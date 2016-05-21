@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="main_theme_color">#ffd705</color>
+    <color name="main_theme_color_dark">#b79b04</color>
+    <color name="black">#ff000000</color>
+    <color name="main_bg">#f4f4f4</color>
+    <color name="split_line">#ffe5e5e5</color>
+    <color name="lite_blue">#ff359ff2</color>
+    <color name="grey1">#ececec</color>
+    <color name="grey2">#cdcdcd</color>
+
+    <color name="md_btn_selected">#33969696</color>
+    <color name="md_btn_selected_dark">#40CBCBCB</color>
+    <color name="md_divider_black">#10000000</color>
+    <color name="md_divider_white">#10FFFFFF</color>
+
+    <color name="md_edittext_error">#DD2C00</color>
+    <color name="red">#ff4949</color>
+    <color name="tran">#00000000</color>
+    <color name="login_bg_color">#3a3937</color>
+    <color name="et_hint">#c1c1c1</color>
+    <color name="main_title_color">#181818</color>
+    <color name="main_text_color">#333</color>
+    <color name="main_text_color2">#666</color>
+    <color name="main_text_color3">#999</color>
+    <color name="green">#00ff00</color>
+    <color name="yellow">#ffd527</color>
+    <color name="lightblue">#539ac2</color>
+    <color name="divider">#ffe0e0e0</color>
+    <color name="split_line2">#ffcccccc</color>
+    <color name="main_theme_color2">#f9c902</color>
+    <color name="search_bg">#e1bcaa</color>
+    <color name="top_bar">#ffffff</color>
+    <color name="top_title">#e53059</color>
+    <color name="white">#ffffff</color>
+    <color name="white2">#ddffffff</color>
+    <color name="back">#3c3b3b</color>
+    <color name="back1">#898585</color>
+    <color name="card_background">#ffffff</color>
+    <color name="card_shadow">#10000000</color>
+    <color name="lyrics_color">#181818</color>
+    <color name="lyrics_color1">#666</color>
+</resources>

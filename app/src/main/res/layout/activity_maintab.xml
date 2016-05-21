@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="false"
+    android:clipChildren="false"
+    android:background="@color/main_bg"
+    android:orientation="vertical"
+    >
+    <include layout="@layout/view_toolbar_play" />
+    <com.xilu.wybz.view.IndexViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+    <include layout="@layout/view_spit_line" />
+    <include layout="@layout/activity_maintab_bottom" />
+</LinearLayout>

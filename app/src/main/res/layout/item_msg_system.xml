@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/yc_10"
+    android:paddingLeft="@dimen/yc_15"
+    android:paddingRight="@dimen/yc_15"
+    android:paddingTop="@dimen/yc_10"
+    android:background="@color/white"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        >
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/iv_head"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            fresco:actualImageScaleType="centerCrop"
+            fresco:fadeDuration="300"
+            fresco:failureImage="@drawable/ic_default_head_252"
+            fresco:failureImageScaleType="centerCrop"
+            fresco:placeholderImage="@drawable/ic_default_head_252"
+            fresco:placeholderImageScaleType="centerCrop"
+            fresco:roundAsCircle="true" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="@dimen/yc_10"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="音淘"
+                android:textColor="@color/main_text_color"
+                android:textSize="@dimen/yc_15" />
+
+            <TextView
+                android:id="@+id/tv_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/yc_2"
+                android:gravity="right"
+                android:text="time"
+                android:textColor="@color/main_text_color2"
+                android:textSize="@dimen/yc_12" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="123"
+        android:layout_marginTop="@dimen/yc_10"
+        android:textColor="@color/main_text_color"
+        android:textSize="@dimen/yc_15" />
+
+    <LinearLayout
+        android:id="@+id/ll_detail"
+        android:padding="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginTop="@dimen/yc_10"
+        android:background="@drawable/link_bg"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/iv_cover"
+            android:layout_width="0dp"
+            android:layout_weight="141"
+            android:layout_height="match_parent"
+            fresco:fadeDuration="300"
+            fresco:actualImageScaleType="centerCrop"
+            fresco:placeholderImage="@drawable/ic_default_pic"
+            fresco:placeholderImageScaleType="centerCrop"
+            fresco:failureImage="@drawable/ic_default_pic"
+            fresco:failureImageScaleType="centerCrop"
+            />
+
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="189"
+            android:layout_marginTop="@dimen/yc_15"
+            android:layout_marginBottom="@dimen/yc_15"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="@dimen/yc_10"
+            android:layout_marginRight="@dimen/yc_10"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="info"
+                android:maxLength="4"
+                android:ellipsize="end"
+                android:textColor="@color/main_text_color"
+                android:textSize="@dimen/yc_15" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

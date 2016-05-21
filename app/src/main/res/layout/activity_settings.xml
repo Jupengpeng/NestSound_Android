@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_bg"
+    android:orientation="vertical">
+
+    <include layout="@layout/view_toolbar" />
+    <LinearLayout
+        android:layout_marginTop="15dp"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="5dp"
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        >
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/iv_head"
+            android:layout_width="59dp"
+            android:layout_height="59dp"
+            fresco:actualImageScaleType="centerCrop"
+            fresco:fadeDuration="300"
+            fresco:failureImage="@drawable/ic_default_head_252"
+            fresco:failureImageScaleType="centerCrop"
+            fresco:placeholderImage="@drawable/ic_default_pic"
+            fresco:placeholderImageScaleType="centerCrop"
+            fresco:roundingBorderWidth="0.6dp"
+            fresco:roundingBorderColor="@color/main_text_color"
+            fresco:roundAsCircle="true" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:textColor="@color/main_text_color"
+                android:text="name"
+                />
+            <TextView
+                android:layout_marginTop="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="13dp"
+                android:textColor="@color/main_text_color2"
+                android:text="sign"
+                />
+
+        </LinearLayout>
+    <ImageView
+        android:id="@+id/iv_modify"
+        android:padding="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_mine_modify"
+        />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <include layout="@layout/view_spit_line" />
+        <LinearLayout
+            android:id="@+id/ll_clear_cache"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/yc_42"
+            android:background="?selectableItemBackground"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/yc_15"
+            android:paddingRight="@dimen/yc_15">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="清理缓存"
+                android:textColor="@color/main_text_color"
+                android:textSize="@dimen/yc_15" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_setting_arrow" />
+            />
+        </LinearLayout>
+
+        <include layout="@layout/view_spit_line" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/yc_42"
+            android:gravity="center_vertical"
+            android:background="?selectableItemBackground"
+            android:paddingLeft="@dimen/yc_15"
+            android:paddingRight="@dimen/yc_15">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="新消息提示"
+                android:textColor="@color/main_text_color"
+                android:textSize="@dimen/yc_15" />
+
+            <CheckBox
+                android:id="@+id/cb_notice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@drawable/check_btn" />
+            />
+        </LinearLayout>
+
+        <include layout="@layout/view_spit_line" />
+
+        <LinearLayout
+            android:id="@+id/ll_score"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/yc_42"
+            android:gravity="center_vertical"
+            android:background="?selectableItemBackground"
+            android:paddingLeft="@dimen/yc_15"
+            android:paddingRight="@dimen/yc_15">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="去评分"
+                android:textColor="@color/main_text_color"
+                android:textSize="@dimen/yc_15" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_setting_arrow" />
+            />
+        </LinearLayout>
+
+        <include layout="@layout/view_spit_line" />
+
+
+
+        <LinearLayout
+            android:id="@+id/ll_feedback"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/yc_42"
+            android:gravity="center_vertical"
+            android:background="?selectableItemBackground"
+            android:paddingLeft="@dimen/yc_15"
+            android:paddingRight="@dimen/yc_15">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="用户反馈"
+                android:textColor="@color/main_text_color"
+                android:textSize="@dimen/yc_15" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_setting_arrow" />
+            />
+        </LinearLayout>
+
+        <include layout="@layout/view_spit_line" />
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_loginout"
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/yc_42"
+        android:orientation="vertical"
+        android:background="?selectableItemBackground"
+        >
+        <include layout="@layout/view_spit_line" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="退出登录"
+            android:textColor="@color/main_text_color"
+            android:background="@color/white"
+            android:textSize="@dimen/yc_15"
+            />
+        <include layout="@layout/view_spit_line" />
+    </LinearLayout>
+
+</LinearLayout>

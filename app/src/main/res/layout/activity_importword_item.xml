@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="66dp"
+        android:layout_weight="1"
+        android:background="@drawable/link_bg">
+
+        <RelativeLayout
+            android:layout_width="66dp"
+            android:layout_height="66dp">
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/iv_cover"
+                android:layout_width="66dp"
+                android:layout_height="66dp"
+                fresco:actualImageScaleType="centerCrop"
+                fresco:fadeDuration="300"
+                fresco:failureImage="@drawable/ic_default_pic"
+                fresco:failureImageScaleType="centerCrop"
+                fresco:placeholderImage="@drawable/ic_default_pic"
+                fresco:roundBottomRight="false"
+                fresco:roundTopRight="false"
+                fresco:roundedCornerRadius="3dp" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:text="你好吗"
+                android:textColor="@color/main_text_color"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_author"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:singleLine="true"
+                android:text="阿超"
+                android:textColor="@color/main_text_color2"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

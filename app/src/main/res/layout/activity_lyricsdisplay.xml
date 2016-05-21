@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_bg"
+    android:orientation="vertical">
+
+    <include layout="@layout/view_toolbar" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.xilu.wybz.view.ReboundScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:overScrollMode="never"
+                android:scrollbars="none">
+
+                <TextView
+                    android:id="@+id/ly_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center"
+                    android:lineSpacingMultiplier="1.5"
+                    android:paddingBottom="20dp"
+                    android:paddingLeft="35dp"
+                    android:paddingRight="35dp"
+                    android:paddingTop="20dp"
+                    android:text=""
+                    android:textColor="#333"
+                    android:textSize="@dimen/yc_15" />
+            </com.xilu.wybz.view.ReboundScrollView>
+
+
+            <include layout="@layout/view_spit_line" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/yc_15">
+
+                <RelativeLayout
+                    android:id="@+id/rl_head"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent">
+
+                    <com.xilu.wybz.view.CircleImageView
+                        android:id="@+id/iv_head"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_centerInParent="true"
+                        app:border_width="1px" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/yc_12"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_author"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:text="Author"
+                        android:textColor="@color/lyrics_color"
+                        android:textSize="12.5dp" />
+
+                    <TextView
+                        android:id="@+id/ly_createday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="1dp"
+                        android:text="Date"
+                        android:textColor="@color/lyrics_color1"
+                        android:textSize="12.5dp" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="@dimen/yc_6"
+                    android:gravity="center_vertical">
+                    <RelativeLayout
+                        android:id="@+id/rl_fav"
+                        android:layout_width="46dp"
+                        android:layout_height="52dp">
+                    <ImageView
+                        android:id="@+id/iv_fav"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/ic_lyrics_fav1" />
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:id="@+id/rl_zan"
+                        android:layout_width="46dp"
+                        android:layout_height="52dp">
+                    <ImageView
+                        android:id="@+id/iv_zan"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/ic_lyrics_zan1" />
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:layout_width="46dp"
+                        android:layout_height="52dp">
+
+                        <ImageView
+                            android:id="@+id/iv_comment"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:paddingLeft="@dimen/yc_10"
+                            android:paddingRight="@dimen/yc_10"
+                            android:src="@drawable/ic_lyrics_reply" />
+
+                        <TextView
+                            android:id="@+id/tv_comment_num"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginRight="4dp"
+                            android:layout_marginTop="12dp"
+                            android:text="121"
+                            android:textColor="@color/main_text_color"
+                            android:textSize="9sp" />
+                    </RelativeLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+        <include layout="@layout/ll_loading" />
+        <include layout="@layout/ll_nonet" />
+
+    </RelativeLayout>
+
+
+</LinearLayout>

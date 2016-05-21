@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/view_toolbar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingLeft="21dp"
+        android:paddingRight="21dp">
+
+        <EditText
+            android:id="@+id/et_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/tran"
+            android:gravity="center"
+            android:hint="标题"
+            android:paddingBottom="@dimen/yc_10"
+            android:paddingTop="@dimen/yc_10"
+            android:singleLine="true"
+            android:textColor="#181818"
+            android:textColorHint="@color/main_text_color2"
+            android:textSize="@dimen/yc_15" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@drawable/makeword_line" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/yc_10"
+            android:layout_marginTop="@dimen/yc_10"
+            android:clipToPadding="false"
+            android:scrollbarThumbVertical="@drawable/transparent"
+            android:scrollbars="vertical">
+
+            <EditText
+                android:id="@+id/et_word"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/tran"
+                android:elegantTextHeight="true"
+                android:gravity="center_horizontal|top"
+                android:minHeight="260dp"
+                android:text=""
+                android:textColor="@color/main_text_color"
+                android:textSize="@dimen/yc_15" />
+        </ScrollView>
+    </LinearLayout>
+</LinearLayout>

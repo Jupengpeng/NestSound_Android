@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_save_draft"
+        android:title="保存草稿"
+        app:actionProviderClass="com.xilu.wybz.view.menuitem.PlayActionProvider"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/menu_save"
+        android:title="发布"
+        app:actionProviderClass="com.xilu.wybz.view.menuitem.PlayActionProvider"
+        app:showAsAction="always" />
+</menu>

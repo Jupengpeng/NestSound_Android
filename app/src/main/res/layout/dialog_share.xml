@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/pop_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:text="分享至"
+        android:textColor="@color/main_text_color"
+        android:textSize="18sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/ll_share_weixin"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/selector"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingBottom="10dip"
+            android:paddingTop="10dip">
+
+            <ImageView
+                android:id="@+id/share_weixin"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/ic_share_wx" />
+
+            <TextView
+                android:id="@+id/tv_weixin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dip"
+                android:text="微信"
+                android:textColor="@color/main_text_color2"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_share_friend"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/selector"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingBottom="10dip"
+            android:paddingTop="10dip">
+
+            <ImageView
+                android:id="@+id/share_friend"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/ic_share_wx_friend" />
+
+            <TextView
+                android:id="@+id/tv_friend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dip"
+                android:text="朋友圈"
+                android:textColor="@color/main_text_color2"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_share_weibo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/selector"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingBottom="10dip"
+            android:paddingTop="10dip">
+
+            <ImageView
+                android:id="@+id/share_weibo"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/ic_share_wb" />
+
+            <TextView
+                android:id="@+id/tv_weibo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dip"
+                android:text="微博"
+                android:textColor="@color/main_text_color2"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_share_qq"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/selector"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingBottom="10dip"
+            android:paddingTop="10dip">
+
+            <ImageView
+                android:id="@+id/share_qq"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/ic_share_qq" />
+
+            <TextView
+                android:id="@+id/tv_qq"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dip"
+                android:text="QQ"
+                android:textColor="@color/main_text_color2"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_share_qzone"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/selector"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingBottom="10dip"
+            android:paddingTop="10dip">
+
+            <ImageView
+                android:id="@+id/share_qzone"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/ic_share_qzone" />
+
+            <TextView
+                android:id="@+id/tv_qzone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dip"
+                android:text="QQ空间"
+                android:textColor="@color/main_text_color2"
+                android:textSize="13sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <include layout="@layout/view_spit_line" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/ll_share_copy"
+            android:layout_width="72dip"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingBottom="10dip"
+            android:paddingTop="10dip">
+
+            <ImageView
+                android:id="@+id/share_copy"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/ic_share_link" />
+
+            <TextView
+                android:id="@+id/tv_copy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dip"
+                android:text="复制连接"
+                android:textColor="@color/main_text_color2"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_share_sms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingBottom="10dip"
+            android:paddingTop="10dip"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/share_sms"
+                android:layout_width="35dp"
+                android:layout_height="35dp" />
+
+            <TextView
+                android:id="@+id/tv_sms"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dip"
+                android:text="发送至联系人"
+                android:textColor="@color/main_text_color2"
+                android:textSize="13sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <include layout="@layout/view_spit_line" />
+
+    <Button
+        android:id="@+id/btn_cancel"
+        android:layout_width="match_parent"
+        android:layout_height="52dip"
+        android:background="@drawable/selector"
+        android:gravity="center"
+        android:text="取消"
+        android:textColor="@color/main_text_color2"
+        android:textSize="16sp" />
+</LinearLayout>

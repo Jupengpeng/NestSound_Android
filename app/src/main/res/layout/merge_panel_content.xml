@@ -1,0 +1,56 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/Panel">
+
+    <include layout="@layout/view_spit_line" />
+
+    <LinearLayout
+        android:id="@+id/ll_record"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:padding="20dp"
+            android:visibility="gone"
+            android:src="@drawable/ic_record_arrow_down"
+            android:tint="@color/main_text_color2" />
+
+        <TextView
+            android:id="@+id/tv_record_status"
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:textSize="16sp"
+            android:text="点击录音"
+            android:textColor="@color/main_text_color2" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginBottom="30dp"
+            >
+
+            <ImageView
+                android:id="@+id/iv_record_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_record_luyin_unstart" />
+
+            <ImageView
+                android:id="@+id/iv_del_record"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="35dp"
+                android:visibility="gone"
+                android:layout_toRightOf="@+id/iv_record_status"
+                android:src="@drawable/ic_record_del" />
+        </RelativeLayout>
+    </LinearLayout>
+    </merge>

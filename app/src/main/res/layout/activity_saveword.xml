@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_bg"
+    android:orientation="vertical">
+    <include layout="@layout/view_toolbar" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:paddingLeft="30px"
+        android:paddingRight="30px"
+        android:paddingTop="20px"
+        >
+        <ScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="256px"
+            android:scrollbarThumbVertical="@drawable/transparent"
+            android:scrollbars="vertical">
+            <EditText
+                android:id="@+id/et_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textSize="@dimen/yc_15"
+                android:textColor="@color/main_text_color"
+                android:hint="快来写一下你为什么创作这首歌吧"
+                android:elegantTextHeight="true"
+                android:background="@color/tran"
+                android:maxLength="140"
+                android:gravity="top"
+                />
+        </ScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="30px"
+            android:paddingTop="30px">
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/iv_cover"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                fresco:fadeDuration="300"
+                fresco:actualImageScaleType="centerCrop"
+                fresco:pressedStateOverlayImage="@drawable/selector2"
+                fresco:placeholderImage="@drawable/ic_add_word_pic"
+                fresco:placeholderImageScaleType="centerCrop"
+                fresco:failureImage="@drawable/ic_add_word_pic"
+                fresco:failureImageScaleType="centerCrop"
+                />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="添加封面"
+                android:layout_marginLeft="@dimen/yc_15"
+                android:textColor="@color/main_text_color"
+                android:textSize="@dimen/yc_15" />
+
+
+        </LinearLayout>
+        <include layout="@layout/view_spit_line" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="是否公开"
+                android:paddingBottom="20px"
+                android:paddingTop="20px"
+                android:textColor="@color/main_text_color"
+                android:textSize="@dimen/yc_15" />
+
+            <CheckBox
+                android:id="@+id/cb_isopen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@drawable/check_btn" />
+            />
+        </LinearLayout>
+    </LinearLayout>
+
+    <include layout="@layout/view_spit_line" />
+
+</LinearLayout>
