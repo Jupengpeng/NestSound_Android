@@ -32,11 +32,13 @@
                         android:id="@+id/id_bg"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_my_banner" />
+                        android:src="@drawable/ic_my_banner"
+                        android:scaleType="centerCrop"
+                        />
 
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="46px"
+                        android:layout_height="23dp"
                         android:layout_below="@+id/id_bg"
                         android:background="@color/white" />
                 </RelativeLayout>
@@ -300,15 +302,20 @@
             <FrameLayout
                 android:id="@+id/user_layout_content"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                >
+            </FrameLayout>
+
         </LinearLayout>
     </com.xilu.wybz.view.TopFloatScrollView>
 
     <RelativeLayout
         android:id="@+id/rl_topbar"
         android:layout_width="match_parent"
-        android:layout_height="48dp">
+        android:layout_height="48dp"
+        >
         <View
+            android:id="@+id/v_toolbar"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:alpha="0"
@@ -320,16 +327,16 @@
             android:layout_centerInParent="true"
             android:gravity="center"
             android:text="个人主页"
-            android:alpha="0"
+            android:alpha="1"
             android:textColor="@android:color/black"
             android:textSize="18sp" />
 
         <RelativeLayout
             android:id="@+id/rl_draft"
-            android:layout_width="48dp"
+            android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:layout_toLeftOf="@+id/rl_setting"
-            android:background="?android:actionBarItemBackground">
+            >
             <ImageView
                 android:id="@+id/iv_draft"
                 android:layout_width="wrap_content"
@@ -339,10 +346,12 @@
         </RelativeLayout>
         <RelativeLayout
             android:id="@+id/rl_setting"
-            android:layout_width="48dp"
+            android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:layout_alignParentRight="true"
-            android:background="?android:actionBarItemBackground">
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="15dp"
+            >
             <ImageView
                 android:id="@+id/iv_setting"
                 android:layout_width="wrap_content"

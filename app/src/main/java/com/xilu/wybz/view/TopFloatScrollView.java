@@ -2,7 +2,10 @@ package com.xilu.wybz.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.FrameLayout;
@@ -53,11 +56,15 @@ public class TopFloatScrollView extends FrameLayout implements MonitorScrollView
     int mFloatToTopHeight;
     int dpi48;
     // 一直在头部的容器
-    RelativeLayout mFloatTopContainer;
-    RelativeLayout rl_top_view;
-    ImageView iv_left_top;
 
-    public void initView(RelativeLayout rl_top_view, ImageView iv_left_top) {
+    RelativeLayout mFloatTopContainer;
+    OnScrollToBottomListener onScrollToBottom;
+
+
+    View rl_top_view;
+    View iv_left_top;
+
+    public void initView(View rl_top_view, View iv_left_top) {
         this.rl_top_view = rl_top_view;
         this.iv_left_top = iv_left_top;
     }
@@ -75,6 +82,42 @@ public class TopFloatScrollView extends FrameLayout implements MonitorScrollView
         super(context, attrs, defStyleAttr);
         this.mContext = context;
         initView();
+    }
+
+
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+
+
+//        int y1 = getScrollY();
+//        int y2 = getChildAt(0).getMeasuredHeight();
+//        int y3 = getHeight();
+//
+//        Log.d("test","y1="+y1+" y2="+y2+" y3="+y3);
+
+
+        return super.onTouchEvent(event);
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+
+//        requestDisallowInterceptTouchEvent(true);
+//
+//        int y1 = getScrollY();
+//        int y2 = getChildAt(0).getMeasuredHeight();
+//        int y3 = getHeight();
+//
+//        Log.d("test","y1="+y1+" y2="+y2+" y3="+y3);
+
+
+        return super.dispatchTouchEvent(ev);
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent e) {
+        return super.onInterceptTouchEvent(e);
     }
 
     void initView() {
@@ -195,7 +238,7 @@ public class TopFloatScrollView extends FrameLayout implements MonitorScrollView
         } else if (y > 255) {
             rl_top_view.setAlpha(1);
         }
-        iv_left_top.setAlpha(1 - rl_top_view.getAlpha());
+        iv_left_top.setAlpha(rl_top_view.getAlpha());
         if (mFloatView != null && mFloatView.getVisibility() == View.VISIBLE) {
             // 在它滚动的时候去决定新增容器有多大
             initNewContanier();
@@ -209,7 +252,9 @@ public class TopFloatScrollView extends FrameLayout implements MonitorScrollView
 
     @Override
     public void onBottom() {
-
+        if (onScrollToBottom != null){
+            onScrollToBottom.scrollBottom();
+        }
     }
 
     void initNewContanier() {
@@ -229,6 +274,11 @@ public class TopFloatScrollView extends FrameLayout implements MonitorScrollView
         if (currentParent != mAddFloatContainer) {
             // 添加到原来的RooView中 我们之前有记录位置
             mFloatTopContainer.removeView(mFloatView);
+
+            ViewGroup parent = (ViewGroup)mFloatView.getParent();
+            if (parent != null){
+                parent.removeView(mFloatView);
+            }
             mAddFloatContainer.addView(mFloatView);
             mFloatTopContainer.setVisibility(View.GONE);
         }
@@ -244,6 +294,11 @@ public class TopFloatScrollView extends FrameLayout implements MonitorScrollView
             mFloatTopContainer.setVisibility(View.VISIBLE);
             mFloatTopContainer.setPadding(0, dpi48, 0, 0);
             mAddFloatContainer.removeAllViews();
+
+            ViewGroup g = (ViewGroup)mFloatView.getParent();
+            if (g != null){
+                g.removeView(mFloatView);
+            }
             mFloatTopContainer.addView(mFloatView);
         }
     }
@@ -298,4 +353,14 @@ public class TopFloatScrollView extends FrameLayout implements MonitorScrollView
                     "TopFloatScrollView can host only one direct child");
         }
     }
+
+
+    public void setScrollBottomListener(OnScrollToBottomListener scrollBottomListener) {
+        onScrollToBottom = scrollBottomListener;
+    }
+
+    public interface OnScrollToBottomListener {
+        void scrollBottom();
+    }
+
 }

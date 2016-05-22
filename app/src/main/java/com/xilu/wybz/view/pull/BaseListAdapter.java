@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import com.xilu.wybz.R;
 
@@ -14,7 +15,7 @@ import com.xilu.wybz.R;
 public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     protected static final int VIEW_TYPE_LOAD_MORE_FOOTER = 100;
-    protected boolean isLoadMoreFooterShown;
+    protected boolean isLoadMoreFooterShown = false;
 
     @Override
     public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

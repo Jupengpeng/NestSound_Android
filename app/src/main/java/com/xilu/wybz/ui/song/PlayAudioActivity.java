@@ -175,6 +175,12 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
         initData();
     }
 
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+    }
+
     public void initView() {
         ExitApplication.getInstance().addActivity(this);
         if (!isChenjin) { //没有沉浸的时候 导航栏不需要上边距
