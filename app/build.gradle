@@ -93,7 +93,10 @@ dependencies {
     compile rootProject.ext.dependencies["nativestackblur"]
     compile rootProject.ext.dependencies["materialprogressbar"]
     compile rootProject.ext.dependencies["eventbus"]
+    compile rootProject.ext.dependencies["cardview"]
+
     compile 'com.android.support:multidex:1.0.0'
+
     compile 'com.wdullaer:materialdatetimepicker:2.3.0'
     compile files('libs/lite-orm-1.9.1.jar')
     compile files('libs/gson-2.3.1.jar')
@@ -115,6 +118,9 @@ dependencies {
     compile files('libs/universal-image-loader-1.9.4.jar')
     compile files('libs/weiboSDKCore_3.1.4.jar')
     compile files('libs/commons-lang3-3.4.jar')
+
+
+    testCompile 'junit:junit:4.12'
 }
 
 
