@@ -218,40 +218,6 @@ public class MineActivity extends BaseActivity implements IUserView {
     }
 
 
-    @Override
-    public void setUserInfo() {
-
-    }
-
-    @Override
-    public void loadUserInfoSuccess(String result) {
-
-    }
-
-    @Override
-    public void loadFocusFansCountSuccess(String result) {
-
-    }
-
-    @Override
-    public void loadUserInfoFail(String msg) {
-
-    }
-
-    @Override
-    public void loadFocusFansCountFail(String msg) {
-
-    }
-
-    @Override
-    public void delSuccess(String result) {
-
-    }
-
-    @Override
-    public void delFail(String msg) {
-
-    }
 
     @Override
     public void addInspirationDatas(List<WorksData> datas) {
@@ -292,6 +258,27 @@ public class MineActivity extends BaseActivity implements IUserView {
     @Override
     public void showCollectionNoData() {
         mUserCollectionView.showNoDataView();
+    }
+
+
+    @Override
+    public void showInspirationNoNet() {
+
+    }
+
+    @Override
+    public void showSongNoNet() {
+
+    }
+
+    @Override
+    public void showLyricNoNet() {
+
+    }
+
+    @Override
+    public void showCollectionNoNet() {
+
     }
 
     @Override
