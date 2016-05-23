@@ -38,42 +38,42 @@ public class UserPresenter extends BasePresenter<IUserView> {
         param.put("type","4");
         param.put("page",""+page);
 
-        httpUtils.post(MyHttpClient.getfocusfansnum(userId),param, new MyStringCallback() {
-            @Override
-            public void onResponse(String response) {
-                try {
-                    if (ParseUtils.checkCode(response)) {
-                        JSONObject jsonObject = new JSONObject(response);
-                        String dataString = jsonObject.getString("data");
+//        httpUtils.post(MyHttpClient.getfocusfansnum(userId),param, new MyStringCallback() {
+//            @Override
+//            public void onResponse(String response) {
+//                try {
+//                    if (ParseUtils.checkCode(response)) {
+//                        JSONObject jsonObject = new JSONObject(response);
+//                        String dataString = jsonObject.getString("data");
+//
+//                        MineBean mineBean= ParseUtils.parseMineBean(dataString);
+//                        List<WorksData> dataList = mineBean.getList();
+//
+//                        if (dataList.size() == 0){
+//                            if (page == 1){
+//
+//                            }
+//
+//                        }else {
+////                            iView.loadUserInfoSuccess("");
+//                        }
+//
+//
+//                    } else {
+//                        ParseUtils.showMsg(context, response);
+//                    }
+//
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+////                    iView.showErrorView();
+//                }
+//            }
 
-                        MineBean mineBean= ParseUtils.parseMineBean(dataString);
-                        List<WorksData> dataList = mineBean.getList();
-
-                        if (dataList.size() == 0){
-                            if (page == 1){
-
-                            }
-
-                        }else {
-//                            iView.loadUserInfoSuccess("");
-                        }
-
-
-                    } else {
-                        ParseUtils.showMsg(context, response);
-                    }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-//                    iView.showErrorView();
-                }
-            }
-
-            @Override
-            public void onError(Call call, Exception e) {
-                super.onError(call, e);
-            }
-        });
+//            @Override
+//            public void onError(Call call, Exception e) {
+//                super.onError(call, e);
+//            }
+//        });
 
     }
     public void getSongList(String userId,int page){

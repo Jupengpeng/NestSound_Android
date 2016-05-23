@@ -32,9 +32,9 @@ public class MsgSystemPresenter extends BasePresenter<ISystemMsgView> {
 
     public void loadData(String userId, int page) {
         Map<String,String> params = new HashMap<>();
-        params.put("userid", userId);
+        params.put("uid", userId);
         params.put("page", page + "");
-        httpUtils.postUrl(MyHttpClient.getSystemt(), params, new MyStringCallback() {
+        httpUtils.post(MyHttpClient.getMsgSystemList(), params, new MyStringCallback() {
             @Override
             public void onError(Call call, Exception e) {
                 iView.loadFail();
@@ -44,10 +44,8 @@ public class MsgSystemPresenter extends BasePresenter<ISystemMsgView> {
             public void onResponse(String response) {
                 if (ParseUtils.checkCode(response)) {
                     try {
-                        String resultlist = new JSONObject(response).getJSONObject("data")
-                                .getJSONObject("info").getJSONObject("resultlist").getString("items");
-                        List<SystemBean> mList = new Gson().fromJson(resultlist, new TypeToken<List<SystemBean>>() {
-                        }.getType());
+                        String resultlist = new JSONObject(response).getString("data");
+                        List<SystemBean> mList = new Gson().fromJson(resultlist, new TypeToken<List<SystemBean>>(){}.getType());
                         if (mList.size() == 0) {
                             if (page == 1) {
                                 iView.loadNoData();

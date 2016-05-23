@@ -42,13 +42,13 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.xilu.wybz.R;
-import internal.MDButton;
-import internal.MDRootLayout;
-import internal.MDTintHelper;
-import internal.ThemeSingleton;
-import util.DialogUtils;
-import util.RippleHelper;
-import util.TypefaceHelper;
+import com.xilu.wybz.view.materialdialogs.internal.MDButton;
+import com.xilu.wybz.view.materialdialogs.internal.MDRootLayout;
+import com.xilu.wybz.view.materialdialogs.internal.MDTintHelper;
+import com.xilu.wybz.view.materialdialogs.internal.ThemeSingleton;
+import com.xilu.wybz.view.materialdialogs.util.DialogUtils;
+import com.xilu.wybz.view.materialdialogs.util.RippleHelper;
+import com.xilu.wybz.view.materialdialogs.util.TypefaceHelper;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;

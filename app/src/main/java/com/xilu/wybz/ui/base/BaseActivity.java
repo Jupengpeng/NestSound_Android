@@ -17,6 +17,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.common.ResizeOptions;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
+import com.umeng.message.PushAgent;
 import com.xilu.wybz.R;
 import com.xilu.wybz.common.ZnImageLoader;
 import com.xilu.wybz.ui.MainTabActivity;
@@ -37,13 +38,15 @@ import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.ToastUtils;
 import com.xilu.wybz.view.AnimImageView;
 import com.xilu.wybz.view.SystemBarTintManager;
+import com.xilu.wybz.view.materialdialogs.MaterialDialog;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
 
 /**
- * Created by drakeet on 8/9/15.
+ * Created by June on 8/9/15.
  */
 public abstract class BaseActivity extends AppCompatActivity {
     protected abstract int getLayoutRes();
@@ -69,7 +72,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         isHomeActivity = this instanceof MainActivity || this instanceof FindActivity
                 || this instanceof MsgActivity || this instanceof MineActivity;
         initStatusBar();
-//        PushAgent.getInstance(context).onAppStart();
+        PushAgent.getInstance(context).onAppStart();
     }
 
     //适配不同手机以及sdk_int的状态栏

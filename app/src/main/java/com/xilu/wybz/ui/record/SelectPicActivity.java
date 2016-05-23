@@ -41,6 +41,7 @@ public class SelectPicActivity extends ToolbarActivity {
     PhotoAdapter photoAdapter;
     SelectPicProvider selectPicProvider;
     ArrayList<String> picList;
+    int column;
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_selectpic_list;
@@ -57,10 +58,11 @@ public class SelectPicActivity extends ToolbarActivity {
         Bundle bundle = getIntent().getExtras();
         if(bundle!=null){
             picList = bundle.getStringArrayList("pics");
+            column = bundle.getInt("column");
         }
         int space10 = DensityUtil.dip2px(context, 10);
-        recycler.setLayoutManager(new GridLayoutManager(context, 4));
-        recycler.addItemDecoration(new GridSpacingItemDecoration(4, space10, false));
+        recycler.setLayoutManager(new GridLayoutManager(context, column));
+        recycler.addItemDecoration(new GridSpacingItemDecoration(column, space10, false));
         getPics();
     }
     // 遍历接收一个文件路径，然后把文件子目录中的所有文件遍历并输出来
@@ -83,7 +85,7 @@ public class SelectPicActivity extends ToolbarActivity {
             cursor.moveToPrevious();
         }
         cursor.close();
-        photoAdapter = new PhotoAdapter(context,mList);
+        photoAdapter = new PhotoAdapter(context,mList,column);
         recycler.setAdapter(photoAdapter);
         photoAdapter.setOnItemClickListener(new PhotoAdapter.OnItemClickListener() {
             @Override

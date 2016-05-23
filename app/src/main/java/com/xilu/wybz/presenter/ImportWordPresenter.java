@@ -15,6 +15,7 @@ import com.xilu.wybz.utils.ParseUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.List;
 
 import okhttp3.Call;
@@ -29,7 +30,10 @@ public class ImportWordPresenter extends BasePresenter<IImportWordView> {
     }
 
     public void loadData(String userId, int page) {
-        httpUtils.get(MyHttpClient.getZanList(userId, page), new MyStringCallback() {
+        params = new HashMap<>();
+        params.put("uid",userId);
+        params.put("page",page+"");
+        httpUtils.get(MyHttpClient.getUserLyricsListUrl(), new MyStringCallback() {
             @Override
             public void onError(Call call, Exception e) {
                 iView.loadFail();
@@ -39,8 +43,8 @@ public class ImportWordPresenter extends BasePresenter<IImportWordView> {
             public void onResponse(String response) {
                 if(ParseUtils.checkCode(response)){
                     try {
-                        String resultlist = new JSONObject(response).getJSONObject("data").getJSONObject("info").getJSONObject("upvotelist").getString("items");
-                        List<WorksData> mList = new Gson().fromJson(resultlist, new TypeToken<List<WorksData>>() {}.getType());
+                        String result = new JSONObject(response).getString("data");
+                        List<WorksData> mList = new Gson().fromJson(result, new TypeToken<List<WorksData>>() {}.getType());
                         if(mList.size()==0){
                             if(page==1){
                                 iView.loadNoData();

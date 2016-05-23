@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.PushAgent;
 import com.xilu.wybz.R;
@@ -20,6 +22,8 @@ import com.xilu.wybz.utils.MD5Util;
 import com.xilu.wybz.utils.ParseUtils;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtil;
+
+import org.json.JSONObject;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -51,7 +55,6 @@ public class LoginActivity extends BaseActivity implements ILoginView,TextWatche
     }
 
     public void initView() {
-
         mloginPass.addTextChangedListener(this);
         mloginUser.addTextChangedListener(this);
 
@@ -139,12 +142,17 @@ public class LoginActivity extends BaseActivity implements ILoginView,TextWatche
     @Override
     public void loginSuccess(String result) {
         if (ParseUtils.checkCode(result)) {
-            UserBean ub = ParseUtils.parseUserBean(result);
+            UserBean ub = null;
+            try {
+                ub = new Gson().fromJson(new JSONObject(result).getString("data"),UserBean.class);
+            } catch (Exception e) {
+            }
             if (ub != null) {
-                userId = ub.uid;
-                MobclickAgent.onProfileSignIn(ub.uid);
-                PushAgent.getInstance(context).setAlias(ub.uid, "yinchao");
-                PushAgent.getInstance(context).setExclusiveAlias(ub.uid, "yinchao");
+                userId = ub.userid;
+                isLogin = true;
+                MobclickAgent.onProfileSignIn(ub.userid);
+                PushAgent.getInstance(context).setAlias(ub.userid, "yinchao");
+                PushAgent.getInstance(context).setExclusiveAlias(ub.userid, "yinchao");
                 PrefsUtil.saveUserInfo(LoginActivity.this, ub);
                 EventBus.getDefault().post(new Event.LoginSuccessEvent());
             }

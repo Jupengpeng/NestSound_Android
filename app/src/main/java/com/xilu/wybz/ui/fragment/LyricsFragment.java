@@ -38,7 +38,7 @@ public class LyricsFragment extends BaseFragment implements ISongView {
     private WorksAdapter newWorksAdapter;
     private WorksAdapter hotWorksAdapter;
     private SongPresenter songPresenter;
-    int column = 2;
+    int column = 3;
 
     @Override
     protected int getLayoutResId() {
@@ -53,20 +53,26 @@ public class LyricsFragment extends BaseFragment implements ISongView {
 
     @Override
     public void showNewSong(List<WorksData> newWorksDatas) {
-        if(newWorksDatas.size()>0){
-        newWorksAdapter = new WorksAdapter(context, newWorksDatas, column);
-        recyclerViewNew.setAdapter(newWorksAdapter);
-        }else{
+        for (WorksData worksData : newWorksDatas) {
+            worksData.status = 2;
+        }
+        if (newWorksDatas.size() > 0) {
+            newWorksAdapter = new WorksAdapter(context, newWorksDatas, column, "");
+            recyclerViewNew.setAdapter(newWorksAdapter);
+        } else {
             tvNewsong.setVisibility(View.GONE);
         }
     }
 
     @Override
     public void showHotSong(List<WorksData> hotWorksDatas) {
-        if(hotWorksDatas.size()>0) {
-            hotWorksAdapter = new WorksAdapter(context, hotWorksDatas, column);
+        for (WorksData worksData : hotWorksDatas) {
+            worksData.status = 2;
+        }
+        if (hotWorksDatas.size() > 0) {
+            hotWorksAdapter = new WorksAdapter(context, hotWorksDatas, column,"");
             recyclerViewHot.setAdapter(hotWorksAdapter);
-        }else{
+        } else {
             tvHotsong.setVisibility(View.GONE);
         }
     }
@@ -88,8 +94,7 @@ public class LyricsFragment extends BaseFragment implements ISongView {
         recyclerViewNew.setLayoutManager(new GridLayoutManager(context, column));
         recyclerViewNew.addItemDecoration(new GridSpacingItemDecoration(column, space10, false));
 
-        songPresenter.getLyricsList("new", column);
-        songPresenter.getLyricsList("hot", column);
+        songPresenter.getWorkList(userId, 2);
     }
 
     @OnClick({R.id.tv_hot_more, R.id.tv_new_more})

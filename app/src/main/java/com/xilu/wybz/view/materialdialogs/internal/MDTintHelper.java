@@ -1,4 +1,4 @@
-package internal;
+package com.xilu.wybz.view.materialdialogs.internal;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -19,7 +19,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.xilu.wybz.R;
-import util.DialogUtils;
+import com.xilu.wybz.view.materialdialogs.util.DialogUtils;
 
 import java.lang.reflect.Field;
 

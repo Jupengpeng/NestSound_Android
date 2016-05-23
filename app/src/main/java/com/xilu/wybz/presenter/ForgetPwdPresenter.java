@@ -20,7 +20,10 @@ public class ForgetPwdPresenter extends BasePresenter<IForgetPwdView> {
     }
 
     public void getSmsCode(String phone) {
-        httpUtils.get(MyHttpClient.getPasswordCodeUrl(phone), new MyStringCallback() {
+        params = new HashMap<>();
+        params.put("type","2");
+        params.put("mobile",phone);
+        httpUtils.get(MyHttpClient.getSmsCodeUrl(), params, new MyStringCallback() {
             @Override
             public void onError(Call call, Exception e) {
                 e.printStackTrace();

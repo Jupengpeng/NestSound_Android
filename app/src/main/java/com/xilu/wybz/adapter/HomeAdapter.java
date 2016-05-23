@@ -1,4 +1,4 @@
-//package com.xilu.wybz.adapter;
+package com.xilu.wybz.adapter;//package com.xilu.wybz.adapter;
 //
 //import android.content.Context;
 //import android.view.LayoutInflater;

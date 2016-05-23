@@ -25,9 +25,11 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.WorksVie
     private List<WorksData> mList;
     private Context context;
     private int itemWidth;
-    public RankingAdapter(Context context, List<WorksData> worksDataList) {
+    private int type;
+    public RankingAdapter(Context context, List<WorksData> worksDataList,int type) {
         this.context = context;
         this.mList = worksDataList;
+        this.type = type;
         itemWidth = DensityUtil.dip2px(context, 86);
     }
 
@@ -58,7 +60,7 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.WorksVie
 //        holder.tvLookNum.setText(worksData.looknum);
 //        holder.tvUpNum.setText(worksData.upnum);
 //        holder.tvFavNum.setText(worksData.fovnum);
-//        holder.ivType.setImageResource(worksData.status == 1 ? R.drawable.ic_song_type : R.drawable.ic_lyric_type);
+        holder.ivType.setImageResource(type == 1 ? R.drawable.ic_raning_play : R.drawable.ic_raning_lyrics);
         holder.tvRank.setText("0"+(position+1));
         if (mOnItemClickListener != null) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -78,22 +80,6 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.WorksVie
         }
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     @Override
     public int getItemCount() {
         return mList.size();
@@ -108,10 +94,10 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.WorksVie
         TextView tvRank;
         @Bind(R.id.tv_look_num)
         TextView tvLookNum;
-        @Bind(R.id.tv_fav_num)
-        TextView tvFavNum;
-        @Bind(R.id.tv_up_num)
-        TextView tvUpNum;
+        @Bind(R.id.tv_fov_num)
+        TextView tvFovNum;
+        @Bind(R.id.tv_zan_num)
+        TextView tvZanNum;
         @Bind(R.id.tv_name)
         TextView tvName;
         @Bind(R.id.tv_author)

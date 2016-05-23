@@ -26,14 +26,14 @@ public class SongPresenter extends BasePresenter<ISongView> {
     public SongPresenter(Context context, ISongView iView) {
         super(context, iView);
     }
+
     /*
     * orderType 1=最新(或不填)，2=热门
      */
-    public void getSongList(String orderType, int page) {
+    public void getWorkList(String userId,int type) {
         params = new HashMap<>();
-        params.put("orderType","");
-        params.put("page",page+"");
-        httpUtils.get(MyHttpClient.getFindSongList(), params, new MyStringCallback() {
+        params.put("uid",userId);
+        httpUtils.get(type==1?MyHttpClient.getFindSongList():MyHttpClient.getFindLyricsList(), params, new MyStringCallback() {
             @Override
             public void onError(Call call, Exception e) {
                 e.printStackTrace();
@@ -42,54 +42,21 @@ public class SongPresenter extends BasePresenter<ISongView> {
 
             @Override
             public void onResponse(String response) {
-                if (ParseUtils.checkCode(response)) {
+                if(ParseUtils.checkCode(response)){
                     try {
-                        String items = new JSONObject(response).getJSONObject("data")
-                                .getJSONObject("info").getJSONObject("worklist").getString("items");
-                        List<WorksData> worksDatas = new Gson().fromJson(items, new TypeToken<List<WorksData>>() {
-                        }.getType());
-                        if (orderType.equals("new")) {
-                            iView.showNewSong(worksDatas);
-                        } else {
-                            iView.showHotSong(worksDatas);
-                        }
+                        String redList = new JSONObject(response).getJSONObject("data").getString("redList");
+                        String newList = new JSONObject(response).getJSONObject("data").getString("newList");
+                        List<WorksData> redsDatas = ParseUtils.getWorksData(context, redList);
+                        List<WorksData> newsDatas = ParseUtils.getWorksData(context, newList);
+                        iView.showNewSong(newsDatas);
+                        iView.showHotSong(redsDatas);
                     } catch (JSONException e) {
                         e.printStackTrace();
-                        iView.showErrorView();
                     }
                 }
             }
         });
     }
-    public void getLyricsList(String orderType, int page) {
-        params = new HashMap<>();
-        params.put("orderType","");
-        params.put("page",page+"");
-        httpUtils.get(MyHttpClient.getFindLyricsList(), params, new MyStringCallback() {
-            @Override
-            public void onError(Call call, Exception e) {
-                e.printStackTrace();
-                iView.showErrorView();
-            }
 
-            @Override
-            public void onResponse(String response) {
-                if (ParseUtils.checkCode(response)) {
-                    try {
-                        String items = new JSONObject(response).getJSONObject("data")
-                                .getJSONObject("info").getJSONObject("worklist").getString("items");
-                        List<WorksData> worksDatas = new Gson().fromJson(items, new TypeToken<List<WorksData>>() {}.getType());
-                        if(orderType.equals("new")) {
-                            iView.showNewSong(worksDatas);
-                        }else{
-                            iView.showHotSong(worksDatas);
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        iView.showErrorView();
-                    }
-                }
-            }
-        });
-    }
+
 }

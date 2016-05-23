@@ -4,28 +4,19 @@ import android.app.LocalActivityManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.View;
 import android.widget.CheckedTextView;
-import android.widget.ImageView;
 
 import com.xilu.wybz.R;
 import com.xilu.wybz.adapter.MyPagerAdapter;
-import com.xilu.wybz.bean.Conversation;
-import com.xilu.wybz.bean.WorkData;
-import com.xilu.wybz.bean.WorksData;
-import com.xilu.wybz.dao.DBManager;
-import com.xilu.wybz.ui.base.BaseActivity;
 import com.xilu.wybz.ui.base.BasePlayMenuActivity;
-import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.ui.find.FindActivity;
-import com.xilu.wybz.ui.login.LoginActivity;
+import com.xilu.wybz.ui.find.SearchWorksActivity;
 import com.xilu.wybz.ui.lyrics.MakeWordActivity;
 import com.xilu.wybz.ui.main.MainActivity;
 import com.xilu.wybz.ui.mine.MineActivity;
 import com.xilu.wybz.ui.msg.MsgActivity;
-import com.xilu.wybz.ui.record.PublishRecordActivity;
-import com.xilu.wybz.ui.song.MakeHotActivity;
+import com.xilu.wybz.ui.record.InspireRecordActivity;
 import com.xilu.wybz.ui.song.MakeSongActivity;
 import com.xilu.wybz.view.IndexViewPager;
 import com.xilu.wybz.view.MoreWindow;
@@ -115,7 +106,7 @@ public class MainTabActivity extends BasePlayMenuActivity {
         }
     }
 
-    @OnClick({R.id.rl_main_home, R.id.rl_main_find, R.id.rl_main_publish, R.id.rl_main_msg, R.id.rl_main_mine, R.id.iv_add})
+    @OnClick({R.id.rl_main_home, R.id.rl_main_find, R.id.rl_main_publish, R.id.rl_main_msg, R.id.rl_main_mine, R.id.iv_add, R.id.ll_search})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.rl_main_home:
@@ -131,6 +122,9 @@ public class MainTabActivity extends BasePlayMenuActivity {
                 break;
             case R.id.rl_main_mine:
                 currentIndex = 3;
+                break;
+            case R.id.ll_search:
+                startActivity(SearchWorksActivity.class);
                 break;
             case R.id.iv_add:
 //                if(isLogin){
@@ -159,7 +153,7 @@ public class MainTabActivity extends BasePlayMenuActivity {
                     startActivity(MakeWordActivity.class);
                     break;
                 case R.id.tv_record:
-                    startActivity(PublishRecordActivity.class);
+                    startActivity(InspireRecordActivity.class);
                     mMoreWindow.dismiss();
                     break;
                 case R.id.tv_zuoqu:
@@ -171,7 +165,7 @@ public class MainTabActivity extends BasePlayMenuActivity {
     };
     private void changeToolbar(int index){
         app_bar_layout.setVisibility(index==3?View.GONE:View.VISIBLE);
-        ll_search.setVisibility(index==2?View.VISIBLE:View.GONE);
+        ll_search.setVisibility(index==1?View.VISIBLE:View.GONE);
         switch (index){
             case 0:
                 setTitle(getResources().getString(R.string.app_name));

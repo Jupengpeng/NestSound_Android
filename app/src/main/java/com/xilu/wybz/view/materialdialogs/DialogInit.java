@@ -22,11 +22,11 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.xilu.wybz.R;
-import internal.MDAdapter;
-import internal.MDButton;
-import internal.MDRootLayout;
-import internal.MDTintHelper;
-import util.DialogUtils;
+import com.xilu.wybz.view.materialdialogs.internal.MDAdapter;
+import com.xilu.wybz.view.materialdialogs.internal.MDButton;
+import com.xilu.wybz.view.materialdialogs.internal.MDRootLayout;
+import com.xilu.wybz.view.materialdialogs.internal.MDTintHelper;
+import com.xilu.wybz.view.materialdialogs.util.DialogUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 

@@ -17,7 +17,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.xilu.wybz.R;
-import internal.MDTintHelper;
+import com.xilu.wybz.view.materialdialogs.internal.MDTintHelper;
 
 class DefaultAdapter extends BaseAdapter {
 

@@ -14,7 +14,7 @@ import com.xilu.wybz.R;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.utils.FileUtils;
 import com.xilu.wybz.utils.PrefsUtil;
-import MaterialDialog;
+import com.xilu.wybz.view.materialdialogs.MaterialDialog;
 
 import butterknife.Bind;
 import butterknife.OnClick;

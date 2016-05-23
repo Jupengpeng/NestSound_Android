@@ -16,8 +16,9 @@ import com.xilu.wybz.ui.IView.IMakeWordView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.view.dialog.LyricsDialog;
-import DialogAction;
-import MaterialDialog;
+import com.xilu.wybz.view.materialdialogs.DialogAction;
+import com.xilu.wybz.view.materialdialogs.MaterialDialog;
+
 import butterknife.Bind;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;

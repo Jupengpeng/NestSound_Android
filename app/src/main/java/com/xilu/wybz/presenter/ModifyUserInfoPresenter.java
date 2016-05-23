@@ -24,7 +24,7 @@ public class ModifyUserInfoPresenter extends BasePresenter<IModifyUserInfoView> 
         params = new HashMap<>();
         params.put("uid",userId);
         params.put("headurl",userBean.headurl);
-        params.put("nickname",userBean.nickname);
+        params.put("nickname",userBean.name);
         params.put("sex",userBean.sex+"");
         params.put("signature",userBean.signature);
         params.put("birthday",userBean.birthday);

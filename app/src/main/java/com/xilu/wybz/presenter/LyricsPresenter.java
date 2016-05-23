@@ -25,16 +25,17 @@ public class LyricsPresenter extends BasePresenter<ILyricsView> {
         super(context, iView);
     }
 
-    public void getLyric(final String id, String userId) {
-        httpUtils.get(MyHttpClient.getLyricsdisplay(id, userId), new MyStringCallback() {
+    public void getLyric(String id, String userId) {
+        params = new HashMap<>();
+        params.put("uid",userId);
+        params.put("id",id);
+        httpUtils.get(MyHttpClient.getLyricsdisplay(), params, new MyStringCallback() {
             @Override
             public void onResponse(String result) {
                 try {
                     if (ParseUtils.checkCode(result)) {
-                        JSONObject jsonObject = new JSONObject(result);
-                        JSONObject dataJson = jsonObject.getJSONObject("data");
-                        String infoJson = dataJson.getString("info");
-                        WorksData lyricsdisplayBean = new Gson().fromJson(infoJson, WorksData.class);
+                        String dataJson = new JSONObject(result).getString("data");
+                        WorksData lyricsdisplayBean = new Gson().fromJson(dataJson, WorksData.class);
                         iView.loadLyrics(lyricsdisplayBean);
                     } else {
                         ParseUtils.showMsg(context, result);
@@ -65,12 +66,13 @@ public class LyricsPresenter extends BasePresenter<ILyricsView> {
         });
     }
 
-    public void zan(String id, String userId) {
+    public void zan(String id, String userId, int target_uid) {
         Map<String, String> params = new HashMap<>();
-        params.put("id", id);
-        params.put("userid", userId);
-        params.put("status", "1");
-        httpUtils.postUrl(MyHttpClient.getUpvoteUrl(), params, new MyStringCallback() {
+        params.put("target_uid", target_uid+"");//作者id
+        params.put("user_id", userId);
+        params.put("work_id", id);
+        params.put("wtype", "2");//2歌词 1歌曲
+        httpUtils.post(MyHttpClient.getUpvoteUrl(), params, new MyStringCallback() {
             @Override
             public void onResponse(String response) {
                 super.onResponse(response);

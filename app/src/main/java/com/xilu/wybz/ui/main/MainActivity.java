@@ -27,15 +27,19 @@ import com.xilu.wybz.bean.Banner;
 import com.xilu.wybz.bean.MusicTalk;
 import com.xilu.wybz.bean.SongAlbum;
 import com.xilu.wybz.bean.WorksData;
+import com.xilu.wybz.common.Event;
+import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.MainPresenter;
 import com.xilu.wybz.ui.BrowserActivity;
 import com.xilu.wybz.ui.IView.IHomeView;
+import com.xilu.wybz.ui.MainTabActivity;
 import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.ui.base.BaseActivity;
 import com.xilu.wybz.ui.lyrics.LyricsdisplayActivity;
 import com.xilu.wybz.ui.song.PlayAudioActivity;
 import com.xilu.wybz.ui.song.SongAblumActivity;
 import com.xilu.wybz.utils.DensityUtil;
+import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.view.GridSpacingItemDecoration;
 import com.xilu.wybz.view.SpacesItemDecoration;
 
@@ -46,6 +50,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+import de.greenrobot.event.EventBus;
 
 public class MainActivity extends BaseActivity implements IHomeView {
     @Bind(R.id.recycler_view_recommend)
@@ -68,6 +73,10 @@ public class MainActivity extends BaseActivity implements IHomeView {
     TextView tvNewwork;
     @Bind(R.id.tv_musictalk)
     TextView tvMusictalk;
+    @Bind(R.id.tv_musictalk_more)
+    TextView tvMusictalkMore;
+    @Bind(R.id.tv_songablum_more)
+    TextView tvSongablumMore;
     private MainPresenter presenter;
     private WorksAdapter worksAdapter;
     private WorksAdapter newworksAdapter;
@@ -105,6 +114,7 @@ public class MainActivity extends BaseActivity implements IHomeView {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
         presenter = new MainPresenter(this, this);
         presenter.init();
     }
@@ -115,6 +125,8 @@ public class MainActivity extends BaseActivity implements IHomeView {
         tvSongablum.setVisibility(View.GONE);
         tvNewwork.setVisibility(View.GONE);
         tvMusictalk.setVisibility(View.GONE);
+        tvMusictalkMore.setVisibility(View.GONE);
+        tvSongablumMore.setVisibility(View.GONE);
 
         int space10 = DensityUtil.dip2px(context, 10);
 
@@ -143,7 +155,7 @@ public class MainActivity extends BaseActivity implements IHomeView {
         mViewPager.setLayoutParams(new LinearLayout.LayoutParams(DensityUtil.getScreenW(context),
                 DensityUtil.getScreenW(context) * 28 / 75));
         //推荐作品
-        worksAdapter = new WorksAdapter(context, recommendWorkList, column);
+        worksAdapter = new WorksAdapter(context, recommendWorkList, column , MyCommon.TUIJIAN);
         worksAdapter.setOnItemClickListener(new WorksAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
@@ -159,7 +171,7 @@ public class MainActivity extends BaseActivity implements IHomeView {
                     if (worksData.status == 2) {
                         LyricsdisplayActivity.toLyricsdisplayActivity(context, worksData.itemid, 0, worksData.getTitle());
                     } else {
-                        PlayAudioActivity.toPlayAudioActivity(context, worksData.getItemid(), "", "tuijian", position);
+                        PlayAudioActivity.toPlayAudioActivity(context, worksData.getItemid(), "", MyCommon.TUIJIAN, position);
                     }
                 }
             }
@@ -185,7 +197,7 @@ public class MainActivity extends BaseActivity implements IHomeView {
         });
         recyclerViewSongalbum.setAdapter(songAlbumAdapter);
         //最新作品
-        newworksAdapter = new WorksAdapter(context, newWorkList, column);
+        newworksAdapter = new WorksAdapter(context, newWorkList, column, MyCommon.ZUIXIN);
         newworksAdapter.setOnItemClickListener(new WorksAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
@@ -205,7 +217,6 @@ public class MainActivity extends BaseActivity implements IHomeView {
             public void onItemClick(View view, int position) {
                 PlayAudioActivity.toPlayAudioActivity(context, musicTalkList.get(position).itemid, "", "yueshuo", position);
             }
-
             @Override
             public void onItemLongClick(View view, int position) {
 
@@ -258,6 +269,7 @@ public class MainActivity extends BaseActivity implements IHomeView {
             songAlbumList.addAll(songAlbums);
             if (songAlbumList.size() > 0) {
                 tvSongablum.setVisibility(View.VISIBLE);
+                tvSongablumMore.setVisibility(View.VISIBLE);
                 worksAdapter.notifyDataSetChanged();
             }
             //最新作品
@@ -282,6 +294,7 @@ public class MainActivity extends BaseActivity implements IHomeView {
             musicTalkList.addAll(musicTalks);
             if (musicTalkList.size() > 0) {
                 tvMusictalk.setVisibility(View.VISIBLE);
+                tvMusictalkMore.setVisibility(View.VISIBLE);
                 musicTalkAdapter.notifyDataSetChanged();
             }
         } catch (Exception e) {
@@ -429,5 +442,32 @@ public class MainActivity extends BaseActivity implements IHomeView {
             case R.id.tv_musictalk_more:
                 break;
         }
+    }
+    public void onEventMainThread(Event.PPStatusEvent event) {
+        switch (event.getStatus()) {
+            case 1://开始
+                String playFrom = PrefsUtil.getString("playFrom",context);
+                if(playFrom.equals(MyCommon.TUIJIAN)){
+                    worksAdapter.notifyDataSetChanged();
+                }else if(playFrom.equals(MyCommon.NEWS)) {
+                    newworksAdapter.notifyDataSetChanged();
+                }
+                break;
+            case 2://停止
+
+                break;
+            case 3://播放
+                ((MainTabActivity)getParent()).startAnimal();
+                break;
+            case 4://暂停
+                ((MainTabActivity)getParent()).stopAnimal();
+                break;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

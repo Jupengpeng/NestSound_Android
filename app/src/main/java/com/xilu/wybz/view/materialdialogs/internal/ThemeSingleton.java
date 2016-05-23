@@ -1,11 +1,11 @@
-package internal;
+package com.xilu.wybz.view.materialdialogs.internal;
 
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 
-import GravityEnum;
+import com.xilu.wybz.view.materialdialogs.GravityEnum;
 
 
 /**

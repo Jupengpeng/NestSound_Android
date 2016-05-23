@@ -24,10 +24,10 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
     private List<PhotoBean> mList;
     private Context context;
     private int itemWidth;
-    public PhotoAdapter(Context context, List<PhotoBean> worksDataList) {
+    public PhotoAdapter(Context context, List<PhotoBean> worksDataList, int column) {
         this.context = context;
         this.mList = worksDataList;
-        itemWidth = (DensityUtil.getScreenW(context)-5*DensityUtil.dip2px(context,10))/4;
+        itemWidth = (DensityUtil.getScreenW(context)-DensityUtil.dip2px(context,(column+1)*10))/column;
     }
 
     public interface OnItemClickListener {

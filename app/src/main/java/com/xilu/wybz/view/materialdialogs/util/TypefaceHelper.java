@@ -1,4 +1,4 @@
-package util;
+package com.xilu.wybz.view.materialdialogs.util;
 
 import android.content.Context;
 import android.graphics.Typeface;

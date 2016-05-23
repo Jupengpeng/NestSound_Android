@@ -8,9 +8,9 @@ import java.util.List;
  * Created by June on 16/5/8.
  */
 public interface IRankingView extends IBaseView {
-    void showRankingSong(List<WorksData> newWorksDatas);
+    void showRankingSong(List<WorksData> songWorksDatas);
 
-    void showRankingLyrics(List<WorksData> hotWorksDatas);
+    void showRankingLyrics(List<WorksData> lyricsWorksDatas);
 
     void showErrorView();
 }
