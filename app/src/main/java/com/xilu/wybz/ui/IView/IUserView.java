@@ -29,8 +29,4 @@ public interface IUserView extends IBaseView {
 
 
 
-    void
-
-
-
 }
