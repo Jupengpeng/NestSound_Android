@@ -110,8 +110,8 @@ public class MineActivity extends BaseActivity implements IUserView {
     @Override
     public void initView() {
 
-//        mUserPresenter = new UserPresenter(context, this);
-//        mUserPresenter.init();
+        mUserPresenter = new UserPresenter(context, this);
+        mUserPresenter.init();
 
         myScrollView.initView(vToolbar, tvCenter);
 
@@ -143,6 +143,13 @@ public class MineActivity extends BaseActivity implements IUserView {
         show(llMyrecord,0);
         contentLayout.setVisibility(View.VISIBLE);
 
+    }
+
+
+    @OnClick(R.id.iv_head)
+    public void onClickForTest(){
+
+        mUserPresenter.getInspirationList("23",1);
     }
 
 

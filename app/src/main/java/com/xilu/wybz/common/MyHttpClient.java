@@ -217,7 +217,9 @@ public class MyHttpClient {
     public static String getfocusfansnum(String userid) {
         return String.format("/getfocusfansnum.php?userid=%s", userid);
     }
-    public static String getMine(String userid) {
-        return String.format("/getfocusfansnum.php?userid=%s", userid);
+
+
+    public static String getMine() {
+        return String.format("userCenter/index");
     }
 }

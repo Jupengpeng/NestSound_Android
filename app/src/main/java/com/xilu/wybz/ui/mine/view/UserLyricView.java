@@ -23,6 +23,7 @@ public class UserLyricView extends UserBaseView {
         data.add(new WorksData());
         data.add(new WorksData());
         data.add(new WorksData());
+        showNoNetView();
 
         setAdapter(new UserSongAdapter(context,data));
     }

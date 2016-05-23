@@ -30,7 +30,8 @@ public class UserBaseView extends LinearLayout {
     protected LinearLayout mContentView;
     protected LinearLayout mFooterView;
     protected RecyclerView mPullRecycler;
-    protected View mNoData;
+    protected LinearLayout mNoData;
+    protected LinearLayout mNoNet;
     protected UserBaseAdapter mBaseListAdapter;
 
 
@@ -60,7 +61,8 @@ public class UserBaseView extends LinearLayout {
         mContentView = (LinearLayout) rootView.findViewById(R.id.ll_content);
         mPullRecycler = (RecyclerView) rootView.findViewById(R.id.pullRecycler);
         mFooterView = (LinearLayout) rootView.findViewById(R.id.ll_pull_refresh_footer);
-        mNoData = rootView.findViewById(R.id.ll_nodata);
+        mNoData = (LinearLayout) rootView.findViewById(R.id.ll_nodata);
+        mNoNet = (LinearLayout) rootView.findViewById(R.id.ll_nonet);
 
         mPullRecycler.setLayoutManager(new MyLinearLayoutManager(mContext));
         mPullRecycler.setNestedScrollingEnabled(false);
@@ -93,12 +95,19 @@ public class UserBaseView extends LinearLayout {
     public void showContentView() {
         mContentView.setVisibility(View.VISIBLE);
         mNoData.setVisibility(View.GONE);
-
+        mNoNet.setVisibility(GONE);
     }
 
     public void showNoDataView() {
         mContentView.setVisibility(View.GONE);
         mNoData.setVisibility(View.VISIBLE);
+        mNoNet.setVisibility(GONE);
+    }
+
+    public void showNoNetView() {
+        mContentView.setVisibility(View.GONE);
+        mNoData.setVisibility(GONE);
+        mNoNet.setVisibility(VISIBLE);
     }
 
 

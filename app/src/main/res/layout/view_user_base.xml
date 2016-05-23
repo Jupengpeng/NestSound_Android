@@ -30,5 +30,6 @@
     </LinearLayout>
 
     <include layout="@layout/ll_nodata" />
+    <include layout="@layout/ll_nonet" />
 
 </LinearLayout>
