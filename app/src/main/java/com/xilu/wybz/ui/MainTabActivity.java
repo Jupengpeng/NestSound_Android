@@ -12,6 +12,7 @@ import com.xilu.wybz.adapter.MyPagerAdapter;
 import com.xilu.wybz.ui.base.BasePlayMenuActivity;
 import com.xilu.wybz.ui.find.FindActivity;
 import com.xilu.wybz.ui.find.SearchWorksActivity;
+import com.xilu.wybz.ui.login.LoginActivity;
 import com.xilu.wybz.ui.lyrics.MakeWordActivity;
 import com.xilu.wybz.ui.main.MainActivity;
 import com.xilu.wybz.ui.mine.MineActivity;
@@ -106,7 +107,7 @@ public class MainTabActivity extends BasePlayMenuActivity {
         }
     }
 
-    @OnClick({R.id.rl_main_home, R.id.rl_main_find, R.id.rl_main_publish, R.id.rl_main_msg, R.id.rl_main_mine, R.id.iv_add, R.id.ll_search})
+    @OnClick({R.id.rl_main_home, R.id.rl_main_find, R.id.rl_main_publish, R.id.rl_main_msg, R.id.rl_main_mine, R.id.ll_search})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.rl_main_home:
@@ -116,7 +117,15 @@ public class MainTabActivity extends BasePlayMenuActivity {
                 currentIndex = 1;
                 break;
             case R.id.rl_main_publish:
-                break;
+                if(isLogin){
+                    if (null == mMoreWindow) {
+                        mMoreWindow = new MoreWindow(this);
+                    }
+                    mMoreWindow.showMoreWindow(MainTabActivity.this, view, onClickListener);
+                }else{
+                    startActivity(LoginActivity.class);
+                }
+                return;
             case R.id.rl_main_msg:
                 currentIndex = 2;
                 break;
@@ -125,17 +134,11 @@ public class MainTabActivity extends BasePlayMenuActivity {
                 break;
             case R.id.ll_search:
                 startActivity(SearchWorksActivity.class);
-                break;
-            case R.id.iv_add:
-//                if(isLogin){
-                    if (null == mMoreWindow) {
-                        mMoreWindow = new MoreWindow(this);
-                    }
-                    mMoreWindow.showMoreWindow(MainTabActivity.this, view, onClickListener);
-//                }else{
-//                    startActivity(LoginActivity.class);
-//                }
-                break;
+                return;
+        }
+        if(!isLogin&&(currentIndex==2||currentIndex==3)){
+            startActivity(LoginActivity.class);
+            return;
         }
         if(oldIndex!=currentIndex) {
             checkedTextViewList.get(oldIndex).setChecked(false);
