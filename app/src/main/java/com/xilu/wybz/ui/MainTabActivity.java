@@ -138,6 +138,7 @@ public class MainTabActivity extends BasePlayMenuActivity {
         }
         if(!isLogin&&(currentIndex==2||currentIndex==3)){
             startActivity(LoginActivity.class);
+            overridePendingTransition(R.anim.activity_open,0);
             return;
         }
         if(oldIndex!=currentIndex) {
