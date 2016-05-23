@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="110dp"
-    android:layout_marginTop="10dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp"
     android:layout_marginLeft="15dp"
     android:layout_marginRight="15dp"
 
@@ -14,13 +15,14 @@
     android:foreground="?android:attr/selectableItemBackground"
     >
 
-
     <ImageView
         android:id="@+id/iv_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@drawable/bg_wel"
         android:scaleType="centerCrop"
+        tools:visibility="visible"
+        android:visibility="gone"
         />
 
     <RelativeLayout
@@ -33,9 +35,9 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="2dp"
-            android:text="07"
+            tools:text="07"
             android:textColor="@color/main_text_color3"
-            android:textSize="28sp"
+            android:textSize="30sp"
             />
         <TextView
             android:id="@+id/date_time"
@@ -44,10 +46,22 @@
             android:layout_toRightOf="@+id/date_day"
             android:layout_alignTop="@+id/date_day"
             android:layout_alignBottom="@+id/date_day"
-            android:gravity="center"
-            android:text="六月\n2016"
+            android:layout_marginLeft="2dp"
+            android:gravity="left|center_vertical"
+            tools:text="六月\n2016"
             android:textColor="@color/main_text_color3"
             android:textSize="10sp"
+            />
+        <ImageView
+            android:id="@+id/iv_frequency_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/date_day"
+            android:layout_alignBottom="@+id/date_day"
+            android:layout_toRightOf="@+id/date_time"
+            android:layout_marginLeft="6dp"
+            android:scaleType="center"
+            android:src="@drawable/ic_user_frequency"
             />
 
         <TextView
@@ -58,24 +72,20 @@
             android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp"
             android:layout_alignParentBottom="true"
-            android:text="立夏\n市文化馆过五规划为日哦一个号  更换为欧冠hi为欧冠和"
+            tools:text="立夏\n市文化馆五规划为一个号欧冠为欧冠"
             android:textSize="12sp"
             android:textColor="@color/grey1"
             />
-
-
 
     </RelativeLayout>
     <ImageView
         android:id="@+id/iv_frequency"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/user_frequency_white"
         android:scaleType="fitCenter"
+        tools:src="@drawable/user_frequency_white"
+        tools:visibility="visible"
+        android:visibility="gone"
         />
-
-
-
-
 
 </android.support.v7.widget.CardView>

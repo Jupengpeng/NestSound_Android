@@ -7,23 +7,21 @@ import android.view.ViewGroup;
 
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.WorksData;
-import com.xilu.wybz.view.pull.BaseListAdapter;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Administrator on 2016/5/22.
  */
 
-public class UserSongAdapter extends UserBaseAdapter {
+public class UserLyricAdapter extends UserBaseAdapter {
 
-    public UserSongAdapter(Context context) {
+    public UserLyricAdapter(Context context) {
         super(context);
     }
 
-    public UserSongAdapter(Context context, List<WorksData> data) {
+    public UserLyricAdapter(Context context, List<WorksData> data) {
         super(context, data);
     }
 

@@ -15,6 +15,13 @@ import java.util.List;
  */
 public class WorksData implements Serializable {
 
+
+    public String createdate;//歌曲id
+    public String pics;//歌曲封面
+    public String spirecontent;//标题
+    public String audio;//作者
+
+
     public String itemid;//歌曲id
     public String pic;//歌曲封面
     public String title;//标题

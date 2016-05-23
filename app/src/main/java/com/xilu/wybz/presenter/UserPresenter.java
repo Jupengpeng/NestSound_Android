@@ -2,9 +2,22 @@ package com.xilu.wybz.presenter;
 
 import android.content.Context;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.xilu.wybz.bean.CollectionBean;
+import com.xilu.wybz.bean.MineBean;
+import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.callback.MyStringCallback;
 import com.xilu.wybz.ui.IView.IUserView;
+import com.xilu.wybz.utils.ParseUtils;
+
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import okhttp3.Call;
 
 /**
@@ -12,67 +25,72 @@ import okhttp3.Call;
  */
 public class UserPresenter extends BasePresenter<IUserView> {
 
+
     public UserPresenter(Context context, IUserView iView) {
         super(context, iView);
     }
 
-    public void getFocusFansCount(Context context, String userId) {
-        httpUtils.get(MyHttpClient.getfocusfansnum(userId), new MyStringCallback() {
+
+    public void getInspirationList(String userId,int page){
+        Map<String,String> param = new HashMap<>();
+
+        param.put("uid",userId);
+        param.put("type","4");
+        param.put("page",""+page);
+
+        httpUtils.post(MyHttpClient.getfocusfansnum(userId),param, new MyStringCallback() {
             @Override
             public void onResponse(String response) {
-                super.onResponse(response);
-                iView.loadFocusFansCountSuccess(response);
+                try {
+                    if (ParseUtils.checkCode(response)) {
+                        JSONObject jsonObject = new JSONObject(response);
+                        String dataString = jsonObject.getString("data");
+
+                        MineBean mineBean= ParseUtils.parseMineBean(dataString);
+                        List<WorksData> dataList = mineBean.getList();
+
+                        if (dataList.size() == 0){
+                            if (page == 1){
+
+                            }
+
+                        }else {
+//                            iView.loadUserInfoSuccess("");
+                        }
+
+
+                    } else {
+                        ParseUtils.showMsg(context, response);
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+//                    iView.showErrorView();
+                }
             }
 
             @Override
             public void onError(Call call, Exception e) {
                 super.onError(call, e);
-                iView.loadFocusFansCountFail(e.getMessage());
             }
         });
+
+    }
+    public void getSongList(String userId,int page){
+
+    }
+    public void getLyricList(String userId,int page){
+
+    }
+    public void getCollectionList(String userId,int page){
+
     }
 
-    public void getUserInfo(Context context, String userId) {
-        httpUtils.get(MyHttpClient.getMineUrl(userId), new MyStringCallback() {
-            @Override
-            public void onResponse(String response) {
-                super.onResponse(response);
-                iView.loadUserInfoSuccess(response);
-            }
 
-            @Override
-            public void onError(Call call, Exception e) {
-                super.onError(call, e);
-                iView.loadUserInfoFail(e.getMessage());
-            }
-        });
-    }
 
-    public void delItem(final Context context, String userId, String ids, int which) {
-        String url = "";
-        switch (which) {
-            case 0:
-                url = MyHttpClient.getDelMusicUrl(ids, userId);
-                break;
-            case 1:
-                url = MyHttpClient.getDelLyricsUrl(ids, userId);
-                break;
-            case 2:
-                url = MyHttpClient.getRemoveSomeFavUrl(ids, userId);
-                break;
-        }
-        httpUtils.get(url, new MyStringCallback() {
-            @Override
-            public void onResponse(String response) {
-                super.onResponse(response);
-                iView.delSuccess(response);
-            }
 
-            @Override
-            public void onError(Call call, Exception e) {
-                super.onError(call, e);
-                iView.delFail(e.getMessage());
-            }
-        });
-    }
+
+
+
+
 }

@@ -17,14 +17,63 @@ public class UserInspirationView extends UserBaseView{
         super(context);
 
         List<WorksData> data = new ArrayList<WorksData>();
-        data.add(new WorksData());
-        data.add(new WorksData());
-        data.add(new WorksData());
-        data.add(new WorksData());
-        data.add(new WorksData());
-        data.add(new WorksData());
-        data.add(new WorksData());
+
+        setTestData(data);
 
         setAdapter(new UserInspirationAdapter(context,data));
+    }
+
+
+    private void setTestData(List<WorksData> data){
+        WorksData worksData;
+
+        worksData = new WorksData();
+        worksData.createdate = "2014-02-09";
+        worksData.pics = "2014";
+        worksData.audio = "2014";
+        worksData.spirecontent = "zhe\n is test..";
+        data.add(worksData);
+
+        worksData = new WorksData();
+        worksData.createdate = "2014-02-01";
+        worksData.pics = "123";
+        worksData.audio = "123";
+        worksData.spirecontent = "";
+        data.add(worksData);
+
+        worksData = new WorksData();
+        worksData.createdate = "2014-02-01";
+        worksData.pics = "123";
+        worksData.audio = "";
+        worksData.spirecontent = "123";
+        data.add(worksData);
+
+        worksData = new WorksData();
+        worksData.createdate = "2014-12-09";
+        worksData.pics = "2014-02-09";
+        worksData.audio = "2014-02-09";
+        worksData.spirecontent = "2014-02-09";
+        data.add(worksData);
+
+        worksData = new WorksData();
+        worksData.createdate = "2014-02-09";
+        worksData.pics = "";
+        worksData.audio = "";
+        worksData.spirecontent = "this is test..";
+        data.add(worksData);
+
+        worksData = new WorksData();
+        worksData.createdate = "2014-02-09";
+        worksData.pics = "";
+        worksData.audio = "123";
+        worksData.spirecontent = "123";
+        data.add(worksData);
+
+        worksData = new WorksData();
+        worksData.createdate = "2014-02-09";
+        worksData.pics = "";
+        worksData.audio = "123";
+        worksData.spirecontent = "";
+        data.add(worksData);
     }
 }

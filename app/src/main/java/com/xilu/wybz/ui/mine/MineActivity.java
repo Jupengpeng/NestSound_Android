@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xilu.wybz.R;
+import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.presenter.UserPresenter;
 import com.xilu.wybz.ui.IView.IUserView;
 import com.xilu.wybz.ui.base.BaseActivity;
@@ -20,6 +21,8 @@ import com.xilu.wybz.ui.mine.view.UserSongView;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.view.CircleImageView;
 import com.xilu.wybz.view.TopFloatScrollView;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -94,6 +97,8 @@ public class MineActivity extends BaseActivity implements IUserView {
     UserLyricView mUserLyricView;
     UserCollectionView mUserCollectionView;
 
+    UserBaseView mCurrentUserView;
+
 
 
 
@@ -113,7 +118,9 @@ public class MineActivity extends BaseActivity implements IUserView {
         myScrollView.setScrollBottomListener(new TopFloatScrollView.OnScrollToBottomListener() {
             @Override
             public void scrollBottom() {
-
+                if (mCurrentUserView != null){
+                    mCurrentUserView.onScrollBottom();
+                }
             }
         });
 
@@ -150,37 +157,36 @@ public class MineActivity extends BaseActivity implements IUserView {
 
     public void setContentPage(int id) {
 
-        UserBaseView view = mUserInspirationView;
 
         switch (id) {
             case 0:
-                view = mUserInspirationView;
+                mCurrentUserView = mUserInspirationView;
                 break;
             case 1:
-                view = mUserSongView;
+                mCurrentUserView = mUserSongView;
                 break;
             case 2:
-                view = mUserLyricView;
+                mCurrentUserView = mUserLyricView;
                 break;
             case 3:
-                view = mUserCollectionView;
+                mCurrentUserView = mUserCollectionView;
                 break;
         }
 
-        if (!(view instanceof UserInspirationView) ){
+        if (!(mCurrentUserView instanceof UserInspirationView) ){
             mUserInspirationView.setVisibility(View.GONE);
         }
-        if (!(view instanceof UserSongView) ){
+        if (!(mCurrentUserView instanceof UserSongView) ){
             mUserSongView.setVisibility(View.GONE);
         }
-        if (!(view instanceof UserLyricView) ){
+        if (!(mCurrentUserView instanceof UserLyricView) ){
             mUserLyricView.setVisibility(View.GONE);
         }
-        if (!(view instanceof UserCollectionView) ){
+        if (!(mCurrentUserView instanceof UserCollectionView) ){
             mUserCollectionView.setVisibility(View.GONE);
         }
 
-        view.setVisibility(View.VISIBLE);
+        mCurrentUserView.setVisibility(View.VISIBLE);
     }
 
 
@@ -245,6 +251,47 @@ public class MineActivity extends BaseActivity implements IUserView {
     @Override
     public void delFail(String msg) {
 
+    }
+
+    @Override
+    public void addInspirationDatas(List<WorksData> datas) {
+        mUserInspirationView.getAdapter().addDatas(datas);
+    }
+
+    @Override
+    public void addSongDatas(List<WorksData> datas) {
+        mUserSongView.getAdapter().addDatas(datas);
+    }
+
+    @Override
+    public void addLyricDatas(List<WorksData> datas) {
+        mUserLyricView.getAdapter().addDatas(datas);
+    }
+
+    @Override
+    public void addCollectionDatas(List<WorksData> datas) {
+        mUserCollectionView.getAdapter().addDatas(datas);
+    }
+
+
+    @Override
+    public void showInspirationNoData() {
+        mUserInspirationView.showNoDataView();
+    }
+
+    @Override
+    public void showSongNoData() {
+        mUserSongView.showNoDataView();
+    }
+
+    @Override
+    public void showLyricNoData() {
+        mUserLyricView.showNoDataView();
+    }
+
+    @Override
+    public void showCollectionNoData() {
+        mUserCollectionView.showNoDataView();
     }
 
     @Override

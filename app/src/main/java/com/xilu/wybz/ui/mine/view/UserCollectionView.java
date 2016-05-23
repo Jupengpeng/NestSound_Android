@@ -27,7 +27,7 @@ public class UserCollectionView extends UserBaseView{
 
         setAdapter(new UserSongAdapter(context,data));
 
-        show(UserBaseView.PAGE_ERROR);
+        showNoDataView();
 
     }
 

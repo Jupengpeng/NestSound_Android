@@ -1,17 +1,22 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_pull_refresh_footer"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    tools:visibility="visible"
+    android:visibility="gone"
     android:gravity="center_horizontal">
 
 
     <ProgressBar
+        android:id="@+id/footer_bar"
         style="@android:style/Widget.ProgressBar.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical" />
 
     <TextView
-        android:id="@+id/footer"
+        android:id="@+id/footer_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"

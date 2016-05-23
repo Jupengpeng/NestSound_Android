@@ -39,37 +39,14 @@ public class ParseUtils {
     public static MineBean parseMineBean(String jsonData) {
         try {
             JSONObject jsonObject = new JSONObject(jsonData);
-            String code = jsonObject.getString("errorcode");
-            if (!code.equals("0")) {
+            String code = jsonObject.getString("code");
+            if (!code.equals("200")) {
+
                 return null;
             }
             MineBean mineBean = new MineBean();
             JSONObject dataJson = jsonObject.getJSONObject("data");
-            JSONObject infoJson = dataJson.getJSONObject("info");
 
-            mineBean.setUserid(infoJson.getString("userid"));
-            mineBean.setName(infoJson.getString("name"));
-            mineBean.setHeadurl(infoJson.getString("headurl"));
-            mineBean.setInfo(infoJson.getString("desc"));
-
-            JSONObject workListJson = infoJson.getJSONObject("worklist");
-            String workListArr = workListJson.getString("items");
-            List<MusicBean> workMusicList = new Gson().fromJson(workListArr, new TypeToken<List<MusicBean>>() {
-            }.getType());
-            mineBean.setWorkList(workMusicList);
-
-            JSONObject fovMusicJson = infoJson.getJSONObject("fovlist");
-            String fovMusicArr = fovMusicJson.getString("items");
-            List<MusicBean> fovMusicList = new Gson().fromJson(fovMusicArr, new TypeToken<List<MusicBean>>() {
-            }.getType());
-            mineBean.setFovList(fovMusicList);
-
-            JSONObject lyricsMusicJson = infoJson.getJSONObject("lyricslist");
-            String lyricsMusicArr = lyricsMusicJson.getString("items");
-            List<LyricBean> lyricsMusicList = new Gson().fromJson(lyricsMusicArr, new TypeToken<List<LyricBean>>() {
-            }.getType());
-
-            mineBean.setLyricList(lyricsMusicList);
 
             return mineBean;
         } catch (Exception e) {
