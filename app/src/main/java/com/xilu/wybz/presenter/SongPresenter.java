@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.xilu.wybz.bean.FindSongBean;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.callback.MyStringCallback;
@@ -22,11 +23,9 @@ import okhttp3.Call;
  * Created by June on 16/5/8.
  */
 public class SongPresenter extends BasePresenter<ISongView> {
-
     public SongPresenter(Context context, ISongView iView) {
         super(context, iView);
     }
-
     /*
     * orderType 1=最新(或不填)，2=热门
      */
@@ -39,17 +38,15 @@ public class SongPresenter extends BasePresenter<ISongView> {
                 e.printStackTrace();
                 iView.showErrorView();
             }
-
             @Override
             public void onResponse(String response) {
                 if(ParseUtils.checkCode(response)){
                     try {
-                        String redList = new JSONObject(response).getJSONObject("data").getString("redList");
-                        String newList = new JSONObject(response).getJSONObject("data").getString("newList");
-                        List<WorksData> redsDatas = ParseUtils.getWorksData(context, redList);
-                        List<WorksData> newsDatas = ParseUtils.getWorksData(context, newList);
-                        iView.showNewSong(newsDatas);
-                        iView.showHotSong(redsDatas);
+                        FindSongBean findSongBean = new Gson().fromJson(new JSONObject(response).getString("data"),FindSongBean.class);
+                        if(findSongBean.newList!=null)
+                        iView.showNewSong(findSongBean.newList);
+                        if(findSongBean.redList!=null)
+                        iView.showHotSong(findSongBean.redList);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
