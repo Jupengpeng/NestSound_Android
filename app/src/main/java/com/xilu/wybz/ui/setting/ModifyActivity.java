@@ -22,7 +22,7 @@ import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.utils.UploadPicUtil;
-import com.xilu.wybz.view.materialdialogs.MaterialDialog;
+import MaterialDialog;
 import java.io.File;
 import java.io.FileOutputStream;
 import butterknife.Bind;

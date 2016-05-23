@@ -1,13 +1,10 @@
 package com.xilu.wybz.common;
-
-import android.util.Log;
-
-
 /**
  * Created by June on 2016/5/4.
  */
 public class MyHttpClient {
     public static final String ROOT_URL = "http://112.124.125.2/";
+//    public static final String ROOT_URL = "http://192.168.0.123:8080/";
     public static String QINIU_URL = "http://7xru8x.com2.z0.glb.qiniucdn.com/";
     public static final String BASE_URL = ROOT_URL+"java/";
 
@@ -18,6 +15,10 @@ public class MyHttpClient {
     public static String getHotUrl() {
         return "common/accompaniment/list";
     }
+    //伴奏详情
+    public static String getHotDetailUrl() {
+        return "common/hot/detail";
+    }
     //首页数据
     public static String getHomeUrl() {
         return "common/index/app";
@@ -25,6 +26,10 @@ public class MyHttpClient {
     //歌曲详情
     public static String getMusicWorkUrl() {
         return "common/music/work";
+    }
+    //歌词详情
+    public static String getLyricsdisplay() {
+        return "common/lyrics/detail";
     }
     //歌单列表
     public static String getGleeListUrl(){
@@ -48,176 +53,63 @@ public class MyHttpClient {
     }
     //发现里面歌曲
     public static String getFindSongList() {
+        return "common/find/music";
+    }
+    //发现里面更多歌曲
+    public static String getFindMoreSongList() {
         return "common/find/moremusic";
     }
-    //发现里面歌曲
+    //发现里面歌词
     public static String getFindLyricsList() {
+        return "common/find/lyrics";
+    }
+    //发现里面更多歌词
+    public static String getFindMoreLyricsList() {
         return "common/find/morelyrics";
     }
-    //活动
-    public static String getEventUrl() {
-        return String.format("/getevent.php");
+    //发现里面歌曲
+    public static String getFindActivityList() {
+        return "common/find/activelist";
     }
-
-    //我的列表
-    public static String getMineUrl(String userid) {
-        return String.format("/getmine.php?userid=%s", userid);
+    //发现里面排行榜
+    public static String getRankingList() {
+        return "common/find/rankList";
     }
-
-    //我的歌词列表
-    public static String getmylyrics(String userid, int page) {
-        return String.format("/getmylyrics.php?userid=%s&page=%s", userid, page);
-    }
-
-    //韵脚列表
-    public static String getyunjiao() {
-        return String.format("/getyunjiao.php");
-    }
-
-
-    //伴奏信息
-    public static String getHotDetailUrl(String id) {
-        return String.format("/gethotiddetail.php?id=%s", id);
-    }
-
-    public static String getLyricsUrl(String keyword) {
-        return String.format("/getlyrics.php?keyword=%s", keyword);
-    }
-
-    //热门录制曲目接口
-    public static String getHotTemplateUrl() {
-        return String.format("/gethottemplate.php");
-    }
-
-    //DIY录制曲目接口
-    public static String getDiyTemplateUrl() {
-        return "/getdiytemplate.php";
-    }
-
-    //公共上传接口
-    public static String getCommonUrl() {
-        return "/upload.php";
-    }
-
-    public static String getSaveLyricsUrl() {
-        return "/newsetsavelyrics.php";
-    }
-
-    //收藏
-    public static String getAddFavUrl(String musicId, String userId) {
-        return String.format("/setaddfov.php?id=%s&userid=%s", musicId, userId);
-    }
-
-    //删除收藏
-    public static String getRemoveFavUrl(String musicId, String userId) {
-        return String.format("/setremovefov.php?id=%s&userid=%s", musicId, userId);
-    }
-
-    //批量删除收藏
-    public static String getRemoveSomeFavUrl(String musicId, String userId) {
-        return String.format("/setremovesomefov.php?id=%s&userid=%s", musicId, userId);
-    }
-
-    //点赞
-    public static String getUpvoteUrl() {
-        return String.format("/setupvote.php");
-    }
-
-    public static String getPlayUrl(String musicId, String deviceId) {
-        return String.format("/setplay.php?id=%s&deviceid=%s", musicId, deviceId);
-    }
-
-    public static String getDelMusicUrl(String musicId, String userId) {
-        return String.format("/setdelsomemusic.php?id=%s&userid=%s", musicId, userId);
-    }
-
-    public static String getDelLyricsUrl(String musicId, String userId) {
-        return String.format("/setdelsomelyrics.php?id=%s&userid=%s", musicId, userId);
-    }
-
-    public static String getLoginWechatUrl(String code) {
-        return String.format("/loginbyweixin.php?code=%s", code);
-    }
-
-    public static String getLoginSinaUrl(String code) {
-        return String.format("/loginbyweibo.php?code=%s", code);
-    }
-
-    public static String getLoginQQUrl(String openid, String token) {
-        return String.format("/loginbyqq.php?openid=%s&token=%s", openid, token);
-    }
-
-
-    public static String getLoginPhoneUrl(String mobile, String code) {
-        return String.format("/loginbymob.php?mobile=%s&code=%s", mobile, code);
-    }
-
     //登录
     public static String getLoginUrl() {
-        return "login/mobile";
+        return "common/login/mobile";
     }
-
     //注册
     public static String getRegiterUrl() {
-        return "regist/mobile";
+        return "common/regist/mobile";
     }
-
     //修改密码
     public static String getPasswordUrl() {
-        return "login/resetPassword";
+        return "common/login/resetPassword";
     }
-
     //注册验证码发送
     public static String getSmsCodeUrl() {
-        return "send/code";
+        return "common/send/code";
     }
-
-    //修改密码验证码发送
-    public static String getPasswordCodeUrl(String mobile) {
-        return String.format("/sendmobcode.php?mobile=%s&type=2", mobile);
-    }
-
-    public static String getAddCommentUrl() {
-        return String.format("/setaddcomment.php");
-    }
-
-    //分享的路径
-    public static String getSharePlayUrl(String itemid) {
-        return String.format("http://www.wuyuebuzuo.com/html/p.php?id=%s", itemid);
-    }
-
-
-    //消息评论
-    public static String getInformation(String userid, int page) {
-        return String.format("/getmycomment.php?userid=%s&page=%s", userid, page);
-    }
-
-
-    //消息赞
-    public static String getZanList(String userId, int page) {
-        return String.format("/getzan.php?userid=%s&page=%s&type=all", userId,page);
-    }
-
-    //消息收藏
-    public static String getFovList() {
-        return String.format("/getfov.php");
-    }
-
-    //系统消息
-    public static String getSystemt() {
-        return String.format("/getsysnote.php");
-    }
-
-    //歌词显示
-    public static String getLyricsdisplay(String id, String userId) {
-        return String.format("/getworklyrics.php?id=%s&userid=%s", id, userId);
-    }
-
-
-    public static String getfocusfansnum(String userid) {
-        return String.format("/getfocusfansnum.php?userid=%s", userid);
-    }
-    public static String getMine(String userid) {
-        return String.format("/getfocusfansnum.php?userid=%s", userid);
-    }
+    //用户歌词列表
+    public static String getUserLyricsListUrl(){return  "common/lyrics/myLyrics";}
+    //点赞接口
+    public static String getUpvoteUrl(){return  "workzan/optZan";}
+    //收藏接口
+    public static String getWorkFovUrl(){return  "workfov/optZan";}
+    //消息收藏列表
+    public static String getMsgFovList(){return  "message/fovMyCenterList";}
+    //消息收藏列表
+    public static String getMsgCommentList(){return  "message/commentCenterList";}
+    //消息点赞列表
+    public static String getMsgZanList(){return  "message/zanCenterList";}
+    //消息点赞列表
+    public static String getMsgSystemList(){return  "message/sysNoteList";}
+    //评论接口
+    public static String getAddCommentUrl(){return  "comment/save";}
+    //发布歌词
+    public static String getSaveLyricsUrl(){return  "lyricsopt/optLyrics";}
+    //分享
+    public static String getSharePlayUrl(String id){return  ROOT_URL+"html/p.php?id="+id;}
 }
+

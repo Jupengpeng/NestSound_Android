@@ -1,7 +1,7 @@
-package com.xilu.wybz.view.materialdialogs.internal;
+package internal;
 
 
-import com.xilu.wybz.view.materialdialogs.MaterialDialog;
+import MaterialDialog;
 
 /**
  * @author Aidan Follestad (afollestad)

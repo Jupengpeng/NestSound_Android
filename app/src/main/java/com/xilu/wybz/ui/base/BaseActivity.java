@@ -37,8 +37,6 @@ import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.ToastUtils;
 import com.xilu.wybz.view.AnimImageView;
 import com.xilu.wybz.view.SystemBarTintManager;
-import com.xilu.wybz.view.materialdialogs.MaterialDialog;
-
 import java.util.ArrayList;
 import java.util.List;
 

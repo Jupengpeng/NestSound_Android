@@ -16,6 +16,7 @@
             android:dividerHeight="@dimen/spit_line_height"
             android:divider="@color/split_line"
             android:layout_height="wrap_content"
+            android:listSelector="?selectableItemBackground"
             android:overScrollMode="never" />
 
         <View

@@ -3,7 +3,7 @@
     <color name="main_theme_color">#ffd705</color>
     <color name="main_theme_color_dark">#b79b04</color>
     <color name="black">#ff000000</color>
-    <color name="main_bg">#f4f4f4</color>
+    <color name="main_bg">#f8f8f8</color>
     <color name="split_line">#ffe5e5e5</color>
     <color name="lite_blue">#ff359ff2</color>
     <color name="grey1">#ececec</color>
@@ -40,5 +40,4 @@
     <color name="card_shadow">#10000000</color>
     <color name="lyrics_color">#181818</color>
     <color name="lyrics_color1">#666</color>
-
 </resources>

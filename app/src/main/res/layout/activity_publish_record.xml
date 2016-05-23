@@ -4,7 +4,6 @@
     android:id="@+id/rootView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/main_bg"
     android:orientation="vertical">
 
     <include layout="@layout/view_toolbar" />
@@ -26,11 +25,14 @@
                 android:gravity="top|left"
                 android:maxLength="1000"
                 android:minLines="5"
+                android:textColor="@color/main_text_color"
+                android:textSize="15sp"
                 android:padding="10dp" />
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler_view_pic"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
+                android:paddingBottom="10dp"
                 android:overScrollMode="never"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

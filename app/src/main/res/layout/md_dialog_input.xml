@@ -1,4 +1,4 @@
-<com.xilu.wybz.view.materialdialogs.internal.MDRootLayout xmlns:tools="http://schemas.android.com/tools"
+<internal.MDRootLayout xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -67,4 +67,4 @@
 
     <include layout="@layout/md_stub_actionbuttons" />
 
-</com.xilu.wybz.view.materialdialogs.internal.MDRootLayout>
+</internal.MDRootLayout>

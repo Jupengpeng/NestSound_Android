@@ -11,6 +11,13 @@ import java.util.Map;
 public class MyCommon {
     public static int requestCode_photo = 200;
     public static int requestCode_crop = 201;
+    public static int PLAY_MODEL_ORDER = 1;
+    public static int PLAY_MODEL_RANDOM = 2;
+    public static int PLAY_MODEL_LOOP = 3;
+    public static String NEWS = "news";
+    public static String RED = "red";
+    public static String TUIJIAN = "tuijian";
+    public static String ZUIXIN = "zuixin";
     public static final String ACTION_PLAY = "com.musicplay.action.PLAY";
     public static final String ACTION_IS_PLAY = "com.musicplay.action.ISPLAY";
     public static final String ACTION_NET_PLAY = "com.musicplay.action.NET_PLAY";
@@ -74,21 +81,22 @@ public class MyCommon {
     //音乐的类型
     public static int getFromMusicType(String from) {// 1单首 2 多首
         Map<String, Integer> map = new HashMap<>();
-        map.put("zambia", 1);////消息 点赞
-        map.put("collection", 1);//消息 收藏
-        map.put("info_comment", 1);//消息 评论
+        map.put("mag_zan", 1);////消息 点赞
+        map.put("mag_fov", 1);//消息 收藏
+        map.put("msg_comment", 1);//消息 评论
 
         map.put("banner", 2);//banner
-        map.put("weeklist", 2);//周榜
-        map.put("recommend", 2);//推荐歌单
-        map.put("yueshuo", 2);//乐说
-        map.put("songlist", 2);//推荐歌单
-        map.put("tuijian", 2);//最热
+        map.put("ranking", 2);//排行榜
 
-        map.put("mywork", 2);//我的作品
-        map.put("myfav", 2);//我的收藏
-        map.put("new", 3);//最新
-        map.put("hot", 3);//最热
+        map.put("mywork", 3);//我的作品
+        map.put("myfov", 3);//我的收藏
+        map.put("myzan", 3);//我的收藏
+        map.put(NEWS, 3);//最新
+        map.put(RED, 3);//最热
+        map.put(TUIJIAN, 3);//推荐作品
+        map.put(ZUIXIN, 3);//推荐作品
+        map.put("gedan", 3);//歌单
+        map.put("yueshuo", 3);//乐说
 
 
         return map.get(from) == null ? 1 : map.get(from);

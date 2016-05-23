@@ -32,9 +32,10 @@ public class GetToken {
             public void onResponse(String response) {
                 super.onResponse(response);
                 try {
-                    String token = new JSONObject(response).getString("token");
-                    String filename = new JSONObject(response).getJSONObject("data").getString("filename");
-                    String qnurl = new JSONObject(response).getJSONObject("data").getString("qiniurl");
+                    JSONObject data = new JSONObject(response).getJSONObject("data");
+                    String token = data.getString("token");
+                    String filename = data.getString("filename");
+                    String qnurl = data.getString("domain_qiliu");
                     MyHttpClient.QINIU_URL = qnurl + "/";
                     if (tokenResult != null) {
                         tokenResult.OnResult(token, filename);

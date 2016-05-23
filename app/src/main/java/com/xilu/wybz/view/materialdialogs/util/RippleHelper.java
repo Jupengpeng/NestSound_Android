@@ -1,4 +1,4 @@
-package com.xilu.wybz.view.materialdialogs.util;
+package util;
 
 import android.annotation.TargetApi;
 import android.content.res.ColorStateList;

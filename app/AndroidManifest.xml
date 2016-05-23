@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.xilu.wybz">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!-- QQ、QQ空间所需权限 -->
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.SET_DEBUG_APP" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
+    <!-- 获取logcat日志 -->
+    <uses-sdk android:minSdkVersion="4"
+        tools:overrideLibrary="com.umeng.socialize.evernote,com.umeng.socialize.pinterest"
+        />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:name=".ui.MyApplication"
+        android:largeHeap="true"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".ui.WelActivity"
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ui.MainTabActivity" android:theme="@style/MainTheme" />
+        <activity android:name=".ui.BrowserActivity" />
+        <activity android:name=".ui.SplashActivity" />
+
+        <activity android:name=".ui.main.MainActivity" />
+        <activity android:name=".ui.main.SongablumMoreActivity" />
+        <activity android:name=".ui.main.MusicTalkMoreActivity" />
+
+        <activity android:name=".ui.find.FindActivity" />
+        <activity android:name=".ui.find.MoreSongActivity" />
+        <activity android:name=".ui.find.SearchWorksActivity" />
+
+        <activity android:name=".ui.msg.MsgActivity" />
+        <activity android:name=".ui.msg.MsgZambiaActivity" />
+        <activity android:name=".ui.msg.MsgCommentActivity" />
+        <activity android:name=".ui.msg.MsgFavActivity" />
+        <activity android:name=".ui.msg.MsgSystemActivity" />
+
+        <activity android:name=".ui.mine.MineActivity" />
+        <activity android:name=".ui.setting.SettingActivity" />
+        <activity android:name=".ui.setting.SettingFeedActivity" />
+        <activity android:name=".ui.setting.ModifyActivity" />
+
+        <activity android:name=".ui.login.RegisterActivity" android:theme="@style/LoginTheme" />
+        <activity android:name=".ui.login.ForgetPwdActivity" />
+        <activity android:name=".ui.login.PasswordActivity" />
+        <activity android:name=".ui.login.ModifyPwdActivity" />
+        <activity android:name=".ui.login.LoginActivity" android:theme="@style/LoginTheme" />
+
+        <activity android:name=".ui.song.MakeHotActivity"  />
+        <activity android:name=".ui.song.MakeSongActivity"  />
+        <activity android:name=".ui.song.SongAblumActivity" />
+        <activity android:name=".ui.song.PlayAudioActivity" android:theme="@style/PlayTheme" />
+
+
+        <activity android:name=".ui.record.InspireRecordActivity" android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".ui.record.SelectPicActivity"  />
+
+        <activity android:name=".ui.lyrics.LyricsdisplayActivity" />
+        <activity android:name=".ui.lyrics.MakeWordActivity" />
+        <activity android:name=".ui.lyrics.ImportWordActivity" />
+        <activity android:name=".ui.lyrics.MakeCourseActivity" />
+        <activity android:name=".ui.lyrics.SaveWordActivity" />
+
+        <service android:name=".service.PlayService" />
+
+        <activity
+            android:name=".ui.wxapi.WXEntryActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name="com.sina.weibo.sdk.component.WeiboSdkBrowser"
+            android:configChanges="keyboardHidden|orientation"
+            android:windowSoftInputMode="adjustResize"
+            android:exported="false" >
+        </activity>
+        <!-- QQ -->
+        <activity
+            android:name="com.tencent.tauth.AuthActivity"
+            android:launchMode="singleTask"
+            android:noHistory="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="1104841554" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.tencent.connect.common.AssistActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <service
+            android:name=".service.MyPushIntentService"
+            android:process=":push" />
+    </application>
+
+</manifest>

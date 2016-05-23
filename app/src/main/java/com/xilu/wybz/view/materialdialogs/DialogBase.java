@@ -6,7 +6,7 @@ import android.content.DialogInterface;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.xilu.wybz.view.materialdialogs.internal.MDRootLayout;
+import internal.MDRootLayout;
 
 /**
  * @author Aidan Follestad (afollestad)

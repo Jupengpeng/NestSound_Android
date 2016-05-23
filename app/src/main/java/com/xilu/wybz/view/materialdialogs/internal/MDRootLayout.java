@@ -1,4 +1,4 @@
-package com.xilu.wybz.view.materialdialogs.internal;
+package internal;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -20,9 +20,9 @@ import android.widget.AdapterView;
 import android.widget.ScrollView;
 
 import com.xilu.wybz.R;
-import com.xilu.wybz.view.materialdialogs.GravityEnum;
-import com.xilu.wybz.view.materialdialogs.MaterialDialog;
-import com.xilu.wybz.view.materialdialogs.util.DialogUtils;
+import GravityEnum;
+import MaterialDialog;
+import util.DialogUtils;
 
 public class MDRootLayout extends ViewGroup {
     View mTitleBar;

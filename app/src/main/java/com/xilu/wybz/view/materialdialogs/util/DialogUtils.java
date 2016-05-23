@@ -1,4 +1,4 @@
-package com.xilu.wybz.view.materialdialogs.util;
+package util;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -16,8 +16,8 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
-import com.xilu.wybz.view.materialdialogs.GravityEnum;
-import com.xilu.wybz.view.materialdialogs.MaterialDialog;
+import GravityEnum;
+import MaterialDialog;
 
 /**
  * @author Aidan Follestad (afollestad)

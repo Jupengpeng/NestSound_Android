@@ -59,7 +59,7 @@ public class PhoneInfoUtil {
 
     //提交到HTTP HEAD
     public static String getMachine(Context context) {
-        return "android|301|"+android.os.Build.VERSION.RELEASE + "|" + getPhoneModel().toUpperCase() + "|" + getPhoneImei(context) + "|" + DensityUtil.getScreenW(context) + "|" + DensityUtil.getScreenH(context);
+        return "android|301|"+ Build.VERSION.RELEASE + "|" + getPhoneModel().toUpperCase() + "|" + getPhoneImei(context) + "|" + DensityUtil.getScreenW(context) + "|" + DensityUtil.getScreenH(context);
     }
 
     public static boolean isFlyme() {

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,22 +14,27 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.gson.Gson;
 import com.umeng.socialize.UMShareAPI;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.ActionBean;
+import com.xilu.wybz.bean.ShareBean;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.Event;
+import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.presenter.LyricsPresenter;
 import com.xilu.wybz.ui.IView.ILyricsView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.ui.mine.UserInfoActivity;
+import com.xilu.wybz.ui.setting.SettingFeedActivity;
 import com.xilu.wybz.utils.NetWorkUtil;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringStyleUtil;
 import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.view.CircleImageView;
 import com.xilu.wybz.view.dialog.ActionMoreDialog;
+import com.xilu.wybz.view.dialog.ShareDialog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,30 +56,32 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
     @Bind(R.id.ly_content)
     TextView ly_content;
     @Bind(R.id.iv_head)
-    CircleImageView iv_head;
+    SimpleDraweeView iv_head;
     @Bind(R.id.tv_author)
     TextView tv_author;
-    @Bind(R.id.ly_createday)
-    TextView ly_createday;
+    @Bind(R.id.tv_time)
+    TextView tvTime;
+    @Bind(R.id.tv_comment_num)
+    TextView tvCommentNum;
     @Bind(R.id.iv_zan)
     ImageView iv_zan;
     String title;
     String id;
     WorksData worksData;
+    ShareDialog shareDialog;
     int isZan;
     int from;//0 默认 1是我的歌词列表
-    String imgUrl = "";
     List<ActionBean> actionBeanList;
     ActionMoreDialog actionMoreDialog;
     LyricsPresenter lyricsPresenter;
     String[] actionTitles = new String[]{"分享","举报","编辑"};
     String[] actionTypes = new String[]{"share","jubao","edit"};
     public static void toLyricsdisplayActivity(Context context, String id, int from, String title) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("id", id);
-        map.put("from", from);
-        map.put("title", title);
-        SystemUtils.toPlayAct(context, map, LyricsdisplayActivity.class);
+        Intent intent = new Intent(context,LyricsdisplayActivity.class);
+        intent.putExtra("id", id);
+        intent.putExtra("from", from);
+        intent.putExtra("title", title);
+        context.startActivity(intent);
     }
 
     @Override
@@ -129,7 +137,7 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
                 if (!SystemUtils.isLogin(context)) {
                     return;
                 }
-                lyricsPresenter.zan(id, userId);
+                lyricsPresenter.zan(id, userId, worksData.uid);
                 break;
             case R.id.iv_nonet:
                 loadData();
@@ -164,6 +172,8 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
         //根据不同的模板id来显示歌词
         if (!TextUtils.isEmpty(str))
             ly_content.setText(StringStyleUtil.getLyrics(worksData));
+        if(worksData.commentnum>0)
+            tvCommentNum.setText(worksData.commentnum);
 
     }
 
@@ -187,15 +197,12 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
     @Override
     public void loadLyrics(WorksData worksData) {
         this.worksData = worksData;
-        if (!TextUtils.isEmpty(worksData.getPic())) {
-            imgUrl = worksData.getPic();
-        }
         isZan = worksData.getIsZan();
         iv_zan.setImageResource(isZan == 0 ? R.drawable.ic_lyrics_zan1 : R.drawable.ic_lyrics_zan2);
         loadTitleContent();
-        loadHeadImage(worksData.getHeadurl(), iv_head);
         tv_author.setText(worksData.getAuthor());
-        ly_createday.setText(worksData.getCreateTime());
+        tvTime.setText(worksData.getCreateTime());
+        loadImage(worksData.getPic(), iv_head);
     }
 
     @Override
@@ -209,8 +216,6 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
         worksData.setZannum(isZan == 0 ? worksData.getZannum() - 1 : worksData.getZannum() + 1);
         iv_zan.startAnimation(AnimationUtils.loadAnimation(context, R.anim.dianzan_anim));
         iv_zan.setImageResource(isZan == 0 ? R.drawable.ic_lyrics_zan1 : R.drawable.ic_lyrics_zan2);
-        PrefsUtil.putString("lyrics" + id, new Gson().toJson(worksData), context);
-        PrefsUtil.putLong("lyricstime" + id, System.currentTimeMillis(), context);
     }
 
     @Override
@@ -280,12 +285,28 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         ActionBean actionBean = actionBeanList.get(position);
+        Intent intent;
         if(actionBean.getType().equals("share")){
-
+            if (worksData != null && !TextUtils.isEmpty(worksData.getItemid())) {
+                if (shareDialog == null) {
+                    String shareTitle = worksData.title;
+                    String shareAuthor = worksData.author;
+                    String shareLink = worksData.shareurl;
+                    String sharePic = worksData.pic;
+                    String shareBody = userId.equals(worksData.uid) ? "我用音巢app创作了一首歌词，快来看看吧!" : "我在音巢app上发现一首好歌词，太棒了~";
+                    String shareContent = shareBody + " 《" + shareTitle + "》 ▷" + shareLink + " (@音巢音乐)";
+                    shareDialog = new ShareDialog(LyricsdisplayActivity.this, new ShareBean(shareTitle, shareAuthor, shareContent, shareLink, sharePic, ""));
+                }
+                if (!shareDialog.isShowing()) {
+                    shareDialog.showDialog();
+                }
+            }
         }else if(actionBean.getType().equals("edit")){
 
         }else if(actionBean.getType().equals("jubao")){
-
+            intent = new Intent(context, SettingFeedActivity.class);
+            intent.putExtra("type", 1);
+            startActivity(intent);
         }
     }
 }

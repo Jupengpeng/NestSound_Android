@@ -1,4 +1,4 @@
-package com.xilu.wybz.view.materialdialogs.internal;
+package internal;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -9,8 +9,8 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.widget.TextView;
 import com.xilu.wybz.R;
-import com.xilu.wybz.view.materialdialogs.GravityEnum;
-import com.xilu.wybz.view.materialdialogs.util.DialogUtils;
+import GravityEnum;
+import util.DialogUtils;
 
 /**
  * @author Kevin Barry (teslacoil) 4/02/2015

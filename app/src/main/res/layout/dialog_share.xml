@@ -12,8 +12,8 @@
         android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
         android:text="分享至"
-        android:textColor="@color/main_text_color"
-        android:textSize="18sp" />
+        android:textColor="@color/main_text_color2"
+        android:textSize="16sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -222,15 +222,4 @@
         </LinearLayout>
     </LinearLayout>
 
-    <include layout="@layout/view_spit_line" />
-
-    <Button
-        android:id="@+id/btn_cancel"
-        android:layout_width="match_parent"
-        android:layout_height="52dip"
-        android:background="@drawable/selector"
-        android:gravity="center"
-        android:text="取消"
-        android:textColor="@color/main_text_color2"
-        android:textSize="16sp" />
 </LinearLayout>
