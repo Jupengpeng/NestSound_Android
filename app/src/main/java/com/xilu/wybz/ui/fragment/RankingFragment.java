@@ -65,10 +65,6 @@ public class RankingFragment extends BaseFragment implements IRankingView {
         recyclerViewLyrics.addItemDecoration(new SpacesItemDecoration(space10));
         recyclerViewLyrics.setNestedScrollingEnabled(false);
 
-        for(int i=0;i<6;i++){
-            songDatas.add(new WorksData());
-        }
-
         lyricsDatas = songDatas;
 
         rankingSongAdapter = new RankingAdapter(context,songDatas,1);

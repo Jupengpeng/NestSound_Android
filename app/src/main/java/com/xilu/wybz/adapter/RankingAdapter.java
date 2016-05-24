@@ -53,15 +53,15 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.WorksVie
     @Override
     public void onBindViewHolder(final WorksViewHolder holder, final int position) {
         WorksData worksData = mList.get(position);
-//        String url = MyCommon.getImageUrl(worksData.getPic(), itemWidth, itemWidth);
-//        ImageLoadUtil.loadImage(url, holder.ivCover);
-//        holder.tvName.setText(worksData.name);
-//        holder.tvAuthor.setText(worksData.author);
-//        holder.tvLookNum.setText(worksData.looknum);
-//        holder.tvUpNum.setText(worksData.upnum);
-//        holder.tvFavNum.setText(worksData.fovnum);
+        String url = MyCommon.getImageUrl(worksData.getPic(), itemWidth, itemWidth);
+        ImageLoadUtil.loadImage(url, holder.ivCover);
+        holder.tvName.setText(worksData.name);
+        holder.tvAuthor.setText(worksData.author);
+        holder.tvLookNum.setText(worksData.looknum+"");
+        holder.tvZanNum.setText(worksData.zannum+"");
+        holder.tvFovNum.setText(worksData.fovnum+"");
         holder.ivType.setImageResource(type == 1 ? R.drawable.ic_raning_play : R.drawable.ic_raning_lyrics);
-        holder.tvRank.setText("0"+(position+1));
+        holder.tvRank.setText(position<9?"0":""+(position+1));
         if (mOnItemClickListener != null) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -79,7 +79,6 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.WorksVie
             });
         }
     }
-
     @Override
     public int getItemCount() {
         return mList.size();

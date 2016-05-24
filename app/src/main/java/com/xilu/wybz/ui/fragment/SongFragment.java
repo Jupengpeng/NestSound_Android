@@ -45,6 +45,7 @@ public class SongFragment extends BaseFragment implements ISongView {
 
     @Override
     protected void initPresenter() {
+        showMsg("SongFragment");
         songPresenter = new SongPresenter(context, this);
         songPresenter.init();
     }
