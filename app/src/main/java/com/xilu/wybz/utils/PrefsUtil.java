@@ -82,7 +82,7 @@ public class PrefsUtil {
     }
 
     public static String getUserId(Context context) {
-        return getUserInfo(context).userid;
+        return getUserInfo(context).userid+"";
     }
 
     public static void saveUserInfo(Context context, UserBean ub) {

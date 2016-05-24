@@ -142,7 +142,7 @@ public class SystemUtils {
 
     public static boolean isLogin(Context context) {
         UserBean userBean = PrefsUtil.getUserInfo(context);
-        if (userBean == null || TextUtils.isEmpty(userBean.userid)) {
+        if (userBean == null || userBean.userid==0) {
             toAct(context, LoginActivity.class);
             return false;
         } else {
