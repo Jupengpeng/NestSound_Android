@@ -12,6 +12,7 @@ import com.xilu.wybz.adapter.MyPagerAdapter;
 import com.xilu.wybz.ui.base.BasePlayMenuActivity;
 import com.xilu.wybz.ui.find.FindActivity;
 import com.xilu.wybz.ui.find.SearchWorksActivity;
+import com.xilu.wybz.ui.login.LoginActivity;
 import com.xilu.wybz.ui.lyrics.MakeWordActivity;
 import com.xilu.wybz.ui.main.MainActivity;
 import com.xilu.wybz.ui.mine.MineActivity;
@@ -119,6 +120,9 @@ public class MainTabActivity extends BasePlayMenuActivity {
                 break;
             case R.id.rl_main_msg:
                 currentIndex = 2;
+                if(!isLogin){
+                    startActivity(LoginActivity.class);
+                }
                 break;
             case R.id.rl_main_mine:
                 currentIndex = 3;
@@ -137,6 +141,9 @@ public class MainTabActivity extends BasePlayMenuActivity {
 //                }
                 break;
         }
+
+
+
         if(oldIndex!=currentIndex) {
             checkedTextViewList.get(oldIndex).setChecked(false);
             checkedTextViewList.get(currentIndex).setChecked(true);

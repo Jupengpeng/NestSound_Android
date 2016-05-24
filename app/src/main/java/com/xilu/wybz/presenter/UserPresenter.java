@@ -35,10 +35,9 @@ public class UserPresenter extends BasePresenter<IUserView> {
         Map<String,String> param = new HashMap<>();
 
         param.put("uid",userId);
-        param.put("type","4");
-        param.put("page",""+page);
+         param.put("page",""+page);
 
-        httpUtils.post(MyHttpClient.getfocusfansnum(userId),param, new MyStringCallback() {
+        httpUtils.get(MyHttpClient.getMine(),param, new MyStringCallback() {
             @Override
             public void onResponse(String response) {
                 try {

@@ -111,5 +111,7 @@ public class MyHttpClient {
     public static String getSaveLyricsUrl(){return  "lyricsopt/optLyrics";}
     //分享
     public static String getSharePlayUrl(String id){return  ROOT_URL+"html/p.php?id="+id;}
+
+    public static String getMine(){return  "userCenter/index";}
 }
 

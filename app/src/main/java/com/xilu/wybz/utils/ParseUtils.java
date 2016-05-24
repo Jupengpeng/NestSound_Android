@@ -74,6 +74,25 @@ public class ParseUtils {
     }
 
 
+    public static MineBean parseMineBean(String jsonData) {
+        try {
+            JSONObject jsonObject = new JSONObject(jsonData);
+            String code = jsonObject.getString("code");
+            if (!code.equals("200")) {
+
+                return null;
+            }
+            MineBean mineBean = new MineBean();
+            JSONObject dataJson = jsonObject.getJSONObject("data");
+
+
+            return mineBean;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public static boolean checkCode(String jsonData) {
         try {
             JSONObject jsonObject = new JSONObject(jsonData);
