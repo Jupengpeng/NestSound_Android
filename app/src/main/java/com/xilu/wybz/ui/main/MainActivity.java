@@ -447,20 +447,36 @@ public class MainActivity extends BaseActivity implements IHomeView {
         switch (event.getStatus()) {
             case 1://开始
                 String playFrom = PrefsUtil.getString("playFrom",context);
-                if(playFrom.equals(MyCommon.TUIJIAN)){
-                    worksAdapter.notifyDataSetChanged();
-                }else if(playFrom.equals(MyCommon.NEWS)) {
-                    newworksAdapter.notifyDataSetChanged();
+                String itemid = PrefsUtil.getString("playId",context);
+                if(playFrom.equals(MyCommon.TUIJIAN)) {
+                    for (int pos = 0; pos < recommendWorkList.size(); pos++) {
+                        if (itemid.equals(recommendWorkList.get(pos).itemid)) {
+                            for (int id = 0; id < recommendWorkList.size(); id++) {
+                                recommendWorkList.get(pos).isPlay = (id==pos);
+                            }
+                            worksAdapter.updatePlayStatus(pos);
+                            break;
+                        }
+                    }
+                }else if (playFrom.equals(MyCommon.NEWS)){
+                    for (int pos = 0; pos < newWorkList.size(); pos++) {
+                        if (itemid.equals(newWorkList.get(pos).itemid)) {
+                            for (int id = 0; id < newWorkList.size(); id++) {
+                                newWorkList.get(pos).isPlay = (id==pos);
+                            }
+                            newworksAdapter.updatePlayStatus(pos);
+                            break;
+                        }
+                    }
                 }
                 break;
             case 2://停止
 
                 break;
             case 3://播放
-                ((MainTabActivity)getParent()).startAnimal();
+
                 break;
             case 4://暂停
-                ((MainTabActivity)getParent()).stopAnimal();
                 break;
         }
     }

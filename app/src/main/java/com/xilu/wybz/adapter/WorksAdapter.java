@@ -24,6 +24,7 @@ import com.xilu.wybz.ui.song.PlayAudioActivity;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.ImageLoadUtil;
 import com.xilu.wybz.utils.PrefsUtil;
+import com.xilu.wybz.utils.ToastUtils;
 
 import java.util.List;
 
@@ -61,6 +62,9 @@ public class WorksAdapter extends RecyclerView.Adapter<WorksAdapter.WorksViewHol
         WorksViewHolder holder = new WorksViewHolder(LayoutInflater.from(context).inflate(R.layout.view_home_work_item, parent, false));
         return holder;
     }
+    public void updatePlayStatus(int pos){
+        notifyItemChanged(pos);
+    }
 
     @Override
     public void onBindViewHolder(final WorksViewHolder holder, final int position) {
@@ -71,22 +75,20 @@ public class WorksAdapter extends RecyclerView.Adapter<WorksAdapter.WorksViewHol
         holder.tvAuthor.setText(worksData.author);
         holder.tvCount.setText(worksData.looknum + "");
         holder.ivType.setImageResource(worksData.status == 1 ? R.drawable.ic_song_type : R.drawable.ic_lyric_type);
-
-        boolean isPlayCurrent = false;
-        if (PlayMediaInstance.getInstance().status > 1) {
-            String playFrom = PrefsUtil.getString("playFrom", context);
-            String playId = PrefsUtil.getString("playId", context);
-            if (playId.equals(worksData.itemid) && playFrom.equals(come)) {//正在播放这首歌
-                isPlayCurrent = true;
-            }
-        }
-        holder.ivWorkType.setImageResource(worksData.status == 2 ? R.drawable.ic_work_lyrics : isPlayCurrent?R.drawable.ic_work_pause:R.drawable.ic_work_play);
+//        boolean isPlayCurrent = false;
+//        if (PlayMediaInstance.getInstance().status > 1) {
+//            String playFrom = PrefsUtil.getString("playFrom", context);
+//            String playId = PrefsUtil.getString("playId", context);
+//            if (playId.equals(worksData.itemid) && playFrom.equals(come)) {//正在播放这首歌
+//                isPlayCurrent = true;
+//            }
+//        }
+        holder.ivWorkType.setImageResource(worksData.status == 2 ? R.drawable.ic_work_lyrics : worksData.isPlay?R.drawable.ic_work_pause:R.drawable.ic_work_play);
         if (worksData.status == 1) {
-            final boolean finalIsPlayCurrent = isPlayCurrent;
             holder.ivWorkType.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (finalIsPlayCurrent) {//判断是否当前音乐正在播放
+                    if (worksData.isPlay) {//判断是否当前音乐正在播放
                         if (PlayMediaInstance.getInstance().status == 2) {
                             PlayMediaInstance.getInstance().resumeMediaPlay();
                             holder.ivWorkType.setImageResource(R.drawable.ic_work_pause);

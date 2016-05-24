@@ -26,7 +26,7 @@ public class ModifyUserInfoPresenter extends BasePresenter<IModifyUserInfoView> 
         params.put("headurl",userBean.headurl);
         params.put("nickname",userBean.name);
         params.put("sex",userBean.sex+"");
-        params.put("signature",userBean.signature);
+        params.put("descr",userBean.descr);
         params.put("birthday",userBean.birthday);
         httpUtils.get(MyHttpClient.getModifyUserInfo(), new MyStringCallback() {
             @Override

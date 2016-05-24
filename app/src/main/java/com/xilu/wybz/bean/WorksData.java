@@ -53,6 +53,15 @@ public class WorksData implements Serializable {
     public String audio;//录歌时人声或者灵感记录的音频
     public String spirecontent;//录歌时人声或者灵感记录的音频
     public String pics;//灵感记录的图片集合
+    public boolean isPlay;
+
+    public boolean isPlay() {
+        return isPlay;
+    }
+
+    public void setPlay(boolean play) {
+        isPlay = play;
+    }
 
     public String getTitle() {
         return title;

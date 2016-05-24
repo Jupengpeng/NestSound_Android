@@ -183,7 +183,7 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
                     photoBean.isAddPic = true;
                     list.add(photoBean);
                 }
-                adapter.notifyDataSetChanged();
+                adapter.notifyItemRemoved(position);
             }
         });
     }
