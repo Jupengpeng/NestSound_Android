@@ -1,5 +1,8 @@
 package com.xilu.wybz.ui.mine;
 
+import android.os.Bundle;
+
+import com.xilu.wybz.R;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 
 /**
@@ -9,6 +12,12 @@ public class UserInfoActivity extends ToolbarActivity{
 
     @Override
     protected int getLayoutRes() {
-        return 0;
+        return R.layout.activity_userinfo;
+    }
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 }

@@ -10,7 +10,7 @@ import static org.junit.Assert.assertEquals;
 /**
  * Created by Administrator on 2016/5/23.
  */
-public class TestDateFormatUtils {
+public class DateFormatUtilTest {
 
     @Test
     public void testPrase2DateText() throws Exception {

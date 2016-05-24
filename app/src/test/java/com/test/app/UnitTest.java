@@ -9,7 +9,7 @@ import static org.junit.Assert.*;
 /**
  * Created by Administrator on 2016/5/22.
  */
-public class TestUnit {
+public class UnitTest {
 
     @Test
     public void addition_isCorrect() throws Exception {

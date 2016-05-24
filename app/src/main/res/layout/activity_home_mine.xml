@@ -1,5 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -43,7 +44,20 @@
                         android:background="@color/white" />
                 </RelativeLayout>
 
-
+                <!--<com.facebook.drawee.view.SimpleDraweeView-->
+                    <!--android:id="@+id/iv_head"-->
+                    <!--android:layout_width="92dp"-->
+                    <!--android:layout_height="92dp"-->
+                    <!--android:layout_gravity="center_horizontal|bottom"-->
+                    <!--fresco:actualImageScaleType="centerCrop"-->
+                    <!--fresco:fadeDuration="300"-->
+                    <!--fresco:failureImage="@drawable/ic_default_head_252"-->
+                    <!--fresco:failureImageScaleType="centerCrop"-->
+                    <!--fresco:placeholderImage="@drawable/ic_default_head_252"-->
+                    <!--fresco:placeholderImageScaleType="centerCrop"-->
+                    <!--fresco:roundingBorderWidth="2dp"-->
+                    <!--fresco:roundingBorderColor="#a58c23"-->
+                    <!--fresco:roundAsCircle="true" />-->
                 <com.xilu.wybz.view.CircleImageView
                     android:id="@+id/iv_head"
                     android:layout_width="92dp"
@@ -51,8 +65,8 @@
                     android:layout_gravity="center_horizontal|bottom"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_default_head_252"
-                    app:border_color="#a58c23"
-                    app:border_width="@dimen/yc_2" />
+                    fresco:border_color="#a58c23"
+                    fresco:border_width="@dimen/yc_2" />
             </FrameLayout>
 
             <RelativeLayout

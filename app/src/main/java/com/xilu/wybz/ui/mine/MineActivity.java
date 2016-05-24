@@ -8,6 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.presenter.UserPresenter;
@@ -18,6 +19,7 @@ import com.xilu.wybz.ui.mine.view.UserCollectionView;
 import com.xilu.wybz.ui.mine.view.UserInspirationView;
 import com.xilu.wybz.ui.mine.view.UserLyricView;
 import com.xilu.wybz.ui.mine.view.UserSongView;
+import com.xilu.wybz.ui.setting.SettingActivity;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.view.CircleImageView;
 import com.xilu.wybz.view.TopFloatScrollView;
@@ -36,7 +38,8 @@ public class MineActivity extends BaseActivity implements IUserView {
     @Bind(R.id.user_layout_top)
     RelativeLayout userLayoutTop;
     @Bind(R.id.iv_head)
-    CircleImageView ivHead;
+//    SimpleDraweeView ivHead;
+    ImageView ivHead;
     @Bind(R.id.user_tv_name)
     TextView userTvName;
     @Bind(R.id.user_tv_info)
@@ -100,12 +103,11 @@ public class MineActivity extends BaseActivity implements IUserView {
     UserBaseView mCurrentUserView;
 
 
-
-
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_home_mine;
     }
+
 
     @Override
     public void initView() {
@@ -118,9 +120,24 @@ public class MineActivity extends BaseActivity implements IUserView {
         myScrollView.setScrollBottomListener(new TopFloatScrollView.OnScrollToBottomListener() {
             @Override
             public void scrollBottom() {
-                if (mCurrentUserView != null){
+                if (mCurrentUserView != null) {
                     mCurrentUserView.onScrollBottom();
                 }
+            }
+        });
+
+
+        ivSetting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(SettingActivity.class);
+            }
+        });
+
+        ivDraft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(DraftActivity.class);
             }
         });
 
@@ -140,16 +157,16 @@ public class MineActivity extends BaseActivity implements IUserView {
         contentLayout.addView(mUserCollectionView);
 
 
-        show(llMyrecord,0);
+        show(llMyrecord, 0);
         contentLayout.setVisibility(View.VISIBLE);
 
     }
 
 
     @OnClick(R.id.iv_head)
-    public void onClickForTest(){
+    public void onClickForTest() {
 
-        mUserPresenter.getInspirationList("23",1);
+        mUserPresenter.getInspirationList("23", 1);
     }
 
 
@@ -180,16 +197,16 @@ public class MineActivity extends BaseActivity implements IUserView {
                 break;
         }
 
-        if (!(mCurrentUserView instanceof UserInspirationView) ){
+        if (!(mCurrentUserView instanceof UserInspirationView)) {
             mUserInspirationView.setVisibility(View.GONE);
         }
-        if (!(mCurrentUserView instanceof UserSongView) ){
+        if (!(mCurrentUserView instanceof UserSongView)) {
             mUserSongView.setVisibility(View.GONE);
         }
-        if (!(mCurrentUserView instanceof UserLyricView) ){
+        if (!(mCurrentUserView instanceof UserLyricView)) {
             mUserLyricView.setVisibility(View.GONE);
         }
-        if (!(mCurrentUserView instanceof UserCollectionView) ){
+        if (!(mCurrentUserView instanceof UserCollectionView)) {
             mUserCollectionView.setVisibility(View.GONE);
         }
 
@@ -197,7 +214,7 @@ public class MineActivity extends BaseActivity implements IUserView {
     }
 
 
-    public void show(View view, int id){
+    public void show(View view, int id) {
 
         setSeletedTab(view);
         setContentPage(id);
@@ -210,20 +227,19 @@ public class MineActivity extends BaseActivity implements IUserView {
 
         switch (view.getId()) {
             case R.id.ll_myrecord:
-                show(view ,0);
+                show(view, 0);
                 break;
             case R.id.ll_mysong:
-                show(view ,1);
+                show(view, 1);
                 break;
             case R.id.ll_mylyrics:
-                show(view ,2);
+                show(view, 2);
                 break;
             case R.id.ll_myfav:
-                show(view ,3);
+                show(view, 3);
                 break;
         }
     }
-
 
 
     @Override

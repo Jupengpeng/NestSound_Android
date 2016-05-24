@@ -19,19 +19,19 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         >
-        <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/iv_head"
-            android:layout_width="59dp"
-            android:layout_height="59dp"
-            fresco:actualImageScaleType="centerCrop"
-            fresco:fadeDuration="300"
-            fresco:failureImage="@drawable/ic_default_head_252"
-            fresco:failureImageScaleType="centerCrop"
-            fresco:placeholderImage="@drawable/ic_default_pic"
-            fresco:placeholderImageScaleType="centerCrop"
-            fresco:roundingBorderWidth="0.6dp"
-            fresco:roundingBorderColor="@color/main_text_color"
-            fresco:roundAsCircle="true" />
+        <!--<com.facebook.drawee.view.SimpleDraweeView-->
+            <!--android:id="@+id/iv_head"-->
+            <!--android:layout_width="59dp"-->
+            <!--android:layout_height="59dp"-->
+            <!--fresco:actualImageScaleType="centerCrop"-->
+            <!--fresco:fadeDuration="300"-->
+            <!--fresco:failureImage="@drawable/ic_default_head_252"-->
+            <!--fresco:failureImageScaleType="centerCrop"-->
+            <!--fresco:placeholderImage="@drawable/ic_default_pic"-->
+            <!--fresco:placeholderImageScaleType="centerCrop"-->
+            <!--fresco:roundingBorderWidth="0.6dp"-->
+            <!--fresco:roundingBorderColor="@color/main_text_color"-->
+            <!--fresco:roundAsCircle="true" />-->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_weight="1"
