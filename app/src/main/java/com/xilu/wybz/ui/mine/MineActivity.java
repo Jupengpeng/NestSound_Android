@@ -100,6 +100,7 @@ public class MineActivity extends BaseActivity implements IUserView {
     UserLyricView mUserLyricView;
     UserCollectionView mUserCollectionView;
 
+
     UserBaseView mCurrentUserView;
 
 
@@ -107,13 +108,17 @@ public class MineActivity extends BaseActivity implements IUserView {
     protected int getLayoutRes() {
         return R.layout.activity_home_mine;
     }
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        mUserPresenter = new UserPresenter(context, this);
+        mUserPresenter.init();
+    }
 
 
     @Override
     public void initView() {
-
-        mUserPresenter = new UserPresenter(context, this);
-        mUserPresenter.init();
 
         myScrollView.initView(vToolbar, tvCenter);
 
@@ -169,7 +174,6 @@ public class MineActivity extends BaseActivity implements IUserView {
         mUserPresenter.getInspirationList("23", 1);
     }
 
-
     public void setSeletedTab(View view) {
         llMyrecord.setSelected(false);
         llMysong.setSelected(false);
@@ -178,6 +182,7 @@ public class MineActivity extends BaseActivity implements IUserView {
 
         view.setSelected(true);
     }
+
 
     public void setContentPage(int id) {
 
@@ -241,7 +246,6 @@ public class MineActivity extends BaseActivity implements IUserView {
         }
     }
 
-
     @Override
     public void addInspirationDatas(List<WorksData> datas) {
         mUserInspirationView.getAdapter().addDatas(datas);
@@ -257,11 +261,11 @@ public class MineActivity extends BaseActivity implements IUserView {
         mUserLyricView.getAdapter().addDatas(datas);
     }
 
+
     @Override
     public void addCollectionDatas(List<WorksData> datas) {
         mUserCollectionView.getAdapter().addDatas(datas);
     }
-
 
     @Override
     public void showInspirationNoData() {
@@ -278,11 +282,11 @@ public class MineActivity extends BaseActivity implements IUserView {
         mUserLyricView.showNoDataView();
     }
 
+
     @Override
     public void showCollectionNoData() {
         mUserCollectionView.showNoDataView();
     }
-
 
     @Override
     public void showInspirationNoNet() {
@@ -302,13 +306,6 @@ public class MineActivity extends BaseActivity implements IUserView {
     @Override
     public void showCollectionNoNet() {
 
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        initView();
     }
 
 }
