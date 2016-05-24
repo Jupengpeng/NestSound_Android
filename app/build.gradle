@@ -58,17 +58,19 @@ android {
 //            }
 //        }
 
-        productFlavors {
-            Yinchao {
-                manifestPlaceholders = [UMENG_CHANNEL_VALUE: "yinchao"]
-            }
+
+    }
+
+    productFlavors {
+        Yinchao {
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "yinchao"]
+        }
 //            Umeng {
 //                manifestPlaceholders = [UMENG_CHANNEL_VALUE: "push"]
 //            }
 //            Meizu {
 //                manifestPlaceholders = [UMENG_CHANNEL_VALUE: "meizu"]
 //            }
-        }
     }
 
     compileOptions {

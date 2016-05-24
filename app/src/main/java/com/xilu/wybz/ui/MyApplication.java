@@ -6,7 +6,6 @@ import android.media.MediaPlayer;
 import android.os.Environment;
 import android.os.Handler;
 import android.support.multidex.MultiDex;
-import android.support.multidex.MultiDexApplication;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.litesuits.orm.LiteOrm;
@@ -29,7 +28,7 @@ import java.util.List;
 /**
  * Created by June on 2016/3/1.
  */
-public class MyApplication extends MultiDexApplication {
+public class MyApplication extends Application {
 
     public static Context context;
     public static String musicId = "";
