@@ -6,6 +6,9 @@ import com.litesuits.orm.db.annotation.PrimaryKey;
 import com.litesuits.orm.db.annotation.Table;
 import com.litesuits.orm.db.enums.AssignType;
 import com.litesuits.orm.db.enums.Relation;
+import com.xilu.wybz.utils.DateTimeUtil;
+import com.xilu.wybz.utils.StringUtil;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -14,26 +17,23 @@ import java.util.List;
  * 歌曲 歌词 或者 灵感记录
  */
 public class WorksData implements Serializable {
-
-
-    public String createdate;//歌曲id
-    public String pics;//歌曲封面
-    public String spirecontent;//标题
-    public String audio;//作者
-
-
     public String itemid;//歌曲id
     public String pic;//歌曲封面
     public String title;//标题
+    public String name;//标题
     public String author;//作者
     public String headurl;//用户头像
     public int looknum;//浏览量
     public int isOpen;//是否公开
     public int fovnum;//收藏量
     public int zannum;//点赞量
+    public int commentnum;//评论量
+    public String shareurl;//分享地址
     public int sampleid;//模板Id
     public String playurl;//mp3地址
     public int mp3times;//mp3时长
+    public String hotmp3;//伴奏播放地址
+    public int hotmp3times;//伴奏时长 秒
     public int status;//1歌曲 2歌词
     public String lyrics;//歌词
     public String detail;//歌词详情 灵感记录的内容
@@ -44,12 +44,63 @@ public class WorksData implements Serializable {
     public int isZan;//1=已赞，0=未赞
     public int uid;//作者id
     public int hotid;//伴奏id
-    public String hotAutor;//伴奏作者
+    public String hotAuthor;//伴奏作者
     public String hotTitle;//伴奏标题
     public String createTime;//创建时间
+    public String createdate;//创建时间
     public int recordtimes;//录音时长
     public String recordPath;//录歌时人声或者灵感记录的音频
-    public List<String> picList;//灵感记录的图片集合
+    public String audio;//录歌时人声或者灵感记录的音频
+    public String spirecontent;//录歌时人声或者灵感记录的音频
+    public String pics;//灵感记录的图片集合
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getShareurl() {
+        return shareurl;
+    }
+
+    public void setShareurl(String shareurl) {
+        this.shareurl = shareurl;
+    }
+
+    public String getHotmp3() {
+        return hotmp3;
+    }
+
+    public void setHotmp3(String hotmp3) {
+        this.hotmp3 = hotmp3;
+    }
+
+    public int getHotmp3times() {
+        return hotmp3times;
+    }
+
+    public void setHotmp3times(int hotmp3times) {
+        this.hotmp3times = hotmp3times;
+    }
+
+    public void setHotAuthor(String hotAuthor) {
+        this.hotAuthor = hotAuthor;
+    }
+
+    public int getCommentnum() {
+        return commentnum;
+    }
+
+    public void setCommentnum(int commentnum) {
+        this.commentnum = commentnum;
+    }
 
     public String getItemid() {
         return itemid;
@@ -67,12 +118,12 @@ public class WorksData implements Serializable {
         this.pic = pic;
     }
 
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void getName(String title) {
+        this.name = name;
     }
 
 
@@ -196,12 +247,12 @@ public class WorksData implements Serializable {
         this.hotid = hotid;
     }
 
-    public String getHotAutor() {
-        return hotAutor;
+    public String getHotAuthor() {
+        return hotAuthor;
     }
 
-    public void setHotAutor(String hotAutor) {
-        this.hotAutor = hotAutor;
+    public void setHotAuhtor(String hotAuthor) {
+        this.hotAuthor = hotAuthor;
     }
 
     public String getHotTitle() {
@@ -229,6 +280,10 @@ public class WorksData implements Serializable {
     }
 
     public String getCreateTime() {
+        if(StringUtil.isLong(createTime)){
+            long time = Long.parseLong(createTime);
+            createTime = DateTimeUtil.timestamp2Time(time);
+        }
         return createTime;
     }
 
@@ -266,13 +321,5 @@ public class WorksData implements Serializable {
 
     public void setRecordPath(String recordPath) {
         this.recordPath = recordPath;
-    }
-
-    public List<String> getPics() {
-        return picList;
-    }
-
-    public void setPics(List<String> picList) {
-        this.picList = picList;
     }
 }

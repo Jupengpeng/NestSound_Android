@@ -1,0 +1,97 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:descendantFocusability="blocksDescendants"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="212px"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="30px"
+        android:paddingRight="30px">
+
+        <RelativeLayout
+            android:layout_width="326px"
+            android:layout_height="172px">
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/iv_cover"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                fresco:actualImageScaleType="centerCrop"
+                fresco:fadeDuration="300"
+                fresco:failureImage="@drawable/ic_default_pic"
+                fresco:failureImageScaleType="centerCrop"
+                fresco:placeholderImage="@drawable/ic_default_pic"
+                fresco:placeholderImageScaleType="fitCenter"
+                fresco:roundedCornerRadius="3dp" />
+
+            <ImageView
+                android:id="@+id/iv_play"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/selector"
+                android:padding="20px"
+                android:src="@drawable/ic_bz_play" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30px"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="2"
+                    android:text="hotname"
+                    android:textColor="@color/main_text_color"
+                    android:textSize="@dimen/yc_15" />
+
+                <TextView
+                    android:id="@+id/tv_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginLeft="12dp"
+                    android:text=""
+                    android:textColor="@color/main_text_color"
+                    android:textSize="@dimen/yc_12" />
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10px"
+                android:text="title"
+                android:textColor="@color/main_text_color2"
+                android:textSize="@dimen/yc_12"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tv_author"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25px"
+                android:text="author"
+                android:textColor="@color/main_text_color2"
+                android:textSize="@dimen/yc_12" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

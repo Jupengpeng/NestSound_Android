@@ -18,6 +18,7 @@ import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.view.dialog.LyricsDialog;
 import com.xilu.wybz.view.materialdialogs.DialogAction;
 import com.xilu.wybz.view.materialdialogs.MaterialDialog;
+
 import butterknife.Bind;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;

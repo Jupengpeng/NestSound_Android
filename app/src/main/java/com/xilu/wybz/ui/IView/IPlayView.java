@@ -10,18 +10,6 @@ public interface IPlayView extends IBaseView {
 
     void toCommentActivity();
 
-    void getMusicDetail();
-
-    void getMusicSuccess(String result);
-
-    void getMusicFail();
-
-    void getHotDetail();
-
-    void getHotSuccess(String result);
-
-    void getHotFail();
-
     void collectionMusic();
 
     void collectionMusicSuccess(String result);

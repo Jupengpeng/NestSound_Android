@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -15,7 +16,7 @@
         android:paddingLeft="21dp"
         android:paddingRight="21dp">
 
-        <EditText
+        <TextView
             android:id="@+id/et_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -36,24 +37,146 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="@dimen/yc_10"
-            android:layout_marginTop="@dimen/yc_10"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:clipToPadding="false"
             android:scrollbarThumbVertical="@drawable/transparent"
             android:scrollbars="vertical">
 
-            <EditText
+            <TextView
                 android:id="@+id/et_word"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/tran"
                 android:elegantTextHeight="true"
                 android:gravity="center_horizontal|top"
-                android:minHeight="260dp"
-                android:text=""
                 android:textColor="@color/main_text_color"
                 android:textSize="@dimen/yc_15" />
         </ScrollView>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="96dp"
+        android:orientation="vertical"
+        >
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:background="@color/main_theme_color" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        >
+        <SurfaceView
+            android:id="@+id/make_sv_wave"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white" />
+        <LinearLayout
+            android:padding="12dp"
+            android:layout_marginRight="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            >
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/main_text_color"
+            android:text="00:00"
+            />
+        <TextView
+            android:layout_gravity="bottom|right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/main_text_color"
+            android:text="/"
+            />
+        <TextView
+            android:id="@+id/tv_alltime"
+            android:layout_gravity="bottom|right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/main_text_color"
+            android:text="00:00"
+            />
+        </LinearLayout>
+    </FrameLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:background="@color/main_theme_color" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="76dp">
+
+        <RelativeLayout
+            android:id="@+id/rl_import"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_record_import" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_play"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_replay_play" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_record"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_record_pause" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_restart"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_record_restart" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_edit"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_record_edit" />
+        </RelativeLayout>
+
     </LinearLayout>
 </LinearLayout>

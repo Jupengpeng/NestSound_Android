@@ -1,4 +1,4 @@
-<com.xilu.wybz.view.materialdialogs.internal.MDRootLayout
+<internal.MDRootLayout
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -30,4 +30,4 @@
 
     <include layout="@layout/md_stub_actionbuttons" />
 
-</com.xilu.wybz.view.materialdialogs.internal.MDRootLayout>
+</internal.MDRootLayout>

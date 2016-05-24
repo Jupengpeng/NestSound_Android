@@ -71,20 +71,25 @@ public class RankingFragment extends BaseFragment implements IRankingView {
 
         lyricsDatas = songDatas;
 
-        rankingSongAdapter = new RankingAdapter(context,songDatas);
-        rankingLyricsAdapter = new RankingAdapter(context,lyricsDatas);
+        rankingSongAdapter = new RankingAdapter(context,songDatas,1);
+        rankingLyricsAdapter = new RankingAdapter(context,lyricsDatas,2);
         recyclerViewSong.setAdapter(rankingSongAdapter);
         recyclerViewLyrics.setAdapter(rankingLyricsAdapter);
+
+        rankingPresenter.loadRankingData(userId,1);
+        rankingPresenter.loadRankingData(userId,2);
     }
 
     @Override
-    public void showRankingSong(List<WorksData> newWorksDatas) {
-
+    public void showRankingSong(List<WorksData> songWorksDatas) {
+        songDatas.addAll(songWorksDatas);
+        rankingSongAdapter.notifyDataSetChanged();
     }
 
     @Override
-    public void showRankingLyrics(List<WorksData> hotWorksDatas) {
-
+    public void showRankingLyrics(List<WorksData> lyricsWorksDatas) {
+        lyricsDatas.addAll(lyricsWorksDatas);
+        rankingLyricsAdapter.notifyDataSetChanged();
     }
 
     @Override

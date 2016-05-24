@@ -20,42 +20,34 @@ public class PlayPresenter extends BasePresenter<IPlayView> {
         super(context, iView);
     }
 
-    public void getPlayDetail(String userId, String music_id, String com, String gedanid) {
+//    public void getPlayDetail(String userId, String music_id, String com, String gedanid) {
+//        params = new HashMap<>();
+//        params.put("uid",userId);
+//        params.put("openmodel", PrefsUtil.getInt("playmodel",context)+"");
+//        params.put("id",music_id);
+//        params.put("gedanid",gedanid);
+//        params.put("com",com);
+//        httpUtils.get(MyHttpClient.getMusicWorkUrl(), params, new MyStringCallback() {
+//            @Override
+//            public void onResponse(String response) {
+//                iView.getMusicSuccess(response);
+//            }
+//
+//            @Override
+//            public void onError(Call call, Exception e) {
+//                iView.getMusicFail();
+//            }
+//        });
+//    }
+
+
+    public void setCollectionState(String userId, String music_id, int target_uid) {
         params = new HashMap<>();
-        params.put("uid",userId);
-        params.put("openmodel", PrefsUtil.getInt("playmodel",context)+"");
-        params.put("id",music_id);
-        params.put("gedanid",gedanid);
-        params.put("com",com);
-        httpUtils.get(MyHttpClient.getMusicWorkUrl(), params, new MyStringCallback() {
-            @Override
-            public void onResponse(String response) {
-                iView.getMusicSuccess(response);
-            }
-
-            @Override
-            public void onError(Call call, Exception e) {
-                iView.getMusicFail();
-            }
-        });
-    }
-
-    public void getHotDetail(String hotId) {
-        httpUtils.get(MyHttpClient.getHotDetailUrl(hotId), new MyStringCallback() {
-            @Override
-            public void onResponse(String response) {
-                iView.getHotSuccess(response);
-            }
-
-            @Override
-            public void onError(Call call, Exception e) {
-                iView.getHotFail();
-            }
-        });
-    }
-
-    public void setCollectionState(String userId, String music_id, int is_fov) {
-        httpUtils.get(is_fov == 0 ? MyHttpClient.getAddFavUrl(music_id, userId) : MyHttpClient.getRemoveFavUrl(music_id, userId), new MyStringCallback() {
+        params.put("uid", userId);
+        params.put("work_id", music_id);
+        params.put("target_uid", target_uid+"");
+        params.put("wtype", "1");
+        httpUtils.get(MyHttpClient.getWorkFovUrl(), params, new MyStringCallback() {
             @Override
             public void onResponse(String response) {
                 iView.collectionMusicSuccess(response);
@@ -68,12 +60,13 @@ public class PlayPresenter extends BasePresenter<IPlayView> {
         });
     }
 
-    public void setZambiaState(String userId, String music_id) {
-        Map<String, String> params = new HashMap<>();
-        params.put("userid", userId);
-        params.put("id", music_id);
-        params.put("status", "2");
-        httpUtils.postUrl(MyHttpClient.getUpvoteUrl(), params, new MyStringCallback() {
+    public void setZambiaState(String userId, String music_id, int target_uid) {
+        params = new HashMap<>();
+        params.put("uid", userId);
+        params.put("work_id", music_id);
+        params.put("target_uid", target_uid+"");
+        params.put("wtype", "1");
+        httpUtils.post(MyHttpClient.getUpvoteUrl(), params, new MyStringCallback() {
             public void onResponse(String response) {
                 iView.zambiaMusicSuccess(response);
             }

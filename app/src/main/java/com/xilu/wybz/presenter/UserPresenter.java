@@ -38,7 +38,7 @@ public class UserPresenter extends BasePresenter<IUserView> {
         param.put("type","4");
         param.put("page",""+page);
 
-        httpUtils.post(MyHttpClient.getMine(),param, new MyStringCallback() {
+        httpUtils.post(MyHttpClient.getfocusfansnum(userId),param, new MyStringCallback() {
             @Override
             public void onResponse(String response) {
                 try {
@@ -51,6 +51,7 @@ public class UserPresenter extends BasePresenter<IUserView> {
 
                         if (dataList.size() == 0){
                             if (page == 1){
+
                             }
 
                         }else {

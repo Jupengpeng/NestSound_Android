@@ -119,7 +119,7 @@ public class MsgFavActivity extends BaseListActivity<CollectionBean> implements 
             final CollectionBean zanbiaBean = mDataList.get(position);
             tvTime.setText(zanbiaBean.getAddtime());
             tvUserName.setText(zanbiaBean.getName());
-            tvAuthor.setText(PrefsUtil.getUserInfo(context).nickname);
+            tvAuthor.setText(PrefsUtil.getUserInfo(context).name);
             tvMusicName.setText(zanbiaBean.getMusicName());
             tvContent.setText("收藏了你的作品");
             loadImage(zanbiaBean.getMusicPic(), ivCover);

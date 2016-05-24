@@ -249,7 +249,19 @@ public class StringUtil {
 
         return true;
     }
+    // 检测变量的值是否为一个long数据
+    public final static boolean isLong(String value) {
+        if (isEmpty(value))
+            return false;
 
+        try {
+            Long.parseLong(value);
+        } catch (NumberFormatException e) {
+            return false;
+        }
+
+        return true;
+    }
     // 判断变量的值是否为double类型
     public final static boolean isDouble(String value) {
         if (isEmpty(value))

@@ -157,7 +157,7 @@ public class MsgCommentActivity extends BaseListActivity<InforCommentBean> imple
             tvContent.setText(StringStyleUtil.getCommentStyleStr(inforCommentBean));
             tvTime.setText(DateTimeUtil.timestamp2Date(inforCommentBean.getCreateday()));
             tvUserName.setText(inforCommentBean.getName());
-            tvAuthor.setText(PrefsUtil.getUserInfo(context).nickname);
+            tvAuthor.setText(PrefsUtil.getUserInfo(context).name);
             tvMusicName.setText(inforCommentBean.getWorkname());
             loadImage(inforCommentBean.getPic(), ivCover);
             String headUrl = inforCommentBean.getHeadurl();

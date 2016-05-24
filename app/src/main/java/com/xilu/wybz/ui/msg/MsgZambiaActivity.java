@@ -120,7 +120,7 @@ public class MsgZambiaActivity extends BaseListActivity<ZambiaBean> implements I
             ZambiaBean zanbiaBean = mDataList.get(position);
             tvTime.setText(zanbiaBean.getAddtime());
             tvUserName.setText(zanbiaBean.getName());
-            tvAuthor.setText(PrefsUtil.getUserInfo(context).nickname);
+            tvAuthor.setText(PrefsUtil.getUserInfo(context).name);
             tvMusicName.setText(zanbiaBean.getMusicName());
             loadImage(zanbiaBean.getMusicPic(), ivCover);
             String headUrl = zanbiaBean.getHeadurl();

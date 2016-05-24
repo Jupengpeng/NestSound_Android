@@ -30,9 +30,9 @@ public class MsgCollectionPresenter extends BasePresenter<ICollectionView> {
 
     public void loadData(String userId, int page) {
         Map<String,String> params = new HashMap<>();
-        params.put("userid", userId);
+        params.put("uid", userId);
         params.put("page", page + "");
-        httpUtils.postUrl(MyHttpClient.getFovList(), params, new MyStringCallback() {
+        httpUtils.post(MyHttpClient.getMsgFovList(), params, new MyStringCallback() {
             @Override
             public void onError(Call call, Exception e) {
                 iView.loadFail();
@@ -42,8 +42,7 @@ public class MsgCollectionPresenter extends BasePresenter<ICollectionView> {
             public void onResponse(String response) {
                 if(ParseUtils.checkCode(response)){
                     try {
-                        String resultlist = new JSONObject(response).getJSONObject("data")
-                                .getJSONObject("info").getJSONObject("fovlist").getString("items");
+                        String resultlist = new JSONObject(response).getString("data");
                         List<CollectionBean> mList = new Gson().fromJson(resultlist, new TypeToken<List<CollectionBean>>() {
                         }.getType());
                         if(mList.size()==0){

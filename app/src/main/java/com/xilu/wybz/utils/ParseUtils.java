@@ -13,6 +13,7 @@ import com.xilu.wybz.bean.MusicBean;
 import com.xilu.wybz.bean.MusicDetailBean;
 import com.xilu.wybz.bean.TemplateBean;
 import com.xilu.wybz.bean.UserBean;
+import com.xilu.wybz.bean.WorksData;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -36,156 +37,39 @@ public class ParseUtils {
         }
     }
 
-    public static MineBean parseMineBean(String jsonData) {
-        try {
-            JSONObject jsonObject = new JSONObject(jsonData);
-            String code = jsonObject.getString("code");
-            if (!code.equals("200")) {
-
-                return null;
-            }
-            MineBean mineBean = new MineBean();
-            JSONObject dataJson = jsonObject.getJSONObject("data");
-
-
-            return mineBean;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    public static MusicDetailBean parseMusicDetailBean(String jsonData) {
-        try {
-            JSONObject jsonObject = new JSONObject(jsonData);
-            String code = jsonObject.getString("errorcode");
-            if (!code.equals("0")) {
-                return null;
-            }
-            JSONObject dataJson = jsonObject.getJSONObject("data");
-            String infoJson = dataJson.getString("info");
-            MusicDetailBean musicDetailBean = new Gson().fromJson(infoJson, MusicDetailBean.class);
-            return musicDetailBean;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    public static List<LyricsListBean> parseLyricsList(String jsonData) {
-        try {
-            JSONObject jsonObject = new JSONObject(jsonData);
-            String code = jsonObject.getString("errorcode");
-            if (!code.equals("0")) {
-                return null;
-            }
-            JSONObject dataJson = jsonObject.getJSONObject("data");
-            JSONObject infoJson = dataJson.getJSONObject("info");
-
-            List<LyricsListBean> lyricsList = new ArrayList<>();
-            JSONObject lyricsJson = infoJson.getJSONObject("lyricslist");
-            JSONArray itemArr = lyricsJson.getJSONArray("items");
-
-            for (int i = 0, len = itemArr.length(); i < len; i++) {
-                JSONObject itemJson = itemArr.getJSONObject(i);
-                LyricsListBean llb = new LyricsListBean();
-                llb.setItemtitle(itemJson.getString("itemtitle"));
-                List<String> ls = new ArrayList<>();
-                JSONArray subitemArr = itemJson.getJSONArray("lyricsitem");
-                for (int j = 0, jen = subitemArr.length(); j < jen; j++) {
-                    JSONObject subJson = subitemArr.getJSONObject(j);
-                    ls.add(subJson.getString("lyrics"));
-                }
-                llb.setLyricsList(ls);
-
-                lyricsList.add(llb);
-            }
-
-            return lyricsList;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    public static List<TemplateBean> parseTemplateList(String jsonData) {
+    public static List<TemplateBean> parseTemplateList(Context context, String response) {
         List<TemplateBean> templateList = new ArrayList<>();
         try {
-            JSONObject jsonObject = new JSONObject(jsonData);
-            String code = jsonObject.getString("errorcode");
-            if (!code.equals("0")) {
-                return templateList;
+            JSONObject jsonObject = new JSONObject(response);
+            int code = jsonObject.getInt("code");
+            if (code==200) {
+                templateList = new Gson().fromJson(new JSONObject(response).getString("data"),new TypeToken<List<TemplateBean>>(){}.getType());
+            }else{
+                if(jsonObject.has("message")&&!TextUtils.isEmpty(jsonObject.getString("message")))
+                    showMsg(context,jsonObject.getString("message"));
             }
-            JSONObject dataJson = jsonObject.getJSONObject("data");
-            JSONObject infoJson = dataJson.getJSONObject("info");
-            JSONObject templateJson = infoJson.getJSONObject("hotlist");
-            String items = templateJson.getString("items");
-            templateList = new Gson().fromJson(items, new TypeToken<List<TemplateBean>>() {
-            }.getType());
+            return templateList;
         } catch (Exception e) {
             e.printStackTrace();
-        }
-        return templateList;
-    }
-
-    public static UserBean parseUserBean(String jsonData) {
-        UserBean ub = new UserBean();
-        try {
-            ub = new Gson().fromJson(jsonData,UserBean.class);
-        } catch (Exception e) {
-        }
-        return ub;
-    }
-
-    //发布过
-    public static String parseMusicId(String jsonData) {
-        try {
-            JSONObject jsonObject = new JSONObject(jsonData);
-            String code = jsonObject.getString("errorcode");
-            if (!code.equals("0")) {
-                return null;
-            }
-            JSONObject dataJson = jsonObject.getJSONObject("data");
-            JSONObject infoJson = dataJson.getJSONObject("info");
-            return infoJson.getString("musicid");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            return templateList;
         }
     }
 
-
-    public static boolean parseStatus(String jsonData) {
+    public static List<WorksData> getWorksData(Context context, String response) {
+        List<WorksData> worksDatas = null;
         try {
-            JSONObject jsonObject = new JSONObject(jsonData);
-            String code = jsonObject.getString("errorcode");
-            return code.equals("0");
+            JSONObject jsonObject = new JSONObject(response);
+            int code = jsonObject.getInt("code");
+            if (code==200) {
+                worksDatas = new Gson().fromJson(new JSONObject(response).getString("data"),new TypeToken<List<WorksData>>(){}.getType());
+            }else{
+                if(jsonObject.has("message")&&!TextUtils.isEmpty(jsonObject.getString("message")))
+                    showMsg(context,jsonObject.getString("message"));
+            }
+            return worksDatas;
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
-        }
-    }
-
-    public static List<String> parseKeylistBean(String jsonData) {
-        try {
-            JSONObject jsonObject = new JSONObject(jsonData);
-            String code = jsonObject.getString("errorcode");
-            if (!code.equals("0")) {
-                return null;
-            }
-            JSONObject dataJson = jsonObject.getJSONObject("data");
-            JSONObject infoJson = dataJson.getJSONObject("info");
-            List<String> strList = new ArrayList<>();
-            JSONObject strJson = infoJson.getJSONObject("wordlist");
-            JSONArray itemArr = strJson.getJSONArray("items");
-            for (int i = 0, len = itemArr.length(); i < len; i++) {
-                JSONObject itemJson = itemArr.getJSONObject(i);
-                strList.add(itemJson.getString("word"));
-            }
-            return strList;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            return worksDatas;
         }
     }
 

@@ -9,5 +9,7 @@ import java.util.List;
  */
 public interface IActView extends IBaseView{
     void showActList(List<ActBean> actBeanList);
+    void showNoData();
+    void showNoMore();
     void showErrorView();
 }

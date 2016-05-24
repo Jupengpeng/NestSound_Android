@@ -24,10 +24,10 @@ public class RecordImageAdapter extends RecyclerView.Adapter<RecordImageAdapter.
     private List<PhotoBean> mList;
     private Context context;
     private int itemWidth, itemHeight;
-    public RecordImageAdapter(Context context, List<PhotoBean> imagePaths) {
+    public RecordImageAdapter(Context context, List<PhotoBean> imagePaths, int column) {
         this.context = context;
         this.mList = imagePaths;
-        itemWidth = (DensityUtil.getScreenW(context)-DensityUtil.dip2px(context,50))/4;
+        itemWidth = (DensityUtil.getScreenW(context)-DensityUtil.dip2px(context,(column+1)*10))/column;
         itemHeight = itemWidth;
     }
 
@@ -53,11 +53,11 @@ public class RecordImageAdapter extends RecyclerView.Adapter<RecordImageAdapter.
     public void onBindViewHolder(final RecordImageViewHolder holder, final int position) {
         if(mList.get(position).isAddPic){
             ImageLoadUtil.loadImage("res://yinchao/"+R.drawable.ic_record_add_pic, holder.ivCover);
-            holder.ivDel.setVisibility(View.VISIBLE);
+            holder.ivDel.setVisibility(View.GONE);
         }else{
             String imgPath = mList.get(position).path;
             ImageLoadUtil.loadImage("file:///"+imgPath, holder.ivCover);
-            holder.ivDel.setVisibility(View.GONE);
+            holder.ivDel.setVisibility(View.VISIBLE);
         }
         if (mOnItemClickListener != null) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -91,12 +91,15 @@ public class RecordImageAdapter extends RecyclerView.Adapter<RecordImageAdapter.
     class RecordImageViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.iv_cover)
         SimpleDraweeView ivCover;
+        @Bind(R.id.rl_cover)
+        RelativeLayout rlCover;
         @Bind(R.id.iv_del)
         ImageView ivDel;
         public RecordImageViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
             ivCover.setLayoutParams(new RelativeLayout.LayoutParams(itemWidth, itemHeight));
+            rlCover.setLayoutParams(new FrameLayout.LayoutParams(itemWidth, itemHeight));
         }
     }
 }

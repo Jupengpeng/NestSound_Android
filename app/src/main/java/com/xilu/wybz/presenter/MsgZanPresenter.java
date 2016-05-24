@@ -16,6 +16,7 @@ import com.xilu.wybz.utils.ParseUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.List;
 
 import okhttp3.Call;
@@ -31,7 +32,10 @@ public class MsgZanPresenter extends BasePresenter<IZanView> {
     }
 
     public void loadData(String userId, int page) {
-        httpUtils.get(MyHttpClient.getZanList(userId, page), new MyStringCallback() {
+        params = new HashMap<>();
+        params.put("uid",userId);
+        params.put("page",page+"");
+        httpUtils.get(MyHttpClient.getMsgZanList(), new MyStringCallback() {
             @Override
             public void onError(Call call, Exception e) {
                 iView.loadFail();
@@ -41,7 +45,7 @@ public class MsgZanPresenter extends BasePresenter<IZanView> {
             public void onResponse(String response) {
                 if(ParseUtils.checkCode(response)){
                     try {
-                        String resultlist = new JSONObject(response).getJSONObject("data").getJSONObject("info").getJSONObject("upvotelist").getString("items");
+                        String resultlist = new JSONObject(response).getString("data");
                         List<ZambiaBean> mList = new Gson().fromJson(resultlist, new TypeToken<List<ZambiaBean>>() {}.getType());
                         if(mList.size()==0){
                             if(page==1){

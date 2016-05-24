@@ -9,7 +9,7 @@ import com.xilu.wybz.ui.MyApplication;
 import java.io.IOException;
 
 /**
- * Created by Zning on 2015/9/16.
+ * Created by June on 2015/9/16.
  */
 public class MediaInstance {
     static MediaInstance mInstance;

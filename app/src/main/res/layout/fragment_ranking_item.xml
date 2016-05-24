@@ -15,19 +15,18 @@
         android:textColor="@color/main_text_color"
         />
     <LinearLayout
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="90dp"
-        android:background="@drawable/link_bg">
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="@drawable/corner_fcfcfc">
 
         <RelativeLayout
-            android:layout_width="86dp"
-            android:layout_height="86dp">
+            android:layout_width="66dp"
+            android:layout_height="70dp">
 
             <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/iv_cover"
-                android:layout_width="86dp"
-                android:layout_height="86dp"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
                 fresco:actualImageScaleType="centerCrop"
                 fresco:fadeDuration="300"
                 fresco:failureImage="@drawable/ic_default_pic"
@@ -36,72 +35,81 @@
                 fresco:roundBottomRight="false"
                 fresco:roundTopRight="false"
                 fresco:roundedCornerRadius="3dp" />
+
             <ImageView
                 android:id="@+id/iv_type"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:padding="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:src="@drawable/ic_play_play" />
-                />
+                android:src="@drawable/ic_raning_play" />
+            />
         </RelativeLayout>
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
-            android:orientation="vertical"
+            android:layout_weight="1"
             android:gravity="center_vertical"
-            android:layout_height="match_parent">
-        <TextView
-            android:id="@+id/tv_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:textColor="@color/main_text_color"
-            android:text="你好吗"
-            android:textSize="16sp"
-            />
-        <TextView
-            android:id="@+id/tv_author"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:layout_marginTop="3dp"
-            android:textColor="@color/main_text_color2"
-            android:text="阿超"
-            android:textSize="14sp"
-            />
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:text="你好吗"
+                android:textColor="@color/main_text_color"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/tv_author"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2.5dp"
+                android:singleLine="true"
+                android:text="阿超"
+                android:textColor="@color/main_text_color2"
+                android:textSize="12sp" />
+
             <LinearLayout
-                android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="4dp">
+
                 <TextView
                     android:id="@+id/tv_look_num"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/main_text_color2"
-                    android:text="1212"
-                    android:textSize="14sp"
-                    />
+                    android:layout_weight="1"
+                    android:drawableLeft="@drawable/ic_ranking_look"
+                    android:drawablePadding="3dp"
+                    android:text="12000"
+                    android:textColor="@color/main_text_color3"
+                    android:textSize="12sp" />
+
                 <TextView
-                    android:id="@+id/tv_fav_num"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/tv_fov_num"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:textColor="@color/main_text_color2"
+                    android:layout_weight="1"
+                    android:drawableLeft="@drawable/ic_ranking_fov"
+                    android:drawablePadding="3dp"
                     android:text="1212"
-                    android:textSize="14sp"
-                    />
+                    android:textColor="@color/main_text_color3"
+                    android:textSize="12sp" />
+
                 <TextView
-                    android:id="@+id/tv_up_num"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/tv_zan_num"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:textColor="@color/main_text_color2"
+                    android:layout_weight="1"
+                    android:drawableLeft="@drawable/ic_ranking_zan"
+                    android:drawablePadding="3dp"
                     android:text="1212"
-                    android:textSize="14sp"
-                    />
+                    android:textColor="@color/main_text_color3"
+                    android:textSize="12sp" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

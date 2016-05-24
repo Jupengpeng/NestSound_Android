@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.MsgBean;
 import com.xilu.wybz.bean.UserBean;
@@ -68,23 +69,21 @@ public class RegisterActivity extends BaseActivity implements IRegisterView,Text
 
     @Override
     public void registerSuccess(String result) {
-        try {
-            String code = new JSONObject(result).getString("code");
-            if ("200".equals(code)) {  //0 表示成功，执行解析用户信息
-                UserBean ub = ParseUtils.parseUserBean(result);
-                if (ub != null) {
-                    showMsg("注册成功");
-                    PrefsUtil.saveUserInfo(RegisterActivity.this, ub);
-                    isLogin = true;
-                    EventBus.getDefault().post(new Event.LoginSuccessEvent());
-                    finish();
-                }
-            } else { // 否则获取相应的错误提示信息
-                showMsg(ParseUtils.getMsg(result));
+        if (ParseUtils.checkCode(result)) {  //0 表示成功，执行解析用户信息
+            UserBean ub = null;
+            try {
+                ub = new Gson().fromJson(new JSONObject(result).getString("data"),UserBean.class);
+            } catch (Exception e) {
             }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
+            if (ub != null) {
+                showMsg("注册成功");
+                PrefsUtil.saveUserInfo(RegisterActivity.this, ub);
+                isLogin = true;
+                EventBus.getDefault().post(new Event.LoginSuccessEvent());
+                finish();
+            }
+        } else { // 否则获取相应的错误提示信息
+            showMsg(ParseUtils.getMsg(result));
         }
     }
 

@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import com.xilu.wybz.R;
 import com.xilu.wybz.adapter.WorksAdapter;
 import com.xilu.wybz.bean.WorksData;
+import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.SongPresenter;
 import com.xilu.wybz.ui.IView.ISongView;
 import com.xilu.wybz.ui.find.MoreSongActivity;
@@ -35,7 +36,7 @@ public class SongFragment extends BaseFragment implements ISongView {
     private WorksAdapter newWorksAdapter;
     private WorksAdapter hotWorksAdapter;
     private SongPresenter songPresenter;
-    int column = 2;
+    int column = 3;
 
     @Override
     protected int getLayoutResId() {
@@ -50,21 +51,48 @@ public class SongFragment extends BaseFragment implements ISongView {
 
     @Override
     public void showNewSong(List<WorksData> newWorksDatas) {
-        newWorksAdapter = new WorksAdapter(context, newWorksDatas, column);
+        for(WorksData worksData:newWorksDatas){
+            worksData.status = 1;
+        }
+        newWorksAdapter = new WorksAdapter(context, newWorksDatas, column, MyCommon.NEWS);
         recyclerViewNew.setAdapter(newWorksAdapter);
+        newWorksAdapter.setOnItemClickListener(new WorksAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+
+            }
+
+            @Override
+            public void onItemLongClick(View view, int position) {
+
+            }
+        });
     }
 
     @Override
     public void showHotSong(List<WorksData> hotWorksDatas) {
-        hotWorksAdapter = new WorksAdapter(context, hotWorksDatas, column);
+        for(WorksData worksData:hotWorksDatas){
+            worksData.status = 1;
+        }
+        hotWorksAdapter = new WorksAdapter(context, hotWorksDatas, column, MyCommon.RED);
         recyclerViewHot.setAdapter(hotWorksAdapter);
+        hotWorksAdapter.setOnItemClickListener(new WorksAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+
+            }
+
+            @Override
+            public void onItemLongClick(View view, int position) {
+
+            }
+        });
     }
 
     @Override
     public void showErrorView() {
 
     }
-
     @Override
     public void initView() {
         int space10 = DensityUtil.dip2px(context, 10);
@@ -74,9 +102,7 @@ public class SongFragment extends BaseFragment implements ISongView {
         recyclerViewNew.setNestedScrollingEnabled(false);
         recyclerViewNew.setLayoutManager(new GridLayoutManager(context, column));
         recyclerViewNew.addItemDecoration(new GridSpacingItemDecoration(column, space10, false));
-
-        songPresenter.getSongList("new", column);
-        songPresenter.getSongList("hot", column);
+        songPresenter.getWorkList(userId,1);
     }
 
     @OnClick({R.id.tv_hot_more, R.id.tv_new_more})

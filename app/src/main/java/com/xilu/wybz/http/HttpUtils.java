@@ -11,6 +11,7 @@ import com.xilu.wybz.http.callback.FileCallBack;
 import com.xilu.wybz.http.callback.MyStringCallback;
 import com.xilu.wybz.http.rsa.RSAUtils;
 import com.xilu.wybz.utils.PhoneInfoUtil;
+import com.xilu.wybz.utils.PrefsUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,7 +35,7 @@ public class HttpUtils {
             params = new HashMap<>();
         }
         params.put("expiretime",System.currentTimeMillis()+ PhoneInfoUtil.getPhoneImei(context));
-        params.put("token","");
+        params.put("token", PrefsUtil.getUserInfo(context).loginToken);
         Log.e("params",new Gson().toJson(params));
         String content = RSAUtils.encodeConvert(RSAUtils.encryptByPublicKey(new Gson().toJson(params)).getBytes());
         Log.e("content",content);
@@ -87,8 +88,9 @@ public class HttpUtils {
             params = new HashMap<>();
         }
         params.put("expiretime",System.currentTimeMillis()+ PhoneInfoUtil.getPhoneImei(context));
-        params.put("token","");
+        params.put("token",PrefsUtil.getUserInfo(context).loginToken);
         String content = RSAUtils.encodeConvert(RSAUtils.encryptByPublicKey(new Gson().toJson(params)).getBytes());
+        Log.e("content",content);
         OkHttpUtils
                 .get()
                 .headers(headers)

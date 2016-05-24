@@ -94,7 +94,7 @@ public class ModifyActivity extends ToolbarActivity implements IModifyUserInfoVi
         EventBus.getDefault().post(new Event.UpdateUserInfo());
     }
     public void initUserInfo() {
-        tv_username.setText(userBean.nickname);
+        tv_username.setText(userBean.name);
         tv_usersign.setText(userBean.signature);
         tv_birthday.setText(userBean.birthday);
         tv_gender.setText(genders[userBean.sex]);
@@ -177,7 +177,7 @@ public class ModifyActivity extends ToolbarActivity implements IModifyUserInfoVi
 
     //修改昵称和签名
     public void showModifyDialog() {
-        String name = TextUtils.isEmpty(userBean.nickname) ? "昵称" : userBean.nickname;
+        String name = TextUtils.isEmpty(userBean.name) ? "昵称" : userBean.name;
         String desc = TextUtils.isEmpty(userBean.signature) ? "签名" : userBean.signature;
         new MaterialDialog.Builder(this)
                 .title(titles[type])
@@ -190,7 +190,7 @@ public class ModifyActivity extends ToolbarActivity implements IModifyUserInfoVi
                     @Override
                     public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
                         if (type == 0)
-                            userBean.nickname = input.toString();
+                            userBean.name = input.toString();
                         else if (type == 1)
                             userBean.signature = input.toString();
                         UpdateUserInfo();

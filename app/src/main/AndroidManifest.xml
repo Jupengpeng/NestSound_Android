@@ -77,7 +77,6 @@
         <activity android:name=".ui.song.PlayAudioActivity" android:theme="@style/PlayTheme" />
 
 
-        <activity android:name=".ui.record.PublishRecordActivity" android:windowSoftInputMode="adjustResize" />
         <activity android:name=".ui.record.SelectPicActivity"  />
 
         <activity android:name=".ui.lyrics.LyricsdisplayActivity" />

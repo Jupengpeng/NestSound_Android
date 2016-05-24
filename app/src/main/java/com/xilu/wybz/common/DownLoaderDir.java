@@ -9,6 +9,8 @@ public class DownLoaderDir {
     public static String SD = Environment.getExternalStorageDirectory() + "";
     public static String rootDir = SD + "/wybz/";
     public static String mp3Dir = SD + "/wybz/mp3/";
+    public static String inspireMp3Dir = SD + "/wybz/record/mp3/";
+    public static String inspirePicDir = SD + "/wybz/record/img/";
     public static String ringDir = SD + "/wybz/ring/";
     public static String radioDir = SD + "/wybz/radio/";
     public static String videoDir = SD + "/wybz/video/";

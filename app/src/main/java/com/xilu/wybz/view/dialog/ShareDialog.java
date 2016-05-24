@@ -25,7 +25,6 @@ public class ShareDialog extends Dialog implements View.OnClickListener {
     LinearLayout ll_qq;
     LinearLayout ll_qzone;
     LinearLayout ll_copylink;
-    Button btn_cancel;
     UmengShareUtil shareUtil;
     ShareBean mShareBean;
     public ShareDialog(Activity context, ShareBean shareBean) {
@@ -34,7 +33,7 @@ public class ShareDialog extends Dialog implements View.OnClickListener {
             shareUtil = new UmengShareUtil(context, shareBean);
         }
         mShareBean = shareBean;
-        context = context;
+        this.context = context;
         setCanceledOnTouchOutside(true);
         getWindow().setGravity(Gravity.BOTTOM);
         getWindow().setWindowAnimations(R.style.BottomDialogAnim); //设置窗口弹出动画
@@ -50,7 +49,6 @@ public class ShareDialog extends Dialog implements View.OnClickListener {
         ll_sina = (LinearLayout) rootView.findViewById(R.id.ll_share_weibo);
         ll_qzone = (LinearLayout) rootView.findViewById(R.id.ll_share_qzone);
         ll_qq = (LinearLayout) rootView.findViewById(R.id.ll_share_qq);
-        btn_cancel = (Button) rootView.findViewById(R.id.btn_cancel);
 
         ll_qq.setOnClickListener(this);
         ll_wechat.setOnClickListener(this);
@@ -58,7 +56,6 @@ public class ShareDialog extends Dialog implements View.OnClickListener {
         ll_sina.setOnClickListener(this);
         ll_qzone.setOnClickListener(this);
         ll_friend.setOnClickListener(this);
-        btn_cancel.setOnClickListener(this);
         return rootView;
     }
 
@@ -83,8 +80,6 @@ public class ShareDialog extends Dialog implements View.OnClickListener {
             case R.id.ll_share_copy:
                 StringUtil.copy(mShareBean.link, context);
                 ToastUtils.toast(context, "复制成功!");
-                break;
-            case R.id.btn_cancel:
                 break;
         }
         dismiss();

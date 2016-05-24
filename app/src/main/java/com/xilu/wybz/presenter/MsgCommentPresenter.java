@@ -29,7 +29,10 @@ public class MsgCommentPresenter extends BasePresenter<ICommentView> {
     }
 
     public void loadData(String userId, int page) {
-        httpUtils.get(MyHttpClient.getInformation(userId, page), new MyStringCallback() {
+        params = new HashMap<>();
+        params.put("uid",userId);
+        params.put("page",page+"");
+        httpUtils.get(MyHttpClient.getMsgCommentList(), params, new MyStringCallback() {
             @Override
             public void onError(Call call, Exception e) {
                 iView.loadFail();
@@ -39,7 +42,7 @@ public class MsgCommentPresenter extends BasePresenter<ICommentView> {
             public void onResponse(String response) {
                 if (ParseUtils.checkCode(response)) {
                     try {
-                        String resultlist = new JSONObject(response).getString("items");
+                        String resultlist = new JSONObject(response).getString("data");
                         List<InforCommentBean> mList = new Gson().fromJson(resultlist, new TypeToken<List<InforCommentBean>>() {
                         }.getType());
                         if (mList.size() == 0) {
@@ -67,7 +70,7 @@ public class MsgCommentPresenter extends BasePresenter<ICommentView> {
         params.put("id", c_id);
         params.put("userid", userId);
         params.put("comment", content);
-        httpUtils.postUrl(MyHttpClient.getAddCommentUrl(), params, new MyStringCallback(){
+        httpUtils.post(MyHttpClient.getAddCommentUrl(), params, new MyStringCallback(){
             @Override
             public void onResponse(String response) {
                 if (ParseUtils.checkCode(response)) {

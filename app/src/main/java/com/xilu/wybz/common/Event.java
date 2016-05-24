@@ -12,6 +12,8 @@ import java.util.List;
 public class Event {
     public static class DelFocusEvent {
     }
+    public static class ShowSearchTabEvent {
+    }
     public static class SelectPicEvent {
         List<PhotoBean> pics;
         public SelectPicEvent(List<PhotoBean> pics){
