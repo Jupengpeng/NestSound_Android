@@ -10,7 +10,7 @@ import com.xilu.wybz.common.YinChaoConfig;
  */
 public class UserBean {
 
-    public String userid;
+    public int userid;
     public String phone;//手机号码
     public String loginToken;
     public String name;//姓名

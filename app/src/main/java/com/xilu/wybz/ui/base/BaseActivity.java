@@ -1,5 +1,6 @@
 package com.xilu.wybz.ui.base;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -64,15 +65,21 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = this;
-        userId = PrefsUtil.getUserId(context);
-        isLogin = !TextUtils.isEmpty(userId);
         Fresco.initialize(this);
+        adaptTheme(true);
         setContentView(getLayoutRes());
         ButterKnife.bind(this);
+        isChenjin = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && !Build.MANUFACTURER.toUpperCase().equals("OPPO");
         isHomeActivity = this instanceof MainActivity || this instanceof FindActivity
                 || this instanceof MsgActivity || this instanceof MineActivity;
-        initStatusBar();
         PushAgent.getInstance(context).onAppStart();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        userId = PrefsUtil.getUserId(context);
+        isLogin = !userId.equals("0");
     }
 
     //适配不同手机以及sdk_int的状态栏
@@ -101,7 +108,20 @@ public abstract class BaseActivity extends AppCompatActivity {
             }
         }
     }
-
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    protected void adaptTheme(boolean isTranslucentStatusFitSystemWindowTrue) {
+        if (isTranslucentStatusFitSystemWindowTrue) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            }
+            if (PhoneInfoUtil.isMIUI()) {
+                PhoneInfoUtil.MiuiCj(this, !(this instanceof PlayAudioActivity));
+            }
+            if (this instanceof MainTabActivity) {
+                setStatusColor(getResources().getColor(R.color.main_theme_color));
+            }
+        }
+    }
     protected void showMsg(String msg) {
         ToastUtils.toast(context, msg);
     }

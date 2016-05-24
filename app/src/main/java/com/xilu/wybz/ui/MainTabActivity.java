@@ -4,6 +4,7 @@ import android.app.LocalActivityManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckedTextView;
 
@@ -85,7 +86,7 @@ public class MainTabActivity extends BasePlayMenuActivity {
         list.add(getView("MINE", intent));
         viewpager.setAdapter(new MyPagerAdapter(list));
         viewpager.setCurrentItem(0);
-        viewpager.setOffscreenPageLimit(1);
+        viewpager.setOffscreenPageLimit(4);
         viewpager.setOnPageChangeListener(new MyOnPageChangeListener());
     }
 

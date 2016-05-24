@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +39,7 @@ public class WorksAdapter extends RecyclerView.Adapter<WorksAdapter.WorksViewHol
     private int itemWidth;
     private String come;
     private Intent serviceIntent;
-
+    private int oldPos=-1;//记录上次播放的位置
     public WorksAdapter(Context context, List<WorksData> worksDataList, int column, String come) {
         this.context = context;
         this.mList = worksDataList;
@@ -62,12 +64,8 @@ public class WorksAdapter extends RecyclerView.Adapter<WorksAdapter.WorksViewHol
         WorksViewHolder holder = new WorksViewHolder(LayoutInflater.from(context).inflate(R.layout.view_home_work_item, parent, false));
         return holder;
     }
-    public void updatePlayStatus(int pos){
-        notifyItemChanged(pos);
-    }
-
     @Override
-    public void onBindViewHolder(final WorksViewHolder holder, final int position) {
+    public void onBindViewHolder(WorksViewHolder holder, int position) {
         WorksData worksData = mList.get(position);
         String url = MyCommon.getImageUrl(worksData.getPic(), itemWidth, itemWidth);
         ImageLoadUtil.loadImage(url, holder.ivCover);
@@ -75,33 +73,6 @@ public class WorksAdapter extends RecyclerView.Adapter<WorksAdapter.WorksViewHol
         holder.tvAuthor.setText(worksData.author);
         holder.tvCount.setText(worksData.looknum + "");
         holder.ivType.setImageResource(worksData.status == 1 ? R.drawable.ic_song_type : R.drawable.ic_lyric_type);
-//        boolean isPlayCurrent = false;
-//        if (PlayMediaInstance.getInstance().status > 1) {
-//            String playFrom = PrefsUtil.getString("playFrom", context);
-//            String playId = PrefsUtil.getString("playId", context);
-//            if (playId.equals(worksData.itemid) && playFrom.equals(come)) {//正在播放这首歌
-//                isPlayCurrent = true;
-//            }
-//        }
-        holder.ivWorkType.setImageResource(worksData.status == 2 ? R.drawable.ic_work_lyrics : worksData.isPlay?R.drawable.ic_work_pause:R.drawable.ic_work_play);
-        if (worksData.status == 1) {
-            holder.ivWorkType.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (worksData.isPlay) {//判断是否当前音乐正在播放
-                        if (PlayMediaInstance.getInstance().status == 2) {
-                            PlayMediaInstance.getInstance().resumeMediaPlay();
-                            holder.ivWorkType.setImageResource(R.drawable.ic_work_pause);
-                        } else {
-                            PlayMediaInstance.getInstance().pauseMediaPlay();
-                            holder.ivWorkType.setImageResource(R.drawable.ic_work_play);
-                        }
-                    } else {//第一次开始播放
-                        toPlayNewMusic(worksData);
-                    }
-                }
-            });
-        }
         if (mOnItemClickListener != null) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -129,6 +100,7 @@ public class WorksAdapter extends RecyclerView.Adapter<WorksAdapter.WorksViewHol
             context.startService(serviceIntent);
         } else {
             context.stopService(serviceIntent);
+            serviceIntent = null;
             toPlayNewMusic(worksData);
         }
     }
@@ -149,8 +121,6 @@ public class WorksAdapter extends RecyclerView.Adapter<WorksAdapter.WorksViewHol
         TextView tvName;
         @Bind(R.id.tv_author)
         TextView tvAuthor;
-        @Bind(R.id.iv_work_type)
-        ImageView ivWorkType;
         @Bind(R.id.rl_cover)
         RelativeLayout rlCover;
 

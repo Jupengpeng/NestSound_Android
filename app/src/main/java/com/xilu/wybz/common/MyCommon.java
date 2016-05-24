@@ -79,7 +79,7 @@ public class MyCommon {
         return lyricsPics;
     }
     //音乐的类型
-    public static int getFromMusicType(String from) {// 1单首 2 多首
+    public static int getFromMusicType(String from) {// 1本地单首 2 本地多首 3服务器控制
         Map<String, Integer> map = new HashMap<>();
         map.put("mag_zan", 1);////消息 点赞
         map.put("mag_fov", 1);//消息 收藏
@@ -87,14 +87,15 @@ public class MyCommon {
 
         map.put("banner", 2);//banner
         map.put("ranking", 2);//排行榜
+        map.put(TUIJIAN, 2);//推荐作品
+        map.put(ZUIXIN, 2);//最新作品
 
         map.put("mywork", 3);//我的作品
         map.put("myfov", 3);//我的收藏
         map.put("myzan", 3);//我的收藏
         map.put(NEWS, 3);//最新
         map.put(RED, 3);//最热
-        map.put(TUIJIAN, 3);//推荐作品
-        map.put(ZUIXIN, 3);//推荐作品
+
         map.put("gedan", 3);//歌单
         map.put("yueshuo", 3);//乐说
 
