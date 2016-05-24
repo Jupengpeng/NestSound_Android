@@ -61,7 +61,7 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.WorksVie
         holder.tvZanNum.setText(worksData.zannum+"");
         holder.tvFovNum.setText(worksData.fovnum+"");
         holder.ivType.setImageResource(type == 1 ? R.drawable.ic_raning_play : R.drawable.ic_raning_lyrics);
-        holder.tvRank.setText("0"+(position+1));
+        holder.tvRank.setText(position<9?"0":""+(position+1));
         if (mOnItemClickListener != null) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

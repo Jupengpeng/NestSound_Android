@@ -29,11 +29,13 @@ public class FindActivity extends BaseActivity{
     }
     public void initView() {
         if(isFirst)return;
+            else isFirst = true;
+        showMsg("FindAdapter");
         FindAdapter pagerAdapter = new FindAdapter(getSupportFragmentManager());
         container.setAdapter(pagerAdapter);
-        container.setOffscreenPageLimit(1);
+        container.setOffscreenPageLimit(4);
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
         tabLayout.setupWithViewPager(container);
-        isFirst = true;
+
     }
 }
