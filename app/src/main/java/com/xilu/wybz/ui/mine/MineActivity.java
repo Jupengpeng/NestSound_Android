@@ -8,9 +8,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.WorksData;
+import com.xilu.wybz.common.KeySet;
 import com.xilu.wybz.presenter.UserPresenter;
 import com.xilu.wybz.ui.IView.IUserView;
 import com.xilu.wybz.ui.base.BaseActivity;
@@ -21,7 +21,6 @@ import com.xilu.wybz.ui.mine.view.UserLyricView;
 import com.xilu.wybz.ui.mine.view.UserSongView;
 import com.xilu.wybz.ui.setting.SettingActivity;
 import com.xilu.wybz.utils.DensityUtil;
-import com.xilu.wybz.view.CircleImageView;
 import com.xilu.wybz.view.TopFloatScrollView;
 
 import java.util.List;
@@ -39,7 +38,7 @@ public class MineActivity extends BaseActivity implements IUserView {
     RelativeLayout userLayoutTop;
     @Bind(R.id.iv_head)
 //    SimpleDraweeView ivHead;
-    ImageView ivHead;
+            ImageView ivHead;
     @Bind(R.id.user_tv_name)
     TextView userTvName;
     @Bind(R.id.user_tv_info)
@@ -108,6 +107,7 @@ public class MineActivity extends BaseActivity implements IUserView {
     protected int getLayoutRes() {
         return R.layout.activity_home_mine;
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -132,21 +132,6 @@ public class MineActivity extends BaseActivity implements IUserView {
         });
 
 
-        ivSetting.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(SettingActivity.class);
-            }
-        });
-
-        ivDraft.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(DraftActivity.class);
-            }
-        });
-
-
         mUserInspirationView = new UserInspirationView(this);
         mUserSongView = new UserSongView(this);
         mUserLyricView = new UserLyricView(this);
@@ -167,10 +152,29 @@ public class MineActivity extends BaseActivity implements IUserView {
 
     }
 
+    @OnClick(R.id.iv_head)
+    public void onClickSetting() {
+        startActivity(SettingActivity.class);
+    }
+
+    @OnClick(R.id.iv_draft)
+    public void onClickDraft() {
+        startActivity(DraftActivity.class);
+    }
+
+    @OnClick(R.id.ll_myfans)
+    public void onClickFans() {
+        FollowAndFansActivity.toFollowAndFansActivity(this, KeySet.TYPE_FANS_ACT);
+    }
+
+    @OnClick(R.id.ll_myfollow)
+    public void onClickFollow() {
+        FollowAndFansActivity.toFollowAndFansActivity(this, KeySet.TYPE_FOLLOW_ACT);
+    }
+
 
     @OnClick(R.id.iv_head)
-    public void onClickForTest() {
-
+    public void onClickHeadImage() {
         mUserPresenter.getInspirationList("23", 1);
     }
 

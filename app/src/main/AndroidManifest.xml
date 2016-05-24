@@ -62,6 +62,7 @@
 
         <activity android:name=".ui.mine.MineActivity" />
         <activity android:name=".ui.mine.DraftActivity" />
+        <activity android:name=".ui.mine.FollowAndFansActivity" />
         <activity android:name=".ui.setting.SettingActivity" />
         <activity android:name=".ui.setting.SettingFeedActivity" />
         <activity android:name=".ui.setting.ModifyActivity" />
