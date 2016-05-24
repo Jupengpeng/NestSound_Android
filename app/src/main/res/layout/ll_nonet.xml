@@ -10,23 +10,18 @@
     android:visibility="gone"
     android:orientation="vertical">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="200px" />
 
     <ImageView
         android:id="@+id/iv_nonet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
         android:layout_centerInParent="true"
         android:src="@drawable/ic_nonet" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="40px" />
-
     <TextView
         android:id="@+id/tv_nonet"
+        android:layout_marginTop="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="网络连接失败"

@@ -9,6 +9,8 @@ import android.widget.CheckedTextView;
 
 import com.xilu.wybz.R;
 import com.xilu.wybz.adapter.MyPagerAdapter;
+import com.xilu.wybz.common.Event;
+import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.ui.base.BasePlayMenuActivity;
 import com.xilu.wybz.ui.find.FindActivity;
 import com.xilu.wybz.ui.find.SearchWorksActivity;
@@ -19,6 +21,7 @@ import com.xilu.wybz.ui.mine.MineActivity;
 import com.xilu.wybz.ui.msg.MsgActivity;
 import com.xilu.wybz.ui.record.InspireRecordActivity;
 import com.xilu.wybz.ui.song.MakeSongActivity;
+import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.view.IndexViewPager;
 import com.xilu.wybz.view.MoreWindow;
 
@@ -27,6 +30,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by June on 16/4/28.
@@ -58,6 +62,7 @@ public class MainTabActivity extends BasePlayMenuActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
         manager = new LocalActivityManager(this, true);
         manager.dispatchCreate(savedInstanceState);
         checkedTextViewList = new ArrayList<>();
@@ -128,9 +133,6 @@ public class MainTabActivity extends BasePlayMenuActivity {
                 return;
             case R.id.rl_main_msg:
                 currentIndex = 2;
-                if(!isLogin){
-                    startActivity(LoginActivity.class);
-                }
                 break;
             case R.id.rl_main_mine:
                 currentIndex = 3;
@@ -144,9 +146,6 @@ public class MainTabActivity extends BasePlayMenuActivity {
             overridePendingTransition(R.anim.activity_open,0);
             return;
         }
-
-
-
         if(oldIndex!=currentIndex) {
             checkedTextViewList.get(oldIndex).setChecked(false);
             checkedTextViewList.get(currentIndex).setChecked(true);
@@ -190,5 +189,26 @@ public class MainTabActivity extends BasePlayMenuActivity {
                 setTitle(getResources().getString(R.string.app_mine));
                 break;
         }
+    }
+    public void onEventMainThread(Event.PPStatusEvent event) {
+        switch (event.getStatus()) {
+            case 1://开始
+                startAnimal();
+                break;
+            case 2://停止
+                stopAnimal();
+                break;
+            case 3://播放
+                startAnimal();
+                break;
+            case 4://暂停
+                stopAnimal();
+                break;
+        }
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

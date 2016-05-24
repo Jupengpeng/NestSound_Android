@@ -26,6 +26,6 @@ public abstract class BasePresenter<T extends IBaseView> {
         params = new HashMap<>();
     }
     public void init(){
-//        iView.initView();
+        iView.initView();
     }
 }

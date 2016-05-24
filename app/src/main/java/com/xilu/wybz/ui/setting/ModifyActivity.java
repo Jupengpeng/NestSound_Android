@@ -95,7 +95,7 @@ public class ModifyActivity extends ToolbarActivity implements IModifyUserInfoVi
     }
     public void initUserInfo() {
         tv_username.setText(userBean.name);
-        tv_usersign.setText(userBean.signature);
+        tv_usersign.setText(userBean.descr);
         tv_birthday.setText(userBean.birthday);
         tv_gender.setText(genders[userBean.sex]);
         loadImage(userBean.headurl,iv_head);
@@ -178,7 +178,7 @@ public class ModifyActivity extends ToolbarActivity implements IModifyUserInfoVi
     //修改昵称和签名
     public void showModifyDialog() {
         String name = TextUtils.isEmpty(userBean.name) ? "昵称" : userBean.name;
-        String desc = TextUtils.isEmpty(userBean.signature) ? "签名" : userBean.signature;
+        String desc = TextUtils.isEmpty(userBean.descr) ? "签名" : userBean.descr;
         new MaterialDialog.Builder(this)
                 .title(titles[type])
                 .inputType(InputType.TYPE_CLASS_TEXT |
@@ -192,7 +192,7 @@ public class ModifyActivity extends ToolbarActivity implements IModifyUserInfoVi
                         if (type == 0)
                             userBean.name = input.toString();
                         else if (type == 1)
-                            userBean.signature = input.toString();
+                            userBean.descr = input.toString();
                         UpdateUserInfo();
                     }
                 }).show();
