@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:descendantFocusability="afterDescendants"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="66dp"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/yc_15"
+        >
+
+
+        <com.xilu.wybz.view.CircleImageView
+            android:id="@+id/iv_head"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="@dimen/yc_8"
+            android:layout_marginTop="@dimen/yc_8"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_default_head_252"
+            app:border_color="#a58c23"
+            app:border_width="0.6dp"
+            />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="9dp"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="我是一只小小鸟"
+                android:text="我是一只小小鸟"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:textColor="@color/main_text_color"
+                android:textSize="@dimen/yc_15" />
+
+            <TextView
+                android:id="@+id/user_sign"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/yc_2"
+                tools:text="想要飞呀怎么也飞不高"
+                android:text="想要飞呀怎么也飞不高"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:textColor="#a4a4a4"
+                android:textSize="@dimen/yc_12" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_follow"
+            android:layout_width="66dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/iv_follow_state"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:src="@drawable/ic_user_each_follow" />
+            <TextView
+                android:id="@+id/tv_follow_state"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/yc_2"
+                android:text="加关注"
+                android:textColor="@color/yellow"
+                android:textSize="10sp"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+    <include layout="@layout/view_spit_line"/>
+
+</LinearLayout>

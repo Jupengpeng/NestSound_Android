@@ -56,7 +56,7 @@ public abstract class BaseListActivity<T> extends BasePlayMenuActivity implement
         setUpAdapter();
         recycler.setOnRefreshListener(this);
         recycler.setLayoutManager(getLayoutManager());
-        recycler.addItemDecoration(getItemDecoration());
+//        recycler.addItemDecoration(getItemDecoration());
         recycler.setAdapter(adapter);
         ivNoNet.setOnClickListener(new View.OnClickListener() {
             @Override

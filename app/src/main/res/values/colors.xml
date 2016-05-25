@@ -39,5 +39,9 @@
     <color name="card_background">#ffffff</color>
     <color name="card_shadow">#10000000</color>
     <color name="lyrics_color">#181818</color>
-    <color name="lyrics_color1">#666</color>
+
+
+    <color name="type_blue">#ff0598ff</color>
+    <color name="type_green">#ff51d29d</color>
+    <color name="type_orang">#ffff954f</color>
 </resources>
