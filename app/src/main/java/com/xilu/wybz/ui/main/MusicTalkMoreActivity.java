@@ -48,6 +48,8 @@ public class MusicTalkMoreActivity extends BaseListActivity<MusicTalk> implement
     public void initView() {
         setTitle("歌单");
         tvNoData.setText(nodata);
+        int dip10 = DensityUtil.dip2px(context,10);
+        recycler.setPadding(dip10,dip10,dip10,dip10);
     }
 
     @Override

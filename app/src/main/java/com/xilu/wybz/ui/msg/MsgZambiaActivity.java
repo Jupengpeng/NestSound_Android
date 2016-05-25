@@ -93,7 +93,7 @@ public class MsgZambiaActivity extends BaseListActivity<ZambiaBean> implements I
 
     @Override
     protected BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_mag_zambia, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_msg_zambia, parent, false);
         return new SampleViewHolder(view);
     }
 

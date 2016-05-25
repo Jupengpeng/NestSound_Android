@@ -33,7 +33,7 @@ public class MusicTalkMorePresenter extends BasePresenter<IMusicTalkMoreView> {
         params = new HashMap<>();
         params.put("page",page+"");
         params.put("uid",userId);
-        httpUtils.get(MyHttpClient.getGleeListUrl(),params,new MyStringCallback(){
+        httpUtils.get(MyHttpClient.getMusicTalkUrl(),params,new MyStringCallback(){
             @Override
             public void onResponse(String response) {
                 super.onResponse(response);

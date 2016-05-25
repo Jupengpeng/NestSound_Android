@@ -25,17 +25,14 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.WorksVie
     private List<WorksData> mList;
     private Context context;
     private int itemWidth;
-    private int type;
-    public RankingAdapter(Context context, List<WorksData> worksDataList,int type) {
+    public RankingAdapter(Context context, List<WorksData> worksDataList) {
         this.context = context;
         this.mList = worksDataList;
-        this.type = type;
-        itemWidth = DensityUtil.dip2px(context, 86);
+        itemWidth = DensityUtil.dip2px(context, 66);
     }
 
     public interface OnItemClickListener {
         void onItemClick(View view, int position);
-        void onItemLongClick(View view, int position);
     }
 
     private OnItemClickListener mOnItemClickListener;
@@ -60,21 +57,13 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.WorksVie
         holder.tvLookNum.setText(worksData.looknum+"");
         holder.tvZanNum.setText(worksData.zannum+"");
         holder.tvFovNum.setText(worksData.fovnum+"");
-        holder.ivType.setImageResource(type == 1 ? R.drawable.ic_raning_play : R.drawable.ic_raning_lyrics);
-        holder.tvRank.setText(position<9?"0":""+(position+1));
+        holder.tvRank.setText((position<9?"0":"")+(position+1));
         if (mOnItemClickListener != null) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int pos = holder.getLayoutPosition();
                     mOnItemClickListener.onItemClick(holder.itemView, pos);
-                }
-            });
-            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    mOnItemClickListener.onItemLongClick(holder.itemView, position);
-                    return false;
                 }
             });
         }
@@ -87,8 +76,6 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.WorksVie
     class WorksViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.iv_cover)
         SimpleDraweeView ivCover;
-        @Bind(R.id.iv_type)
-        ImageView ivType;
         @Bind(R.id.tv_rank)
         TextView tvRank;
         @Bind(R.id.tv_look_num)

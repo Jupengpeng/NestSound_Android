@@ -11,14 +11,18 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+
 import com.commit451.nativestackblur.NativeStackBlur;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.xilu.wybz.R;
 import com.xilu.wybz.adapter.SongListAdapter;
+import com.xilu.wybz.bean.GleeDetailBean;
 import com.xilu.wybz.bean.SongAlbum;
 import com.xilu.wybz.bean.WorksData;
+import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.common.YinChaoConfig;
 import com.xilu.wybz.common.ZnImageLoader;
 import com.xilu.wybz.presenter.SongAlbumPresenter;
@@ -26,12 +30,18 @@ import com.xilu.wybz.ui.IView.IRecSongView;
 import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.ui.lyrics.LyricsdisplayActivity;
+import com.xilu.wybz.ui.main.SongablumMoreActivity;
 import com.xilu.wybz.utils.BitmapUtils;
 import com.xilu.wybz.utils.DensityUtil;
+import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.view.YcScrollView;
+
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 import butterknife.Bind;
+import butterknife.OnClick;
 
 /**
  * Created by June on 2016/3/11.
@@ -44,8 +54,14 @@ public class SongAblumActivity extends ToolbarActivity implements IRecSongView {
     View statusBarView;
     @Bind(R.id.rl_top)
     RelativeLayout rlTop;
+    @Bind(R.id.tv_title)
+    TextView tvTitle;
+    @Bind(R.id.tv_desc)
+    TextView tvDesc;
     @Bind(R.id.iv_cover)
     ImageView ivCover;
+    @Bind(R.id.tv_count)
+    TextView tvCount;
     @Bind(R.id.iv_top_bg)
     ImageView ivTopBg;
     @Bind(R.id.iv_toolbar_bg)
@@ -92,17 +108,18 @@ public class SongAblumActivity extends ToolbarActivity implements IRecSongView {
 
     public void getIntentData() {
         songAlbum = (SongAlbum) getIntent().getSerializableExtra(YinChaoConfig.RECOMMENTSONG);
-//        setTitle(songAlbum.getName());
-        recSongPresenter.getMusicList(songAlbum.getItemid());
+        tvTitle.setText(songAlbum.getName());
+        tvDesc.setText(songAlbum.getDetail());
+        recSongPresenter.getMusicList(songAlbum.getId(),1);
     }
 
     public void initMusicView() {
         int statusbarHeight = 0;
-        if (isChenjin) { //没有沉浸的时候 导航栏不需要上边距
-            statusbarHeight =  DensityUtil.getStatusBarHeight(context);
+        if(isChenjin) {
+            statusbarHeight = DensityUtil.getStatusBarHeight(context);
         }
         statusBarView.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, statusbarHeight));
-        int coverPicWith = DensityUtil.dip2px(context, 120)*DensityUtil.getScreenW(context)/1080;
+        int coverPicWith = DensityUtil.dip2px(context, 120*DensityUtil.getScreenDensity(context)/2);
         ivCover.setLayoutParams(new LinearLayout.LayoutParams(coverPicWith,coverPicWith));
         baseScrollHeight = DensityUtil.dip2px(context, 25) + coverPicWith;
         rlTop.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, statusbarHeight + DensityUtil.dip2px(context, 48 + 25) + coverPicWith));
@@ -116,21 +133,7 @@ public class SongAblumActivity extends ToolbarActivity implements IRecSongView {
         songListAdapter.setOnItemClickListener(new SongListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                if (musicBeans.size() > 0) {
-                    if (MyApplication.ids.size() > 0)
-                        MyApplication.ids.clear();
-                    for (WorksData worksData : musicBeans) {
-                        if (worksData.status == 1) {
-                            MyApplication.ids.add(worksData.getItemid());
-                        }
-                    }
-                    WorksData worksData = musicBeans.get(position);
-                    if (worksData.status == 2) {
-                        LyricsdisplayActivity.toLyricsdisplayActivity(context, worksData.itemid, 0, worksData.title);
-                    } else {
-                        PlayAudioActivity.toPlayAudioActivity(context, worksData.getItemid(), "","tuijian", position);
-                    }
-                }
+                toPlayPos(position);
             }
             @Override
             public void onItemLongClick(View view, int position) {
@@ -140,7 +143,7 @@ public class SongAblumActivity extends ToolbarActivity implements IRecSongView {
         recyclerViewSong.setAdapter(songListAdapter);
     }
     private void loadPic(){
-        String url = "http://p8.qhimg.com/t011f3905c56dc4251f.jpg";
+        String url = songAlbum.getPic();
         ImageLoader.getInstance().displayImage(url, ivCover, ZnImageLoader.getInstance().playOptions, new ImageLoadingListener() {
             @Override
             public void onLoadingStarted(String s, View view) {
@@ -165,10 +168,34 @@ public class SongAblumActivity extends ToolbarActivity implements IRecSongView {
         });
 
     }
+    @OnClick({R.id.iv_play_all})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.iv_play_all:
+                toPlayPos(0);
+                break;
+        }
+    }
+    public void toPlayPos(int position){
+        if (musicBeans.size() > 0) {
+            String playFrom = PrefsUtil.getString("playFrom",context);
+            String playGedanId = PrefsUtil.getString("playGedanId",context);
+            if(!playFrom.equals(MyCommon.GEDAN)||MyApplication.ids.size()==0||!playGedanId.equals(songAlbum.id)){
+                if (MyApplication.ids.size() > 0)
+                    MyApplication.ids.clear();
+                for (WorksData worksData : musicBeans) {
+                    MyApplication.ids.add(worksData.getItemid());
+                }
+            }
+            WorksData worksData = musicBeans.get(position);
+            PlayAudioActivity.toPlayAudioActivity(context, worksData.getItemid(), songAlbum.id, MyCommon.GEDAN, position);
+        }
+    }
     @Override
-    public void showMusicList(List<WorksData> musicBeanList) {
-        Log.e("musicBeanList", musicBeanList.size() + "");
-        musicBeans.addAll(musicBeanList);
+    public void showSongDetail(GleeDetailBean gleeDetailBean) {
+        musicBeans.addAll(gleeDetailBean.workList);
+        musicBeans.addAll(gleeDetailBean.workList);
+        tvCount.setText("(共"+gleeDetailBean.workCount+"首）");
         songListAdapter.notifyDataSetChanged();
     }
 

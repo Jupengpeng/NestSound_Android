@@ -52,7 +52,7 @@
         <activity android:name=".ui.main.MusicTalkMoreActivity" />
 
         <activity android:name=".ui.find.FindActivity" />
-        <activity android:name=".ui.find.MoreSongActivity" />
+        <activity android:name=".ui.find.MoreWorkActivity" />
 
         <activity android:name=".ui.msg.MsgActivity" />
         <activity android:name=".ui.msg.MsgZambiaActivity" />

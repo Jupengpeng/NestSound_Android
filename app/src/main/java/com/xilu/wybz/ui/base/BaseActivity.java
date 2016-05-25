@@ -61,6 +61,15 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected List<Integer> resourceIdList;
     protected ImageView ivLoading;
     protected MaterialDialog materialDialog;
+
+
+
+
+
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,7 +78,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         adaptTheme(true);
         setContentView(getLayoutRes());
         ButterKnife.bind(this);
-        isChenjin = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && !Build.MANUFACTURER.toUpperCase().equals("OPPO");
+        isChenjin = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
         isHomeActivity = this instanceof MainActivity || this instanceof FindActivity
                 || this instanceof MsgActivity || this instanceof MineActivity;
         PushAgent.getInstance(context).onAppStart();

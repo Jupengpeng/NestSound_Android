@@ -84,6 +84,7 @@ public class HttpUtils {
     }
     //加密get
     public void get(String url, Map<String, String> params, MyStringCallback stringCallback) {
+        Log.e("url",url);
         if(params==null){
             params = new HashMap<>();
         }
