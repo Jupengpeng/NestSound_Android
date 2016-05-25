@@ -87,8 +87,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:paddingBottom="20px"
-                    android:paddingTop="20px"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
                     android:text="是否公开"
                     android:textColor="@color/main_text_color"
                     android:textSize="@dimen/yc_15" />

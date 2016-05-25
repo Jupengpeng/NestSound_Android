@@ -20,6 +20,7 @@ import com.xilu.wybz.ui.mine.view.UserCollectionView;
 import com.xilu.wybz.ui.mine.view.UserInspirationView;
 import com.xilu.wybz.ui.mine.view.UserLyricView;
 import com.xilu.wybz.ui.mine.view.UserSongView;
+import com.xilu.wybz.ui.setting.SettingActivity;
 import com.xilu.wybz.ui.song.CommentActivity;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.PrefsUtil;
@@ -146,8 +147,7 @@ public class MineActivity extends BaseActivity implements IUserView {
 
     @OnClick(R.id.iv_setting)
     public void onClickSetting() {
-        startActivity(LoginActivity.class);
-//        mUserPresenter.getInspirationList("147",1);
+        startActivity(SettingActivity.class);
     }
 
     @OnClick(R.id.iv_draft)

@@ -1,6 +1,7 @@
 package com.xilu.wybz.utils;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -11,6 +12,7 @@ import com.xilu.wybz.bean.MsgBean;
 import com.xilu.wybz.bean.MusicTalk;
 import com.xilu.wybz.bean.SongAlbum;
 import com.xilu.wybz.bean.TemplateBean;
+import com.xilu.wybz.bean.TokenBean;
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.bean.WorksData;
 
@@ -21,27 +23,13 @@ import java.util.List;
 
 public class ParseUtils {
 
-    public static MsgBean parseMsgBean(String jsonData) {
-        JSONObject jsonObject;
-        try {
-            jsonObject = new JSONObject(jsonData);
-            MsgBean mb = new MsgBean();
-            mb.setCode(jsonObject.getString("code"));
-            mb.setMessage(jsonObject.getString("message"));
-            return mb;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
     public static List<TemplateBean> parseTemplateList(Context context, String response) {
         List<TemplateBean> templateList = new ArrayList<>();
         try {
             JSONObject jsonObject = new JSONObject(response);
             int code = jsonObject.getInt("code");
             if (code == 200) {
-                templateList = new Gson().fromJson(new JSONObject(response).getString("data"), new TypeToken<List<TemplateBean>>() {
+                templateList = new Gson().fromJson(jsonObject.getString("data"), new TypeToken<List<TemplateBean>>() {
                 }.getType());
             } else {
                 showMsg(context, jsonObject.getString("message"));
@@ -51,6 +39,39 @@ public class ParseUtils {
             e.printStackTrace();
             return templateList;
         }
+    }
+    public static List<SongAlbum> getSongAlbumsData(Context context, String response) {
+        List<SongAlbum> templateList = new ArrayList<>();
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            int code = jsonObject.getInt("code");
+            if (code == 200) {
+                templateList = new Gson().fromJson(jsonObject.getString("data"), new TypeToken<List<SongAlbum>>() {
+                }.getType());
+            } else {
+                showMsg(context, jsonObject.getString("message"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return templateList;
+    }
+
+    public static List<Lyricat> getLyricatsData(Context context, String response) {
+        List<Lyricat> templateList = new ArrayList<>();
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            int code = jsonObject.getInt("code");
+            if (code == 200) {
+                templateList = new Gson().fromJson(jsonObject.getString("data"), new TypeToken<List<Lyricat>>() {
+                }.getType());
+            } else {
+                showMsg(context, jsonObject.getString("message"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return templateList;
     }
 
     public static List<WorksData> getWorksData(Context context, String response) {
@@ -59,25 +80,7 @@ public class ParseUtils {
             JSONObject jsonObject = new JSONObject(response);
             int code = jsonObject.getInt("code");
             if (code == 200) {
-                worksDatas = new Gson().fromJson(new JSONObject(response).getString("data"), new TypeToken<List<WorksData>>() {
-                }.getType());
-            } else {
-                showMsg(context, jsonObject.getString("message"));
-            }
-            return worksDatas;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return worksDatas;
-        }
-    }
-    //词库
-    public static List<Lyricat> getLyricatsData(Context context, String response) {
-        List<Lyricat> lyricats = new ArrayList<>();
-        try {
-            JSONObject jsonObject = new JSONObject(response);
-            int code = jsonObject.getInt("code");
-            if (code == 200) {
-                lyricats = new Gson().fromJson(new JSONObject(response).getString("data"), new TypeToken<List<Lyricat>>() {
+                worksDatas = new Gson().fromJson(jsonObject.getString("data"), new TypeToken<List<WorksData>>() {
                 }.getType());
             } else {
                 showMsg(context, jsonObject.getString("message"));
@@ -85,15 +88,15 @@ public class ParseUtils {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return lyricats;
+        return worksDatas;
     }
     public static List<MusicTalk> getMusicTalksData(Context context, String response) {
-        List<MusicTalk> musicTalks = new ArrayList<>();
+        List<MusicTalk> worksDatas = null;
         try {
             JSONObject jsonObject = new JSONObject(response);
             int code = jsonObject.getInt("code");
             if (code == 200) {
-                musicTalks = new Gson().fromJson(new JSONObject(response).getString("data"), new TypeToken<List<MusicTalk>>() {
+                worksDatas = new Gson().fromJson(jsonObject.getString("data"), new TypeToken<List<MusicTalk>>() {
                 }.getType());
             } else {
                 showMsg(context, jsonObject.getString("message"));
@@ -101,59 +104,54 @@ public class ParseUtils {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return musicTalks;
+        return worksDatas;
     }
-    public static List<SongAlbum> getSongAlbumsData(Context context, String response) {
-        List<SongAlbum> songAlbums = new ArrayList<>();
-        try {
-            JSONObject jsonObject = new JSONObject(response);
-            int code = jsonObject.getInt("code");
-            if (code == 200) {
-                songAlbums = new Gson().fromJson(new JSONObject(response).getString("data"), new TypeToken<List<SongAlbum>>() {
-                }.getType());
-            } else {
-                showMsg(context, jsonObject.getString("message"));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return songAlbums;
-    }
-    public static UserBean getUserBean(Context context, String response) {
-        UserBean userBean = new UserBean();
-        try {
-            JSONObject jsonObject = new JSONObject(response);
-            int code = jsonObject.getInt("code");
-            if (code == 200) {
-                String data = new JSONObject(response).getString("data");
-                userBean = new Gson().fromJson(data, UserBean.class);
-            }else{
-                showMsg(context, jsonObject.getString("message"));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return userBean;
-    }
-    public static DataBean getDataBean(String response) {
+
+
+    public static DataBean getDataBean(Context context,String response) {
         DataBean dataBean = new DataBean();
         try {
-            dataBean = new Gson().fromJson(response, DataBean.class);
+            JSONObject jsonObject = new JSONObject(response);
+            int code = jsonObject.getInt("code");
+            if (code == 200) {
+                dataBean = new Gson().fromJson(jsonObject.getString("data"),DataBean.class);
+            } else {
+                showMsg(context, jsonObject.getString("message"));
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return dataBean;
     }
-
-    public static MineBean parseMineBean(String jsonData) {
+    public static UserBean getUserBean(Context context, String response) {
+        UserBean dataBean = new UserBean();
         try {
-            JSONObject jsonObject = new JSONObject(jsonData);
-            String dataJson = jsonObject.getString("data");
-            return new Gson().fromJson(dataJson, MineBean.class);
+            JSONObject jsonObject = new JSONObject(response);
+            int code = jsonObject.getInt("code");
+            if (code == 200) {
+                dataBean = new Gson().fromJson(jsonObject.getString("data"),UserBean.class);
+            } else {
+                showMsg(context, jsonObject.getString("message"));
+            }
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
         }
+        return dataBean;
+    }
+    public static TokenBean getTokenBean(Context context, String response) {
+        TokenBean dataBean = new TokenBean();
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            int code = jsonObject.getInt("code");
+            if (code == 200) {
+                dataBean = new Gson().fromJson(jsonObject.getString("data"),TokenBean.class);
+            } else {
+                showMsg(context, jsonObject.getString("message"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return dataBean;
     }
 
     public static boolean checkCode(String jsonData) {
@@ -170,5 +168,6 @@ public class ParseUtils {
     public static void showMsg(Context context, String msg) {
         ToastUtils.toast(context, msg);
     }
+
 
 }

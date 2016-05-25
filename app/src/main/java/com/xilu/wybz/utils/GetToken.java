@@ -37,19 +37,17 @@ public class GetToken {
         Map<String, String> params = new HashMap<>();
         params.put("type", type + "");
         params.put("fixx", fixx);
-        new HttpUtils(context).get(MyHttpClient.getQnToken(), params, new AppStringCallback(context) {
-            @Override
-            public Type getDataType() {
-                return new TypeToken<Response<TokenBean>>(){}.getType();
-            }
+        new HttpUtils(context).get(MyHttpClient.getQnToken(), params, new MyStringCallback() {
+
             @Override
             public void onError(Call call, Exception e) {
                 super.onError(call, e);
             }
+
             @Override
-            public void onResponse(Response<? extends Object> response) {
+            public void onResponse(String response) {
                 super.onResponse(response);
-                TokenBean tokenBean = response.getData();
+                TokenBean tokenBean = ParseUtils.getTokenBean(context,response);
                 if(tokenBean!=null){
                     String token = tokenBean.token;
                     String filename = tokenBean.filename;

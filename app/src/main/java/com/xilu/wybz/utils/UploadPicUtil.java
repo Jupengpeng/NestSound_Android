@@ -15,11 +15,11 @@ public class UploadPicUtil {
     /*
     * fixx 文件类型空间前缀标示。灵感记录=inspire，歌词封面=lyrcover,歌曲封面=muscover,头像=head
      */
-    public void uploadFile(Context context, String filePath, int fileType, String fixx, UploadPicResult uploadResult) {
+    public void uploadFile(Context context, String filePath, String fixx, UploadPicResult uploadResult) {
         mFilePath = filePath;
         mUploadResult = uploadResult;
         ImageUploader imageUploader = new ImageUploader();
-        imageUploader.setFilePath(filePath, fileType, fixx);
+        imageUploader.setFilePath(filePath, fixx);
         imageUploader.setOnUploadListener(new ImageUploader.OnUploadListener() {
             @Override
             public void onSuccess(String result) {

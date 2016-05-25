@@ -4,6 +4,7 @@ import android.app.LocalActivityManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckedTextView;
@@ -13,7 +14,9 @@ import com.umeng.message.PushAgent;
 import com.xilu.wybz.R;
 import com.xilu.wybz.adapter.MyPagerAdapter;
 import com.xilu.wybz.bean.UserBean;
+import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.Event;
+import com.xilu.wybz.common.KeySet;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.ui.base.BasePlayMenuActivity;
 import com.xilu.wybz.ui.find.FindActivity;
@@ -162,7 +165,7 @@ public class MainTabActivity extends BasePlayMenuActivity {
             switch (v.getId()){
                 case R.id.tv_zuoci:
                     mMoreWindow.dismiss();
-                    startActivity(MakeWordActivity.class);
+                    MakeWordActivity.toMakeWordActivity(context,PrefsUtil.getLocalLyrics(context));
                     break;
                 case R.id.tv_record:
                     startActivity(InspireRecordActivity.class);

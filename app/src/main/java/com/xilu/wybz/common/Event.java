@@ -15,6 +15,15 @@ public class Event {
     }
     public static class ShowSearchTabEvent {
     }
+    public static class UpdateLyricsData {
+        WorksData worksData;
+        public UpdateLyricsData(WorksData worksData) {
+            this.worksData = worksData;
+        }
+
+        public WorksData getWorksData() {
+            return worksData;
+        }    }
     public static class SelectPicEvent {
         List<PhotoBean> pics;
         public SelectPicEvent(List<PhotoBean> pics){

@@ -20,14 +20,12 @@ public abstract class StringCallback extends Callback<String> {
     @Override
     public String parseNetworkResponse(Response response) throws IOException {
         String content = response.body().string();
-        Log.e("response", content);
         try {
             JSONObject jsonObject = new JSONObject(content);
-            JSONObject data = jsonObject.getJSONObject("data");
-            if (!TextUtils.isEmpty(data.toString())) {
-                String newData = RSAUtils.decryptByPublicKey(new String(RSAUtils.decodeConvert(data.toString()), "UTF-8"));
-
-                jsonObject.put("data", new JSONObject(newData));
+            String data = jsonObject.getString("data");
+            if (!TextUtils.isEmpty(data)) {
+                String newData = RSAUtils.decryptByPublicKey(new String(RSAUtils.decodeConvert(data), "UTF-8"));
+                jsonObject.put("data", newData);
                 return jsonObject.toString();
             }
         } catch (JSONException e) {

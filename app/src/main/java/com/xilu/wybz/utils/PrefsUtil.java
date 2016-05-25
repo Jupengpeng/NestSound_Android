@@ -8,6 +8,7 @@ import com.google.gson.reflect.TypeToken;
 import com.tencent.connect.UserInfo;
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.bean.WorksData;
+import com.xilu.wybz.common.KeySet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -118,5 +119,13 @@ public class PrefsUtil {
             lyricsdisplayBean = new Gson().fromJson(lyrics,WorksData.class);
         }
         return lyricsdisplayBean;
+    }
+    public static WorksData getLocalLyrics(Context context){
+        WorksData worksData = new WorksData();
+        String lyrics = PrefsUtil.getString(KeySet.LOCAL_LYRICS, context);
+        if (!TextUtils.isEmpty(lyrics)) {
+            worksData = new Gson().fromJson(lyrics,WorksData.class);
+        }
+        return worksData;
     }
 }

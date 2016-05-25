@@ -32,7 +32,6 @@ public class AppStringCallback extends MyStringCallback {
         this.context =context;
         this.type = type;
     }
-
     @Override
     public void onResponse(String response) {
         super.onResponse(response);
@@ -40,11 +39,9 @@ public class AppStringCallback extends MyStringCallback {
         try{
             result = new Gson().fromJson(response,type != null ? type:getDataType());
         } catch (Exception e){
-//            e.printStackTrace();
-            Log.e("GsonException",e.toString());
             result = new Response<>();
             result.setCode(999);
-            result.setMessage("Json decode error.");
+            result.setMessage("Json decode error");
             result.setError(e.toString());
         }
 
@@ -57,7 +54,6 @@ public class AppStringCallback extends MyStringCallback {
 //            onResponse(result);
             return;
         }
-
         if (!TextUtils.isEmpty(result.getMessage())) {
             ToastUtils.toast(context != null ? context:getContext(), result.getMessage());
         }

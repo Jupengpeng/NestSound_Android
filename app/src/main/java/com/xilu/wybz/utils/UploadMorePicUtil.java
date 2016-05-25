@@ -59,7 +59,7 @@ public class UploadMorePicUtil {
 
     public void upLoadPic(String imgPath, int pos, UploadPicResult uploadPicsInterface) {
         ImageUploader imageUploader = new ImageUploader();
-        imageUploader.setFilePath(imgPath, 1, "inspire");
+        imageUploader.setFilePath(imgPath, ImageUploader.fixxs[0]);
         imageUploader.UpLoad(context);
         imageUploader.setOnUploadListener(new ImageUploader.OnUploadListener() {
             @Override
