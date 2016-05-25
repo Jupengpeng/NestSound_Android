@@ -16,6 +16,8 @@ public class MyCommon {
     public static int PLAY_MODEL_LOOP = 3;
     public static String NEWS = "news";
     public static String RED = "red";
+    public static String GEDAN = "gedan";
+    public static String RANK_SONG = "rank_song";
     public static String TUIJIAN = "tuijian";
     public static String ZUIXIN = "zuixin";
     public static final String ACTION_PLAY = "com.musicplay.action.PLAY";
@@ -89,6 +91,8 @@ public class MyCommon {
         map.put("ranking", 2);//排行榜
         map.put(TUIJIAN, 2);//推荐作品
         map.put(ZUIXIN, 2);//最新作品
+        map.put(GEDAN, 2);//歌单
+        map.put(RANK_SONG, 2);//歌单
 
         map.put("mywork", 3);//我的作品
         map.put("myfov", 3);//我的收藏
@@ -96,7 +100,6 @@ public class MyCommon {
         map.put(NEWS, 3);//最新
         map.put(RED, 3);//最热
 
-        map.put("gedan", 3);//歌单
         map.put("yueshuo", 3);//乐说
 
 

@@ -23,6 +23,10 @@ public class MyHttpClient {
     public static String getHomeUrl() {
         return "common/index/app";
     }
+    //乐说列表
+    public static String getMusicTalkUrl() {
+        return "common/yueshuo/list";
+    }
     //歌曲详情
     public static String getMusicWorkUrl() {
         return "common/music/work";
@@ -30,10 +34,6 @@ public class MyHttpClient {
     //歌词详情
     public static String getLyricsdisplay() {
         return "common/lyrics/detail";
-    }
-    //歌单列表
-    public static String getGleeListUrl(){
-        return "common/glee/list";
     }
     //反馈
     public static String getFeed() {
@@ -48,7 +48,11 @@ public class MyHttpClient {
         return "userCenter/updateuserinfo";
     }
     //歌单列表
-    public static String getRecommendListUrl() {
+    public static String getGleeListUrl() {
+        return "common/glee/list";
+    }
+    //歌单详情
+    public static String getGleeDetailUrl() {
         return "common/glee/detail";
     }
     //发现里面歌曲

@@ -117,6 +117,8 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     RelativeLayout rlFav;
     @Bind(R.id.rl_zan)
     RelativeLayout rlZan;
+    TextView tvHotName;
+    TextView tvDetail;
     List<View> viewList;//把需要滑动的页卡添加到这个li
     ListView listview_lyrics;
     ScrollView sv_content;
@@ -206,6 +208,8 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
         listview_lyrics = (ListView) view1.findViewById(R.id.listview_lyrics);
         sv_content = (ScrollView) view1.findViewById(R.id.sv_content);
         View view2 = lf.inflate(R.layout.ll_music_detail, null);
+        tvHotName = (TextView) view2.findViewById(R.id.tv_hot_name);
+        tvDetail = (TextView) view2.findViewById(R.id.tv_detail);
         viewList = new ArrayList<>();
         // 将要分页显示的View装入数组中
         viewList.add(view1);
@@ -339,6 +343,8 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
             if (worksData.commentnum > 0)
                 tvCommentNum.setText(worksData.commentnum + "");
             playLyricsAdapter = new PlayLyricsAdapter(context, lyricsList);
+            tvHotName.setText(worksData.getHotTitle());
+            tvDetail.setText(worksData.getDetail());
             listview_lyrics.setAdapter(playLyricsAdapter);
             listview_lyrics.setOnScrollListener(new AbsListView.OnScrollListener() {
                 @Override

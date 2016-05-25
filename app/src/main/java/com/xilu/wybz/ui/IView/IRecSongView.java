@@ -1,5 +1,6 @@
 package com.xilu.wybz.ui.IView;
 
+import com.xilu.wybz.bean.GleeDetailBean;
 import com.xilu.wybz.bean.MusicBean;
 import com.xilu.wybz.bean.WorksData;
 
@@ -10,7 +11,7 @@ import java.util.List;
  * Created by June on 16/4/5.
  */
 public interface IRecSongView extends IBaseView{
-    void showMusicList(List<WorksData> musicBeanList);
+    void showSongDetail(GleeDetailBean gleeDetailBean);
     void showProgressBar();
     void hideProgressBar();
     void showErrorView();

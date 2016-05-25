@@ -11,9 +11,14 @@ import android.widget.TextView;
 import com.xilu.wybz.R;
 import com.xilu.wybz.adapter.RankingAdapter;
 import com.xilu.wybz.bean.WorksData;
+import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.RankingPresenter;
 import com.xilu.wybz.ui.IView.IRankingView;
+import com.xilu.wybz.ui.MyApplication;
+import com.xilu.wybz.ui.lyrics.LyricsdisplayActivity;
+import com.xilu.wybz.ui.song.PlayAudioActivity;
 import com.xilu.wybz.utils.DensityUtil;
+import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.view.SpacesItemDecoration;
 
 import java.util.ArrayList;
@@ -65,17 +70,43 @@ public class RankingFragment extends BaseFragment implements IRankingView {
         recyclerViewLyrics.addItemDecoration(new SpacesItemDecoration(space10));
         recyclerViewLyrics.setNestedScrollingEnabled(false);
 
-        lyricsDatas = songDatas;
-
-        rankingSongAdapter = new RankingAdapter(context,songDatas,1);
-        rankingLyricsAdapter = new RankingAdapter(context,lyricsDatas,2);
+        rankingSongAdapter = new RankingAdapter(context,songDatas);
+        rankingLyricsAdapter = new RankingAdapter(context,lyricsDatas);
         recyclerViewSong.setAdapter(rankingSongAdapter);
         recyclerViewLyrics.setAdapter(rankingLyricsAdapter);
 
         rankingPresenter.loadRankingData(userId,1);
         rankingPresenter.loadRankingData(userId,2);
-    }
+        rankingSongAdapter.setOnItemClickListener(new RankingAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                toPlayPos(position);
+            }
 
+        });
+        rankingLyricsAdapter.setOnItemClickListener(new RankingAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                LyricsdisplayActivity.toLyricsdisplayActivity(context,lyricsDatas.get(position).itemid,0,lyricsDatas.get(position).title);
+            }
+
+        });
+
+    }
+    public void toPlayPos(int position){
+        if (songDatas.size() > 0) {
+            String playFrom = PrefsUtil.getString("playFrom",context);
+            if(!playFrom.equals(MyCommon.RANK_SONG)||MyApplication.ids.size()==0){
+                if (MyApplication.ids.size() > 0)
+                    MyApplication.ids.clear();
+                for (WorksData worksData : songDatas) {
+                    MyApplication.ids.add(worksData.getItemid());
+                }
+            }
+            WorksData worksData = songDatas.get(position);
+            PlayAudioActivity.toPlayAudioActivity(context, worksData.getItemid(), "", MyCommon.RANK_SONG, position);
+        }
+    }
     @Override
     public void showRankingSong(List<WorksData> songWorksDatas) {
         songDatas.addAll(songWorksDatas);

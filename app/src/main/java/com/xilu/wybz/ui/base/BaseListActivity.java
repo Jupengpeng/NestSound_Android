@@ -39,6 +39,8 @@ public abstract class BaseListActivity<T> extends BasePlayMenuActivity implement
     protected LinearLayout llNoData;
     @Bind(R.id.iv_nonet)
     ImageView ivNoNet;
+    protected int action;
+    protected int page;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

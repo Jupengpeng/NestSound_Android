@@ -1,11 +1,8 @@
 package com.xilu.wybz.ui.fragment;
 
-import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.xilu.wybz.R;
@@ -13,14 +10,13 @@ import com.xilu.wybz.adapter.WorksAdapter;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.presenter.SongPresenter;
 import com.xilu.wybz.ui.IView.ISongView;
-import com.xilu.wybz.ui.find.MoreSongActivity;
+import com.xilu.wybz.ui.find.MoreWorkActivity;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.view.GridSpacingItemDecoration;
 
 import java.util.List;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -101,10 +97,10 @@ public class LyricsFragment extends BaseFragment implements ISongView {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_hot_more:
-                MoreSongActivity.toMoreSongActivity(context, "hot");
+                MoreWorkActivity.toMoreSongActivity(context, 2, 2);
                 break;
             case R.id.tv_new_more:
-                MoreSongActivity.toMoreSongActivity(context, "new");
+                MoreWorkActivity.toMoreSongActivity(context, 1, 2);
                 break;
         }
     }

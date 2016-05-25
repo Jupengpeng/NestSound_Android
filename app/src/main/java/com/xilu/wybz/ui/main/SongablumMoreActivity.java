@@ -11,6 +11,7 @@ import com.xilu.wybz.bean.SongAlbum;
 import com.xilu.wybz.presenter.SongablumMorePresenter;
 import com.xilu.wybz.ui.IView.ISongablumMoreView;
 import com.xilu.wybz.ui.base.BaseListActivity;
+import com.xilu.wybz.ui.song.SongAblumActivity;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.view.GridSpacingItemDecoration;
 import com.xilu.wybz.view.pull.BaseViewHolder;
@@ -38,6 +39,8 @@ public class SongablumMoreActivity extends BaseListActivity<SongAlbum> implement
     public void initView() {
         setTitle("歌单");
         tvNoData.setText(nodata);
+        int dip10 = DensityUtil.dip2px(context,10);
+        recycler.setPadding(dip10,dip10,dip10,dip10);
     }
 
     @Override
@@ -120,7 +123,7 @@ public class SongablumMoreActivity extends BaseListActivity<SongAlbum> implement
 
         @Override
         public void onItemClick(View view, int position) {
-
+            SongAblumActivity.toSongAblumActivity(context,mDataList.get(position));
         }
     }
 

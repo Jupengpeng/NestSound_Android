@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.xilu.wybz.bean.GleeDetailBean;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.callback.MyStringCallback;
@@ -28,10 +29,11 @@ public class SongAlbumPresenter extends BasePresenter<IRecSongView> {
         super(context, iView);
     }
 
-    public void getMusicList(String itemid) {
+    public void getMusicList(String itemid,int page) {
         params = new HashMap<>();
         params.put("id",itemid);
-        httpUtils.get(MyHttpClient.getRecommendListUrl(), params, new MyStringCallback() {
+        params.put("page",page+"");
+        httpUtils.get(MyHttpClient.getGleeDetailUrl(), params, new MyStringCallback() {
             @Override
             public void onBefore(Request request) {
                 iView.showProgressBar();
@@ -51,14 +53,12 @@ public class SongAlbumPresenter extends BasePresenter<IRecSongView> {
             public void onResponse(String response) {
                 if (ParseUtils.checkCode(response)) {
                     try {
-                        String jsonData = new JSONObject(response).getJSONObject("data")
-                                .getJSONObject("info").getJSONObject("worklist").getString("items");
-                        List<WorksData> musicBeanList = new Gson().fromJson(jsonData,
-                                new TypeToken<List<WorksData>>() {}.getType());
-                        if (musicBeanList.size() == 0) {
+                        String data = new JSONObject(response).getString("data");
+                        GleeDetailBean gleeDetailBean = new Gson().fromJson(data, GleeDetailBean.class);
+                        if (gleeDetailBean.workList.size() == 0) {
                             iView.showErrorView();
                         } else {
-                            iView.showMusicList(musicBeanList);
+                            iView.showSongDetail(gleeDetailBean);
                         }
                     } catch (Exception e) {
                         iView.showErrorView();

@@ -439,6 +439,7 @@ public class MainActivity extends BaseActivity implements IHomeView {
                 startActivity(SongablumMoreActivity.class);
                 break;
             case R.id.tv_musictalk_more:
+                startActivity(MusicTalkMoreActivity.class);
                 break;
         }
     }
