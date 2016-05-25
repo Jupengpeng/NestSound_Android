@@ -125,7 +125,7 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
         recyclerViewPic.addItemDecoration(new GridSpacingItemDecoration(column, space10, false));
         KeyboardUtil.attach(this, mPanelRoot,
                 // Add keyboard showing state callback, do like this when you want to listen in the
-                // keyboard's show/hide change.
+                // keyboard's setCurrentPageView/hide change.
                 new KeyboardUtil.OnKeyboardShowingListener() {
                     @Override
                     public void onKeyboardShowing(boolean isShowing) {

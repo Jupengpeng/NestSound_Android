@@ -9,21 +9,21 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xilu.wybz.R;
-import com.xilu.wybz.bean.WorksData;
+import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.common.KeySet;
 import com.xilu.wybz.presenter.UserPresenter;
 import com.xilu.wybz.ui.IView.IUserView;
 import com.xilu.wybz.ui.base.BaseActivity;
+import com.xilu.wybz.ui.login.LoginActivity;
 import com.xilu.wybz.ui.mine.view.UserBaseView;
 import com.xilu.wybz.ui.mine.view.UserCollectionView;
 import com.xilu.wybz.ui.mine.view.UserInspirationView;
 import com.xilu.wybz.ui.mine.view.UserLyricView;
 import com.xilu.wybz.ui.mine.view.UserSongView;
-import com.xilu.wybz.ui.setting.SettingActivity;
 import com.xilu.wybz.utils.DensityUtil;
+import com.xilu.wybz.utils.PrefsUtil;
+import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.view.TopFloatScrollView;
-
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -32,33 +32,25 @@ import butterknife.OnClick;
  * Created by June on 16/4/29.
  */
 public class MineActivity extends BaseActivity implements IUserView {
-    @Bind(R.id.id_bg)
-    ImageView idBg;
-    @Bind(R.id.user_layout_top)
-    RelativeLayout userLayoutTop;
+
+
     @Bind(R.id.iv_head)
-//    SimpleDraweeView ivHead;
-            ImageView ivHead;
+    ImageView ivHead;
     @Bind(R.id.user_tv_name)
     TextView userTvName;
     @Bind(R.id.user_tv_info)
     TextView userTvInfo;
-    @Bind(R.id.user_fans)
-    TextView userFans;
+
     @Bind(R.id.user_follownum)
     TextView userFollownum;
     @Bind(R.id.ll_myfollow)
     LinearLayout llMyfollow;
-    @Bind(R.id.user_follow)
-    TextView userFollow;
+
     @Bind(R.id.user_fansnum)
     TextView userFansnum;
     @Bind(R.id.ll_myfans)
     LinearLayout llMyfans;
-    @Bind(R.id.user_layout_cmenu)
-    LinearLayout userLayoutCmenu;
-    @Bind(R.id.user_layout_center)
-    LinearLayout userLayoutCenter;
+
     @Bind(R.id.ll_myrecord)
     LinearLayout llMyrecord;
     @Bind(R.id.ll_mysong)
@@ -67,8 +59,7 @@ public class MineActivity extends BaseActivity implements IUserView {
     LinearLayout llMylyrics;
     @Bind(R.id.ll_myfav)
     LinearLayout llMyfav;
-    @Bind(R.id.user_layout_menu)
-    LinearLayout userLayoutMenu;
+
     @Bind(R.id.top_float)
     RelativeLayout topFloat;
     @Bind(R.id.user_layout_content)
@@ -90,17 +81,16 @@ public class MineActivity extends BaseActivity implements IUserView {
     @Bind(R.id.container)
     RelativeLayout container;
     @Bind(R.id.v_toolbar)
-    View vToolbar;
-    private UserPresenter mUserPresenter;
 
+    View vToolbar;
+    UserBaseView mCurrentUserView;
 
     UserInspirationView mUserInspirationView;
     UserSongView mUserSongView;
     UserLyricView mUserLyricView;
     UserCollectionView mUserCollectionView;
 
-
-    UserBaseView mCurrentUserView;
+    private UserPresenter mUserPresenter;
 
 
     @Override
@@ -131,7 +121,6 @@ public class MineActivity extends BaseActivity implements IUserView {
             }
         });
 
-
         mUserInspirationView = new UserInspirationView(this);
         mUserSongView = new UserSongView(this);
         mUserLyricView = new UserLyricView(this);
@@ -147,14 +136,17 @@ public class MineActivity extends BaseActivity implements IUserView {
         contentLayout.addView(mUserCollectionView);
 
 
-        show(llMyrecord, 0);
+        setCurrentPageView(llMyrecord, 0);
         contentLayout.setVisibility(View.VISIBLE);
+
+        setUserInfo(PrefsUtil.getUserInfo(this));
 
     }
 
-    @OnClick(R.id.iv_head)
+    @OnClick(R.id.iv_setting)
     public void onClickSetting() {
-        startActivity(SettingActivity.class);
+        startActivity(LoginActivity.class);
+//        mUserPresenter.getInspirationList("147",1);
     }
 
     @OnClick(R.id.iv_draft)
@@ -172,10 +164,39 @@ public class MineActivity extends BaseActivity implements IUserView {
         FollowAndFansActivity.toFollowAndFansActivity(this, KeySet.TYPE_FOLLOW_ACT);
     }
 
-
     @OnClick(R.id.iv_head)
     public void onClickHeadImage() {
-        mUserPresenter.getInspirationList("23", 1);
+        mUserPresenter.getInspirationList("147", 1);
+    }
+
+
+    @Override
+    public void setUserInfo(UserBean userBean){
+        userBean = checkByDefault(userBean);
+
+        loadImage(userBean.headurl,ivHead);
+        userTvName.setText(userBean.name);
+        userTvInfo.setText(userBean.descr);
+    }
+
+    @Override
+    public void setFollowNumber(int number) {
+
+    }
+
+    @Override
+    public void setFansNumber(int number) {
+
+    }
+
+    private UserBean checkByDefault(UserBean userBean){
+        if (StringUtil.isBlank(userBean.name)){
+            userBean.name = "音巢音乐";
+        }
+        if (StringUtil.isBlank(userBean.descr)){
+            userBean.descr = "人人都是作曲家";
+        }
+        return userBean;
     }
 
     public void setSeletedTab(View view) {
@@ -189,8 +210,6 @@ public class MineActivity extends BaseActivity implements IUserView {
 
 
     public void setContentPage(int id) {
-
-
         switch (id) {
             case 0:
                 mCurrentUserView = mUserInspirationView;
@@ -223,7 +242,7 @@ public class MineActivity extends BaseActivity implements IUserView {
     }
 
 
-    public void show(View view, int id) {
+    public void setCurrentPageView(View view, int id) {
 
         setSeletedTab(view);
         setContentPage(id);
@@ -236,80 +255,18 @@ public class MineActivity extends BaseActivity implements IUserView {
 
         switch (view.getId()) {
             case R.id.ll_myrecord:
-                show(view, 0);
+                setCurrentPageView(view, 0);
                 break;
             case R.id.ll_mysong:
-                show(view, 1);
+                setCurrentPageView(view, 1);
                 break;
             case R.id.ll_mylyrics:
-                show(view, 2);
+                setCurrentPageView(view, 2);
                 break;
             case R.id.ll_myfav:
-                show(view, 3);
+                setCurrentPageView(view, 3);
                 break;
         }
-    }
-
-    @Override
-    public void addInspirationDatas(List<WorksData> datas) {
-        mUserInspirationView.getAdapter().addDatas(datas);
-    }
-
-    @Override
-    public void addSongDatas(List<WorksData> datas) {
-        mUserSongView.getAdapter().addDatas(datas);
-    }
-
-    @Override
-    public void addLyricDatas(List<WorksData> datas) {
-        mUserLyricView.getAdapter().addDatas(datas);
-    }
-
-
-    @Override
-    public void addCollectionDatas(List<WorksData> datas) {
-        mUserCollectionView.getAdapter().addDatas(datas);
-    }
-
-    @Override
-    public void showInspirationNoData() {
-        mUserInspirationView.showNoDataView();
-    }
-
-    @Override
-    public void showSongNoData() {
-        mUserSongView.showNoDataView();
-    }
-
-    @Override
-    public void showLyricNoData() {
-        mUserLyricView.showNoDataView();
-    }
-
-
-    @Override
-    public void showCollectionNoData() {
-        mUserCollectionView.showNoDataView();
-    }
-
-    @Override
-    public void showInspirationNoNet() {
-
-    }
-
-    @Override
-    public void showSongNoNet() {
-
-    }
-
-    @Override
-    public void showLyricNoNet() {
-
-    }
-
-    @Override
-    public void showCollectionNoNet() {
-
     }
 
 }

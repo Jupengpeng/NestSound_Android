@@ -29,10 +29,10 @@ import com.xilu.wybz.view.kpswitch.util.ViewUtil;
  * Created by Jacksgong on 3/30/16.
  * <p/>
  * Keyboard->Panel: if the keyboard is showing, and {@code visibility} equal {@link View#VISIBLE}
- * then must by Keyboard->Panel, then show the panel after the keyboard is real gone, and will be
+ * then must by Keyboard->Panel, then setCurrentPageView the panel after the keyboard is real gone, and will be
  * <p/>
  * Panel->Keyboard: do not need to invoke {@link View#setVisibility(int)} to let the panel gone,
- * just show keyboard, the panel will be gone automatically when keyboard is real visible, and will
+ * just setCurrentPageView keyboard, the panel will be gone automatically when keyboard is real visible, and will
  * be hide by {@link #handleHide()} -> {@link #processOnMeasure(int, int)}.
  *
  */
@@ -102,8 +102,8 @@ public class KPSwitchPanelLayoutHandler implements IPanelConflictLayout {
          * For handling Keyboard->Panel.
          *
          * Will be handled on {@link KPSwitchRootLayoutHandler#handleBeforeMeasure(int, int)} ->
-         * {@link IPanelConflictLayout#handleShow()} Delay show, until the {@link KPSwitchRootLayoutHandler} discover
-         * the size is changed by keyboard-show. And will show, on the next frame of the above
+         * {@link IPanelConflictLayout#handleShow()} Delay setCurrentPageView, until the {@link KPSwitchRootLayoutHandler} discover
+         * the size is changed by keyboard-setCurrentPageView. And will setCurrentPageView, on the next frame of the above
          * change discovery.
          */
         if (isKeyboardShowing() && visibility == View.VISIBLE) {
@@ -158,7 +158,7 @@ public class KPSwitchPanelLayoutHandler implements IPanelConflictLayout {
 
     @Override
     public void handleShow() {
-        throw new IllegalAccessError("You can't invoke handle show in handler," +
+        throw new IllegalAccessError("You can't invoke handle setCurrentPageView in handler," +
                 " please instead of handling in the panel layout, maybe just need invoke " +
                 "super.setVisibility(View.VISIBLE)");
     }

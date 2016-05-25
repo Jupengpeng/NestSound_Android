@@ -1352,7 +1352,7 @@ public class MaterialDialog extends DialogBase implements
         try {
             super.show();
         } catch (WindowManager.BadTokenException e) {
-            throw new DialogException("Bad window token, you cannot show a dialog before an Activity is created or after it's hidden.");
+            throw new DialogException("Bad window token, you cannot setCurrentPageView a dialog before an Activity is created or after it's hidden.");
         }
     }
 

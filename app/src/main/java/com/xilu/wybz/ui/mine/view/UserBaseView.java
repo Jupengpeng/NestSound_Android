@@ -7,20 +7,24 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.WorksData;
+import com.xilu.wybz.ui.IView.IUserListView;
 import com.xilu.wybz.view.pull.BaseListAdapter;
 import com.xilu.wybz.view.pull.PullRecycler;
 import com.xilu.wybz.view.pull.layoutmanager.MyLinearLayoutManager;
 
+import java.sql.Date;
 import java.util.List;
 
 /**
  * Created by Administrator on 2016/5/21.
  */
-public class UserBaseView extends LinearLayout {
+public class UserBaseView extends LinearLayout implements IUserListView {
 
 //    public static final int PAGE_ERROR   = 0;
 //    public static final int PAGE_CONTENT = 1;
@@ -32,7 +36,11 @@ public class UserBaseView extends LinearLayout {
     protected RecyclerView mPullRecycler;
     protected LinearLayout mNoData;
     protected LinearLayout mNoNet;
+    protected TextView mNoDataText;
+    protected TextView mNoNetText;
     protected UserBaseAdapter mBaseListAdapter;
+
+    private OnReLoadListener onReLoadListener;
 
 
     public UserBaseView(Context context) {
@@ -63,6 +71,18 @@ public class UserBaseView extends LinearLayout {
         mFooterView = (LinearLayout) rootView.findViewById(R.id.ll_pull_refresh_footer);
         mNoData = (LinearLayout) rootView.findViewById(R.id.ll_nodata);
         mNoNet = (LinearLayout) rootView.findViewById(R.id.ll_nonet);
+        mNoDataText = (TextView) mNoData.findViewById(R.id.tv_nodata);
+        mNoNetText = (TextView) mNoData.findViewById(R.id.tv_nonet);
+
+        ImageView ivNoNet = (ImageView) mNoNet.findViewById(R.id.iv_nonet);
+        ivNoNet.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onReLoadListener != null){
+                    onReLoadListener.onReload();
+                }
+            }
+        });
 
         mPullRecycler.setLayoutManager(new MyLinearLayoutManager(mContext));
         mPullRecycler.setNestedScrollingEnabled(false);
@@ -70,10 +90,49 @@ public class UserBaseView extends LinearLayout {
             mPullRecycler.setAdapter(mBaseListAdapter);
         }
         showContentView();
-        showLoadMoreView();
+        showLoadMore();
         addView(rootView, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
     }
 
+
+    @Override
+    public void addListDatas(List<WorksData> datas) {
+        if (mBaseListAdapter != null){
+            mBaseListAdapter.addDatas(datas);
+        }
+    }
+
+    @Override
+    public void refreshListDatas(List<WorksData> datas) {
+        if (mBaseListAdapter != null){
+            mBaseListAdapter.updateDatas(datas);
+        }
+    }
+
+    @Override
+    public void showNoNet() {
+        showNoNetView();
+    }
+
+    @Override
+    public void showNoData() {
+        showNoDataView();
+    }
+
+    @Override
+    public void showContent() {
+        showContentView();
+    }
+
+    @Override
+    public void showLoadMore() {
+        mFooterView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void cancelLoadMore() {
+        mFooterView.setVisibility(View.GONE);
+    }
 
     public void onScrollBottom(){
 
@@ -81,15 +140,6 @@ public class UserBaseView extends LinearLayout {
 
     }
 
-    public void showLoadMoreView(){
-
-        mFooterView.setVisibility(View.VISIBLE);
-    }
-
-    public void cancelLoadMoreView(){
-
-        mFooterView.setVisibility(View.GONE);
-    }
 
 
     public void showContentView() {
@@ -110,6 +160,15 @@ public class UserBaseView extends LinearLayout {
         mNoNet.setVisibility(VISIBLE);
     }
 
+    public void setNoDataText(String text){
+
+        mNoDataText.setText(text);
+    }
+    public void setNoNetText(String text){
+
+        mNoNetText.setText(text);
+    }
+
 
     public void setAdapter(UserBaseAdapter adapter){
         this.mBaseListAdapter = adapter;
@@ -123,22 +182,13 @@ public class UserBaseView extends LinearLayout {
     }
 
 
-    public void notifyUpdateData(List<WorksData> data){
-
-        if (mBaseListAdapter != null){
-            mBaseListAdapter.updateDatas(data);
-        }
+    public void setOnReLoadListener(OnReLoadListener listener){
+        this.onReLoadListener = listener;
     }
 
-    public void notifyAddData(List<WorksData> data){
-
-        if (mBaseListAdapter != null){
-            mBaseListAdapter.addDatas(data);
-        }
+    interface OnReLoadListener{
+        void onReload();
     }
-
-
-
 
 
 }

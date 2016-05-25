@@ -2,6 +2,7 @@ package com.xilu.wybz.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.ScrollView;
 
 /**
@@ -44,6 +45,8 @@ public class MonitorScrollView extends ScrollView {
     @Override
     protected void onScrollChanged(int l, int t, int oldl, int oldt) {
         super.onScrollChanged(l, t, oldl, oldt);
+
+        Log.d("float","t="+t+" h="+getHeight()+" c="+computeVerticalScrollRange());
         if (t + getHeight() >= computeVerticalScrollRange()) {
             if (mListener != null)
                 mListener.onBottom();

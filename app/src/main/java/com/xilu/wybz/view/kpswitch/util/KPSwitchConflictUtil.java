@@ -41,7 +41,7 @@ public class KPSwitchConflictUtil {
      * attach the action by yourself with invoke methods manually: {@link #showPanel(View)}、
      * {@link #showKeyboard(View, View)}、{@link #hidePanelAndKeyboard(View)}, and in the case of don't
      * invoke this method to attach, and if your activity with the fullscreen-theme, please ensure your
-     * panel layout is {@link View#INVISIBLE} before the keyboard is going to show.
+     * panel layout is {@link View#INVISIBLE} before the keyboard is going to setCurrentPageView.
      *
      * @param panelLayout            the layout of panel.
      * @param switchPanelKeyboardBtn the view will be used to trigger switching between the panel and
@@ -75,7 +75,7 @@ public class KPSwitchConflictUtil {
                     if (event.getAction() == MotionEvent.ACTION_UP) {
                         /**
                          * Show the fake empty keyboard-same-height panel to fix the conflict when
-                         * keyboard going to show.
+                         * keyboard going to setCurrentPageView.
                          * @see KPSwitchConflictUtil#showKeyboard(View, View)
                          */
                         panelLayout.setVisibility(View.INVISIBLE);
@@ -87,7 +87,7 @@ public class KPSwitchConflictUtil {
     }
 
     /**
-     * To show the panel(hide the keyboard automatically if the keyboard is showing) with
+     * To setCurrentPageView the panel(hide the keyboard automatically if the keyboard is showing) with
      * non-layout-conflict.
      *
      * @param panelLayout the layout of panel.
@@ -101,7 +101,7 @@ public class KPSwitchConflictUtil {
     }
 
     /**
-     * To show the keyboard(hide the panel automatically if the panel is showing) with
+     * To setCurrentPageView the keyboard(hide the panel automatically if the panel is showing) with
      * non-layout-conflict.
      *
      * @param panelLayout the layout of panel.
@@ -117,13 +117,13 @@ public class KPSwitchConflictUtil {
     }
 
     /**
-     * If the keyboard is showing, then going to show the {@code panelLayout},
+     * If the keyboard is showing, then going to setCurrentPageView the {@code panelLayout},
      * and hide the keyboard with non-layout-conflict.
      * <p/>
-     * If the panel is showing, then going to show the keyboard,
+     * If the panel is showing, then going to setCurrentPageView the keyboard,
      * and hide the {@code panelLayout} with non-layout-conflict.
      * <p/>
-     * If the panel and the keyboard are both hiding. then going to show the {@code panelLayout}
+     * If the panel and the keyboard are both hiding. then going to setCurrentPageView the {@code panelLayout}
      * with non-layout-conflict.
      *
      * @param panelLayout the layout of panel.
@@ -176,7 +176,7 @@ public class KPSwitchConflictUtil {
      * @param isTranslucentStatus Whether in translucent status theme.
      * @param isFitsSystem        Whether the root view(the child of the content view) is in
      *                            {@code getFitSystemWindow()} equal true.
-     * @return Whether handle the conflict by show panel placeholder, otherwise, handle by delay the
+     * @return Whether handle the conflict by setCurrentPageView panel placeholder, otherwise, handle by delay the
      * visible or gone of panel.
      */
     public static boolean isHandleByPlaceholder(boolean isFullScreen, boolean isTranslucentStatus,

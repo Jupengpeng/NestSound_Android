@@ -85,36 +85,6 @@ public class TopFloatScrollView extends FrameLayout implements MonitorScrollView
     }
 
 
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-
-
-//        int y1 = getScrollY();
-//        int y2 = getChildAt(0).getMeasuredHeight();
-//        int y3 = getHeight();
-//
-//        Log.d("test","y1="+y1+" y2="+y2+" y3="+y3);
-
-
-        return super.onTouchEvent(event);
-    }
-
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-
-//        requestDisallowInterceptTouchEvent(true);
-//
-//        int y1 = getScrollY();
-//        int y2 = getChildAt(0).getMeasuredHeight();
-//        int y3 = getHeight();
-//
-//        Log.d("test","y1="+y1+" y2="+y2+" y3="+y3);
-
-
-        return super.dispatchTouchEvent(ev);
-    }
-
     @Override
     public boolean onInterceptTouchEvent(MotionEvent e) {
         return super.onInterceptTouchEvent(e);

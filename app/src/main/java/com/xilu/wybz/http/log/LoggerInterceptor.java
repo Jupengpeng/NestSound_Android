@@ -134,7 +134,7 @@ public class LoggerInterceptor implements Interceptor {
             copy.body().writeTo(buffer);
             return buffer.readUtf8();
         } catch (final IOException e) {
-            return "something error when show requestBody.";
+            return "something error when setCurrentPageView requestBody.";
         }
     }
 }

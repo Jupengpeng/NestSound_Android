@@ -77,16 +77,8 @@ public class ParseUtils {
     public static MineBean parseMineBean(String jsonData) {
         try {
             JSONObject jsonObject = new JSONObject(jsonData);
-            String code = jsonObject.getString("code");
-            if (!code.equals("200")) {
-
-                return null;
-            }
-            MineBean mineBean = new MineBean();
-            JSONObject dataJson = jsonObject.getJSONObject("data");
-
-
-            return mineBean;
+            String dataJson = jsonObject.getString("data");
+            return (MineBean)new Gson().fromJson(dataJson,MineBean.class);
         } catch (Exception e) {
             e.printStackTrace();
             return null;

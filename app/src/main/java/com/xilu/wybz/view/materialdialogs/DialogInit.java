@@ -343,7 +343,7 @@ class DialogInit {
         if (builder.keyListener != null)
             dialog.setOnKeyListener(builder.keyListener);
 
-        // Setup internal show listener
+        // Setup internal setCurrentPageView listener
         dialog.setOnShowListenerInternal();
 
         // Other internal initialization

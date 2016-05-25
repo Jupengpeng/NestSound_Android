@@ -112,6 +112,7 @@ public class MyHttpClient {
     //分享
     public static String getSharePlayUrl(String id){return  ROOT_URL+"html/p.php?id="+id;}
 
-    public static String getMine(){return  "userCenter/index";}
+    public static String getUserCenter(){return  "userCenter/index";}
+    public static String getOtherCenter(){return  "otherCenter/index";}
 }
 

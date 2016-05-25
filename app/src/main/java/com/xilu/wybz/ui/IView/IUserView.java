@@ -1,5 +1,6 @@
 package com.xilu.wybz.ui.IView;
 
+import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.bean.WorksData;
 
 import java.util.List;
@@ -10,23 +11,8 @@ import java.util.List;
  */
 public interface IUserView extends IBaseView {
 
-
-    void addInspirationDatas(List<WorksData> datas);
-    void addSongDatas(List<WorksData> datas);
-    void addLyricDatas(List<WorksData> datas);
-    void addCollectionDatas(List<WorksData> datas);
-
-
-    void showInspirationNoData();
-    void showSongNoData();
-    void showLyricNoData();
-    void showCollectionNoData();
-
-    void showInspirationNoNet();
-    void showSongNoNet();
-    void showLyricNoNet();
-    void showCollectionNoNet();
-
-
+    void setUserInfo(UserBean userBean);
+    void setFollowNumber(int number);
+    void setFansNumber(int number);
 
 }
