@@ -2,6 +2,7 @@ package com.xilu.wybz.http.callback;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -40,6 +41,7 @@ public class AppStringCallback extends MyStringCallback {
             result = new Gson().fromJson(response,type != null ? type:getDataType());
         } catch (Exception e){
 //            e.printStackTrace();
+            Log.e("GsonException",e.toString());
             result = new Response<>();
             result.setCode(999);
             result.setMessage("Json decode error.");

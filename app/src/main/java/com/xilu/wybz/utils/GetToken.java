@@ -16,6 +16,8 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
+import okhttp3.Call;
+
 /**
  * Created by Administrator on 2016/3/7 0007.
  */
@@ -38,9 +40,12 @@ public class GetToken {
         new HttpUtils(context).get(MyHttpClient.getQnToken(), params, new AppStringCallback(context) {
             @Override
             public Type getDataType() {
-                return new TypeToken<Response<TokenResult>>(){}.getType();
+                return new TypeToken<Response<TokenBean>>(){}.getType();
             }
-
+            @Override
+            public void onError(Call call, Exception e) {
+                super.onError(call, e);
+            }
             @Override
             public void onResponse(Response<? extends Object> response) {
                 super.onResponse(response);

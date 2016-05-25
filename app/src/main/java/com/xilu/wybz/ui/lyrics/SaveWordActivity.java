@@ -80,7 +80,6 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView{
 
     @Override
     public void initView() {
-        setTitle("保存发布");
         Bundle bundle = getIntent().getExtras();
         if(bundle!=null){
             worksData = (WorksData) bundle.getSerializable("worksData");
