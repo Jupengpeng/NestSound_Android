@@ -45,7 +45,6 @@
         android:id="@+id/panel_root"
         android:visibility="gone"
         style="@style/Panel">
-
         <include layout="@layout/merge_panel_content" />
     </com.xilu.wybz.view.kpswitch.widget.KPSwitchPanelLinearLayout>
 </com.xilu.wybz.view.kpswitch.widget.KPSwitchRootLinearLayout>

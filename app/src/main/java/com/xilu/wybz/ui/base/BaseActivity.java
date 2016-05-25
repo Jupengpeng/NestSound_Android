@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -68,19 +69,15 @@ public abstract class BaseActivity extends AppCompatActivity {
         context = this;
         Fresco.initialize(this);
         adaptTheme(true);
+        userId = PrefsUtil.getUserId(context);
+        Log.e("userId",userId);
+        isLogin = !userId.equals("0");
         setContentView(getLayoutRes());
         ButterKnife.bind(this);
         isChenjin = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
         isHomeActivity = this instanceof MainActivity || this instanceof FindActivity
                 || this instanceof MsgActivity || this instanceof MineActivity;
         PushAgent.getInstance(context).onAppStart();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        userId = PrefsUtil.getUserId(context);
-        isLogin = !userId.equals("0");
     }
 
     //适配不同手机以及sdk_int的状态栏

@@ -34,9 +34,11 @@
     <!-- ToolBar -->
     <style name="ToolBarStyle" parent="Theme.AppCompat.Light">
         <item name="android:actionBarSize">@dimen/actionbar_size</item>
+        <item name="android:textSize">16sp</item>
     </style>
     <style name="ToolBarStyle2" parent="Theme.AppCompat">
         <item name="android:actionBarSize">@dimen/actionbar_size</item>
+        <item name="android:textSize">16sp</item>
     </style>
     <style name="ToolbarSubtitleAppearance">
         <item name="android:textSize">12sp</item>

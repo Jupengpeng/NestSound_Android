@@ -4,8 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="48dp"
     android:gravity="center_vertical"
-    android:fitsSystemWindows="true"
-    android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
     app:elevation="0.6dp">
 
     <android.support.v7.widget.Toolbar

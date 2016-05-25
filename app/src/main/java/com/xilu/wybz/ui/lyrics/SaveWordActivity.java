@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -31,6 +32,8 @@ import com.xilu.wybz.utils.ParseUtils;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.utils.UploadPicUtil;
+import com.xilu.wybz.view.materialdialogs.DialogAction;
+import com.xilu.wybz.view.materialdialogs.MaterialDialog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -82,6 +85,7 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView{
         if(bundle!=null){
             worksData = (WorksData) bundle.getSerializable("worksData");
         }
+        EventBus.getDefault().register(this);
         initEvent();
         initData();
     }
@@ -93,7 +97,10 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView{
                 et_content.setText(worksData.detail);
             }
             if(!TextUtils.isEmpty(worksData.pic)){
-                loadImage(worksData.pic,iv_cover);
+                if(worksData.pic.startsWith("http"))
+                    loadImage(worksData.pic,iv_cover);
+                else if(new File(worksData.pic).exists())
+                    loadImage("file:///"+worksData.pic,iv_cover);
             }
         }
     }
@@ -198,22 +205,8 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView{
                     showMsg("请先选择歌词的封面！");
                 }
                 break;
-            case R.id.menu_drafts:
-                saveToLocal();
-                break;
         }
         return true;
-    }
-    //保存到草稿箱
-    public void saveToLocal(){
-        DBManager.createDb(context,userId);
-        if(worksData.draftType==2){//更新草稿箱
-            DBManager.update(worksData);
-        }else{
-            worksData.setDraftType(2);
-            DBManager.insert(worksData);
-        }
-
     }
     @Override
     public void saveWordSuccess(String result) {
@@ -228,18 +221,47 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView{
             EventBus.getDefault().post(new Event.SaveLyricsSuccessEvent(2, worksData));
             EventBus.getDefault().post(new Event.SaveLyricsSuccessEvent(3, worksData));
             EventBus.getDefault().post(new Event.SaveLyricsSuccessEvent(4, worksData));
-            PrefsUtil.putString("local_lyrics" + sampleid, "", context);
         } else {
             ParseUtils.showMsg(context, result);
         }
     }
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-    @Override
     public void saveWordFail() {
         cancelPd();
         showMsg("保存失败");
+    }
+
+    public void onEventMainThread(Event.SaveLyricsSuccessEvent event) {
+        if (event.getWhich() == 4) {
+            new MaterialDialog.Builder(context)
+                    .content("歌词保存成功！")
+                    .positiveText("返回首页")
+                    .canceledOnTouchOutside(false)
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            finish();
+                        }
+                    }).negativeText("查看歌词")
+                    .onNegative(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+//                            Intent intent = new Intent(context, LyricsdisplayActivity.class);
+//                            intent.putExtra("id", lyricsid);
+//                            intent.putExtra("title", lyricsdisplayBean.getName());
+//                            intent.putExtra("from", 1);//1 标识可以修改
+//                            startActivity(intent);
+//                            overridePendingTransition(R.anim.right_in_anim, R.anim.left_out_anim);
+//                            finish();
+                        }
+                    })
+                    .show();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

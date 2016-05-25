@@ -118,72 +118,64 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView {
         }
     }
     //提示保存本地数据
-    public void TipSaveLocalData() {
-        if (!TextUtils.isEmpty(etTitle.getText().toString().trim()) || !TextUtils.isEmpty(etWord.getText().toString().trim())) {
-            new MaterialDialog.Builder(context)
-                    .content("是否保存到草稿箱？")
-                    .positiveText("保存")
-                    .onPositive(new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            saveToLocal();
-                            finish();
-                        }
-                    }).negativeText("放弃")
-                    .onNegative(new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            finish();
-                        }
-                    })
-                    .show();
-        } else {
-            finish();
-        }
-    }
-    //保存到草稿箱
-    public void saveToLocal(){
-        worksData.setDraftType(2);
-        DBManager.createDb(context,userId);
-        DBManager.insert(worksData);
-    }
-    //提示保存网络数据
-    public void TipSaveWebData() {
-        if (!TextUtils.isEmpty(etTitle.getText().toString().trim()) || !TextUtils.isEmpty(etWord.getText().toString().trim())) {
-            new MaterialDialog.Builder(context)
-                    .content("是否保存修改过的歌词？")
-                    .positiveText("下一步")
-                    .onPositive(new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            SaveWordActivity.toSaveWordActivity(context,worksData);
-                            finish();
-                        }
-                    }).negativeText("放弃")
-                    .onNegative(new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            finish();
-                        }
-                    })
-                    .show();
-        } else {
-            finish();
-        }
-    }
-
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK
-                && event.getRepeatCount() == 0) {
-            if (TextUtils.isEmpty(worksData.getItemid())||worksData.getItemid().equals("0")) {
-                TipSaveLocalData();
-            } else {
-                TipSaveLocalData();
-            }
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
-    }
+//    public void TipSaveLocalData() {
+//        if (!TextUtils.isEmpty(etTitle.getText().toString().trim()) || !TextUtils.isEmpty(etWord.getText().toString().trim())) {
+//            new MaterialDialog.Builder(context)
+//                    .content("是否保存到本地？")
+//                    .positiveText("保存")
+//                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+//                        @Override
+//                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+//                            finish();
+//                        }
+//                    }).negativeText("放弃")
+//                    .onNegative(new MaterialDialog.SingleButtonCallback() {
+//                        @Override
+//                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+//                            finish();
+//                        }
+//                    })
+//                    .show();
+//        } else {
+//            finish();
+//        }
+//    }
+//    //提示保存网络数据
+//    public void TipSaveWebData() {
+//        if (!TextUtils.isEmpty(etTitle.getText().toString().trim()) || !TextUtils.isEmpty(etWord.getText().toString().trim())) {
+//            new MaterialDialog.Builder(context)
+//                    .content("是否保存修改过的歌词？")
+//                    .positiveText("下一步")
+//                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+//                        @Override
+//                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+//                            SaveWordActivity.toSaveWordActivity(context,worksData);
+//                            finish();
+//                        }
+//                    }).negativeText("放弃")
+//                    .onNegative(new MaterialDialog.SingleButtonCallback() {
+//                        @Override
+//                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+//                            finish();
+//                        }
+//                    })
+//                    .show();
+//        } else {
+//            finish();
+//        }
+//    }
+//    public boolean onKeyDown(int keyCode, KeyEvent event) {
+//        if (keyCode == KeyEvent.KEYCODE_BACK
+//                && event.getRepeatCount() == 0) {
+//            if (TextUtils.isEmpty(worksData.getItemid())||worksData.getItemid().equals("0")) {
+//                TipSaveLocalData();
+//            } else {
+//                TipSaveLocalData();
+//            }
+//            return true;
+//        }
+//        return super.onKeyDown(keyCode, event);
+//    }
     private void importData(WorksData worksData){
         this.worksData = worksData;
         etTitle.setText(worksData.getTitle());

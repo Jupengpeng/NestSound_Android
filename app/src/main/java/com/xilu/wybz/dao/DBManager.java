@@ -31,18 +31,25 @@ public class DBManager {
      * 插入所有记录
      * @param list
      */
-    public static <T> void insertAll(List<T> list){
-        liteOrm.save(list);
+    public static <T> long insertAll(List<T> list){
+        return liteOrm.save(list);
     }
     /**
      * 插入一条记录
      * @param t
      */
-    public static <T> void insert(T t){
-        liteOrm.save(t);
-        Log.e("success",""+liteOrm.save(t));
+    public static <T> long insert(T t){
+        return liteOrm.save(t);
     }
-
+    /**
+     * 分页查询
+     * @param cla
+     * @param page
+     * @return
+     */
+    public static <T> List<T> getQueryByPage(Class<T> cla, int page){
+        return liteOrm.<T>query(new QueryBuilder(cla).limit((page-1)*20, 20));
+    }
     /**
      * 查询所有
      * @param cla
@@ -98,8 +105,8 @@ public class DBManager {
      * 仅在以存在时更新
      * @param t
      */
-    public static <T> void update(T t){
-        liteOrm.update(t, ConflictAlgorithm.Replace);
+    public static <T> long update(T t){
+       return liteOrm.update(t, ConflictAlgorithm.Replace);
     }
 
 
