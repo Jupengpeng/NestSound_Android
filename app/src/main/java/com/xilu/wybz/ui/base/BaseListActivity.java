@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.xilu.wybz.R;
+import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.view.pull.BaseListAdapter;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.DividerItemDecoration;
@@ -56,7 +57,7 @@ public abstract class BaseListActivity<T> extends BasePlayMenuActivity implement
         setUpAdapter();
         recycler.setOnRefreshListener(this);
         recycler.setLayoutManager(getLayoutManager());
-//        recycler.addItemDecoration(getItemDecoration());
+        recycler.addItemDecoration(getItemDecoration());
         recycler.setAdapter(adapter);
         ivNoNet.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,7 +76,7 @@ public abstract class BaseListActivity<T> extends BasePlayMenuActivity implement
     }
 
     protected RecyclerView.ItemDecoration getItemDecoration() {
-        return new DividerItemDecoration(getApplicationContext(), R.drawable.list_divider);
+        return new DividerItemDecoration(getApplicationContext(), R.drawable.transparent);
     }
 
     public class ListAdapter extends BaseListAdapter {
