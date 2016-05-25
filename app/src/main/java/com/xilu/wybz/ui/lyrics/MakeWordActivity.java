@@ -2,15 +2,19 @@ package com.xilu.wybz.ui.lyrics;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+
+import com.google.gson.Gson;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.Event;
+import com.xilu.wybz.dao.DBManager;
 import com.xilu.wybz.presenter.MakeWordPresenter;
 import com.xilu.wybz.ui.IView.IMakeWordView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
@@ -18,6 +22,8 @@ import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.view.dialog.LyricsDialog;
 import com.xilu.wybz.view.materialdialogs.DialogAction;
 import com.xilu.wybz.view.materialdialogs.MaterialDialog;
+
+import org.w3c.dom.Text;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -49,18 +55,15 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_makeword, menu);
+        getMenuInflater().inflate(R.menu.menu_next, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
-            case R.id.menu_save:
+            case R.id.menu_next:
                 SaveWordActivity.toSaveWordActivity(context,worksData);
-                break;
-            case R.id.menu_drafts:
-
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -113,6 +116,73 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView {
         }else{
             importData(event.getWorksData());
         }
+    }
+    //提示保存本地数据
+    public void TipSaveLocalData() {
+        if (!TextUtils.isEmpty(etTitle.getText().toString().trim()) || !TextUtils.isEmpty(etWord.getText().toString().trim())) {
+            new MaterialDialog.Builder(context)
+                    .content("是否保存到草稿箱？")
+                    .positiveText("保存")
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            saveToLocal();
+                            finish();
+                        }
+                    }).negativeText("放弃")
+                    .onNegative(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            finish();
+                        }
+                    })
+                    .show();
+        } else {
+            finish();
+        }
+    }
+    //保存到草稿箱
+    public void saveToLocal(){
+        worksData.setDraftType(2);
+        DBManager.createDb(context,userId);
+        DBManager.insert(worksData);
+    }
+    //提示保存网络数据
+    public void TipSaveWebData() {
+        if (!TextUtils.isEmpty(etTitle.getText().toString().trim()) || !TextUtils.isEmpty(etWord.getText().toString().trim())) {
+            new MaterialDialog.Builder(context)
+                    .content("是否保存修改过的歌词？")
+                    .positiveText("下一步")
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            SaveWordActivity.toSaveWordActivity(context,worksData);
+                            finish();
+                        }
+                    }).negativeText("放弃")
+                    .onNegative(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            finish();
+                        }
+                    })
+                    .show();
+        } else {
+            finish();
+        }
+    }
+
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK
+                && event.getRepeatCount() == 0) {
+            if (TextUtils.isEmpty(worksData.getItemid())||worksData.getItemid().equals("0")) {
+                TipSaveLocalData();
+            } else {
+                TipSaveLocalData();
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
     private void importData(WorksData worksData){
         this.worksData = worksData;

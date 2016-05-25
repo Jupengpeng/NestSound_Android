@@ -24,7 +24,7 @@ public class FindMoreWorkPresenter extends BasePresenter<IFindMoreWorkView> {
         params = new HashMap<>();
         params.put("orderType",orderType+"");
         params.put("page",page+"");
-        httpUtils.get(workType==1?MyHttpClient.getFindMoreSongList():MyHttpClient.getFindLyricsList(), params, new MyStringCallback() {
+        httpUtils.get(workType==1?MyHttpClient.getFindMoreSongList():MyHttpClient.getFindMoreLyricsList(), params, new MyStringCallback() {
             @Override
             public void onResponse(String response) {
                 List<WorksData> worksDatas = ParseUtils.getWorksData(context,response);

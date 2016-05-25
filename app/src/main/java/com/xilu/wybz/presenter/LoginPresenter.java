@@ -2,9 +2,12 @@ package com.xilu.wybz.presenter;
 
 import android.content.Context;
 
+import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.callback.MyStringCallback;
 import com.xilu.wybz.ui.IView.ILoginView;
+import com.xilu.wybz.utils.ParseUtils;
+import com.xilu.wybz.utils.ToastUtils;
 
 import okhttp3.Call;
 import okhttp3.Request;
@@ -29,7 +32,11 @@ public class LoginPresenter extends BasePresenter<ILoginView>{
             @Override
             public void onResponse(String response) {
                 super.onResponse(response);
-                iView.loginSuccess(response);
+                UserBean userBean = ParseUtils.getUserBean(context,response);
+                if(userBean.userid>0)
+                    iView.loginSuccess(userBean);
+                else
+                    ToastUtils.toast(context,"用户Id获取失败");
             }
 
             @Override

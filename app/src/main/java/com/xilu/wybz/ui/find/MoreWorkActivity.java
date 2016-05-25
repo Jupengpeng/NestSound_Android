@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -17,10 +18,17 @@ import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.FindMoreWorkPresenter;
 import com.xilu.wybz.ui.IView.IFindMoreWorkView;
+import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.ui.base.BaseListActivity;
+import com.xilu.wybz.ui.lyrics.LyricsdisplayActivity;
+import com.xilu.wybz.ui.song.PlayAudioActivity;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.ImageLoadUtil;
+import com.xilu.wybz.utils.NumberUtil;
+import com.xilu.wybz.utils.PrefsUtil;
+import com.xilu.wybz.view.SpacesItemDecoration;
 import com.xilu.wybz.view.pull.BaseViewHolder;
+import com.xilu.wybz.view.pull.DividerItemDecoration;
 import com.xilu.wybz.view.pull.PullRecycler;
 
 import java.util.ArrayList;
@@ -35,8 +43,9 @@ import butterknife.ButterKnife;
 public class MoreWorkActivity extends BaseListActivity<WorksData> implements IFindMoreWorkView {
     int orderType;
     int workType;
+    int itemWidth;
+    String COME;
     FindMoreWorkPresenter findMoreWorkPresenter;
-
     public static void toMoreSongActivity(Context context, int orderType, int workType) {
         Intent intent = new Intent(context, MoreWorkActivity.class);
         intent.putExtra("orderType", orderType);
@@ -55,20 +64,28 @@ public class MoreWorkActivity extends BaseListActivity<WorksData> implements IFi
         findMoreWorkPresenter = new FindMoreWorkPresenter(context, this);
         findMoreWorkPresenter.init();
     }
-
+    public boolean hasPadding() {return true;}
     public void initView() {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             workType = bundle.getInt("workType");
             orderType = bundle.getInt("orderType");
         }
-        if (orderType == 1) {
-            setTitle("最新歌曲");
-        } else if (orderType == 2) {
-            setTitle("热门歌曲");
+        if(workType==1) {
+            if (orderType == 1) {
+                setTitle("最新歌曲");
+                COME = MyCommon.MORENEWS;
+            } else if (orderType == 2) {
+                setTitle("热门歌曲");
+                COME = MyCommon.MORERED;
+            }
+        }else{
+            if (orderType == 1) {
+                setTitle("最新歌词");
+            } else if (orderType == 2) {
+                setTitle("热门歌词");
+            }
         }
-        int dpi10 = DensityUtil.dip2px(context, 10);
-        recycler.setPadding(dpi10, dpi10, dpi10, dpi10);
     }
 
     @Override
@@ -111,14 +128,16 @@ public class MoreWorkActivity extends BaseListActivity<WorksData> implements IFi
         recycler.onRefreshCompleted();
         recycler.enableLoadMore(false);
     }
-
+    protected RecyclerView.ItemDecoration getItemDecoration() {
+        return new SpacesItemDecoration(dip10);
+    }
     @Override
     protected BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
         WorksViewHolder holder = new WorksViewHolder(LayoutInflater.from(context).inflate(R.layout.activity_work_list_item, parent, false));
         return holder;
     }
     class WorksViewHolder extends BaseViewHolder {
-        int itemWidth;
+        @Bind(R.id.iv_cover)
         SimpleDraweeView ivCover;
         @Bind(R.id.tv_look_num)
         TextView tvLookNum;
@@ -133,7 +152,7 @@ public class MoreWorkActivity extends BaseListActivity<WorksData> implements IFi
         public WorksViewHolder(View view) {
             super(view);
             itemWidth = DensityUtil.dip2px(context, 66);
-            ivCover.setLayoutParams(new RelativeLayout.LayoutParams(itemWidth, itemWidth));
+            ivCover.setLayoutParams(new LinearLayout.LayoutParams(itemWidth, itemWidth));
         }
 
         @Override
@@ -143,14 +162,32 @@ public class MoreWorkActivity extends BaseListActivity<WorksData> implements IFi
             ImageLoadUtil.loadImage(url, ivCover);
             tvName.setText(worksData.name);
             tvAuthor.setText(worksData.author);
-            tvLookNum.setText(worksData.looknum+"");
-            tvZanNum.setText(worksData.zannum+"");
-            tvFovNum.setText(worksData.fovnum+"");
+            tvLookNum.setText(NumberUtil.format(worksData.looknum));
+            tvZanNum.setText(NumberUtil.format(worksData.zannum));
+            tvFovNum.setText(NumberUtil.format(worksData.fovnum));
         }
 
         @Override
         public void onItemClick(View view, int position) {
-
+            if(workType==1){
+                toPlayPos(position);
+            }else{
+                LyricsdisplayActivity.toLyricsdisplayActivity(context,mDataList.get(position).getItemid(),0,mDataList.get(position).name);
+            }
+        }
+    }
+    public void toPlayPos(int position){
+        if (mDataList.size() > 0) {
+            String playFrom = PrefsUtil.getString("playFrom",context);
+            if(!playFrom.equals(COME)|| MyApplication.ids.size()==0){
+                if (MyApplication.ids.size() > 0)
+                    MyApplication.ids.clear();
+                for (WorksData worksData : mDataList) {
+                    MyApplication.ids.add(worksData.getItemid());
+                }
+            }
+            WorksData worksData = mDataList.get(position);
+            PlayAudioActivity.toPlayAudioActivity(context, worksData.getItemid(), "", COME, position);
         }
     }
 }

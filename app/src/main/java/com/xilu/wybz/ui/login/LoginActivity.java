@@ -131,7 +131,7 @@ public class LoginActivity extends BaseActivity implements ILoginView,TextWatche
         // TODO Auto-generated method stub
         super.finish();
         //关闭窗体动画显示
-        this.overridePendingTransition(0, R.anim.activity_close);
+        overridePendingTransition(0, R.anim.activity_close);
     }
 
     @Override
@@ -140,28 +140,8 @@ public class LoginActivity extends BaseActivity implements ILoginView,TextWatche
     }
 
     @Override
-    public void loginSuccess(String result) {
-        if (ParseUtils.checkCode(result)) {
-            try {
-                String data = new JSONObject(result).getString("data");
-                Log.e("data",data);
-                UserBean ub = new Gson().fromJson(data,UserBean.class);
-                if (ub != null&&ub.userid!=0) {
-                    userId = ub.userid+"";
-                    isLogin = true;
-                    MobclickAgent.onProfileSignIn(ub.userid+"");
-                    PushAgent.getInstance(context).setAlias(ub.userid+"", "yinchao");
-                    PushAgent.getInstance(context).setExclusiveAlias(ub.userid+"", "yinchao");
-                    PrefsUtil.saveUserInfo(LoginActivity.this, ub);
-                    EventBus.getDefault().post(new Event.LoginSuccessEvent());
-                }
-            } catch (Exception e) {
-                Log.e("exception",e.toString());
-            }
-
-        } else { // 否则获取相应的错误提示信息
-            showMsg(ParseUtils.getMsg(result));
-        }
+    public void loginSuccess(UserBean ub) {
+        EventBus.getDefault().post(new Event.LoginSuccessEvent(ub));
     }
 
     @Override

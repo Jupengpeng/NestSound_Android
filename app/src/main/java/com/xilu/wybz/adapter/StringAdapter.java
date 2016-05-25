@@ -8,13 +8,15 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import com.xilu.wybz.R;
+import com.xilu.wybz.bean.LibArr;
+
 import java.util.List;
 
-public class StringAdapter extends ArrayAdapter<String> {
+public class StringAdapter extends ArrayAdapter<LibArr> {
 
     LayoutInflater layoutInflater;
     int itemId;
-    List<String> dataList;
+    List<LibArr> dataList;
 
     public StringAdapter(Context context, int textViewResourceId) {
         super(context, textViewResourceId);
@@ -28,11 +30,11 @@ public class StringAdapter extends ArrayAdapter<String> {
     }
 
     @Override
-    public String getItem(int position) {
+    public LibArr getItem(int position) {
         return dataList.get(position);
     }
 
-    public void setData(List<String> addList) {
+    public void setData(List<LibArr> addList) {
         this.dataList = addList;
         notifyDataSetChanged();
     }
@@ -42,7 +44,7 @@ public class StringAdapter extends ArrayAdapter<String> {
         notifyDataSetChanged();
     }
 
-    public List<String> getData() {
+    public List<LibArr> getData() {
         return dataList;
     }
 
@@ -51,7 +53,7 @@ public class StringAdapter extends ArrayAdapter<String> {
         if (convertView == null) {
             convertView = layoutInflater.inflate(itemId, null);
         }
-        final String msg = getItem(position);
+        String msg = getItem(position).lyrics;
         TextView tv_title = BaseViewHolder.get(convertView, R.id.item_tv_title);
         tv_title.setText((position + 1) + "." + msg);
         return convertView;

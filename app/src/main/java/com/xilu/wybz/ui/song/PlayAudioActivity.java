@@ -330,10 +330,8 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
             is_fov = worksData.getIscollect();
             tvZan.setChecked(is_zan == 1);
             tvFav.setChecked(is_fov == 1);
-            if (StringUtil.isInt(worksData.getCreateTime())) {
-                int times = Integer.valueOf(worksData.getCreateTime());
-                tvAlltime.setText(FormatHelper.formatDuration(times));
-            }
+            int times = Integer.valueOf(worksData.getMp3times());
+            tvAlltime.setText(FormatHelper.formatDuration(times));
             toolbar.setSubtitle(author);
             if (!TextUtils.isEmpty(lyrics)) {
                 Log.e("lyrics", lyrics);
@@ -351,7 +349,6 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
                 public void onScrollStateChanged(AbsListView view, int scrollState) {
 
                 }
-
                 @Override
                 public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 

@@ -3,7 +3,6 @@
     android:layout_height="wrap_content"
     android:layout_alignParentBottom="true"
     android:orientation="vertical">
-    <include layout="@layout/view_spit_line" />
     <com.xilu.wybz.view.HorizontalListView
         android:id="@+id/lyrics_hlv_type"
         android:layout_width="match_parent"

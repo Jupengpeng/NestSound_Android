@@ -201,4 +201,5 @@
         <item name="android:windowEnterAnimation">@anim/popup_enter</item>
         <item name="android:windowExitAnimation">@anim/popup_exit</item>
     </style>
+    <style name="ProgressBarStyle" parent="@android:style/Widget.DeviceDefault.ProgressBar.Small" />
 </resources>

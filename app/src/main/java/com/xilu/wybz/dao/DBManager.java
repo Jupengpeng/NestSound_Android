@@ -1,17 +1,16 @@
 package com.xilu.wybz.dao;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.litesuits.orm.LiteOrm;
 import com.litesuits.orm.db.DataBaseConfig;
 import com.litesuits.orm.db.assit.QueryBuilder;
 import com.litesuits.orm.db.assit.WhereBuilder;
 import com.litesuits.orm.db.model.ConflictAlgorithm;
-import com.litesuits.orm.log.OrmLog;
-import com.xilu.wybz.bean.WorkData;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.DownLoaderDir;
-import com.xilu.wybz.ui.MyApplication;
+
 import java.util.List;
 /**
  * Created by hujunwei on 16/5/19.
@@ -41,6 +40,7 @@ public class DBManager {
      */
     public static <T> void insert(T t){
         liteOrm.save(t);
+        Log.e("success",""+liteOrm.save(t));
     }
 
     /**
@@ -116,7 +116,7 @@ public class DBManager {
 //        List<WorksData> worksDatas = liteOrm.query(new QueryBuilder<WorksData>(WorksData.class)
 //                .distinct(true)
 //                .limit((page-1)*pageNo, pageNo)
-//                .appendOrderAscBy(WorkData.ID));
+//                .appendOrderAscBy(WorkDatas.ID));
 //        OrmLog.i("WorksData", worksDatas);
 //        return worksDatas;
 //    }

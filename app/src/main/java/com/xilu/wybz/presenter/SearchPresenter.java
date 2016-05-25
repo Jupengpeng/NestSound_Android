@@ -34,10 +34,7 @@ public class SearchPresenter extends BasePresenter<ISearchView> {
             }
             @Override
             public void onResponse(String response) {
-                if (ParseUtils.checkCode(response)) {
-                } else {
-                    ToastUtils.toast(context, ParseUtils.getMsg(response));
-                }
+
             }
         });
     }

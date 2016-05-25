@@ -5,11 +5,17 @@ import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.xilu.wybz.bean.LyricBean;
+import com.xilu.wybz.bean.LyricsListBean;
 import com.xilu.wybz.bean.MineBean;
 import com.xilu.wybz.bean.MsgBean;
+import com.xilu.wybz.bean.MusicBean;
+import com.xilu.wybz.bean.MusicDetailBean;
 import com.xilu.wybz.bean.TemplateBean;
+import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.bean.WorksData;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -78,26 +84,6 @@ public class ParseUtils {
             return null;
         }
     }
-
-
-//    public static String parseSponse(){
-//        try {
-//            JSONObject jsonObject = new JSONObject(response);
-//            int code = jsonObject.getInt("code");
-//            if (code==200) {
-//                worksDatas = new Gson().fromJson(new JSONObject(response).getString("data"),new TypeToken<List<WorksData>>(){}.getType());
-//            }else{
-//                if(jsonObject.has("message")&&!TextUtils.isEmpty(jsonObject.getString("message")))
-//                    showMsg(context,jsonObject.getString("message"));
-//            }
-//            return worksDatas;
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return worksDatas;
-//        }
-//    }
-
-
 
     public static boolean checkCode(String jsonData) {
         try {

@@ -22,6 +22,7 @@ import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.DownLoaderDir;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.MyCommon;
+import com.xilu.wybz.dao.DBManager;
 import com.xilu.wybz.presenter.SaveWordPresenter;
 import com.xilu.wybz.ui.IView.ISaveWordView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
@@ -76,7 +77,6 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView{
 
     @Override
     public void initView() {
-        EventBus.getDefault().register(this);
         setTitle("保存发布");
         Bundle bundle = getIntent().getExtras();
         if(bundle!=null){
@@ -184,7 +184,7 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView{
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_saveword, menu);
+        getMenuInflater().inflate(R.menu.menu_makeword, menu);
         return true;
     }
 
@@ -192,21 +192,27 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView{
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.menu_save:
-                break;
-            case R.id.menu_save_draft:
                 if(!TextUtils.isEmpty(coverPath)){
                     uploadCoverPic();
                 }else{
                     showMsg("请先选择歌词的封面！");
                 }
                 break;
+            case R.id.menu_drafts:
+                saveToLocal();
+                break;
         }
         return true;
     }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    //保存到草稿箱
+    public void saveToLocal(){
+        DBManager.createDb(context,userId);
+        if(worksData.draftType==2){//更新草稿箱
+            DBManager.update(worksData);
+        }else{
+            worksData.setDraftType(2);
+            DBManager.insert(worksData);
+        }
 
     }
     @Override
@@ -227,7 +233,10 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView{
             ParseUtils.showMsg(context, result);
         }
     }
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
     @Override
     public void saveWordFail() {
         cancelPd();

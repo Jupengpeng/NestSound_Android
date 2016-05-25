@@ -39,10 +39,6 @@ public class SearchSongFragment extends BaseListFragment<WorksData> implements I
         }
     }
     @Override
-    protected BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
-        return null;
-    }
-    @Override
     public void onRefresh(int action) {
         if (mDataList == null) {
             mDataList = new ArrayList<>();
@@ -83,5 +79,9 @@ public class SearchSongFragment extends BaseListFragment<WorksData> implements I
         llNoData.setVisibility(View.VISIBLE);
         recycler.onRefreshCompleted();
         recycler.enableLoadMore(false);
+    }
+    @Override
+    protected BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
+        return null;
     }
 }

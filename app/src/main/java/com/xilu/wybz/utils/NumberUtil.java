@@ -4,8 +4,6 @@ package com.xilu.wybz.utils;
  * Created by Administrator on 2016/5/24.
  */
 public class NumberUtil {
-
-
     /**
      * 将浏览及赞的数量格式化.
      * @param number

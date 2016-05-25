@@ -40,27 +40,21 @@ public class MsgCollectionPresenter extends BasePresenter<ICollectionView> {
 
             @Override
             public void onResponse(String response) {
-                if(ParseUtils.checkCode(response)){
-                    try {
-                        String resultlist = new JSONObject(response).getString("data");
-                        List<CollectionBean> mList = new Gson().fromJson(resultlist, new TypeToken<List<CollectionBean>>() {
-                        }.getType());
-                        if(mList.size()==0){
-                            if(page==1){
-                                iView.loadNoData();
-                            }else{
-                                iView.loadNoMore();
-                            }
+                try {
+                    String resultlist = new JSONObject(response).getString("data");
+                    List<CollectionBean> mList = new Gson().fromJson(resultlist, new TypeToken<List<CollectionBean>>() {}.getType());
+                    if(mList.size()==0){
+                        if(page==1){
+                            iView.loadNoData();
                         }else{
-                            iView.showCollectionData(mList);
+                            iView.loadNoMore();
                         }
-
-                    } catch (JSONException e) {
-                        iView.loadNoData();
+                    }else{
+                        iView.showCollectionData(mList);
                     }
 
-                }else{
-                    iView.loadFail();
+                } catch (JSONException e) {
+                    iView.loadNoData();
                 }
             }
         });

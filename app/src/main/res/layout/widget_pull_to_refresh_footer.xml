@@ -2,11 +2,11 @@
     android:id="@+id/ll_pull_refresh_footer"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center_horizontal">
+    android:gravity="center">
 
 
     <ProgressBar
-        style="@android:style/Widget.ProgressBar.Small"
+        style="@style/ProgressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical" />
@@ -15,8 +15,8 @@
         android:id="@+id/footer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp"
         android:layout_centerHorizontal="true"
-        android:layout_margin="10dp"
         android:textColor="@color/black"
         android:ellipsize="end"
         android:singleLine="true"

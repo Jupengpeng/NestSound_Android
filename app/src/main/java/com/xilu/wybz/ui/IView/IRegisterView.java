@@ -1,11 +1,13 @@
 package com.xilu.wybz.ui.IView;
 
+import com.xilu.wybz.bean.UserBean;
+
 /**
  * Created by June on 16/4/5.
  */
 public interface IRegisterView extends IBaseView{
     void registerStart();
-    void registerSuccess(String result);
+    void registerSuccess(UserBean userBean);
     void registerFail();
     void registerFinish();
 

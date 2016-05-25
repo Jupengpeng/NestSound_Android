@@ -39,10 +39,8 @@ public class SongablumMoreActivity extends BaseListActivity<SongAlbum> implement
     public void initView() {
         setTitle("歌单");
         tvNoData.setText(nodata);
-        int dip10 = DensityUtil.dip2px(context,10);
-        recycler.setPadding(dip10,dip10,dip10,dip10);
     }
-
+    public boolean hasPadding() {return true;}
     @Override
     protected void setUpData() {
         super.setUpData();
@@ -65,7 +63,7 @@ public class SongablumMoreActivity extends BaseListActivity<SongAlbum> implement
     }
 
     protected RecyclerView.ItemDecoration getItemDecoration() {
-        return new GridSpacingItemDecoration(2, DensityUtil.dip2px(context,10), false);
+        return new GridSpacingItemDecoration(2, dip10, false);
     }
 
     @Override

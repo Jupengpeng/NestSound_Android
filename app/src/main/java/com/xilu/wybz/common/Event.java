@@ -1,6 +1,7 @@
 package com.xilu.wybz.common;
 
 import com.xilu.wybz.bean.PhotoBean;
+import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.bean.WorksData;
 
 import java.util.HashSet;
@@ -161,6 +162,14 @@ public class Event {
     }
 
     public static class LoginSuccessEvent {
+        UserBean userBean;
+        public LoginSuccessEvent(UserBean userBean){
+            this.userBean= userBean;
+        }
+
+        public UserBean getUserBean() {
+            return userBean;
+        }
     }
 
     public static class LoginOutEvent {

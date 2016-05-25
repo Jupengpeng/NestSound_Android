@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -15,6 +16,7 @@ import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.ImageLoadUtil;
+import com.xilu.wybz.utils.NumberUtil;
 
 import java.util.List;
 
@@ -54,9 +56,9 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.WorksVie
         ImageLoadUtil.loadImage(url, holder.ivCover);
         holder.tvName.setText(worksData.name);
         holder.tvAuthor.setText(worksData.author);
-        holder.tvLookNum.setText(worksData.looknum+"");
-        holder.tvZanNum.setText(worksData.zannum+"");
-        holder.tvFovNum.setText(worksData.fovnum+"");
+        holder.tvLookNum.setText(NumberUtil.format(worksData.looknum));
+        holder.tvZanNum.setText(NumberUtil.format(worksData.zannum));
+        holder.tvFovNum.setText(NumberUtil.format(worksData.fovnum));
         holder.tvRank.setText((position<9?"0":"")+(position+1));
         if (mOnItemClickListener != null) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -91,7 +93,7 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.WorksVie
         public WorksViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
-            ivCover.setLayoutParams(new RelativeLayout.LayoutParams(itemWidth, itemWidth));
+            ivCover.setLayoutParams(new LinearLayout.LayoutParams(itemWidth, itemWidth));
         }
     }
 }

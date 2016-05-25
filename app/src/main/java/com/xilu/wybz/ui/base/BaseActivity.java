@@ -62,14 +62,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected ImageView ivLoading;
     protected MaterialDialog materialDialog;
 
-
-
-
-
-
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -181,6 +173,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         Intent intent = new Intent();
         intent.setClass(context, cls);
         startActivity(intent);
+        if(cls == LoginActivity.class){
+            overridePendingTransition(R.anim.activity_open,0);
+        }
 //        overridePendingTransition(R.anim.right_in_anim, R.anim.left_out_anim);
     }
 
