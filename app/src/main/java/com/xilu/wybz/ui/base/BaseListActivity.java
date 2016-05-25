@@ -42,9 +42,11 @@ public abstract class BaseListActivity<T> extends BasePlayMenuActivity implement
     ImageView ivNoNet;
     protected int action;
     protected int page;
+    protected int dip10;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        dip10 = DensityUtil.dip2px(context, 10);
         initPresenter();
         setUpData();
     }
@@ -55,6 +57,11 @@ public abstract class BaseListActivity<T> extends BasePlayMenuActivity implement
     }
     protected void setUpData() {
         setUpAdapter();
+        if(hasPadding()){
+            recycler.setPadding(dip10, dip10, dip10, dip10);
+            recycler.setClipChildren(false);
+            recycler.setClipToPadding(false);
+        }
         recycler.setOnRefreshListener(this);
         recycler.setLayoutManager(getLayoutManager());
         recycler.addItemDecoration(getItemDecoration());
@@ -66,7 +73,7 @@ public abstract class BaseListActivity<T> extends BasePlayMenuActivity implement
             }
         });
     }
-
+    public boolean hasPadding() {return false;}
     protected void setUpAdapter() {
         adapter = new ListAdapter();
     }

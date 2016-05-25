@@ -15,6 +15,8 @@ public class MyCommon {
     public static int PLAY_MODEL_RANDOM = 2;
     public static int PLAY_MODEL_LOOP = 3;
     public static String NEWS = "news";
+    public static String MORENEWS = "morenews";
+    public static String MORERED = "morered";
     public static String RED = "red";
     public static String GEDAN = "gedan";
     public static String RANK_SONG = "rank_song";
@@ -94,11 +96,14 @@ public class MyCommon {
         map.put(GEDAN, 2);//歌单
         map.put(RANK_SONG, 2);//歌单
 
+        map.put(MORENEWS, 2);//最新
+        map.put(NEWS, 2);//最新
+        map.put(MORERED, 2);//最热
+        map.put(RED, 2);//最热
+
         map.put("mywork", 3);//我的作品
         map.put("myfov", 3);//我的收藏
         map.put("myzan", 3);//我的收藏
-        map.put(NEWS, 3);//最新
-        map.put(RED, 3);//最热
 
         map.put("yueshuo", 3);//乐说
 

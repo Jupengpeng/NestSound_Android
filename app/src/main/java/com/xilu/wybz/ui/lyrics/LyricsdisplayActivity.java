@@ -28,6 +28,8 @@ import com.xilu.wybz.ui.IView.ILyricsView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.ui.mine.UserInfoActivity;
 import com.xilu.wybz.ui.setting.SettingFeedActivity;
+import com.xilu.wybz.utils.DateFormatUtils;
+import com.xilu.wybz.utils.DateTimeUtil;
 import com.xilu.wybz.utils.NetWorkUtil;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringStyleUtil;
@@ -201,7 +203,7 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
         iv_zan.setImageResource(isZan == 0 ? R.drawable.ic_lyrics_zan1 : R.drawable.ic_lyrics_zan2);
         loadTitleContent();
         tv_author.setText(worksData.getAuthor());
-        tvTime.setText(worksData.getCreateTime());
+        tvTime.setText(DateTimeUtil.timestamp2DateTime(worksData.getCreateTime()));
         loadImage(worksData.getPic(), iv_head);
     }
 

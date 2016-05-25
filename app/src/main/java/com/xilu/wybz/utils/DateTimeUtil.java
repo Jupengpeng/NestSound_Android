@@ -24,28 +24,28 @@ public class DateTimeUtil {
     public static String timestamp2DateTime(long timestamp) {
         if (timestamp == 0) return getDateTime();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        String date = sdf.format(new Date(timestamp * 1000));
+        String date = sdf.format(new Date(timestamp));
         return date;
     }
 
     public static String timestamp2Date(long timestamp) {
         if (timestamp == 0) return getDateTime();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String date = sdf.format(new Date(timestamp * 1000));
+        String date = sdf.format(new Date(timestamp));
         return date;
     }
 
     public static String timestamp2Time(long timestamp) {
         if (timestamp == 0) return getDateTime();
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-        String date = sdf.format(new Date(timestamp * 1000));
+        String date = sdf.format(new Date(timestamp));
         return date;
     }
 
     public static String timestamp2DateTime2(long timestamp) {
         if (timestamp == 0) return getDateTime();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String date = sdf.format(new Date(timestamp * 1000));
+        String date = sdf.format(new Date(timestamp));
         return date;
     }
 

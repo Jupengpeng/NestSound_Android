@@ -194,7 +194,6 @@ public class SongAblumActivity extends ToolbarActivity implements IRecSongView {
     @Override
     public void showSongDetail(GleeDetailBean gleeDetailBean) {
         musicBeans.addAll(gleeDetailBean.workList);
-        musicBeans.addAll(gleeDetailBean.workList);
         tvCount.setText("(共"+gleeDetailBean.workCount+"首）");
         songListAdapter.notifyDataSetChanged();
     }

@@ -15,8 +15,6 @@ public abstract class ToolbarActivity extends BaseActivity {
     protected RelativeLayout mAppBar;
     protected Toolbar mToolbar;
     protected boolean mIsHidden = false;
-    public void onToolbarClick() {
-    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -48,10 +48,8 @@ public class MusicTalkMoreActivity extends BaseListActivity<MusicTalk> implement
     public void initView() {
         setTitle("歌单");
         tvNoData.setText(nodata);
-        int dip10 = DensityUtil.dip2px(context,10);
-        recycler.setPadding(dip10,dip10,dip10,dip10);
     }
-
+    public boolean hasPadding() {return true;}
     @Override
     protected void setUpData() {
         super.setUpData();
@@ -74,7 +72,7 @@ public class MusicTalkMoreActivity extends BaseListActivity<MusicTalk> implement
     }
 
     protected RecyclerView.ItemDecoration getItemDecoration() {
-        return new SpacesItemDecoration(DensityUtil.dip2px(context,10));
+        return new SpacesItemDecoration(dip10);
     }
 
     @Override

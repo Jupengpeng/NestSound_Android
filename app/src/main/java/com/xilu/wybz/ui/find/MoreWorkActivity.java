@@ -18,10 +18,14 @@ import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.FindMoreWorkPresenter;
 import com.xilu.wybz.ui.IView.IFindMoreWorkView;
+import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.ui.base.BaseListActivity;
+import com.xilu.wybz.ui.lyrics.LyricsdisplayActivity;
+import com.xilu.wybz.ui.song.PlayAudioActivity;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.ImageLoadUtil;
 import com.xilu.wybz.utils.NumberUtil;
+import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.view.SpacesItemDecoration;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.DividerItemDecoration;
@@ -40,8 +44,8 @@ public class MoreWorkActivity extends BaseListActivity<WorksData> implements IFi
     int orderType;
     int workType;
     int itemWidth;
+    String COME;
     FindMoreWorkPresenter findMoreWorkPresenter;
-    int dip10;
     public static void toMoreSongActivity(Context context, int orderType, int workType) {
         Intent intent = new Intent(context, MoreWorkActivity.class);
         intent.putExtra("orderType", orderType);
@@ -60,7 +64,7 @@ public class MoreWorkActivity extends BaseListActivity<WorksData> implements IFi
         findMoreWorkPresenter = new FindMoreWorkPresenter(context, this);
         findMoreWorkPresenter.init();
     }
-
+    public boolean hasPadding() {return true;}
     public void initView() {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -70,8 +74,10 @@ public class MoreWorkActivity extends BaseListActivity<WorksData> implements IFi
         if(workType==1) {
             if (orderType == 1) {
                 setTitle("最新歌曲");
+                COME = MyCommon.MORENEWS;
             } else if (orderType == 2) {
                 setTitle("热门歌曲");
+                COME = MyCommon.MORERED;
             }
         }else{
             if (orderType == 1) {
@@ -80,8 +86,6 @@ public class MoreWorkActivity extends BaseListActivity<WorksData> implements IFi
                 setTitle("热门歌词");
             }
         }
-        dip10 = DensityUtil.dip2px(context, 10);
-        recycler.setPadding(dip10, dip10, dip10, dip10);
     }
 
     @Override
@@ -165,7 +169,25 @@ public class MoreWorkActivity extends BaseListActivity<WorksData> implements IFi
 
         @Override
         public void onItemClick(View view, int position) {
-
+            if(workType==1){
+                toPlayPos(position);
+            }else{
+                LyricsdisplayActivity.toLyricsdisplayActivity(context,mDataList.get(position).getItemid(),0,mDataList.get(position).name);
+            }
+        }
+    }
+    public void toPlayPos(int position){
+        if (mDataList.size() > 0) {
+            String playFrom = PrefsUtil.getString("playFrom",context);
+            if(!playFrom.equals(COME)|| MyApplication.ids.size()==0){
+                if (MyApplication.ids.size() > 0)
+                    MyApplication.ids.clear();
+                for (WorksData worksData : mDataList) {
+                    MyApplication.ids.add(worksData.getItemid());
+                }
+            }
+            WorksData worksData = mDataList.get(position);
+            PlayAudioActivity.toPlayAudioActivity(context, worksData.getItemid(), "", COME, position);
         }
     }
 }

@@ -10,8 +10,11 @@ import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.SongPresenter;
 import com.xilu.wybz.ui.IView.ISongView;
+import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.ui.find.MoreWorkActivity;
+import com.xilu.wybz.ui.song.PlayAudioActivity;
 import com.xilu.wybz.utils.DensityUtil;
+import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.view.GridSpacingItemDecoration;
 
 import java.util.List;
@@ -53,7 +56,7 @@ public class SongFragment extends BaseFragment implements ISongView {
         newWorksAdapter.setOnItemClickListener(new WorksAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-
+                toPlayPos(newWorksDatas,position,MyCommon.NEWS);
             }
             @Override
             public void onItemLongClick(View view, int position) {
@@ -72,7 +75,7 @@ public class SongFragment extends BaseFragment implements ISongView {
         hotWorksAdapter.setOnItemClickListener(new WorksAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-
+                toPlayPos(hotWorksDatas,position,MyCommon.RED);
             }
 
             @Override
@@ -107,6 +110,20 @@ public class SongFragment extends BaseFragment implements ISongView {
             case R.id.tv_new_more:
                 MoreWorkActivity.toMoreSongActivity(context, 1, 1);
                 break;
+        }
+    }
+    public void toPlayPos(List<WorksData> worksDataList,int position,String COME){
+        if (worksDataList.size() > 0) {
+            String playFrom = PrefsUtil.getString("playFrom",context);
+            if(!playFrom.equals(COME)|| MyApplication.ids.size()==0){
+                if (MyApplication.ids.size() > 0)
+                    MyApplication.ids.clear();
+                for (WorksData worksData : worksDataList) {
+                    MyApplication.ids.add(worksData.getItemid());
+                }
+            }
+            WorksData worksData = worksDataList.get(position);
+            PlayAudioActivity.toPlayAudioActivity(context, worksData.getItemid(), "", COME, position);
         }
     }
 }

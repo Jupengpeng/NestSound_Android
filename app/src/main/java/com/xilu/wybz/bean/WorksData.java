@@ -46,7 +46,7 @@ public class WorksData implements Serializable {
     public int hotid;//伴奏id
     public String hotAuthor;//伴奏作者
     public String hotTitle;//伴奏标题
-    public String createTime;//创建时间
+    public long createTime;//创建时间
     public String createdate;//创建时间
     public int recordtimes;//录音时长
     public String recordPath;//录歌时人声或者灵感记录的音频
@@ -288,11 +288,7 @@ public class WorksData implements Serializable {
         this.author = author;
     }
 
-    public String getCreateTime() {
-        if(StringUtil.isLong(createTime)){
-            long time = Long.parseLong(createTime);
-            createTime = DateTimeUtil.timestamp2Time(time);
-        }
+    public long getCreateTime() {
         return createTime;
     }
 
@@ -304,7 +300,7 @@ public class WorksData implements Serializable {
         this.detail = detail;
     }
 
-    public void setCreateTime(String createTime) {
+    public void setCreateTime(long createTime) {
         this.createTime = createTime;
     }
 

@@ -62,14 +62,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected ImageView ivLoading;
     protected MaterialDialog materialDialog;
 
-
-
-
-
-
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
