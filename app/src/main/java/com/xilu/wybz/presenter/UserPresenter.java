@@ -1,24 +1,13 @@
 package com.xilu.wybz.presenter;
 
 import android.content.Context;
-import android.util.Log;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.xilu.wybz.bean.CollectionBean;
-import com.xilu.wybz.bean.MineBean;
-import com.xilu.wybz.bean.UserBean;
-import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.MyHttpClient;
+import com.xilu.wybz.http.callback.AppStringCallback;
 import com.xilu.wybz.http.callback.MyStringCallback;
 import com.xilu.wybz.ui.IView.IUserView;
-import com.xilu.wybz.utils.ParseUtils;
-
-import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import okhttp3.Call;
 
@@ -27,75 +16,31 @@ import okhttp3.Call;
  */
 public class UserPresenter extends BasePresenter<IUserView> {
 
-    public static final int TYPE_SONG           = 1;
-    public static final int TYPE_LYRIC          = 2;
-    public static final int TYPE_COLLECTION     = 3;
-    public static final int TYPE_INSPIRATION    = 4;
+    public static final int TYPE_SONG = 1;
+    public static final int TYPE_LYRIC = 2;
+    public static final int TYPE_COLLECTION = 3;
+    public static final int TYPE_INSPIRATION = 4;
 
 
-    public UserPresenter(Context context, IUserView iView) {
+    public static final int TYPE_USER_CENTER = 5;
+    public static final int TYPE_OTHER_CENTER = 6;
+
+
+    public int userType;
+
+
+    public UserPresenter(Context context, IUserView iView, int userType) {
         super(context, iView);
-
-
+        this.userType = userType;
     }
 
 
-    public void getInspirationList(String userId, int page) {
+    public void requestUserInfo(String userId) {
 
-        executeUser(userId, 1, page, new MyStringCallback() {
+        request(userId,1,1,new AppStringCallback(context){
             @Override
             public void onResponse(String response) {
-                Log.d("http", response);
-                if (ParseUtils.checkCode(response)) {
-                    List<WorksData> dataList = getDataList(response);
-
-                } else {
-                    ParseUtils.showMsg(context, response);
-                }
-            }
-
-            @Override
-            public void onError(Call call, Exception e) {
-                super.onError(call, e);
-            }
-        });
-
-    }
-
-    public void getSongList(String userId, int page) {
-        executeUser(userId, 1, page, new MyStringCallback() {
-            @Override
-            public void onResponse(String response) {
-                Log.d("http", response);
-            }
-
-            @Override
-            public void onError(Call call, Exception e) {
-                super.onError(call, e);
-            }
-        });
-
-    }
-
-    public void getLyricList(String userId, int page) {
-        executeUser(userId, 1, page, new MyStringCallback() {
-            @Override
-            public void onResponse(String response) {
-                Log.d("http", response);
-            }
-
-            @Override
-            public void onError(Call call, Exception e) {
-                super.onError(call, e);
-            }
-        });
-    }
-
-    public void getCollectionList(String userId, int page) {
-        executeUser(userId, 1, page, new MyStringCallback() {
-            @Override
-            public void onResponse(String response) {
-                Log.d("http", response);
+                super.onResponse(response);
             }
 
             @Override
@@ -106,37 +51,32 @@ public class UserPresenter extends BasePresenter<IUserView> {
     }
 
 
-
-    protected List<WorksData> getDataList(String json){
-        MineBean mineBean = ParseUtils.parseMineBean(json);
-        if (mineBean == null){
-            return null;
+    public void request(String userId, int type, int page, MyStringCallback callback) {
+        if (userType == TYPE_USER_CENTER) {
+            executeUser(userId, type, page, callback);
+        } else if (userType == TYPE_OTHER_CENTER) {
+            executeOther(userId, type, page, callback);
         }
-        return mineBean.getList();
     }
-    protected UserBean getUserInfo(String json){
-        MineBean mineBean = ParseUtils.parseMineBean(json);
-        if (mineBean == null){
-            return null;
+
+    protected void executeUser(String userId, int type, int page, MyStringCallback callback) {
+        execute(MyHttpClient.getUserCenter(), userId, type, page, callback);
+    }
+
+    protected void executeOther(String userId, int type, int page, MyStringCallback callback) {
+        execute(MyHttpClient.getOtherCenter(), userId, type, page, callback);
+    }
+
+    protected void execute(String url, String userId, int type, int page, MyStringCallback callback) {
+        if (params == null) {
+            params = new HashMap<>();
         }
-        return mineBean.getUser();
+        params.clear();
+        params.put("uid", userId);
+        params.put("type", "" + type);
+        params.put("page", "" + page);
+        httpUtils.get(url, params, callback);
     }
-
-    protected void executeUser(String userId,int type, int page, MyStringCallback callback ){
-       execute(MyHttpClient.getUserCenter(),userId,type,page,callback);
-    }
-    protected void executeOther(String userId,int type, int page, MyStringCallback callback ){
-        execute(MyHttpClient.getOtherCenter(),userId,type,page,callback);
-    }
-
-    protected void execute(String url, String userId,int type, int page, MyStringCallback callback ){
-        Map<String, String> param = new HashMap<>();
-        param.put("uid", userId);
-        param.put("type", "" + type);
-        param.put("page", "" + page);
-        httpUtils.get(url,param,callback);
-    }
-
 
 
 }

@@ -98,7 +98,7 @@ public class FollowAndFansActivity extends BaseListActivity<String> implements I
 
     }
 
-    public class FollowAndFansViewHolder extends BaseViewHolder{
+    public static class FollowAndFansViewHolder extends BaseViewHolder{
 
         public FollowAndFansViewHolder(View itemView) {
             super(itemView);

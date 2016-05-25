@@ -1,10 +1,11 @@
 package com.xilu.wybz.presenter;
 
 import android.content.Context;
-import android.view.View;
+import android.text.TextUtils;
 
 import com.xilu.wybz.http.HttpUtils;
 import com.xilu.wybz.ui.IView.IBaseView;
+import com.xilu.wybz.utils.ToastUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,5 +28,12 @@ public abstract class BasePresenter<T extends IBaseView> {
     }
     public void init(){
         iView.initView();
+    }
+
+
+    public void showMessage(String message){
+        if (!TextUtils.isEmpty(message)) {
+            ToastUtils.toast(context, message);
+        }
     }
 }

@@ -20,6 +20,7 @@ import com.xilu.wybz.ui.mine.view.UserCollectionView;
 import com.xilu.wybz.ui.mine.view.UserInspirationView;
 import com.xilu.wybz.ui.mine.view.UserLyricView;
 import com.xilu.wybz.ui.mine.view.UserSongView;
+import com.xilu.wybz.ui.song.CommentActivity;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtil;
@@ -102,7 +103,7 @@ public class MineActivity extends BaseActivity implements IUserView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mUserPresenter = new UserPresenter(context, this);
+        mUserPresenter = new UserPresenter(context, this,UserPresenter.TYPE_USER_CENTER);
         mUserPresenter.init();
     }
 
@@ -166,7 +167,9 @@ public class MineActivity extends BaseActivity implements IUserView {
 
     @OnClick(R.id.iv_head)
     public void onClickHeadImage() {
-        mUserPresenter.getInspirationList("147", 1);
+//        mUserPresenter.getInspirationList("147", 1);
+        startActivity(CommentActivity.class);
+
     }
 
 

@@ -4,12 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
@@ -18,6 +13,7 @@ import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.xilu.wybz.R;
 import com.xilu.wybz.ui.IView.IDraftView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
+import com.xilu.wybz.ui.mine.Adapter.DraftAdapter;
 import com.xilu.wybz.utils.DensityUtil;
 
 import butterknife.Bind;

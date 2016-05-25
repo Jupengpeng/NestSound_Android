@@ -1,4 +1,4 @@
-package com.test.app;
+package com.xilu.wybz.user;
 
 import com.xilu.wybz.utils.DateTimeUtil;
 

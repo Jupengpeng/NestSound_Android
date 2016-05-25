@@ -1,4 +1,4 @@
-package com.xilu.wybz.ui.mine.view;
+package com.xilu.wybz.ui.mine.Adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

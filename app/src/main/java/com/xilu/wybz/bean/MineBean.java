@@ -1,9 +1,5 @@
 package com.xilu.wybz.bean;
 
-import android.text.TextUtils;
-
-import com.xilu.wybz.common.YinChaoConfig;
-
 import java.util.List;
 
 /**
@@ -11,26 +7,26 @@ import java.util.List;
  */
 public class MineBean {
 
-    String fannum;
-    String gznum;
+    int fansnum;
+    int gznum;
     UserBean user;
 
     List<WorksData> list;
 
 
-    public String getFannum() {
-        return fannum;
+    public int getFansnum() {
+        return fansnum;
     }
 
-    public void setFannum(String fannum) {
-        this.fannum = fannum;
+    public void setFansnum(int fansnum) {
+        this.fansnum = fansnum;
     }
 
-    public String getGznum() {
+    public int getGznum() {
         return gznum;
     }
 
-    public void setGznum(String gznum) {
+    public void setGznum(int gznum) {
         this.gznum = gznum;
     }
 

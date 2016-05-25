@@ -1,4 +1,4 @@
-package com.xilu.wybz.ui.mine.view;
+package com.xilu.wybz.ui.mine.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,13 +9,13 @@ import android.widget.TextView;
 
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.WorksData;
+import com.xilu.wybz.ui.mine.Adapter.UserBaseAdapter;
 import com.xilu.wybz.utils.NumberUtil;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 
 import java.util.List;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 
 /**
  * Created by Administrator on 2016/5/22.

@@ -26,6 +26,19 @@ public class InforCommentBean implements Serializable {
     String id;
     String workid;
 
+    public String comment_type;
+    public String commentdate;
+    public int itemid;
+    public String nickname;
+    public int uid;
+    public String target_nickname;
+    public int target_uid;
+    public int type;
+
+
+
+
+
     public String getWorkid() {
         return workid;
     }

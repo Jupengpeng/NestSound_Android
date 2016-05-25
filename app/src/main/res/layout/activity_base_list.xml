@@ -10,6 +10,13 @@
         android:id="@+id/pullRecycler"
         android:layout_below="@+id/app_bar_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_weight="1"
+        android:layout_height="0dp" />
+    <ViewStub
+        android:id="@+id/view_footbar_send"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout="@layout/view_footbar_send"
+        />
 
 </LinearLayout>

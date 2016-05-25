@@ -1,4 +1,4 @@
-package com.xilu.wybz.ui.mine.view;
+package com.xilu.wybz.ui.mine.Adapter;
 
 import android.content.Context;
 import android.util.Log;
@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.WorksData;
+import com.xilu.wybz.ui.mine.Adapter.UserBaseAdapter;
 import com.xilu.wybz.utils.DateFormatUtils;
 import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.view.pull.BaseViewHolder;

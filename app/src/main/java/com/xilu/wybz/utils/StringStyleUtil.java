@@ -33,6 +33,21 @@ public class StringStyleUtil {
         spannableString.setSpan(new ForegroundColorSpan(0xff539ac2),2,3, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         return spannableString;
     }
+
+
+    public static SpannableString getWorkCommentStyleStr(InforCommentBean commentBean) {
+        String nickName = commentBean.target_nickname;
+        if (StringUtil.isBlank(nickName)){
+            return new SpannableString(commentBean.getComment());
+        }
+
+        String comment ="回复" + nickName+"："+commentBean.getComment();
+        SpannableString spannableString = new SpannableString(comment);
+
+        spannableString.setSpan(new ForegroundColorSpan(0xff539ac2),2,2+nickName.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        return spannableString;
+    }
+
     public static SpannableString getParentCommentStyleStr(InforCommentBean commentBean) {
         String comment ="我:" + commentBean.getParentcomment();
         SpannableString spannableString = new SpannableString(comment);

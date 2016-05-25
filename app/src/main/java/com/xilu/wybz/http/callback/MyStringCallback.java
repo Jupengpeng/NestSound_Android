@@ -21,6 +21,8 @@ public class MyStringCallback extends StringCallback {
 
     @Override
     public void onResponse(String response) {
+
+
     }
 
     @Override

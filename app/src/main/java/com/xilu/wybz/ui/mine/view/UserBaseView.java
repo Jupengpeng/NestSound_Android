@@ -2,10 +2,8 @@ package com.xilu.wybz.ui.mine.view;
 
 import android.app.Activity;
 import android.content.Context;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -14,11 +12,9 @@ import android.widget.TextView;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.ui.IView.IUserListView;
-import com.xilu.wybz.view.pull.BaseListAdapter;
-import com.xilu.wybz.view.pull.PullRecycler;
+import com.xilu.wybz.ui.mine.Adapter.UserBaseAdapter;
 import com.xilu.wybz.view.pull.layoutmanager.MyLinearLayoutManager;
 
-import java.sql.Date;
 import java.util.List;
 
 /**
@@ -46,7 +42,6 @@ public class UserBaseView extends LinearLayout implements IUserListView {
     public UserBaseView(Context context) {
         super(context);
         this.mContext = context;
-        init();
     }
 
     /**
@@ -58,11 +53,10 @@ public class UserBaseView extends LinearLayout implements IUserListView {
         super(context);
         this.mContext = context;
         this.mBaseListAdapter = adapter;
-        init();
     }
 
-
-    public void init(){
+    @Override
+    public void initView() {
 
         View rootView = ((Activity)mContext).getLayoutInflater().inflate(R.layout.view_user_base, null);
 

@@ -1,4 +1,4 @@
-package com.xilu.wybz.ui.mine;
+package com.xilu.wybz.ui.mine.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
