@@ -2,10 +2,12 @@ package com.xilu.wybz.presenter;
 
 import android.content.Context;
 
+import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.callback.MyStringCallback;
 import com.xilu.wybz.ui.IView.IPasswordView;
 import com.xilu.wybz.ui.IView.IRegisterView;
+import com.xilu.wybz.utils.ParseUtils;
 
 import java.util.HashMap;
 
@@ -35,7 +37,8 @@ public class PasswordPresenter extends BasePresenter<IPasswordView>{
             @Override
             public void onResponse(String response) {
                 super.onResponse(response);
-                iView.modifyPwdSuccess(response);
+                UserBean userBean = ParseUtils.getUserBean(context, response);
+                iView.modifyPwdSuccess(userBean);
             }
 
             @Override

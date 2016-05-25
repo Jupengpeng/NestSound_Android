@@ -29,35 +29,24 @@ public class MusicTalkMorePresenter extends BasePresenter<IMusicTalkMoreView> {
     public MusicTalkMorePresenter(Context context, IMusicTalkMoreView iView) {
         super(context, iView);
     }
-    public void loadData(String userId,int page){
+
+    public void loadData(String userId, int page) {
         params = new HashMap<>();
-        params.put("page",page+"");
-        params.put("uid",userId);
-        httpUtils.get(MyHttpClient.getMusicTalkUrl(),params,new MyStringCallback(){
+        params.put("page", page + "");
+        params.put("uid", userId);
+        httpUtils.get(MyHttpClient.getMusicTalkUrl(), params, new MyStringCallback() {
             @Override
             public void onResponse(String response) {
                 super.onResponse(response);
-                if (ParseUtils.checkCode(response)) {
-                    try {
-                        String resultlist = new JSONObject(response).getString("data");
-                        List<MusicTalk> mList = new Gson().fromJson(resultlist, new TypeToken<List<MusicTalk>>() {
-                        }.getType());
-                        if (mList.size() == 0) {
-                            if (page == 1) {
-                                iView.loadNoData();
-                            } else {
-                                iView.loadNoMore();
-                            }
-                        } else {
-                            iView.showMusicTalkData(mList);
-                        }
-
-                    } catch (JSONException e) {
+                List<MusicTalk> musicTalks = ParseUtils.getMusicTalksData(context, response);
+                if (musicTalks.size() == 0) {
+                    if (page == 1) {
                         iView.loadNoData();
+                    } else {
+                        iView.loadNoMore();
                     }
-
                 } else {
-                    ToastUtils.toast(context,ParseUtils.getMsg(response));
+                    iView.showMusicTalkData(musicTalks);
                 }
             }
 

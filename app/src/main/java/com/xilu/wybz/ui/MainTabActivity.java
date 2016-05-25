@@ -8,8 +8,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.CheckedTextView;
 
+import com.umeng.analytics.MobclickAgent;
+import com.umeng.message.PushAgent;
 import com.xilu.wybz.R;
 import com.xilu.wybz.adapter.MyPagerAdapter;
+import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.ui.base.BasePlayMenuActivity;
@@ -206,6 +209,15 @@ public class MainTabActivity extends BasePlayMenuActivity {
                 stopAnimal();
                 break;
         }
+    }
+    public void onEventMainThread(Event.LoginSuccessEvent event){
+        UserBean ub = event.getUserBean();
+        userId = ub.userid+"";
+        isLogin = true;
+        PrefsUtil.saveUserInfo(context, ub);
+        MobclickAgent.onProfileSignIn(ub.userid+"");
+        PushAgent.getInstance(context).setAlias(ub.userid+"", "yinchao");
+        PushAgent.getInstance(context).setExclusiveAlias(ub.userid+"", "yinchao");
     }
     @Override
     protected void onDestroy() {

@@ -1,11 +1,13 @@
 package com.xilu.wybz.ui.IView;
 
+import com.xilu.wybz.bean.UserBean;
+
 /**
  * Created by June on 16/4/5.
  */
 public interface IPasswordView extends IBaseView{
     void modifyPwdStart();
-    void modifyPwdSuccess(String result);
+    void modifyPwdSuccess(UserBean userBean);
     void modifyPwdFail();
     void modifyPwdFinish();
 

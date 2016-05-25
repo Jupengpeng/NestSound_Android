@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.xilu.wybz.bean.DataBean;
 import com.xilu.wybz.bean.InforCommentBean;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.callback.MyStringCallback;
@@ -43,11 +44,8 @@ public class FeedbackPresenter extends BasePresenter<IFeedbackView> {
 
             @Override
             public void onResponse(String response) {
-                if (ParseUtils.checkCode(response)) {
-                    iView.postSuccess();
-                } else {
-                    ToastUtils.toast(context, ParseUtils.getMsg(response));
-                }
+                DataBean dataBean = ParseUtils.getDataBean(response);
+                ToastUtils.toast(context,dataBean.message);
             }
         });
     }

@@ -30,35 +30,24 @@ public class SongablumMorePresenter extends BasePresenter<ISongablumMoreView> {
     public SongablumMorePresenter(Context context, ISongablumMoreView iView) {
         super(context, iView);
     }
-    public void loadData(String userId,int page){
+
+    public void loadData(String userId, int page) {
         params = new HashMap<>();
-        params.put("page",page+"");
-        params.put("uid",userId);
-        httpUtils.get(MyHttpClient.getGleeListUrl(),params,new MyStringCallback(){
+        params.put("page", page + "");
+        params.put("uid", userId);
+        httpUtils.get(MyHttpClient.getGleeListUrl(), params, new MyStringCallback() {
             @Override
             public void onResponse(String response) {
                 super.onResponse(response);
-                if (ParseUtils.checkCode(response)) {
-                    try {
-                        String resultlist = new JSONObject(response).getString("data");
-                        List<SongAlbum> mList = new Gson().fromJson(resultlist, new TypeToken<List<SongAlbum>>() {
-                        }.getType());
-                        if (mList.size() == 0) {
-                            if (page == 1) {
-                                iView.loadNoData();
-                            } else {
-                                iView.loadNoMore();
-                            }
-                        } else {
-                            iView.showSongAblumData(mList);
-                        }
-
-                    } catch (JSONException e) {
+                List<SongAlbum> songAlbumList = ParseUtils.getSongAlbumsData(context, response);
+                if (songAlbumList.size() == 0) {
+                    if (page == 1) {
                         iView.loadNoData();
+                    } else {
+                        iView.loadNoMore();
                     }
-
                 } else {
-                    ToastUtils.toast(context,ParseUtils.getMsg(response));
+                    iView.showSongAblumData(songAlbumList);
                 }
             }
 

@@ -68,25 +68,13 @@ public class RegisterActivity extends BaseActivity implements IRegisterView,Text
     }
 
     @Override
-    public void registerSuccess(String result) {
-        if (ParseUtils.checkCode(result)) {  //0 表示成功，执行解析用户信息
-            UserBean ub = null;
-            try {
-                ub = new Gson().fromJson(new JSONObject(result).getString("data"),UserBean.class);
-            } catch (Exception e) {
-            }
-            if (ub != null) {
-                showMsg("注册成功");
-                PrefsUtil.saveUserInfo(RegisterActivity.this, ub);
-                isLogin = true;
-                EventBus.getDefault().post(new Event.LoginSuccessEvent());
-                finish();
-            }
-        } else { // 否则获取相应的错误提示信息
-            showMsg(ParseUtils.getMsg(result));
+    public void registerSuccess(UserBean ub) {
+        if (ub != null) {
+            showMsg("注册成功");
+            EventBus.getDefault().post(new Event.LoginSuccessEvent(ub));
+            finish();
         }
     }
-
     @Override
     public void registerFail() {
         showNetErrorMsg();

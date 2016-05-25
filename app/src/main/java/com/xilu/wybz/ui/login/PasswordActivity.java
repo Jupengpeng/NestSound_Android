@@ -20,11 +20,14 @@ import com.xilu.wybz.utils.MyCountTimer;
 import com.xilu.wybz.utils.ParseUtils;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtil;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import butterknife.Bind;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
+
 /**
  * Created by June on 2016/5/4.
  */
@@ -42,10 +45,12 @@ public class PasswordActivity extends BaseActivity implements IPasswordView, Tex
     EditText mpassYpass;
     @Bind(R.id.mpass_login)
     TextView mpassLogin;
+
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_password;
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,24 +72,13 @@ public class PasswordActivity extends BaseActivity implements IPasswordView, Tex
     }
 
     @Override
-    public void modifyPwdSuccess(String result) {
-        if (ParseUtils.checkCode(result)) {
-            UserBean ub = null;
-            try {
-                ub = new Gson().fromJson(new JSONObject(result).getString("data"),UserBean.class);
-            } catch (Exception e) {
-            }
-            if (ub != null) {
-                showMsg("密码修改成功");
-                PrefsUtil.saveUserInfo(PasswordActivity.this, ub);
-                isLogin = true;
-                EventBus.getDefault().post(new Event.LoginSuccessEvent());
-                finish();
-            } else {
-                showMsg("密码修改失败");
-            }
-        } else { // 否则获取相应的错误提示信息
-            showMsg(ParseUtils.getMsg(result));
+    public void modifyPwdSuccess(UserBean userBean) {
+        if (userBean != null) {
+            showMsg("密码修改成功");
+            EventBus.getDefault().post(new Event.LoginSuccessEvent(userBean));
+            finish();
+        } else {
+            showMsg("密码修改失败");
         }
     }
 
@@ -145,6 +139,7 @@ public class PasswordActivity extends BaseActivity implements IPasswordView, Tex
                 break;
         }
     }
+
     private void getSmsCode() {
         String phone = mpassPhone.getText().toString().trim();
         if (!StringUtil.checkPhone(phone)) {
@@ -153,6 +148,7 @@ public class PasswordActivity extends BaseActivity implements IPasswordView, Tex
             passwordPresenter.getSmsCode(phone, "2");
         }
     }
+
     private void toLogin() {
         String phone = mpassPhone.getText().toString().trim();
         String code = mpassPhonepass.getText().toString().trim();
@@ -167,11 +163,11 @@ public class PasswordActivity extends BaseActivity implements IPasswordView, Tex
         } else if (password.length() < 6) {
             showMsg("密码不能少于6个字符");
             return;
-        }else if (!repassword.equals(password)) {
+        } else if (!repassword.equals(password)) {
             showMsg("两次密码要输入一致");
             return;
         }
-        passwordPresenter.modifyPwd(phone,code,password,repassword);
+        passwordPresenter.modifyPwd(phone, code, password, repassword);
 
     }
 
@@ -191,7 +187,7 @@ public class PasswordActivity extends BaseActivity implements IPasswordView, Tex
         String code = mpassPhonepass.getText().toString().trim();
         String pass = mpassPass.getText().toString().trim();
         String ypass = mpassYpass.getText().toString().trim();
-        if (StringUtil.isEmpty(phone) || StringUtil.isEmpty(code) || StringUtil.isEmpty(pass)|| StringUtil.isEmpty(ypass)) {
+        if (StringUtil.isEmpty(phone) || StringUtil.isEmpty(code) || StringUtil.isEmpty(pass) || StringUtil.isEmpty(ypass)) {
             mpassLogin.setEnabled(false);
             mpassLogin.setBackgroundResource(R.drawable.corner_login);
         } else {
