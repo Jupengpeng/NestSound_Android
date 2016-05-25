@@ -1,24 +1,19 @@
 package com.xilu.wybz.utils;
 
 import android.content.Context;
-import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.xilu.wybz.bean.DataBean;
-import com.xilu.wybz.bean.LyricBean;
-import com.xilu.wybz.bean.LyricsListBean;
+import com.xilu.wybz.bean.Lyricat;
 import com.xilu.wybz.bean.MineBean;
 import com.xilu.wybz.bean.MsgBean;
-import com.xilu.wybz.bean.MusicBean;
-import com.xilu.wybz.bean.MusicDetailBean;
 import com.xilu.wybz.bean.MusicTalk;
 import com.xilu.wybz.bean.SongAlbum;
 import com.xilu.wybz.bean.TemplateBean;
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.bean.WorksData;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -75,7 +70,23 @@ public class ParseUtils {
             return worksDatas;
         }
     }
-
+    //词库
+    public static List<Lyricat> getLyricatsData(Context context, String response) {
+        List<Lyricat> lyricats = new ArrayList<>();
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            int code = jsonObject.getInt("code");
+            if (code == 200) {
+                lyricats = new Gson().fromJson(new JSONObject(response).getString("data"), new TypeToken<List<Lyricat>>() {
+                }.getType());
+            } else {
+                showMsg(context, jsonObject.getString("message"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return lyricats;
+    }
     public static List<MusicTalk> getMusicTalksData(Context context, String response) {
         List<MusicTalk> musicTalks = new ArrayList<>();
         try {
@@ -114,7 +125,8 @@ public class ParseUtils {
             JSONObject jsonObject = new JSONObject(response);
             int code = jsonObject.getInt("code");
             if (code == 200) {
-                userBean = new Gson().fromJson(response, UserBean.class);
+                String data = new JSONObject(response).getString("data");
+                userBean = new Gson().fromJson(data, UserBean.class);
             }else{
                 showMsg(context, jsonObject.getString("message"));
             }

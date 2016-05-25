@@ -131,7 +131,7 @@ public class LoginActivity extends BaseActivity implements ILoginView,TextWatche
         // TODO Auto-generated method stub
         super.finish();
         //关闭窗体动画显示
-        this.overridePendingTransition(0, R.anim.activity_close);
+        overridePendingTransition(0, R.anim.activity_close);
     }
 
     @Override

@@ -16,7 +16,8 @@ import java.util.List;
  * Created by June on 16/5/3.
  * 歌曲 歌词 或者 灵感记录
  */
-public class WorksData implements Serializable {
+@Table("workdata")
+public class WorksData extends BaseModel implements Serializable {
     public String itemid;//歌曲id
     public String pic;//歌曲封面
     public String title;//标题
@@ -54,6 +55,23 @@ public class WorksData implements Serializable {
     public String spirecontent;//录歌时人声或者灵感记录的音频
     public String pics;//灵感记录的图片集合
     public boolean isPlay;
+    public int draftType;//1歌曲 2歌词 3灵感记录
+
+    public int getDraftType() {
+        return draftType;
+    }
+
+    public void setDraftType(int draftType) {
+        this.draftType = draftType;
+    }
+
+    public String getPics() {
+        return pics;
+    }
+
+    public void setPics(String pics) {
+        this.pics = pics;
+    }
 
     public boolean isPlay() {
         return isPlay;

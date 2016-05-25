@@ -103,7 +103,7 @@ public class MyHttpClient {
     public static String getWorkFovUrl(){return  "workfov/optZan";}
     //消息收藏列表
     public static String getMsgFovList(){return  "message/fovMyCenterList";}
-    //消息收藏列表
+    //消息评论列表
     public static String getMsgCommentList(){return  "message/commentCenterList";}
     //消息点赞列表
     public static String getMsgZanList(){return  "message/zanCenterList";}
@@ -118,5 +118,6 @@ public class MyHttpClient {
 
     public static String getUserCenter(){return  "userCenter/index";}
     public static String getOtherCenter(){return  "otherCenter/index";}
+    public static String getLyricatsUrl(){return  "lyricsopt/getLyriCats";}
 }
 
