@@ -123,5 +123,9 @@ public class MyHttpClient {
     public static String getSaveCommentUrl(){return  "commentopt/save";}
     //删除评论
     public static String getDelCommentUrl(){return "commentopt/delete";}
+    //更新IP
+    public static String getDomain() {
+        return "http://7xtj7f.com1.z0.glb.clouddn.com/app_config.txt";
+    }
 }
 
