@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#bbffffff"
     android:gravity="center_horizontal"
+    android:background="@drawable/bg_share"
     android:orientation="vertical">
-
+    <View
+        android:id="@+id/status_bar_view"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="25dp" />
     <include layout="@layout/view_toolbar_playaudio" />
 
     <RelativeLayout
@@ -48,30 +53,33 @@
         android:textSize="16.5sp" />
 
     <LinearLayout
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp">
 
-        <android.support.v4.widget.Space
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/tv_weixin"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:drawablePadding="12dp"
             android:drawableTop="@drawable/ic_share_wx"
             android:gravity="center"
             android:text="微信"
             android:textColor="@color/main_text_color" />
-        <android.support.v4.widget.Space
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
+
 
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/tv_friend"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
             android:layout_height="wrap_content"
             android:drawablePadding="12dp"
             android:drawableTop="@drawable/ic_share_wx_friend"
@@ -79,13 +87,13 @@
             android:text="朋友圈"
             android:textColor="@color/main_text_color" />
 
-        <android.support.v4.widget.Space
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/tv_weibo"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:layout_height="wrap_content"
             android:drawablePadding="12dp"
             android:drawableTop="@drawable/ic_share_wb"
@@ -93,38 +101,36 @@
             android:text="微博"
             android:textColor="@color/main_text_color" />
 
-        <android.support.v4.widget.Space
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
 
     </LinearLayout>
 
     <LinearLayout
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp">
+        android:layout_height="wrap_content">
 
-        <android.support.v4.widget.Space
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/tv_qq"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:drawablePadding="12dp"
             android:drawableTop="@drawable/ic_share_qq"
             android:gravity="center"
             android:text="QQ"
             android:textColor="@color/main_text_color" />
-        <android.support.v4.widget.Space
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
+
 
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/tv_qzone"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
             android:layout_height="wrap_content"
             android:drawablePadding="12dp"
             android:drawableTop="@drawable/ic_share_qzone"
@@ -132,25 +138,21 @@
             android:text="QQ空间"
             android:textColor="@color/main_text_color" />
 
-        <android.support.v4.widget.Space
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:layout_height="wrap_content"
             android:drawablePadding="12dp"
             android:drawableTop="@drawable/ic_share_wb"
             android:gravity="center"
-            android:text="weibo"
+            android:text="微博"
             android:visibility="invisible"
             android:textColor="@color/main_text_color" />
 
-        <android.support.v4.widget.Space
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
 
     </LinearLayout>
+
 </LinearLayout>

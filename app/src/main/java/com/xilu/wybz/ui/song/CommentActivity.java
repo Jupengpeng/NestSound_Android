@@ -34,7 +34,6 @@ import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.PullRecycler;
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.Bind;
 
 /**
@@ -81,6 +80,7 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
     @Override
     public void initView() {
         setTitle("评论");
+        rl_right.setVisibility(View.GONE);
         loadFootBar();
         initData();
     }
@@ -188,7 +188,6 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
 
     @Override
     public void commentSuccess() {
-        showMsg("评论成功！");
         CommentBean commentBean = new CommentBean();
         commentBean.setUid(userId);
         commentBean.setComment(content);
@@ -198,7 +197,7 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
         commentBean.setCreatedate(System.currentTimeMillis());
         commentBean.setNickname(PrefsUtil.getUserInfo(context).name);
         mDataList.add(0,commentBean);
-        adapter.notifyItemChanged(0);
+        adapter.notifyDataSetChanged();
         if(mDataList.size()==1){
             llNoData.setVisibility(View.GONE);
         }
@@ -210,12 +209,13 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
     @Override
     public void commentFail() {
         showMsg("评论失败！");
+
     }
 
     @Override
     public void delSuccess() {
         mDataList.remove(delPos);
-        adapter.notifyItemChanged(delPos);
+        adapter.notifyDataSetChanged();
         if(mDataList.size()==0){
             llNoData.setVisibility(View.VISIBLE);
         }
@@ -225,6 +225,7 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
     @Override
     public void delFail() {
         showMsg("删除失败！");
+        actionMoreDialog.dismiss();
     }
     @Override
     protected BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
@@ -233,7 +234,6 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
     }
 
     public class CommentViewHolder extends BaseViewHolder {
-
         @Bind(R.id.iv_head)
         CircleImageView ivHead;
         @Bind(R.id.tv_name)
@@ -265,8 +265,8 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
                 if(actionMoreDialog==null){
                     actionMoreDialog = new ActionMoreDialog(context, new AdapterView.OnItemClickListener() {
                         @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            if(position==0){
+                        public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
+                            if(pos==0){
                                 delPos = position;
                                 commentPresenter.delComment(commentBean.id,type);
                             }

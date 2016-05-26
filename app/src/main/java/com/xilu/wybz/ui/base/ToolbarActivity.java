@@ -33,6 +33,8 @@ public abstract class ToolbarActivity extends BaseActivity {
         if(this instanceof MainTabActivity){
             mToolbar.setBackgroundColor(getResources().getColor(R.color.main_theme_color));
             view.setVisibility(View.GONE);
+        }else{
+            setTitle("");
         }
         setSupportActionBar(mToolbar);
         if (canBack()) {

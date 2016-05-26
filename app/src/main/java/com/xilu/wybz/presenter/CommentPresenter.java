@@ -97,10 +97,9 @@ public class CommentPresenter extends BasePresenter<ICommentView>{
                     iView.delFail();
                 }
             }
-
             @Override
             public void onError(Call call, Exception e) {
-                iView.commentFail();
+                iView.delFail();
             }
         });
     }

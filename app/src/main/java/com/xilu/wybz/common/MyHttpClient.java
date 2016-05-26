@@ -117,11 +117,11 @@ public class MyHttpClient {
     public static String getUserCenter(){return  "userCenter/index";}
     public static String getOtherCenter(){return  "otherCenter/index";}
     public static String getLyricatsUrl(){return  "lyricsopt/getLyriCats";}
-    //评论列表
+    //发表评论
     public static String getCommentListUrl(){return "common/comment/list";}
     //评论接口
     public static String getSaveCommentUrl(){return  "commentopt/save";}
     //删除评论
-    public static String getDelCommentUrl(){return "commentopt/del";}
+    public static String getDelCommentUrl(){return "commentopt/delete";}
 }
 

@@ -66,8 +66,6 @@ public class MoreWindow extends PopupWindow {
         if (null != overlay) {
             return overlay;
         }
-        long startMs = System.currentTimeMillis();
-
         View view = mContext.getWindow().getDecorView();
         view.setDrawingCacheEnabled(true);
         view.buildDrawingCache(true);
@@ -86,7 +84,6 @@ public class MoreWindow extends PopupWindow {
         canvas.drawBitmap(mBitmap, 0, 0, paint);
 
         overlay = FastBlur.doBlur(overlay, (int) radius, true);
-        Log.i(TAG, "blur time is:" + (System.currentTimeMillis() - startMs));
         return overlay;
     }
 
@@ -118,17 +115,6 @@ public class MoreWindow extends PopupWindow {
 
         });
         return set;
-    }
-    private void full(boolean enable) {
-        if (enable) {//隐藏状态栏
-            WindowManager.LayoutParams lp =  mContext.getWindow().getAttributes();
-            lp.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;
-            mContext.getWindow().setAttributes(lp);
-        } else {//显示状态栏
-            WindowManager.LayoutParams attr =  mContext.getWindow().getAttributes();
-            attr.flags &= (~WindowManager.LayoutParams.FLAG_FULLSCREEN);
-            mContext.getWindow().setAttributes(attr);
-        }
     }
     public void showMoreWindow(MainTabActivity activity, View anchor, OnClickListener onClickListener) {
 //        mActivity.setStatusColor(0x90000000);

@@ -79,32 +79,32 @@ public abstract class BaseActivity extends AppCompatActivity {
         PushAgent.getInstance(context).onAppStart();
     }
 
-    //适配不同手机以及sdk_int的状态栏
-    private void initStatusBar() {
-        isChenjin = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
-        if (isChenjin && !Build.MANUFACTURER.toUpperCase().equals("OPPO")) {
-            if (PhoneInfoUtil.isMIUI()) {
-                PhoneInfoUtil.MiuiCj(this, !(this instanceof PlayAudioActivity));
-            } else {
-                getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-                getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-            }
-            if (!(this instanceof PlayAudioActivity ||this instanceof SongAblumActivity || this instanceof SplashActivity || this instanceof WelActivity) && !isHomeActivity) {
-                if (this instanceof LoginActivity || this instanceof PasswordActivity
-                        || this instanceof RegisterActivity) {
-                    setStatusColor(0xff3a3937);
-                } else if (this instanceof MainTabActivity) {
-                    setStatusColor(getResources().getColor(R.color.main_theme_color));
-                } else {
-                    if (Build.MANUFACTURER.toUpperCase().equals("MEIZU") || PhoneInfoUtil.isMIUI()) {
-                        setStatusColor(0xffffffff);
-                    } else {
-                        setStatusRes(R.drawable.bg_statusbar);
-                    }
-                }
-            }
-        }
-    }
+//    //适配不同手机以及sdk_int的状态栏
+//    private void initStatusBar() {
+//        isChenjin = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
+//        if (isChenjin && !Build.MANUFACTURER.toUpperCase().equals("OPPO")) {
+//            if (PhoneInfoUtil.isMIUI()) {
+//                PhoneInfoUtil.MiuiCj(this, !(this instanceof PlayAudioActivity));
+//            } else {
+//                getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+//                getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+//            }
+//            if (!(this instanceof PlayAudioActivity ||this instanceof SongAblumActivity || this instanceof SplashActivity || this instanceof WelActivity) && !isHomeActivity) {
+//                if (this instanceof LoginActivity || this instanceof PasswordActivity
+//                        || this instanceof RegisterActivity) {
+//                    setStatusColor(0xff3a3937);
+//                } else if (this instanceof MainTabActivity) {
+//                    setStatusColor(getResources().getColor(R.color.main_theme_color));
+//                } else {
+//                    if (Build.MANUFACTURER.toUpperCase().equals("MEIZU") || PhoneInfoUtil.isMIUI()) {
+//                        setStatusColor(0xffffffff);
+//                    } else {
+//                        setStatusRes(R.drawable.bg_statusbar);
+//                    }
+//                }
+//            }
+//        }
+//    }
     @TargetApi(Build.VERSION_CODES.KITKAT)
     protected void adaptTheme(boolean isTranslucentStatusFitSystemWindowTrue) {
         if (isTranslucentStatusFitSystemWindowTrue) {

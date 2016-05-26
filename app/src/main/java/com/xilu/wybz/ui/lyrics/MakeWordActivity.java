@@ -157,9 +157,13 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView {
     public void TipSaveLocalData() {
         String title = etTitle.getText().toString().trim();
         String content = etWord.getText().toString().trim();
+        if((title.length()==0&&content.length()==0)) {
+            finish();
+            return;
+        }
         worksData.setTitle(title);
         worksData.setLyrics(content);
-        if (!(title.length()==0&&content.length()==0)||!new Gson().toJson(worksData).equals(oldWorksData)) {
+        if (!new Gson().toJson(worksData).equals(oldWorksData)) {
             new MaterialDialog.Builder(context)
                     .content("是否保存到本地？")
                     .positiveText("保存")

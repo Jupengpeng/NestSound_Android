@@ -23,6 +23,7 @@ import com.xilu.wybz.ui.find.FindActivity;
 import com.xilu.wybz.ui.find.SearchWorksActivity;
 import com.xilu.wybz.ui.login.LoginActivity;
 import com.xilu.wybz.ui.lyrics.MakeWordActivity;
+import com.xilu.wybz.ui.lyrics.ShareActivity;
 import com.xilu.wybz.ui.main.MainActivity;
 import com.xilu.wybz.ui.mine.MineActivity;
 import com.xilu.wybz.ui.msg.MsgActivity;

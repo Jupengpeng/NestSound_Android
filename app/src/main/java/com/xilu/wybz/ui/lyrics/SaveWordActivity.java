@@ -76,7 +76,6 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView{
         if(bundle!=null){
             worksData = (WorksData) bundle.getSerializable("worksData");
         }
-        setTitle("");
         initEvent();
         initData();
     }
@@ -181,7 +180,7 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView{
         EventBus.getDefault().post(new Event.SaveLyricsSuccessEvent(2, worksData));
         EventBus.getDefault().post(new Event.SaveLyricsSuccessEvent(3, worksData));
         EventBus.getDefault().post(new Event.SaveLyricsSuccessEvent(4, worksData));
-        startActivity(ShareActivity.class);
+        ShareActivity.toShareActivity(context,worksData);
     }
     @Override
     public void saveWordFail() {

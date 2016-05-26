@@ -20,7 +20,7 @@ import java.util.List;
  * Created by June on 16/5/4.
  */
 public abstract class BasePlayMenuActivity extends ToolbarActivity {
-    private RelativeLayout rl_right;
+    protected RelativeLayout rl_right;
     protected RelativeLayout app_bar_layout;
     private ImageView ivPlay;
     private AnimImageView animImageView;
