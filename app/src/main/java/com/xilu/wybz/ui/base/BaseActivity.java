@@ -15,6 +15,7 @@ import android.widget.ImageView;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.backends.pipeline.PipelineDraweeController;
+import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.common.ResizeOptions;
 import com.facebook.imagepipeline.request.ImageRequest;
@@ -146,16 +147,11 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     protected void loadImage(String url, SimpleDraweeView mDraweeView) {
-        ImageRequest request =
-                ImageRequestBuilder.newBuilderWithSource(Uri.parse(url))
-                        .setResizeOptions(
-                                new ResizeOptions(mDraweeView.getLayoutParams().width, mDraweeView.getLayoutParams().height))
-                        .setProgressiveRenderingEnabled(true)
-                        .build();
-        PipelineDraweeController controller = (PipelineDraweeController) Fresco.newDraweeControllerBuilder()
-                .setOldController(mDraweeView.getController())
-                .setImageRequest(request)
+        DraweeController controller = Fresco.newDraweeControllerBuilder()
+                .setCallerContext(null)
+                .setUri(Uri.parse(url))
                 .setAutoPlayAnimations(true)
+                .setOldController(mDraweeView.getController())
                 .build();
         mDraweeView.setController(controller);
     }
