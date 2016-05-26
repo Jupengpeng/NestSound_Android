@@ -3,13 +3,10 @@ package com.xilu.wybz.utils;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.xilu.wybz.bean.CommentBean;
-import com.xilu.wybz.bean.InforCommentBean;
 import com.xilu.wybz.bean.WorksData;
-
 import java.util.List;
 
 public class StringStyleUtil {
@@ -20,14 +17,8 @@ public class StringStyleUtil {
         junkData = junkData.replaceAll("(\r\n|\n)", "");
         return junkData;
     }
+
     public static SpannableString getCommentStyleStr(CommentBean commentBean) {
-        String comment = commentBean.getName() + ":" + commentBean.getComment();
-        SpannableString spannableString = new SpannableString(comment);
-//        spannableString.setSpan(new RelativeSizeSpan(0.8f),gank.desc.length()+1,gankStr.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-//        spannableString.setSpan(new ForegroundColorSpan(Color.GRAY),gank.desc.length()+1,gankStr.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-        return spannableString;
-    }
-    public static SpannableString getCommentStyleStr(InforCommentBean commentBean) {
         String comment ="回复我:" + commentBean.getComment();
         SpannableString spannableString = new SpannableString(comment);
         spannableString.setSpan(new ForegroundColorSpan(0xff539ac2),2,3, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
@@ -35,7 +26,7 @@ public class StringStyleUtil {
     }
 
 
-    public static SpannableString getWorkCommentStyleStr(InforCommentBean commentBean) {
+    public static SpannableString getWorkCommentStyleStr(CommentBean commentBean) {
         String nickName = commentBean.target_nickname;
         if (StringUtil.isBlank(nickName)){
             return new SpannableString(commentBean.getComment());
@@ -48,8 +39,8 @@ public class StringStyleUtil {
         return spannableString;
     }
 
-    public static SpannableString getParentCommentStyleStr(InforCommentBean commentBean) {
-        String comment ="我:" + commentBean.getParentcomment();
+    public static SpannableString getParentCommentStyleStr(CommentBean commentBean) {
+        String comment ="我:" + commentBean.getComment();
         SpannableString spannableString = new SpannableString(comment);
         spannableString.setSpan(new ForegroundColorSpan(0xff539ac2),0,1, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         return spannableString;

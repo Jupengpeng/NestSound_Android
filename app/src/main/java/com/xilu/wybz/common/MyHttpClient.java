@@ -109,24 +109,23 @@ public class MyHttpClient {
     public static String getMsgZanList(){return  "message/zanCenterList";}
     //消息点赞列表
     public static String getMsgSystemList(){return  "message/sysNoteList";}
-    //评论接口
-    public static String getAddCommentUrl(){return  "comment/save";}
     //发布歌词
     public static String getSaveLyricsUrl(){return  "lyricsopt/optLyrics";}
-    //分享
-    public static String getSharePlayUrl(String id){return  ROOT_URL+"html/p.php?id="+id;}
+    //保存灵感记录
+    public static String getSaveInspireUrl(){return  "inspire/save";}
 
-    public static String getLyricatsUrl(){return  "lyricsopt/getLyriCats";}
-
-    //个人用户中心
     public static String getUserCenter(){return  "userCenter/index";}
-    //他人用户中心
     public static String getOtherCenter(){return  "otherCenter/index";}
-    //作品评论列表
-    public static String getCommentList(){return  "comment/list";}
-    //提交作品评论
-    public static String getCommentSave(){return  "comment/save";}
-    //删除作品评论
-    public static String getCommentDelete(){return  "comment/delete";}
+    public static String getLyricatsUrl(){return  "lyricsopt/getLyriCats";}
+    //发表评论
+    public static String getCommentListUrl(){return "common/comment/list";}
+    //评论接口
+    public static String getSaveCommentUrl(){return  "commentopt/save";}
+    //删除评论
+    public static String getDelCommentUrl(){return "commentopt/delete";}
+    //更新IP
+    public static String getDomain() {
+        return "http://7xtj7f.com1.z0.glb.clouddn.com/app_config.txt";
+    }
 }
 

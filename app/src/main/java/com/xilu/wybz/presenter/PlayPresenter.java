@@ -20,9 +20,9 @@ public class PlayPresenter extends BasePresenter<IPlayView> {
         super(context, iView);
     }
 
-//    public void getPlayDetail(String userId, String music_id, String com, String gedanid) {
+//    public void getPlayDetail(int userId, String music_id, String com, String gedanid) {
 //        params = new HashMap<>();
-//        params.put("uid",userId);
+//        params.put("uid",userId+"");
 //        params.put("openmodel", PrefsUtil.getInt("playmodel",context)+"");
 //        params.put("id",music_id);
 //        params.put("gedanid",gedanid);
@@ -41,10 +41,10 @@ public class PlayPresenter extends BasePresenter<IPlayView> {
 //    }
 
 
-    public void setCollectionState(String userId, String music_id, int target_uid) {
+    public void setCollectionState(int userId, int music_id, int target_uid) {
         params = new HashMap<>();
-        params.put("uid", userId);
-        params.put("work_id", music_id);
+        params.put("uid",userId+"");;
+        params.put("work_id", music_id+"");
         params.put("target_uid", target_uid+"");
         params.put("wtype", "1");
         httpUtils.get(MyHttpClient.getWorkFovUrl(), params, new MyStringCallback() {
@@ -60,10 +60,10 @@ public class PlayPresenter extends BasePresenter<IPlayView> {
         });
     }
 
-    public void setZambiaState(String userId, String music_id, int target_uid) {
+    public void setZambiaState(int userId, int music_id, int target_uid) {
         params = new HashMap<>();
-        params.put("uid", userId);
-        params.put("work_id", music_id);
+        params.put("uid",userId+"");;
+        params.put("work_id", music_id+"");
         params.put("target_uid", target_uid+"");
         params.put("wtype", "1");
         httpUtils.post(MyHttpClient.getUpvoteUrl(), params, new MyStringCallback() {

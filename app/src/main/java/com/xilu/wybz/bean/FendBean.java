@@ -5,15 +5,15 @@ package com.xilu.wybz.bean;
  * 用户反馈
  */
 public class FendBean {
-    String userId;
+    int userId;
     String content;
     String phone;
 
-    public String getUserId() {
+    public int getUserid() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 

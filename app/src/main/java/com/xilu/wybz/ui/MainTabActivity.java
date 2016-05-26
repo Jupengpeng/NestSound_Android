@@ -23,6 +23,7 @@ import com.xilu.wybz.ui.find.FindActivity;
 import com.xilu.wybz.ui.find.SearchWorksActivity;
 import com.xilu.wybz.ui.login.LoginActivity;
 import com.xilu.wybz.ui.lyrics.MakeWordActivity;
+import com.xilu.wybz.ui.lyrics.ShareActivity;
 import com.xilu.wybz.ui.main.MainActivity;
 import com.xilu.wybz.ui.mine.MineActivity;
 import com.xilu.wybz.ui.msg.MsgActivity;
@@ -214,7 +215,7 @@ public class MainTabActivity extends BasePlayMenuActivity {
     }
     public void onEventMainThread(Event.LoginSuccessEvent event){
         UserBean ub = event.getUserBean();
-        userId = ub.userid+"";
+        userId = ub.userid;
         isLogin = true;
         PrefsUtil.saveUserInfo(context, ub);
         MobclickAgent.onProfileSignIn(ub.userid+"");

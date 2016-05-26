@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.xilu.wybz.common.interfaces.IMediaPlayerListener;
+import com.xilu.wybz.service.PlayService;
 import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.utils.FileUtils;
 
@@ -36,7 +37,7 @@ public class PlayMediaInstance {
 
     public void startMediaPlay(String url) {
         if (mediaPlayer == null) {
-            mediaPlayer = MyApplication.getMediaPlayer();
+            mediaPlayer = PlayService.getMediaPlayer();
             mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mp) {

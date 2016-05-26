@@ -23,7 +23,10 @@ public class ActionAdapter extends WyBaseAdapter<ActionBean>{
             convertView = LayoutInflater.from(context).inflate(R.layout.ll_actionview,null);
         }
         TextView tv_title = BaseViewHolder.get(convertView,R.id.tv_title);
-        tv_title.setText(mList.get(position).getTitle());
+        String title = mList.get(position).getTitle();
+        if(title.equals("删除"))
+        tv_title.setTextColor(context.getResources().getColor(R.color.red));
+        tv_title.setText(title);
         return convertView;
     }
 }

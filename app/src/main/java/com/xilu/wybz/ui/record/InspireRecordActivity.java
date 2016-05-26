@@ -1,7 +1,6 @@
 package com.xilu.wybz.ui.record;
 
 import android.content.Intent;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -29,9 +28,13 @@ import com.xilu.wybz.common.NewPlayInstance;
 import com.xilu.wybz.presenter.InspireRecordPresenter;
 import com.xilu.wybz.ui.IView.IInspireRecordView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
+import com.xilu.wybz.utils.DateTimeUtil;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.FileUtils;
+import com.xilu.wybz.utils.ImageUploader;
 import com.xilu.wybz.utils.SystemUtils;
+import com.xilu.wybz.utils.UploadFileUtil;
+import com.xilu.wybz.utils.UploadMorePicUtil;
 import com.xilu.wybz.view.GridSpacingItemDecoration;
 import com.xilu.wybz.view.kpswitch.util.KPSwitchConflictUtil;
 import com.xilu.wybz.view.kpswitch.util.KeyboardUtil;
@@ -79,9 +82,9 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
     private int playState; //1播放 2暂停
     private String recordPath;//录音文件保存路径
     private MP3Recorder mp3Recorder;
-    private MediaPlayer mediaPlayer;
     private WorksData worksData;
     int column = 3;
+    int itemSpace;
     InspireRecordPresenter inspireRecordPresenter;
     @Override
     protected int getLayoutRes() {
@@ -102,16 +105,58 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
         getMenuInflater().inflate(R.menu.menu_send, menu);
         return true;
     }
+    private void uploadPics(){
+        UploadMorePicUtil uploadMorePicUtil = new UploadMorePicUtil(context);
+        List<String> pics = new ArrayList<>();
+        for(PhotoBean photoBean:list){
+            pics.add(photoBean.path);
+        }
+        uploadMorePicUtil.uploadPics(pics, new UploadMorePicUtil.UploadPicResult() {
+            @Override
+            public void onSuccess(String images) {
+                if(!TextUtils.isEmpty(images)){
+                    worksData.pics = images;
+                    uploadRecord();
+                }
+            }
+            @Override
+            public void onFail() {
+                cancelPd();
+                showMsg("图片上传失败！");
+            }
+        });
+    }
+    private void uploadRecord(){
+        UploadFileUtil uploadFileUtil = new UploadFileUtil(context);
+        uploadFileUtil.uploadFile(recordPath, ImageUploader.fixxs[3], new UploadFileUtil.UploadResult() {
+            @Override
+            public void onSuccess(String filrUrl) {
+                if(!TextUtils.isEmpty(filrUrl)){
+                    worksData.audio = filrUrl;
+                    uploadRecord();
 
+                }
+            }
+            @Override
+            public void onFail() {
+                cancelPd();
+                showMsg("录音上传失败！");
+            }
+        });
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.menu_send:
-                if(TextUtils.isEmpty(etContent.getText().toString())){
-                    showMsg("内容不能为空！");
+                String content = etContent.getText().toString().trim();
+                worksData.spirecontent = content;
+                if(list.size()>0){
+                    uploadPics();
                 }else{
-                    if(TextUtils.isEmpty(recordPath)&&list.size()==0){
-
+                    if(TextUtils.isEmpty(recordPath)){
+                        inspireRecordPresenter.publishData(userId,worksData);
+                    }else{
+                        uploadRecord();
                     }
                 }
                 break;
@@ -119,10 +164,10 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
         return super.onOptionsItemSelected(item);
     }
     public void initView() {
-        setTitle("灵感记录");
-        int space10 = DensityUtil.dip2px(context, 10);
+        setTitle(DateTimeUtil.timestamp2DateTime(System.currentTimeMillis()));
+        itemSpace = DensityUtil.dip2px(context, 10);
         recyclerViewPic.setLayoutManager(new GridLayoutManager(context, column));
-        recyclerViewPic.addItemDecoration(new GridSpacingItemDecoration(column, space10, false));
+        recyclerViewPic.addItemDecoration(new GridSpacingItemDecoration(column, itemSpace, false));
         KeyboardUtil.attach(this, mPanelRoot,
                 // Add keyboard showing state callback, do like this when you want to listen in the
                 // keyboard's setCurrentPageView/hide change.
@@ -144,16 +189,6 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
                         }
                     }
                 });
-//        recyclerViewPic.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View view, MotionEvent motionEvent) {
-//                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-//                    KPSwitchConflictUtil.hidePanelAndKeyboard(mPanelRoot);
-//                }
-//
-//                return false;
-//            }
-//        });
 
     }
 
@@ -387,7 +422,7 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
 
     @Override
     public void onMusicStop() {
-            //只有删除的时候才会触发
+
     }
 
     @Override
@@ -419,12 +454,18 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
     }
 
     @Override
-    public void pubSuccess(String result) {
-
+    public void pubSuccess() {
+        showMsg("发布成功！");
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                finish();
+            }
+        },1000);
     }
 
     @Override
     public void pubFail() {
-
+        showMsg("发布失败！");
     }
 }

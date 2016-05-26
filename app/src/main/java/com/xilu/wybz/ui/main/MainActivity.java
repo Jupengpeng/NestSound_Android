@@ -328,7 +328,7 @@ public class MainActivity extends BaseActivity implements IHomeView {
                 if (bannerList.get(pos).getType() == 0) {
                     MyApplication.ids.clear();
                     for (Banner bannerListBean : bannerList) {
-                        if (bannerListBean.getType() == 0 && !TextUtils.isEmpty(bannerListBean.getItemid()))
+                        if (bannerListBean.getType() == 0 && bannerListBean.getItemid()>0)
                             MyApplication.ids.add(bannerListBean.getItemid());
                     }
                     PlayAudioActivity.toPlayAudioActivity(context, bannerList.get(pos).getItemid(), "", "banner", pos);

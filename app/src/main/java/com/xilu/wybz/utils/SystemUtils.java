@@ -24,34 +24,6 @@ public class SystemUtils {
         context.startActivity(intent);
         ((Activity) context).overridePendingTransition(R.anim.activity_open, 0);
     }
-    public static void toPlayAct(Context context, Map<String,Object> map, Class<?> clazz) {
-        Intent intent = new Intent(context, clazz);
-        for (String key : map.keySet()) {
-            Object param = map.get(key);
-            if (param instanceof Integer) {
-                int value = ((Integer) param).intValue();
-                intent.putExtra(key, value);
-            } else if (param instanceof String) {
-                String s = (String) param;
-                intent.putExtra(key, s);
-            } else if (param instanceof Double) {
-                double d = ((Double) param).doubleValue();
-                intent.putExtra(key, d);
-            } else if (param instanceof Float) {
-                float f = ((Float) param).floatValue();
-                intent.putExtra(key, f);
-            } else if (param instanceof Long) {
-                long l = ((Long) param).longValue();
-                intent.putExtra(key, l);
-            } else if (param instanceof Boolean) {
-                boolean b = ((Boolean) param).booleanValue();
-                intent.putExtra(key, b);
-            }
-        }
-        context.startActivity(intent);
-//        if(clazz==PlayAudioActivity.class)
-//        ((Activity) context).overridePendingTransition(R.anim.activity_open, 0);
-    }
     //打图库
     public static void openGallery(Activity activity) {
         Intent intent = new Intent();

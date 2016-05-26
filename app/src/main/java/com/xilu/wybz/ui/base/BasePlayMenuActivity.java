@@ -20,7 +20,7 @@ import java.util.List;
  * Created by June on 16/5/4.
  */
 public abstract class BasePlayMenuActivity extends ToolbarActivity {
-    private RelativeLayout rl_right;
+    protected RelativeLayout rl_right;
     protected RelativeLayout app_bar_layout;
     private ImageView ivPlay;
     private AnimImageView animImageView;
@@ -72,9 +72,9 @@ public abstract class BasePlayMenuActivity extends ToolbarActivity {
     }
 
     public void onPlayMenuClick() {
-        String playId = PrefsUtil.getString("playId", context);
-        if (!TextUtils.isEmpty(playId)) {
-            PlayAudioActivity.toPlayAudioActivity(context, PrefsUtil.getString("playId", context),
+        int playId = PrefsUtil.getInt("playId", context);
+        if (playId>0) {
+            PlayAudioActivity.toPlayAudioActivity(context, PrefsUtil.getInt("playId", context),
                     PrefsUtil.getString("playGedanId", context),
                     PrefsUtil.getString("playFrom", context), PrefsUtil.getInt("playdPos", context));
         }

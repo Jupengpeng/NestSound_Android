@@ -87,6 +87,7 @@
 
         <activity android:name=".ui.lyrics.LyricsdisplayActivity" />
         <activity android:name=".ui.lyrics.MakeWordActivity" />
+        <activity android:name=".ui.lyrics.ShareActivity" android:theme="@style/PlayTheme" />
         <activity android:name=".ui.lyrics.ImportWordActivity" />
         <activity android:name=".ui.lyrics.MakeCourseActivity" />
         <activity android:name=".ui.lyrics.SaveWordActivity" android:windowSoftInputMode="stateUnchanged" />
@@ -126,6 +127,16 @@
         <service
             android:name=".service.MyPushIntentService"
             android:process=":push" />
+        <service android:name=".service.GetDomainService" />
+
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="56a8610ce0f55afc29001dca" >
+        </meta-data>
+        <meta-data
+            android:name="UMENG_MESSAGE_SECRET"
+            android:value="f1168f7bdf262938f02024ea1b1acc92" >
+        </meta-data>
     </application>
 
 </manifest>

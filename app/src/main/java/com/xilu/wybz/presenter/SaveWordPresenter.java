@@ -22,15 +22,15 @@ public class SaveWordPresenter extends BasePresenter<ISaveWordView> {
         super(context, iView);
     }
 
-    public void saveLyrics(WorksData worksData, String userId) {
+    public void saveLyrics(WorksData worksData, int userId) {
         Map<String, String> map = new HashMap<>();
         try {
-            map.put("uid", userId);
+            map.put("uid", userId+"");
             map.put("title", worksData.title);
             map.put("lyrics", worksData.lyrics);
             map.put("pic", worksData.pic);
             map.put("detail", worksData.detail);
-            map.put("itemid", worksData.itemid);
+            map.put("itemid", worksData.itemid+"");
             map.put("status", worksData.status + "");
         } catch (Exception e) {
             Log.e("Exception", e.toString());

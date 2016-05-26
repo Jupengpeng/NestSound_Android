@@ -1,73 +1,76 @@
 package com.xilu.wybz.bean;
 
+
 import android.text.TextUtils;
 
 import com.xilu.wybz.common.YinChaoConfig;
 import com.xilu.wybz.utils.StringStyleUtil;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
- * Created by Zning on 2015/9/7.
+ * Created by Administrator on 2016/3/3 0003.
+ * 这是消息 评论
  */
 public class CommentBean implements Serializable {
+    public int id;//评论ID
+    public int itemid;//作品ID
+    public int uid;//发评论者的ID
+    public int type;//1=歌曲，2=歌词
+    public int comment_type; //1=默认，2=跟帖
+    public long createdate;//发布时间
+    public String comment;//评论内容
+    public String headerurl;//评论人头像
+    public String nickname;//发评论者的昵称
+    public String target_nickname;//被评论跟帖者的昵称
+    public int target_uid; //被评论者的id
 
-    public String id;
-    public String userid;
-    public String name;
-    public String headurl;
-    public String createday;
-    public String comment;
-    public List<CommentBean> childcommentlist;
-
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public String getUserid() {
-        return userid;
+    public int getItemid() {
+        return itemid;
     }
 
-    public void setUserid(String userid) {
-        this.userid = userid;
+    public void setItemid(int itemid) {
+        this.itemid = itemid;
     }
 
-    public String getName() {
-        if (name == null) {
-            name = "";
-        } else {
-            name = StringStyleUtil.removeSpecialCharacters(name);
-        }
-        return name;
+    public int getUid() {
+        return uid;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUid(int uid) {
+        this.uid = uid;
     }
 
-    public String getHeadurl() {
-        if (!TextUtils.isEmpty(headurl)) {
-            headurl = headurl.replace(YinChaoConfig.DEFAULT_HEAD_URL, "");
-        }
-        return headurl;
+    public int getType() {
+        return type;
     }
 
-    public void setHeadurl(String headurl) {
-        this.headurl = headurl;
+    public void setType(int type) {
+        this.type = type;
     }
 
-    public String getCreateday() {
-        return createday;
+    public int getComment_type() {
+        return comment_type;
     }
 
-    public void setCreateday(String createday) {
-        this.createday = createday;
+    public void setComment_type(int comment_type) {
+        this.comment_type = comment_type;
+    }
+
+    public long getCreatedate() {
+        return createdate;
+    }
+
+    public void setCreatedate(long createdate) {
+        this.createdate = createdate;
     }
 
     public String getComment() {
@@ -78,14 +81,35 @@ public class CommentBean implements Serializable {
         this.comment = comment;
     }
 
-    public List<CommentBean> getChildcommentlist() {
-        if (childcommentlist == null) {
-            childcommentlist = new ArrayList<>();
-        }
-        return childcommentlist;
+    public String getHeaderurl() {
+        return headerurl;
     }
 
-    public void setChildcommentlist(List<CommentBean> childcommentlist) {
-        this.childcommentlist = childcommentlist;
+    public void setHeaderurl(String headerurl) {
+        this.headerurl = headerurl;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public String getTarget_nickname() {
+        return target_nickname;
+    }
+
+    public void setTarget_nickname(String target_nickname) {
+        this.target_nickname = target_nickname;
+    }
+
+    public int getTarget_uid() {
+        return target_uid;
+    }
+
+    public void setTarget_uid(int target_uid) {
+        this.target_uid = target_uid;
     }
 }

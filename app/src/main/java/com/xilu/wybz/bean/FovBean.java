@@ -11,15 +11,15 @@ import java.io.Serializable;
  */
 public class FovBean implements Serializable {
 
-    String userid;
+    int userid;
     String name;
     String headurl;
 
-    public String getUserid() {
+    public int getUserid() {
         return userid;
     }
 
-    public void setUserid(String userid) {
+    public void setUserid(int userId) {
         this.userid = userid;
     }
 

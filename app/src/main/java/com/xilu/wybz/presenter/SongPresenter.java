@@ -29,9 +29,9 @@ public class SongPresenter extends BasePresenter<ISongView> {
     /*
     * orderType 1=最新(或不填)，2=热门
      */
-    public void getWorkList(String userId,int type) {
+    public void getWorkList(int userId,int type) {
         params = new HashMap<>();
-        params.put("uid",userId);
+        params.put("uid",userId+"");
         httpUtils.get(type==1?MyHttpClient.getFindSongList():MyHttpClient.getFindLyricsList(), params, new MyStringCallback() {
             @Override
             public void onError(Call call, Exception e) {

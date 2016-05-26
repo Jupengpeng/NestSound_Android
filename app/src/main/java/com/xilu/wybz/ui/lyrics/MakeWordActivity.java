@@ -37,8 +37,6 @@ import de.greenrobot.event.EventBus;
  * Created by June on 16/5/13.
  */
 public class MakeWordActivity extends ToolbarActivity implements IMakeWordView {
-    @Bind(R.id.ll_main)
-    LinearLayout llMain;
     MakeWordPresenter makeWordPresenter;
     @Bind(R.id.et_title)
     EditText etTitle;
@@ -101,7 +99,6 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView {
             worksData = new WorksData();
         }
         oldWorksData = new Gson().toJson(worksData);
-        llMain.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
     }
 
     @OnClick({R.id.ll_import, R.id.ll_thesaurus, R.id.ll_course})
@@ -160,6 +157,10 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView {
     public void TipSaveLocalData() {
         String title = etTitle.getText().toString().trim();
         String content = etWord.getText().toString().trim();
+        if((title.length()==0&&content.length()==0)) {
+            finish();
+            return;
+        }
         worksData.setTitle(title);
         worksData.setLyrics(content);
         if (!new Gson().toJson(worksData).equals(oldWorksData)) {

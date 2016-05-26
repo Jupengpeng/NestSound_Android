@@ -30,9 +30,9 @@ public class MsgSystemPresenter extends BasePresenter<ISystemMsgView> {
         super(context, iView);
     }
 
-    public void loadData(String userId, int page) {
+    public void loadData(int userId, int page) {
         Map<String,String> params = new HashMap<>();
-        params.put("uid", userId);
+        params.put("uid",userId+"");;
         params.put("page", page + "");
         httpUtils.post(MyHttpClient.getMsgSystemList(), params, new MyStringCallback() {
             @Override

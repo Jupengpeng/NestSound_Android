@@ -13,7 +13,7 @@ import com.xilu.wybz.utils.ToastUtils;
 import butterknife.ButterKnife;
 public abstract class BaseFragment extends Fragment {
     protected Context context;
-    protected String userId;
+    protected int userId;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(getLayoutResId(), container, false);

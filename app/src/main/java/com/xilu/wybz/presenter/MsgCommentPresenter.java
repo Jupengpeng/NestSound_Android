@@ -2,21 +2,14 @@ package com.xilu.wybz.presenter;
 
 import android.content.Context;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.xilu.wybz.bean.InforCommentBean;
+import com.xilu.wybz.bean.CommentBean;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.callback.MyStringCallback;
 import com.xilu.wybz.ui.IView.ICommentView;
 import com.xilu.wybz.utils.ParseUtils;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import okhttp3.Call;
 
 /**
@@ -28,9 +21,9 @@ public class MsgCommentPresenter extends BasePresenter<ICommentView> {
         super(context, iView);
     }
 
-    public void loadData(String userId, int page) {
+    public void loadData(int userId, int page) {
         params = new HashMap<>();
-        params.put("uid",userId);
+        params.put("uid",userId+"");
         params.put("page",page+"");
         httpUtils.get(MyHttpClient.getMsgCommentList(), params, new MyStringCallback() {
             @Override
@@ -40,37 +33,25 @@ public class MsgCommentPresenter extends BasePresenter<ICommentView> {
 
             @Override
             public void onResponse(String response) {
-                if (ParseUtils.checkCode(response)) {
-                    try {
-                        String resultlist = new JSONObject(response).getString("data");
-                        List<InforCommentBean> mList = new Gson().fromJson(resultlist, new TypeToken<List<InforCommentBean>>() {
-                        }.getType());
-                        if (mList.size() == 0) {
-                            if (page == 1) {
-                                iView.loadNoData();
-                            } else {
-                                iView.loadNoMore();
-                            }
-                        } else {
-                            iView.showCommentData(mList);
-                        }
-
-                    } catch (JSONException e) {
+                List<CommentBean> mList = ParseUtils.getCommentsData(context,response);
+                if (mList.size() == 0) {
+                    if (page == 1) {
                         iView.loadNoData();
+                    } else {
+                        iView.loadNoMore();
                     }
-
                 } else {
-                    iView.loadFail();
+                    iView.showCommentData(mList);
                 }
             }
         });
     }
-    public void sendComment(String c_id,String userId,String content){
+    public void sendComment(String c_id,int userId,String content){
         Map<String,String> params = new HashMap<>();
         params.put("id", c_id);
-        params.put("userid", userId);
+        params.put("userid",userId+"");;
         params.put("comment", content);
-        httpUtils.post(MyHttpClient.getAddCommentUrl(), params, new MyStringCallback(){
+        httpUtils.post(MyHttpClient.getSaveCommentUrl(), params, new MyStringCallback(){
             @Override
             public void onResponse(String response) {
                 if (ParseUtils.checkCode(response)) {

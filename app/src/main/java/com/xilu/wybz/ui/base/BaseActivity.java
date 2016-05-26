@@ -15,6 +15,7 @@ import android.widget.ImageView;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.backends.pipeline.PipelineDraweeController;
+import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.common.ResizeOptions;
 import com.facebook.imagepipeline.request.ImageRequest;
@@ -53,7 +54,7 @@ import butterknife.ButterKnife;
 public abstract class BaseActivity extends AppCompatActivity {
     protected abstract int getLayoutRes();
 
-    protected String userId;
+    protected int userId;
     protected boolean isChenjin;
     protected Context context;
     boolean isHomeActivity;
@@ -70,8 +71,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         Fresco.initialize(this);
         adaptTheme(true);
         userId = PrefsUtil.getUserId(context);
-        Log.e("userId",userId);
-        isLogin = !userId.equals("0");
+        isLogin = userId>0;
         setContentView(getLayoutRes());
         ButterKnife.bind(this);
         isChenjin = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
@@ -80,32 +80,32 @@ public abstract class BaseActivity extends AppCompatActivity {
         PushAgent.getInstance(context).onAppStart();
     }
 
-    //适配不同手机以及sdk_int的状态栏
-    private void initStatusBar() {
-        isChenjin = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
-        if (isChenjin && !Build.MANUFACTURER.toUpperCase().equals("OPPO")) {
-            if (PhoneInfoUtil.isMIUI()) {
-                PhoneInfoUtil.MiuiCj(this, !(this instanceof PlayAudioActivity));
-            } else {
-                getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-                getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-            }
-            if (!(this instanceof PlayAudioActivity ||this instanceof SongAblumActivity || this instanceof SplashActivity || this instanceof WelActivity) && !isHomeActivity) {
-                if (this instanceof LoginActivity || this instanceof PasswordActivity
-                        || this instanceof RegisterActivity) {
-                    setStatusColor(0xff3a3937);
-                } else if (this instanceof MainTabActivity) {
-                    setStatusColor(getResources().getColor(R.color.main_theme_color));
-                } else {
-                    if (Build.MANUFACTURER.toUpperCase().equals("MEIZU") || PhoneInfoUtil.isMIUI()) {
-                        setStatusColor(0xffffffff);
-                    } else {
-                        setStatusRes(R.drawable.bg_statusbar);
-                    }
-                }
-            }
-        }
-    }
+//    //适配不同手机以及sdk_int的状态栏
+//    private void initStatusBar() {
+//        isChenjin = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
+//        if (isChenjin && !Build.MANUFACTURER.toUpperCase().equals("OPPO")) {
+//            if (PhoneInfoUtil.isMIUI()) {
+//                PhoneInfoUtil.MiuiCj(this, !(this instanceof PlayAudioActivity));
+//            } else {
+//                getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+//                getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+//            }
+//            if (!(this instanceof PlayAudioActivity ||this instanceof SongAblumActivity || this instanceof SplashActivity || this instanceof WelActivity) && !isHomeActivity) {
+//                if (this instanceof LoginActivity || this instanceof PasswordActivity
+//                        || this instanceof RegisterActivity) {
+//                    setStatusColor(0xff3a3937);
+//                } else if (this instanceof MainTabActivity) {
+//                    setStatusColor(getResources().getColor(R.color.main_theme_color));
+//                } else {
+//                    if (Build.MANUFACTURER.toUpperCase().equals("MEIZU") || PhoneInfoUtil.isMIUI()) {
+//                        setStatusColor(0xffffffff);
+//                    } else {
+//                        setStatusRes(R.drawable.bg_statusbar);
+//                    }
+//                }
+//            }
+//        }
+//    }
     @TargetApi(Build.VERSION_CODES.KITKAT)
     protected void adaptTheme(boolean isTranslucentStatusFitSystemWindowTrue) {
         if (isTranslucentStatusFitSystemWindowTrue) {
@@ -147,16 +147,11 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     protected void loadImage(String url, SimpleDraweeView mDraweeView) {
-        ImageRequest request =
-                ImageRequestBuilder.newBuilderWithSource(Uri.parse(url))
-                        .setResizeOptions(
-                                new ResizeOptions(mDraweeView.getLayoutParams().width, mDraweeView.getLayoutParams().height))
-                        .setProgressiveRenderingEnabled(true)
-                        .build();
-        PipelineDraweeController controller = (PipelineDraweeController) Fresco.newDraweeControllerBuilder()
-                .setOldController(mDraweeView.getController())
-                .setImageRequest(request)
+        DraweeController controller = Fresco.newDraweeControllerBuilder()
+                .setCallerContext(null)
+                .setUri(Uri.parse(url))
                 .setAutoPlayAnimations(true)
+                .setOldController(mDraweeView.getController())
                 .build();
         mDraweeView.setController(controller);
     }

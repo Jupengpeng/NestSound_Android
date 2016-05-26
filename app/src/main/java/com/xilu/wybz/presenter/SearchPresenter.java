@@ -22,9 +22,9 @@ public class SearchPresenter extends BasePresenter<ISearchView> {
         super(context, iView);
     }
 
-    public void searchData(String userId, String keyWord, int type, int page) {
+    public void searchData(int userId, String keyWord, int type, int page) {
         params = new HashMap<>();
-        params.put("userid", userId);
+        params.put("userid",userId+"");;
         params.put("keyWord", keyWord);
         params.put("type", type+"");
         params.put("page", page+"");

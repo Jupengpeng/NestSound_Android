@@ -30,10 +30,10 @@ public class MusicTalkMorePresenter extends BasePresenter<IMusicTalkMoreView> {
         super(context, iView);
     }
 
-    public void loadData(String userId, int page) {
+    public void loadData(int userId, int page) {
         params = new HashMap<>();
         params.put("page", page + "");
-        params.put("uid", userId);
+        params.put("uid",userId+"");;
         httpUtils.get(MyHttpClient.getMusicTalkUrl(), params, new MyStringCallback() {
             @Override
             public void onResponse(String response) {
