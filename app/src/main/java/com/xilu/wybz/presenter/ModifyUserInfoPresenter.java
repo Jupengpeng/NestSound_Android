@@ -20,9 +20,9 @@ public class ModifyUserInfoPresenter extends BasePresenter<IModifyUserInfoView> 
     public ModifyUserInfoPresenter(Context context, IModifyUserInfoView iView) {
         super(context, iView);
     }
-    public void modifyUserInfo(String userId, UserBean userBean) {
+    public void modifyUserInfo(int userId, UserBean userBean) {
         params = new HashMap<>();
-        params.put("uid",userId);
+        params.put("uid",userId+"");
         params.put("headurl",userBean.headurl);
         params.put("nickname",userBean.name);
         params.put("sex",userBean.sex+"");

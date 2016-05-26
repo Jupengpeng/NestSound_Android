@@ -86,6 +86,7 @@
 
         <activity android:name=".ui.lyrics.LyricsdisplayActivity" />
         <activity android:name=".ui.lyrics.MakeWordActivity" />
+        <activity android:name=".ui.lyrics.ShareActivity" android:theme="@style/PlayTheme" />
         <activity android:name=".ui.lyrics.ImportWordActivity" />
         <activity android:name=".ui.lyrics.MakeCourseActivity" />
         <activity android:name=".ui.lyrics.SaveWordActivity" android:windowSoftInputMode="stateUnchanged" />

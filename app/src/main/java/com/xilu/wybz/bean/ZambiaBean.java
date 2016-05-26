@@ -12,7 +12,7 @@ import java.io.Serializable;
  */
 public class ZambiaBean implements Serializable {
 
-    String userid;
+    int userid;
     String name;
     String headurl;
     String MusicName;
@@ -80,11 +80,11 @@ public class ZambiaBean implements Serializable {
         this.headurl = headurl;
     }
 
-    public String getUserid() {
+    public int getUserid() {
         return userid;
     }
 
-    public void setUserid(String userid) {
+    public void setUserid(int userId) {
         this.userid = userid;
     }
 }

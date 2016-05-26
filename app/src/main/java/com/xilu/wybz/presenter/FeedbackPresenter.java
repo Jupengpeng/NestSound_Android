@@ -22,9 +22,9 @@ public class FeedbackPresenter extends BasePresenter<IFeedbackView> {
         super(context, iView);
     }
 
-    public void postData(String userId, String phone, String text, int type) {
+    public void postData(int userId, String phone, String text, int type) {
         params = new HashMap<>();
-        params.put("userid", userId);
+        params.put("userid", userId+"");
         params.put("phone", phone);
         params.put("text", text);
         httpUtils.post(type == 0 ? MyHttpClient.getFeed() : MyHttpClient.getUserReport(), params, new MyStringCallback() {

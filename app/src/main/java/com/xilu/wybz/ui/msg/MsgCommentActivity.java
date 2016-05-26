@@ -103,6 +103,16 @@ public class MsgCommentActivity extends BaseListActivity<CommentBean> implements
     }
 
     @Override
+    public void delSuccess() {
+
+    }
+
+    @Override
+    public void delFail() {
+
+    }
+
+    @Override
     protected BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_msg_comment, parent, false);
         return new SampleViewHolder(view);

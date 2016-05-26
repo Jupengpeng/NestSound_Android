@@ -27,9 +27,9 @@ public class InspireRecordPresenter extends BasePresenter<IInspireRecordView>{
     public InspireRecordPresenter(Context context, IInspireRecordView iView) {
         super(context, iView);
     }
-    public void publishData(String uid, WorksData worksData){
+    public void publishData(int uid, WorksData worksData){
         params = new HashMap<>();
-        params.put("uid",uid);
+        params.put("uid",uid+"");
         params.put("spirecontent",worksData.spirecontent);
         params.put("pics",worksData.pics);
         params.put("audio",worksData.audio);

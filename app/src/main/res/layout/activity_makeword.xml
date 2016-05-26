@@ -25,6 +25,7 @@
             android:paddingTop="@dimen/yc_10"
             android:singleLine="true"
             android:textColor="#181818"
+            android:layerType="none"
             android:textColorHint="@color/main_text_color2"
             android:textSize="@dimen/yc_15" />
 

@@ -128,7 +128,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     int is_fov;
     int is_zan;
     String name;
-    String id;
+    int id;
     PlayService.MusicBinder musicBinder;
     String from;
     String gedanid;
@@ -274,13 +274,12 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     public void initData() {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            id = bundle.getString("id");
+            id = bundle.getInt("id");
             from = bundle.getString("from", "");
             gedanid = bundle.getString("gedanid", "");
             authorid = bundle.getString("authorid");
             position = bundle.getInt("position");
-            isCurrentMusic = id.equals(PrefsUtil.getString("playId", context))
-                    && from.equals(PrefsUtil.getString("playFrom", context));
+            isCurrentMusic = (id==PrefsUtil.getInt("playId", context)) && from.equals(PrefsUtil.getString("playFrom", context));
         }
         viewPager.setAdapter(new PlayPagerAdapter(viewList));
         if (serviceIntent == null) {
@@ -566,7 +565,6 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
             saveMusicBean();
         }
     }
-
     @Override
     public void zambiaMusicFail() {
         rlZan.setEnabled(true);
@@ -575,7 +573,6 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     public void saveMusicBean() {
         PrefsUtil.putString("playdata" + id, new Gson().toJson(worksData), context);
     }
-
     public void onEventMainThread(Event.PPStatusEvent event) {
         switch (event.getStatus()) {
             case 1://开始

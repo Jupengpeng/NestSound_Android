@@ -132,7 +132,7 @@ public class ParseUtils {
             JSONObject jsonObject = new JSONObject(response);
             int code = jsonObject.getInt("code");
             if (code == 200) {
-                dataBean = new Gson().fromJson(jsonObject.getString("data"),DataBean.class);
+                dataBean = new Gson().fromJson(response,DataBean.class);
             } else {
                 showMsg(context, jsonObject.getString("message"));
             }

@@ -35,7 +35,7 @@ public class UserPresenter extends BasePresenter<IUserView> {
     }
 
 
-    public void requestUserInfo(String userId) {
+    public void requestUserInfo(int userId) {
 
         request(userId,1,1,new AppStringCallback(context){
             @Override
@@ -51,7 +51,7 @@ public class UserPresenter extends BasePresenter<IUserView> {
     }
 
 
-    public void request(String userId, int type, int page, MyStringCallback callback) {
+    public void request(int userId, int type, int page, MyStringCallback callback) {
         if (userType == TYPE_USER_CENTER) {
             executeUser(userId, type, page, callback);
         } else if (userType == TYPE_OTHER_CENTER) {
@@ -59,18 +59,18 @@ public class UserPresenter extends BasePresenter<IUserView> {
         }
     }
 
-    protected void executeUser(String userId, int type, int page, MyStringCallback callback) {
+    protected void executeUser(int userId, int type, int page, MyStringCallback callback) {
         execute(MyHttpClient.getUserCenter(), userId, type, page, callback);
     }
 
-    protected void executeOther(String userId, int type, int page, MyStringCallback callback) {
+    protected void executeOther(int userId, int type, int page, MyStringCallback callback) {
         execute(MyHttpClient.getOtherCenter(), userId, type, page, callback);
     }
 
-    protected void execute(String url, String userId, int type, int page, MyStringCallback callback) {
+    protected void execute(String url, int userId, int type, int page, MyStringCallback callback) {
         params = new HashMap<>();
         params.clear();
-        params.put("uid", userId);
+        params.put("uid",userId+"");;
         params.put("type", "" + type);
         params.put("page", "" + page);
         httpUtils.get(url, params, callback);

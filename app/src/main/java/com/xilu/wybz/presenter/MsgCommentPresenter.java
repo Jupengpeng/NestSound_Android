@@ -21,9 +21,9 @@ public class MsgCommentPresenter extends BasePresenter<ICommentView> {
         super(context, iView);
     }
 
-    public void loadData(String userId, int page) {
+    public void loadData(int userId, int page) {
         params = new HashMap<>();
-        params.put("uid",userId);
+        params.put("uid",userId+"");
         params.put("page",page+"");
         httpUtils.get(MyHttpClient.getMsgCommentList(), params, new MyStringCallback() {
             @Override
@@ -46,12 +46,12 @@ public class MsgCommentPresenter extends BasePresenter<ICommentView> {
             }
         });
     }
-    public void sendComment(String c_id,String userId,String content){
+    public void sendComment(String c_id,int userId,String content){
         Map<String,String> params = new HashMap<>();
         params.put("id", c_id);
-        params.put("userid", userId);
+        params.put("userid",userId+"");;
         params.put("comment", content);
-        httpUtils.post(MyHttpClient.getAddCommentUrl(), params, new MyStringCallback(){
+        httpUtils.post(MyHttpClient.getSaveCommentUrl(), params, new MyStringCallback(){
             @Override
             public void onResponse(String response) {
                 if (ParseUtils.checkCode(response)) {

@@ -214,7 +214,7 @@ public class MainTabActivity extends BasePlayMenuActivity {
     }
     public void onEventMainThread(Event.LoginSuccessEvent event){
         UserBean ub = event.getUserBean();
-        userId = ub.userid+"";
+        userId = ub.userid;
         isLogin = true;
         PrefsUtil.saveUserInfo(context, ub);
         MobclickAgent.onProfileSignIn(ub.userid+"");

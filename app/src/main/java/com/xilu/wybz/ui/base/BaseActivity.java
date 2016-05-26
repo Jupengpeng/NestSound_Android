@@ -53,7 +53,7 @@ import butterknife.ButterKnife;
 public abstract class BaseActivity extends AppCompatActivity {
     protected abstract int getLayoutRes();
 
-    protected String userId;
+    protected int userId;
     protected boolean isChenjin;
     protected Context context;
     boolean isHomeActivity;
@@ -69,8 +69,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         context = this;
         Fresco.initialize(this);
         adaptTheme(true);
-        userId = PrefsUtil.getUserId(context)+"";
-        isLogin = !userId.equals("0");
+        userId = PrefsUtil.getUserId(context);
+        isLogin = userId>0;
         setContentView(getLayoutRes());
         ButterKnife.bind(this);
         isChenjin = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;

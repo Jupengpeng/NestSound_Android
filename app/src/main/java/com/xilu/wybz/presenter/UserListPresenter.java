@@ -35,7 +35,7 @@ public class UserListPresenter extends UserPresenter {
         iListView.initView();
     }
 
-    public void requestListData(String userId, int page){
+    public void requestListData(int userId, int page){
 
         request(userId,type,page,new AppStringCallback(context){
 

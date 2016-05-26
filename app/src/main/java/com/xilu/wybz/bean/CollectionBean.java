@@ -11,7 +11,7 @@ import java.io.Serializable;
  * 这个是消息 收藏
  */
 public class CollectionBean implements Serializable {
-    String userid;
+    int userId;
     String name;
     String headurl;
     String MusicName;
@@ -82,11 +82,11 @@ public class CollectionBean implements Serializable {
         this.headurl = headurl;
     }
 
-    public String getUserid() {
-        return userid;
+    public int getUserid() {
+        return userId;
     }
 
-    public void setUserid(String userid) {
-        this.userid = userid;
+    public void setUserid(int userId) {
+        this.userId = userId;
     }
 }

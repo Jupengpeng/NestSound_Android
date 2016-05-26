@@ -29,7 +29,7 @@ public class CommentPresenter extends BasePresenter<ICommentView>{
         params.put("itemid",itemid+"");
         params.put("type",type+"");
         params.put("page",page+"");
-        httpUtils.post(MyHttpClient.getCommentListUrl(), params, new MyStringCallback(){
+        httpUtils.get(MyHttpClient.getCommentListUrl(), params, new MyStringCallback(){
             @Override
             public void onError(Call call, Exception e) {
                 iView.loadFail();
@@ -57,21 +57,44 @@ public class CommentPresenter extends BasePresenter<ICommentView>{
     * type 1=歌曲，2=歌词
     * comment_type 1=默认，发帖，2=跟帖，回复
      */
-    public void sendComment(String uid,int itemid,int comment_type,int type,int target_uid, String comment){
+    public void sendComment(int uid,int itemid,int comment_type,int type,int target_uid, String comment){
         Map<String,String> params = new HashMap<>();
-        params.put("uid", uid);
+        params.put("uid", uid+"");
+        if(itemid>0)
         params.put("itemid", itemid+"");
         params.put("comment_type", comment_type+"");
         params.put("type", type+"");
+        if(target_uid>0)
         params.put("target_uid", target_uid+"");
         params.put("comment", comment);
-        httpUtils.post(MyHttpClient.getAddCommentUrl(), params, new MyStringCallback(){
+        httpUtils.post(MyHttpClient.getSaveCommentUrl(), params, new MyStringCallback(){
             @Override
             public void onResponse(String response) {
                 if (ParseUtils.checkCode(response)) {
                     iView.commentSuccess();
                 }else{
                     iView.commentFail();
+                }
+            }
+
+            @Override
+            public void onError(Call call, Exception e) {
+                iView.commentFail();
+            }
+        });
+    }
+    //删除评论
+    public void delComment(int id,int type){
+        Map<String,String> params = new HashMap<>();
+        params.put("id", id+"");
+        params.put("type", type+"");
+        httpUtils.post(MyHttpClient.getDelCommentUrl(), params, new MyStringCallback(){
+            @Override
+            public void onResponse(String response) {
+                if (ParseUtils.checkCode(response)) {
+                    iView.delSuccess();
+                }else{
+                    iView.delFail();
                 }
             }
 

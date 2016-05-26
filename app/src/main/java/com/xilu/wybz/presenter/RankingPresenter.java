@@ -30,9 +30,9 @@ public class RankingPresenter extends BasePresenter<IRankingView>{
     public RankingPresenter(Context context, IRankingView iView) {
         super(context, iView);
     }
-    public void loadRankingData(String userId,int modelType){
+    public void loadRankingData(int userId,int modelType){
         params = new HashMap<>();
-        params.put("uid",userId);
+        params.put("uid",userId+"");
         params.put("modelType",modelType+"");
         params.put("page","1");
         httpUtils.get(MyHttpClient.getRankingList(),params,new AppStringCallback(){

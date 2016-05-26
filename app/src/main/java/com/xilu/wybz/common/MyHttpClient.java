@@ -109,8 +109,6 @@ public class MyHttpClient {
     public static String getMsgZanList(){return  "message/zanCenterList";}
     //消息点赞列表
     public static String getMsgSystemList(){return  "message/sysNoteList";}
-    //评论接口
-    public static String getAddCommentUrl(){return  "comment/save";}
     //发布歌词
     public static String getSaveLyricsUrl(){return  "lyricsopt/optLyrics";}
     //保存灵感记录
@@ -120,6 +118,10 @@ public class MyHttpClient {
     public static String getOtherCenter(){return  "otherCenter/index";}
     public static String getLyricatsUrl(){return  "lyricsopt/getLyriCats";}
     //评论列表
-    public static String getCommentListUrl(){return "comment/list";}
+    public static String getCommentListUrl(){return "common/comment/list";}
+    //评论接口
+    public static String getSaveCommentUrl(){return  "commentopt/save";}
+    //删除评论
+    public static String getDelCommentUrl(){return "commentopt/del";}
 }
 

@@ -19,4 +19,8 @@ public interface ICommentView extends IBaseView {
     void commentSuccess();
 
     void commentFail();
+
+    void delSuccess();
+
+    void delFail();
 }

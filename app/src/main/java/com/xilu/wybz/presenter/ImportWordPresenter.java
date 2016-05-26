@@ -29,9 +29,9 @@ public class ImportWordPresenter extends BasePresenter<IImportWordView> {
         super(context, iView);
     }
 
-    public void loadData(String userId, int page) {
+    public void loadData(int userId, int page) {
         params = new HashMap<>();
-        params.put("uid",userId);
+        params.put("uid",userId+"");
         params.put("page",page+"");
         httpUtils.get(MyHttpClient.getUserLyricsListUrl(), new MyStringCallback() {
             @Override

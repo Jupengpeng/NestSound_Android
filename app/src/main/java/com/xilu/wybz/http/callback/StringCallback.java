@@ -26,6 +26,7 @@ public abstract class StringCallback extends Callback<String> {
             if (!TextUtils.isEmpty(data)) {
                 String newData = RSAUtils.decryptByPublicKey(new String(RSAUtils.decodeConvert(data), "UTF-8"));
                 jsonObject.put("data", newData);
+                Log.e("data",newData);
                 return jsonObject.toString();
             }
         } catch (JSONException e) {

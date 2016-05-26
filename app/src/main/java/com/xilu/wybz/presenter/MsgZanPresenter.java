@@ -31,9 +31,9 @@ public class MsgZanPresenter extends BasePresenter<IZanView> {
         super(context, iView);
     }
 
-    public void loadData(String userId, int page) {
+    public void loadData(int userId, int page) {
         params = new HashMap<>();
-        params.put("uid",userId);
+        params.put("uid",userId+"");
         params.put("page",page+"");
         httpUtils.get(MyHttpClient.getMsgZanList(), params, new MyStringCallback() {
             @Override

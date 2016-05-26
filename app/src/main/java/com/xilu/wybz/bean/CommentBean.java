@@ -13,17 +13,17 @@ import java.io.Serializable;
  * 这是消息 评论
  */
 public class CommentBean implements Serializable {
-    public int id;
-    public int itemid;
-    public int uid;
-    public int type;
-    public int comment_type;
-    public long createdate;
-    public String comment;
-    public String headerurl;
-    public String nickname;
-    public String target_nickname;
-    public int target_uid;
+    public int id;//评论ID
+    public int itemid;//作品ID
+    public int uid;//发评论者的ID
+    public int type;//1=歌曲，2=歌词
+    public int comment_type; //1=默认，2=跟帖
+    public long createdate;//发布时间
+    public String comment;//评论内容
+    public String headerurl;//评论人头像
+    public String nickname;//发评论者的昵称
+    public String target_nickname;//被评论跟帖者的昵称
+    public int target_uid; //被评论者的id
 
     public int getId() {
         return id;

@@ -295,7 +295,7 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
                     String shareAuthor = worksData.author;
                     String shareLink = worksData.shareurl;
                     String sharePic = worksData.pic;
-                    String shareBody = userId.equals(worksData.uid) ? "我用音巢app创作了一首歌词，快来看看吧!" : "我在音巢app上发现一首好歌词，太棒了~";
+                    String shareBody = userId==worksData.uid ? "我用音巢app创作了一首歌词，快来看看吧!" : "我在音巢app上发现一首好歌词，太棒了~";
                     String shareContent = shareBody + " 《" + shareTitle + "》 ▷" + shareLink + " (@音巢音乐)";
                     shareDialog = new ShareDialog(LyricsdisplayActivity.this, new ShareBean(shareTitle, shareAuthor, shareContent, shareLink, sharePic, ""));
                 }

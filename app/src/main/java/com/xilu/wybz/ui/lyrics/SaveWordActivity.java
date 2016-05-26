@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -19,32 +18,22 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.google.gson.Gson;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.DownLoaderDir;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.KeySet;
 import com.xilu.wybz.common.MyCommon;
-import com.xilu.wybz.dao.DBManager;
 import com.xilu.wybz.presenter.SaveWordPresenter;
 import com.xilu.wybz.ui.IView.ISaveWordView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.utils.ImageUploader;
 import com.xilu.wybz.utils.ImageUtils;
-import com.xilu.wybz.utils.ParseUtils;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.SystemUtils;
-import com.xilu.wybz.utils.UploadPicUtil;
-import com.xilu.wybz.view.materialdialogs.DialogAction;
-import com.xilu.wybz.view.materialdialogs.MaterialDialog;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.xilu.wybz.utils.UploadFileUtil;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -144,8 +133,8 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView{
     //上传封面图片
     public void uploadCoverPic() {
         showPd("正在保存中，请稍候...");
-        UploadPicUtil uploadPicUtil = new UploadPicUtil();
-        uploadPicUtil.uploadFile(context, coverPath, ImageUploader.fixxs[1], new UploadPicUtil.UploadPicResult() {
+        UploadFileUtil uploadPicUtil = new UploadFileUtil(context);
+        uploadPicUtil.uploadFile(coverPath, ImageUploader.fixxs[1], new UploadFileUtil.UploadResult() {
             @Override
             public void onSuccess(String imageUrl) {
                 worksData.setPic(imageUrl);
@@ -192,6 +181,7 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView{
         EventBus.getDefault().post(new Event.SaveLyricsSuccessEvent(2, worksData));
         EventBus.getDefault().post(new Event.SaveLyricsSuccessEvent(3, worksData));
         EventBus.getDefault().post(new Event.SaveLyricsSuccessEvent(4, worksData));
+        startActivity(ShareActivity.class);
     }
     @Override
     public void saveWordFail() {
