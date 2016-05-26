@@ -11,28 +11,25 @@ import org.w3c.dom.Text;
 
 import java.io.IOException;
 
+import okhttp3.Call;
 import okhttp3.Response;
 
 /**
  * Created by June on 16/04/28.
  */
-public abstract class StringCallback extends Callback<String> {
+public class StringCallback extends Callback<String> {
     @Override
     public String parseNetworkResponse(Response response) throws IOException {
-        String content = response.body().string();
-        try {
-            JSONObject jsonObject = new JSONObject(content);
-            String data = jsonObject.getString("data");
-            if (!TextUtils.isEmpty(data)) {
-                String newData = RSAUtils.decryptByPublicKey(new String(RSAUtils.decodeConvert(data), "UTF-8"));
-                jsonObject.put("data", newData);
-                Log.e("data",newData);
-                return jsonObject.toString();
-            }
-        } catch (JSONException e) {
-            Log.e("JSONException", e.toString());
-            e.printStackTrace();
-        }
-        return content;
+        return response.body().string();
+    }
+
+    @Override
+    public void onError(Call call, Exception e) {
+
+    }
+
+    @Override
+    public void onResponse(String response) {
+
     }
 }

@@ -77,7 +77,6 @@
         <activity android:name=".ui.song.MakeHotActivity"  />
         <activity android:name=".ui.song.MakeSongActivity"  />
         <activity android:name=".ui.song.CommentActivity"  />
-        <activity android:name=".ui.song.TestActivity"  />
         <activity android:name=".ui.song.SongAblumActivity" android:theme="@style/PlayTheme" />
         <activity android:name=".ui.song.PlayAudioActivity" android:theme="@style/PlayTheme" />
 
@@ -128,7 +127,7 @@
             android:name=".service.MyPushIntentService"
             android:process=":push" />
         <service android:name=".service.GetDomainService" />
-
+        <service android:name=".service.GetDomainService" />
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="56a8610ce0f55afc29001dca" >

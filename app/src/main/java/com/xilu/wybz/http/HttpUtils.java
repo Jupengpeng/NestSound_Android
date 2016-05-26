@@ -7,8 +7,10 @@ import com.google.gson.Gson;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.callback.BitmapCallback;
+import com.xilu.wybz.http.callback.Callback;
 import com.xilu.wybz.http.callback.FileCallBack;
-import com.xilu.wybz.http.callback.MyStringCallback;
+import com.xilu.wybz.http.callback.Callback;
+import com.xilu.wybz.http.callback.StringCallback;
 import com.xilu.wybz.http.rsa.RSAUtils;
 import com.xilu.wybz.utils.PhoneInfoUtil;
 import com.xilu.wybz.utils.PrefsUtil;
@@ -29,7 +31,7 @@ public class HttpUtils {
     }
 
     //普通post提交
-    public void post(String url, Map<String, String> params, MyStringCallback stringCallback) {
+    public void post(String url, Map<String, String> params, Callback stringCallback) {
         Log.e("url",MyHttpClient.BASE_URL + url);
         if(params==null){
             params = new HashMap<>();
@@ -49,7 +51,7 @@ public class HttpUtils {
 
     }
     //普通post提交
-    public void postUrl(String url, Map<String, String> params, MyStringCallback stringCallback) {
+    public void postUrl(String url, Map<String, String> params, Callback stringCallback) {
         OkHttpUtils.post()
                 .url(MyHttpClient.BASE_URL + url)
                 .tag(url)
@@ -59,7 +61,7 @@ public class HttpUtils {
                 .execute(stringCallback);
     }
     //提post加密后的json串
-    public void postString(String url, String content, MyStringCallback stringCallback) {
+    public void postString(String url, String content, Callback stringCallback) {
         OkHttpUtils
                 .postString()
                 .tag(url)
@@ -72,7 +74,7 @@ public class HttpUtils {
     }
 
     //put加密后的json串
-    public void putString(String url, String content, MyStringCallback stringCallback) {
+    public void putString(String url, String content, Callback stringCallback) {
         OkHttpUtils
                 .put()
                 .tag(url)
@@ -83,7 +85,7 @@ public class HttpUtils {
                 .execute(stringCallback);
     }
     //加密get
-    public void get(String url, Map<String, String> params, MyStringCallback stringCallback) {
+    public void get(String url, Map<String, String> params, Callback stringCallback) {
         Log.e("url",url);
         if(params==null){
             params = new HashMap<>();
@@ -102,13 +104,13 @@ public class HttpUtils {
                 .execute(stringCallback);
     }
     //普通get
-    public void get(String url, MyStringCallback stringCallback) {
+    public void get(String url, Callback stringCallback) {
         Log.e("url",url);
         OkHttpUtils
                 .get()
                 .headers(headers)
-                .tag(MyHttpClient.BASE_URL + url)
-                .url(MyHttpClient.BASE_URL + url)
+                .tag(url)
+                .url(url)
                 .build()
                 .execute(stringCallback);
     }

@@ -68,7 +68,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = this;
-        Fresco.initialize(this);
         adaptTheme(true);
         userId = PrefsUtil.getUserId(context);
         isLogin = userId>0;
@@ -80,7 +79,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         PushAgent.getInstance(context).onAppStart();
     }
 
-//    //适配不同手机以及sdk_int的状态栏
+    //适配不同手机以及sdk_int的状态栏
 //    private void initStatusBar() {
 //        isChenjin = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
 //        if (isChenjin && !Build.MANUFACTURER.toUpperCase().equals("OPPO")) {
@@ -168,7 +167,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         if(cls == LoginActivity.class){
             overridePendingTransition(R.anim.activity_open,0);
         }
-//        overridePendingTransition(R.anim.right_in_anim, R.anim.left_out_anim);
     }
 
     protected void showLoading(View ll_loading) {

@@ -16,10 +16,12 @@ import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.ui.main.MainActivity;
 import com.xilu.wybz.utils.PrefsUtil;
 
+import butterknife.Bind;
+
 
 public class WelActivity extends BaseActivity {
-
-    SimpleDraweeView iv_logo;
+    @Bind(R.id.iv_logo)
+    SimpleDraweeView ivLogo;
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_wel;
@@ -27,15 +29,14 @@ public class WelActivity extends BaseActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        iv_logo = (SimpleDraweeView) findViewById(R.id.iv_logo);
         String applogo = PrefsUtil.getString("applogo",this);
         if(!TextUtils.isEmpty(applogo)){
             Log.e("applogo",applogo);
-            loadImage(applogo,iv_logo);
+            loadImage(applogo,ivLogo);
         }else{
-            loadImage("res:///"+R.drawable.bg_wel,iv_logo);
+            loadImage("res:///"+R.drawable.bg_wel,ivLogo);
         }
-        Intent getDomainService = new Intent(this,GetDomainService.class);
+        Intent getDomainService = new Intent(this, GetDomainService.class);
         startService(getDomainService);
         toMainAct(2000);
     }
@@ -46,7 +47,6 @@ public class WelActivity extends BaseActivity {
             public void run() {
                 startActivity(MainActivity.class);
                 finish();
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
         }, time);
     }

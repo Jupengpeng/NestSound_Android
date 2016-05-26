@@ -4,9 +4,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.os.Binder;
-import android.os.Handler;
 import android.os.IBinder;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
@@ -30,9 +28,6 @@ import com.xilu.wybz.utils.PrefsUtil;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -350,33 +345,4 @@ public class PlayService extends Service {
             }
         }
     };
-    public static MediaPlayer getMediaPlayer() {
-        MediaPlayer mediaplayer = new MediaPlayer();
-        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.KITKAT) {
-            return mediaplayer;
-        }
-        try {
-            Class<?> cMediaTimeProvider = Class.forName("android.media.MediaTimeProvider");
-            Class<?> cSubtitleController = Class.forName("android.media.SubtitleController");
-            Class<?> iSubtitleControllerAnchor = Class.forName("android.media.SubtitleController$Anchor");
-            Class<?> iSubtitleControllerListener = Class.forName("android.media.SubtitleController$Listener");
-            Constructor constructor = cSubtitleController.getConstructor(Context.class, cMediaTimeProvider, iSubtitleControllerListener);
-            Object subtitleInstance = constructor.newInstance(MyApplication.context, null, null);
-            Field f = cSubtitleController.getDeclaredField("mHandler");
-            f.setAccessible(true);
-            try {
-                f.set(subtitleInstance, new Handler());
-            } catch (IllegalAccessException e) {
-                return mediaplayer;
-            } finally {
-                f.setAccessible(false);
-            }
-
-            Method setsubtitleanchor = mediaplayer.getClass().getMethod("setSubtitleAnchor", cSubtitleController, iSubtitleControllerAnchor);
-            setsubtitleanchor.invoke(mediaplayer, subtitleInstance, null);
-            //Log.e("", "subtitle is setted :p");
-        } catch (Exception e) {
-        }
-        return mediaplayer;
-    }
 }

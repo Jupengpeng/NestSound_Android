@@ -5,16 +5,14 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
-
 import com.loopj.android.http.TextHttpResponseHandler;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.HttpUtils;
 import com.xilu.wybz.http.callback.MyStringCallback;
+import com.xilu.wybz.http.callback.StringCallback;
 import com.xilu.wybz.utils.PrefsUtil;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import okhttp3.Call;
 
 /**
@@ -33,7 +31,7 @@ public class GetDomainService extends Service {
         getNewIp();
     }
     private void getNewIp() {
-        new HttpUtils(GetDomainService.this).get(MyHttpClient.getDomain(), null, new MyStringCallback(){
+        new HttpUtils(GetDomainService.this).get(MyHttpClient.getDomain(), new StringCallback(){
             @Override
             public void onResponse(String response) {
                 super.onResponse(response);
@@ -48,7 +46,6 @@ public class GetDomainService extends Service {
                     stopSelf();
                 }
             }
-
             @Override
             public void onError(Call call, Exception e) {
                 super.onError(call, e);

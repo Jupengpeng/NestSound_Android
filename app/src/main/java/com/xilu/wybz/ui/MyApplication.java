@@ -46,6 +46,7 @@ public class MyApplication extends Application {
         super.onCreate();
         context = this;
         ids = new ArrayList<>();
+        Fresco.initialize(this);
         //Umeng分享
         PlatformConfig.setWeixin(MyCommon.WECHAT_APP_ID, MyCommon.WECHAT_APP_SECRET);//微信
         PlatformConfig.setSinaWeibo(MyCommon.SINA_APP_KEY, MyCommon.SINA_APP_SECRET);//新浪微博
@@ -65,6 +66,35 @@ public class MyApplication extends Application {
         config.tasksProcessingOrder(QueueProcessingType.LIFO);
         config.writeDebugLogs(); // Remove for release app
         ImageLoader.getInstance().init(config.build());
+    }
+    public static MediaPlayer getMediaPlayer() {
+        MediaPlayer mediaplayer = new MediaPlayer();
+        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.KITKAT) {
+            return mediaplayer;
+        }
+        try {
+            Class<?> cMediaTimeProvider = Class.forName("android.media.MediaTimeProvider");
+            Class<?> cSubtitleController = Class.forName("android.media.SubtitleController");
+            Class<?> iSubtitleControllerAnchor = Class.forName("android.media.SubtitleController$Anchor");
+            Class<?> iSubtitleControllerListener = Class.forName("android.media.SubtitleController$Listener");
+            Constructor constructor = cSubtitleController.getConstructor(Context.class, cMediaTimeProvider, iSubtitleControllerListener);
+            Object subtitleInstance = constructor.newInstance(context, null, null);
+            Field f = cSubtitleController.getDeclaredField("mHandler");
+            f.setAccessible(true);
+            try {
+                f.set(subtitleInstance, new Handler());
+            } catch (IllegalAccessException e) {
+                return mediaplayer;
+            } finally {
+                f.setAccessible(false);
+            }
+
+            Method setsubtitleanchor = mediaplayer.getClass().getMethod("setSubtitleAnchor", cSubtitleController, iSubtitleControllerAnchor);
+            setsubtitleanchor.invoke(mediaplayer, subtitleInstance, null);
+            //Log.e("", "subtitle is setted :p");
+        } catch (Exception e) {
+        }
+        return mediaplayer;
     }
     @Override
     public void onTerminate() {
