@@ -1,17 +1,13 @@
 package com.xilu.wybz.presenter;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.util.Log;
 
-import com.xilu.wybz.bean.Response;
+import com.xilu.wybz.bean.JsonResponse;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.callback.AppStringCallback;
-import com.xilu.wybz.http.callback.MyStringCallback;
-import com.xilu.wybz.ui.IView.IForgetPwdView;
 import com.xilu.wybz.ui.IView.ISaveWordView;
-import com.xilu.wybz.utils.ToastUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,7 +37,7 @@ public class SaveWordPresenter extends BasePresenter<ISaveWordView> {
         }
         httpUtils.post(MyHttpClient.getSaveLyricsUrl(), map, new AppStringCallback(context) {
                     @Override
-                    public void onResponse(Response<? extends Object> response) {
+                    public void onResponse(JsonResponse<? extends Object> response) {
                         super.onResponse(response);
                         iView.saveWordSuccess(response.getData());
                     }

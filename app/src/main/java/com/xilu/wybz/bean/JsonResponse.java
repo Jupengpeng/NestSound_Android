@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by Administrator on 2016/5/25.
  */
-public class Response<T> implements Serializable{
+public class JsonResponse<T> implements Serializable{
 
     protected int code;
     protected String message;
@@ -13,7 +13,7 @@ public class Response<T> implements Serializable{
     protected T data;
     protected String tag;
 
-    public Response(){
+    public JsonResponse(){
 
     }
 
@@ -60,7 +60,7 @@ public class Response<T> implements Serializable{
 
     @Override
     public String toString() {
-        return "Response{" +
+        return "JsonResponse{" +
                 "code=" + code +
                 ", message='" + message + '\'' +
                 ", error='" + error + '\'' +

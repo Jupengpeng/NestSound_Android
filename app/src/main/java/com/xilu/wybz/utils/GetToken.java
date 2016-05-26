@@ -1,18 +1,12 @@
 package com.xilu.wybz.utils;
 
 import android.content.Context;
-import android.util.Log;
 
-import com.google.gson.reflect.TypeToken;
-import com.xilu.wybz.bean.Response;
 import com.xilu.wybz.bean.TokenBean;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.HttpUtils;
-import com.xilu.wybz.http.callback.AppStringCallback;
 import com.xilu.wybz.http.callback.MyStringCallback;
-import org.json.JSONObject;
 
-import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 

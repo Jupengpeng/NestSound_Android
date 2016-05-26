@@ -33,6 +33,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="2dp"
+            android:layerType="software"
             android:background="@drawable/makeword_line" />
 
         <ScrollView
@@ -54,61 +55,76 @@
                 android:textSize="@dimen/yc_15" />
         </ScrollView>
     </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="96dp"
-        android:orientation="vertical"
-        >
     <View
         android:layout_width="match_parent"
         android:layout_height="2px"
         android:background="@color/main_theme_color" />
-    <FrameLayout
+    <SurfaceView
+        android:id="@+id/make_sv_wave"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        />
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:background="@color/main_theme_color" />
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        >
-        <SurfaceView
-            android:id="@+id/make_sv_wave"
+        android:orientation="vertical">
+
+        <View
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/white" />
-        <LinearLayout
-            android:padding="12dp"
-            android:layout_marginRight="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
-            >
-        <TextView
-            android:id="@+id/tv_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/main_text_color"
-            android:text="00:00"
-            />
-        <TextView
-            android:layout_gravity="bottom|right"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/main_text_color"
-            android:text="/"
-            />
-        <TextView
-            android:id="@+id/tv_alltime"
-            android:layout_gravity="bottom|right"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/main_text_color"
-            android:text="00:00"
-            />
-        </LinearLayout>
-    </FrameLayout>
+            android:layout_height="2px"
+            android:background="@color/main_theme_color" />
+
+
+        <!--<FrameLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:layout_weight="1"-->
+        <!--&gt;-->
+        <!---->
+        <!--&lt;!&ndash;<LinearLayout&ndash;&gt;-->
+        <!--&lt;!&ndash;android:padding="12dp"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_marginRight="10dp"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_gravity="bottom|right"&ndash;&gt;-->
+        <!--&lt;!&ndash;&gt;&ndash;&gt;-->
+        <!--&lt;!&ndash;<TextView&ndash;&gt;-->
+        <!--&lt;!&ndash;android:id="@+id/tv_time"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:textColor="@color/main_text_color"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:text="00:00"&ndash;&gt;-->
+        <!--&lt;!&ndash;/>&ndash;&gt;-->
+        <!--&lt;!&ndash;<TextView&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_gravity="bottom|right"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:textColor="@color/main_text_color"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:text="/"&ndash;&gt;-->
+        <!--&lt;!&ndash;/>&ndash;&gt;-->
+        <!--&lt;!&ndash;<TextView&ndash;&gt;-->
+        <!--&lt;!&ndash;android:id="@+id/tv_alltime"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_gravity="bottom|right"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:textColor="@color/main_text_color"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:text="00:00"&ndash;&gt;-->
+        <!--&lt;!&ndash;/>&ndash;&gt;-->
+        <!--&lt;!&ndash;</LinearLayout>&ndash;&gt;-->
+        <!--</FrameLayout>-->
         <View
             android:layout_width="match_parent"
             android:layout_height="2px"
             android:background="@color/main_theme_color" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="76dp">

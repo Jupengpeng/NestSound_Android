@@ -2,7 +2,7 @@ package com.xilu.wybz.http;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.xilu.wybz.bean.Response;
+import com.xilu.wybz.bean.JsonResponse;
 import com.xilu.wybz.bean.TokenBean;
 import com.xilu.wybz.http.callback.AppStringCallback;
 
@@ -27,7 +27,7 @@ public class ResponseJsonTest {
         String jsonString = "{\"message\":\"test\",\"code\":200,\"data\":\"{name is zhangjun}\"}";
 
 
-        Response<String> result = json.fromJson(jsonString, new TypeToken<Response<String>>(){}.getType());
+        JsonResponse<String> result = json.fromJson(jsonString, new TypeToken<JsonResponse<String>>(){}.getType());
 
         System.out.println(result);
 
@@ -46,7 +46,7 @@ public class ResponseJsonTest {
         System.out.println("json:"+jsonString);
         AppStringCallback app = new AppStringCallback(){
             @Override
-            public void onResponse(Response<? extends Object> response) {
+            public void onResponse(JsonResponse<? extends Object> response) {
                 System.out.println("data:"+response.toString());
                 String name = response.getData().getClass().getSimpleName();
                 System.out.println("name:"+name);
@@ -56,7 +56,7 @@ public class ResponseJsonTest {
 
             @Override
             public Type getDataType() {
-                return new TypeToken<Response<List<String>>>(){}.getType();
+                return new TypeToken<JsonResponse<List<String>>>(){}.getType();
             }
         };
 
@@ -75,7 +75,7 @@ public class ResponseJsonTest {
 
         AppStringCallback app = new AppStringCallback(){
             @Override
-            public void onResponse(Response<? extends Object> response) {
+            public void onResponse(JsonResponse<? extends Object> response) {
                 System.out.println("data:"+response.toString());
                 String name = response.getData().getClass().getSimpleName();
                 System.out.println("name:"+name);
@@ -85,7 +85,7 @@ public class ResponseJsonTest {
 
             @Override
             public Type getDataType() {
-                return new TypeToken<Response<TokenBean>>(){}.getType();
+                return new TypeToken<JsonResponse<TokenBean>>(){}.getType();
             }
         };
 

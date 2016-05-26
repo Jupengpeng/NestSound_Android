@@ -2,11 +2,10 @@ package com.xilu.wybz.http.callback;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.xilu.wybz.bean.Response;
+import com.xilu.wybz.bean.JsonResponse;
 import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.utils.ToastUtils;
 
@@ -32,30 +31,33 @@ public class AppStringCallback extends MyStringCallback {
         this.context =context;
         this.type = type;
     }
+
     @Override
     public void onResponse(String response) {
         super.onResponse(response);
-        Response<Object> result;
+        JsonResponse<Object> result;
         try{
             result = new Gson().fromJson(response,type != null ? type:getDataType());
         } catch (Exception e){
-            result = new Response<>();
+//            e.printStackTrace();
+            result = new JsonResponse<>();
             result.setCode(999);
-            result.setMessage("Json decode error");
+            result.setMessage("Json decode error.");
             result.setError(e.toString());
-
         }
 
         if (result.getCode() == 200){
             onResponse(result);
             return;
         } else {
-            onResultError(result);
+//            onResultError(re);
         }
 
         if (result.getCode() == 999){
+//            onResponse(result);
             return;
         }
+
         if (!TextUtils.isEmpty(result.getMessage())) {
             ToastUtils.toast(context != null ? context:getContext(), result.getMessage());
         }
@@ -63,14 +65,14 @@ public class AppStringCallback extends MyStringCallback {
 
 
 
-    public void onResultError(Response<? extends Object> response){
+    public void onResultError(JsonResponse<? extends Object> response){
 
     }
 
 
 
 
-    public void onResponse(Response<? extends Object> response) {
+    public void onResponse(JsonResponse<? extends Object> response) {
 //        System.out.print(response.toString());
     }
 
@@ -80,7 +82,7 @@ public class AppStringCallback extends MyStringCallback {
      * @return
      */
     public Type getDataType(){
-        return new TypeToken<Response<String>>(){}.getType();
+        return new TypeToken<JsonResponse<String>>(){}.getType();
     }
 
     /**

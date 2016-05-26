@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.google.gson.reflect.TypeToken;
 import com.xilu.wybz.bean.InforCommentBean;
-import com.xilu.wybz.bean.Response;
+import com.xilu.wybz.bean.JsonResponse;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.callback.AppStringCallback;
 import com.xilu.wybz.ui.IView.ICommentView;
@@ -36,11 +36,11 @@ public class WorkCommentPresenter extends BasePresenter<ICommentView> {
 
             @Override
             public Type getDataType() {
-                return new TypeToken<Response<List<InforCommentBean>>>(){}.getType();
+                return new TypeToken<JsonResponse<List<InforCommentBean>>>(){}.getType();
             }
 
             @Override
-            public void onResponse(Response<? extends Object> response) {
+            public void onResponse(JsonResponse<? extends Object> response) {
                 super.onResponse(response);
 
                 List<InforCommentBean> data = response.getData();
@@ -74,7 +74,7 @@ public class WorkCommentPresenter extends BasePresenter<ICommentView> {
         httpUtils.post(MyHttpClient.getAddCommentUrl(), params, new AppStringCallback(context){
 
             @Override
-            public void onResponse(Response<? extends Object> response) {
+            public void onResponse(JsonResponse<? extends Object> response) {
                 iView.commentSuccess();
             }
 

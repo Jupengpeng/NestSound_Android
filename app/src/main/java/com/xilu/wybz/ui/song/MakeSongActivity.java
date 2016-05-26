@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.TemplateBean;
 import com.xilu.wybz.bean.WorksData;
-import com.xilu.wybz.common.RecordInstance;
 import com.xilu.wybz.dao.DBManager;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 
@@ -34,10 +33,10 @@ public class MakeSongActivity extends ToolbarActivity {
     TextView etWord;
     @Bind(R.id.make_sv_wave)
     SurfaceView makeSvWave;
-    @Bind(R.id.tv_time)
-    TextView tvTime;
-    @Bind(R.id.tv_alltime)
-    TextView tvAlltime;
+//    @Bind(R.id.tv_time)
+//    TextView tvTime;
+//    @Bind(R.id.tv_alltime)
+//    TextView tvAlltime;
     TemplateBean templateBean;
     WorksData worksData;
     long startRecordTime, startPlayTime, allTime;
@@ -45,6 +44,10 @@ public class MakeSongActivity extends ToolbarActivity {
     String RECORD_TAG;
     boolean isQc; //是不是清唱
     DBManager dbManager;
+
+    WaveSurfaceHelper helper;
+
+
     public static void ToMakeSongActivity(Context context, TemplateBean templateBean) {
         Intent intent = new Intent(context, MakeSongActivity.class);
         intent.putExtra("templateBean", templateBean);
@@ -63,9 +66,14 @@ public class MakeSongActivity extends ToolbarActivity {
     }
 
     private void initView() {
-        setTitle("");
-        RecordInstance.getInstance().setSurfaceView(makeSvWave);
-        llMain.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+//        setTitle("");
+//        RecordInstance.getInstance().setSurfaceView(makeSvWave);
+//        llMain.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+
+
+        helper = new WaveSurfaceHelper(makeSvWave);
+
+
     }
 
     private void initData() {
@@ -83,6 +91,8 @@ public class MakeSongActivity extends ToolbarActivity {
             case R.id.rl_play:
                 break;
             case R.id.rl_record:
+
+                startActivity(TestActivity.class);
                 break;
             case R.id.rl_restart:
                 break;

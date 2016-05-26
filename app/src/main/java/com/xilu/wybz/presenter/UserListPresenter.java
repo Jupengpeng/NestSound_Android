@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.google.gson.reflect.TypeToken;
 import com.xilu.wybz.bean.MineBean;
-import com.xilu.wybz.bean.Response;
+import com.xilu.wybz.bean.JsonResponse;
 import com.xilu.wybz.http.callback.AppStringCallback;
 import com.xilu.wybz.ui.IView.IUserListView;
 import com.xilu.wybz.ui.IView.IUserView;
@@ -41,7 +41,7 @@ public class UserListPresenter extends UserPresenter {
 
             @Override
             public Type getDataType() {
-                return new TypeToken<Response<MineBean>>(){}.getType();
+                return new TypeToken<JsonResponse<MineBean>>(){}.getType();
             }
 
             @Override
@@ -57,7 +57,7 @@ public class UserListPresenter extends UserPresenter {
             }
 
             @Override
-            public void onResponse(Response<? extends Object> response) {
+            public void onResponse(JsonResponse<? extends Object> response) {
                 super.onResponse(response);
                 iListView.showContent();
                 MineBean data = response.getData();
