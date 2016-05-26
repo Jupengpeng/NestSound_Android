@@ -43,21 +43,31 @@ public class AppStringCallback extends MyStringCallback {
             result.setCode(999);
             result.setMessage("Json decode error");
             result.setError(e.toString());
+
         }
 
         if (result.getCode() == 200){
             onResponse(result);
             return;
+        } else {
+            onResultError(result);
         }
 
         if (result.getCode() == 999){
-//            onResponse(result);
             return;
         }
         if (!TextUtils.isEmpty(result.getMessage())) {
             ToastUtils.toast(context != null ? context:getContext(), result.getMessage());
         }
     }
+
+
+
+    public void onResultError(Response<? extends Object> response){
+
+    }
+
+
 
 
     public void onResponse(Response<? extends Object> response) {

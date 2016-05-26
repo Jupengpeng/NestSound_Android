@@ -68,9 +68,7 @@ public class UserPresenter extends BasePresenter<IUserView> {
     }
 
     protected void execute(String url, String userId, int type, int page, MyStringCallback callback) {
-        if (params == null) {
-            params = new HashMap<>();
-        }
+        params = new HashMap<>();
         params.clear();
         params.put("uid", userId);
         params.put("type", "" + type);

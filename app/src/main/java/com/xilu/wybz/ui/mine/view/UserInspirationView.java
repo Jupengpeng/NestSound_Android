@@ -16,6 +16,7 @@ public class UserInspirationView extends UserBaseView{
 
     public UserInspirationView(Context context) {
         super(context);
+        initView();
 
         List<WorksData> data = new ArrayList<WorksData>();
 
