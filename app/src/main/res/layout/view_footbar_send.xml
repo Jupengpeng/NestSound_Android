@@ -33,7 +33,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="15dp"
             android:src="@drawable/ic_send_msg"
-            android:background="@drawable/btn_send2"
+            android:background="@drawable/btn_send"
             android:scaleType="center"
             />
 

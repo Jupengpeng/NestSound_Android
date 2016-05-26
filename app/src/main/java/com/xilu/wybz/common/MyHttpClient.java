@@ -116,8 +116,17 @@ public class MyHttpClient {
     //分享
     public static String getSharePlayUrl(String id){return  ROOT_URL+"html/p.php?id="+id;}
 
-    public static String getUserCenter(){return  "userCenter/index";}
-    public static String getOtherCenter(){return  "otherCenter/index";}
     public static String getLyricatsUrl(){return  "lyricsopt/getLyriCats";}
+
+    //个人用户中心
+    public static String getUserCenter(){return  "userCenter/index";}
+    //他人用户中心
+    public static String getOtherCenter(){return  "otherCenter/index";}
+    //作品评论列表
+    public static String getCommentList(){return  "comment/list";}
+    //提交作品评论
+    public static String getCommentSave(){return  "comment/save";}
+    //删除作品评论
+    public static String getCommentDelete(){return  "comment/delete";}
 }
 

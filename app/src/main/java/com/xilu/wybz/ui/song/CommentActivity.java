@@ -1,7 +1,9 @@
 package com.xilu.wybz.ui.song;
 
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.SpannableString;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,11 +30,11 @@ import butterknife.Bind;
 /**
  * Created by Administrator on 2016/5/25.
  */
-public class CommentActivity extends BaseListActivity<String> implements ICommentView {
+public class CommentActivity extends BaseListActivity<InforCommentBean> implements ICommentView {
 
     protected LinearLayout llFootBar;
     protected EditText etContent;
-    protected ImageView tvSend;
+    protected ImageView ivSend;
 
 
     @Override
@@ -57,14 +59,43 @@ public class CommentActivity extends BaseListActivity<String> implements ICommen
         setTitle(PrefsUtil.getUserInfo(this).name + "评论");
 
         loadFootBar();
+
+
     }
 
 
     public void loadFootBar() {
+
         ViewStub stub = (ViewStub) findViewById(R.id.view_footbar_send);
         llFootBar = (LinearLayout) stub.inflate();
         etContent = (EditText) llFootBar.findViewById(R.id.et_content);
-        tvSend = (ImageView) llFootBar.findViewById(R.id.iv_send);
+        ivSend = (ImageView) llFootBar.findViewById(R.id.iv_send);
+
+        ivSend.setEnabled(false);
+
+        etContent.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                ivSend.setEnabled(s.length() > 0 );
+            }
+        });
+
+        ivSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     @Override
@@ -72,15 +103,15 @@ public class CommentActivity extends BaseListActivity<String> implements ICommen
         super.setUpData();
         mDataList = new ArrayList<>();
 
-        List<String> list = new ArrayList<>();
-        list.add("");
-        list.add("");
-        list.add("");
-        list.add("");
-        list.add("");
-        list.add("");
-        list.add("");
-        list.add("");
+        List<InforCommentBean> list = new ArrayList<>();
+
+        list.add(new InforCommentBean());
+        list.add(new InforCommentBean());
+        list.add(new InforCommentBean());
+        list.add(new InforCommentBean());
+        list.add(new InforCommentBean());
+        list.add(new InforCommentBean());
+        list.add(new InforCommentBean());
 
         mDataList.addAll(list);
         adapter.notifyDataSetChanged();
@@ -108,7 +139,7 @@ public class CommentActivity extends BaseListActivity<String> implements ICommen
 
     @Override
     public void commentSuccess() {
-
+        etContent.setText("");
     }
 
     @Override
@@ -125,6 +156,7 @@ public class CommentActivity extends BaseListActivity<String> implements ICommen
     @Override
     public void onRefresh(int action) {
 
+        recycler.onRefreshCompleted();
     }
 
     public static class CommentViewHolder extends BaseViewHolder {
