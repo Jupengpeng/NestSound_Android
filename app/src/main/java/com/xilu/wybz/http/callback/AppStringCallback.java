@@ -2,6 +2,7 @@ package com.xilu.wybz.http.callback;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -31,7 +32,6 @@ public class AppStringCallback extends MyStringCallback {
         this.context =context;
         this.type = type;
     }
-
     @Override
     public void onResponse(String response) {
         super.onResponse(response);
@@ -39,10 +39,9 @@ public class AppStringCallback extends MyStringCallback {
         try{
             result = new Gson().fromJson(response,type != null ? type:getDataType());
         } catch (Exception e){
-//            e.printStackTrace();
             result = new Response<>();
             result.setCode(999);
-            result.setMessage("Json decode error.");
+            result.setMessage("Json decode error");
             result.setError(e.toString());
 
         }
@@ -57,7 +56,6 @@ public class AppStringCallback extends MyStringCallback {
         if (result.getCode() == 999){
             return;
         }
-
         if (!TextUtils.isEmpty(result.getMessage())) {
             ToastUtils.toast(context != null ? context:getContext(), result.getMessage());
         }

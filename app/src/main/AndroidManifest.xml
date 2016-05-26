@@ -53,6 +53,7 @@
 
         <activity android:name=".ui.find.FindActivity" />
         <activity android:name=".ui.find.MoreWorkActivity" />
+        <activity android:name=".ui.find.SearchWorksActivity" />
 
         <activity android:name=".ui.msg.MsgActivity" />
         <activity android:name=".ui.msg.MsgZambiaActivity" />
@@ -87,7 +88,7 @@
         <activity android:name=".ui.lyrics.MakeWordActivity" />
         <activity android:name=".ui.lyrics.ImportWordActivity" />
         <activity android:name=".ui.lyrics.MakeCourseActivity" />
-        <activity android:name=".ui.lyrics.SaveWordActivity" />
+        <activity android:name=".ui.lyrics.SaveWordActivity" android:windowSoftInputMode="stateUnchanged" />
 
         <service android:name=".service.PlayService" />
 

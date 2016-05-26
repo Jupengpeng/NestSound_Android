@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.xilu.wybz.R;
+import com.xilu.wybz.bean.DataBean;
 import com.xilu.wybz.bean.MsgBean;
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.common.Event;
@@ -99,16 +100,15 @@ public class PasswordActivity extends BaseActivity implements IPasswordView, Tex
 
     @Override
     public void SmsCodeSuccess(String result) {
-        MsgBean mb = ParseUtils.parseMsgBean(result);
+        DataBean mb = ParseUtils.getDataBean(context,result);
         if (mb != null) {
-            if (mb.getCode().equals("200")) {
+            if (mb.code==200) {
                 MyCountTimer timeCount = new MyCountTimer(mpassPhonebut);
                 timeCount.start();
                 mpassPhonepass.setFocusable(true);
                 mpassPhonepass.setFocusableInTouchMode(true);
                 mpassPhonepass.requestFocus();
             }
-            showMsg(mb.getMessage());
         } else {
             showMsg("验证码发送失败");
         }

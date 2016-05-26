@@ -19,6 +19,7 @@ import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.ModifyUserInfoPresenter;
 import com.xilu.wybz.ui.IView.IModifyUserInfoView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
+import com.xilu.wybz.utils.ImageUploader;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.utils.UploadPicUtil;
@@ -241,7 +242,7 @@ public class ModifyActivity extends ToolbarActivity implements IModifyUserInfoVi
     //上传头像到服务器
     public void uploadUserHead() {
         UploadPicUtil uploadPicUtil = new UploadPicUtil();
-        uploadPicUtil.uploadFile(context, headPath, 1,"headport",new UploadPicUtil.UploadPicResult() {
+        uploadPicUtil.uploadFile(context, headPath, ImageUploader.fixxs[4],new UploadPicUtil.UploadPicResult() {
             @Override
             public void onSuccess(String imageUrl) {
                 if (!TextUtils.isEmpty(headPath) && new File(headPath).exists()) {

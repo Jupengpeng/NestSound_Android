@@ -44,7 +44,7 @@ public class FeedbackPresenter extends BasePresenter<IFeedbackView> {
 
             @Override
             public void onResponse(String response) {
-                DataBean dataBean = ParseUtils.getDataBean(response);
+                DataBean dataBean = ParseUtils.getDataBean(context,response);
                 ToastUtils.toast(context,dataBean.message);
             }
         });

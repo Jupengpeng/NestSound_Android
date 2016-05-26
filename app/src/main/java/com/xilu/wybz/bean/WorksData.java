@@ -25,7 +25,6 @@ public class WorksData extends BaseModel implements Serializable {
     public String author;//作者
     public String headurl;//用户头像
     public int looknum;//浏览量
-    public int isOpen;//是否公开
     public int fovnum;//收藏量
     public int zannum;//点赞量
     public int commentnum;//评论量
@@ -35,7 +34,7 @@ public class WorksData extends BaseModel implements Serializable {
     public int mp3times;//mp3时长
     public String hotmp3;//伴奏播放地址
     public int hotmp3times;//伴奏时长 秒
-    public int status;//1歌曲 2歌词
+    public int status;//1歌曲 2歌词 歌词是否公开 0不公开 1公开
     public String lyrics;//歌词
     public String detail;//歌词详情 灵感记录的内容
     public String prev;//上一首
@@ -320,14 +319,6 @@ public class WorksData extends BaseModel implements Serializable {
 
     public void setCreateTime(long createTime) {
         this.createTime = createTime;
-    }
-
-    public int getIsOpen() {
-        return isOpen;
-    }
-
-    public void setIsOpen(int isOpen) {
-        this.isOpen = isOpen;
     }
 
     public int getRecordtimes() {

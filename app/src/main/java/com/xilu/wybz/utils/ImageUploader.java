@@ -14,14 +14,20 @@ import org.json.JSONObject;
  */
 public class ImageUploader {
     String filePath;
-    int fileType;//1 图片 2 音乐
     String fixx;
+    public static String[] fixxs = new String[]{"inspire","lyrcover","muscover","music","headport"};
     String endStrs[] = new String[]{".jpg", ".mp3"};
-
-    public void setFilePath(String filePath, int fileType, String fixx) {
+    String endStr = "";
+    int fileType;
+    public void setFilePath(String filePath, String fixx) {
         this.filePath = filePath;
-        this.fileType = fileType;
         this.fixx = fixx;
+        if(fixx.equals("music")) {
+            fileType = 1;
+        }else{
+            fileType = 0;
+        }
+        endStr = endStrs[fileType];
     }
 
     public interface OnUploadListener {
@@ -50,7 +56,7 @@ public class ImageUploader {
     }
 
     public void uploadPic(String token, String filename) {
-        MyApplication.uploadManager.put(filePath, filename + endStrs[fileType], token,
+        MyApplication.uploadManager.put(filePath, filename + endStr, token,
                 new UpCompletionHandler() {
                     @Override
                     public void complete(String key, ResponseInfo info, JSONObject response) {

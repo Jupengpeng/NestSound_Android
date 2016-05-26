@@ -10,4 +10,5 @@ import java.util.List;
 public interface ISaveWordView extends IBaseView {
     void saveWordSuccess(String response);
     void saveWordFail();
+    void onFinish();
 }

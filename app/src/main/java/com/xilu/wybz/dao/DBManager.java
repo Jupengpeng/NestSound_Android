@@ -2,7 +2,6 @@ package com.xilu.wybz.dao;
 
 import android.content.Context;
 import android.util.Log;
-
 import com.litesuits.orm.LiteOrm;
 import com.litesuits.orm.db.DataBaseConfig;
 import com.litesuits.orm.db.assit.QueryBuilder;

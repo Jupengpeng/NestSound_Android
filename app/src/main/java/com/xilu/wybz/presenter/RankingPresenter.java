@@ -4,8 +4,10 @@ import android.content.Context;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.xilu.wybz.bean.Response;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.MyHttpClient;
+import com.xilu.wybz.http.callback.AppStringCallback;
 import com.xilu.wybz.http.callback.MyStringCallback;
 import com.xilu.wybz.ui.IView.ILoginView;
 import com.xilu.wybz.ui.IView.IRankingView;
@@ -14,6 +16,7 @@ import com.xilu.wybz.utils.ParseUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
 
@@ -32,11 +35,11 @@ public class RankingPresenter extends BasePresenter<IRankingView>{
         params.put("uid",userId);
         params.put("modelType",modelType+"");
         params.put("page","1");
-        httpUtils.get(MyHttpClient.getRankingList(),params,new MyStringCallback(){
+        httpUtils.get(MyHttpClient.getRankingList(),params,new AppStringCallback(){
             @Override
-            public void onResponse(String response) {
+            public void onResponse(Response<? extends Object> response) {
                 super.onResponse(response);
-                List<WorksData> worksDatas = ParseUtils.getWorksData(context,response);
+                List<WorksData> worksDatas = response.getData();
                 if(worksDatas!=null){
                     switch (modelType){
                         case 1:
@@ -47,6 +50,11 @@ public class RankingPresenter extends BasePresenter<IRankingView>{
                             break;
                     }
                 }
+            }
+
+            @Override
+            public Type getDataType() {
+                return new TypeToken<List<WorksData>>(){}.getType();
             }
 
             @Override

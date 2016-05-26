@@ -16,6 +16,8 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
+import okhttp3.Call;
+
 /**
  * Created by Administrator on 2016/3/7 0007.
  */
@@ -35,16 +37,17 @@ public class GetToken {
         Map<String, String> params = new HashMap<>();
         params.put("type", type + "");
         params.put("fixx", fixx);
-        new HttpUtils(context).get(MyHttpClient.getQnToken(), params, new AppStringCallback(context) {
+        new HttpUtils(context).get(MyHttpClient.getQnToken(), params, new MyStringCallback() {
+
             @Override
-            public Type getDataType() {
-                return new TypeToken<Response<TokenResult>>(){}.getType();
+            public void onError(Call call, Exception e) {
+                super.onError(call, e);
             }
 
             @Override
-            public void onResponse(Response<? extends Object> response) {
+            public void onResponse(String response) {
                 super.onResponse(response);
-                TokenBean tokenBean = response.getData();
+                TokenBean tokenBean = ParseUtils.getTokenBean(context,response);
                 if(tokenBean!=null){
                     String token = tokenBean.token;
                     String filename = tokenBean.filename;
