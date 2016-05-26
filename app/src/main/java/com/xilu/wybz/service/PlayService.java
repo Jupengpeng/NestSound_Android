@@ -350,7 +350,7 @@ public class PlayService extends Service {
             }
         }
     };
-    private MediaPlayer getMediaPlayer() {
+    public static MediaPlayer getMediaPlayer() {
         MediaPlayer mediaplayer = new MediaPlayer();
         if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.KITKAT) {
             return mediaplayer;
@@ -361,7 +361,7 @@ public class PlayService extends Service {
             Class<?> iSubtitleControllerAnchor = Class.forName("android.media.SubtitleController$Anchor");
             Class<?> iSubtitleControllerListener = Class.forName("android.media.SubtitleController$Listener");
             Constructor constructor = cSubtitleController.getConstructor(Context.class, cMediaTimeProvider, iSubtitleControllerListener);
-            Object subtitleInstance = constructor.newInstance(PlayService.this, null, null);
+            Object subtitleInstance = constructor.newInstance(MyApplication.context, null, null);
             Field f = cSubtitleController.getDeclaredField("mHandler");
             f.setAccessible(true);
             try {

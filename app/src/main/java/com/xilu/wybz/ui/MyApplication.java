@@ -66,7 +66,6 @@ public class MyApplication extends Application {
         config.writeDebugLogs(); // Remove for release app
         ImageLoader.getInstance().init(config.build());
     }
-
     @Override
     public void onTerminate() {
         super.onTerminate();
