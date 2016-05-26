@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.xilu.wybz.bean.CommentBean;
 import com.xilu.wybz.bean.DataBean;
 import com.xilu.wybz.bean.Lyricat;
 import com.xilu.wybz.bean.MusicTalk;
@@ -20,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ParseUtils {
-
+    //伴奏
     public static List<TemplateBean> parseTemplateList(Context context, String response) {
         List<TemplateBean> templateList = new ArrayList<>();
         try {
@@ -38,6 +39,7 @@ public class ParseUtils {
             return templateList;
         }
     }
+    //歌单
     public static List<SongAlbum> getSongAlbumsData(Context context, String response) {
         List<SongAlbum> templateList = new ArrayList<>();
         try {
@@ -54,14 +56,14 @@ public class ParseUtils {
         }
         return templateList;
     }
-
+    //词库
     public static List<Lyricat> getLyricatsData(Context context, String response) {
-        List<Lyricat> templateList = new ArrayList<>();
+        List<Lyricat> lyricats = new ArrayList<>();
         try {
             JSONObject jsonObject = new JSONObject(response);
             int code = jsonObject.getInt("code");
             if (code == 200) {
-                templateList = new Gson().fromJson(jsonObject.getString("data"), new TypeToken<List<Lyricat>>() {
+                lyricats = new Gson().fromJson(jsonObject.getString("data"), new TypeToken<List<Lyricat>>() {
                 }.getType());
             } else {
                 showMsg(context, jsonObject.getString("message"));
@@ -69,9 +71,26 @@ public class ParseUtils {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return templateList;
+        return lyricats;
     }
-
+    //词库
+    public static List<CommentBean> getCommentsData(Context context, String response) {
+        List<CommentBean> commentBeanList = new ArrayList<>();
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            int code = jsonObject.getInt("code");
+            if (code == 200) {
+                commentBeanList = new Gson().fromJson(jsonObject.getString("data"), new TypeToken<List<CommentBean>>() {
+                }.getType());
+            } else {
+                showMsg(context, jsonObject.getString("message"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return commentBeanList;
+    }
+    //作品列表
     public static List<WorksData> getWorksData(Context context, String response) {
         List<WorksData> worksDatas = null;
         try {
@@ -88,6 +107,7 @@ public class ParseUtils {
         }
         return worksDatas;
     }
+    //乐说列表
     public static List<MusicTalk> getMusicTalksData(Context context, String response) {
         List<MusicTalk> worksDatas = null;
         try {
@@ -121,6 +141,7 @@ public class ParseUtils {
         }
         return dataBean;
     }
+    //用户
     public static UserBean getUserBean(Context context, String response) {
         UserBean dataBean = new UserBean();
         try {
@@ -136,6 +157,7 @@ public class ParseUtils {
         }
         return dataBean;
     }
+    //七牛的Token
     public static TokenBean getTokenBean(Context context, String response) {
         TokenBean dataBean = new TokenBean();
         try {

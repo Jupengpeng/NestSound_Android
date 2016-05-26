@@ -9,6 +9,7 @@ import android.os.IBinder;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.xilu.wybz.bean.MusicDetailBean;
@@ -39,8 +40,8 @@ import okhttp3.Call;
 public class PlayService extends Service {
     WorksData currMdb;
     MusicBinder mBinder = new MusicBinder();
-    String userId;
-    String id;
+    int userId;
+    int id;
     String from;
     String gedanid;
     int position;
@@ -124,15 +125,15 @@ public class PlayService extends Service {
         tmgr.listen(mPhoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
     }
 
-    public void initData(String musicId) {
-        if (musicId == null) {
+    public void initData(int musicId) {
+        if (musicId == 0) {
             return;
         }
         loadData(musicId);
     }
 
     public void initPreData() {
-        if (currMdb == null || currMdb.getPrev() == null || currMdb.getPrev().trim().equals("") || currMdb.getPrev().equalsIgnoreCase("null")) {
+        if (currMdb == null || currMdb.getPrev() == 0) {
             EventBus.getDefault().post(new Event.PPStatusEvent(9));
             return;
         }
@@ -140,23 +141,23 @@ public class PlayService extends Service {
     }
 
     public void initNextData() {
-        if (currMdb == null || currMdb.getNext() == null || currMdb.getNext().trim().equals("") || currMdb.getNext().equalsIgnoreCase("null")) {
+        if (currMdb == null || currMdb.getNext() == 0) {
             EventBus.getDefault().post(new Event.PPStatusEvent(10));
             return;
         }
         loadData(currMdb.getNext());
     }
 
-    public void loadData(String itemid) {
+    public void loadData(int itemid) {
         PlayMediaInstance.getInstance().stopMediaPlay();
-        Map<String,String> params = new HashMap<>();
+        Map<String, String> params = new HashMap<>();
         params = new HashMap<>();
-        params.put("uid",userId);
-        int openmodel = PrefsUtil.getInt("playmodell",PlayService.this);
-        params.put("openmodel", (openmodel==0?1:openmodel)+"");
-        params.put("id",itemid);
-        params.put("gedanid",gedanid);
-        params.put("com",from);
+        params.put("uid", userId + "");
+        int openmodel = PrefsUtil.getInt("playmodell", PlayService.this);
+        params.put("openmodel", (openmodel == 0 ? 1 : openmodel) + "");
+        params.put("id", itemid+"");
+        params.put("gedanid", gedanid);
+        params.put("com", from);
         new HttpUtils(PlayService.this).get(MyHttpClient.getMusicWorkUrl(), params, new MyStringCallback() {
             @Override
             public void onError(Call call, Exception e) {
@@ -165,12 +166,12 @@ public class PlayService extends Service {
 
             @Override
             public void onResponse(String response) {
-                if(ParseUtils.checkCode(response)){
+                if (ParseUtils.checkCode(response)) {
                     try {
                         String data = new JSONObject(response).getString("data");
-                        currMdb = new Gson().fromJson(data,WorksData.class);
+                        currMdb = new Gson().fromJson(data, WorksData.class);
                         id = currMdb.getItemid();
-                        PrefsUtil.putString("playId", id, PlayService.this);
+                        PrefsUtil.putInt("playId", id, PlayService.this);
                         PrefsUtil.putString("playdata" + id, new Gson().toJson(currMdb), PlayService.this);
                         PlayMediaInstance.getInstance().startMediaPlay(currMdb.getPlayurl());
                         EventBus.getDefault().post(new Event.MusicDataEvent());
@@ -185,12 +186,12 @@ public class PlayService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         try {
-            id = intent.getStringExtra("id");
+            id = intent.getIntExtra("id",0);
             from = intent.getStringExtra("from");
             gedanid = intent.getStringExtra("gedanid");
             position = intent.getIntExtra("position", -1);
             PrefsUtil.putString("playFrom", from, this);
-            PrefsUtil.putString("playId", id, this);
+            PrefsUtil.putInt("playId", id, this);
             PrefsUtil.putInt("playPos", position, this);
             PrefsUtil.putString("playGedanId", gedanid, this);
         } catch (Exception e) {
@@ -198,11 +199,8 @@ public class PlayService extends Service {
         } catch (Error error) {
             error.printStackTrace();
         }
-        if (!TextUtils.isEmpty(id)) {
+        if (id>0) {
             userId = PrefsUtil.getUserId(this);
-            if (TextUtils.isEmpty(userId)) {
-                userId = "";
-            }
             initData(id);
         }
         return super.onStartCommand(intent, flags, startId);

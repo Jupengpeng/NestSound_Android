@@ -18,7 +18,7 @@ import java.util.List;
  */
 @Table("workdata")
 public class WorksData extends BaseModel implements Serializable {
-    public String itemid;//歌曲id
+    public int itemid;//歌曲id
     public String pic;//歌曲封面
     public String title;//标题
     public String name;//标题
@@ -37,8 +37,8 @@ public class WorksData extends BaseModel implements Serializable {
     public int status;//1歌曲 2歌词 歌词是否公开 0不公开 1公开
     public String lyrics;//歌词
     public String detail;//歌词详情 灵感记录的内容
-    public String prev;//上一首
-    public String next;//下一首
+    public int prev;//上一首
+    public int next;//下一首
     public String come;
     public int iscollect;//1=已收藏，0=未收藏
     public int isZan;//1=已赞，0=未赞
@@ -128,11 +128,11 @@ public class WorksData extends BaseModel implements Serializable {
         this.commentnum = commentnum;
     }
 
-    public String getItemid() {
+    public int getItemid() {
         return itemid;
     }
 
-    public void setItemid(String itemid) {
+    public void setItemid(int itemid) {
         this.itemid = itemid;
     }
 
@@ -217,19 +217,19 @@ public class WorksData extends BaseModel implements Serializable {
         this.lyrics = lyrics;
     }
 
-    public String getPrev() {
+    public int getPrev() {
         return prev;
     }
 
-    public void setPrev(String prev) {
+    public void setPrev(int prev) {
         this.prev = prev;
     }
 
-    public String getNext() {
+    public int getNext() {
         return next;
     }
 
-    public void setNext(String next) {
+    public void setNext(int next) {
         this.next = next;
     }
 

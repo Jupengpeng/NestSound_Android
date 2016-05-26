@@ -69,8 +69,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         context = this;
         Fresco.initialize(this);
         adaptTheme(true);
-        userId = PrefsUtil.getUserId(context);
-        Log.e("userId",userId);
+        userId = PrefsUtil.getUserId(context)+"";
         isLogin = !userId.equals("0");
         setContentView(getLayoutRes());
         ButterKnife.bind(this);

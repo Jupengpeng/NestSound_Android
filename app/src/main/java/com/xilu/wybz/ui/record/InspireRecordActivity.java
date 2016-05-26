@@ -29,6 +29,7 @@ import com.xilu.wybz.common.NewPlayInstance;
 import com.xilu.wybz.presenter.InspireRecordPresenter;
 import com.xilu.wybz.ui.IView.IInspireRecordView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
+import com.xilu.wybz.utils.DateTimeUtil;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.FileUtils;
 import com.xilu.wybz.utils.SystemUtils;
@@ -79,7 +80,6 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
     private int playState; //1播放 2暂停
     private String recordPath;//录音文件保存路径
     private MP3Recorder mp3Recorder;
-    private MediaPlayer mediaPlayer;
     private WorksData worksData;
     int column = 3;
     InspireRecordPresenter inspireRecordPresenter;
@@ -110,8 +110,10 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
                 if(TextUtils.isEmpty(etContent.getText().toString())){
                     showMsg("内容不能为空！");
                 }else{
-                    if(TextUtils.isEmpty(recordPath)&&list.size()==0){
+                    if(list.size()>0){
 
+                    }else{
+                        inspireRecordPresenter.publishData(userId,worksData);
                     }
                 }
                 break;
@@ -119,7 +121,7 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
         return super.onOptionsItemSelected(item);
     }
     public void initView() {
-        setTitle("灵感记录");
+        setTitle(DateTimeUtil.timestamp2DateTime(System.currentTimeMillis()));
         int space10 = DensityUtil.dip2px(context, 10);
         recyclerViewPic.setLayoutManager(new GridLayoutManager(context, column));
         recyclerViewPic.addItemDecoration(new GridSpacingItemDecoration(column, space10, false));
@@ -387,7 +389,7 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
 
     @Override
     public void onMusicStop() {
-            //只有删除的时候才会触发
+
     }
 
     @Override
@@ -419,7 +421,7 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
     }
 
     @Override
-    public void pubSuccess(String result) {
+    public void pubSuccess() {
 
     }
 

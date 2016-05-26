@@ -5,6 +5,6 @@ package com.xilu.wybz.ui.IView;
  */
 public interface IInspireRecordView extends IBaseView{
     void pubStart();
-    void pubSuccess(String result);
+    void pubSuccess();
     void pubFail();
 }

@@ -2,25 +2,16 @@ package com.xilu.wybz.presenter;
 
 import android.content.Context;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.xilu.wybz.bean.InforCommentBean;
 import com.xilu.wybz.bean.SongAlbum;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.callback.MyStringCallback;
-import com.xilu.wybz.ui.IView.ISaveWordView;
 import com.xilu.wybz.ui.IView.ISongablumMoreView;
 import com.xilu.wybz.utils.ParseUtils;
-import com.xilu.wybz.utils.ToastUtils;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.List;
 
 import okhttp3.Call;
-import okhttp3.Request;
 
 /**
  * Created by hujunwei on 16/5/20.

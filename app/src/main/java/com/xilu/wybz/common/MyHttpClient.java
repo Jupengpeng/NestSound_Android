@@ -113,11 +113,13 @@ public class MyHttpClient {
     public static String getAddCommentUrl(){return  "comment/save";}
     //发布歌词
     public static String getSaveLyricsUrl(){return  "lyricsopt/optLyrics";}
-    //分享
-    public static String getSharePlayUrl(String id){return  ROOT_URL+"html/p.php?id="+id;}
+    //保存灵感记录
+    public static String getSaveInspireUrl(){return  "inspire/save";}
 
     public static String getUserCenter(){return  "userCenter/index";}
     public static String getOtherCenter(){return  "otherCenter/index";}
     public static String getLyricatsUrl(){return  "lyricsopt/getLyriCats";}
+    //评论列表
+    public static String getCommentListUrl(){return "comment/list";}
 }
 

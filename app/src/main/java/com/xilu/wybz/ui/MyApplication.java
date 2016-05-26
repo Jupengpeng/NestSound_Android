@@ -31,7 +31,7 @@ public class MyApplication extends Application {
     public static String musicId = "";
     public static String from;
     public static String id;
-    public static List<String> ids;
+    public static List<Integer> ids;
     public static boolean isPlay;
     public static UploadManager uploadManager;
 

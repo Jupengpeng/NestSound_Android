@@ -1,7 +1,10 @@
 package com.xilu.wybz.ui.song;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.SpannableString;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,16 +13,17 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.xilu.wybz.R;
-import com.xilu.wybz.bean.InforCommentBean;
+import com.xilu.wybz.bean.CommentBean;
+import com.xilu.wybz.bean.WorksData;
+import com.xilu.wybz.presenter.CommentPresenter;
 import com.xilu.wybz.ui.IView.ICommentView;
 import com.xilu.wybz.ui.base.BaseListActivity;
-import com.xilu.wybz.utils.PrefsUtil;
+import com.xilu.wybz.utils.DateTimeUtil;
 import com.xilu.wybz.utils.StringStyleUtil;
 import com.xilu.wybz.view.CircleImageView;
 import com.xilu.wybz.view.pull.BaseViewHolder;
-
+import com.xilu.wybz.view.pull.PullRecycler;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,38 +32,46 @@ import butterknife.Bind;
 /**
  * Created by Administrator on 2016/5/25.
  */
-public class CommentActivity extends BaseListActivity<String> implements ICommentView {
+public class CommentActivity extends BaseListActivity<CommentBean> implements ICommentView {
 
-    protected LinearLayout llFootBar;
-    protected EditText etContent;
-    protected ImageView tvSend;
-
-
+    private LinearLayout llFootBar;
+    private EditText etContent;
+    private ImageView tvSend;
+    private CommentPresenter commentPresenter;
+    private WorksData worksData;
+    public static void ToCommentActivity(Context context, WorksData worksData){
+        Intent intent = new Intent(context,CommentActivity.class);
+        intent.putExtra("worksdata",worksData);
+        context.startActivity(intent);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initView();
     }
 
     @Override
     protected int getLayoutRes() {
         return super.getLayoutRes();
-//        return R.layout.activity_draft;
     }
 
     @Override
     protected void initPresenter() {
-
+        commentPresenter = new CommentPresenter(context,this);
+        commentPresenter.init();
     }
 
     @Override
     public void initView() {
-        setTitle(PrefsUtil.getUserInfo(this).name + "评论");
-
+        setTitle("评论");
         loadFootBar();
+        initData();
     }
-
-
+    public void initData(){
+        Bundle bundle = getIntent().getExtras();
+        if(bundle!=null) {
+            worksData = (WorksData) bundle.getSerializable("worksdata");
+        }
+    }
     public void loadFootBar() {
         ViewStub stub = (ViewStub) findViewById(R.id.view_footbar_send);
         llFootBar = (LinearLayout) stub.inflate();
@@ -70,25 +82,30 @@ public class CommentActivity extends BaseListActivity<String> implements ICommen
     @Override
     protected void setUpData() {
         super.setUpData();
-        mDataList = new ArrayList<>();
-
-        List<String> list = new ArrayList<>();
-        list.add("");
-        list.add("");
-        list.add("");
-        list.add("");
-        list.add("");
-        list.add("");
-        list.add("");
-        list.add("");
-
-        mDataList.addAll(list);
-        adapter.notifyDataSetChanged();
+        recycler.setRefreshing();
     }
-
     @Override
-    public void showCommentData(List<InforCommentBean> commentBeans) {
-
+    public void onRefresh(int action) {
+        this.action = action;
+        if (mDataList == null) {
+            mDataList = new ArrayList<>();
+        }
+        if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
+            page = 1;
+        }
+        if(worksData!=null){
+            commentPresenter.getCommentList(worksData.getItemid(), TextUtils.isEmpty(worksData.getPlayurl())?2:1,page++);
+        }
+    }
+    @Override
+    public void showCommentData(List<CommentBean> commentBeans) {
+        if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
+            mDataList.clear();
+        }
+        recycler.enableLoadMore(true);
+        mDataList.addAll(commentBeans);
+        adapter.notifyDataSetChanged();
+        recycler.onRefreshCompleted();
     }
 
     @Override
@@ -122,12 +139,7 @@ public class CommentActivity extends BaseListActivity<String> implements ICommen
         return new CommentViewHolder(view);
     }
 
-    @Override
-    public void onRefresh(int action) {
-
-    }
-
-    public static class CommentViewHolder extends BaseViewHolder {
+    public class CommentViewHolder extends BaseViewHolder {
 
         @Bind(R.id.iv_head)
         CircleImageView ivHead;
@@ -140,18 +152,16 @@ public class CommentActivity extends BaseListActivity<String> implements ICommen
 
         public CommentViewHolder(View itemView) {
             super(itemView);
-
-
-            InforCommentBean bean = new InforCommentBean();
-            bean.target_nickname = "小妹";
-            bean.setComment("小小不在家啊");
-            SpannableString s = StringStyleUtil.getWorkCommentStyleStr(bean);
-            tvContent.setText(s);
         }
 
         @Override
         public void onBindViewHolder(int position) {
-
+            CommentBean bean = mDataList.get(position);
+            loadImage(bean.headerurl,ivHead);
+            tvName.setText(bean.nickname);
+            tvDate.setText(DateTimeUtil.timestamp2DateTime(bean.createdate));
+            SpannableString s = StringStyleUtil.getWorkCommentStyleStr(bean);
+            tvContent.setText(s);
         }
 
         @Override

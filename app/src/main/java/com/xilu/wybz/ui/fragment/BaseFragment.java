@@ -18,7 +18,7 @@ public abstract class BaseFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(getLayoutResId(), container, false);
         context = getActivity();
-        userId = PrefsUtil.getUserId(context);
+        userId = PrefsUtil.getUserId(context)+"";
         ButterKnife.bind(this, view);
         initPresenter();
         return view;

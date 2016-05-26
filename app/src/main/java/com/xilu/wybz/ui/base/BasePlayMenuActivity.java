@@ -74,7 +74,7 @@ public abstract class BasePlayMenuActivity extends ToolbarActivity {
     public void onPlayMenuClick() {
         String playId = PrefsUtil.getString("playId", context);
         if (!TextUtils.isEmpty(playId)) {
-            PlayAudioActivity.toPlayAudioActivity(context, PrefsUtil.getString("playId", context),
+            PlayAudioActivity.toPlayAudioActivity(context, PrefsUtil.getInt("playId", context),
                     PrefsUtil.getString("playGedanId", context),
                     PrefsUtil.getString("playFrom", context), PrefsUtil.getInt("playdPos", context));
         }

@@ -166,7 +166,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
         }
     };
 
-    public static void toPlayAudioActivity(Context context, String id, String gedanid, String from, int position) {
+    public static void toPlayAudioActivity(Context context, int id, String gedanid, String from, int position) {
         Intent intent = new Intent(context, PlayAudioActivity.class);
         intent.putExtra("id", id);
         intent.putExtra("from", from);
@@ -425,7 +425,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_share:
-                if (worksData != null && !TextUtils.isEmpty(worksData.itemid)) {
+                if (worksData != null && worksData.itemid>0) {
                     if (shareDialog == null) {
                         String shareTitle = worksData.title;
                         String shareAuthor = worksData.author;
@@ -519,7 +519,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
 
     @Override
     public void toCommentActivity() {
-
+        CommentActivity.ToCommentActivity(context,worksData);
     }
 
     @Override

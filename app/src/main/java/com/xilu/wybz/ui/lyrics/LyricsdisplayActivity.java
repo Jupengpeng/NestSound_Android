@@ -68,7 +68,7 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
     @Bind(R.id.iv_zan)
     ImageView iv_zan;
     String title;
-    String id;
+    int id;
     WorksData worksData;
     ShareDialog shareDialog;
     int isZan;
@@ -78,7 +78,7 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
     LyricsPresenter lyricsPresenter;
     String[] actionTitles = new String[]{"分享","举报","编辑"};
     String[] actionTypes = new String[]{"share","jubao","edit"};
-    public static void toLyricsdisplayActivity(Context context, String id, int from, String title) {
+    public static void toLyricsdisplayActivity(Context context, int id, int from, String title) {
         Intent intent = new Intent(context,LyricsdisplayActivity.class);
         intent.putExtra("id", id);
         intent.putExtra("from", from);
@@ -111,7 +111,7 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
             title = bundle.getString("title");
             if (!TextUtils.isEmpty(title))
                 setTitle(title);
-            id = bundle.getString("id");
+            id = bundle.getInt("id");
             from = bundle.getInt("from");
             loadData();
         }
@@ -289,7 +289,7 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
         ActionBean actionBean = actionBeanList.get(position);
         Intent intent;
         if(actionBean.getType().equals("share")){
-            if (worksData != null && !TextUtils.isEmpty(worksData.getItemid())) {
+            if (worksData != null && worksData.getItemid()>0) {
                 if (shareDialog == null) {
                     String shareTitle = worksData.title;
                     String shareAuthor = worksData.author;
