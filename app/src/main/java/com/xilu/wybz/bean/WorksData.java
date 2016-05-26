@@ -25,7 +25,6 @@ public class WorksData extends BaseModel implements Serializable {
     public String author;//作者
     public String headurl;//用户头像
     public int looknum;//浏览量
-    public int isOpen;//是否公开
     public int fovnum;//收藏量
     public int zannum;//点赞量
     public int commentnum;//评论量

@@ -7,8 +7,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.xilu.wybz.bean.DataBean;
 import com.xilu.wybz.bean.Lyricat;
-import com.xilu.wybz.bean.MineBean;
-import com.xilu.wybz.bean.MsgBean;
 import com.xilu.wybz.bean.MusicTalk;
 import com.xilu.wybz.bean.SongAlbum;
 import com.xilu.wybz.bean.TemplateBean;

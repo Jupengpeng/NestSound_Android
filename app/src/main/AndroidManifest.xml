@@ -53,6 +53,7 @@
 
         <activity android:name=".ui.find.FindActivity" />
         <activity android:name=".ui.find.MoreWorkActivity" />
+        <activity android:name=".ui.find.SearchWorksActivity" />
 
         <activity android:name=".ui.msg.MsgActivity" />
         <activity android:name=".ui.msg.MsgZambiaActivity" />

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -44,6 +45,7 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView {
     @Bind(R.id.et_word)
     EditText etWord;
     WorksData worksData;
+    String oldWorksData;
     LyricsDialog lyricsDialog;
     @Override
     protected int getLayoutRes() {
@@ -59,7 +61,7 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView {
         super.onCreate(savedInstanceState);
         Bundle bundle = getIntent().getExtras();
         if(bundle!=null) {
-            worksData = (WorksData) bundle.get(KeySet.WORKS_DATA);
+            worksData = (WorksData) bundle.getSerializable(KeySet.WORKS_DATA);
         }
         makeWordPresenter = new MakeWordPresenter(context, this);
         makeWordPresenter.init();
@@ -98,6 +100,7 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView {
         }else{
             worksData = new WorksData();
         }
+        oldWorksData = new Gson().toJson(worksData);
         llMain.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
     }
 
@@ -157,15 +160,15 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView {
     public void TipSaveLocalData() {
         String title = etTitle.getText().toString().trim();
         String content = etWord.getText().toString().trim();
-        if (!TextUtils.isEmpty(title) || !TextUtils.isEmpty(content)) {
+        worksData.setTitle(title);
+        worksData.setLyrics(content);
+        if (!new Gson().toJson(worksData).equals(oldWorksData)) {
             new MaterialDialog.Builder(context)
                     .content("是否保存到本地？")
                     .positiveText("保存")
                     .onPositive(new MaterialDialog.SingleButtonCallback() {
                         @Override
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            worksData.setTitle(title);
-                            worksData.setLyrics(content);
                             PrefsUtil.putString(KeySet.LOCAL_LYRICS, new Gson().toJson(worksData), context);
                             finish();
                         }

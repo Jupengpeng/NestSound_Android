@@ -82,27 +82,29 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView{
 
     @Override
     public void initView() {
+        EventBus.getDefault().register(this);
         Bundle bundle = getIntent().getExtras();
         if(bundle!=null){
             worksData = (WorksData) bundle.getSerializable("worksData");
         }
         setTitle("");
-        EventBus.getDefault().register(this);
         initEvent();
         initData();
     }
     private void initData(){
         //修改歌词的时候 还原数据
         if(worksData!=null){
-            cb_isopen.setChecked(worksData.isOpen==1?true:false);
+            cb_isopen.setChecked(worksData.status==1?true:false);
             if(!TextUtils.isEmpty(worksData.detail)){
                 et_content.setText(worksData.detail);
             }
             if(!TextUtils.isEmpty(worksData.pic)){
                 if(worksData.pic.startsWith("http"))
                     loadImage(worksData.pic,iv_cover);
-                else if(new File(worksData.pic).exists())
-                    loadImage("file:///"+worksData.pic,iv_cover);
+                else if(new File(worksData.pic).exists()) {
+                    coverPath = worksData.pic;
+                    loadImage("file:///" + worksData.pic, iv_cover);
+                }
             }
         }
     }
