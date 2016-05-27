@@ -32,7 +32,6 @@ public class HttpUtils {
 
     //普通post提交
     public void post(String url, Map<String, String> params, Callback stringCallback) {
-        Log.e("url",MyHttpClient.BASE_URL + url);
         if(params==null){
             params = new HashMap<>();
         }

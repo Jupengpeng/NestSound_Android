@@ -72,13 +72,9 @@ public class CommentPresenter extends BasePresenter<ICommentView>{
         params.put("comment", comment);
         httpUtils.post(MyHttpClient.getSaveCommentUrl(), params, new AppJsonCalback(context){
             @Override
-            public void onResponse(JsonResponse response) {
-                super.onResponse(response);
+            public void onResult(JsonResponse<? extends Object> response) {
+                super.onResult(response);
                 iView.commentSuccess();
-            }
-            @Override
-            public void onError(Call call, Exception e) {
-                iView.commentFail();
             }
         });
     }
@@ -89,14 +85,9 @@ public class CommentPresenter extends BasePresenter<ICommentView>{
         params.put("type", type+"");
         httpUtils.post(MyHttpClient.getDelCommentUrl(), params, new AppJsonCalback(context){
             @Override
-            public void onResponse(JsonResponse response) {
-                super.onResponse(response);
+            public void onResult(JsonResponse<? extends Object> response) {
+                super.onResult(response);
                 iView.delSuccess();
-            }
-
-            @Override
-            public void onError(Call call, Exception e) {
-                iView.delFail();
             }
         });
     }

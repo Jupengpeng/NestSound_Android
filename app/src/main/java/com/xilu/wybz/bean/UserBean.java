@@ -14,7 +14,9 @@ public class UserBean {
     public String phone;//手机号码
     public String loginToken;
     public String name;//姓名
+    public String nickname;//姓名
     public String descr;//签名
+    public String signature;//签名
     public String headurl;
     public int sex;
     public String birthday;

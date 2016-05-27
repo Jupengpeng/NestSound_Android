@@ -64,7 +64,7 @@ public class AppJsonCalback extends JsonCallback {
             return;
         }
         if(response.getCode()==53001){
-            ToastUtils.logingTip(getContext(),StringUtil.isNotBlank(response.getMessage())?response.getMessage():"登录状态失效，请重新进行登录！");
+            ToastUtils.toast(getContext(),"登录状态失效，请重新进行登录！");
             return;
         }
         if (StringUtil.isNotBlank(response.getMessage())){

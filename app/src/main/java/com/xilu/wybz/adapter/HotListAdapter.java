@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -15,6 +17,7 @@ import com.xilu.wybz.common.PlayBanZouInstance;
 import com.xilu.wybz.common.PlayMediaInstance;
 import com.xilu.wybz.common.interfaces.ITemplateMusicListener;
 import com.xilu.wybz.ui.MyApplication;
+import com.xilu.wybz.utils.DensityUtil;
 
 import java.util.List;
 
@@ -24,10 +27,14 @@ import java.util.List;
 public class HotListAdapter extends WyBaseAdapter<TemplateBean> {
     ITemplateMusicListener iml;
     ImageView currIv;
+    int itemWidth;
+    int itemHeight;
     int playCount;//通过看它的值是否大于0来判断搜索页 有没有播放新的歌曲
 
     public HotListAdapter(Context context, List<TemplateBean> list) {
         super(context, list);
+        itemWidth =  (DensityUtil.getScreenW(context)-DensityUtil.dip2px(context,40))/2;
+        itemHeight = itemWidth*172/326;
     }
 
     @Override
@@ -35,14 +42,16 @@ public class HotListAdapter extends WyBaseAdapter<TemplateBean> {
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.bz_list_item, null);
         }
-        final TemplateBean templateBean = mList.get(position);
+        TemplateBean templateBean = mList.get(position);
+        RelativeLayout rl_cover = BaseViewHolder.get(convertView, R.id.rl_cover);
         SimpleDraweeView iv_cover = BaseViewHolder.get(convertView, R.id.iv_cover);
-        final ImageView iv_play = BaseViewHolder.get(convertView, R.id.iv_play);
+        rl_cover.setLayoutParams(new LinearLayout.LayoutParams(itemWidth,itemHeight));
+        ImageView iv_play = BaseViewHolder.get(convertView, R.id.iv_play);
         TextView tv_title = BaseViewHolder.get(convertView, R.id.tv_title);
         TextView tv_author = BaseViewHolder.get(convertView,R.id.tv_author);
         tv_title.setText(templateBean.title);
         tv_author.setText(templateBean.author);
-        loadImage(templateBean.pic, iv_cover, 326, 172);
+        loadImage(templateBean.pic, iv_cover, itemWidth, itemHeight);
         if (!TextUtils.isEmpty(MyApplication.musicId) && MyApplication.musicId.equals(templateBean.id) && PlayMediaInstance.getInstance().status == 3) {
             currIv = iv_play;
             iv_play.setImageResource(R.drawable.ic_bz_pause);

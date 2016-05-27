@@ -112,13 +112,11 @@ public class SongablumMoreActivity extends BaseListActivity<SongAlbum> implement
             int itemHeight = itemWidth * 21 / 32;
             mDraweeView.setLayoutParams(new FrameLayout.LayoutParams(itemWidth, itemHeight));
         }
-
         @Override
         public void onBindViewHolder(int position) {
             String pic = mDataList.get(position).getPic();
             loadImage(pic, mDraweeView);
         }
-
         @Override
         public void onItemClick(View view, int position) {
             SongAblumActivity.toSongAblumActivity(context,mDataList.get(position));

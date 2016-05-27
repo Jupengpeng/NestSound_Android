@@ -7,6 +7,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckedTextView;
@@ -43,7 +45,6 @@ public class MakeHotActivity extends ToolbarActivity {
     protected int getLayoutRes() {
         return R.layout.activity_makehot;
     }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,12 +66,9 @@ public class MakeHotActivity extends ToolbarActivity {
             }
         });
     }
-    @OnClick({R.id.iv_qc, R.id.tv_new, R.id.tv_hot, R.id.rl_right})
+    @OnClick({R.id.iv_qc, R.id.tv_new, R.id.tv_hot})
     public void OnClick(View view) {
         switch (view.getId()) {
-            case R.id.rl_right:
-                startActivity(SearchHotActivity.class);
-                break;
             case R.id.iv_qc:
                 Intent intent = new Intent(context, MakeHotActivity.class);
                 intent.putExtra("id", "108");
@@ -166,5 +164,22 @@ public class MakeHotActivity extends ToolbarActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_search,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.menu_search:
+                startActivity(SearchHotActivity.class);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

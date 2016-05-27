@@ -113,9 +113,11 @@ public class MyHttpClient {
     public static String getSaveLyricsUrl(){return  "lyricsopt/optLyrics";}
     //保存灵感记录
     public static String getSaveInspireUrl(){return  "inspire/save";}
-
+    //个人主页
     public static String getUserCenter(){return  "userCenter/index";}
+    //他人主页
     public static String getOtherCenter(){return  "otherCenter/index";}
+    //歌词
     public static String getLyricatsUrl(){return  "lyricsopt/getLyriCats";}
     //发表评论
     public static String getCommentListUrl(){return "common/comment/list";}

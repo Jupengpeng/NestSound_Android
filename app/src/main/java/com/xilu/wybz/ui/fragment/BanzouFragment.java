@@ -23,6 +23,7 @@ import com.xilu.wybz.common.PlayMediaInstance;
 import com.xilu.wybz.presenter.HotPresenter;
 import com.xilu.wybz.ui.IView.IHotView;
 import com.xilu.wybz.ui.song.MakeHotActivity;
+import com.xilu.wybz.ui.song.MakeSongActivity;
 import com.xilu.wybz.utils.FileUtils;
 import com.xilu.wybz.utils.HttpUtils;
 import com.xilu.wybz.utils.ParseUtils;
@@ -92,12 +93,7 @@ public class BanzouFragment extends BaseFragment implements IHotView {
                     adapter.updateData();
                 }
                 TemplateBean bean = templateBeans.get(position);
-                Intent intent = new Intent(context, MakeHotActivity.class);
-                intent.putExtra("id", bean.id);
-                intent.putExtra("name", bean.title);
-                intent.putExtra("url", bean.mp3);
-                intent.putExtra("times", bean.mp3times);
-                startActivity(intent);
+                MakeSongActivity.ToMakeSongActivity(context,bean);
             }
         });
         listview.setOnScrollListener(new AbsListView.OnScrollListener() {

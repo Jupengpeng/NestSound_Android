@@ -46,7 +46,9 @@ public class FollowAndFansActivity extends BaseListActivity<String> implements I
 
     @Override
     public void initView() {
+        hideRight();
         getIntentData();
+
         if (KeySet.TYPE_FANS_ACT.equals(type)){
             setTitle("粉丝");
         } else if (KeySet.TYPE_FOLLOW_ACT.equals(type)) {

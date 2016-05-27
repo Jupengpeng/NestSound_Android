@@ -89,7 +89,7 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
     @Override
     public void initView() {
         setTitle("评论");
-        rl_right.setVisibility(View.GONE);
+        hideRight();
         loadFootBar();
         initData();
     }
@@ -260,15 +260,19 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
 
         @Override
         public void onBindViewHolder(int position) {
-            super.onBindViewHolder(position);
             CommentBean bean = mDataList.get(position);
             loadImage(bean.headerurl, ivHead);
             tvName.setText(bean.nickname);
             tvDate.setText(DateTimeUtil.timestamp2DateTime(bean.createdate));
             SpannableString s = StringStyleUtil.getWorkCommentStyleStr(bean);
             tvContent.setText(s);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onItemClick(v,position);
+                }
+            });
         }
-
         @Override
         public void onItemClick(View view, int position) {
             Log.e("onItemClick position",position+"");

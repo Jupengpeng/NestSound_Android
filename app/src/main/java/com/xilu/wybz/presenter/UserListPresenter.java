@@ -5,6 +5,7 @@ import android.content.Context;
 import com.google.gson.reflect.TypeToken;
 import com.xilu.wybz.bean.MineBean;
 import com.xilu.wybz.bean.JsonResponse;
+import com.xilu.wybz.http.callback.AppJsonCalback;
 import com.xilu.wybz.http.callback.AppStringCallback;
 import com.xilu.wybz.ui.IView.IUserListView;
 import com.xilu.wybz.ui.IView.IUserView;
@@ -31,14 +32,11 @@ public class UserListPresenter extends UserPresenter {
 
     @Override
     public void init() {
-//        super.init();
         iListView.initView();
     }
 
     public void requestListData(int userId, int page){
-
-        request(userId,type,page,new AppStringCallback(context){
-
+        request(userId,type,page,new AppJsonCalback(context){
             @Override
             public Type getDataType() {
                 return new TypeToken<JsonResponse<MineBean>>(){}.getType();
@@ -57,8 +55,8 @@ public class UserListPresenter extends UserPresenter {
             }
 
             @Override
-            public void onResponse(JsonResponse<? extends Object> response) {
-                super.onResponse(response);
+            public void onResult(JsonResponse<? extends Object> response) {
+                super.onResult(response);
                 iListView.showContent();
                 MineBean data = response.getData();
                 if (data.getUser() != null){
@@ -80,10 +78,9 @@ public class UserListPresenter extends UserPresenter {
                     }
                 }
             }
-
             @Override
-            public void onError(Call call, Exception e) {
-                super.onError(call, e);
+            public void onResultError(JsonResponse<? extends Object> response) {
+                super.onResultError(response);
                 iListView.showNoNet();
             }
         });

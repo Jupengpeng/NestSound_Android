@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.WorksData;
+import com.xilu.wybz.presenter.UserListPresenter;
 import com.xilu.wybz.ui.IView.IUserListView;
 import com.xilu.wybz.ui.mine.Adapter.UserBaseAdapter;
 import com.xilu.wybz.view.pull.layoutmanager.MyLinearLayoutManager;
@@ -36,6 +37,7 @@ public class UserBaseView extends LinearLayout implements IUserListView {
     protected TextView mNoNetText;
     protected UserBaseAdapter mBaseListAdapter;
 
+    private UserListPresenter userListPresenter;
     private OnReLoadListener onReLoadListener;
 
 
@@ -162,7 +164,13 @@ public class UserBaseView extends LinearLayout implements IUserListView {
 
         mNoNetText.setText(text);
     }
+    public UserListPresenter getUserListPresenter() {
+        return userListPresenter;
+    }
 
+    public void setUserListPresenter(UserListPresenter userListPresenter) {
+        this.userListPresenter = userListPresenter;
+    }
 
     public void setAdapter(UserBaseAdapter adapter){
         this.mBaseListAdapter = adapter;
