@@ -155,7 +155,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         mDraweeView.setController(controller);
     }
     protected void loadImage(String picUrl, ImageView imageView){
-        ZnImageLoader.getInstance().displayImage(picUrl,ZnImageLoader.getInstance().headOptions,imageView);
+        ZnImageLoader.getInstance().displayImage(picUrl,ZnImageLoader.getInstance().options,imageView);
     }
     /*
     * 通过Class跳转界面

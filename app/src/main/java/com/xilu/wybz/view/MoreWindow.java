@@ -5,19 +5,16 @@ import android.animation.Animator.AnimatorListener;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationSet;
@@ -157,7 +154,7 @@ public class MoreWindow extends PopupWindow {
     }
 
     private void showAnimation(ViewGroup layout) {
-        layout.startAnimation(AnimationUtils.loadAnimation(mContext, R.anim.fade_in2));
+        layout.startAnimation(AnimationUtils.loadAnimation(mContext, R.anim.fade_in));
         for (int i = 0; i < layout.getChildCount(); i++) {
             final View child = layout.getChildAt(i);
             if (child.getId() == R.id.rl_bottom) {
