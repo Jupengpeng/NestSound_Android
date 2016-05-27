@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,17 +23,20 @@ import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.xilu.wybz.R;
 import com.xilu.wybz.view.pull.BaseListAdapter;
 import com.xilu.wybz.view.pull.BaseViewHolder;
+import com.xilu.wybz.view.pull.DividerItemDecoration;
 import com.xilu.wybz.view.pull.PullRecycler;
 import com.xilu.wybz.view.pull.layoutmanager.ILayoutManager;
 import com.xilu.wybz.view.pull.layoutmanager.MyLinearLayoutManager;
+
 import java.util.ArrayList;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
  * Created by hujunwei on 16/5/22.
  */
-public abstract class BaseListFragment<T> extends BaseFragment implements PullRecycler.OnRecyclerRefreshListener{
+public abstract class BaseListFragment<T> extends BaseFragment implements PullRecycler.OnRecyclerRefreshListener {
     protected Context context;
     protected BaseListAdapter adapter;
     protected ArrayList<T> mDataList;
@@ -49,6 +53,7 @@ public abstract class BaseListFragment<T> extends BaseFragment implements PullRe
     String keyWord;
     int action;
     int page = 1;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(getLayoutResId(), container, false);
@@ -57,21 +62,25 @@ public abstract class BaseListFragment<T> extends BaseFragment implements PullRe
         setUpData();
         return view;
     }
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         context = activity;
     }
+
     @Override
     public int getLayoutResId() {
         return R.layout.fragment_base_list;
     }
+
     protected abstract void initPresenter();
+
     protected void setUpData() {
         setUpAdapter();
         recycler.setOnRefreshListener(this);
         recycler.setLayoutManager(getLayoutManager());
-//        recycler.addItemDecoration(getItemDecoration());
+        recycler.addItemDecoration(getItemDecoration());
         recycler.setAdapter(adapter);
         ivNoNet.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,57 +89,71 @@ public abstract class BaseListFragment<T> extends BaseFragment implements PullRe
             }
         });
     }
+
     protected void setUpAdapter() {
         adapter = new ListAdapter();
     }
+
     protected ILayoutManager getLayoutManager() {
         return new MyLinearLayoutManager(getActivity().getApplicationContext());
     }
-    //    protected RecyclerView.ItemDecoration getItemDecoration() {
-//        return new DividerItemDecoration(getActivity().getApplicationContext(), R.drawable.list_divider);
-//    }
+
+    protected RecyclerView.ItemDecoration getItemDecoration() {
+        return new DividerItemDecoration(getActivity().getApplicationContext(), R.drawable.transparent);
+    }
+
     public class ListAdapter extends BaseListAdapter {
         @Override
         protected BaseViewHolder onCreateNormalViewHolder(ViewGroup parent, int viewType) {
             return getViewHolder(parent, viewType);
         }
+
         @Override
         protected int getDataCount() {
             return mDataList != null ? mDataList.size() : 0;
         }
+
         @Override
         protected int getDataViewType(int position) {
             return getItemType(position);
         }
+
         @Override
         public boolean isSectionHeader(int position) {
             return BaseListFragment.this.isSectionHeader(position);
         }
     }
+
     protected boolean isSectionHeader(int position) {
         return false;
     }
+
     protected int getItemType(int position) {
         return 0;
     }
+
     protected abstract BaseViewHolder getViewHolder(ViewGroup parent, int viewType);
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
     }
-    public void clearData(){
-        if(mDataList!=null) {
+
+    public void clearData() {
+        if (mDataList != null) {
             mDataList.clear();
             keyWord = null;
             adapter.notifyDataSetChanged();
             page = 1;
         }
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
     }
+
     protected void loadImage(String url, SimpleDraweeView mDraweeView) {
         ImageRequest request =
                 ImageRequestBuilder.newBuilderWithSource(Uri.parse(url))

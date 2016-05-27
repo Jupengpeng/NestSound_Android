@@ -48,7 +48,7 @@ public class SearchUserFragment extends BaseListFragment<UserBean> implements IS
         if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
             page = 1;
         }
-        searchPresenter.searchData(userId, keyWord, 3, page++);
+        searchPresenter.searchData(keyWord, 3, page++);
     }
 
     @Override

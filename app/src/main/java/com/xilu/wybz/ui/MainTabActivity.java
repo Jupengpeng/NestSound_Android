@@ -28,8 +28,10 @@ import com.xilu.wybz.ui.main.MainActivity;
 import com.xilu.wybz.ui.mine.MineActivity;
 import com.xilu.wybz.ui.msg.MsgActivity;
 import com.xilu.wybz.ui.record.InspireRecordActivity;
+import com.xilu.wybz.ui.song.MakeHotActivity;
 import com.xilu.wybz.ui.song.MakeSongActivity;
 import com.xilu.wybz.utils.PrefsUtil;
+import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.view.IndexViewPager;
 import com.xilu.wybz.view.MoreWindow;
 
@@ -130,13 +132,11 @@ public class MainTabActivity extends BasePlayMenuActivity {
                 currentIndex = 1;
                 break;
             case R.id.rl_main_publish:
-                if(isLogin){
+                if(SystemUtils.isLogin(context)){
                     if (null == mMoreWindow) {
                         mMoreWindow = new MoreWindow(this);
                     }
                     mMoreWindow.showMoreWindow(MainTabActivity.this, view, onClickListener);
-                }else{
-                    startActivity(LoginActivity.class);
                 }
                 return;
             case R.id.rl_main_msg:
@@ -149,7 +149,7 @@ public class MainTabActivity extends BasePlayMenuActivity {
                 startActivity(SearchWorksActivity.class);
                 return;
         }
-        if(!isLogin&&(currentIndex==2||currentIndex==3)){
+        if(PrefsUtil.getUserId(context)==0&&(currentIndex==2||currentIndex==3)){
             startActivity(LoginActivity.class);
             return;
         }
@@ -173,7 +173,7 @@ public class MainTabActivity extends BasePlayMenuActivity {
                     mMoreWindow.dismiss();
                     break;
                 case R.id.tv_zuoqu:
-                    startActivity(MakeSongActivity.class);
+                    startActivity(MakeHotActivity.class);
                     mMoreWindow.dismiss();
                     break;
             }
@@ -214,9 +214,10 @@ public class MainTabActivity extends BasePlayMenuActivity {
         }
     }
     public void onEventMainThread(Event.LoginSuccessEvent event){
+        ((MineActivity)manager.getActivity("MINE")).initData();//登录成功更新我的页面
         UserBean ub = event.getUserBean();
-        userId = ub.userid;
-        isLogin = true;
+        MyApplication.getInstance().setUserid(ub.userid);
+        MyApplication.getInstance().setIsLogin(true);
         PrefsUtil.saveUserInfo(context, ub);
         MobclickAgent.onProfileSignIn(ub.userid+"");
         PushAgent.getInstance(context).setAlias(ub.userid+"", "yinchao");

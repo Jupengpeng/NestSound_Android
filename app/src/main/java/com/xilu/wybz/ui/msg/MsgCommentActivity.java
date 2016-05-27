@@ -57,7 +57,7 @@ public class MsgCommentActivity extends BaseListActivity<CommentBean> implements
         if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
             page = 1;
         }
-        commentPresenter.loadData(userId, page++);
+        commentPresenter.loadData(page++);
     }
 
     @Override
@@ -195,6 +195,6 @@ public class MsgCommentActivity extends BaseListActivity<CommentBean> implements
             showMsg("评论不能为空！");
             return;
         }
-        commentPresenter.sendComment(c_id,userId,content);
+        commentPresenter.sendComment(c_id, content);
     }
 }

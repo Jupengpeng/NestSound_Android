@@ -55,7 +55,7 @@ public class MsgFavActivity extends BaseListActivity<CollectionBean> implements 
         if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
             page = 1;
         }
-        collectionPresenter.loadData(userId, page++);
+        collectionPresenter.loadData(page++);
     }
 
 

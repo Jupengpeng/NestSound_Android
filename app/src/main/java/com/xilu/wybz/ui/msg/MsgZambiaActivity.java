@@ -59,7 +59,7 @@ public class MsgZambiaActivity extends BaseListActivity<ZambiaBean> implements I
         if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
             page = 1;
         }
-        zanPresenter.loadData(userId, page++);
+        zanPresenter.loadData(page++);
     }
 
     @Override

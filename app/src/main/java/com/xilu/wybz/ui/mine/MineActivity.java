@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.common.KeySet;
+import com.xilu.wybz.presenter.UserListPresenter;
 import com.xilu.wybz.presenter.UserPresenter;
 import com.xilu.wybz.ui.IView.IUserView;
 import com.xilu.wybz.ui.base.BaseActivity;
@@ -92,7 +93,9 @@ public class MineActivity extends BaseActivity implements IUserView {
     UserLyricView mUserLyricView;
     UserCollectionView mUserCollectionView;
 
+    private boolean firstLoadUserInfo;
     private UserPresenter mUserPresenter;
+
 
 
     @Override
@@ -103,11 +106,14 @@ public class MineActivity extends BaseActivity implements IUserView {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        if(PrefsUtil.getUserId(context)>0){
+            initData();
+        }
+    }
+    public void initData(){
         mUserPresenter = new UserPresenter(context, this,UserPresenter.TYPE_USER_CENTER);
         mUserPresenter.init();
     }
-
 
     @Override
     public void initView() {
@@ -124,7 +130,7 @@ public class MineActivity extends BaseActivity implements IUserView {
         });
 
         mUserInspirationView = new UserInspirationView(this);
-        mUserSongView = new UserSongView(this);
+        mUserSongView = new UserSongView(this,1);
         mUserLyricView = new UserLyricView(this);
         mUserCollectionView = new UserCollectionView(this);
 
@@ -141,47 +147,49 @@ public class MineActivity extends BaseActivity implements IUserView {
         setCurrentPageView(llMyrecord, 0);
         contentLayout.setVisibility(View.VISIBLE);
 
-        setUserInfo(PrefsUtil.getUserInfo(this));
+        setLocalUserInfo(PrefsUtil.getUserInfo(this));
 
     }
 
-    @OnClick(R.id.iv_setting)
-    public void onClickSetting() {
-        startActivity(SettingActivity.class);
+    @OnClick({R.id.iv_setting, R.id.iv_draft, R.id.ll_myfans})
+    public void OnClick(View view){
+        switch (view.getId()){
+            case R.id.iv_setting:
+                startActivity(SettingActivity.class);
+                break;
+            case R.id.iv_draft:
+                startActivity(DraftActivity.class);
+                break;
+            case R.id.ll_myfans:
+                FollowAndFansActivity.toFollowAndFansActivity(this, KeySet.TYPE_FANS_ACT);
+                break;
+            case R.id.ll_myfollow:
+                FollowAndFansActivity.toFollowAndFansActivity(this, KeySet.TYPE_FOLLOW_ACT);
+                break;
+        }
     }
-
-    @OnClick(R.id.iv_draft)
-    public void onClickDraft() {
-        startActivity(DraftActivity.class);
-    }
-
-    @OnClick(R.id.ll_myfans)
-    public void onClickFans() {
-        FollowAndFansActivity.toFollowAndFansActivity(this, KeySet.TYPE_FANS_ACT);
-    }
-
-    @OnClick(R.id.ll_myfollow)
-    public void onClickFollow() {
-        FollowAndFansActivity.toFollowAndFansActivity(this, KeySet.TYPE_FOLLOW_ACT);
-    }
-
-    @OnClick(R.id.iv_head)
-    public void onClickHeadImage() {
-//        mUserPresenter.getInspirationList("147", 1);
-        startActivity(CommentActivity.class);
-
-    }
-
 
     @Override
     public void setUserInfo(UserBean userBean){
+        if(!firstLoadUserInfo) {
+            //更新本地数据
+            UserBean localUserBean = PrefsUtil.getUserInfo(context);
+            if(userBean.userid>0)localUserBean.userid=userBean.userid;
+            if(StringUtil.isNotBlank(userBean.nickname))localUserBean.name=userBean.nickname;
+            if(StringUtil.isNotBlank(userBean.signature))localUserBean.descr=userBean.signature;
+            if(StringUtil.isNotBlank(userBean.headurl))localUserBean.headurl=userBean.headurl;
+            PrefsUtil.saveUserInfo(context,localUserBean);
+            //更新我的资料
+            setLocalUserInfo(userBean);
+            firstLoadUserInfo = true;
+        }
+    }
+    public void setLocalUserInfo(UserBean userBean){
         userBean = checkByDefault(userBean);
-
         loadImage(userBean.headurl,ivHead);
         userTvName.setText(userBean.name);
         userTvInfo.setText(userBean.descr);
     }
-
     @Override
     public void setFollowNumber(int number) {
 

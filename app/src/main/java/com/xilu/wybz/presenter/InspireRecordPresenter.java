@@ -11,6 +11,7 @@ import com.xilu.wybz.ui.IView.IBaseView;
 import com.xilu.wybz.ui.IView.IInspireRecordView;
 import com.xilu.wybz.ui.IView.ILoginView;
 import com.xilu.wybz.utils.ParseUtils;
+import com.xilu.wybz.utils.PrefsUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,9 +28,9 @@ public class InspireRecordPresenter extends BasePresenter<IInspireRecordView>{
     public InspireRecordPresenter(Context context, IInspireRecordView iView) {
         super(context, iView);
     }
-    public void publishData(int uid, WorksData worksData){
+    public void publishData(WorksData worksData){
         params = new HashMap<>();
-        params.put("uid",uid+"");
+        params.put("uid", PrefsUtil.getUserId(context)+"");
         params.put("spirecontent",worksData.spirecontent);
         params.put("pics",worksData.pics);
         params.put("audio",worksData.audio);

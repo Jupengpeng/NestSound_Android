@@ -79,7 +79,9 @@ public abstract class BasePlayMenuActivity extends ToolbarActivity {
                     PrefsUtil.getString("playFrom", context), PrefsUtil.getInt("playdPos", context));
         }
     }
-
+    protected void hideRight(){
+        rl_right.setVisibility(View.GONE);
+    }
     @Override
     protected void onPause() {
         super.onPause();

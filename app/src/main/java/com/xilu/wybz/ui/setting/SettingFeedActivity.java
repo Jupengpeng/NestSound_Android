@@ -95,7 +95,7 @@ public class SettingFeedActivity extends ToolbarActivity implements IFeedbackVie
             showMsg("手机号或email不能为空");
             return;
         }
-        feedbackPresenter.postData(userId,us,content,type);
+        feedbackPresenter.postData(us,content,type);
     }
 
     @Override

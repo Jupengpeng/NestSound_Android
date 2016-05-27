@@ -1,100 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.xilu.wybz.view.TopScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/myScrollView"
-    android:background="@color/white"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <include layout="@layout/view_toolbar" />
+
+    <com.xilu.wybz.view.TopScrollView
+        android:id="@+id/myScrollView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-        <RelativeLayout
-            android:layout_marginTop="30px"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/iv_qc"
-                android:layout_marginLeft="30px"
-                android:layout_marginRight="30px"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/main_bg">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/iv_qc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    fresco:actualImageScaleType="centerCrop"
+                    fresco:fadeDuration="300"
+                    fresco:failureImageScaleType="centerCrop"
+                    fresco:placeholderImageScaleType="centerCrop"
+                    fresco:roundedCornerRadius="4dp"
+                    fresco:viewAspectRatio="2.87" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="清唱"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/top_float"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                fresco:viewAspectRatio="2.87"
-                fresco:actualImageScaleType="centerCrop"
-                fresco:fadeDuration="300"
-                fresco:roundedCornerRadius="4dp"
-                fresco:failureImageScaleType="centerCrop"
-                fresco:placeholderImageScaleType="centerCrop" />
-            <TextView
-                android:textSize="18sp"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                android:text="清唱"
-                android:layout_centerInParent="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </RelativeLayout>
-        <LinearLayout
-            android:id="@+id/top_float"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@color/white"
-            >
-            <RelativeLayout
+                android:background="@color/white"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="10dp"
+                    android:focusable="true"
+
+                    android:focusableInTouchMode="true">
+
+                    <CheckedTextView
+                        android:id="@+id/tv_new"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/selector"
+                        android:checked="true"
+                        android:gravity="center"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:text="最新"
+                        android:textColor="@color/txt_check"
+                        android:textSize="@dimen/yc_15" />
+
+                    <TextView
+                        android:id="@+id/line"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_toRightOf="@+id/tv_new"
+                        android:gravity="center"
+                        android:text="|"
+                        android:textColor="@color/main_text_color"
+                        android:textSize="@dimen/yc_15" />
+
+                    <CheckedTextView
+                        android:id="@+id/tv_hot"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_toRightOf="@+id/line"
+                        android:background="@drawable/selector"
+                        android:gravity="center"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:text="最热"
+                        android:textColor="@color/txt_check"
+                        android:textSize="@dimen/yc_15" />
+                </RelativeLayout>
+
+                <include layout="@layout/view_spit_line" />
+            </LinearLayout>
+
+            <com.xilu.wybz.view.CustomViewPager
+                android:id="@+id/viewPager"
                 android:layout_width="match_parent"
-                android:layout_height="96px"
-                android:focusable="true"
-                android:layout_marginLeft="10px"
-                android:layout_marginRight="30px"
-
-                android:focusableInTouchMode="true">
-                <CheckedTextView
-                    android:id="@+id/tv_new"
-                    android:paddingLeft="20px"
-                    android:paddingRight="20px"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="最新"
-                    android:gravity="center"
-                    android:checked="true"
-                    android:background="@drawable/selector"
-                    android:textColor="@color/txt_check"
-                    android:textSize="@dimen/yc_15"
-                    />
-                <TextView
-                    android:layout_toRightOf="@+id/tv_new"
-                    android:id="@+id/line"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="|"
-                    android:textColor="@color/main_text_color"
-                    android:textSize="@dimen/yc_15"
-                    />
-                <CheckedTextView
-                    android:layout_toRightOf="@+id/line"
-                    android:id="@+id/tv_hot"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:paddingLeft="20px"
-                    android:paddingRight="20px"
-                    android:gravity="center"
-                    android:text="最热"
-                    android:background="@drawable/selector"
-                    android:textColor="@color/txt_check"
-                    android:textSize="@dimen/yc_15"
-                    />
-            </RelativeLayout>
-            <include layout="@layout/view_spit_line" />
+                android:layout_height="wrap_content" />
         </LinearLayout>
-        <com.xilu.wybz.view.CustomViewPager
-            android:id="@+id/viewPager"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
 
-</com.xilu.wybz.view.TopScrollView>
+    </com.xilu.wybz.view.TopScrollView>
+</LinearLayout>

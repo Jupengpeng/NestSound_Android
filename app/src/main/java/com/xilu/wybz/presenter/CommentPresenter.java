@@ -3,12 +3,15 @@ package com.xilu.wybz.presenter;
 import android.content.Context;
 
 import com.xilu.wybz.bean.CommentBean;
+import com.xilu.wybz.bean.JsonResponse;
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.common.MyHttpClient;
+import com.xilu.wybz.http.callback.AppJsonCalback;
 import com.xilu.wybz.http.callback.MyStringCallback;
 import com.xilu.wybz.ui.IView.ICommentView;
 import com.xilu.wybz.ui.IView.ILoginView;
 import com.xilu.wybz.utils.ParseUtils;
+import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.ToastUtils;
 
 import java.util.HashMap;
@@ -57,9 +60,9 @@ public class CommentPresenter extends BasePresenter<ICommentView>{
     * type 1=歌曲，2=歌词
     * comment_type 1=默认，发帖，2=跟帖，回复
      */
-    public void sendComment(int uid,int itemid,int comment_type,int type,int target_uid, String comment){
+    public void sendComment(int itemid,int comment_type,int type,int target_uid, String comment){
         Map<String,String> params = new HashMap<>();
-        params.put("uid", uid+"");
+        params.put("uid", PrefsUtil.getUserId(context)+"");
         if(itemid>0)
         params.put("itemid", itemid+"");
         params.put("comment_type", comment_type+"");
@@ -67,19 +70,11 @@ public class CommentPresenter extends BasePresenter<ICommentView>{
         if(target_uid>0)
         params.put("target_uid", target_uid+"");
         params.put("comment", comment);
-        httpUtils.post(MyHttpClient.getSaveCommentUrl(), params, new MyStringCallback(){
+        httpUtils.post(MyHttpClient.getSaveCommentUrl(), params, new AppJsonCalback(context){
             @Override
-            public void onResponse(String response) {
-                if (ParseUtils.checkCode(response)) {
-                    iView.commentSuccess();
-                }else{
-                    iView.commentFail();
-                }
-            }
-
-            @Override
-            public void onError(Call call, Exception e) {
-                iView.commentFail();
+            public void onResult(JsonResponse<? extends Object> response) {
+                super.onResult(response);
+                iView.commentSuccess();
             }
         });
     }
@@ -88,18 +83,11 @@ public class CommentPresenter extends BasePresenter<ICommentView>{
         Map<String,String> params = new HashMap<>();
         params.put("id", id+"");
         params.put("type", type+"");
-        httpUtils.post(MyHttpClient.getDelCommentUrl(), params, new MyStringCallback(){
+        httpUtils.post(MyHttpClient.getDelCommentUrl(), params, new AppJsonCalback(context){
             @Override
-            public void onResponse(String response) {
-                if (ParseUtils.checkCode(response)) {
-                    iView.delSuccess();
-                }else{
-                    iView.delFail();
-                }
-            }
-            @Override
-            public void onError(Call call, Exception e) {
-                iView.delFail();
+            public void onResult(JsonResponse<? extends Object> response) {
+                super.onResult(response);
+                iView.delSuccess();
             }
         });
     }

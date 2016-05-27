@@ -54,7 +54,7 @@ public class ImportWordActivity extends BaseListActivity<WorksData> implements I
         if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
             page = 1;
         }
-        importWordPresenter.loadData(userId, page++);
+        importWordPresenter.loadData(page++);
     }
 
     @Override

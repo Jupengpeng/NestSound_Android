@@ -33,7 +33,6 @@ public class RecordImageAdapter extends RecyclerView.Adapter<RecordImageAdapter.
 
     public interface OnItemClickListener {
         void onItemClick(View view, int position);
-        void onItemLongClick(View view, int position);
         void onDelClick(View view, int position);
     }
 
@@ -50,7 +49,7 @@ public class RecordImageAdapter extends RecyclerView.Adapter<RecordImageAdapter.
     }
 
     @Override
-    public void onBindViewHolder(final RecordImageViewHolder holder, final int position) {
+    public void onBindViewHolder(RecordImageViewHolder holder, int position) {
         if(mList.get(position).isAddPic){
             ImageLoadUtil.loadImage("res://yinchao/"+R.drawable.ic_record_add_pic, holder.ivCover);
             holder.ivDel.setVisibility(View.GONE);
@@ -67,13 +66,6 @@ public class RecordImageAdapter extends RecyclerView.Adapter<RecordImageAdapter.
                     mOnItemClickListener.onItemClick(holder.itemView, pos);
                 }
             });
-            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    mOnItemClickListener.onItemLongClick(holder.itemView, position);
-                    return false;
-                }
-            });
         }
         holder.ivDel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,7 +74,18 @@ public class RecordImageAdapter extends RecyclerView.Adapter<RecordImageAdapter.
             }
         });
     }
-
+    public void removeItem(int position){
+        mList.remove(position);
+        if(mList.size()==8&&!mList.get(mList.size()-1).isAddPic){
+            PhotoBean photoBean = new PhotoBean();
+            photoBean.isAddPic = true;
+            mList.add(photoBean);
+        }
+        notifyItemRemoved(position);
+        if(position != mList.size()){
+            notifyItemRangeChanged(position, mList.size() - position);
+        }
+    }
     @Override
     public int getItemCount() {
         return mList.size();

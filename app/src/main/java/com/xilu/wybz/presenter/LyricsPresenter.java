@@ -8,6 +8,7 @@ import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.callback.MyStringCallback;
 import com.xilu.wybz.ui.IView.ILyricsView;
 import com.xilu.wybz.utils.ParseUtils;
+import com.xilu.wybz.utils.PrefsUtil;
 
 import org.json.JSONObject;
 
@@ -25,9 +26,9 @@ public class LyricsPresenter extends BasePresenter<ILyricsView> {
         super(context, iView);
     }
 
-    public void getLyric(int id, int userId) {
+    public void getLyric(int id) {
         params = new HashMap<>();
-        params.put("uid",userId+"");
+        params.put("uid", PrefsUtil.getUserId(context)+"");
         params.put("id",id+"");
         httpUtils.get(MyHttpClient.getLyricsdisplay(), params, new MyStringCallback() {
             @Override
@@ -66,10 +67,10 @@ public class LyricsPresenter extends BasePresenter<ILyricsView> {
         });
     }
 
-    public void zan(int id, int userId, int target_uid) {
+    public void zan(int id, int target_uid) {
         Map<String, String> params = new HashMap<>();
         params.put("target_uid", target_uid+"");//作者id
-        params.put("user_id", userId+"");
+        params.put("user_id", PrefsUtil.getUserId(context)+"");
         params.put("work_id", id+"");
         params.put("wtype", "2");//2歌词 1歌曲
         httpUtils.post(MyHttpClient.getUpvoteUrl(), params, new MyStringCallback() {

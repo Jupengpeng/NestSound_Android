@@ -524,7 +524,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     @Override
     public void collectionMusic() {
         rlFav.setEnabled(false);
-        playPresenter.setCollectionState(userId, id, is_fov);
+        playPresenter.setCollectionState(id, is_fov);
     }
 
     @Override
@@ -549,7 +549,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     @Override
     public void zambiaMusic() {
         rlZan.setEnabled(false);
-        playPresenter.setZambiaState(userId, id, worksData.uid);
+        playPresenter.setZambiaState(id, worksData.uid);
     }
 
     @Override

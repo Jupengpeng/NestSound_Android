@@ -15,6 +15,7 @@ import com.qiniu.android.storage.UploadManager;
 import com.umeng.message.PushAgent;
 import com.umeng.socialize.PlatformConfig;
 import com.xilu.wybz.common.MyCommon;
+import com.xilu.wybz.utils.PrefsUtil;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -34,18 +35,42 @@ public class MyApplication extends Application {
     public static List<Integer> ids;
     public static boolean isPlay;
     public static UploadManager uploadManager;
+    public int userid;
+    public boolean isLogin;
+    public static MyApplication instance;
+    public int getUserid() {
+        return userid;
+    }
 
+    public void setUserid(int userid) {
+        this.userid = userid;
+    }
+
+    public boolean getIsLogin() {
+        return isLogin;
+    }
+
+    public void setIsLogin(boolean isLogin) {
+        this.isLogin = isLogin;
+    }
 
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
         MultiDex.install(this);
     }
-
+    public static MyApplication getInstance(){
+        if(instance==null){
+            instance = new MyApplication();
+        }
+        return instance;
+    }
     @Override
     public void onCreate() {
         super.onCreate();
         context = this;
         ids = new ArrayList<>();
+        userid = PrefsUtil.getUserId(context);
+        isLogin = userid>0;
         Fresco.initialize(this);
         //Umeng分享
         PlatformConfig.setWeixin(MyCommon.WECHAT_APP_ID, MyCommon.WECHAT_APP_SECRET);//微信

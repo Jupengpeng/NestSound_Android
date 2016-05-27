@@ -7,6 +7,7 @@ import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.callback.MyStringCallback;
 import com.xilu.wybz.ui.IView.ISongablumMoreView;
 import com.xilu.wybz.utils.ParseUtils;
+import com.xilu.wybz.utils.PrefsUtil;
 
 import java.util.HashMap;
 import java.util.List;
@@ -22,10 +23,10 @@ public class SongablumMorePresenter extends BasePresenter<ISongablumMoreView> {
         super(context, iView);
     }
 
-    public void loadData(int userId, int page) {
+    public void loadData(int page) {
         params = new HashMap<>();
         params.put("page", page + "");
-        params.put("uid",userId+"");;
+        params.put("uid", PrefsUtil.getUserId(context)+"");;
         httpUtils.get(MyHttpClient.getGleeListUrl(), params, new MyStringCallback() {
             @Override
             public void onResponse(String response) {

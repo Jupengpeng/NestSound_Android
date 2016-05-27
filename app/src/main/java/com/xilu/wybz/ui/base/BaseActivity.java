@@ -24,6 +24,7 @@ import com.umeng.message.PushAgent;
 import com.xilu.wybz.R;
 import com.xilu.wybz.common.ZnImageLoader;
 import com.xilu.wybz.ui.MainTabActivity;
+import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.ui.find.FindActivity;
 import com.xilu.wybz.ui.login.LoginActivity;
 import com.xilu.wybz.ui.login.PasswordActivity;
@@ -53,12 +54,9 @@ import butterknife.ButterKnife;
  */
 public abstract class BaseActivity extends AppCompatActivity {
     protected abstract int getLayoutRes();
-
-    protected int userId;
     protected boolean isChenjin;
     protected Context context;
     boolean isHomeActivity;
-    protected boolean isLogin;
     protected AnimImageView animImageView;
     protected List<Integer> resourceIdList;
     protected ImageView ivLoading;
@@ -69,8 +67,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         context = this;
         adaptTheme(true);
-        userId = PrefsUtil.getUserId(context);
-        isLogin = userId>0;
         setContentView(getLayoutRes());
         ButterKnife.bind(this);
         isChenjin = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;

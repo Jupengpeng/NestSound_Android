@@ -136,10 +136,9 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
                 }
                 break;
             case R.id.rl_zan:
-                if (!SystemUtils.isLogin(context)) {
-                    return;
+                if (SystemUtils.isLogin(context)) {
+                    lyricsPresenter.zan(id, worksData.uid);
                 }
-                lyricsPresenter.zan(id, userId, worksData.uid);
                 break;
             case R.id.iv_nonet:
                 loadData();
@@ -156,7 +155,7 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
 
 
     public void loadData() {
-        lyricsPresenter.getLyric(id, userId);
+        lyricsPresenter.getLyric(id);
     }
 
     public void onEventMainThread(Event.SaveLyricsSuccessEvent event) {
@@ -295,7 +294,7 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
                     String shareAuthor = worksData.author;
                     String shareLink = worksData.shareurl;
                     String sharePic = worksData.pic;
-                    String shareBody = userId==worksData.uid ? "我用音巢app创作了一首歌词，快来看看吧!" : "我在音巢app上发现一首好歌词，太棒了~";
+                    String shareBody = PrefsUtil.getUserId(context)==worksData.uid ? "我用音巢app创作了一首歌词，快来看看吧!" : "我在音巢app上发现一首好歌词，太棒了~";
                     String shareContent = shareBody + " 《" + shareTitle + "》 ▷" + shareLink + " (@音巢音乐)";
                     shareDialog = new ShareDialog(LyricsdisplayActivity.this, new ShareBean(shareTitle, shareAuthor, shareContent, shareLink, sharePic, ""));
                 }

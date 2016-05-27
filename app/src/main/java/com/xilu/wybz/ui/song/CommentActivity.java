@@ -3,10 +3,12 @@ package com.xilu.wybz.ui.song;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,20 +25,25 @@ import com.xilu.wybz.bean.CommentBean;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.presenter.CommentPresenter;
 import com.xilu.wybz.ui.IView.ICommentView;
+import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.ui.base.BaseListActivity;
+import com.xilu.wybz.ui.login.LoginActivity;
 import com.xilu.wybz.utils.DateTimeUtil;
 import com.xilu.wybz.utils.KeyBoardUtil;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringStyleUtil;
+import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.utils.SystemUtils;
+import com.xilu.wybz.utils.ToastUtils;
 import com.xilu.wybz.view.CircleImageView;
 import com.xilu.wybz.view.dialog.ActionMoreDialog;
+import com.xilu.wybz.view.materialdialogs.DialogAction;
+import com.xilu.wybz.view.materialdialogs.MaterialDialog;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.PullRecycler;
 import java.util.ArrayList;
 import java.util.List;
 import butterknife.Bind;
-
 /**
  * Created by Administrator on 2016/5/25.
  */
@@ -51,6 +58,7 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
     private int type;
     private int commentType = 1;
     private int targetUid;
+    private String targetName;
     private String content;
     String[] actionTitles = new String[]{"删除"};
     String[] actionTypes = new String[]{"del"};
@@ -81,7 +89,7 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
     @Override
     public void initView() {
         setTitle("评论");
-        rl_right.setVisibility(View.GONE);
+        hideRight();
         loadFootBar();
         initData();
     }
@@ -134,7 +142,7 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
     }
 
     private void toSendComment() {
-        commentPresenter.sendComment(userId, worksData.itemid, commentType, type, targetUid, content);
+        commentPresenter.sendComment(worksData.itemid, commentType, type, targetUid, content);
     }
 
     @Override
@@ -190,15 +198,18 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
     @Override
     public void commentSuccess() {
         CommentBean commentBean = new CommentBean();
-        commentBean.setUid(userId);
+        commentBean.setUid(PrefsUtil.getUserId(context));
+        commentBean.setTarget_uid(targetUid);
+        commentBean.setType(type);
+        commentBean.setComment_type(commentType);
+        commentBean.setTarget_nickname(targetName);
         commentBean.setComment(content);
         commentBean.setHeaderurl(PrefsUtil.getUserInfo(context).headurl);
         commentBean.setComment_type(commentType);
         commentBean.setTarget_uid(targetUid);
         commentBean.setCreatedate(System.currentTimeMillis());
         commentBean.setNickname(PrefsUtil.getUserInfo(context).name);
-        mDataList.add(0,commentBean);
-        adapter.notifyDataSetChanged();
+        addItem(commentBean);
         if(mDataList.size()==1){
             llNoData.setVisibility(View.GONE);
         }
@@ -215,8 +226,7 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
 
     @Override
     public void delSuccess() {
-        mDataList.remove(delPos);
-        adapter.notifyDataSetChanged();
+        removeItem(delPos);
         if(mDataList.size()==0){
             llNoData.setVisibility(View.VISIBLE);
         }
@@ -256,13 +266,19 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
             tvDate.setText(DateTimeUtil.timestamp2DateTime(bean.createdate));
             SpannableString s = StringStyleUtil.getWorkCommentStyleStr(bean);
             tvContent.setText(s);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onItemClick(v,position);
+                }
+            });
         }
-
         @Override
         public void onItemClick(View view, int position) {
-            if(isLogin) {
+            Log.e("onItemClick position",position+"");
+            if(PrefsUtil.getUserId(context)>0) {
                 CommentBean commentBean = mDataList.get(position);
-                boolean isMe = commentBean.uid == userId;
+                boolean isMe = commentBean.uid == PrefsUtil.getUserId(context);
                 if (isMe) {
                     if (actionMoreDialog == null) {
                         actionMoreDialog = new ActionMoreDialog(context, new AdapterView.OnItemClickListener() {
@@ -280,10 +296,14 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
                     }
                 } else {
                     targetUid = commentBean.target_uid;
-                    commentType = commentBean.comment_type;
+                    targetName = commentBean.target_nickname;
+                    commentType = 2;//回复别人
                     etContent.setHint("回复" + commentBean.nickname);
+                    etContent.requestFocus();
                     KeyBoardUtil.openKeybord(etContent,context);
                 }
+            }else{
+                ToastUtils.logingTip(context,"请登录后再进行回复！");
             }
         }
     }

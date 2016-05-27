@@ -61,7 +61,7 @@ public class MsgSystemActivity extends BaseListActivity<SystemBean> implements I
         if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
             page = 1;
         }
-        systemPresenter.loadData(userId, page++);
+        systemPresenter.loadData(page++);
     }
 
     @Override

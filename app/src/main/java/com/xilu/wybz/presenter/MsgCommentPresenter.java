@@ -7,6 +7,8 @@ import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.callback.MyStringCallback;
 import com.xilu.wybz.ui.IView.ICommentView;
 import com.xilu.wybz.utils.ParseUtils;
+import com.xilu.wybz.utils.PrefsUtil;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,9 +23,9 @@ public class MsgCommentPresenter extends BasePresenter<ICommentView> {
         super(context, iView);
     }
 
-    public void loadData(int userId, int page) {
+    public void loadData(int page) {
         params = new HashMap<>();
-        params.put("uid",userId+"");
+        params.put("uid", PrefsUtil.getUserId(context)+"");
         params.put("page",page+"");
         httpUtils.get(MyHttpClient.getMsgCommentList(), params, new MyStringCallback() {
             @Override
@@ -46,10 +48,10 @@ public class MsgCommentPresenter extends BasePresenter<ICommentView> {
             }
         });
     }
-    public void sendComment(String c_id,int userId,String content){
+    public void sendComment(String c_id,String content){
         Map<String,String> params = new HashMap<>();
         params.put("id", c_id);
-        params.put("userid",userId+"");;
+        params.put("userid",PrefsUtil.getUserId(context)+"");;
         params.put("comment", content);
         httpUtils.post(MyHttpClient.getSaveCommentUrl(), params, new MyStringCallback(){
             @Override
