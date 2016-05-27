@@ -1,9 +1,11 @@
 package com.xilu.wybz.http.callback;
 
 import android.content.Context;
+import android.content.Intent;
 
 import com.xilu.wybz.bean.JsonResponse;
 import com.xilu.wybz.ui.MyApplication;
+import com.xilu.wybz.ui.login.LoginActivity;
 import com.xilu.wybz.utils.NetWorkUtil;
 import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.utils.ToastUtils;
@@ -60,7 +62,12 @@ public class AppJsonCalback extends JsonCallback {
         }
 
         if (StringUtil.isNotBlank(response.getMessage())){
-            ToastUtils.toast(context!=null ? context:getContext(),response.getMessage());
+            ToastUtils.toast(getContext(),response.getMessage());
+        }
+
+        if(response.getCode()==53001){
+            Intent intent = new Intent(getContext(),LoginActivity.class);
+            getContext().startActivity(intent);
         }
     }
 
@@ -85,7 +92,7 @@ public class AppJsonCalback extends JsonCallback {
      * @return
      */
     public Context getContext(){
-        return MyApplication.context;
+        return context==null?MyApplication.context:context;
     }
 
 }
