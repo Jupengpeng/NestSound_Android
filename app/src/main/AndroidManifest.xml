@@ -75,6 +75,7 @@
 
         <activity android:name=".ui.song.MakeHotActivity"  />
         <activity android:name=".ui.song.MakeSongActivity"  />
+        <activity android:name=".ui.song.TestActivity"  />
         <activity android:name=".ui.song.CommentActivity"  />
         <activity android:name=".ui.song.SongAblumActivity" android:theme="@style/PlayTheme" />
         <activity android:name=".ui.song.PlayAudioActivity" android:theme="@style/PlayTheme" />

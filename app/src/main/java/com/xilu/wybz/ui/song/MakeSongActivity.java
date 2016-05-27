@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.SurfaceView;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -15,6 +14,7 @@ import com.xilu.wybz.bean.TemplateBean;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.dao.DBManager;
 import com.xilu.wybz.ui.base.ToolbarActivity;
+import com.xilu.wybz.view.WaveSurfaceView;
 
 import java.util.Timer;
 
@@ -32,7 +32,7 @@ public class MakeSongActivity extends ToolbarActivity {
     @Bind(R.id.et_word)
     TextView etWord;
     @Bind(R.id.make_sv_wave)
-    SurfaceView makeSvWave;
+    WaveSurfaceView makeSvWave;
 //    @Bind(R.id.tv_time)
 //    TextView tvTime;
 //    @Bind(R.id.tv_alltime)
@@ -71,7 +71,6 @@ public class MakeSongActivity extends ToolbarActivity {
 //        llMain.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 
 
-        helper = new WaveSurfaceHelper(makeSvWave);
 
 
     }
