@@ -200,7 +200,7 @@ public class ModifyActivity extends ToolbarActivity implements IModifyUserInfoVi
     }
 
     public void UpdateUserInfo(){
-        modifyUserInfoPresenter.modifyUserInfo(userId,userBean);
+        modifyUserInfoPresenter.modifyUserInfo(userBean);
     }
 
     public void selectImage(Intent data, int requestCode) {

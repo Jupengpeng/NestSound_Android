@@ -48,7 +48,7 @@ public class SearchLyricsFragment extends BaseListFragment<WorksData> implements
         if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
             page = 1;
         }
-        searchPresenter.searchData(userId, keyWord, 2, page++);
+        searchPresenter.searchData(keyWord, 2, page++);
     }
 
     @Override

@@ -12,6 +12,7 @@ import com.xilu.wybz.common.interfaces.HttpLinstener;
 import com.xilu.wybz.http.callback.MyStringCallback;
 import com.xilu.wybz.ui.IView.IZanView;
 import com.xilu.wybz.utils.ParseUtils;
+import com.xilu.wybz.utils.PrefsUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,9 +32,9 @@ public class MsgZanPresenter extends BasePresenter<IZanView> {
         super(context, iView);
     }
 
-    public void loadData(int userId, int page) {
+    public void loadData(int page) {
         params = new HashMap<>();
-        params.put("uid",userId+"");
+        params.put("uid", PrefsUtil.getUserId(context)+"");
         params.put("page",page+"");
         httpUtils.get(MyHttpClient.getMsgZanList(), params, new MyStringCallback() {
             @Override

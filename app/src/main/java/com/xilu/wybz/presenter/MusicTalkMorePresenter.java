@@ -11,6 +11,7 @@ import com.xilu.wybz.http.callback.MyStringCallback;
 import com.xilu.wybz.ui.IView.IMusicTalkMoreView;
 import com.xilu.wybz.ui.IView.ISongablumMoreView;
 import com.xilu.wybz.utils.ParseUtils;
+import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.ToastUtils;
 
 import org.json.JSONException;
@@ -30,10 +31,10 @@ public class MusicTalkMorePresenter extends BasePresenter<IMusicTalkMoreView> {
         super(context, iView);
     }
 
-    public void loadData(int userId, int page) {
+    public void loadData(int page) {
         params = new HashMap<>();
         params.put("page", page + "");
-        params.put("uid",userId+"");;
+        params.put("uid", PrefsUtil.getUserId(context)+"");;
         httpUtils.get(MyHttpClient.getMusicTalkUrl(), params, new MyStringCallback() {
             @Override
             public void onResponse(String response) {

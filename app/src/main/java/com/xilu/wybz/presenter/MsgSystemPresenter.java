@@ -11,6 +11,7 @@ import com.xilu.wybz.http.callback.MyStringCallback;
 import com.xilu.wybz.ui.IView.ICollectionView;
 import com.xilu.wybz.ui.IView.ISystemMsgView;
 import com.xilu.wybz.utils.ParseUtils;
+import com.xilu.wybz.utils.PrefsUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,9 +31,9 @@ public class MsgSystemPresenter extends BasePresenter<ISystemMsgView> {
         super(context, iView);
     }
 
-    public void loadData(int userId, int page) {
+    public void loadData(int page) {
         Map<String,String> params = new HashMap<>();
-        params.put("uid",userId+"");;
+        params.put("uid", PrefsUtil.getUserId(context)+"");;
         params.put("page", page + "");
         httpUtils.post(MyHttpClient.getMsgSystemList(), params, new MyStringCallback() {
             @Override

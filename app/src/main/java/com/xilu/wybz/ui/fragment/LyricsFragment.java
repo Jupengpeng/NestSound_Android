@@ -90,7 +90,7 @@ public class LyricsFragment extends BaseFragment implements ISongView {
         recyclerViewNew.setLayoutManager(new GridLayoutManager(context, column));
         recyclerViewNew.addItemDecoration(new GridSpacingItemDecoration(column, space10, false));
 
-        songPresenter.getWorkList(userId, 2);
+        songPresenter.getWorkList(2);
     }
 
     @OnClick({R.id.tv_hot_more, R.id.tv_new_more})

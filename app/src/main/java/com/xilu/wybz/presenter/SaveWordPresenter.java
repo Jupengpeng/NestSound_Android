@@ -8,6 +8,7 @@ import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.callback.AppStringCallback;
 import com.xilu.wybz.ui.IView.ISaveWordView;
+import com.xilu.wybz.utils.PrefsUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,10 +23,10 @@ public class SaveWordPresenter extends BasePresenter<ISaveWordView> {
         super(context, iView);
     }
 
-    public void saveLyrics(WorksData worksData, int userId) {
+    public void saveLyrics(WorksData worksData) {
         Map<String, String> map = new HashMap<>();
         try {
-            map.put("uid", userId+"");
+            map.put("uid", PrefsUtil.getUserId(context)+"");
             map.put("title", worksData.title);
             map.put("lyrics", worksData.lyrics);
             map.put("pic", worksData.pic);

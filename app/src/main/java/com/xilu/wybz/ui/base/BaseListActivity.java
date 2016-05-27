@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.xilu.wybz.R;
+import com.xilu.wybz.bean.PhotoBean;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.view.pull.BaseListAdapter;
 import com.xilu.wybz.view.pull.BaseViewHolder;
@@ -108,7 +109,19 @@ public abstract class BaseListActivity<T> extends BasePlayMenuActivity implement
             return BaseListActivity.this.isSectionHeader(position);
         }
     }
-
+    public void removeItem(int position){
+        mDataList.remove(position);
+        adapter.notifyItemRemoved(position);
+        if(position != mDataList.size()){
+            adapter.notifyItemRangeChanged(position, mDataList.size() - position);
+        }
+    }
+    public void addItem(T t){
+        mDataList.add(0,t);
+        recycler.setSelection(0);
+        adapter.notifyItemInserted(0);
+        adapter.notifyItemRangeChanged(0, mDataList.size());
+    }
     protected boolean isSectionHeader(int position) {
         return false;
     }

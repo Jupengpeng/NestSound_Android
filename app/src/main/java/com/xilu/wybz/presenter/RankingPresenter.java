@@ -8,6 +8,7 @@ import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.callback.AppStringCallback;
 import com.xilu.wybz.ui.IView.IRankingView;
+import com.xilu.wybz.utils.PrefsUtil;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -22,9 +23,9 @@ public class RankingPresenter extends BasePresenter<IRankingView>{
     public RankingPresenter(Context context, IRankingView iView) {
         super(context, iView);
     }
-    public void loadRankingData(int userId,int modelType){
+    public void loadRankingData(int modelType){
         params = new HashMap<>();
-        params.put("uid",userId+"");
+        params.put("uid", PrefsUtil.getUserId(context)+"");
         params.put("modelType",modelType+"");
         params.put("page","1");
         httpUtils.get(MyHttpClient.getRankingList(),params,new AppStringCallback(){

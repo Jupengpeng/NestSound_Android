@@ -134,7 +134,6 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
                 if(!TextUtils.isEmpty(filrUrl)){
                     worksData.audio = filrUrl;
                     uploadRecord();
-
                 }
             }
             @Override
@@ -154,7 +153,7 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
                     uploadPics();
                 }else{
                     if(TextUtils.isEmpty(recordPath)){
-                        inspireRecordPresenter.publishData(userId,worksData);
+                        inspireRecordPresenter.publishData(worksData);
                     }else{
                         uploadRecord();
                     }
@@ -204,21 +203,9 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
                     ToSelectPicActivity();
                 }
             }
-
-            @Override
-            public void onItemLongClick(View view, int position) {
-
-            }
-
             @Override
             public void onDelClick(View view, int position) {
-                list.remove(position);
-                if(list.size()==8&&!list.get(list.size()-1).isAddPic){
-                    PhotoBean photoBean = new PhotoBean();
-                    photoBean.isAddPic = true;
-                    list.add(photoBean);
-                }
-                adapter.notifyItemRemoved(position);
+                adapter.removeItem(position);
             }
         });
     }

@@ -33,6 +33,9 @@ import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.utils.UploadFileUtil;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 
 import butterknife.Bind;
@@ -137,7 +140,7 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView{
             @Override
             public void onSuccess(String imageUrl) {
                 worksData.setPic(imageUrl);
-                saveWordPresenter.saveLyrics(worksData,userId);
+                saveWordPresenter.saveLyrics(worksData);
             }
 
             @Override
@@ -175,12 +178,21 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView{
     @Override
     public void saveWordSuccess(String result) {
         cancelPd();
+        try {
+            String shareurl = new JSONObject(result).getString("shareurl");
+            int itemid = new JSONObject(result).getInt("itemid");
+            worksData.setShareurl(shareurl+"?id="+itemid);
+            ShareActivity.toShareActivity(context,worksData);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         PrefsUtil.putString(KeySet.LOCAL_LYRICS, "", context);
         EventBus.getDefault().post(new Event.SaveLyricsSuccessEvent(1, worksData));
         EventBus.getDefault().post(new Event.SaveLyricsSuccessEvent(2, worksData));
         EventBus.getDefault().post(new Event.SaveLyricsSuccessEvent(3, worksData));
         EventBus.getDefault().post(new Event.SaveLyricsSuccessEvent(4, worksData));
-        ShareActivity.toShareActivity(context,worksData);
+
     }
     @Override
     public void saveWordFail() {

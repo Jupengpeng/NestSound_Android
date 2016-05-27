@@ -11,6 +11,7 @@ import com.xilu.wybz.http.callback.MyStringCallback;
 import com.xilu.wybz.ui.IView.IHomeView;
 import com.xilu.wybz.ui.IView.IImportWordView;
 import com.xilu.wybz.utils.ParseUtils;
+import com.xilu.wybz.utils.PrefsUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,9 +30,9 @@ public class ImportWordPresenter extends BasePresenter<IImportWordView> {
         super(context, iView);
     }
 
-    public void loadData(int userId, int page) {
+    public void loadData(int page) {
         params = new HashMap<>();
-        params.put("uid",userId+"");
+        params.put("uid", PrefsUtil.getUserId(context)+"");
         params.put("page",page+"");
         httpUtils.get(MyHttpClient.getUserLyricsListUrl(), new MyStringCallback() {
             @Override

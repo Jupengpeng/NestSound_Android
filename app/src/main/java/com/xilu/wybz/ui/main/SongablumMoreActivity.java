@@ -56,7 +56,7 @@ public class SongablumMoreActivity extends BaseListActivity<SongAlbum> implement
         if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
             page = 1;
         }
-        songablumMorePresenter.loadData(userId, page++);
+        songablumMorePresenter.loadData(page++);
     }
     protected ILayoutManager getLayoutManager() {
         return new MyGridLayoutManager(getApplicationContext(), 2);

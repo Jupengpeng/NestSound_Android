@@ -10,6 +10,7 @@ import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.callback.MyStringCallback;
 import com.xilu.wybz.ui.IView.ISongView;
 import com.xilu.wybz.utils.ParseUtils;
+import com.xilu.wybz.utils.PrefsUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,9 +30,9 @@ public class SongPresenter extends BasePresenter<ISongView> {
     /*
     * orderType 1=最新(或不填)，2=热门
      */
-    public void getWorkList(int userId,int type) {
+    public void getWorkList(int type) {
         params = new HashMap<>();
-        params.put("uid",userId+"");
+        params.put("uid", PrefsUtil.getUserId(context)+"");
         httpUtils.get(type==1?MyHttpClient.getFindSongList():MyHttpClient.getFindLyricsList(), params, new MyStringCallback() {
             @Override
             public void onError(Call call, Exception e) {

@@ -7,6 +7,7 @@ import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.callback.MyStringCallback;
 import com.xilu.wybz.ui.IView.IForgetPwdView;
 import com.xilu.wybz.ui.IView.IModifyUserInfoView;
+import com.xilu.wybz.utils.PrefsUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,9 +21,9 @@ public class ModifyUserInfoPresenter extends BasePresenter<IModifyUserInfoView> 
     public ModifyUserInfoPresenter(Context context, IModifyUserInfoView iView) {
         super(context, iView);
     }
-    public void modifyUserInfo(int userId, UserBean userBean) {
+    public void modifyUserInfo(UserBean userBean) {
         params = new HashMap<>();
-        params.put("uid",userId+"");
+        params.put("uid", PrefsUtil.getUserId(context)+"");
         params.put("headurl",userBean.headurl);
         params.put("nickname",userBean.name);
         params.put("sex",userBean.sex+"");

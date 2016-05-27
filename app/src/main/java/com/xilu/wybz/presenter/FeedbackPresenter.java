@@ -7,6 +7,7 @@ import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.callback.MyStringCallback;
 import com.xilu.wybz.ui.IView.IFeedbackView;
 import com.xilu.wybz.utils.ParseUtils;
+import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.ToastUtils;
 
 import java.util.HashMap;
@@ -22,9 +23,9 @@ public class FeedbackPresenter extends BasePresenter<IFeedbackView> {
         super(context, iView);
     }
 
-    public void postData(int userId, String phone, String text, int type) {
+    public void postData(String phone, String text, int type) {
         params = new HashMap<>();
-        params.put("userid", userId+"");
+        params.put("userid", PrefsUtil.getUserId(context)+"");
         params.put("phone", phone);
         params.put("text", text);
         httpUtils.post(type == 0 ? MyHttpClient.getFeed() : MyHttpClient.getUserReport(), params, new MyStringCallback() {

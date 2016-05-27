@@ -9,6 +9,7 @@ import com.xilu.wybz.http.callback.MyStringCallback;
 import com.xilu.wybz.ui.IView.ICommentView;
 import com.xilu.wybz.ui.IView.ILoginView;
 import com.xilu.wybz.utils.ParseUtils;
+import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.ToastUtils;
 
 import java.util.HashMap;
@@ -57,9 +58,9 @@ public class CommentPresenter extends BasePresenter<ICommentView>{
     * type 1=歌曲，2=歌词
     * comment_type 1=默认，发帖，2=跟帖，回复
      */
-    public void sendComment(int uid,int itemid,int comment_type,int type,int target_uid, String comment){
+    public void sendComment(int itemid,int comment_type,int type,int target_uid, String comment){
         Map<String,String> params = new HashMap<>();
-        params.put("uid", uid+"");
+        params.put("uid", PrefsUtil.getUserId(context)+"");
         if(itemid>0)
         params.put("itemid", itemid+"");
         params.put("comment_type", comment_type+"");

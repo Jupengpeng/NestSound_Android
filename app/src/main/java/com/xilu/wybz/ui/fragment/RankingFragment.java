@@ -75,8 +75,8 @@ public class RankingFragment extends BaseFragment implements IRankingView {
         recyclerViewSong.setAdapter(rankingSongAdapter);
         recyclerViewLyrics.setAdapter(rankingLyricsAdapter);
 
-        rankingPresenter.loadRankingData(userId,1);
-        rankingPresenter.loadRankingData(userId,2);
+        rankingPresenter.loadRankingData(1);
+        rankingPresenter.loadRankingData(2);
         rankingSongAdapter.setOnItemClickListener(new RankingAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {

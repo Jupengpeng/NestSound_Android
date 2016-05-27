@@ -43,7 +43,7 @@ public class SearchSongFragment extends BaseListFragment<WorksData> implements I
         if (mDataList == null) {
             mDataList = new ArrayList<>();
         }
-        searchPresenter.searchData(userId, keyWord, 1, page++);
+        searchPresenter.searchData(keyWord, 1, page++);
     }
 
     @Override

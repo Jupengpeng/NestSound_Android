@@ -98,7 +98,7 @@ public class SongFragment extends BaseFragment implements ISongView {
         recyclerViewNew.setNestedScrollingEnabled(false);
         recyclerViewNew.setLayoutManager(new GridLayoutManager(context, column));
         recyclerViewNew.addItemDecoration(new GridSpacingItemDecoration(column, space10, false));
-        songPresenter.getWorkList(userId,1);
+        songPresenter.getWorkList(1);
     }
 
     @OnClick({R.id.tv_hot_more, R.id.tv_new_more})

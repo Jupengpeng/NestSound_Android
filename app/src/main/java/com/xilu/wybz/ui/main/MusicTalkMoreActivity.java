@@ -65,7 +65,7 @@ public class MusicTalkMoreActivity extends BaseListActivity<MusicTalk> implement
         if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
             page = 1;
         }
-        musicTalkMorePresenter.loadData(userId, page++);
+        musicTalkMorePresenter.loadData(page++);
     }
     protected ILayoutManager getLayoutManager() {
         return new MyLinearLayoutManager(getApplicationContext());
