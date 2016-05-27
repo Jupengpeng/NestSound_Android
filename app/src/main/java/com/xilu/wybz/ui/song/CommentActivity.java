@@ -3,6 +3,7 @@ package com.xilu.wybz.ui.song;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -26,13 +27,18 @@ import com.xilu.wybz.presenter.CommentPresenter;
 import com.xilu.wybz.ui.IView.ICommentView;
 import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.ui.base.BaseListActivity;
+import com.xilu.wybz.ui.login.LoginActivity;
 import com.xilu.wybz.utils.DateTimeUtil;
 import com.xilu.wybz.utils.KeyBoardUtil;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringStyleUtil;
+import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.utils.SystemUtils;
+import com.xilu.wybz.utils.ToastUtils;
 import com.xilu.wybz.view.CircleImageView;
 import com.xilu.wybz.view.dialog.ActionMoreDialog;
+import com.xilu.wybz.view.materialdialogs.DialogAction;
+import com.xilu.wybz.view.materialdialogs.MaterialDialog;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.PullRecycler;
 import java.util.ArrayList;
@@ -293,7 +299,7 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
                     KeyBoardUtil.openKeybord(etContent,context);
                 }
             }else{
-                showMsg("登录后才能添加回复!");
+                ToastUtils.logingTip(context,"请登录后再进行回复！");
             }
         }
     }

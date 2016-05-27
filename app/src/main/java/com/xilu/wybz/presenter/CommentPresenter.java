@@ -3,8 +3,10 @@ package com.xilu.wybz.presenter;
 import android.content.Context;
 
 import com.xilu.wybz.bean.CommentBean;
+import com.xilu.wybz.bean.JsonResponse;
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.common.MyHttpClient;
+import com.xilu.wybz.http.callback.AppJsonCalback;
 import com.xilu.wybz.http.callback.MyStringCallback;
 import com.xilu.wybz.ui.IView.ICommentView;
 import com.xilu.wybz.ui.IView.ILoginView;
@@ -68,16 +70,12 @@ public class CommentPresenter extends BasePresenter<ICommentView>{
         if(target_uid>0)
         params.put("target_uid", target_uid+"");
         params.put("comment", comment);
-        httpUtils.post(MyHttpClient.getSaveCommentUrl(), params, new MyStringCallback(){
+        httpUtils.post(MyHttpClient.getSaveCommentUrl(), params, new AppJsonCalback(context){
             @Override
-            public void onResponse(String response) {
-                if (ParseUtils.checkCode(response)) {
-                    iView.commentSuccess();
-                }else{
-                    iView.commentFail();
-                }
+            public void onResponse(JsonResponse response) {
+                super.onResponse(response);
+                iView.commentSuccess();
             }
-
             @Override
             public void onError(Call call, Exception e) {
                 iView.commentFail();
@@ -89,15 +87,13 @@ public class CommentPresenter extends BasePresenter<ICommentView>{
         Map<String,String> params = new HashMap<>();
         params.put("id", id+"");
         params.put("type", type+"");
-        httpUtils.post(MyHttpClient.getDelCommentUrl(), params, new MyStringCallback(){
+        httpUtils.post(MyHttpClient.getDelCommentUrl(), params, new AppJsonCalback(context){
             @Override
-            public void onResponse(String response) {
-                if (ParseUtils.checkCode(response)) {
-                    iView.delSuccess();
-                }else{
-                    iView.delFail();
-                }
+            public void onResponse(JsonResponse response) {
+                super.onResponse(response);
+                iView.delSuccess();
             }
+
             @Override
             public void onError(Call call, Exception e) {
                 iView.delFail();

@@ -2,6 +2,7 @@ package com.xilu.wybz.http.callback;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 
 import com.xilu.wybz.bean.JsonResponse;
 import com.xilu.wybz.ui.MyApplication;
@@ -9,6 +10,8 @@ import com.xilu.wybz.ui.login.LoginActivity;
 import com.xilu.wybz.utils.NetWorkUtil;
 import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.utils.ToastUtils;
+import com.xilu.wybz.view.materialdialogs.DialogAction;
+import com.xilu.wybz.view.materialdialogs.MaterialDialog;
 
 import java.lang.reflect.Type;
 
@@ -60,15 +63,15 @@ public class AppJsonCalback extends JsonCallback {
         if (response.getCode() == 999){
             return;
         }
-
+        if(response.getCode()==53001){
+            ToastUtils.logingTip(getContext(),StringUtil.isNotBlank(response.getMessage())?response.getMessage():"登录状态失效，请重新进行登录！");
+            return;
+        }
         if (StringUtil.isNotBlank(response.getMessage())){
             ToastUtils.toast(getContext(),response.getMessage());
         }
 
-        if(response.getCode()==53001){
-            Intent intent = new Intent(getContext(),LoginActivity.class);
-            getContext().startActivity(intent);
-        }
+
     }
 
 

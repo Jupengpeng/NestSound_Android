@@ -1,10 +1,15 @@
 package com.xilu.wybz.utils;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.view.WindowManager;
 
+import com.xilu.wybz.ui.login.LoginActivity;
 import com.xilu.wybz.view.dialog.ToastDialog;
+import com.xilu.wybz.view.materialdialogs.DialogAction;
+import com.xilu.wybz.view.materialdialogs.MaterialDialog;
 
 public class ToastUtils {
     public static void toast(Context context, String text) {
@@ -21,6 +26,24 @@ public class ToastUtils {
                 toastDialog.dismiss();
             }
         }, 1200);
+    }
 
+    public static void logingTip(Context context, String msg) {
+        new MaterialDialog.Builder(context)
+                .content(msg)
+                .positiveText("登录")
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        Intent intent = new Intent(context, LoginActivity.class);
+                        context.startActivity(intent);
+                    }
+                }).negativeText("取消")
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+
+                    }
+                }).show();
     }
 }
