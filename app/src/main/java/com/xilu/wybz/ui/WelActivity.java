@@ -45,12 +45,23 @@ public class WelActivity extends BaseActivity {
         }
         Intent getDomainService = new Intent(this, GetDomainService.class);
         startService(getDomainService);
+        toHome();
 
-        startActivity(MainTabActivity.class);
-        finish();
-        overridePendingTransition(0, R.anim.wave_scale);
     }
-
+    // 跳转到首页
+    public void toHome() {
+        new Handler().postDelayed(new Runnable() {
+            public void run() {
+                toMainAct();
+            }
+        }, 1500);
+    }
+    private void toMainAct(){
+        Intent intent = new Intent(WelActivity.this, MainTabActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.enter_right, R.anim.exit_left);
+        finish();
+    }
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK
                 && event.getRepeatCount() == 0) {

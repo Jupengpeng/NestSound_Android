@@ -25,6 +25,7 @@ import com.xilu.wybz.presenter.CommentPresenter;
 import com.xilu.wybz.ui.IView.ICommentView;
 import com.xilu.wybz.ui.base.BaseListActivity;
 import com.xilu.wybz.utils.DateTimeUtil;
+import com.xilu.wybz.utils.KeyBoardUtil;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringStyleUtil;
 import com.xilu.wybz.utils.SystemUtils;
@@ -259,28 +260,30 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
 
         @Override
         public void onItemClick(View view, int position) {
-            CommentBean commentBean = mDataList.get(position);
-            boolean isMe = commentBean.uid == userId;
-            if(isMe){
-                if(actionMoreDialog==null){
-                    actionMoreDialog = new ActionMoreDialog(context, new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
-                            if(pos==0){
-                                delPos = position;
-                                commentPresenter.delComment(commentBean.id,type);
+            if(isLogin) {
+                CommentBean commentBean = mDataList.get(position);
+                boolean isMe = commentBean.uid == userId;
+                if (isMe) {
+                    if (actionMoreDialog == null) {
+                        actionMoreDialog = new ActionMoreDialog(context, new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
+                                if (pos == 0) {
+                                    delPos = position;
+                                    commentPresenter.delComment(commentBean.id, type);
+                                }
                             }
-                        }
-                    }, actionBeanList);
+                        }, actionBeanList);
+                    }
+                    if (!actionMoreDialog.isShowing()) {
+                        actionMoreDialog.showDialog();
+                    }
+                } else {
+                    targetUid = commentBean.target_uid;
+                    commentType = commentBean.comment_type;
+                    etContent.setHint("回复" + commentBean.nickname);
+                    KeyBoardUtil.openKeybord(etContent,context);
                 }
-                if(!actionMoreDialog.isShowing()){
-                    actionMoreDialog.showDialog();
-                }
-            }else{
-                targetUid = commentBean.target_uid;
-                commentType = commentBean.comment_type;
-                etContent.setHint("回复"+commentBean.nickname);
-                toSendComment();
             }
         }
     }
