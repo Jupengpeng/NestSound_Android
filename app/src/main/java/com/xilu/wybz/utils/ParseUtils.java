@@ -8,6 +8,7 @@ import com.google.gson.reflect.TypeToken;
 import com.xilu.wybz.bean.CommentBean;
 import com.xilu.wybz.bean.DataBean;
 import com.xilu.wybz.bean.Lyricat;
+import com.xilu.wybz.bean.MainBean;
 import com.xilu.wybz.bean.MusicTalk;
 import com.xilu.wybz.bean.SongAlbum;
 import com.xilu.wybz.bean.TemplateBean;
@@ -126,6 +127,21 @@ public class ParseUtils {
     }
 
 
+    public static MainBean getMainBean(Context context,String response) {
+        MainBean dataBean = new MainBean();
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            int code = jsonObject.getInt("code");
+            if (code == 200) {
+                dataBean = new Gson().fromJson(jsonObject.getString("data"),MainBean.class);
+            } else {
+                showMsg(context, jsonObject.getString("message"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return dataBean;
+    }
     public static DataBean getDataBean(Context context,String response) {
         DataBean dataBean = new DataBean();
         try {

@@ -223,14 +223,21 @@ public class MainActivity extends BaseActivity implements IHomeView {
             }
         });
         recyclerViewMusictalk.setAdapter(musicTalkAdapter);
+        //加载本地数据
+        String homedata = PrefsUtil.getString("homedata",context);;
+        if(!TextUtils.isEmpty(homedata)){
+            MainBean mainBean = new Gson().fromJson(homedata,MainBean.class);
+            showMainData(mainBean);
+        }
         presenter.getHomeData();
     }
 
     @Override
     public void showMainData(MainBean mainBean) {
-
         if(mainBean!=null) {
+            PrefsUtil.putString("homedata",new Gson().toJson(mainBean),context);
             //banner
+            if(bannerList.size()>0)bannerList.clear();
             bannerList.addAll(mainBean.bannerList);
             if (bannerList.size() > 0)
                 setViewPager();
@@ -254,12 +261,14 @@ public class MainActivity extends BaseActivity implements IHomeView {
                 worksAdapter.notifyDataSetChanged();
             }
             //最新作品
+            if(newWorkList.size()>0)newWorkList.clear();
             newWorkList.addAll(mainBean.newList);
             if (newWorkList.size() > 0) {
                 tvNewwork.setVisibility(View.VISIBLE);
             }
             newworksAdapter.notifyDataSetChanged();
             //乐说
+            if(musicTalkList.size()>0)musicTalkList.clear();
             musicTalkList.addAll(mainBean.yueshuoList);
             if (musicTalkList.size() > 0) {
                 tvMusictalk.setVisibility(View.VISIBLE);
