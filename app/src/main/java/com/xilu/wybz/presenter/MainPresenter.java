@@ -2,11 +2,20 @@ package com.xilu.wybz.presenter;
 
 import android.content.Context;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.xilu.wybz.bean.JsonResponse;
+import com.xilu.wybz.bean.MainBean;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.common.MyHttpClient;
+import com.xilu.wybz.http.callback.AppJsonCalback;
 import com.xilu.wybz.http.callback.MyStringCallback;
 import com.xilu.wybz.ui.IView.IHomeView;
+import com.xilu.wybz.utils.ParseUtils;
 
+import org.json.JSONObject;
+
+import java.lang.reflect.Type;
 import java.util.Map;
 
 import okhttp3.Call;
@@ -23,12 +32,6 @@ public class MainPresenter extends BasePresenter<IHomeView> {
     public void getHomeData() {
         httpUtils.get(MyHttpClient.getHomeUrl(),null, new MyStringCallback() {
             @Override
-            public void onBefore(Request request) {
-                super.onBefore(request);
-                iView.loadDataStart();
-            }
-
-            @Override
             public void onAfter() {
                 super.onAfter();
                 iView.loadDataFinish();
@@ -36,15 +39,16 @@ public class MainPresenter extends BasePresenter<IHomeView> {
 
             @Override
             public void onError(Call call, Exception e) {
-                e.printStackTrace();
+                super.onError(call, e);
                 iView.loadDataFail(e.getMessage());
             }
 
             @Override
             public void onResponse(String response) {
-                iView.loadDataSuccess(response);
+                super.onResponse(response);
+                MainBean mainBean = ParseUtils.getMainBean(context,response);
+                iView.showMainData(mainBean);
             }
         });
-
     }
 }

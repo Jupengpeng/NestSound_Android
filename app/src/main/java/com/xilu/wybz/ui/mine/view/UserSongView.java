@@ -18,7 +18,7 @@ public class UserSongView extends UserBaseView {
     public UserSongView(Context context,int userType) {
         super(context);
         initView();
-        setUserListPresenter(new UserListPresenter(context,(IUserView)context,this, userType, UserPresenter.TYPE_SONG));
+        setUserListPresenter(new UserListPresenter(context,(IUserView)context, this, userType, UserPresenter.TYPE_SONG));
         List<WorksData> data = new ArrayList<WorksData>();
         setAdapter(new UserSongAdapter(context,data));
     }

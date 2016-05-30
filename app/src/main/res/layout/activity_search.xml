@@ -11,16 +11,17 @@
     <RelativeLayout
         android:id="@+id/rl_tab"
         android:layout_width="match_parent"
-        android:layout_height="38dp">
+        android:layout_height="38.6dp">
         <android.support.design.widget.TabLayout
             android:id="@+id/tab_layout"
             android:layout_width="match_parent"
             android:layout_height="38dp"
             android:background="@color/white"
             app:tabSelectedTextColor="@color/black" />
-        <android.support.v4.widget.Space
+        <View
             android:layout_width="match_parent"
             android:layout_height="0.6dp"
+            android:layout_alignParentBottom="true"
             android:background="@color/split_line"
             />
     </RelativeLayout>

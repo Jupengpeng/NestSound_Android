@@ -60,8 +60,6 @@ public abstract class BaseListActivity<T> extends BasePlayMenuActivity implement
         setUpAdapter();
         if(hasPadding()){
             recycler.setPadding(dip10, dip10, dip10, dip10);
-            recycler.setClipChildren(false);
-            recycler.setClipToPadding(false);
         }
         recycler.setOnRefreshListener(this);
         recycler.setLayoutManager(getLayoutManager());

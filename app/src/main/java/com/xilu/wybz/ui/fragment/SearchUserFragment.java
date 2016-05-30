@@ -1,54 +1,80 @@
 package com.xilu.wybz.ui.fragment;
 
+import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.xilu.wybz.R;
+import com.xilu.wybz.bean.FansBean;
+import com.xilu.wybz.bean.FindSongBean;
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.bean.WorksData;
+import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.SearchPresenter;
 import com.xilu.wybz.ui.IView.ISearchView;
+import com.xilu.wybz.utils.DensityUtil;
+import com.xilu.wybz.utils.ImageLoadUtil;
+import com.xilu.wybz.utils.NumberUtil;
+import com.xilu.wybz.utils.StringUtil;
+import com.xilu.wybz.view.GridSpacingItemDecoration;
+import com.xilu.wybz.view.SpacesItemDecoration;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.PullRecycler;
+import com.xilu.wybz.view.pull.layoutmanager.ILayoutManager;
+import com.xilu.wybz.view.pull.layoutmanager.MyGridLayoutManager;
+import com.xilu.wybz.view.pull.layoutmanager.MyLinearLayoutManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
+
 /**
  * Created by hujunwei on 16/5/22.
  */
-public class SearchUserFragment extends BaseListFragment<UserBean> implements ISearchView{
+public class SearchUserFragment extends BaseListFragment<FansBean> implements ISearchView {
     SearchPresenter searchPresenter;
+    int column = 4;
+
     @Override
     protected void initPresenter() {
-        searchPresenter = new SearchPresenter(context,this);
+        searchPresenter = new SearchPresenter(context, this);
         searchPresenter.init();
     }
+
+    @Override
+    protected void setUpData() {
+        super.setUpData();
+    }
+
+    public boolean hasPadding() {
+        return true;
+    }
+
     @Override
     public void initView() {
         recycler.enablePullToRefresh(false);
     }
-    public void loadData(String keyWord){
-        if(keyWord==null) {
-            this.keyWord = keyWord;
-            setUpData();
+
+    public void loadData(String name) {
+        if (TextUtils.isEmpty(keyWord)) {
+            keyWord = name;
             recycler.setRefreshing();
         }
-    }
-    @Override
-    protected BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
-        return null;
     }
 
     @Override
     public void onRefresh(int action) {
-        this.action = action;
         if (mDataList == null) {
             mDataList = new ArrayList<>();
         }
-        if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
-            page = 1;
-        }
-        searchPresenter.searchData(keyWord, 3, page++);
+        searchPresenter.searchUserData(keyWord, 3, page++);
     }
 
     @Override
@@ -57,10 +83,7 @@ public class SearchUserFragment extends BaseListFragment<UserBean> implements IS
     }
 
     @Override
-    public void showUserData(List<UserBean> userBeenList) {
-        if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
-            mDataList.clear();
-        }
+    public void showUserData(List<FansBean> userBeenList) {
         recycler.enableLoadMore(true);
         mDataList.addAll(userBeenList);
         adapter.notifyDataSetChanged();
@@ -84,5 +107,48 @@ public class SearchUserFragment extends BaseListFragment<UserBean> implements IS
         llNoData.setVisibility(View.VISIBLE);
         recycler.onRefreshCompleted();
         recycler.enableLoadMore(false);
+    }
+
+    protected ILayoutManager getLayoutManager() {
+        return new MyGridLayoutManager(getActivity().getApplicationContext(), column);
+    }
+
+    protected RecyclerView.ItemDecoration getItemDecoration() {
+        return new GridSpacingItemDecoration(column, dip10, false);
+    }
+
+    @Override
+    protected BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
+        UsersViewHolder holder = new UsersViewHolder(LayoutInflater.from(context).inflate(R.layout.activity_search_userlist_item, parent, false));
+        return holder;
+    }
+
+    class UsersViewHolder extends BaseViewHolder {
+        int itemWidth;
+        @Bind(R.id.iv_head)
+        SimpleDraweeView ivHead;
+        @Bind(R.id.tv_name)
+        TextView tvName;
+
+        public UsersViewHolder(View view) {
+            super(view);
+            itemWidth = (DensityUtil.getScreenW(context) - DensityUtil.dip2px(context, (column + 1) * 10)) / column;
+            ivHead.setLayoutParams(new LinearLayout.LayoutParams(itemWidth, itemWidth));
+        }
+
+        @Override
+        public void onBindViewHolder(int position) {
+            FansBean fansBean = mDataList.get(position);
+            if(StringUtil.isNotBlank(fansBean.headurl)) {
+                String url = MyCommon.getImageUrl(fansBean.headurl, itemWidth, itemWidth);
+                loadImage(url, ivHead);
+            }
+            if(StringUtil.isNotBlank(fansBean.nickname))tvName.setText(fansBean.nickname);
+        }
+
+        @Override
+        public void onItemClick(View view, int position) {
+
+        }
     }
 }

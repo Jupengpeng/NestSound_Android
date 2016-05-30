@@ -24,6 +24,7 @@ import com.xilu.wybz.adapter.MusicTalkAdapter;
 import com.xilu.wybz.adapter.SongAlbumAdapter;
 import com.xilu.wybz.adapter.WorksAdapter;
 import com.xilu.wybz.bean.Banner;
+import com.xilu.wybz.bean.MainBean;
 import com.xilu.wybz.bean.MusicTalk;
 import com.xilu.wybz.bean.SongAlbum;
 import com.xilu.wybz.bean.WorksData;
@@ -222,82 +223,58 @@ public class MainActivity extends BaseActivity implements IHomeView {
             }
         });
         recyclerViewMusictalk.setAdapter(musicTalkAdapter);
+        //加载本地数据
+        String homedata = PrefsUtil.getString("homedata",context);;
+        if(!TextUtils.isEmpty(homedata)){
+            MainBean mainBean = new Gson().fromJson(homedata,MainBean.class);
+            showMainData(mainBean);
+        }
         presenter.getHomeData();
     }
 
     @Override
-    public void loadDataStart() {
-
-    }
-
-    @Override
-    public void loadDataSuccess(String result) {
-        Log.e("result", result);
-        try {
-            JSONObject infoJSONObject = new JSONObject(new JSONObject(result).getString("data"));
+    public void showMainData(MainBean mainBean) {
+        if(mainBean!=null) {
+            PrefsUtil.putString("homedata",new Gson().toJson(mainBean),context);
             //banner
-            String banner = infoJSONObject.getString("bannerList");
-            List<Banner> banners = new Gson().fromJson(banner,
-                    new TypeToken<List<Banner>>() {
-                    }.getType());
-            bannerList.addAll(banners);
+            if(bannerList.size()>0)bannerList.clear();
+            bannerList.addAll(mainBean.bannerList);
             if (bannerList.size() > 0)
                 setViewPager();
             //推荐作品
-            String worksData = infoJSONObject.getString("mTuijianList");
-            Log.e("worksData", worksData);
-            List<WorksData> worksDatas = new Gson().fromJson(worksData,
-                    new TypeToken<List<WorksData>>() {
-                    }.getType());
             if (recommendWorkList.size() > 0) {
                 recommendWorkList.clear();
             }
-            recommendWorkList.addAll(worksDatas);
+            recommendWorkList.addAll(mainBean.mTuijianList);
             if (recommendWorkList.size() > 0) {
                 tvRecommendwork.setVisibility(View.VISIBLE);
                 worksAdapter.notifyDataSetChanged();
             }
             //推荐歌单
-            String songAlbum = infoJSONObject.getString("recommendsonglist");
-            List<SongAlbum> songAlbums = new Gson().fromJson(songAlbum,
-                    new TypeToken<List<SongAlbum>>() {
-                    }.getType());
             if (songAlbumList.size() > 0) {
                 songAlbumList.clear();
             }
-            songAlbumList.addAll(songAlbums);
+            songAlbumList.addAll(mainBean.recommendsonglist);
             if (songAlbumList.size() > 0) {
                 tvSongablum.setVisibility(View.VISIBLE);
                 tvSongablumMore.setVisibility(View.VISIBLE);
                 worksAdapter.notifyDataSetChanged();
             }
             //最新作品
-            String newWorks = infoJSONObject.getString("newList");
-            List<WorksData> newWorkList = new Gson().fromJson(newWorks,
-                    new TypeToken<List<WorksData>>() {
-                    }.getType());
-            newWorkList.addAll(newWorkList);
+            if(newWorkList.size()>0)newWorkList.clear();
+            newWorkList.addAll(mainBean.newList);
             if (newWorkList.size() > 0) {
                 tvNewwork.setVisibility(View.VISIBLE);
             }
             newworksAdapter.notifyDataSetChanged();
             //乐说
-            String musicTalk = infoJSONObject.getString("yueshuoList");
-            List<MusicTalk> musicTalks = new Gson().fromJson(musicTalk,
-                    new TypeToken<List<MusicTalk>>() {
-                    }.getType());
-            if (musicTalks.size() == 4) {
-                musicTalks.remove(3);
-                musicTalks.remove(2);
-            }
-            musicTalkList.addAll(musicTalks);
+            if(musicTalkList.size()>0)musicTalkList.clear();
+            musicTalkList.addAll(mainBean.yueshuoList);
             if (musicTalkList.size() > 0) {
                 tvMusictalk.setVisibility(View.VISIBLE);
                 tvMusictalkMore.setVisibility(View.VISIBLE);
                 musicTalkAdapter.notifyDataSetChanged();
             }
-        } catch (Exception e) {
-            Log.e("Exception", e.toString());
         }
     }
 

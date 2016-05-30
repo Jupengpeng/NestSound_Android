@@ -30,7 +30,6 @@ public class RecordInstance {
         mp3Recorder.setSurfaceView(sfv);
     }
 
-
     static RecordInstance mInstance;
 
     RecordInstance() {

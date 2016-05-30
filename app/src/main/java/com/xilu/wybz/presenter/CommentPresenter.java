@@ -76,6 +76,12 @@ public class CommentPresenter extends BasePresenter<ICommentView>{
                 super.onResult(response);
                 iView.commentSuccess();
             }
+
+            @Override
+            public void onResultError(JsonResponse<? extends Object> response) {
+                super.onResultError(response);
+                iView.commentFail();
+            }
         });
     }
     //删除评论
@@ -88,6 +94,12 @@ public class CommentPresenter extends BasePresenter<ICommentView>{
             public void onResult(JsonResponse<? extends Object> response) {
                 super.onResult(response);
                 iView.delSuccess();
+            }
+
+            @Override
+            public void onResultError(JsonResponse<? extends Object> response) {
+                super.onResultError(response);
+                iView.delFail();
             }
         });
     }

@@ -7,7 +7,9 @@ import com.xilu.wybz.bean.JsonResponse;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.callback.AppStringCallback;
+import com.xilu.wybz.http.callback.MyStringCallback;
 import com.xilu.wybz.ui.IView.IRankingView;
+import com.xilu.wybz.utils.ParseUtils;
 import com.xilu.wybz.utils.PrefsUtil;
 
 import java.lang.reflect.Type;
@@ -28,12 +30,12 @@ public class RankingPresenter extends BasePresenter<IRankingView>{
         params.put("uid", PrefsUtil.getUserId(context)+"");
         params.put("modelType",modelType+"");
         params.put("page","1");
-        httpUtils.get(MyHttpClient.getRankingList(),params,new AppStringCallback(){
+        httpUtils.get(MyHttpClient.getRankingList(),params,new MyStringCallback(){
             @Override
-            public void onResponse(JsonResponse<? extends Object> response) {
+            public void onResponse(String response) {
                 super.onResponse(response);
-                List<WorksData> worksDatas = response.getData();
-                if(worksDatas!=null){
+                List<WorksData> worksDatas = ParseUtils.getWorksData(context,response);
+                if(worksDatas.size()>0){
                     switch (modelType){
                         case 1:
                             iView.showRankingSong(worksDatas);
@@ -43,11 +45,6 @@ public class RankingPresenter extends BasePresenter<IRankingView>{
                             break;
                     }
                 }
-            }
-
-            @Override
-            public Type getDataType() {
-                return new TypeToken<List<WorksData>>(){}.getType();
             }
 
             @Override

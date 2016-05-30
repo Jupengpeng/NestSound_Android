@@ -10,7 +10,6 @@ import com.xilu.wybz.R;
 import com.xilu.wybz.view.pull.layoutmanager.ILayoutManager;
 
 /**
- * Created by Stay on 5/3/16.
  * Powered by June
  */
 public class PullRecycler extends FrameLayout implements SwipeRefreshLayout.OnRefreshListener {

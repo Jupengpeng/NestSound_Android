@@ -14,6 +14,7 @@ import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.presenter.UserListPresenter;
 import com.xilu.wybz.ui.IView.IUserListView;
 import com.xilu.wybz.ui.mine.Adapter.UserBaseAdapter;
+import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.view.pull.layoutmanager.MyLinearLayoutManager;
 
 import java.util.List;
@@ -39,7 +40,7 @@ public class UserBaseView extends LinearLayout implements IUserListView {
 
     private UserListPresenter userListPresenter;
     private OnReLoadListener onReLoadListener;
-
+    private int page = 1;
 
     public UserBaseView(Context context) {
         super(context);
@@ -132,7 +133,6 @@ public class UserBaseView extends LinearLayout implements IUserListView {
 
     public void onScrollBottom(){
 
-        Log.d("test","onScrollBottom:"+this.getClass().getSimpleName());
 
     }
 

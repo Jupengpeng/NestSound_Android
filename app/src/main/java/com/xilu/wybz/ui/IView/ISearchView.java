@@ -1,5 +1,6 @@
 package com.xilu.wybz.ui.IView;
 
+import com.xilu.wybz.bean.FansBean;
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.bean.WorksData;
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.List;
  */
 public interface ISearchView extends IBaseView{
     void showWorksData(List<WorksData> worksDataList);
-    void showUserData(List<UserBean> userBeenList);
+    void showUserData(List<FansBean> userBeenList);
     void loadFail();
     void loadNoMore();
     void loadNoData();
