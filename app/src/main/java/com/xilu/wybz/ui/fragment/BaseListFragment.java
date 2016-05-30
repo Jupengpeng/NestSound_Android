@@ -21,6 +21,7 @@ import com.facebook.imagepipeline.common.ResizeOptions;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.xilu.wybz.R;
+import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.view.pull.BaseListAdapter;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.DividerItemDecoration;
@@ -53,7 +54,7 @@ public abstract class BaseListFragment<T> extends BaseFragment implements PullRe
     String keyWord;
     int action;
     int page = 1;
-
+    int dip10;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(getLayoutResId(), container, false);
@@ -67,6 +68,7 @@ public abstract class BaseListFragment<T> extends BaseFragment implements PullRe
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         context = activity;
+        dip10 = DensityUtil.dip2px(context,10);
     }
 
     @Override
@@ -75,9 +77,12 @@ public abstract class BaseListFragment<T> extends BaseFragment implements PullRe
     }
 
     protected abstract void initPresenter();
-
+    public boolean hasPadding() {return false;}
     protected void setUpData() {
         setUpAdapter();
+        if(hasPadding()){
+            recycler.setPadding(dip10, dip10, dip10, dip10);
+        }
         recycler.setOnRefreshListener(this);
         recycler.setLayoutManager(getLayoutManager());
         recycler.addItemDecoration(getItemDecoration());
@@ -144,6 +149,7 @@ public abstract class BaseListFragment<T> extends BaseFragment implements PullRe
         if (mDataList != null) {
             mDataList.clear();
             keyWord = null;
+            llNoData.setVisibility(View.GONE);
             adapter.notifyDataSetChanged();
             page = 1;
         }

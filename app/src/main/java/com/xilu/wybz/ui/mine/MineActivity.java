@@ -95,7 +95,7 @@ public class MineActivity extends BaseActivity implements IUserView {
 
     private boolean firstLoadUserInfo;
     private UserPresenter mUserPresenter;
-
+    private int userType = 1;
 
 
     @Override
@@ -106,12 +106,13 @@ public class MineActivity extends BaseActivity implements IUserView {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(PrefsUtil.getUserId(context)>0){
+        if (PrefsUtil.getUserId(context) > 0) {
             initData();
         }
     }
-    public void initData(){
-        mUserPresenter = new UserPresenter(context, this,UserPresenter.TYPE_USER_CENTER);
+
+    public void initData() {
+        mUserPresenter = new UserPresenter(context, this, UserPresenter.TYPE_USER_CENTER);
         mUserPresenter.init();
     }
 
@@ -128,10 +129,10 @@ public class MineActivity extends BaseActivity implements IUserView {
                 }
             }
         });
-
+        int userId = PrefsUtil.getUserId(context);
         mUserInspirationView = new UserInspirationView(this);
-        mUserSongView = new UserSongView(this,1);
-        mUserLyricView = new UserLyricView(this);
+        mUserSongView = new UserSongView(this, userType);
+        mUserLyricView = new UserLyricView(this, userType);
         mUserCollectionView = new UserCollectionView(this);
 
 
@@ -148,12 +149,12 @@ public class MineActivity extends BaseActivity implements IUserView {
         contentLayout.setVisibility(View.VISIBLE);
 
         setLocalUserInfo(PrefsUtil.getUserInfo(this));
-
+        mUserSongView.getUserListPresenter().requestListData(userId, 1);
     }
 
     @OnClick({R.id.iv_setting, R.id.iv_draft, R.id.ll_myfans})
-    public void OnClick(View view){
-        switch (view.getId()){
+    public void OnClick(View view) {
+        switch (view.getId()) {
             case R.id.iv_setting:
                 startActivity(SettingActivity.class);
                 break;
@@ -161,35 +162,37 @@ public class MineActivity extends BaseActivity implements IUserView {
                 startActivity(DraftActivity.class);
                 break;
             case R.id.ll_myfans:
-                FollowAndFansActivity.toFollowAndFansActivity(this, KeySet.TYPE_FANS_ACT);
+                FollowAndFansActivity.toFollowAndFansActivity(this, KeySet.TYPE_FANS_ACT, PrefsUtil.getUserId(context));
                 break;
             case R.id.ll_myfollow:
-                FollowAndFansActivity.toFollowAndFansActivity(this, KeySet.TYPE_FOLLOW_ACT);
+                FollowAndFansActivity.toFollowAndFansActivity(this, KeySet.TYPE_FOLLOW_ACT, PrefsUtil.getUserId(context));
                 break;
         }
     }
 
     @Override
-    public void setUserInfo(UserBean userBean){
-        if(!firstLoadUserInfo) {
+    public void setUserInfo(UserBean userBean) {
+        if (!firstLoadUserInfo) {
             //更新本地数据
             UserBean localUserBean = PrefsUtil.getUserInfo(context);
-            if(userBean.userid>0)localUserBean.userid=userBean.userid;
-            if(StringUtil.isNotBlank(userBean.nickname))localUserBean.name=userBean.nickname;
-            if(StringUtil.isNotBlank(userBean.signature))localUserBean.descr=userBean.signature;
-            if(StringUtil.isNotBlank(userBean.headurl))localUserBean.headurl=userBean.headurl;
-            PrefsUtil.saveUserInfo(context,localUserBean);
+            if (userBean.userid > 0) localUserBean.userid = userBean.userid;
+            if (StringUtil.isNotBlank(userBean.nickname)) localUserBean.name = userBean.nickname;
+            if (StringUtil.isNotBlank(userBean.signature)) localUserBean.descr = userBean.signature;
+            if (StringUtil.isNotBlank(userBean.headurl)) localUserBean.headurl = userBean.headurl;
+            PrefsUtil.saveUserInfo(context, localUserBean);
             //更新我的资料
             setLocalUserInfo(userBean);
             firstLoadUserInfo = true;
         }
     }
-    public void setLocalUserInfo(UserBean userBean){
+
+    public void setLocalUserInfo(UserBean userBean) {
         userBean = checkByDefault(userBean);
-        loadImage(userBean.headurl,ivHead);
+        loadImage(userBean.headurl, ivHead);
         userTvName.setText(userBean.name);
         userTvInfo.setText(userBean.descr);
     }
+
     @Override
     public void setFollowNumber(int number) {
 
@@ -200,11 +203,11 @@ public class MineActivity extends BaseActivity implements IUserView {
 
     }
 
-    private UserBean checkByDefault(UserBean userBean){
-        if (StringUtil.isBlank(userBean.name)){
+    private UserBean checkByDefault(UserBean userBean) {
+        if (StringUtil.isBlank(userBean.name)) {
             userBean.name = "音巢音乐";
         }
-        if (StringUtil.isBlank(userBean.descr)){
+        if (StringUtil.isBlank(userBean.descr)) {
             userBean.descr = "人人都是作曲家";
         }
         return userBean;

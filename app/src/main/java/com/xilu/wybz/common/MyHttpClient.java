@@ -83,6 +83,10 @@ public class MyHttpClient {
     public static String getLoginUrl() {
         return "common/login/mobile";
     }
+    //退出登录
+    public static String getLoginOut(){
+        return "common/login/logout";
+    }
     //注册
     public static String getRegiterUrl() {
         return "common/regist/mobile";
@@ -128,6 +132,14 @@ public class MyHttpClient {
     //更新IP
     public static String getDomain() {
         return "http://7xtj7f.com1.z0.glb.clouddn.com/app_config.txt";
+    }
+    //粉丝列表
+    public static String getFansList(){
+        return "fanfocus/fanslist";
+    }
+    //搜索接口
+    public static String getSearchList(){
+        return "common/search/search";
     }
 }
 

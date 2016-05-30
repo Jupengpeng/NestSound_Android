@@ -223,6 +223,9 @@ public class MainTabActivity extends BasePlayMenuActivity {
         PushAgent.getInstance(context).setAlias(ub.userid+"", "yinchao");
         PushAgent.getInstance(context).setExclusiveAlias(ub.userid+"", "yinchao");
     }
+    public void onEventMainThread(Event.LoginOutEvent event){
+        finish();
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();

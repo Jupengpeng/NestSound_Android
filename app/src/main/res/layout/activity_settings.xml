@@ -9,36 +9,37 @@
 
     <include layout="@layout/view_toolbar" />
     <LinearLayout
-        android:layout_marginTop="15dp"
-        android:paddingTop="15dp"
-        android:paddingBottom="15dp"
-        android:paddingLeft="20dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="15dp"
         android:paddingRight="5dp"
         android:gravity="center_vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
         >
-        <!--<com.facebook.drawee.view.SimpleDraweeView-->
-            <!--android:id="@+id/iv_head"-->
-            <!--android:layout_width="59dp"-->
-            <!--android:layout_height="59dp"-->
-            <!--fresco:actualImageScaleType="centerCrop"-->
-            <!--fresco:fadeDuration="300"-->
-            <!--fresco:failureImage="@drawable/ic_default_head_252"-->
-            <!--fresco:failureImageScaleType="centerCrop"-->
-            <!--fresco:placeholderImage="@drawable/ic_default_pic"-->
-            <!--fresco:placeholderImageScaleType="centerCrop"-->
-            <!--fresco:roundingBorderWidth="0.6dp"-->
-            <!--fresco:roundingBorderColor="@color/main_text_color"-->
-            <!--fresco:roundAsCircle="true" />-->
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/iv_head"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            fresco:actualImageScaleType="centerCrop"
+            fresco:fadeDuration="300"
+            fresco:failureImage="@drawable/ic_default_head_252"
+            fresco:failureImageScaleType="centerCrop"
+            fresco:placeholderImage="@drawable/ic_default_pic"
+            fresco:placeholderImageScaleType="centerCrop"
+            fresco:roundingBorderWidth="0.6dp"
+            fresco:roundingBorderColor="@color/main_text_color"
+            fresco:roundAsCircle="true" />
         <LinearLayout
             android:layout_width="0dp"
             android:layout_weight="1"
+            android:layout_marginLeft="10dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             >
             <TextView
+                android:id="@+id/tv_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="16dp"
@@ -46,6 +47,7 @@
                 android:text="name"
                 />
             <TextView
+                android:id="@+id/tv_sign"
                 android:layout_marginTop="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -63,6 +65,7 @@
         android:src="@drawable/ic_mine_modify"
         />
     </LinearLayout>
+    <include layout="@layout/view_spit_line" />
     <LinearLayout
         android:layout_marginTop="15dp"
         android:layout_width="match_parent"

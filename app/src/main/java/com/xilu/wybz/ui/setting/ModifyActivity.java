@@ -81,18 +81,9 @@ public class ModifyActivity extends ToolbarActivity implements IModifyUserInfoVi
 
     @Override
     public void initView() {
-        setTitle("修改个人资料");
+        setTitle("完善个人信息");
         userBean = PrefsUtil.getUserInfo(context);
         initUserInfo();
-        //更新本地的缓存信息
-        PrefsUtil.saveUserInfo(context, userBean);
-        if (type == 0) {
-            tv_username.setText(content);
-        } else if (type == 1) {
-            tv_usersign.setText(content);
-        }
-        //通知我的个人主页更新
-        EventBus.getDefault().post(new Event.UpdateUserInfo());
     }
     public void initUserInfo() {
         tv_username.setText(userBean.name);
@@ -100,6 +91,9 @@ public class ModifyActivity extends ToolbarActivity implements IModifyUserInfoVi
         tv_birthday.setText(userBean.birthday);
         tv_gender.setText(genders[userBean.sex]);
         loadImage(userBean.headurl,iv_head);
+        //通知我的个人主页更新
+        PrefsUtil.saveUserInfo(context,userBean);
+        EventBus.getDefault().post(new Event.UpdateUserInfo());
     }
 
     @OnClick({R.id.ll_userhead, R.id.ll_username, R.id.ll_sign, R.id.ll_gender, R.id.ll_birthday})

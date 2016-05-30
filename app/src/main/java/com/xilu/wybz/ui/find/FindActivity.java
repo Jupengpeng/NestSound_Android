@@ -35,6 +35,5 @@ public class FindActivity extends BaseActivity{
         container.setOffscreenPageLimit(4);
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
         tabLayout.setupWithViewPager(container);
-
     }
 }

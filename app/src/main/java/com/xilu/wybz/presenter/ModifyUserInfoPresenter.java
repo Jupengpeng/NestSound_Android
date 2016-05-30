@@ -29,7 +29,7 @@ public class ModifyUserInfoPresenter extends BasePresenter<IModifyUserInfoView> 
         params.put("sex",userBean.sex+"");
         params.put("descr",userBean.descr);
         params.put("birthday",userBean.birthday);
-        httpUtils.get(MyHttpClient.getModifyUserInfo(), new MyStringCallback() {
+        httpUtils.get(MyHttpClient.getModifyUserInfo(), params, new MyStringCallback() {
             @Override
             public void onError(Call call, Exception e) {
                 e.printStackTrace();

@@ -43,7 +43,6 @@ import butterknife.ButterKnife;
 public class MoreWorkActivity extends BaseListActivity<WorksData> implements IFindMoreWorkView {
     int orderType;
     int workType;
-    int itemWidth;
     String COME;
     FindMoreWorkPresenter findMoreWorkPresenter;
     public static void toMoreSongActivity(Context context, int orderType, int workType) {
@@ -137,6 +136,7 @@ public class MoreWorkActivity extends BaseListActivity<WorksData> implements IFi
         return holder;
     }
     class WorksViewHolder extends BaseViewHolder {
+        int itemWidth;
         @Bind(R.id.iv_cover)
         SimpleDraweeView ivCover;
         @Bind(R.id.tv_look_num)

@@ -19,6 +19,7 @@ public class MyCommon {
     public static String MORERED = "morered";
     public static String RED = "red";
     public static String GEDAN = "gedan";
+    public static String SEARCH = "search";
     public static String RANK_SONG = "rank_song";
     public static String TUIJIAN = "tuijian";
     public static String ZUIXIN = "zuixin";
@@ -97,6 +98,7 @@ public class MyCommon {
         map.put(RANK_SONG, 2);//歌单
 
         map.put(MORENEWS, 2);//最新
+        map.put(SEARCH, 2);//搜
         map.put(NEWS, 2);//最新
         map.put(MORERED, 2);//最热
         map.put(RED, 2);//最热

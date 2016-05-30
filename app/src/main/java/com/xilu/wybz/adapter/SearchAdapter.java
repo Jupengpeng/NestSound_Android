@@ -30,16 +30,19 @@ public class SearchAdapter extends FragmentStatePagerAdapter{
     public Fragment getItem(int position) {
         switch (position){
             case 0:
-                mPageReferenceMap.put(position, new SearchSongFragment());
-                return new SearchSongFragment();
+                SearchSongFragment searchSongFragment = new SearchSongFragment();
+                mPageReferenceMap.put(position, searchSongFragment);
+                return searchSongFragment;
             case 1:
-                mPageReferenceMap.put(position, new SearchLyricsFragment());
-                return new SearchLyricsFragment();
+                SearchLyricsFragment searchLyricsFragment = new SearchLyricsFragment();
+                mPageReferenceMap.put(position, searchLyricsFragment);
+                return searchLyricsFragment;
             case 2:
-                mPageReferenceMap.put(position, new SearchUserFragment());
-                return new SearchUserFragment();
+                SearchUserFragment searchUserFragment = new SearchUserFragment();
+                mPageReferenceMap.put(position, searchUserFragment);
+                return searchUserFragment;
             default:
-                return new SearchSongFragment();
+                return null;
         }
     }
     public Fragment getFragment(int key) {

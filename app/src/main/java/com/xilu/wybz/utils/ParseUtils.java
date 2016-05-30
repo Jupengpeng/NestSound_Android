@@ -5,8 +5,10 @@ import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.xilu.wybz.bean.ActBean;
 import com.xilu.wybz.bean.CommentBean;
 import com.xilu.wybz.bean.DataBean;
+import com.xilu.wybz.bean.FansBean;
 import com.xilu.wybz.bean.Lyricat;
 import com.xilu.wybz.bean.MainBean;
 import com.xilu.wybz.bean.MusicTalk;
@@ -91,9 +93,43 @@ public class ParseUtils {
         }
         return commentBeanList;
     }
+    //粉丝列表
+    public static List<FansBean> getFansData(Context context, String response) {
+        List<FansBean> fansBeanList = new ArrayList<>();
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            int code = jsonObject.getInt("code");
+            if (code == 200) {
+                fansBeanList = new Gson().fromJson(jsonObject.getString("data"), new TypeToken<List<FansBean>>() {
+                }.getType());
+            } else {
+                showMsg(context, jsonObject.getString("message"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return fansBeanList;
+    }
+    //作品列表
+    public static List<ActBean> getActsData(Context context, String response) {
+        List<ActBean> actBeans = new ArrayList<>();
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            int code = jsonObject.getInt("code");
+            if (code == 200) {
+                actBeans = new Gson().fromJson(jsonObject.getString("data"), new TypeToken<List<ActBean>>() {
+                }.getType());
+            } else {
+                showMsg(context, jsonObject.getString("message"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return actBeans;
+    }
     //作品列表
     public static List<WorksData> getWorksData(Context context, String response) {
-        List<WorksData> worksDatas = null;
+        List<WorksData> worksDatas = new ArrayList<>();
         try {
             JSONObject jsonObject = new JSONObject(response);
             int code = jsonObject.getInt("code");

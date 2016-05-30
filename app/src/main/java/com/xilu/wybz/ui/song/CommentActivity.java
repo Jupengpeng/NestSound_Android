@@ -266,16 +266,9 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
             tvDate.setText(DateTimeUtil.timestamp2DateTime(bean.createdate));
             SpannableString s = StringStyleUtil.getWorkCommentStyleStr(bean);
             tvContent.setText(s);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onItemClick(v,position);
-                }
-            });
         }
         @Override
         public void onItemClick(View view, int position) {
-            Log.e("onItemClick position",position+"");
             if(PrefsUtil.getUserId(context)>0) {
                 CommentBean commentBean = mDataList.get(position);
                 boolean isMe = commentBean.uid == PrefsUtil.getUserId(context);

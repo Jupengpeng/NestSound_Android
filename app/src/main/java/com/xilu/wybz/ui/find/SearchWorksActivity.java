@@ -50,12 +50,11 @@ public class SearchWorksActivity extends ToolbarActivity {
         super.onCreate(savedInstanceState);
         initView();
     }
-
     public void initView() {
         EventBus.getDefault().register(this);
         pagerAdapter = new SearchAdapter(getSupportFragmentManager());
         container.setAdapter(pagerAdapter);
-        container.setOffscreenPageLimit(1);
+        container.setOffscreenPageLimit(3);
         rlTab.setVisibility(View.GONE);
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
         tabLayout.setupWithViewPager(container);
@@ -117,7 +116,7 @@ public class SearchWorksActivity extends ToolbarActivity {
         etKeyword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if(actionId== EditorInfo.IME_ACTION_SEARCH||actionId== EditorInfo.IME_ACTION_SEND){
+                if(actionId== EditorInfo.IME_ACTION_SEARCH){
                     if(!TextUtils.isEmpty(content)){
                         SearchSongFragment searchSongFragment = (SearchSongFragment) pagerAdapter.getFragment(0);
                         if(searchSongFragment!=null){

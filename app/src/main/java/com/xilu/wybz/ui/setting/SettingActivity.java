@@ -5,19 +5,35 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.qiniu.android.utils.StringUtils;
+import com.tencent.connect.UserInfo;
+import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.PushAgent;
 import com.xilu.wybz.R;
+import com.xilu.wybz.bean.UserBean;
+import com.xilu.wybz.common.Event;
+import com.xilu.wybz.common.MyHttpClient;
+import com.xilu.wybz.http.HttpUtils;
+import com.xilu.wybz.http.callback.MyStringCallback;
 import com.xilu.wybz.ui.base.ToolbarActivity;
+import com.xilu.wybz.ui.login.LoginActivity;
 import com.xilu.wybz.utils.FileUtils;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.view.materialdialogs.MaterialDialog;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import butterknife.Bind;
 import butterknife.OnClick;
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by June on 16/5/13.
@@ -25,6 +41,12 @@ import butterknife.OnClick;
 public class SettingActivity extends ToolbarActivity {
     @Bind(R.id.cb_notice)
     CheckBox cbNotice;
+    @Bind(R.id.iv_head)
+    SimpleDraweeView ivHead;
+    @Bind(R.id.tv_name)
+    TextView tvName;
+    @Bind(R.id.tv_sign)
+    TextView tvSign;
 
     @Override
     protected int getLayoutRes() {
@@ -36,21 +58,30 @@ public class SettingActivity extends ToolbarActivity {
         super.onCreate(savedInstanceState);
         initView();
     }
-
+    public void onEventMainThread(Event.UpdateUserInfo event){
+        loadUserInfo();
+    }
     private void initView() {
+        EventBus.getDefault().register(this);
         setTitle("设置");
         cbNotice.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (!isChecked&& PushAgent.getInstance(context).isEnabled()) {
+                if (!isChecked && PushAgent.getInstance(context).isEnabled()) {
                     PushAgent.getInstance(context).disable();
                     showMsg("关闭消息推送");
                 }
                 PrefsUtil.putBoolean("isPushOpen", isChecked, context);
             }
         });
+        loadUserInfo();
     }
-
+    public void loadUserInfo(){
+        UserBean userInfo = PrefsUtil.getUserInfo(context);
+        if(!TextUtils.isEmpty(userInfo.headurl))loadImage(userInfo.headurl,ivHead);
+        if(!TextUtils.isEmpty(userInfo.name))tvName.setText(userInfo.name);
+        if(!TextUtils.isEmpty(userInfo.descr))tvSign.setText(userInfo.descr);
+    }
     @OnClick({R.id.iv_modify, R.id.ll_clear_cache, R.id.ll_score, R.id.ll_feedback, R.id.ll_loginout})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -66,8 +97,19 @@ public class SettingActivity extends ToolbarActivity {
                 startActivity(intent);
                 break;
             case R.id.ll_feedback:
+                startActivity(SettingFeedActivity.class);
                 break;
             case R.id.ll_loginout:
+                HttpUtils httpUtils = new HttpUtils(context);
+                Map<String,String> map = new HashMap<String,String>();
+                httpUtils.post(MyHttpClient.getLoginOut(),null,new MyStringCallback(){
+
+                });
+                PrefsUtil.saveUserInfo(context, new UserBean());
+                MobclickAgent.onProfileSignOff();
+                EventBus.getDefault().post(new Event.LoginOutEvent());
+                finish();
+                startActivity(LoginActivity.class);
                 break;
         }
     }
@@ -108,5 +150,11 @@ public class SettingActivity extends ToolbarActivity {
                 .progress(true, 0)
                 .progressIndeterminateStyle(horizontal)
                 .show();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }
