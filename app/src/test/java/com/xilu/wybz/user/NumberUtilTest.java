@@ -29,4 +29,21 @@ public class NumberUtilTest {
         assertEquals(t3,"231.2万");
 
     }
+
+
+    @Test
+    public void test1() throws Exception {
+        int x = -100;
+        int s = 40;
+
+        x -= 2*s*(x/(2*s));
+
+        System.out.println("s:"+"-->"+x);
+
+
+
+    }
+
+
+
 }

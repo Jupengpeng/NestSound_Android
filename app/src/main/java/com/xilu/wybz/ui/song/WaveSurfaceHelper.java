@@ -16,30 +16,49 @@ import java.util.List;
  */
 public class WaveSurfaceHelper {
 
+    //protected
     protected SurfaceView surfaceView;
     protected SurfaceHolder surfaceHolder;
 
     protected Rect viewRect ;
-
     protected int currentPosition;
+    protected int screenOff;
+    protected Configure configure;
+
+    protected Thread runThead;
+    protected boolean isrun = false;
 
     private List<Short> data;
 
-    Thread runThead;
-    boolean isrun = false;
+
+    //private
+    int backgroundColor;
+
+    Paint p1 = new Paint();
+    Paint p2 = new Paint();
+
+    Paint p3 = new Paint();
+    Paint p4 = new Paint();
+    Paint p5 = new Paint();
+    Paint p6 = new Paint();
+
+
 
     public WaveSurfaceHelper(SurfaceView surfaceView) {
         this.surfaceView = surfaceView;
         this.surfaceHolder = surfaceView.getHolder();
-
         init();
     }
 
-
+    /**
+     * WaveSurfaceHelper 初始化.
+     */
     public void init(){
-
+        //初始化参数配置，因为需要适配不同手机屏幕，需要计算必要参数值
+        initConfigure();
+        //初始化画笔，方便使用减少重复创建
         initPaint();
-
+        //设置Callback为了自动初始化View
         surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
@@ -63,10 +82,38 @@ public class WaveSurfaceHelper {
 
     }
 
+    public void initConfigure(){
+        //使用默认配置
+        configure = new Configure();
+        screenOff = 0;
+    }
+
+    public void initPaint(){
+
+        //背景色
+        backgroundColor = configure.backgroundColor;
+
+        //绘制ruler
+        p1.setColor(configure.color1);
+        p1.setTextSize(20);
+        p1.setAntiAlias(true);
+        //绘制中线
+        p2.setColor(configure.color2);
+
+        //绘制波形
+        p3.setColor(configure.color3);
+        p4.setColor(configure.color4);
+        p5.setColor(configure.color5);
+        p6.setColor(configure.color6);
+    }
+
+    /**
+     * 计算画布尺寸.
+     * @param rect
+     */
     protected void calculateViewRect(Rect rect){
         surfaceView.getLocalVisibleRect(rect);
     }
-
 
     public void onDrawWaveByThread(){
         runThead = new Thread(){
@@ -93,69 +140,80 @@ public class WaveSurfaceHelper {
                 }
             }
         };
-
-
         runThead.start();
     }
 
+
     public void onDrawWave() {
-        onDrawWave(data,0);
+        onDrawWave(-1);
     }
 
 
-    int backgroundColor = Color.parseColor("#ffffff");
-
-    Paint p1 = new Paint();
-    Paint p2 = new Paint();
-
-    Paint p3 = new Paint();
-    Paint p4 = new Paint();
-    Paint p5 = new Paint();
-    Paint p6 = new Paint();
-
-    public void initPaint(){
-        p1.setColor(Color.parseColor("#ff686868"));
-        p1.setTextSize(20);
-        p1.setAntiAlias(true);
-
-        p2.setColor(Color.parseColor("#ffff0000"));
-
-        p3.setColor(Color.parseColor("#ffffd705"));
-        p4.setColor(Color.parseColor("#42ffd705"));
-
-        p5.setColor(Color.parseColor("#ffefd705"));
-        p6.setColor(Color.parseColor("#42f4d705"));
+    public void onDrawWave(int position) {
+        onDrawWave(null,position);
     }
+
 
     public void onDrawWave(List<Short> data, int position) {
-        Canvas canvas;
+        if (data != null){
+            this.data = data;
+        }
+        if (position >= 0){
+            this.currentPosition = position;
+        }
+        onDrawKernel();
+    }
 
+
+
+    public void onDrawKernel(){
+        Canvas canvas;
         synchronized (surfaceHolder) {
 
             canvas = surfaceHolder.lockCanvas();
             canvas.drawColor(backgroundColor);
-//            Rect r = new Rect(100, 50, 300, 250);
-//            canvas.drawRect(r, p1);
-//            canvas.drawText("这是第" + (100) + "秒", 100, 0, p1);
             drawWave(canvas);
             drawsRuler(canvas);
 
         }
+        if (canvas != null){
+            surfaceHolder.unlockCanvasAndPost(canvas);
+        }
+    }
 
 
-        surfaceHolder.unlockCanvasAndPost(canvas);
+    public String getRulerDegreeScale(){
+        String scale = "";
+
+
+        return scale;
     }
 
 
     public void drawsRuler(Canvas canvas){
-        int x = 10;
-        int y = 40;
-        int d = 1;
-        int h1 = 30;
-        int h2 = 10;
-        int s = 60;
+
+        int offy = configure.offy;
+        int d = configure.d;
+        int h1 = configure.h1;
+        int h2 = configure.h2;
+        int s = configure.s;
 
         Rect v=viewRect;
+
+        int offx = -currentPosition*4;
+
+        int x = v.centerX() + offx ;
+        int y = offy;
+
+        int start = 0;
+
+        if (x < 0){
+            start = -(x/(2*s));
+            x += 2*s*start;
+        }
+
+        x -= screenOff;
+
         Rect r;
 
         r = new Rect(x, y, v.right, y+d);
@@ -163,42 +221,44 @@ public class WaveSurfaceHelper {
         canvas.drawRect(r,p1);
 
         r = new Rect(x, y-h1, x+d, y);
-        int i=0;
-        while (true){
-            if (!checkRect(r)) break;
 
-            if (i%2 == 0){
-                r.top = r.bottom-h1;
-            } else {
-                r.top = r.bottom-h2;
-            }
 
-            canvas.drawRect(r,p1);
+        while (true) {
+            if (checkRectOut(r) == 1) break;
 
-            if (i%2 == 0){
-                canvas.drawText("00.00",r.left+5,r.bottom-10,p1);
-            }
-            i++;
+            r.top = r.bottom - h1;
+            canvas.drawRect(r, p1);
+
+            canvas.drawText("00." + start, r.left + 5, r.bottom - 10, p1);
+            start++;
+
+            r.top = r.bottom - h2;
+
+            r.left += s;
+            r.right += s;
+
+            canvas.drawRect(r, p1);
+
             r.left += s;
             r.right += s;
         }
 
 
-        r = new Rect(0, v.centerY(), v.right, v.centerY()+1);
+        //画横向中线
+        r = new Rect(0, v.centerY()+offy/2, v.right, v.centerY()+offy/2+1);
         canvas.drawRect(r,p1);
 
-        r = new Rect(v.centerX(), 0, v.centerX()+1, v.bottom);
+        //画标示竖线
+        r = new Rect(v.centerX(), offy, v.centerX()+1, v.bottom);
         canvas.drawRect(r,p2);
-
-//        canvas.drawRect(r,p1);
-
 
     }
 
     public void drawWave(Canvas canvas){
 
-        int d = 2;
-        int s = 4;
+        int d = configure.wave;
+        int s = configure.waveSpace;
+        int offy = configure.offy;
 
 
         Rect v=viewRect;
@@ -206,24 +266,20 @@ public class WaveSurfaceHelper {
 
         List<Short> list = data;
 
-        if (list == null || list.size() == 0){
+        if (list == null || list.size() == 0 ||currentPosition < 0){
             return;
         }
 
-        int curent = list.size()-1;
+        int curent = 0;
 
-        int cx = v.centerX();
-        int cy = v.centerY();
-        int w = list.get(curent);
+        int cx = v.centerX()-screenOff;
+        int cy = v.centerY()+offy/2;
+        int w = 0;
 
-        w = w*2;
-        r = new Rect(cx-s, cy-w, cx-s+d, cy);
+        curent = currentPosition;
+        r = new Rect(cx+s, cy, cx+s+d, cy);
 
         while (true){
-            if (!checkRect(r)) break;
-
-            canvas.drawRect(r,p3);
-
             curent--;
             if (curent < 0) break;
             w = list.get(curent);
@@ -231,18 +287,15 @@ public class WaveSurfaceHelper {
             r.top = cy-w;
             r.left -= s;
             r.right -= s;
+
+            if (!checkRect(r)) break;
+            canvas.drawRect(r,p3);
         }
 
-        curent = list.size()-1;
-        w = list.get(curent);
-        w = w*2;
-        r = new Rect(cx-s, cy, cx-s+d, cy+w);
+        curent = currentPosition;
+        r = new Rect(cx+s, cy, cx+s+d, cy);
 
         while (true){
-            if (!checkRect(r)) break;
-
-            canvas.drawRect(r,p4);
-
             curent--;
             if (curent < 0) break;
             w = list.get(curent);
@@ -250,11 +303,45 @@ public class WaveSurfaceHelper {
             r.bottom = cy+w;
             r.left -= s;
             r.right -= s;
+
+            if (!checkRect(r)) break;
+            canvas.drawRect(r,p4);
+        }
+        //--------------------------------------------
+        //--------------------------------------------
+        curent = currentPosition-1;
+        r = new Rect(cx, cy, cx+d, cy);
+
+        while (true){
+            curent++;
+            if (curent >= data.size()) break;
+            w = list.get(curent);
+            w = w*2;
+            r.top = cy-w;
+            r.left += s;
+            r.right += s;
+
+            if (!checkRect(r)) break;
+            canvas.drawRect(r,p5);
         }
 
 
 
+        curent = currentPosition-1;
+        r = new Rect(cx, cy, cx+d, cy+w);
 
+        while (true){
+            curent++;
+            if (curent >= data.size()) break;
+            w = list.get(curent);
+            w = w*2;
+            r.bottom = cy+w;
+            r.left += s;
+            r.right += s;
+
+            if (!checkRect(r)) break;
+            canvas.drawRect(r,p6);
+        }
 
     }
 
@@ -268,20 +355,72 @@ public class WaveSurfaceHelper {
 
 
 
+    protected int checkRectOut(Rect r){
+        Rect v = viewRect;
+        if (r.left>=v.right){
+            return 1;
+        }
+        if (r.right < v.left){
+            return -1;
+        }
+        return 0;
+    }
 
 
+
+
+    static int op = 0;
     public void startList(){
 
         if (data == null){
             data = new ArrayList<>(500);
         }
         int size = data.size();
+//        if (size > 400){
+//            data = data.subList(size-100,size);
+//        }
+//
+//        short w = (short) (Math.random()*60);
+//        data.add(w);
+
         if (size > 400){
-            data = data.subList(size-100,size);
+            if ( op == 1 && currentPosition < 400){
+                screenOff++;
+                if (screenOff > 3){
+                    screenOff = 0;
+                    currentPosition ++;
+                }
+                return;
+            } else {
+                op = 0;
+            }
+
+            if (op == 0 && currentPosition > 0){
+                screenOff--;
+                if (screenOff < 0){
+                    screenOff = 3;
+                    currentPosition --;
+                }
+                return;
+            } else {
+                op = 1;
+            }
+
+        } else {
+            short w = (short) (Math.random() * 60);
+            data.add(w);
+            currentPosition = data.size();
         }
 
-        short w = (short) (Math.random()*60);
-        data.add(w);
+    }
+
+
+
+    public void setOffX(int offx){
+
+
+        Log.d("surface","offx:" + offx);
+
 
     }
 
@@ -294,6 +433,34 @@ public class WaveSurfaceHelper {
         list.add((short) 12);
 
         return list;
+    }
+
+
+    public static class Configure{
+
+        //global
+        public int backgroundColor = Color.parseColor("#ffffffff");
+
+        public int color1 = Color.parseColor("#ff686868");
+        public int color2 = Color.parseColor("#ffff0000");
+        public int color3 = Color.parseColor("#ffffd705");
+        public int color4 = Color.parseColor("#32ffd705");
+        public int color5 = Color.parseColor("#ffd6d6d6");
+        public int color6 = Color.parseColor("#32d6d6d6");
+
+        //ruler
+        public int offy = 40;
+        public int d = 1;
+        public int h1 = 25;
+        public int h2 = 6;
+        public int s = 40;
+        public int textSize = 20;
+
+        //wave
+        public int waveMAX = 60;
+        public int wave = 2;
+        public int waveSpace = 4;
+
     }
 
 }
