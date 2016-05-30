@@ -11,6 +11,7 @@ import com.xilu.wybz.bean.DataBean;
 import com.xilu.wybz.bean.FansBean;
 import com.xilu.wybz.bean.Lyricat;
 import com.xilu.wybz.bean.MainBean;
+import com.xilu.wybz.bean.MsgCommentBean;
 import com.xilu.wybz.bean.MusicTalk;
 import com.xilu.wybz.bean.SongAlbum;
 import com.xilu.wybz.bean.TemplateBean;
@@ -76,7 +77,7 @@ public class ParseUtils {
         }
         return lyricats;
     }
-    //词库
+    //评论列表
     public static List<CommentBean> getCommentsData(Context context, String response) {
         List<CommentBean> commentBeanList = new ArrayList<>();
         try {
@@ -84,6 +85,23 @@ public class ParseUtils {
             int code = jsonObject.getInt("code");
             if (code == 200) {
                 commentBeanList = new Gson().fromJson(jsonObject.getString("data"), new TypeToken<List<CommentBean>>() {
+                }.getType());
+            } else {
+                showMsg(context, jsonObject.getString("message"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return commentBeanList;
+    }
+    //消息评论列表
+    public static List<MsgCommentBean> getMsgCommentsData(Context context, String response) {
+        List<MsgCommentBean> commentBeanList = new ArrayList<>();
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            int code = jsonObject.getInt("code");
+            if (code == 200) {
+                commentBeanList = new Gson().fromJson(jsonObject.getString("data"), new TypeToken<List<MsgCommentBean>>() {
                 }.getType());
             } else {
                 showMsg(context, jsonObject.getString("message"));

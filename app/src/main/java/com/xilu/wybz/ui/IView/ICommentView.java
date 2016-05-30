@@ -1,6 +1,8 @@
 package com.xilu.wybz.ui.IView;
 
 import com.xilu.wybz.bean.CommentBean;
+import com.xilu.wybz.bean.MsgCommentBean;
+
 import java.util.List;
 
 /**
@@ -9,6 +11,8 @@ import java.util.List;
 public interface ICommentView extends IBaseView {
 
     void showCommentData(List<CommentBean> commentBeans);
+
+    void showMsgCommentData(List<MsgCommentBean> commentBeans);
 
     void loadFail();
 
@@ -20,7 +24,7 @@ public interface ICommentView extends IBaseView {
 
     void commentFail();
 
-    void delSuccess();
+    void delSuccess(int pos);
 
     void delFail();
 }

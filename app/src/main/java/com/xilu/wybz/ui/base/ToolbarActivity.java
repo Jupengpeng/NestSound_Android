@@ -9,6 +9,9 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.RelativeLayout;
 import com.xilu.wybz.R;
 import com.xilu.wybz.ui.MainTabActivity;
+import com.xilu.wybz.ui.find.FindActivity;
+import com.xilu.wybz.ui.main.MainActivity;
+import com.xilu.wybz.ui.msg.MsgActivity;
 import com.xilu.wybz.ui.song.PlayAudioActivity;
 import butterknife.ButterKnife;
 public abstract class ToolbarActivity extends BaseActivity {
@@ -30,7 +33,7 @@ public abstract class ToolbarActivity extends BaseActivity {
         }else{
             mToolbar.setTitleTextAppearance(context, R.style.ToolbarTitleAppearance2);
         }
-        if(this instanceof MainTabActivity){
+        if(this instanceof FindActivity||this instanceof MsgActivity||this instanceof MainActivity){
             mToolbar.setBackgroundColor(getResources().getColor(R.color.main_theme_color));
             view.setVisibility(View.GONE);
         }else{

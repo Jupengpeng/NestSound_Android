@@ -15,7 +15,8 @@
     <com.xilu.wybz.view.pull.PullRecycler
         android:id="@+id/pullRecycler"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        />
     </LinearLayout>
     <ViewStub
         android:id="@+id/view_footbar_send"

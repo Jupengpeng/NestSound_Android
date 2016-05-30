@@ -83,7 +83,12 @@ public class PrefsUtil {
     }
 
     public static int getUserId(Context context) {
-        return getUserInfo(context).userid;
+        UserBean ub = new UserBean();
+        String userInfo = getString("userInfo",context);
+        if(!TextUtils.isEmpty(userInfo)){
+            ub = new Gson().fromJson(userInfo, UserBean.class);
+        }
+        return ub.userid;
     }
 
     public static void saveUserInfo(Context context, UserBean ub) {

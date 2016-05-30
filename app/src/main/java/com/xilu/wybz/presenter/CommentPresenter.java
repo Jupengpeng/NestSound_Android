@@ -63,42 +63,39 @@ public class CommentPresenter extends BasePresenter<ICommentView>{
     public void sendComment(int itemid,int comment_type,int type,int target_uid, String comment){
         Map<String,String> params = new HashMap<>();
         params.put("uid", PrefsUtil.getUserId(context)+"");
-        if(itemid>0)
         params.put("itemid", itemid+"");
         params.put("comment_type", comment_type+"");
         params.put("type", type+"");
-        if(target_uid>0)
         params.put("target_uid", target_uid+"");
         params.put("comment", comment);
-        httpUtils.post(MyHttpClient.getSaveCommentUrl(), params, new AppJsonCalback(context){
+        httpUtils.post(MyHttpClient.getSaveCommentUrl(), params, new MyStringCallback(){
             @Override
-            public void onResult(JsonResponse<? extends Object> response) {
-                super.onResult(response);
+            public void onResponse(String response) {
+                super.onResponse(response);
                 iView.commentSuccess();
             }
-
             @Override
-            public void onResultError(JsonResponse<? extends Object> response) {
-                super.onResultError(response);
+            public void onError(Call call, Exception e) {
+                super.onError(call, e);
                 iView.commentFail();
             }
+
         });
     }
     //删除评论
-    public void delComment(int id,int type){
+    public void delComment(int id, int pos, int type){
         Map<String,String> params = new HashMap<>();
         params.put("id", id+"");
         params.put("type", type+"");
-        httpUtils.post(MyHttpClient.getDelCommentUrl(), params, new AppJsonCalback(context){
+        httpUtils.post(MyHttpClient.getDelCommentUrl(), params, new MyStringCallback(){
             @Override
-            public void onResult(JsonResponse<? extends Object> response) {
-                super.onResult(response);
-                iView.delSuccess();
+            public void onResponse(String response) {
+                super.onResponse(response);
+                iView.delSuccess(pos);
             }
-
             @Override
-            public void onResultError(JsonResponse<? extends Object> response) {
-                super.onResultError(response);
+            public void onError(Call call, Exception e) {
+                super.onError(call, e);
                 iView.delFail();
             }
         });

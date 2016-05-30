@@ -8,9 +8,14 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.CommentBean;
+import com.xilu.wybz.bean.MsgCommentBean;
 import com.xilu.wybz.presenter.MsgCommentPresenter;
 import com.xilu.wybz.ui.IView.ICommentView;
 import com.xilu.wybz.ui.base.BaseListActivity;
+import com.xilu.wybz.utils.DateTimeUtil;
+import com.xilu.wybz.utils.PrefsUtil;
+import com.xilu.wybz.utils.StringStyleUtil;
+import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.view.dialog.CommentDialog;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.PullRecycler;
@@ -22,7 +27,7 @@ import butterknife.OnClick;
 /**
  * Created by Administrator on 2016/1/27.
  */
-public class MsgCommentActivity extends BaseListActivity<CommentBean> implements ICommentView {
+public class MsgCommentActivity extends BaseListActivity<MsgCommentBean> implements ICommentView {
     private int page = 1;
     private int action = 0;
     String nodata = "暂无评论";
@@ -62,6 +67,11 @@ public class MsgCommentActivity extends BaseListActivity<CommentBean> implements
 
     @Override
     public void showCommentData(List<CommentBean> commentBeans) {
+
+    }
+
+    @Override
+    public void showMsgCommentData(List<MsgCommentBean> commentBeans) {
         if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
             mDataList.clear();
         }
@@ -103,8 +113,8 @@ public class MsgCommentActivity extends BaseListActivity<CommentBean> implements
     }
 
     @Override
-    public void delSuccess() {
-
+    public void delSuccess(int pos) {
+        removeItem(pos);
     }
 
     @Override
@@ -133,11 +143,9 @@ public class MsgCommentActivity extends BaseListActivity<CommentBean> implements
         TextView tvMusicName;
         @Bind(R.id.tv_content)
         TextView tvContent;
-        @Bind(R.id.tv_parent_comment)
-        TextView tvParentComment;
         @OnClick(R.id.tv_reply)
         void replyClick() {
-            showCommentDialog((CommentBean) card.getTag());
+            showCommentDialog((MsgCommentBean) card.getTag());
         }
         @OnClick(R.id.ll_music)
         void toPlayMusic(){
@@ -150,25 +158,22 @@ public class MsgCommentActivity extends BaseListActivity<CommentBean> implements
         View card;
         @Override
         public void onBindViewHolder(int position) {
-            CommentBean inforCommentBean = mDataList.get(position);
-            card.setTag(inforCommentBean);
-//            int status = inforCommentBean.getStatus();
-//            tvContent.setVisibility(status == 1 ? View.VISIBLE : View.GONE);
-//            tvParentComment.setVisibility(status == 1 ? View.VISIBLE : View.GONE);
-//            if (status == 1) {//子评论 出现父评论 父评论是我发布的
-//                tvParentComment.setText(StringStyleUtil.getParentCommentStyleStr(inforCommentBean));
-//            }
-//            tvContent.setText(StringStyleUtil.getCommentStyleStr(inforCommentBean));
-//            tvTime.setText(DateTimeUtil.timestamp2Date(inforCommentBean.getCreateday()));
-//            tvUserName.setText(inforCommentBean.getName());
-//            tvAuthor.setText(PrefsUtil.getUserInfo(context).name);
-//            tvMusicName.setText(inforCommentBean.getWorkname());
-//            loadImage(inforCommentBean.getPic(), ivCover);
-//            String headUrl = inforCommentBean.getHeadurl();
-//            if (headUrl.contains("qlogo.cn") && headUrl.contains("wuyuebuzuo.com")) {
-//                headUrl = headUrl.replace("http://api.wuyuebuzuo.com/api/", "");
-//            }
-//            loadImage(headUrl, ivHead);
+            MsgCommentBean commentBean = mDataList.get(position);
+            card.setTag(commentBean);
+
+            tvContent.setText(StringStyleUtil.getCommentStyleStr(commentBean));
+
+            if(commentBean.createdate>0)tvTime.setText(DateTimeUtil.timestamp2Date(commentBean.createdate));
+            if (StringUtil.isNotBlank(commentBean.nickname))tvUserName.setText(commentBean.nickname);
+            if (StringUtil.isNotBlank(commentBean.headerurl)) loadImage(commentBean.headerurl, ivHead);
+
+            if(commentBean.workid>0) {
+                if (StringUtil.isNotBlank(commentBean.author)) tvAuthor.setText(commentBean.author);
+                if (StringUtil.isNotBlank(commentBean.title)) tvMusicName.setText(commentBean.title);
+                if (StringUtil.isNotBlank(commentBean.pic)) loadImage(commentBean.pic, ivCover);
+            }else{
+
+            }
         }
 
         @Override
@@ -177,12 +182,12 @@ public class MsgCommentActivity extends BaseListActivity<CommentBean> implements
         }
 
     }
-    public void showCommentDialog(CommentBean inforCommentBean) {
+    public void showCommentDialog(MsgCommentBean inforCommentBean) {
         if (commentDialog == null) {
             commentDialog = new CommentDialog(context, new CommentDialog.ICommentListener() {
                 @Override
                 public void toSend(String comment) {
-//                    toSendComment(comment,inforCommentBean.itemid);
+                    toSendComment(comment, inforCommentBean);
                 }
             });
         }
@@ -190,11 +195,11 @@ public class MsgCommentActivity extends BaseListActivity<CommentBean> implements
             commentDialog.showDialog();
         }
     }
-    public void toSendComment(String content,String c_id) {
+    public void toSendComment(String content,MsgCommentBean inforCommentBean) {
         if (content.trim().equals("")) {
             showMsg("评论不能为空！");
             return;
         }
-        commentPresenter.sendComment(c_id, content);
+        commentPresenter.sendComment(inforCommentBean.workid, 2, inforCommentBean.type,inforCommentBean.target_uid,content);
     }
 }

@@ -639,6 +639,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        actionMoreDialog.dismiss();
         switch (position) {
             case 0://个人主页
                 toUserInfo();

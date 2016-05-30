@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.ActionBean;
 import com.xilu.wybz.bean.CommentBean;
+import com.xilu.wybz.bean.MsgCommentBean;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.presenter.CommentPresenter;
 import com.xilu.wybz.ui.IView.ICommentView;
@@ -54,7 +55,6 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
     private ImageView tvSend;
     private CommentPresenter commentPresenter;
     private WorksData worksData;
-    private int delPos;
     private int type;
     private int commentType = 1;
     private int targetUid;
@@ -178,6 +178,11 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
     }
 
     @Override
+    public void showMsgCommentData(List<MsgCommentBean> commentBeans) {
+
+    }
+
+    @Override
     public void loadFail() {
         recycler.onRefreshCompleted();
     }
@@ -225,8 +230,8 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
     }
 
     @Override
-    public void delSuccess() {
-        removeItem(delPos);
+    public void delSuccess(int pos) {
+        removeItem(pos);
         if(mDataList.size()==0){
             llNoData.setVisibility(View.VISIBLE);
         }
@@ -278,8 +283,7 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
                             @Override
                             public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
                                 if (pos == 0) {
-                                    delPos = position;
-                                    commentPresenter.delComment(commentBean.id, type);
+                                    commentPresenter.delComment(commentBean.id, position, type);
                                 }
                             }
                         }, actionBeanList);
