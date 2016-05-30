@@ -4,7 +4,6 @@ import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.TimeZone;
 
 /**
  * Created by Administrator on 2016/5/23.
@@ -14,6 +13,31 @@ public class DateFormatUtils {
     public static final String[] MONTH_MASK = {"一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月"};
 
 
+
+    public static String formatTime(int time){
+        if (time <= 0){
+            return String.format("00.00");
+        }
+
+        return String.format("%02d:%02d",(time/60)%60,time%60);
+    }
+
+
+    public static String formatTime(long time){
+        long hour;
+        long minute;
+        long second;
+
+        if (time <= 0){
+            return String.format("00:00:00");
+        }
+        hour = time/60/60;
+        minute = (time/60)%60;
+        second = time%60;
+
+        return String.format("%02d:%02d:%02d",hour,minute,second);
+
+    }
 
 
 //    public static DateText prase2Text(String timeString){
