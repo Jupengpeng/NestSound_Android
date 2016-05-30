@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.VelocityTracker;
@@ -27,18 +28,22 @@ public class WaveSurfaceView extends SurfaceView {
     private Context mContext;
 
 
+
     public WaveSurfaceView(Context context) {
         super(context);
+        this.mContext = context;
         init();
     }
 
     public WaveSurfaceView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        this.mContext = context;
         init();
     }
 
     public WaveSurfaceView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        this.mContext = context;
         init();
     }
 
@@ -58,28 +63,35 @@ public class WaveSurfaceView extends SurfaceView {
         return super.dispatchTouchEvent(event);
     }
 
+    static float x1 = 0;
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
         int action = event.getAction() & MotionEvent.ACTION_MASK;
+//        int minx = ViewConfiguration.get(mContext).getScaledTouchSlop();
+        int minx = 2;
 
-        float x1 = 0;
+
         float x2 = 0;
         float off;
 
         switch (action) {
             case MotionEvent.ACTION_DOWN:
                 x1 = event.getX();
+                Log.d("sur","ACTION_DOWN:" + x1);
                 break;
             case MotionEvent.ACTION_MOVE:
                 x2 = event.getX();
-                off = x2 - x1;
-                waveSurfaceHelper.setOffX((int)off);
-                x2 =x1;
+                off = x1 - x2;
+                if (off > minx || off <-minx){
+                    waveSurfaceHelper.setOffX((int)off);
+                    x1 = x2;
+                }
 
+                Log.d("sur","ACTION_MOVE:" + x2);
                 break;
             case MotionEvent.ACTION_UP:
-
+                Log.d("sur","ACTION_UP:" );
 
                 break;
             case MotionEvent.ACTION_CANCEL:
@@ -87,7 +99,9 @@ public class WaveSurfaceView extends SurfaceView {
 
         }
 
-        return super.onTouchEvent(event);
+        return true;
+
+//        return super.onTouchEvent(event);
 
     }
 
@@ -162,5 +176,14 @@ public class WaveSurfaceView extends SurfaceView {
                 return new SavedState[size];
             }
         };
+    }
+
+
+    public WaveSurfaceHelper getWaveSurfaceHelper() {
+        return waveSurfaceHelper;
+    }
+
+    public void setWaveSurfaceHelper(WaveSurfaceHelper waveSurfaceHelper) {
+        this.waveSurfaceHelper = waveSurfaceHelper;
     }
 }

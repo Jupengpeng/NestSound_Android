@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.xilu.wybz.utils.DateFormatUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +28,7 @@ public class WaveSurfaceHelper {
     protected Configure configure;
 
     protected Thread runThead;
-    protected boolean isrun = false;
+    public boolean isrun = false;
 
     private List<Short> data;
 
@@ -57,7 +59,7 @@ public class WaveSurfaceHelper {
         //初始化参数配置，因为需要适配不同手机屏幕，需要计算必要参数值
         initConfigure();
         //初始化画笔，方便使用减少重复创建
-        initPaint();
+//        initPaint();
         //设置Callback为了自动初始化View
         surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
@@ -70,6 +72,12 @@ public class WaveSurfaceHelper {
                 Log.d("surface","surfaceChanged");
                 calculateViewRect(viewRect = new Rect());
                 Log.d("surface",viewRect+":"+viewRect.right);
+
+
+                adaptationScreen();
+                initPaint();
+
+
                 onDrawWaveByThread();
             }
 
@@ -85,7 +93,19 @@ public class WaveSurfaceHelper {
     public void initConfigure(){
         //使用默认配置
         configure = new Configure();
+
         screenOff = 0;
+    }
+
+
+    public void adaptationScreen(){
+
+        int density = (int)(1.0*viewRect.right/360+0.5);
+
+        configure.adapter(density);
+
+        configure.waveMAX = (viewRect.bottom -configure.offy)/2;
+
     }
 
     public void initPaint(){
@@ -95,7 +115,7 @@ public class WaveSurfaceHelper {
 
         //绘制ruler
         p1.setColor(configure.color1);
-        p1.setTextSize(20);
+        p1.setTextSize(configure.offy/2);
         p1.setAntiAlias(true);
         //绘制中线
         p2.setColor(configure.color2);
@@ -123,19 +143,19 @@ public class WaveSurfaceHelper {
                 isrun = true;
                 while (isrun){
 
-                    startList();
+//                    startList();
                     long start = System.currentTimeMillis();
                     onDrawWave();
                     long stop = System.currentTimeMillis();
-
                     Log.d("surface","onDraw time:"+(stop -start));
-
                     try {
 
                         runThead.sleep(40l);
                     } catch (Exception e){
                         e.printStackTrace();
                     }
+
+                    isrun = false;
 
                 }
             }
@@ -200,7 +220,7 @@ public class WaveSurfaceHelper {
 
         Rect v=viewRect;
 
-        int offx = -currentPosition*4;
+        int offx = -currentPosition*configure.waveSpace;
 
         int x = v.centerX() + offx ;
         int y = offy;
@@ -229,7 +249,7 @@ public class WaveSurfaceHelper {
             r.top = r.bottom - h1;
             canvas.drawRect(r, p1);
 
-            canvas.drawText("00." + start, r.left + 5, r.bottom - 10, p1);
+            canvas.drawText(DateFormatUtils.formatTime(start), r.left + configure.offy/8, r.bottom - configure.offy/4, p1);
             start++;
 
             r.top = r.bottom - h2;
@@ -242,7 +262,6 @@ public class WaveSurfaceHelper {
             r.left += s;
             r.right += s;
         }
-
 
         //画横向中线
         r = new Rect(0, v.centerY()+offy/2, v.right, v.centerY()+offy/2+1);
@@ -272,7 +291,7 @@ public class WaveSurfaceHelper {
 
         int curent = 0;
 
-        int cx = v.centerX()-screenOff;
+        int cx = v.centerX()-screenOff-s;
         int cy = v.centerY()+offy/2;
         int w = 0;
 
@@ -283,7 +302,7 @@ public class WaveSurfaceHelper {
             curent--;
             if (curent < 0) break;
             w = list.get(curent);
-            w = w*2;
+            w = computeWaveHeight(w);
             r.top = cy-w;
             r.left -= s;
             r.right -= s;
@@ -299,7 +318,7 @@ public class WaveSurfaceHelper {
             curent--;
             if (curent < 0) break;
             w = list.get(curent);
-            w = w*2;
+            w = computeWaveHeight(w);
             r.bottom = cy+w;
             r.left -= s;
             r.right -= s;
@@ -316,7 +335,7 @@ public class WaveSurfaceHelper {
             curent++;
             if (curent >= data.size()) break;
             w = list.get(curent);
-            w = w*2;
+            w = computeWaveHeight(w);
             r.top = cy-w;
             r.left += s;
             r.right += s;
@@ -334,7 +353,7 @@ public class WaveSurfaceHelper {
             curent++;
             if (curent >= data.size()) break;
             w = list.get(curent);
-            w = w*2;
+            w = computeWaveHeight(w);
             r.bottom = cy+w;
             r.left += s;
             r.right += s;
@@ -343,6 +362,21 @@ public class WaveSurfaceHelper {
             canvas.drawRect(r,p6);
         }
 
+    }
+
+
+    protected int computeWaveHeight(int height ){
+        if (height < 0){
+            height = -height;
+        }
+
+        height= height/300;
+
+        if (height > 120){
+            height = 120;
+        }
+
+        return height;
     }
 
     protected boolean checkRect(Rect r){
@@ -384,6 +418,7 @@ public class WaveSurfaceHelper {
 //        data.add(w);
 
         if (size > 400){
+            isrun = false;
             if ( op == 1 && currentPosition < 400){
                 screenOff++;
                 if (screenOff > 3){
@@ -418,9 +453,52 @@ public class WaveSurfaceHelper {
 
     public void setOffX(int offx){
 
+        Log.d("sur","offx:" + offx);
 
-        Log.d("surface","offx:" + offx);
+        if (offx > 0){
 
+            int i = offx/configure.waveSpace;
+            int j = offx%configure.waveSpace;
+
+            if (j + screenOff >= configure.waveSpace){
+                i++;
+                screenOff = screenOff+j-configure.waveSpace;
+            } else {
+                screenOff += j;
+            }
+
+            if ((currentPosition + i) <= data.size()){
+                currentPosition += i;
+            } else {
+
+                currentPosition = data.size();
+                screenOff = configure.waveSpace-1;
+            }
+
+
+        } else {
+
+            int i = offx/configure.waveSpace;
+            int j = offx%configure.waveSpace;
+
+            if (j + screenOff < 0){
+                i--;
+                screenOff = screenOff+j+configure.waveSpace;
+            } else {
+                screenOff += j;
+            }
+
+            if ((currentPosition + i) >= 0){
+                currentPosition += i;
+            } else {
+
+                currentPosition = 0;
+                screenOff = 0;
+            }
+
+        }
+
+        onDrawWave();
 
     }
 
@@ -451,7 +529,7 @@ public class WaveSurfaceHelper {
         //ruler
         public int offy = 40;
         public int d = 1;
-        public int h1 = 25;
+        public int h1 = 28;
         public int h2 = 6;
         public int s = 40;
         public int textSize = 20;
@@ -460,6 +538,24 @@ public class WaveSurfaceHelper {
         public int waveMAX = 60;
         public int wave = 2;
         public int waveSpace = 4;
+
+
+
+
+
+        public void adapter(int density){
+
+            offy = offy/2*density;
+            h1 = h1/2*density;
+            h2 = h2/2*density;
+
+            s = s/2*density;
+            textSize = textSize/2*density;
+
+            wave = wave/2*density;
+            waveSpace = waveSpace/2*density;
+
+        }
 
     }
 

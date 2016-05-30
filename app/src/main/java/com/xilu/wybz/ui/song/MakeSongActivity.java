@@ -6,16 +6,20 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.czt.mp3recorder.MP3Recorder;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.TemplateBean;
 import com.xilu.wybz.bean.WorksData;
+import com.xilu.wybz.common.RecordInstance;
 import com.xilu.wybz.dao.DBManager;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.view.WaveSurfaceView;
 
+import java.util.List;
 import java.util.Timer;
 
 import butterknife.Bind;
@@ -31,9 +35,11 @@ public class MakeSongActivity extends ToolbarActivity {
     TextView etTitle;
     @Bind(R.id.et_word)
     TextView etWord;
+
+
     @Bind(R.id.make_sv_wave)
     WaveSurfaceView makeSvWave;
-//    @Bind(R.id.tv_time)
+    //    @Bind(R.id.tv_time)
 //    TextView tvTime;
 //    @Bind(R.id.tv_alltime)
 //    TextView tvAlltime;
@@ -46,6 +52,8 @@ public class MakeSongActivity extends ToolbarActivity {
     DBManager dbManager;
 
     WaveSurfaceHelper helper;
+    @Bind(R.id.iv_record)
+    ImageView ivRecord;
 
 
     public static void ToMakeSongActivity(Context context, TemplateBean templateBean) {
@@ -53,6 +61,7 @@ public class MakeSongActivity extends ToolbarActivity {
         intent.putExtra("templateBean", templateBean);
         context.startActivity(intent);
     }
+
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_makesong;
@@ -69,9 +78,14 @@ public class MakeSongActivity extends ToolbarActivity {
 //        setTitle("");
 //        RecordInstance.getInstance().setSurfaceView(makeSvWave);
 //        llMain.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        RecordInstance.getInstance().mp3Recorder.setListenner(new MP3Recorder.OnWaveChangeListenner() {
+            @Override
+            public void onChange(List<Short> data) {
+                makeSvWave.getWaveSurfaceHelper().onDrawWave(data,data.size());
 
-
-
+                makeSvWave.getWaveSurfaceHelper().isrun = false;
+            }
+        });
 
     }
 
@@ -82,6 +96,7 @@ public class MakeSongActivity extends ToolbarActivity {
         }
         if (templateBean == null) isQc = true;
     }
+
     @OnClick({R.id.rl_import, R.id.rl_play, R.id.rl_record, R.id.rl_restart, R.id.rl_edit})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -90,8 +105,18 @@ public class MakeSongActivity extends ToolbarActivity {
             case R.id.rl_play:
                 break;
             case R.id.rl_record:
+//                startActivity(TestActivity.class);
 
-                startActivity(TestActivity.class);
+                if (RecordInstance.getInstance().isStart()){
+
+                    RecordInstance.getInstance().toPause();
+                    showRecordPlay();
+                } else {
+
+                    RecordInstance.getInstance().toStart();
+                    showRecordPause();
+                }
+
                 break;
             case R.id.rl_restart:
                 break;
@@ -99,6 +124,15 @@ public class MakeSongActivity extends ToolbarActivity {
                 break;
         }
     }
+
+
+    public void showRecordPlay(){
+        ivRecord.setImageResource(R.drawable.ic_record_luyin_unstart);
+    }
+    public void showRecordPause(){
+        ivRecord.setImageResource(R.drawable.ic_record_pause);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_next, menu);

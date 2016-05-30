@@ -41,6 +41,27 @@ public class DateFormatUtilTest {
 
     }
 
+
+    @Test
+    public void testFormatTime() throws Exception {
+        System.out.println("this is testFormatTime...");
+
+
+        System.out.println(""+DateFormatUtils.formatTime(1));
+        System.out.println(""+DateFormatUtils.formatTime(67));
+        System.out.println(""+DateFormatUtils.formatTime(72));
+        System.out.println(""+DateFormatUtils.formatTime(756));
+
+
+        System.out.println(""+DateFormatUtils.formatTime(1l));
+        System.out.println(""+DateFormatUtils.formatTime(67l));
+        System.out.println(""+DateFormatUtils.formatTime(72l));
+        System.out.println(""+DateFormatUtils.formatTime(756l));
+
+        assertEquals(1,1);
+
+    }
+
     @Test
     public void testPrintln() throws Exception {
 

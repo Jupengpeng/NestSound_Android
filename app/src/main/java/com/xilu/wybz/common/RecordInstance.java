@@ -51,11 +51,11 @@ public class RecordInstance {
             if (isStart) {
                 return "正在录音中，请先停止录音";
             } else {
-                startMediaPlay();
+//                startMediaPlay();
                 try {
                     mp3Recorder.start();
                 } catch (Exception e) {
-
+                    e.printStackTrace();
                 }
                 // 让录制状态为true
                 isStart = true;
@@ -172,7 +172,7 @@ public class RecordInstance {
 
     public void toStart() {
         startRecord();
-        startMediaPlay();
+//        startMediaPlay();
         if (iml != null) {
             iml.onStart();
         }

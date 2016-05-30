@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class MP3Recorder {
     //=======================AudioRecord Default Settings=======================
@@ -45,7 +46,7 @@ public class MP3Recorder {
 
     //==================================================================
     private ArrayList<Short> inBuf = new ArrayList<Short>();
-    public int rateX = 352;
+    public int rateX = 30;
     public int rateY = 0;
     private int baseLine = 0;
     private long c_time;
@@ -63,6 +64,7 @@ public class MP3Recorder {
     private DataEncodeThread mEncodeThread;
     private boolean mIsRecording = false;
     private File mRecordFile;
+
 
     /**
      * Default constructor. Setup recorder with default sampling rate 1 channel,
@@ -100,27 +102,42 @@ public class MP3Recorder {
                     if (readSize > 0) {
                         mEncodeThread.addTask(mPCMBuffer, readSize);
                     }
+
+
+                    Log.d("auto","size:"+readSize+"--:"+mBufferSize);
+
+
+
                     synchronized (inBuf) {
                         int len = readSize / rateX;
                         for (int i = 0; i < len; i += rateX) {
                             inBuf.add((short) ((0x0000 | mPCMBuffer[i + 1]) << 8 | mPCMBuffer[i]));
                         }
                     }
+
+                    Log.d("auto","inBuf:"+inBuf.size()+"v:"+inBuf.get(inBuf.size()-1));
+
+
+
                     long time = new Date().getTime();
                     if (time - c_time >= draw_time) {
                         ArrayList<Short> buf = new ArrayList<Short>();
                         synchronized (inBuf) {
                             if (inBuf.size() == 0)
                                 return;
-                            while (inBuf.size() > sfv.getWidth() / divider) {
-                                inBuf.remove(0);
-                            }
+//                            while (inBuf.size() > sfv.getWidth() / divider) {
+//                                inBuf.remove(0);
+//                            }
                             buf = (ArrayList<Short>) inBuf.clone();// 保存
                         }
 
+                        if (listenner!= null){
+                            listenner.onChange(buf);
+                        }
 
-                        toDraw(buf);// 把缓冲区数据画出来
-                        c_time = new Date().getTime();
+
+//                        toDraw(buf);// 把缓冲区数据画出来
+//                        c_time = new Date().getTime();
 
 //                        calculateRealVolume(mPCMBuffer, readSize);
                     }
@@ -248,5 +265,20 @@ public class MP3Recorder {
             py = y;
         }
         sfv.getHolder().unlockCanvasAndPost(canvas);// 解锁画布，提交画好的图像
+    }
+
+    public OnWaveChangeListenner listenner;
+
+
+    public OnWaveChangeListenner getListenner() {
+        return listenner;
+    }
+
+    public void setListenner(OnWaveChangeListenner listenner) {
+        this.listenner = listenner;
+    }
+
+    public interface OnWaveChangeListenner {
+        public void onChange(List<Short> data);
     }
 }
