@@ -104,8 +104,6 @@ public class MsgSystemActivity extends BaseListActivity<SystemBean> implements I
     class SampleViewHolder extends BaseViewHolder {
         @Bind(R.id.iv_cover)
         SimpleDraweeView ivCover;
-        @Bind(R.id.iv_head)
-        SimpleDraweeView ivHead;
         @Bind(R.id.tv_time)
         TextView tvTime;
         @Bind(R.id.tv_username)

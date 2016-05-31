@@ -121,6 +121,7 @@ public class ParseUtils {
             JSONObject jsonObject = new JSONObject(response);
             int code = jsonObject.getInt("code");
             if (code == 200) {
+                if(!TextUtils.isEmpty(jsonObject.getString("data")))
                 commentBeanList = new Gson().fromJson(jsonObject.getString("data"), new TypeToken<List<SystemBean>>() {}.getType());
             } else {
                 showMsg(context, jsonObject.getString("message"));

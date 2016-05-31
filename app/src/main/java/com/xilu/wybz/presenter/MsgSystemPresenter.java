@@ -44,7 +44,7 @@ public class MsgSystemPresenter extends BasePresenter<ISystemMsgView> {
             @Override
             public void onResponse(String response) {
                 List<SystemBean> mList = ParseUtils.getSystemsData(context,response);
-                if (mList.size() == 0) {
+                if (mList==null||mList.size() == 0) {
                     if (page == 1) {
                         iView.loadNoData();
                     } else {
