@@ -40,9 +40,22 @@ public class NumberUtilTest {
 
         System.out.println("s:"+"-->"+x);
 
-
+        assertEquals("1","1");
 
     }
+
+
+
+    @Test
+    public void testGui1() throws Exception {
+
+
+        System.out.println("m:"+"-->"+Math.sqrt(15000d));
+
+        assertEquals("1","1");
+
+    }
+
 
 
 

@@ -78,7 +78,7 @@ public class MakeSongActivity extends ToolbarActivity {
 //        setTitle("");
 //        RecordInstance.getInstance().setSurfaceView(makeSvWave);
 //        llMain.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-        RecordInstance.getInstance().mp3Recorder.setListenner(new MP3Recorder.OnWaveChangeListenner() {
+        RecordInstance.getInstance().getMp3Recorder().setListenner(new MP3Recorder.OnWaveChangeListenner() {
             @Override
             public void onChange(List<Short> data) {
                 makeSvWave.getWaveSurfaceHelper().onDrawWave(data,data.size());
@@ -129,6 +129,7 @@ public class MakeSongActivity extends ToolbarActivity {
     public void showRecordPlay(){
         ivRecord.setImageResource(R.drawable.ic_record_luyin_unstart);
     }
+
     public void showRecordPause(){
         ivRecord.setImageResource(R.drawable.ic_record_pause);
     }

@@ -3,11 +3,11 @@ package com.xilu.wybz.common;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.util.Log;
-import android.view.SurfaceView;
 
 import com.czt.mp3recorder.MP3Recorder;
 import com.xilu.wybz.common.interfaces.IMediaPlayerListener;
 import com.xilu.wybz.utils.FileUtils;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -15,27 +15,21 @@ import java.io.IOException;
  * Created by June on 2016/5/4.
  */
 public class RecordInstance {
-    public MP3Recorder mp3Recorder;
 
-    MediaPlayer mediaPlayer;
-    boolean isStart = false;// 设置正在录制的状态
-    IMediaPlayerListener iml;
-    String tag;
-    SurfaceView sfv;
-    //NewAudioName可播放的音频文件
-    String NewAudioName = "";
+    protected static RecordInstance mInstance;
 
-    public void setSurfaceView(SurfaceView sfv) {
-        this.sfv = sfv;
-        mp3Recorder.setSurfaceView(sfv);
-    }
+    protected MP3Recorder mp3Recorder;
+    protected MediaPlayer mediaPlayer;
+    protected boolean isStart = false;// 设置正在录制的状态
+    protected String tag;
+    protected String NewAudioName = "";//NewAudioName可播放的音频文件
 
-    static RecordInstance mInstance;
+    protected IMediaPlayerListener iml;
 
-    RecordInstance() {
-        NewAudioName = FileUtils.getTempRecordPath();
-        Log.e("ss", NewAudioName);
-        mp3Recorder = new MP3Recorder(new File(NewAudioName));
+    protected RecordInstance() {
+        this.NewAudioName = FileUtils.getTempRecordPath();
+        this.mp3Recorder = new MP3Recorder(new File(NewAudioName));
+        Log.e("auto", "NewAudioName:"+NewAudioName);
     }
 
     public synchronized static RecordInstance getInstance() {
@@ -47,29 +41,32 @@ public class RecordInstance {
 
     public String startRecord() {
         //判断是否有外部存储设备sdcard
-        if (FileUtils.isSdcardExit()) {
-            if (isStart) {
-                return "正在录音中，请先停止录音";
-            } else {
-//                startMediaPlay();
-                try {
-                    mp3Recorder.start();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                // 让录制状态为true
-                isStart = true;
-                return "success";
-            }
-
-        } else {
+        if (!FileUtils.isSdcardExit()) {
             return "没有SD卡，无法存储录音数据";
         }
 
+        if (isStart) {
+            return "正在录音中，请先停止录音";
+        } else {
+                startMediaPlay();
+            try {
+                mp3Recorder.start();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            // 让录制状态为true
+            isStart = true;
+        }
+        return "success";
     }
 
-    public void cleanDraw() {
-        mp3Recorder.cleanDraw();
+
+    public MP3Recorder getMp3Recorder() {
+        return mp3Recorder;
+    }
+
+    public MediaPlayer getMediaPlayer() {
+        return mediaPlayer;
     }
 
     public boolean isStart() {

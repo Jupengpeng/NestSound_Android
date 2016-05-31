@@ -370,10 +370,12 @@ public class WaveSurfaceHelper {
             height = -height;
         }
 
-        height= height/300;
+        height= (int)Math.sqrt(1.0*height);
 
-        if (height > 120){
-            height = 120;
+//        height= (int)(height*0.8);
+
+        if (height > configure.waveMAX){
+            height = configure.waveMAX;
         }
 
         return height;

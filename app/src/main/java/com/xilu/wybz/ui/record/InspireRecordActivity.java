@@ -245,7 +245,7 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
                         }
                         recordPath = DownLoaderDir.inspireMp3Dir+System.currentTimeMillis()+".mp3";
                         mp3Recorder = new MP3Recorder(new File(recordPath));
-                        mp3Recorder.setSurfaceView(null);
+//                        mp3Recorder.setSurfaceView(null);
                         try {
                             mp3Recorder.start();
                             ivRecordStatus.setImageResource(R.drawable.ic_record_luyin_start);
