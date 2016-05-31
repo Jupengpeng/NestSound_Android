@@ -12,6 +12,7 @@ import com.xilu.wybz.bean.ZambiaBean;
 import com.xilu.wybz.presenter.MsgZanPresenter;
 import com.xilu.wybz.ui.IView.IZanView;
 import com.xilu.wybz.ui.base.BaseListActivity;
+import com.xilu.wybz.utils.DateTimeUtil;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.PullRecycler;
@@ -118,18 +119,14 @@ public class MsgZambiaActivity extends BaseListActivity<ZambiaBean> implements I
         @Override
         public void onBindViewHolder(int position) {
             ZambiaBean zanbiaBean = mDataList.get(position);
-            tvTime.setText(zanbiaBean.getAddtime());
-            tvUserName.setText(zanbiaBean.getName());
-            tvAuthor.setText(PrefsUtil.getUserInfo(context).name);
-            tvMusicName.setText(zanbiaBean.getMusicName());
-            loadImage(zanbiaBean.getMusicPic(), ivCover);
-            String headUrl = zanbiaBean.getHeadurl();
-            if (headUrl.contains("qlogo.cn") && headUrl.contains("wuyuebuzuo.com")) {
-                headUrl = headUrl.replace("http://api.wuyuebuzuo.com/api/", "");
-            }
+            tvTime.setText(DateTimeUtil.timestamp2DateTime(zanbiaBean.add_time));
+            tvUserName.setText(zanbiaBean.nickname);
+            tvAuthor.setText(zanbiaBean.author);
+            tvMusicName.setText(zanbiaBean.title);
+            loadImage(zanbiaBean.pic, ivCover);
+            String headUrl = zanbiaBean.headerurl;
             loadImage(headUrl, ivHead);
         }
-
         @Override
         public void onItemClick(View view, int position) {
 

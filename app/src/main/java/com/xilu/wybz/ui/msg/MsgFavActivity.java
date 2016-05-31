@@ -11,7 +11,9 @@ import com.xilu.wybz.bean.CollectionBean;
 import com.xilu.wybz.presenter.MsgCollectionPresenter;
 import com.xilu.wybz.ui.IView.ICollectionView;
 import com.xilu.wybz.ui.base.BaseListActivity;
+import com.xilu.wybz.utils.DateTimeUtil;
 import com.xilu.wybz.utils.PrefsUtil;
+import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.PullRecycler;
 import java.util.ArrayList;
@@ -117,23 +119,19 @@ public class MsgFavActivity extends BaseListActivity<CollectionBean> implements 
         @Override
         public void onBindViewHolder(int position) {
             final CollectionBean zanbiaBean = mDataList.get(position);
-            tvTime.setText(zanbiaBean.getAddtime());
-            tvUserName.setText(zanbiaBean.getName());
-            tvAuthor.setText(PrefsUtil.getUserInfo(context).name);
-            tvMusicName.setText(zanbiaBean.getMusicName());
+            tvTime.setText(DateTimeUtil.timestamp2DateTime(zanbiaBean.intabletime));
+            tvUserName.setText(zanbiaBean.nickname);
+            tvAuthor.setText(zanbiaBean.author);
+            if(StringUtil.isEmpty(zanbiaBean.title))zanbiaBean.title="未命名";
+            tvMusicName.setText(zanbiaBean.title);
             tvContent.setText("收藏了你的作品");
-            loadImage(zanbiaBean.getMusicPic(), ivCover);
-            String headUrl = zanbiaBean.getHeadurl();
-            if (headUrl.contains("qlogo.cn") && headUrl.contains("wuyuebuzuo.com")) {
-                headUrl = headUrl.replace("http://api.wuyuebuzuo.com/api/", "");
-            }
+            loadImage(zanbiaBean.pic, ivCover);
+            String headUrl = zanbiaBean.headerurl;
             loadImage(headUrl, ivHead);
         }
-
         @Override
         public void onItemClick(View view, int position) {
 
         }
-
     }
 }

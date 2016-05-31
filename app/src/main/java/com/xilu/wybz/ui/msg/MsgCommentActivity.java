@@ -168,11 +168,17 @@ public class MsgCommentActivity extends BaseListActivity<MsgCommentBean> impleme
             if (StringUtil.isNotBlank(commentBean.headerurl)) loadImage(commentBean.headerurl, ivHead);
 
             if(commentBean.workid>0) {
+                tvMusicName.setVisibility(View.VISIBLE);
                 if (StringUtil.isNotBlank(commentBean.author)) tvAuthor.setText(commentBean.author);
-                if (StringUtil.isNotBlank(commentBean.title)) tvMusicName.setText(commentBean.title);
+                if (StringUtil.isBlank(commentBean.title)){
+                    commentBean.title = "未命名";
+                }
+                tvMusicName.setText(commentBean.title);
                 if (StringUtil.isNotBlank(commentBean.pic)) loadImage(commentBean.pic, ivCover);
             }else{
-
+                tvMusicName.setVisibility(View.GONE);
+                loadImage("res:///"+R.drawable.ic_nodata_pic,ivCover);
+                tvAuthor.setText("抱歉，此作品已被删除！");
             }
         }
 

@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.xilu.wybz.bean.ActBean;
+import com.xilu.wybz.bean.CollectionBean;
 import com.xilu.wybz.bean.CommentBean;
 import com.xilu.wybz.bean.DataBean;
 import com.xilu.wybz.bean.FansBean;
@@ -14,10 +15,12 @@ import com.xilu.wybz.bean.MainBean;
 import com.xilu.wybz.bean.MsgCommentBean;
 import com.xilu.wybz.bean.MusicTalk;
 import com.xilu.wybz.bean.SongAlbum;
+import com.xilu.wybz.bean.SystemBean;
 import com.xilu.wybz.bean.TemplateBean;
 import com.xilu.wybz.bean.TokenBean;
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.bean.WorksData;
+import com.xilu.wybz.bean.ZambiaBean;
 
 import org.json.JSONObject;
 
@@ -85,6 +88,56 @@ public class ParseUtils {
             int code = jsonObject.getInt("code");
             if (code == 200) {
                 commentBeanList = new Gson().fromJson(jsonObject.getString("data"), new TypeToken<List<CommentBean>>() {
+                }.getType());
+            } else {
+                showMsg(context, jsonObject.getString("message"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return commentBeanList;
+    }
+    //消息收藏列表
+    public static List<CollectionBean> getFavsData(Context context, String response) {
+        List<CollectionBean> commentBeanList = new ArrayList<>();
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            int code = jsonObject.getInt("code");
+            if (code == 200) {
+                commentBeanList = new Gson().fromJson(jsonObject.getString("data"), new TypeToken<List<CollectionBean>>() {
+                }.getType());
+            } else {
+                showMsg(context, jsonObject.getString("message"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return commentBeanList;
+    }
+    //消息收藏列表
+    public static List<SystemBean> getSystemsData(Context context, String response) {
+        List<SystemBean> commentBeanList = new ArrayList<>();
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            int code = jsonObject.getInt("code");
+            if (code == 200) {
+                commentBeanList = new Gson().fromJson(jsonObject.getString("data"), new TypeToken<List<SystemBean>>() {}.getType());
+            } else {
+                showMsg(context, jsonObject.getString("message"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return commentBeanList;
+    }
+    //消息点赞列表
+    public static List<ZambiaBean> getZambiasData(Context context, String response) {
+        List<ZambiaBean> commentBeanList = new ArrayList<>();
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            int code = jsonObject.getInt("code");
+            if (code == 200) {
+                commentBeanList = new Gson().fromJson(jsonObject.getString("data"), new TypeToken<List<ZambiaBean>>() {
                 }.getType());
             } else {
                 showMsg(context, jsonObject.getString("message"));
