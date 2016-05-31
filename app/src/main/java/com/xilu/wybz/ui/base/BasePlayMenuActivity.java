@@ -8,6 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.xilu.wybz.R;
+import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.PlayMediaInstance;
 import com.xilu.wybz.ui.song.PlayAudioActivity;
 import com.xilu.wybz.utils.PrefsUtil;
@@ -15,6 +16,8 @@ import com.xilu.wybz.view.AnimImageView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by June on 16/5/4.
@@ -30,6 +33,7 @@ public abstract class BasePlayMenuActivity extends ToolbarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
         rl_right = (RelativeLayout) findViewById(R.id.rl_right);
         app_bar_layout = (RelativeLayout) findViewById(R.id.app_bar_layout);
         ll_search = (LinearLayout) findViewById(R.id.ll_search);
@@ -95,6 +99,29 @@ public abstract class BasePlayMenuActivity extends ToolbarActivity {
         super.onResume();
         if (PlayMediaInstance.getInstance().status == 3) {
             startAnimal();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    public void onEventMainThread(Event.PPStatusEvent event) {
+        switch (event.getStatus()) {
+            case 1://开始
+                startAnimal();
+                break;
+            case 2://停止
+                stopAnimal();
+                break;
+            case 3://播放
+                startAnimal();
+                break;
+            case 4://暂停
+                stopAnimal();
+                break;
         }
     }
 }

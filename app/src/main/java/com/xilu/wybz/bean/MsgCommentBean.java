@@ -1,29 +1,44 @@
 package com.xilu.wybz.bean;
 
 
-import android.text.TextUtils;
-
-import com.xilu.wybz.common.YinChaoConfig;
-import com.xilu.wybz.utils.StringStyleUtil;
-
 import java.io.Serializable;
 
 /**
  * Created by Administrator on 2016/3/3 0003.
  * 这是消息 评论
  */
-public class CommentBean implements Serializable {
+public class MsgCommentBean implements Serializable {
+    public int workid;//作品ID
     public int id;//评论ID
     public int itemid;//作品ID
     public int uid;//发评论者的ID
     public int type;//1=歌曲，2=歌词
     public int comment_type; //1=默认，2=跟帖
     public long createdate;//发布时间
+    public String author;//作者名称
+    public String title;//作品标题
+    public String pic;//作品图片
     public String comment;//评论内容
     public String headerurl;//评论人头像
     public String nickname;//发评论者的昵称
-    public String target_nickname;//被评论跟帖者的昵称
-    public int target_uid; //被评论者的id
+    public String targetname;//被评论跟帖者的昵称
+
+    public int getTarget_uid() {
+        return target_uid;
+    }
+
+    public void setTarget_uid(int target_uid) {
+        this.target_uid = target_uid;
+    }
+
+    public int getWorkid() {
+        return workid;
+    }
+
+    public void setWorkid(int workid) {
+        this.workid = workid;
+    }
+
     public int getId() {
         return id;
     }
@@ -72,6 +87,14 @@ public class CommentBean implements Serializable {
         this.createdate = createdate;
     }
 
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
     public String getComment() {
         return comment;
     }
@@ -96,19 +119,14 @@ public class CommentBean implements Serializable {
         this.nickname = nickname;
     }
 
-    public String getTarget_nickname() {
-        return target_nickname;
+    public String getTargetname() {
+        return targetname;
     }
 
-    public void setTarget_nickname(String target_nickname) {
-        this.target_nickname = target_nickname;
+    public void setTargetname(String targetname) {
+        this.targetname = targetname;
     }
 
-    public int getTarget_uid() {
-        return target_uid;
-    }
+    public int target_uid; //被评论者的id
 
-    public void setTarget_uid(int target_uid) {
-        this.target_uid = target_uid;
-    }
 }

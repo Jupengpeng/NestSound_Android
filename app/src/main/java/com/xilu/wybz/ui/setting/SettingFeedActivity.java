@@ -7,17 +7,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import com.xilu.wybz.R;
 import com.xilu.wybz.presenter.FeedbackPresenter;
 import com.xilu.wybz.ui.IView.IFeedbackView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
+
 import butterknife.Bind;
 
 /**
  * Modify by June on 2016/3/25.
  * 意见反馈
  */
-public class SettingFeedActivity extends ToolbarActivity implements IFeedbackView{
+public class SettingFeedActivity extends ToolbarActivity implements IFeedbackView {
     @Bind(R.id.tv_number)
     TextView tv_number;
     @Bind(R.id.et_content)
@@ -27,6 +29,7 @@ public class SettingFeedActivity extends ToolbarActivity implements IFeedbackVie
     final int charMaxNum = 200;
     int type;
     FeedbackPresenter feedbackPresenter;
+
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_setting_feedback;
@@ -35,10 +38,12 @@ public class SettingFeedActivity extends ToolbarActivity implements IFeedbackVie
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        feedbackPresenter = new FeedbackPresenter(this,this);
+        feedbackPresenter = new FeedbackPresenter(context, this);
+        feedbackPresenter.init();
     }
 
     public void initView() {
+        setTitle("意见反馈");
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             type = bundle.getInt("type");
@@ -47,7 +52,6 @@ public class SettingFeedActivity extends ToolbarActivity implements IFeedbackVie
                 et_content.setHint("请输入您的举报内容");
             }
         }
-        setTitle("意见反馈");
         et_content.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -68,15 +72,15 @@ public class SettingFeedActivity extends ToolbarActivity implements IFeedbackVie
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_send,menu);
-        MenuItem menuItem = menu.findItem(0);
+        getMenuInflater().inflate(R.menu.menu_send, menu);
+        MenuItem menuItem = menu.findItem(R.id.menu_send);
         menuItem.setTitle("提交");
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.menu_send:
                 toPass();
                 break;
@@ -95,7 +99,7 @@ public class SettingFeedActivity extends ToolbarActivity implements IFeedbackVie
             showMsg("手机号或email不能为空");
             return;
         }
-        feedbackPresenter.postData(us,content,type);
+        feedbackPresenter.postData(us, content, type);
     }
 
     @Override

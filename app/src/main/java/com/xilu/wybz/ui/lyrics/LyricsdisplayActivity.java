@@ -28,6 +28,7 @@ import com.xilu.wybz.ui.IView.ILyricsView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.ui.mine.UserInfoActivity;
 import com.xilu.wybz.ui.setting.SettingFeedActivity;
+import com.xilu.wybz.ui.song.CommentActivity;
 import com.xilu.wybz.utils.DateFormatUtils;
 import com.xilu.wybz.utils.DateTimeUtil;
 import com.xilu.wybz.utils.NetWorkUtil;
@@ -127,7 +128,7 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
         }
     }
 
-    @OnClick({R.id.rl_zan, R.id.rl_fav, R.id.iv_nonet, R.id.rl_head})
+    @OnClick({R.id.rl_zan, R.id.rl_fav, R.id.iv_nonet, R.id.rl_head, R.id.iv_comment})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.rl_fav:
@@ -143,6 +144,9 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
             case R.id.iv_nonet:
                 loadData();
                 break;
+            case R.id.iv_comment:
+                toCommentActivity();
+                break;
             case R.id.rl_head:
                 if (worksData.getUid()>0) {
                     Intent intent = new Intent(LyricsdisplayActivity.this, UserInfoActivity.class);
@@ -157,11 +161,17 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
     public void loadData() {
         lyricsPresenter.getLyric(id);
     }
-
+    //修改歌词以后 更新
     public void onEventMainThread(Event.SaveLyricsSuccessEvent event) {
         if (event.getWhich() == 2) {
-//            worksData = event.getLyricsdisplayBean();
+            worksData = event.getLyricsdisplayBean();
             loadTitleContent();
+        }
+    }
+    //更新评论数量
+    public void onEventMainThread(Event.UpdataCommentNumEvent event){
+        if(event.getType()==2){
+            tvCommentNum.setText(worksData.getCommentnum()+event.getNum()+"");
         }
     }
 
@@ -309,5 +319,8 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
             intent.putExtra("type", 1);
             startActivity(intent);
         }
+    }
+    public void toCommentActivity() {
+        CommentActivity.ToCommentActivity(context,worksData);
     }
 }

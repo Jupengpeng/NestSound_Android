@@ -15,6 +15,7 @@ import com.xilu.wybz.presenter.UserListPresenter;
 import com.xilu.wybz.presenter.UserPresenter;
 import com.xilu.wybz.ui.IView.IUserView;
 import com.xilu.wybz.ui.base.BaseActivity;
+import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.ui.login.LoginActivity;
 import com.xilu.wybz.ui.mine.view.UserBaseView;
 import com.xilu.wybz.ui.mine.view.UserCollectionView;

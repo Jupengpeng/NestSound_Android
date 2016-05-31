@@ -5,23 +5,26 @@ import android.view.View;
 
 import com.xilu.wybz.R;
 import com.xilu.wybz.ui.base.BaseActivity;
+import com.xilu.wybz.ui.base.BasePlayMenuActivity;
 
 import butterknife.OnClick;
 
 /**
  * Created by June on 16/4/29.
  */
-public class MsgActivity extends BaseActivity {
+public class MsgActivity extends BasePlayMenuActivity {
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_home_msg;
     }
-
+    public boolean canBack() {
+        return false;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle("消息");
     }
-
     @OnClick({R.id.ll_comment, R.id.ll_zambia, R.id.ll_collection, R.id.ll_message})
     public void onClick(View view) {
         switch (view.getId()) {

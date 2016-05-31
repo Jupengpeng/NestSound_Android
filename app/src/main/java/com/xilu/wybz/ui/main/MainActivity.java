@@ -36,6 +36,7 @@ import com.xilu.wybz.ui.IView.IHomeView;
 import com.xilu.wybz.ui.MainTabActivity;
 import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.ui.base.BaseActivity;
+import com.xilu.wybz.ui.base.BasePlayMenuActivity;
 import com.xilu.wybz.ui.lyrics.LyricsdisplayActivity;
 import com.xilu.wybz.ui.song.PlayAudioActivity;
 import com.xilu.wybz.ui.song.SongAblumActivity;
@@ -53,7 +54,7 @@ import butterknife.Bind;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 
-public class MainActivity extends BaseActivity implements IHomeView {
+public class MainActivity extends BasePlayMenuActivity implements IHomeView {
     @Bind(R.id.recycler_view_recommend)
     RecyclerView recyclerViewRecommend;
     @Bind(R.id.recycler_view_songalbum)
@@ -106,7 +107,9 @@ public class MainActivity extends BaseActivity implements IHomeView {
     //轮播间隔时间
     protected static final long MSG_DELAY = 3000;
     private int column = 3;
-
+    public boolean canBack() {
+        return false;
+    }
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_home_main;

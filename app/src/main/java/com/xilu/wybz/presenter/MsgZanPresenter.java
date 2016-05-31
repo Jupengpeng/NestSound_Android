@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.xilu.wybz.bean.CollectionBean;
 import com.xilu.wybz.bean.ZambiaBean;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.common.interfaces.HttpLinstener;
@@ -44,26 +45,15 @@ public class MsgZanPresenter extends BasePresenter<IZanView> {
 
             @Override
             public void onResponse(String response) {
-                if(ParseUtils.checkCode(response)){
-                    try {
-                        String resultlist = new JSONObject(response).getString("data");
-                        List<ZambiaBean> mList = new Gson().fromJson(resultlist, new TypeToken<List<ZambiaBean>>() {}.getType());
-                        if(mList.size()==0){
-                            if(page==1){
-                                iView.loadNoData();
-                            }else{
-                                iView.loadNoMore();
-                            }
-                        }else{
-                            iView.showZambiaData(mList);
-                        }
-
-                    } catch (JSONException e) {
+                List<ZambiaBean> mList = ParseUtils.getZambiasData(context,response);
+                if (mList.size() == 0) {
+                    if (page == 1) {
                         iView.loadNoData();
+                    } else {
+                        iView.loadNoMore();
                     }
-
-                }else{
-                    iView.loadFail();
+                } else {
+                    iView.showZambiaData(mList);
                 }
             }
         });

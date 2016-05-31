@@ -6,6 +6,7 @@ import android.text.style.ForegroundColorSpan;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.xilu.wybz.bean.CommentBean;
+import com.xilu.wybz.bean.MsgCommentBean;
 import com.xilu.wybz.bean.WorksData;
 import java.util.List;
 
@@ -18,10 +19,15 @@ public class StringStyleUtil {
         return junkData;
     }
 
-    public static SpannableString getCommentStyleStr(CommentBean commentBean) {
-        String comment ="回复我:" + commentBean.getComment();
+    public static SpannableString getCommentStyleStr(MsgCommentBean commentBean) {
+        String nickName = commentBean.targetname;
+        if (StringUtil.isBlank(nickName)){
+            return new SpannableString(commentBean.getComment());
+        }
+        String comment ="回复" + nickName+"："+commentBean.getComment();
         SpannableString spannableString = new SpannableString(comment);
-        spannableString.setSpan(new ForegroundColorSpan(0xff539ac2),2,3, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+
+        spannableString.setSpan(new ForegroundColorSpan(0xff539ac2),2,2+nickName.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         return spannableString;
     }
 
@@ -31,7 +37,6 @@ public class StringStyleUtil {
         if (StringUtil.isBlank(nickName)){
             return new SpannableString(commentBean.getComment());
         }
-
         String comment ="回复" + nickName+"："+commentBean.getComment();
         SpannableString spannableString = new SpannableString(comment);
 

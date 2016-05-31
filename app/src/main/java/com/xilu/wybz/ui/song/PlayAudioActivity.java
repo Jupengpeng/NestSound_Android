@@ -573,6 +573,13 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     public void saveMusicBean() {
         PrefsUtil.putString("playdata" + id, new Gson().toJson(worksData), context);
     }
+
+    //更新评论数量
+    public void onEventMainThread(Event.UpdataCommentNumEvent event){
+        if(event.getType()==1){
+            tvCommentNum.setText(worksData.getCommentnum()+event.getNum()+"");
+        }
+    }
     public void onEventMainThread(Event.PPStatusEvent event) {
         switch (event.getStatus()) {
             case 1://开始
@@ -639,6 +646,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        actionMoreDialog.dismiss();
         switch (position) {
             case 0://个人主页
                 toUserInfo();

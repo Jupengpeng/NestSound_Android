@@ -6,17 +6,21 @@ import android.text.TextUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.xilu.wybz.bean.ActBean;
+import com.xilu.wybz.bean.CollectionBean;
 import com.xilu.wybz.bean.CommentBean;
 import com.xilu.wybz.bean.DataBean;
 import com.xilu.wybz.bean.FansBean;
 import com.xilu.wybz.bean.Lyricat;
 import com.xilu.wybz.bean.MainBean;
+import com.xilu.wybz.bean.MsgCommentBean;
 import com.xilu.wybz.bean.MusicTalk;
 import com.xilu.wybz.bean.SongAlbum;
+import com.xilu.wybz.bean.SystemBean;
 import com.xilu.wybz.bean.TemplateBean;
 import com.xilu.wybz.bean.TokenBean;
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.bean.WorksData;
+import com.xilu.wybz.bean.ZambiaBean;
 
 import org.json.JSONObject;
 
@@ -76,7 +80,7 @@ public class ParseUtils {
         }
         return lyricats;
     }
-    //词库
+    //评论列表
     public static List<CommentBean> getCommentsData(Context context, String response) {
         List<CommentBean> commentBeanList = new ArrayList<>();
         try {
@@ -84,6 +88,74 @@ public class ParseUtils {
             int code = jsonObject.getInt("code");
             if (code == 200) {
                 commentBeanList = new Gson().fromJson(jsonObject.getString("data"), new TypeToken<List<CommentBean>>() {
+                }.getType());
+            } else {
+                showMsg(context, jsonObject.getString("message"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return commentBeanList;
+    }
+    //消息收藏列表
+    public static List<CollectionBean> getFavsData(Context context, String response) {
+        List<CollectionBean> commentBeanList = new ArrayList<>();
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            int code = jsonObject.getInt("code");
+            if (code == 200) {
+                commentBeanList = new Gson().fromJson(jsonObject.getString("data"), new TypeToken<List<CollectionBean>>() {
+                }.getType());
+            } else {
+                showMsg(context, jsonObject.getString("message"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return commentBeanList;
+    }
+    //消息收藏列表
+    public static List<SystemBean> getSystemsData(Context context, String response) {
+        List<SystemBean> commentBeanList = new ArrayList<>();
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            int code = jsonObject.getInt("code");
+            if (code == 200) {
+                if(!TextUtils.isEmpty(jsonObject.getString("data")))
+                commentBeanList = new Gson().fromJson(jsonObject.getString("data"), new TypeToken<List<SystemBean>>() {}.getType());
+            } else {
+                showMsg(context, jsonObject.getString("message"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return commentBeanList;
+    }
+    //消息点赞列表
+    public static List<ZambiaBean> getZambiasData(Context context, String response) {
+        List<ZambiaBean> commentBeanList = new ArrayList<>();
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            int code = jsonObject.getInt("code");
+            if (code == 200) {
+                commentBeanList = new Gson().fromJson(jsonObject.getString("data"), new TypeToken<List<ZambiaBean>>() {
+                }.getType());
+            } else {
+                showMsg(context, jsonObject.getString("message"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return commentBeanList;
+    }
+    //消息评论列表
+    public static List<MsgCommentBean> getMsgCommentsData(Context context, String response) {
+        List<MsgCommentBean> commentBeanList = new ArrayList<>();
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            int code = jsonObject.getInt("code");
+            if (code == 200) {
+                commentBeanList = new Gson().fromJson(jsonObject.getString("data"), new TypeToken<List<MsgCommentBean>>() {
                 }.getType());
             } else {
                 showMsg(context, jsonObject.getString("message"));
@@ -225,7 +297,22 @@ public class ParseUtils {
         }
         return dataBean;
     }
-
+    //获取评论Id
+    public static int getCommentId(Context context, String response){
+        int id = 0;
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            int code = jsonObject.getInt("code");
+            if (code == 200) {
+                id = jsonObject.getInt("data");
+            } else {
+                showMsg(context, jsonObject.getString("message"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return id;
+    }
     public static boolean checkCode(String jsonData) {
         try {
             JSONObject jsonObject = new JSONObject(jsonData);

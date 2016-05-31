@@ -18,6 +18,7 @@ import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.KeySet;
 import com.xilu.wybz.common.MyCommon;
+import com.xilu.wybz.ui.base.BaseActivity;
 import com.xilu.wybz.ui.base.BasePlayMenuActivity;
 import com.xilu.wybz.ui.find.FindActivity;
 import com.xilu.wybz.ui.find.SearchWorksActivity;
@@ -45,7 +46,7 @@ import de.greenrobot.event.EventBus;
 /**
  * Created by June on 16/4/28.
  */
-public class MainTabActivity extends BasePlayMenuActivity {
+public class MainTabActivity extends BaseActivity {
     @Bind(R.id.viewpager)
     IndexViewPager viewpager;
     @Bind(R.id.tv_home)
@@ -122,7 +123,7 @@ public class MainTabActivity extends BasePlayMenuActivity {
         }
     }
 
-    @OnClick({R.id.rl_main_home, R.id.rl_main_find, R.id.rl_main_publish, R.id.rl_main_msg, R.id.rl_main_mine, R.id.ll_search})
+    @OnClick({R.id.rl_main_home, R.id.rl_main_find, R.id.rl_main_publish, R.id.rl_main_msg, R.id.rl_main_mine})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.rl_main_home:
@@ -145,9 +146,6 @@ public class MainTabActivity extends BasePlayMenuActivity {
             case R.id.rl_main_mine:
                 currentIndex = 3;
                 break;
-            case R.id.ll_search:
-                startActivity(SearchWorksActivity.class);
-                return;
         }
         if(PrefsUtil.getUserId(context)==0&&(currentIndex==2||currentIndex==3)){
             startActivity(LoginActivity.class);
@@ -180,8 +178,6 @@ public class MainTabActivity extends BasePlayMenuActivity {
         }
     };
     private void changeToolbar(int index){
-        app_bar_layout.setVisibility(index==3?View.GONE:View.VISIBLE);
-        ll_search.setVisibility(index==1?View.VISIBLE:View.GONE);
         switch (index){
             case 0:
                 setTitle(getResources().getString(R.string.app_name));
@@ -193,23 +189,7 @@ public class MainTabActivity extends BasePlayMenuActivity {
                 setTitle(getResources().getString(R.string.app_msg));
                 break;
             case 3:
-                setTitle(getResources().getString(R.string.app_mine));
-                break;
-        }
-    }
-    public void onEventMainThread(Event.PPStatusEvent event) {
-        switch (event.getStatus()) {
-            case 1://开始
-                startAnimal();
-                break;
-            case 2://停止
-                stopAnimal();
-                break;
-            case 3://播放
-                startAnimal();
-                break;
-            case 4://暂停
-                stopAnimal();
+                setTitle("");
                 break;
         }
     }
@@ -224,7 +204,7 @@ public class MainTabActivity extends BasePlayMenuActivity {
         PushAgent.getInstance(context).setExclusiveAlias(ub.userid+"", "yinchao");
     }
     public void onEventMainThread(Event.LoginOutEvent event){
-        finish();
+        viewpager.setCurrentItem(0,false);
     }
     @Override
     protected void onDestroy() {

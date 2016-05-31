@@ -163,7 +163,6 @@ public class PlayService extends Service {
             public void onError(Call call, Exception e) {
                 EventBus.getDefault().post(new Event.PPStatusEvent(7));
             }
-
             @Override
             public void onResponse(String response) {
                 if (ParseUtils.checkCode(response)) {

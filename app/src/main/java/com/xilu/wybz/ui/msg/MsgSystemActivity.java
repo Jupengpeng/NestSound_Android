@@ -15,6 +15,7 @@ import com.xilu.wybz.presenter.MsgSystemPresenter;
 import com.xilu.wybz.ui.IView.ISystemMsgView;
 import com.xilu.wybz.ui.base.BaseListActivity;
 import com.xilu.wybz.ui.BrowserActivity;
+import com.xilu.wybz.utils.DateTimeUtil;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.PullRecycler;
@@ -103,8 +104,6 @@ public class MsgSystemActivity extends BaseListActivity<SystemBean> implements I
     class SampleViewHolder extends BaseViewHolder {
         @Bind(R.id.iv_cover)
         SimpleDraweeView ivCover;
-        @Bind(R.id.iv_head)
-        SimpleDraweeView ivHead;
         @Bind(R.id.tv_time)
         TextView tvTime;
         @Bind(R.id.tv_username)
@@ -134,21 +133,20 @@ public class MsgSystemActivity extends BaseListActivity<SystemBean> implements I
         @Override
         public void onBindViewHolder(int position) {
             SystemBean systemBean = mDataList.get(position);
-            if (TextUtils.isEmpty(systemBean.getDetailurl())) {
-                tvContent.setText(systemBean.getContent());
+            if (systemBean.type==1) {
+                tvContent.setText(systemBean.context);
                 tvContent.setVisibility(View.VISIBLE);
                 llDetail.setVisibility(View.GONE);
             } else {
-                tvInfo.setText(systemBean.getContent());
+                tvInfo.setText(systemBean.context);
                 tvContent.setVisibility(View.GONE);
                 llDetail.setVisibility(View.VISIBLE);
-                if(!TextUtils.isEmpty(systemBean.getPicurl())){
-                    loadImage(systemBean.getPicurl(), ivCover);
+                if(!TextUtils.isEmpty(systemBean.pic)){
+                    loadImage(systemBean.pic, ivCover);
                 }
             }
-            tvUserName.setText(systemBean.getSysname().replace("无乐不作", "音巢音乐"));
-            tvTime.setText(systemBean.getSendtime());
-            loadImage(systemBean.getSysheadurl(), ivHead);
+            tvUserName.setText("音巢音乐");
+            tvTime.setText(DateTimeUtil.timestamp2DateTime(systemBean.createdate));
         }
 
         @Override
@@ -159,6 +157,6 @@ public class MsgSystemActivity extends BaseListActivity<SystemBean> implements I
     }
 
     void toWebView(SystemBean systemBean) {
-        BrowserActivity.toBrowserActivity(context, systemBean.getDetailurl());
+        BrowserActivity.toBrowserActivity(context, systemBean.url);
     }
 }
