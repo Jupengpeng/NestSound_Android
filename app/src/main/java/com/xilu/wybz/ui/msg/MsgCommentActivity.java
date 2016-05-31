@@ -100,7 +100,7 @@ public class MsgCommentActivity extends BaseListActivity<MsgCommentBean> impleme
     }
 
     @Override
-    public void commentSuccess() {
+    public void commentSuccess(int id) {
         commentDialog.dismiss();
         commentDialog.cleanData();
         showMsg("回复成功！");

@@ -13,21 +13,53 @@ import java.util.List;
 public class Event {
     public static class DelFocusEvent {
     }
+
+    public static class UpdataCommentNumEvent {
+        int type;
+        int num;
+
+        public UpdataCommentNumEvent(int type, int num) {
+            this.type = type;
+            this.num = num;
+        }
+
+        public int getType() {
+            return type;
+        }
+
+        public void setType(int type) {
+            this.type = type;
+        }
+
+        public int getNum() {
+            return num;
+        }
+
+        public void setNum(int num) {
+            this.num = num;
+        }
+    }
+
     public static class ShowSearchTabEvent {
     }
+
     public static class UpdateLyricsData {
         WorksData worksData;
+
         public UpdateLyricsData(WorksData worksData) {
             this.worksData = worksData;
         }
 
         public WorksData getWorksData() {
             return worksData;
-        }    }
+        }
+    }
+
     public static class SelectPicEvent {
         List<PhotoBean> pics;
-        public SelectPicEvent(List<PhotoBean> pics){
-            this.pics=pics;
+
+        public SelectPicEvent(List<PhotoBean> pics) {
+            this.pics = pics;
         }
 
         public List<PhotoBean> getPics() {
@@ -38,8 +70,10 @@ public class Event {
             this.pics = pics;
         }
     }
+
     public static class ImportWordEvent {
         WorksData worksData;
+
         public ImportWordEvent(WorksData worksData) {
             this.worksData = worksData;
         }
@@ -172,8 +206,9 @@ public class Event {
 
     public static class LoginSuccessEvent {
         UserBean userBean;
-        public LoginSuccessEvent(UserBean userBean){
-            this.userBean= userBean;
+
+        public LoginSuccessEvent(UserBean userBean) {
+            this.userBean = userBean;
         }
 
         public UserBean getUserBean() {

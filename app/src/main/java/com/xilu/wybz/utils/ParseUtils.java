@@ -243,7 +243,22 @@ public class ParseUtils {
         }
         return dataBean;
     }
-
+    //获取评论Id
+    public static int getCommentId(Context context, String response){
+        int id = 0;
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            int code = jsonObject.getInt("code");
+            if (code == 200) {
+                id = jsonObject.getInt("data");
+            } else {
+                showMsg(context, jsonObject.getString("message"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return id;
+    }
     public static boolean checkCode(String jsonData) {
         try {
             JSONObject jsonObject = new JSONObject(jsonData);

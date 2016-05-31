@@ -70,7 +70,10 @@ public class MsgCommentPresenter extends BasePresenter<ICommentView> {
             @Override
             public void onResponse(String response) {
                 super.onResponse(response);
-                iView.commentSuccess();
+                int id = ParseUtils.getCommentId(context,response);
+                if(id>0) {
+                    iView.commentSuccess(id);
+                }
             }
 
             @Override

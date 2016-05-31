@@ -24,6 +24,7 @@ import com.xilu.wybz.bean.ActionBean;
 import com.xilu.wybz.bean.CommentBean;
 import com.xilu.wybz.bean.MsgCommentBean;
 import com.xilu.wybz.bean.WorksData;
+import com.xilu.wybz.common.Event;
 import com.xilu.wybz.presenter.CommentPresenter;
 import com.xilu.wybz.ui.IView.ICommentView;
 import com.xilu.wybz.ui.MyApplication;
@@ -45,11 +46,12 @@ import com.xilu.wybz.view.pull.PullRecycler;
 import java.util.ArrayList;
 import java.util.List;
 import butterknife.Bind;
+import de.greenrobot.event.EventBus;
+
 /**
  * Created by Administrator on 2016/5/25.
  */
 public class CommentActivity extends BaseListActivity<CommentBean> implements ICommentView {
-
     private LinearLayout llFootBar;
     private EditText etContent;
     private ImageView tvSend;
@@ -60,6 +62,8 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
     private int targetUid;
     private String targetName;
     private String content;
+    private int delPos;
+
     String[] actionTitles = new String[]{"删除"};
     String[] actionTypes = new String[]{"del"};
     List<ActionBean> actionBeanList;
@@ -201,11 +205,13 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
     }
 
     @Override
-    public void commentSuccess() {
+    public void commentSuccess(int id) {
+        EventBus.getDefault().post(new Event.UpdataCommentNumEvent(type,1));
         CommentBean commentBean = new CommentBean();
         commentBean.setUid(PrefsUtil.getUserId(context));
         commentBean.setTarget_uid(targetUid);
         commentBean.setType(type);
+        commentBean.setId(id);
         commentBean.setComment_type(commentType);
         commentBean.setTarget_nickname(targetName);
         commentBean.setComment(content);
@@ -232,15 +238,18 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
     @Override
     public void delSuccess(int pos) {
         removeItem(pos);
+        EventBus.getDefault().post(new Event.UpdataCommentNumEvent(type,-1));
         if(mDataList.size()==0){
             llNoData.setVisibility(View.VISIBLE);
         }
+        if(actionMoreDialog!=null)
         actionMoreDialog.dismiss();
     }
 
     @Override
     public void delFail() {
         showMsg("删除失败！");
+        if(actionMoreDialog!=null)
         actionMoreDialog.dismiss();
     }
     @Override
@@ -278,16 +287,14 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
                 CommentBean commentBean = mDataList.get(position);
                 boolean isMe = commentBean.uid == PrefsUtil.getUserId(context);
                 if (isMe) {
-                    if (actionMoreDialog == null) {
-                        actionMoreDialog = new ActionMoreDialog(context, new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
-                                if (pos == 0) {
-                                    commentPresenter.delComment(commentBean.id, position, type);
-                                }
+                    actionMoreDialog = new ActionMoreDialog(context, new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
+                            if (pos == 0) {
+                                commentPresenter.delComment(commentBean.id, position, type);
                             }
-                        }, actionBeanList);
-                    }
+                        }
+                    }, actionBeanList);
                     if (!actionMoreDialog.isShowing()) {
                         actionMoreDialog.showDialog();
                     }

@@ -20,7 +20,7 @@ public interface ICommentView extends IBaseView {
 
     void loadNoData();
 
-    void commentSuccess();
+    void commentSuccess(int id);
 
     void commentFail();
 

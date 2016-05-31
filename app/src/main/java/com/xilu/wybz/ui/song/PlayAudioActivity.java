@@ -573,6 +573,13 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     public void saveMusicBean() {
         PrefsUtil.putString("playdata" + id, new Gson().toJson(worksData), context);
     }
+
+    //更新评论数量
+    public void onEventMainThread(Event.UpdataCommentNumEvent event){
+        if(event.getType()==1){
+            tvCommentNum.setText(worksData.getCommentnum()+event.getNum()+"");
+        }
+    }
     public void onEventMainThread(Event.PPStatusEvent event) {
         switch (event.getStatus()) {
             case 1://开始
