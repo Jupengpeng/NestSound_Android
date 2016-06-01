@@ -28,6 +28,8 @@ public class ImportWordActivity extends BaseListActivity<WorksData> implements I
     String nodata = "暂无歌词";
     int nodatares = R.drawable.ic_nozan;
     private ImportWordPresenter importWordPresenter;
+
+
     @Override
     protected void initPresenter() {
         importWordPresenter = new ImportWordPresenter(context,this);

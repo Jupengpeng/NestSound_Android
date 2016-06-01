@@ -16,7 +16,7 @@
         android:paddingLeft="21dp"
         android:paddingRight="21dp">
 
-        <TextView
+        <EditText
             android:id="@+id/et_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -33,8 +33,8 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:layerType="software"
-            android:background="@drawable/makeword_line" />
+            android:background="@drawable/makeword_line"
+            android:layerType="software" />
 
         <ScrollView
             android:layout_width="match_parent"
@@ -44,10 +44,11 @@
             android:scrollbarThumbVertical="@drawable/transparent"
             android:scrollbars="vertical">
 
-            <TextView
+            <EditText
                 android:id="@+id/et_word"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="40dp"
                 android:background="@color/tran"
                 android:elegantTextHeight="true"
                 android:gravity="center_horizontal|top"
@@ -55,107 +56,60 @@
                 android:textSize="@dimen/yc_15" />
         </ScrollView>
     </LinearLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="2px"
         android:background="@color/main_theme_color" />
+
     <com.xilu.wybz.view.WaveSurfaceView
         android:id="@+id/make_sv_wave"
         android:layout_width="match_parent"
-        android:layout_height="180dp"
-        />
+        android:layout_height="120dp" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="2px"
         android:background="@color/main_theme_color" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="vertical">
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2px"
-            android:background="@color/main_theme_color" />
-
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2px"
-            android:background="@color/main_theme_color" />
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="76dp">
 
-        <RelativeLayout
-            android:id="@+id/rl_import"
+        <Space
+            android:layout_width="60dp"
+            android:layout_height="match_parent" />
+
+        <ImageView
+            android:id="@+id/iv_play"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:scaleType="center"
+            android:src="@drawable/ic_replay_play" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:src="@drawable/ic_record_import" />
-        </RelativeLayout>
 
-        <RelativeLayout
-            android:id="@+id/rl_play"
+        <ImageView
+            android:id="@+id/iv_record"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:scaleType="center"
+            android:src="@drawable/ic_record_unstart" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:src="@drawable/ic_replay_play" />
-        </RelativeLayout>
 
-        <RelativeLayout
-            android:id="@+id/rl_record"
+        <ImageView
+            android:id="@+id/iv_restart"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:scaleType="center"
+            android:src="@drawable/ic_record_restart" />
+        <Space
+            android:layout_width="60dp"
+            android:layout_height="match_parent" />
 
-            <ImageView
-                android:id="@+id/iv_record"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:src="@drawable/ic_record_luyin_unstart" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/rl_restart"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:src="@drawable/ic_record_restart" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/rl_edit"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:src="@drawable/ic_record_edit" />
-        </RelativeLayout>
 
     </LinearLayout>
 </LinearLayout>

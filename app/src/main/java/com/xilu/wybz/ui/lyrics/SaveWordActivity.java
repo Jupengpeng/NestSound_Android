@@ -193,6 +193,9 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView{
         EventBus.getDefault().post(new Event.SaveLyricsSuccessEvent(3, worksData));
         EventBus.getDefault().post(new Event.SaveLyricsSuccessEvent(4, worksData));
 
+        //录音编辑歌词
+        EventBus.getDefault().post(new Event.SaveLyricsSuccessEvent(5, worksData));
+
     }
     @Override
     public void saveWordFail() {

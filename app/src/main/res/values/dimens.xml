@@ -37,6 +37,8 @@
     <dimen name="yc_18">18dp</dimen>
     <dimen name="yc_56">56dp</dimen>
 
+    <dimen name="seekbar_progress">1.0dp</dimen>
+
     <!-- Margin around the dialog, excluding the button bar -->
     <dimen name="md_dialog_frame_margin">24dp</dimen>
     <!-- Total title margin bottom is 16, but we split this between content and title -->

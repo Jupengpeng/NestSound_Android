@@ -61,6 +61,8 @@ public class WaveSurfaceHelper {
         //初始化画笔，方便使用减少重复创建
 //        initPaint();
         //设置Callback为了自动初始化View
+
+        data = new ArrayList<>();
         surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
@@ -77,8 +79,10 @@ public class WaveSurfaceHelper {
                 adaptationScreen();
                 initPaint();
 
+                onDrawWave();
 
-                onDrawWaveByThread();
+
+//                onDrawWaveByThread();
             }
 
             @Override
@@ -285,6 +289,10 @@ public class WaveSurfaceHelper {
 
         List<Short> list = data;
 
+        if (list == null){
+            return;
+        }
+
         if (list == null || list.size() == 0 ||currentPosition < 0){
             return;
         }
@@ -372,7 +380,7 @@ public class WaveSurfaceHelper {
 
         height= (int)Math.sqrt(1.0*height);
 
-//        height= (int)(height*0.8);
+        height= (int)(height*configure.scaleRate);
 
         if (height > configure.waveMAX){
             height = configure.waveMAX;
@@ -456,6 +464,9 @@ public class WaveSurfaceHelper {
     public void setOffX(int offx){
 
         Log.d("sur","offx:" + offx);
+        if (data == null || data.size() == 0){
+            return;
+        }
 
         if (offx > 0){
 
@@ -477,7 +488,6 @@ public class WaveSurfaceHelper {
                 screenOff = configure.waveSpace-1;
             }
 
-
         } else {
 
             int i = offx/configure.waveSpace;
@@ -497,11 +507,9 @@ public class WaveSurfaceHelper {
                 currentPosition = 0;
                 screenOff = 0;
             }
-
         }
 
         onDrawWave();
-
     }
 
 
@@ -528,6 +536,8 @@ public class WaveSurfaceHelper {
         public int color5 = Color.parseColor("#ffd6d6d6");
         public int color6 = Color.parseColor("#32d6d6d6");
 
+        public float scaleRate = 0.68f;
+
         //ruler
         public int offy = 40;
         public int d = 1;
@@ -542,9 +552,6 @@ public class WaveSurfaceHelper {
         public int waveSpace = 4;
 
 
-
-
-
         public void adapter(int density){
 
             offy = offy/2*density;
@@ -556,6 +563,8 @@ public class WaveSurfaceHelper {
 
             wave = wave/2*density;
             waveSpace = waveSpace/2*density;
+
+            scaleRate = scaleRate/2*density;
 
         }
 

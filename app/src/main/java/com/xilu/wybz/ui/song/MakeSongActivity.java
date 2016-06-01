@@ -6,54 +6,65 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.czt.mp3recorder.MP3Recorder;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.TemplateBean;
 import com.xilu.wybz.bean.WorksData;
+import com.xilu.wybz.common.Event;
+import com.xilu.wybz.common.PlayMediaInstance;
 import com.xilu.wybz.common.RecordInstance;
 import com.xilu.wybz.dao.DBManager;
+import com.xilu.wybz.ui.IView.IMakeSongView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
+import com.xilu.wybz.ui.lyrics.ImportWordActivity;
 import com.xilu.wybz.view.WaveSurfaceView;
+import com.xilu.wybz.view.materialdialogs.GravityEnum;
+import com.xilu.wybz.view.materialdialogs.MaterialDialog;
 
 import java.util.List;
 import java.util.Timer;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by hujunwei on 16/5/19.
  */
-public class MakeSongActivity extends ToolbarActivity {
+public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
+
     @Bind(R.id.ll_main)
     LinearLayout llMain;
     @Bind(R.id.et_title)
-    TextView etTitle;
+    EditText etTitle;
     @Bind(R.id.et_word)
-    TextView etWord;
-
+    EditText etWord;
 
     @Bind(R.id.make_sv_wave)
     WaveSurfaceView makeSvWave;
-    //    @Bind(R.id.tv_time)
-//    TextView tvTime;
-//    @Bind(R.id.tv_alltime)
-//    TextView tvAlltime;
-    TemplateBean templateBean;
-    WorksData worksData;
-    long startRecordTime, startPlayTime, allTime;
-    Timer recordTimer, playTimer;
-    String RECORD_TAG;
-    boolean isQc; //是不是清唱
-    DBManager dbManager;
 
-    WaveSurfaceHelper helper;
     @Bind(R.id.iv_record)
     ImageView ivRecord;
+    @Bind(R.id.iv_play)
+    ImageView ivPlay;
+    @Bind(R.id.iv_restart)
+    ImageView ivRestart;
+
+
+    private TemplateBean templateBean;
+    private WorksData worksData;
+    private long startRecordTime, startPlayTime, allTime;
+    private Timer recordTimer, playTimer;
+    private String RECORD_TAG;
+    private boolean isQc; //是不是清唱
+    private DBManager dbManager;
+
+    private WaveSurfaceHelper helper;
+
 
 
     public static void ToMakeSongActivity(Context context, TemplateBean templateBean) {
@@ -70,23 +81,63 @@ public class MakeSongActivity extends ToolbarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initView();
         initData();
+        initView();
+
+
+
+        EventBus.getDefault().register(this);
+        setProgress(1);
+
+        if (PlayMediaInstance.getInstance().status == 3) {
+            PlayMediaInstance.getInstance().pauseMediaPlay();
+            EventBus.getDefault().post(new Event.PPStatusEvent(4));
+        }
+
+
     }
 
-    private void initView() {
+    @Override
+    public void initView() {
 //        setTitle("");
 //        RecordInstance.getInstance().setSurfaceView(makeSvWave);
 //        llMain.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+
+
+        helper = makeSvWave.getWaveSurfaceHelper();
         RecordInstance.getInstance().getMp3Recorder().setListenner(new MP3Recorder.OnWaveChangeListenner() {
             @Override
             public void onChange(List<Short> data) {
-                makeSvWave.getWaveSurfaceHelper().onDrawWave(data,data.size());
-
-                makeSvWave.getWaveSurfaceHelper().isrun = false;
+                helper.onDrawWave(data, data.size());
+                helper.isrun = false;
             }
         });
 
+    }
+
+
+    @Override
+    public void setLoadProgress(int progress) {
+        if (materialDialog != null){
+            materialDialog.setProgress(progress);
+        }
+    }
+
+    public void showWorks(){
+
+        etTitle.setText(worksData.title);
+        etWord.setText(worksData.lyrics);
+
+    }
+
+    public void onEventMainThread(Event.ImportWordEvent event){
+        this.worksData = event.getWorksData();
+        showWorks();
+    }
+
+    public void onEventMainThread(Event.SaveLyricsSuccessEvent event){
+        this.worksData = event.getLyricsdisplayBean();
+        showWorks();
     }
 
     private void initData() {
@@ -97,17 +148,29 @@ public class MakeSongActivity extends ToolbarActivity {
         if (templateBean == null) isQc = true;
     }
 
-    @OnClick({R.id.rl_import, R.id.rl_play, R.id.rl_record, R.id.rl_restart, R.id.rl_edit})
+    @OnClick({ R.id.iv_play, R.id.iv_record, R.id.iv_restart})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.rl_import:
-                break;
-            case R.id.rl_play:
-                break;
-            case R.id.rl_record:
-//                startActivity(TestActivity.class);
+//            case R.id.iv_import:
+//                startActivity(ImportWordActivity.class);
+//                break;
+            case R.id.iv_play:
 
-                if (RecordInstance.getInstance().isStart()){
+                materialDialog = new MaterialDialog.Builder(this)
+                        .title("伴奏下载")
+                        .content(R.string.please_wait_down)
+                        .contentGravity(GravityEnum.CENTER)
+                        .progress(false, 100, true)
+                        .canceledOnTouchOutside(false).build();
+
+                materialDialog.show();
+                materialDialog.setProgress(20);
+
+
+                break;
+            case R.id.iv_record:
+
+                if (RecordInstance.getInstance().isStart()) {
 
                     RecordInstance.getInstance().toPause();
                     showRecordPlay();
@@ -118,30 +181,46 @@ public class MakeSongActivity extends ToolbarActivity {
                 }
 
                 break;
-            case R.id.rl_restart:
+            case R.id.iv_restart:
                 break;
-            case R.id.rl_edit:
-                break;
+//            case R.id.iv_edit:
+//                MakeWordActivity.toMakeWordActivity(this,worksData);
+//                break;
         }
     }
 
 
-    public void showRecordPlay(){
-        ivRecord.setImageResource(R.drawable.ic_record_luyin_unstart);
+    public void showRecordPlay() {
+        ivRecord.setImageResource(R.drawable.ic_record_unstart);
     }
 
-    public void showRecordPause(){
-        ivRecord.setImageResource(R.drawable.ic_record_pause);
+    public void showRecordPause() {
+        ivRecord.setImageResource(R.drawable.ic_record_start);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_next, menu);
+        getMenuInflater().inflate(R.menu.menu_makesong, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()){
+            case R.id.menu_import:
+                startActivity(ImportWordActivity.class);
+                return true;
+            case R.id.menu_next:
+                SaveSongActivity.toSaveSongActivity(this,worksData);
+                return true;
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

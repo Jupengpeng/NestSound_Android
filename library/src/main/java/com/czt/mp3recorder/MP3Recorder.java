@@ -52,6 +52,8 @@ public class MP3Recorder {
     private boolean mIsRecording = false;
     private File mRecordFile;
 
+    private ArrayList<Short> buf = new ArrayList<Short>();
+
 
     /**
      * Default constructor. Setup recorder with default sampling rate 1 channel,
@@ -79,10 +81,15 @@ public class MP3Recorder {
          * (round up to the factor of given frame size)
 		 * 使能被整除，方便下面的周期性通知
 		 * */
-        int frameSize = mBufferSize / bytesPerFrame;
-        if (frameSize % FRAME_COUNT != 0) {
-            frameSize += (FRAME_COUNT - frameSize % FRAME_COUNT);
-            mBufferSize = frameSize * bytesPerFrame;
+//        int frameSize = mBufferSize / bytesPerFrame;
+//        if (frameSize % FRAME_COUNT != 0) {
+//            frameSize += (FRAME_COUNT - frameSize % FRAME_COUNT);
+//            mBufferSize = frameSize * bytesPerFrame;
+//        }
+
+        if (mBufferSize > 420){
+            mBufferSize = 420;
+            Log.d("auto","mBufferSize:"+420);
         }
 
 		/* Setup audio recorder */
@@ -113,6 +120,9 @@ public class MP3Recorder {
      *
      * @throws IOException initAudioRecorder throws
      */
+
+    int index = 0;
+
     public void start() throws IOException {
         if (mIsRecording) return;
         initAudioRecorder();
@@ -124,39 +134,43 @@ public class MP3Recorder {
                 //设置线程权限
                 android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_URGENT_AUDIO);
                 mIsRecording = true;
-                long time = System.currentTimeMillis();
+//                long time = System.currentTimeMillis();
                 while (mIsRecording) {
-                    long t1 = System.currentTimeMillis();
+//                    long t1 = System.currentTimeMillis();
                     int readSize = mAudioRecord.read(mPCMBuffer, 0, mBufferSize );
-                    long t2 = System.currentTimeMillis();
+//                    long t2 = System.currentTimeMillis();
                     if (readSize > 0) {
                         mEncodeThread.addTask(mPCMBuffer, readSize);
                     }
-                    Log.d("auto", "size:" + readSize + "-->>:" + mBufferSize);
-
+//                    Log.d("auto", "size:" + readSize + "-->>:" + mBufferSize);
+                    if (index < 5 ){
+                        index++;
+                        continue;
+                    }
+                    index = 0;
                     synchronized (inBuf) {
 
                         inBuf.add(calculateRealVolume(mPCMBuffer, readSize));
                     }
 
-                    Log.d("auto", "inBuf:" + inBuf.size() + " value:" + inBuf.get(inBuf.size() - 1));
+//                    Log.d("auto", "inBuf:" + inBuf.size() + " value:" + inBuf.get(inBuf.size() - 1));
 
-
-                    ArrayList<Short> buf = new ArrayList<Short>();
                     synchronized (inBuf) {
                         if (inBuf.size() == 0) {
-                            return;
+                            continue;
                         }
-                        buf = (ArrayList<Short>) inBuf.clone();// 保存
+                        if (mIsRecording){
+                            buf = (ArrayList<Short>) inBuf.clone();// 保存
+                        }
                     }
-                    long t3 = System.currentTimeMillis();
+//                    long t3 = System.currentTimeMillis();
                     if (listenner != null) {
                         listenner.onChange(buf);
                     }
-                    long t4 = System.currentTimeMillis();
+//                    long t4 = System.currentTimeMillis();
 
-                    Log.d("auto", "times: 1=" + (t1 - t1) + " 2=" + (t2 - t1) + " 3=" + (t3 - t1) + " 4=" + (t4 - t1) + " 5=" + (t4 - t1)+" tx:"+(time-t1));
-                    time = t4;
+//                    Log.d("auto", "times: 1=" + (t1 - t1) + " 2=" + (t2 - t1) + " 3=" + (t3 - t1) + " 4=" + (t4 - t1) + " 5=" + (t4 - t1)+" tx:"+(time-t1));
+//                    time = t4;
                 }
 
                 // release and finalize audioRecord
