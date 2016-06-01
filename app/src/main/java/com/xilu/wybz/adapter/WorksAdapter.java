@@ -69,7 +69,7 @@ public class WorksAdapter extends RecyclerView.Adapter<WorksAdapter.WorksViewHol
         WorksData worksData = mList.get(position);
         String url = MyCommon.getImageUrl(worksData.getPic(), itemWidth, itemWidth);
         ImageLoadUtil.loadImage(url, holder.ivCover);
-        holder.tvName.setText(worksData.name);
+        holder.tvName.setText(worksData.title);
         holder.tvAuthor.setText(worksData.author);
         holder.tvCount.setText(worksData.looknum + "");
         holder.ivType.setImageResource(worksData.status == 1 ? R.drawable.ic_song_type : R.drawable.ic_lyric_type);

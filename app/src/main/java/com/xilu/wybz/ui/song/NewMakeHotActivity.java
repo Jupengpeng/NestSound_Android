@@ -387,14 +387,24 @@ public class NewMakeHotActivity extends ToolbarActivity implements IHotView, Vie
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.menu_search:
-                if(PlayBanZouInstance.getInstance().status>1){
-                    PlayBanZouInstance.getInstance().stopMediaPlay();
-                    adapter.updateData();
-                }
+                //关闭播放
+                stopPlayBz();
                 startActivity(SearchHotActivity.class);
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
-
+    public void stopPlayBz(){
+        if(PlayBanZouInstance.getInstance().status>1){
+            PlayBanZouInstance.getInstance().stopMediaPlay();
+            if(adapter!=null)
+            adapter.updateData();
+        }
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //关闭播放
+        stopPlayBz();
+    }
 }

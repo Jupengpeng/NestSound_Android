@@ -42,15 +42,15 @@
                 android:padding="10dp">
                 <ImageView
                     android:id="@+id/iv_play"
-                    android:layout_width="25dip"
-                    android:layout_height="25dip"
+                    android:layout_width="21dip"
+                    android:layout_height="21dip"
                     android:src="@drawable/ic_bz_play" />
 
                 <ProgressBar
                     android:id="@+id/progress"
                     style="@style/android:Widget.Holo.Light.ProgressBar.Large.Inverse"
-                    android:layout_width="25dip"
-                    android:layout_height="25dip"
+                    android:layout_width="21dip"
+                    android:layout_height="21dip"
                     android:visibility="invisible" />
             </RelativeLayout>
 

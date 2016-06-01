@@ -58,9 +58,9 @@ public class HotListAdapter extends WyBaseAdapter<TemplateBean> {
         if(StringUtil.isNotBlank(templateBean.pic)) loadImage(templateBean.pic, iv_cover, itemWidth, itemHeight);
         if (!TextUtils.isEmpty(MyApplication.musicId) && MyApplication.musicId.equals(templateBean.id)&&PlayMediaInstance.getInstance().status==3) {
             currIv = ivPlay;
-            ivPlay.setImageResource(R.drawable.ic_pause);
+            ivPlay.setImageResource(R.drawable.ic_bz_pause);
         }else{
-            ivPlay.setImageResource(R.drawable.ic_play);
+            ivPlay.setImageResource(R.drawable.ic_bz_play);
         }
         rlPlay.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,6 +103,7 @@ public class HotListAdapter extends WyBaseAdapter<TemplateBean> {
         if(currProgress!=null&&currIv!=null) {
             currProgress.setVisibility(View.GONE);
             currIv.setVisibility(View.VISIBLE);
+            currIv.setImageResource(R.drawable.ic_bz_pause);
         }
     }
     public void setITemplateMusicListener(ITemplateMusicListener iml) {

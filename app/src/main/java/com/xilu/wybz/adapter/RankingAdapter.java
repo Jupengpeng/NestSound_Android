@@ -54,7 +54,7 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.WorksVie
         WorksData worksData = mList.get(position);
         String url = MyCommon.getImageUrl(worksData.getPic(), itemWidth, itemWidth);
         ImageLoadUtil.loadImage(url, holder.ivCover);
-        holder.tvName.setText(worksData.name);
+        holder.tvName.setText(worksData.title);
         holder.tvAuthor.setText(worksData.author);
         holder.tvLookNum.setText(NumberUtil.format(worksData.looknum));
         holder.tvZanNum.setText(NumberUtil.format(worksData.zannum));
