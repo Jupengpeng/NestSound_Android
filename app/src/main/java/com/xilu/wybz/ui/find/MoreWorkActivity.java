@@ -160,7 +160,7 @@ public class MoreWorkActivity extends BaseListActivity<WorksData> implements IFi
             WorksData worksData = mDataList.get(position);
             String url = MyCommon.getImageUrl(worksData.getPic(), itemWidth, itemWidth);
             ImageLoadUtil.loadImage(url, ivCover);
-            tvName.setText(worksData.name);
+            tvName.setText(worksData.title);
             tvAuthor.setText(worksData.author);
             tvLookNum.setText(NumberUtil.format(worksData.looknum));
             tvZanNum.setText(NumberUtil.format(worksData.zannum));

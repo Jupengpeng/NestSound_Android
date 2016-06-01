@@ -97,6 +97,23 @@ public class ParseUtils {
         }
         return commentBeanList;
     }
+    //评论列表
+    public static List<TemplateBean> getTemplatesData(Context context, String response) {
+        List<TemplateBean> commentBeanList = new ArrayList<>();
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            int code = jsonObject.getInt("code");
+            if (code == 200) {
+                commentBeanList = new Gson().fromJson(jsonObject.getString("data"), new TypeToken<List<TemplateBean>>() {
+                }.getType());
+            } else {
+                showMsg(context, jsonObject.getString("message"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return commentBeanList;
+    }
     //消息收藏列表
     public static List<CollectionBean> getFavsData(Context context, String response) {
         List<CollectionBean> commentBeanList = new ArrayList<>();

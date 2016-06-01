@@ -58,10 +58,6 @@ public class SongFragment extends BaseFragment implements ISongView {
             public void onItemClick(View view, int position) {
                 toPlayPos(newWorksDatas,position,MyCommon.NEWS);
             }
-            @Override
-            public void onItemLongClick(View view, int position) {
-
-            }
         });
     }
 
@@ -76,11 +72,6 @@ public class SongFragment extends BaseFragment implements ISongView {
             @Override
             public void onItemClick(View view, int position) {
                 toPlayPos(hotWorksDatas,position,MyCommon.RED);
-            }
-
-            @Override
-            public void onItemLongClick(View view, int position) {
-
             }
         });
     }

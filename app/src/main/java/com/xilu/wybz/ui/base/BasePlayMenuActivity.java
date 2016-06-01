@@ -11,6 +11,7 @@ import com.xilu.wybz.R;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.PlayMediaInstance;
 import com.xilu.wybz.ui.song.PlayAudioActivity;
+import com.xilu.wybz.ui.song.SearchHotActivity;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.view.AnimImageView;
 
@@ -52,12 +53,14 @@ public abstract class BasePlayMenuActivity extends ToolbarActivity {
         resourceIdList.add(R.drawable.ic_menu_play_17);
         resourceIdList.add(R.drawable.ic_menu_play_18);
         initAnimal();
-        rl_right.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onPlayMenuClick();
-            }
-        });
+        if(!(this instanceof SearchHotActivity)) {
+            rl_right.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onPlayMenuClick();
+                }
+            });
+        }
     }
 
     private void initAnimal() {

@@ -28,7 +28,7 @@ public class UploadFileUtil {
             @Override
             public void onSuccess(String result) {
                 try {
-                    String filrUrl = MyHttpClient.QINIU_URL + new JSONObject(result).getString("key");
+                    String filrUrl = new JSONObject(result).getString("key");
                     mUploadResult.onSuccess(filrUrl);
                 } catch (JSONException e) {
                     e.printStackTrace();

@@ -48,7 +48,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongAl
     public void onBindViewHolder(final SongAlbumViewHolder holder, final int position) {
         WorksData worksData = mDatas.get(position);
         holder.tvAuthor.setTag(worksData);
-        holder.tvName.setText(worksData.name);
+        holder.tvName.setText(worksData.title);
         holder.tvAuthor.setText(worksData.getAuthor());
         holder.tvNum.setText(""+(position+1));
         if(mOnItemClickListener!=null) {

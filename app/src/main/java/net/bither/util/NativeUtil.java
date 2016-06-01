@@ -22,7 +22,6 @@ import android.graphics.Rect;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-
 import com.xilu.wybz.common.DownLoaderDir;
 import com.xilu.wybz.utils.BitmapUtils;
 import com.xilu.wybz.utils.FileUtils;
@@ -134,7 +133,7 @@ public class NativeUtil {
 			}
 		}
 	};
-	public static interface CompressPicInterface {
-		public void onCompressResult(int errorCode, String path);
+	public interface CompressPicInterface {
+		void onCompressResult(int errorCode, String path);
 	}
 }

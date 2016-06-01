@@ -49,8 +49,6 @@ public class WorksAdapter extends RecyclerView.Adapter<WorksAdapter.WorksViewHol
 
     public interface OnItemClickListener {
         void onItemClick(View view, int position);
-
-        void onItemLongClick(View view, int position);
     }
 
     private OnItemClickListener mOnItemClickListener;
@@ -69,7 +67,7 @@ public class WorksAdapter extends RecyclerView.Adapter<WorksAdapter.WorksViewHol
         WorksData worksData = mList.get(position);
         String url = MyCommon.getImageUrl(worksData.getPic(), itemWidth, itemWidth);
         ImageLoadUtil.loadImage(url, holder.ivCover);
-        holder.tvName.setText(worksData.name);
+        holder.tvName.setText(worksData.title);
         holder.tvAuthor.setText(worksData.author);
         holder.tvCount.setText(worksData.looknum + "");
         holder.ivType.setImageResource(worksData.status == 1 ? R.drawable.ic_song_type : R.drawable.ic_lyric_type);
@@ -81,29 +79,22 @@ public class WorksAdapter extends RecyclerView.Adapter<WorksAdapter.WorksViewHol
                     mOnItemClickListener.onItemClick(holder.itemView, pos);
                 }
             });
-            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    mOnItemClickListener.onItemLongClick(holder.itemView, position);
-                    return false;
-                }
-            });
         }
     }
 
-    public void toPlayNewMusic(WorksData worksData) {
-        if (serviceIntent == null) {
-            serviceIntent = new Intent(context, PlayService.class);
-            serviceIntent.putExtra("id", worksData.itemid);
-            serviceIntent.putExtra("from", come);
-            serviceIntent.putExtra("gedanid", "");
-            context.startService(serviceIntent);
-        } else {
-            context.stopService(serviceIntent);
-            serviceIntent = null;
-            toPlayNewMusic(worksData);
-        }
-    }
+//    public void toPlayNewMusic(WorksData worksData) {
+//        if (serviceIntent == null) {
+//            serviceIntent = new Intent(context, PlayService.class);
+//            serviceIntent.putExtra("id", worksData.itemid);
+//            serviceIntent.putExtra("from", come);
+//            serviceIntent.putExtra("gedanid", "");
+//            context.startService(serviceIntent);
+//        } else {
+//            context.stopService(serviceIntent);
+//            serviceIntent = null;
+//            toPlayNewMusic(worksData);
+//        }
+//    }
 
     @Override
     public int getItemCount() {

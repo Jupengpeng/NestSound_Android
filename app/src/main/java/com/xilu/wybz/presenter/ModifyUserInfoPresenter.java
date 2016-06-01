@@ -2,11 +2,13 @@ package com.xilu.wybz.presenter;
 
 import android.content.Context;
 
+import com.xilu.wybz.bean.DataBean;
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.callback.MyStringCallback;
 import com.xilu.wybz.ui.IView.IForgetPwdView;
 import com.xilu.wybz.ui.IView.IModifyUserInfoView;
+import com.xilu.wybz.utils.ParseUtils;
 import com.xilu.wybz.utils.PrefsUtil;
 
 import java.util.HashMap;
@@ -29,7 +31,7 @@ public class ModifyUserInfoPresenter extends BasePresenter<IModifyUserInfoView> 
         params.put("sex",userBean.sex+"");
         params.put("descr",userBean.descr);
         params.put("birthday",userBean.birthday);
-        httpUtils.get(MyHttpClient.getModifyUserInfo(), params, new MyStringCallback() {
+        httpUtils.post(MyHttpClient.getModifyUserInfo(), params, new MyStringCallback() {
             @Override
             public void onError(Call call, Exception e) {
                 e.printStackTrace();
@@ -38,7 +40,9 @@ public class ModifyUserInfoPresenter extends BasePresenter<IModifyUserInfoView> 
 
             @Override
             public void onResponse(String response) {
-                iView.modifyUserInfoSuccess(response);
+                DataBean dataBean = ParseUtils.getDataBean(context,response);
+                if(dataBean.code==200)
+                iView.modifyUserInfoSuccess();
             }
 
         });

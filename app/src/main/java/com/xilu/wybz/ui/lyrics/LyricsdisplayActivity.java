@@ -118,7 +118,7 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
         }
         actionBeanList = new ArrayList<>();
         for(int i = 0;i<actionTitles.length;i++) {
-            if(i==2&&from==0){
+            if(i==2&&from==0){//不是我的歌词列表进来的 不允许编辑
                 break;
             }
             ActionBean actionBean = new ActionBean();

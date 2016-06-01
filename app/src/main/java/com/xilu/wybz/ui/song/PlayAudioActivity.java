@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -32,10 +31,6 @@ import android.widget.TextView;
 
 import com.commit451.nativestackblur.NativeStackBlur;
 import com.google.gson.Gson;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
-import com.tencent.connect.UserInfo;
 import com.umeng.socialize.UMShareAPI;
 import com.xilu.wybz.R;
 import com.xilu.wybz.adapter.PlayLyricsAdapter;
@@ -44,11 +39,10 @@ import com.xilu.wybz.bean.ActionBean;
 import com.xilu.wybz.bean.ShareBean;
 import com.xilu.wybz.bean.TemplateBean;
 import com.xilu.wybz.bean.WorksData;
+import com.xilu.wybz.common.DownLoaderDir;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.MyCommon;
-import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.common.PlayMediaInstance;
-import com.xilu.wybz.common.ZnImageLoader;
 import com.xilu.wybz.http.HttpUtils;
 import com.xilu.wybz.http.callback.BitmapCallback;
 import com.xilu.wybz.presenter.PlayPresenter;
@@ -60,27 +54,23 @@ import com.xilu.wybz.ui.mine.UserInfoActivity;
 import com.xilu.wybz.ui.setting.SettingFeedActivity;
 import com.xilu.wybz.utils.BitmapUtils;
 import com.xilu.wybz.utils.DensityUtil;
+import com.xilu.wybz.utils.FileUtils;
 import com.xilu.wybz.utils.FormatHelper;
 import com.xilu.wybz.utils.ParseUtils;
 import com.xilu.wybz.utils.PrefsUtil;
-import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.view.dialog.ActionMoreDialog;
 import com.xilu.wybz.view.dialog.ShareDialog;
-
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import butterknife.Bind;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 import okhttp3.Call;
-
 /**
  * Created by June on 16/5/4.
  */
@@ -359,21 +349,29 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     }
 
     public void loadPic(String imageUrl) {
-        imageUrl = MyCommon.getImageUrl(imageUrl,200,200);
-        HttpUtils httpUtils = new HttpUtils(context);
-        httpUtils.getImage(imageUrl, new BitmapCallback() {
-            @Override
-            public void onError(Call call, Exception e) {
+        File file = new File(DownLoaderDir.cacheDir);
+        if(!file.exists())file.mkdirs();
 
-            }
-            @Override
-            public void onResponse(Bitmap response) {
-                Bitmap bmp = NativeStackBlur.process(BitmapUtils.zoomBitmap(response, 200), 30);
-                blurImageView.setImageBitmap(bmp);
-            }
-        });
+        String path = DownLoaderDir.cacheDir+"music_blur"+worksData.itemid+".png";
+        if(new File(path).exists()){//加载本地
+            blurImageView.setImageBitmap(BitmapUtils.getSDCardImg(path));
+        }else{//下载并保存到本地
+            imageUrl = MyCommon.getImageUrl(imageUrl,200,200);
+            HttpUtils httpUtils = new HttpUtils(context);
+            httpUtils.getImage(imageUrl, new BitmapCallback() {
+                @Override
+                public void onError(Call call, Exception e) {
+
+                }
+                @Override
+                public void onResponse(Bitmap response) {
+                    Bitmap bmp = NativeStackBlur.process(BitmapUtils.zoomBitmap(response, 200), 30);
+                    FileUtils.saveBmp(path,bmp);
+                    blurImageView.setImageBitmap(bmp);
+                }
+            });
+        }
     }
-
     //关闭时间
     public void closeTimer() {
         if (timer != null) {

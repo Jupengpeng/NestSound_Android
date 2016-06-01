@@ -89,8 +89,8 @@ public class UserSongAdapter extends UserBaseAdapter {
         public void onBindViewHolder(int position) {
             WorksData worksData = datas.get(position);
 
-            tvTitle.setText(worksData.name);
-            tvText.setText(worksData.name);
+            tvTitle.setText(worksData.title);
+            tvText.setText(worksData.title);
 
             tvShowNum.setText(NumberUtil.format(worksData.looknum));
             tvLikeNum.setText(NumberUtil.format(worksData.fovnum));

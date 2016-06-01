@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import com.xilu.wybz.R;
 
 /**
- * Created by Stay on 7/3/16.
  * Powered by June
  */
 public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseViewHolder> {

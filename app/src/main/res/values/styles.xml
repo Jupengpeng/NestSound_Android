@@ -8,6 +8,7 @@
         <item name="android:windowBackground">@color/white</item>
         <item name="android:fitsSystemWindows">true</item>
         <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@style/WindowAnimation</item>
         <item name="android:actionMenuTextAppearance">@style/MenuTextStyle</item>
         <item name="android:windowContentOverlay">@null</item>
     </style>
@@ -19,6 +20,7 @@
         <item name="android:windowBackground">@color/white</item>
         <item name="android:fitsSystemWindows">true</item>
         <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@style/WindowAnimation</item>
         <item name="android:actionMenuTextAppearance">@style/MenuTextStyle</item>
         <item name="android:windowContentOverlay">@null</item>
     </style>
@@ -200,6 +202,12 @@
     <style name="MD_WindowAnimation">
         <item name="android:windowEnterAnimation">@anim/popup_enter</item>
         <item name="android:windowExitAnimation">@anim/popup_exit</item>
+    </style>
+    <style name="WindowAnimation">
+        <item name="android:activityOpenEnterAnimation">@anim/enter_right</item>
+        <item name="android:activityOpenExitAnimation">@anim/exit_left</item>
+        <item name="android:activityCloseEnterAnimation">@anim/enter_left</item>
+        <item name="android:activityCloseExitAnimation">@anim/exit_right</item>
     </style>
     <style name="ProgressBarStyle" parent="@android:style/Widget.DeviceDefault.ProgressBar.Small" />
 </resources>

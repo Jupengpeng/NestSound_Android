@@ -3,7 +3,6 @@ package com.xilu.wybz.view.pull;
 import android.support.v7.widget.GridLayoutManager;
 
 /**
- * Created by Stay on 6/3/16.
  * Powered by June
  */
 public class FooterSpanSizeLookup extends GridLayoutManager.SpanSizeLookup {

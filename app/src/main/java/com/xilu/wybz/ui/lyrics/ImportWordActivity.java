@@ -1,5 +1,6 @@
 package com.xilu.wybz.ui.lyrics;
 
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,9 @@ import com.xilu.wybz.presenter.ImportWordPresenter;
 import com.xilu.wybz.ui.IView.IImportWordView;
 import com.xilu.wybz.ui.base.BaseListActivity;
 import com.xilu.wybz.utils.PrefsUtil;
+import com.xilu.wybz.view.SpacesItemDecoration;
 import com.xilu.wybz.view.pull.BaseViewHolder;
+import com.xilu.wybz.view.pull.DividerItemDecoration;
 import com.xilu.wybz.view.pull.PullRecycler;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +38,7 @@ public class ImportWordActivity extends BaseListActivity<WorksData> implements I
         importWordPresenter = new ImportWordPresenter(context,this);
         importWordPresenter.init();
     }
+    public boolean hasPadding() {return true;}
     @Override
     public void initView() {
         setTitle("我的歌词");
@@ -46,7 +50,9 @@ public class ImportWordActivity extends BaseListActivity<WorksData> implements I
         super.setUpData();
         recycler.setRefreshing();
     }
-
+    protected RecyclerView.ItemDecoration getItemDecoration() {
+        return new SpacesItemDecoration(dip10);
+    }
     @Override
     public void onRefresh(int action) {
         this.action = action;
@@ -105,8 +111,8 @@ public class ImportWordActivity extends BaseListActivity<WorksData> implements I
         @Override
         public void onBindViewHolder(int position) {
             WorksData worksData = mDataList.get(position);
-            tvName.setText(worksData.getTitle());
-            tvAuthor.setText(PrefsUtil.getUserInfo(context).name);
+            tvName.setText(worksData.title);
+            tvAuthor.setText(worksData.author);
             String pic = worksData.getPic();
             loadImage(pic, ivCover);
         }

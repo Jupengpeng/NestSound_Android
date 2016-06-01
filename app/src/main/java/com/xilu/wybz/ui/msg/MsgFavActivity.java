@@ -8,9 +8,13 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.CollectionBean;
+import com.xilu.wybz.bean.MsgCommentBean;
+import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.MsgCollectionPresenter;
 import com.xilu.wybz.ui.IView.ICollectionView;
 import com.xilu.wybz.ui.base.BaseListActivity;
+import com.xilu.wybz.ui.lyrics.LyricsdisplayActivity;
+import com.xilu.wybz.ui.song.PlayAudioActivity;
 import com.xilu.wybz.utils.DateTimeUtil;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtil;
@@ -19,6 +23,8 @@ import com.xilu.wybz.view.pull.PullRecycler;
 import java.util.ArrayList;
 import java.util.List;
 import butterknife.Bind;
+import butterknife.OnClick;
+
 /**
  * Created by Administrator on 2016/1/27.
  */
@@ -111,22 +117,32 @@ public class MsgFavActivity extends BaseListActivity<CollectionBean> implements 
         TextView tvMusicName;
         @Bind(R.id.tv_content)
         TextView tvContent;
-
+        @OnClick(R.id.ll_works)
+        void toWorks(){
+            CollectionBean collectionBean = (CollectionBean)itemView.getTag();
+            if(collectionBean.type==1){
+                if(collectionBean.workid>0)
+                    PlayAudioActivity.toPlayAudioActivity(context, collectionBean.workid, "", MyCommon.MSG_COMMENT, 0);
+            }else{
+                if(collectionBean.workid>0)
+                    LyricsdisplayActivity.toLyricsdisplayActivity(context, collectionBean.workid, 0, collectionBean.title);
+            }
+        }
         public SampleViewHolder(View itemView) {
             super(itemView);
         }
 
         @Override
         public void onBindViewHolder(int position) {
-            final CollectionBean zanbiaBean = mDataList.get(position);
-            tvTime.setText(DateTimeUtil.timestamp2DateTime(zanbiaBean.intabletime));
-            tvUserName.setText(zanbiaBean.nickname);
-            tvAuthor.setText(zanbiaBean.author);
-            if(StringUtil.isEmpty(zanbiaBean.title))zanbiaBean.title="未命名";
-            tvMusicName.setText(zanbiaBean.title);
+            CollectionBean collectionBean = mDataList.get(position);
+            tvTime.setText(DateTimeUtil.timestamp2DateTime(collectionBean.intabletime));
+            tvUserName.setText(collectionBean.nickname);
+            tvAuthor.setText(collectionBean.author);
+            if(StringUtil.isEmpty(collectionBean.title))collectionBean.title="未命名";
+            tvMusicName.setText(collectionBean.title);
             tvContent.setText("收藏了你的作品");
-            loadImage(zanbiaBean.pic, ivCover);
-            String headUrl = zanbiaBean.headerurl;
+            loadImage(collectionBean.pic, ivCover);
+            String headUrl = collectionBean.headerurl;
             loadImage(headUrl, ivHead);
         }
         @Override

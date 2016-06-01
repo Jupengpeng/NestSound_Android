@@ -167,9 +167,7 @@ public class PlayBanZouInstance {
             stopMediaPlay();
             return;
         }
-        if (!tag.equals(MyCommon.TYPE_DIYTYPE)) {
-            MyApplication.musicId = id;
-        }
+        MyApplication.musicId = id;
         startMediaPlay(FileUtils.getMusicCachePath(tag + id));
     }
 }

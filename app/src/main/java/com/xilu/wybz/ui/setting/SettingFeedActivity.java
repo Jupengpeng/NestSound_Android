@@ -12,6 +12,7 @@ import com.xilu.wybz.R;
 import com.xilu.wybz.presenter.FeedbackPresenter;
 import com.xilu.wybz.ui.IView.IFeedbackView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
+import com.xilu.wybz.utils.ToastUtils;
 
 import butterknife.Bind;
 
@@ -95,16 +96,16 @@ public class SettingFeedActivity extends ToolbarActivity implements IFeedbackVie
             showMsg("内容不能为空");
             return;
         }
-        if (us == null || us.trim().equals("")) {
-            showMsg("手机号或email不能为空");
-            return;
-        }
+//        if (us == null || us.trim().equals("")) {
+//            showMsg("手机号或email不能为空");
+//            return;
+//        }
         feedbackPresenter.postData(us, content, type);
     }
 
     @Override
     public void postSuccess() {
-
+        ToastUtils.toast(context,"提交成功!");
     }
 
     @Override

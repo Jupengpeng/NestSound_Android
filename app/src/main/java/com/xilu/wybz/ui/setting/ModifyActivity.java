@@ -68,7 +68,7 @@ public class ModifyActivity extends ToolbarActivity implements IModifyUserInfoVi
     }
 
     @Override
-    public void modifyUserInfoSuccess(String result) {
+    public void modifyUserInfoSuccess() {
         showMsg("修改成功");
         initUserInfo();
 

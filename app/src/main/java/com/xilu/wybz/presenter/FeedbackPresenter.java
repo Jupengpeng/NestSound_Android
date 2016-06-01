@@ -33,11 +33,13 @@ public class FeedbackPresenter extends BasePresenter<IFeedbackView> {
             public void onError(Call call, Exception e) {
                 iView.postFail();
             }
-
             @Override
             public void onResponse(String response) {
                 DataBean dataBean = ParseUtils.getDataBean(context,response);
-                ToastUtils.toast(context,dataBean.message);
+                if(dataBean.code==200){
+                    iView.postSuccess();
+                }
+
             }
         });
     }

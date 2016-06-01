@@ -11,6 +11,7 @@ import net.bither.util.NativeUtil;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -34,26 +35,29 @@ public class UploadMorePicUtil {
         num = 0;
         images = "";
         for (int i = 0; i < pics.size(); i++) {
-            final int c = i;
+            int c = i;
             imageUrls.add("");
-            final String imgPath = pics.get(i);
-            double size = FileUtils.getFileOrFilesSize(imgPath, 2);
-            final String newPath = DownLoaderDir.inspirePicDir + UUID.randomUUID() + ".jpg";
-            if (size > 300) {
-                NativeUtil.CompressionPic(imgPath, newPath, new NativeUtil.CompressPicInterface() {
-                    @Override
-                    public void onCompressResult(int errorCode, String path) {
-                        if (errorCode == 0) { //压缩成功 上传新图
-                            upLoadPic(path, c, uploadPicsInterface);
-                        } else { //压缩失败 上传原
-                            upLoadPic(imgPath, c, uploadPicsInterface);
-                        }
-                    }
-                });
-            } else { //图片本身就小 无需压缩
+            String imgPath = pics.get(i);
+//            double size = FileUtils.getFileOrFilesSize(imgPath, 2);
+//            if(!new File(DownLoaderDir.inspirePicDir).exists()) {
+//                new File(DownLoaderDir.inspirePicDir).mkdirs();
+//            }
+//            String newPath = DownLoaderDir.inspirePicDir + UUID.randomUUID() + ".jpg";
+//            if (size > 300) {
+//                NativeUtil.CompressionPic(imgPath, newPath, new NativeUtil.CompressPicInterface() {
+//                    @Override
+//                    public void onCompressResult(int errorCode, String path) {
+//                        if (errorCode == 0) { //压缩成功 上传新图
+//                            upLoadPic(path, c, uploadPicsInterface);
+//                        } else { //压缩失败 上传原
+//                            upLoadPic(imgPath, c, uploadPicsInterface);
+//                        }
+//                    }
+//                });
+//            } else { //图片本身就小 无需压缩
                 //直接上传图片到七牛
                 upLoadPic(imgPath, imageUrls.size() - 1, uploadPicsInterface);
-            }
+//            }
         }
     }
 
@@ -65,7 +69,7 @@ public class UploadMorePicUtil {
             @Override
             public void onSuccess(String result) {
                 try {
-                    String imageUrl = MyHttpClient.QINIU_URL + new JSONObject(result).getString("key");
+                    String imageUrl = new JSONObject(result).getString("key");
                     imageUrls.set(pos, imageUrl);
                     num++;
                 } catch (Exception e) {
@@ -94,7 +98,7 @@ public class UploadMorePicUtil {
                 images += imageUrl + ",";
             }
         }
-        uploadPicsInterface.onSuccess(images);
+        uploadPicsInterface.onSuccess(images.substring(0,images.length()-1));
     }
 
     public interface UploadPicResult {
