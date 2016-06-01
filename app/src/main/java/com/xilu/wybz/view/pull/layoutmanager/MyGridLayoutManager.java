@@ -10,7 +10,6 @@ import com.xilu.wybz.view.pull.FooterSpanSizeLookup;
 
 
 /**
- * Created by Stay on 5/3/16.
  * Powered by June
  */
 public class MyGridLayoutManager extends GridLayoutManager implements ILayoutManager {

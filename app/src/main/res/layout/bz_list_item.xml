@@ -31,15 +31,29 @@
                 fresco:placeholderImageScaleType="fitCenter"
                 fresco:roundedCornerRadius="3dp" />
 
-            <ImageView
-                android:id="@+id/iv_play"
+            <RelativeLayout
+                android:id="@+id/rl_play"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
                 android:background="@drawable/selector"
-                android:padding="10dp"
-                android:src="@drawable/ic_bz_play" />
+                android:padding="10dp">
+                <ImageView
+                    android:id="@+id/iv_play"
+                    android:layout_width="25dip"
+                    android:layout_height="25dip"
+                    android:src="@drawable/ic_bz_play" />
+
+                <ProgressBar
+                    android:id="@+id/progress"
+                    style="@style/android:Widget.Holo.Light.ProgressBar.Large.Inverse"
+                    android:layout_width="25dip"
+                    android:layout_height="25dip"
+                    android:visibility="invisible" />
+            </RelativeLayout>
+
         </RelativeLayout>
 
         <LinearLayout
@@ -71,4 +85,5 @@
         </LinearLayout>
     </LinearLayout>
 
+    <include layout="@layout/view_spit_line" />
 </LinearLayout>

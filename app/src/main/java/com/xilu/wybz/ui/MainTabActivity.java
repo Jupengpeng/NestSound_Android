@@ -4,8 +4,6 @@ import android.app.LocalActivityManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.CheckedTextView;
 
@@ -14,23 +12,16 @@ import com.umeng.message.PushAgent;
 import com.xilu.wybz.R;
 import com.xilu.wybz.adapter.MyPagerAdapter;
 import com.xilu.wybz.bean.UserBean;
-import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.Event;
-import com.xilu.wybz.common.KeySet;
-import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.ui.base.BaseActivity;
-import com.xilu.wybz.ui.base.BasePlayMenuActivity;
 import com.xilu.wybz.ui.find.FindActivity;
-import com.xilu.wybz.ui.find.SearchWorksActivity;
 import com.xilu.wybz.ui.login.LoginActivity;
 import com.xilu.wybz.ui.lyrics.MakeWordActivity;
-import com.xilu.wybz.ui.lyrics.ShareActivity;
 import com.xilu.wybz.ui.main.MainActivity;
 import com.xilu.wybz.ui.mine.MineActivity;
 import com.xilu.wybz.ui.msg.MsgActivity;
 import com.xilu.wybz.ui.record.InspireRecordActivity;
-import com.xilu.wybz.ui.song.MakeHotActivity;
-import com.xilu.wybz.ui.song.MakeSongActivity;
+import com.xilu.wybz.ui.song.NewMakeHotActivity;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.view.IndexViewPager;
@@ -171,7 +162,7 @@ public class MainTabActivity extends BaseActivity {
                     mMoreWindow.dismiss();
                     break;
                 case R.id.tv_zuoqu:
-                    startActivity(MakeHotActivity.class);
+                    startActivity(NewMakeHotActivity.class);
                     mMoreWindow.dismiss();
                     break;
             }

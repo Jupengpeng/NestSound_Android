@@ -103,8 +103,8 @@ public class ImportWordActivity extends BaseListActivity<WorksData> implements I
         @Override
         public void onBindViewHolder(int position) {
             WorksData worksData = mDataList.get(position);
-            tvName.setText(worksData.getTitle());
-            tvAuthor.setText(PrefsUtil.getUserInfo(context).name);
+            tvName.setText(worksData.title);
+            tvAuthor.setText(worksData.author);
             String pic = worksData.getPic();
             loadImage(pic, ivCover);
         }

@@ -32,36 +32,26 @@ public class ImportWordPresenter extends BasePresenter<IImportWordView> {
 
     public void loadData(int page) {
         params = new HashMap<>();
-        params.put("uid", PrefsUtil.getUserId(context)+"");
-        params.put("page",page+"");
-        httpUtils.get(MyHttpClient.getUserLyricsListUrl(), new MyStringCallback() {
+        params.put("uid", PrefsUtil.getUserId(context) + "");
+        params.put("page", page + "");
+        httpUtils.get(MyHttpClient.getUserLyricsListUrl(), params, new MyStringCallback() {
             @Override
             public void onError(Call call, Exception e) {
                 iView.loadFail();
             }
-
             @Override
             public void onResponse(String response) {
-                if(ParseUtils.checkCode(response)){
-                    try {
-                        String result = new JSONObject(response).getString("data");
-                        List<WorksData> mList = new Gson().fromJson(result, new TypeToken<List<WorksData>>() {}.getType());
-                        if(mList.size()==0){
-                            if(page==1){
-                                iView.loadNoData();
-                            }else{
-                                iView.loadNoMore();
-                            }
-                        }else{
-                            iView.showLyricsData(mList);
+                List<WorksData> mList = ParseUtils.getWorksData(context, response);
+                if (mList != null) {
+                    if (mList.size() == 0) {
+                        if (page == 1) {
+                            iView.loadNoData();
+                        } else {
+                            iView.loadNoMore();
                         }
-
-                    } catch (JSONException e) {
-                        iView.loadNoData();
+                    } else {
+                        iView.showLyricsData(mList);
                     }
-
-                }else{
-                    iView.loadFail();
                 }
             }
         });

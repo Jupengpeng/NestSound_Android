@@ -1,7 +1,6 @@
 package com.xilu.wybz.view.pull.section;
 
 /**
- * Created by Stay on 16/11/15.
  * Powered by June
  */
 public class SectionData<T> {

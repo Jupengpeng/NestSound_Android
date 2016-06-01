@@ -8,7 +8,6 @@ import com.xilu.wybz.view.pull.BaseListAdapter;
 
 
 /**
- * Created by Stay on 5/3/16.
  * Powered by June
  */
 public class MyStaggeredGridLayoutManager extends StaggeredGridLayoutManager implements ILayoutManager {

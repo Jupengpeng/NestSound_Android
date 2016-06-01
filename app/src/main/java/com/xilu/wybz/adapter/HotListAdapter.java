@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -18,6 +19,7 @@ import com.xilu.wybz.common.PlayMediaInstance;
 import com.xilu.wybz.common.interfaces.ITemplateMusicListener;
 import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.utils.DensityUtil;
+import com.xilu.wybz.utils.StringUtil;
 
 import java.util.List;
 
@@ -25,11 +27,11 @@ import java.util.List;
  * Created by hujunwei on 16/4/14.
  */
 public class HotListAdapter extends WyBaseAdapter<TemplateBean> {
-    ITemplateMusicListener iml;
-    ImageView currIv;
-    int itemWidth;
-    int itemHeight;
-    int playCount;//通过看它的值是否大于0来判断搜索页 有没有播放新的歌曲
+    private ITemplateMusicListener iml;
+    private ImageView currIv;
+    private ProgressBar currProgress;
+    private int itemWidth;
+    private int itemHeight;
 
     public HotListAdapter(Context context, List<TemplateBean> list) {
         super(context, list);
@@ -46,22 +48,26 @@ public class HotListAdapter extends WyBaseAdapter<TemplateBean> {
         RelativeLayout rl_cover = BaseViewHolder.get(convertView, R.id.rl_cover);
         SimpleDraweeView iv_cover = BaseViewHolder.get(convertView, R.id.iv_cover);
         rl_cover.setLayoutParams(new LinearLayout.LayoutParams(itemWidth,itemHeight));
-        ImageView iv_play = BaseViewHolder.get(convertView, R.id.iv_play);
-        TextView tv_title = BaseViewHolder.get(convertView, R.id.tv_title);
-        TextView tv_author = BaseViewHolder.get(convertView,R.id.tv_author);
-        tv_title.setText(templateBean.title);
-        tv_author.setText(templateBean.author);
-        loadImage(templateBean.pic, iv_cover, itemWidth, itemHeight);
-        if (!TextUtils.isEmpty(MyApplication.musicId) && MyApplication.musicId.equals(templateBean.id) && PlayMediaInstance.getInstance().status == 3) {
-            currIv = iv_play;
-            iv_play.setImageResource(R.drawable.ic_bz_pause);
+        ImageView ivPlay = BaseViewHolder.get(convertView, R.id.iv_play);
+        RelativeLayout rlPlay = BaseViewHolder.get(convertView, R.id.rl_play);
+        ProgressBar progress = BaseViewHolder.get(convertView, R.id.progress);
+        TextView tvTitle = BaseViewHolder.get(convertView, R.id.tv_title);
+        TextView tvAuthor = BaseViewHolder.get(convertView,R.id.tv_author);
+        tvTitle.setText(templateBean.title);
+        tvAuthor.setText(templateBean.author);
+        if(StringUtil.isNotBlank(templateBean.pic)) loadImage(templateBean.pic, iv_cover, itemWidth, itemHeight);
+        if (!TextUtils.isEmpty(MyApplication.musicId) && MyApplication.musicId.equals(templateBean.id)&&PlayMediaInstance.getInstance().status==3) {
+            currIv = ivPlay;
+            ivPlay.setImageResource(R.drawable.ic_pause);
+        }else{
+            ivPlay.setImageResource(R.drawable.ic_play);
         }
-        iv_play.setOnClickListener(new View.OnClickListener() {
+        rlPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!TextUtils.isEmpty(MyApplication.musicId) && MyApplication.musicId.equals(templateBean.id)) {
                     if (iml != null) {
-                        currIv = iv_play;
+                        currIv = ivPlay;
                         if (PlayBanZouInstance.getInstance().status == 3) {
                             currIv.setImageResource(R.drawable.ic_bz_play);
                             iml.onPauseMusic();
@@ -71,15 +77,15 @@ public class HotListAdapter extends WyBaseAdapter<TemplateBean> {
                         }
                     }
                 } else {
-                    iv_play.setImageResource(R.drawable.ic_bz_pause);
-                    MyApplication.musicId = templateBean.id;
                     if (iml != null) {
-                        playCount++;
                         iml.onPlayMusic(templateBean);
-                        if (currIv != null && currIv != iv_play) {
+                        if (currIv != null && currIv != ivPlay) {
                             currIv.setImageResource(R.drawable.ic_bz_play);
                         }
-                        currIv = iv_play;
+                        progress.setVisibility(View.VISIBLE);
+                        ivPlay.setVisibility(View.GONE);
+                        currProgress = progress;
+                        currIv = ivPlay;
                     }
                 }
                 notifyDataSetChanged();
@@ -88,16 +94,17 @@ public class HotListAdapter extends WyBaseAdapter<TemplateBean> {
         return convertView;
     }
 
-    public int getPlayCount() {
-        return playCount;
-    }
-
     public void updateData() {
         if (PlayBanZouInstance.getInstance().status != 3 && currIv != null) {
             currIv.setImageResource(R.drawable.ic_bz_play);
         }
     }
-
+    public void updatePlayStatus(){
+        if(currProgress!=null&&currIv!=null) {
+            currProgress.setVisibility(View.GONE);
+            currIv.setVisibility(View.VISIBLE);
+        }
+    }
     public void setITemplateMusicListener(ITemplateMusicListener iml) {
         this.iml = iml;
     }

@@ -1,12 +1,21 @@
 package com.xilu.wybz.ui.IView;
 
+import com.xilu.wybz.bean.TemplateBean;
+
+import java.util.List;
+
 /**
  * Created by hujunwei on 16/4/5.
  */
-public interface IHotView extends IBaseView{
-    void loadHotData(String keyword);
+public interface IHotView extends IBaseView {
 
-    void loadSuccess(String result);
+    void showHotData(List<TemplateBean> templateBeens);
 
-    void loadFail(String msg);
+    void loadFail();
+
+    void loadNoMore();
+
+    void downloadSuccess();
+
+    void loadNoData();
 }
