@@ -326,7 +326,7 @@ public class SearchHotActivity extends BaseListActivity<TemplateBean> implements
         @Override
         public void onItemClick(View view, int position) {
             if (PlayBanZouInstance.getInstance().status == 3) {
-                PlayBanZouInstance.getInstance().pauseMediaPlay();
+                PlayBanZouInstance.getInstance().stopMediaPlay();
                 adapter.notifyItemChanged(position);
             }
             TemplateBean bean = mDataList.get(position);

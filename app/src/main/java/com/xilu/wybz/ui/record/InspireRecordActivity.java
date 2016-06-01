@@ -32,6 +32,7 @@ import com.xilu.wybz.utils.DateTimeUtil;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.FileUtils;
 import com.xilu.wybz.utils.ImageUploader;
+import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.utils.UploadFileUtil;
 import com.xilu.wybz.utils.UploadMorePicUtil;
@@ -109,14 +110,15 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
         UploadMorePicUtil uploadMorePicUtil = new UploadMorePicUtil(context);
         List<String> pics = new ArrayList<>();
         for(PhotoBean photoBean:list){
-            pics.add(photoBean.path);
+            if(StringUtil.isNotBlank(photoBean.path)&&new File(photoBean.path).exists())
+                pics.add(photoBean.path);
         }
         uploadMorePicUtil.uploadPics(pics, new UploadMorePicUtil.UploadPicResult() {
             @Override
             public void onSuccess(String images) {
                 if(!TextUtils.isEmpty(images)){
                     worksData.pics = images;
-                    uploadRecord();
+                    inspireRecordPresenter.publishData(worksData);
                 }
             }
             @Override
@@ -133,7 +135,7 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
             public void onSuccess(String filrUrl) {
                 if(!TextUtils.isEmpty(filrUrl)){
                     worksData.audio = filrUrl;
-                    uploadRecord();
+                    inspireRecordPresenter.publishData(worksData);
                 }
             }
             @Override
@@ -148,14 +150,17 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
         switch (item.getItemId()){
             case R.id.menu_send:
                 String content = etContent.getText().toString().trim();
-                worksData.spirecontent = content;
-                if(list.size()>0){
-                    uploadPics();
-                }else{
-                    if(TextUtils.isEmpty(recordPath)){
-                        inspireRecordPresenter.publishData(worksData);
-                    }else{
-                        uploadRecord();
+                if(!TextUtils.isEmpty(content)||list.size()>0||!TextUtils.isEmpty(recordPath)) {
+                    showPd("正在发布中，请稍候...");
+                    worksData.spirecontent = content;
+                    if (list.size() > 0) {
+                        uploadPics();
+                    } else {
+                        if (TextUtils.isEmpty(recordPath) || StringUtil.isNotBlank(worksData.audio)) {
+                            inspireRecordPresenter.publishData(worksData);
+                        } else {
+                            uploadRecord();
+                        }
                     }
                 }
                 break;
@@ -245,7 +250,6 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
                         }
                         recordPath = DownLoaderDir.inspireMp3Dir+System.currentTimeMillis()+".mp3";
                         mp3Recorder = new MP3Recorder(new File(recordPath));
-//                        mp3Recorder.setSurfaceView(null);
                         try {
                             mp3Recorder.start();
                             ivRecordStatus.setImageResource(R.drawable.ic_record_luyin_start);
@@ -442,6 +446,7 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
 
     @Override
     public void pubSuccess() {
+        cancelPd();
         showMsg("发布成功！");
         new Handler().postDelayed(new Runnable() {
             @Override

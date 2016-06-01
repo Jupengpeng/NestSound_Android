@@ -108,10 +108,7 @@ public class NewMakeHotActivity extends ToolbarActivity implements IHotView, Vie
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (PlayBanZouInstance.getInstance().status == 3) {
-                    PlayBanZouInstance.getInstance().pauseMediaPlay();
-                    adapter.updateData();
-                }
+                stopPlayBz();
                 TemplateBean bean = item.get(position);
                 MakeSongActivity.ToMakeSongActivity(context, bean);
             }
