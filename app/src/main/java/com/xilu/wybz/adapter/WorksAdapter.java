@@ -49,8 +49,6 @@ public class WorksAdapter extends RecyclerView.Adapter<WorksAdapter.WorksViewHol
 
     public interface OnItemClickListener {
         void onItemClick(View view, int position);
-
-        void onItemLongClick(View view, int position);
     }
 
     private OnItemClickListener mOnItemClickListener;
@@ -79,13 +77,6 @@ public class WorksAdapter extends RecyclerView.Adapter<WorksAdapter.WorksViewHol
                 public void onClick(View v) {
                     int pos = holder.getLayoutPosition();
                     mOnItemClickListener.onItemClick(holder.itemView, pos);
-                }
-            });
-            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    mOnItemClickListener.onItemLongClick(holder.itemView, position);
-                    return false;
                 }
             });
         }

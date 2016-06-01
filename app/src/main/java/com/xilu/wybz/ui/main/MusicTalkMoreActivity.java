@@ -10,12 +10,17 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.MusicTalk;
 import com.xilu.wybz.bean.SongAlbum;
+import com.xilu.wybz.bean.WorksData;
+import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.MusicTalkMorePresenter;
 import com.xilu.wybz.presenter.SongablumMorePresenter;
 import com.xilu.wybz.ui.IView.IMusicTalkMoreView;
 import com.xilu.wybz.ui.IView.ISongablumMoreView;
+import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.ui.base.BaseListActivity;
+import com.xilu.wybz.ui.song.PlayAudioActivity;
 import com.xilu.wybz.utils.DensityUtil;
+import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.view.GridSpacingItemDecoration;
 import com.xilu.wybz.view.SpacesItemDecoration;
 import com.xilu.wybz.view.pull.BaseViewHolder;
@@ -46,7 +51,7 @@ public class MusicTalkMoreActivity extends BaseListActivity<MusicTalk> implement
 
     @Override
     public void initView() {
-        setTitle("歌单");
+        setTitle("乐说");
         tvNoData.setText(nodata);
     }
     public boolean hasPadding() {return true;}
@@ -130,8 +135,21 @@ public class MusicTalkMoreActivity extends BaseListActivity<MusicTalk> implement
 
         @Override
         public void onItemClick(View view, int position) {
-
+            toPlayPos(position);
         }
     }
-
+    public void toPlayPos(int position){
+        if (mDataList.size() > 0) {
+            String playFrom = PrefsUtil.getString("playFrom",context);
+            if(!playFrom.equals(MyCommon.MUSICTALK_MORE)|| MyApplication.ids.size()==0){
+                if (MyApplication.ids.size() > 0)
+                    MyApplication.ids.clear();
+                for (MusicTalk worksData : mDataList) {
+                    MyApplication.ids.add(worksData.itemid);
+                }
+            }
+            MusicTalk worksData = mDataList.get(position);
+            PlayAudioActivity.toPlayAudioActivity(context, worksData.itemid, "", MyCommon.MUSICTALK_MORE, position);
+        }
+    }
 }

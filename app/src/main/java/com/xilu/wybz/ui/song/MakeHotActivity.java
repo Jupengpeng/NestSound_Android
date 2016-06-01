@@ -41,7 +41,7 @@ import de.greenrobot.event.EventBus;
 /**
  * Created by hujunwei on 16/5/31.
  */
-public class NewMakeHotActivity extends ToolbarActivity implements IHotView, View.OnClickListener {
+public class MakeHotActivity extends ToolbarActivity implements IHotView, View.OnClickListener {
     @Bind(R.id.listview)
     ListView listView;
     @Bind(R.id.up_float_tab_root)

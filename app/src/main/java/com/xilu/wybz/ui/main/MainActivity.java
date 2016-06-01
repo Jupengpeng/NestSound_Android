@@ -107,9 +107,11 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
     //轮播间隔时间
     protected static final long MSG_DELAY = 3000;
     private int column = 3;
+
     public boolean canBack() {
         return false;
     }
+
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_home_main;
@@ -158,30 +160,28 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
         mViewPager.setLayoutParams(new LinearLayout.LayoutParams(DensityUtil.getScreenW(context),
                 DensityUtil.getScreenW(context) * 28 / 75));
         //推荐作品
-        worksAdapter = new WorksAdapter(context, recommendWorkList, column , MyCommon.TUIJIAN);
+        worksAdapter = new WorksAdapter(context, recommendWorkList, column, MyCommon.TUIJIAN);
         worksAdapter.setOnItemClickListener(new WorksAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 if (recommendWorkList.size() > 0) {
-                    if (MyApplication.ids.size() > 0)
-                        MyApplication.ids.clear();
-                    for (WorksData worksData : recommendWorkList) {
-                        if (worksData.status == 1) {
-                            MyApplication.ids.add(worksData.getItemid());
-                        }
-                    }
                     WorksData worksData = recommendWorkList.get(position);
                     if (worksData.status == 2) {
                         LyricsdisplayActivity.toLyricsdisplayActivity(context, worksData.itemid, 0, worksData.getTitle());
                     } else {
-                        PlayAudioActivity.toPlayAudioActivity(context, worksData.getItemid(), "", MyCommon.TUIJIAN, position);
+                        String playFrom = PrefsUtil.getString("playFrom", context);
+                        if (!playFrom.equals(MyCommon.TUIJIAN) || MyApplication.ids.size() == 0) {
+                            if (MyApplication.ids.size() > 0)
+                                MyApplication.ids.clear();
+                            for (WorksData workData : recommendWorkList) {
+                                if (workData.status == 1) {
+                                    MyApplication.ids.add(worksData.getItemid());
+                                }
+                            }
+                        }
+                        PlayAudioActivity.toPlayAudioActivity(context, worksData.itemid, "", MyCommon.TUIJIAN, position);
                     }
                 }
-            }
-
-            @Override
-            public void onItemLongClick(View view, int position) {
-
             }
         });
         recyclerViewRecommend.setAdapter(worksAdapter);
@@ -192,11 +192,6 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
             public void onItemClick(View view, int position) {
                 SongAblumActivity.toSongAblumActivity(context, songAlbumList.get(position));
             }
-
-            @Override
-            public void onItemLongClick(View view, int position) {
-
-            }
         });
         recyclerViewSongalbum.setAdapter(songAlbumAdapter);
         //最新作品
@@ -204,13 +199,26 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
         newworksAdapter.setOnItemClickListener(new WorksAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-
+                if (newWorkList.size() > 0) {
+                    WorksData worksData = newWorkList.get(position);
+                    if (worksData.status == 2) {
+                        LyricsdisplayActivity.toLyricsdisplayActivity(context, worksData.itemid, 0, worksData.getTitle());
+                    } else {
+                        String playFrom = PrefsUtil.getString("playFrom", context);
+                        if (!playFrom.equals(MyCommon.ZUIXIN) || MyApplication.ids.size() == 0) {
+                            if (MyApplication.ids.size() > 0)
+                                MyApplication.ids.clear();
+                            for (WorksData workData : newWorkList) {
+                                if (workData.status == 1) {
+                                    MyApplication.ids.add(worksData.getItemid());
+                                }
+                            }
+                        }
+                        PlayAudioActivity.toPlayAudioActivity(context, worksData.itemid, "", MyCommon.ZUIXIN, position);
+                    }
+                }
             }
 
-            @Override
-            public void onItemLongClick(View view, int position) {
-
-            }
         });
         recyclerViewNewwork.setAdapter(newworksAdapter);
         //乐说
@@ -218,18 +226,26 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
         musicTalkAdapter.setOnItemClickListener(new MusicTalkAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                PlayAudioActivity.toPlayAudioActivity(context, musicTalkList.get(position).itemid, "", "yueshuo", position);
-            }
-            @Override
-            public void onItemLongClick(View view, int position) {
-
+                if (musicTalkList.size() > 0) {
+                    String playFrom = PrefsUtil.getString("playFrom", context);
+                    if (!playFrom.equals(MyCommon.MUSICTALK) || MyApplication.ids.size() == 0) {
+                        if (MyApplication.ids.size() > 0)
+                            MyApplication.ids.clear();
+                        for (MusicTalk worksData : musicTalkList) {
+                            MyApplication.ids.add(worksData.itemid);
+                        }
+                    }
+                    MusicTalk worksData = musicTalkList.get(position);
+                    PlayAudioActivity.toPlayAudioActivity(context, worksData.itemid, "", MyCommon.MUSICTALK, position);
+                }
             }
         });
         recyclerViewMusictalk.setAdapter(musicTalkAdapter);
         //加载本地数据
-        String homedata = PrefsUtil.getString("homedata",context);;
-        if(!TextUtils.isEmpty(homedata)){
-            MainBean mainBean = new Gson().fromJson(homedata,MainBean.class);
+        String homedata = PrefsUtil.getString("homedata", context);
+        ;
+        if (!TextUtils.isEmpty(homedata)) {
+            MainBean mainBean = new Gson().fromJson(homedata, MainBean.class);
             showMainData(mainBean);
         }
         presenter.getHomeData();
@@ -237,10 +253,10 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
 
     @Override
     public void showMainData(MainBean mainBean) {
-        if(mainBean!=null) {
-            PrefsUtil.putString("homedata",new Gson().toJson(mainBean),context);
+        if (mainBean != null) {
+            PrefsUtil.putString("homedata", new Gson().toJson(mainBean), context);
             //banner
-            if(bannerList.size()>0)bannerList.clear();
+            if (bannerList.size() > 0) bannerList.clear();
             bannerList.addAll(mainBean.bannerList);
             if (bannerList.size() > 0)
                 setViewPager();
@@ -264,14 +280,14 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
                 worksAdapter.notifyDataSetChanged();
             }
             //最新作品
-            if(newWorkList.size()>0)newWorkList.clear();
+            if (newWorkList.size() > 0) newWorkList.clear();
             newWorkList.addAll(mainBean.newList);
             if (newWorkList.size() > 0) {
                 tvNewwork.setVisibility(View.VISIBLE);
             }
             newworksAdapter.notifyDataSetChanged();
             //乐说
-            if(musicTalkList.size()>0)musicTalkList.clear();
+            if (musicTalkList.size() > 0) musicTalkList.clear();
             musicTalkList.addAll(mainBean.yueshuoList);
             if (musicTalkList.size() > 0) {
                 tvMusictalk.setVisibility(View.VISIBLE);
@@ -306,12 +322,16 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
             public void onItemClick(View view, int position) {
                 int pos = position % bannerList.size();
                 if (bannerList.get(pos).getType() == 0) {
-                    MyApplication.ids.clear();
-                    for (Banner bannerListBean : bannerList) {
-                        if (bannerListBean.getType() == 0 && bannerListBean.getItemid()>0)
-                            MyApplication.ids.add(bannerListBean.getItemid());
+                    String playFrom = PrefsUtil.getString("playFrom", context);
+                    if (!playFrom.equals(MyCommon.BANNER) || MyApplication.ids.size() == 0) {
+                        if (MyApplication.ids.size() > 0)
+                            MyApplication.ids.clear();
+                        for (Banner bannerListBean : bannerList) {
+                            if (bannerListBean.getType() == 0 && bannerListBean.getItemid() > 0)
+                                MyApplication.ids.add(bannerListBean.getItemid());
+                        }
                     }
-                    PlayAudioActivity.toPlayAudioActivity(context, bannerList.get(pos).getItemid(), "", "banner", pos);
+                    PlayAudioActivity.toPlayAudioActivity(context, bannerList.get(pos).getItemid(), "", MyCommon.BANNER, pos);
                 } else {
                     BrowserActivity.toBrowserActivity(context, bannerList.get(pos).getPlayurl());
                 }
@@ -423,6 +443,7 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
                 break;
         }
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();

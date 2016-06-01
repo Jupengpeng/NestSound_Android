@@ -25,7 +25,6 @@ public class SongAlbumAdapter extends RecyclerView.Adapter<SongAlbumAdapter.Song
     private int itemWidth, itemHeight;
     public interface OnItemClickLitener {
         void onItemClick(View view, int position);
-        void onItemLongClick(View view, int position);
     }
     private OnItemClickLitener mOnItemClickListener;
     public void setOnItemClickLitener(OnItemClickLitener mOnItemClickListener) {
@@ -57,13 +56,6 @@ public class SongAlbumAdapter extends RecyclerView.Adapter<SongAlbumAdapter.Song
                 @Override
                 public void onClick(View v) {
                     mOnItemClickListener.onItemClick(holder.itemView, position);
-                }
-            });
-            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    mOnItemClickListener.onItemLongClick(holder.itemView, position);
-                    return false;
                 }
             });
         }

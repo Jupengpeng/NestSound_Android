@@ -21,7 +21,7 @@ import com.xilu.wybz.ui.main.MainActivity;
 import com.xilu.wybz.ui.mine.MineActivity;
 import com.xilu.wybz.ui.msg.MsgActivity;
 import com.xilu.wybz.ui.record.InspireRecordActivity;
-import com.xilu.wybz.ui.song.NewMakeHotActivity;
+import com.xilu.wybz.ui.song.MakeHotActivity;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.view.IndexViewPager;
@@ -162,7 +162,7 @@ public class MainTabActivity extends BaseActivity {
                     mMoreWindow.dismiss();
                     break;
                 case R.id.tv_zuoqu:
-                    startActivity(NewMakeHotActivity.class);
+                    startActivity(MakeHotActivity.class);
                     mMoreWindow.dismiss();
                     break;
             }

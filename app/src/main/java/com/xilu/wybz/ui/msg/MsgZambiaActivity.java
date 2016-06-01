@@ -9,11 +9,14 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.ZambiaBean;
+import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.MsgZanPresenter;
 import com.xilu.wybz.ui.IView.IZanView;
 import com.xilu.wybz.ui.base.BaseListActivity;
+import com.xilu.wybz.ui.lyrics.LyricsdisplayActivity;
+import com.xilu.wybz.ui.song.PlayAudioActivity;
 import com.xilu.wybz.utils.DateTimeUtil;
-import com.xilu.wybz.utils.PrefsUtil;
+import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.PullRecycler;
 
@@ -21,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 
 /**
  * Created by Administrator on 2016/1/27.
@@ -111,7 +115,17 @@ public class MsgZambiaActivity extends BaseListActivity<ZambiaBean> implements I
         TextView tvAuthor;
         @Bind(R.id.tv_music_name)
         TextView tvMusicName;
-
+        @OnClick(R.id.ll_works)
+        void toWorks(){
+            ZambiaBean zambiaBean = (ZambiaBean)itemView.getTag();
+            if(zambiaBean.type==1){
+                if(zambiaBean.workid>0)
+                    PlayAudioActivity.toPlayAudioActivity(context, zambiaBean.workid, "", MyCommon.MSG_COMMENT, 0);
+            }else{
+                if(zambiaBean.workid>0)
+                    LyricsdisplayActivity.toLyricsdisplayActivity(context, zambiaBean.workid, 0, zambiaBean.title);
+            }
+        }
         public SampleViewHolder(View itemView) {
             super(itemView);
         }
@@ -122,6 +136,7 @@ public class MsgZambiaActivity extends BaseListActivity<ZambiaBean> implements I
             tvTime.setText(DateTimeUtil.timestamp2DateTime(zanbiaBean.add_time));
             tvUserName.setText(zanbiaBean.nickname);
             tvAuthor.setText(zanbiaBean.author);
+            if(StringUtil.isEmpty(zanbiaBean.title))zanbiaBean.title="未命名";
             tvMusicName.setText(zanbiaBean.title);
             loadImage(zanbiaBean.pic, ivCover);
             String headUrl = zanbiaBean.headerurl;

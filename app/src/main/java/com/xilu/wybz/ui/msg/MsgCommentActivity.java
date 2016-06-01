@@ -7,11 +7,16 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
+import com.xilu.wybz.bean.Banner;
 import com.xilu.wybz.bean.CommentBean;
 import com.xilu.wybz.bean.MsgCommentBean;
+import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.MsgCommentPresenter;
 import com.xilu.wybz.ui.IView.ICommentView;
+import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.ui.base.BaseListActivity;
+import com.xilu.wybz.ui.lyrics.LyricsdisplayActivity;
+import com.xilu.wybz.ui.song.PlayAudioActivity;
 import com.xilu.wybz.utils.DateTimeUtil;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringStyleUtil;
@@ -145,21 +150,26 @@ public class MsgCommentActivity extends BaseListActivity<MsgCommentBean> impleme
         TextView tvContent;
         @OnClick(R.id.tv_reply)
         void replyClick() {
-            showCommentDialog((MsgCommentBean) card.getTag());
+            showCommentDialog((MsgCommentBean) itemView.getTag());
         }
-        @OnClick(R.id.ll_music)
-        void toPlayMusic(){
-            showMsg("去歌曲播放页 如果是歌词 去歌词展示页");
+        @OnClick(R.id.ll_works)
+        void toWorks(){
+            MsgCommentBean msgCommentBean = (MsgCommentBean)itemView.getTag();
+            if(msgCommentBean.type==1){
+                if(msgCommentBean.workid>0)
+                PlayAudioActivity.toPlayAudioActivity(context, msgCommentBean.workid, "", MyCommon.MSG_COMMENT, 0);
+            }else{
+                if(msgCommentBean.workid>0)
+                    LyricsdisplayActivity.toLyricsdisplayActivity(context, msgCommentBean.workid, 0, msgCommentBean.title);
+            }
         }
         public SampleViewHolder(View itemView) {
             super(itemView);
-            card = itemView;
         }
-        View card;
         @Override
         public void onBindViewHolder(int position) {
             MsgCommentBean commentBean = mDataList.get(position);
-            card.setTag(commentBean);
+            itemView.setTag(commentBean);
 
             tvContent.setText(StringStyleUtil.getCommentStyleStr(commentBean));
 
@@ -170,9 +180,7 @@ public class MsgCommentActivity extends BaseListActivity<MsgCommentBean> impleme
             if(commentBean.workid>0) {
                 tvMusicName.setVisibility(View.VISIBLE);
                 if (StringUtil.isNotBlank(commentBean.author)) tvAuthor.setText(commentBean.author);
-                if (StringUtil.isBlank(commentBean.title)){
-                    commentBean.title = "未命名";
-                }
+                if (StringUtil.isBlank(commentBean.title))commentBean.title = "未命名";
                 tvMusicName.setText(commentBean.title);
                 if (StringUtil.isNotBlank(commentBean.pic)) loadImage(commentBean.pic, ivCover);
             }else{

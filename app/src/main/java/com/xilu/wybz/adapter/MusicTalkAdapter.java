@@ -30,7 +30,6 @@ public class MusicTalkAdapter extends RecyclerView.Adapter<MusicTalkAdapter.Musi
 
     public interface OnItemClickListener {
         void onItemClick(View view, int position);
-        void onItemLongClick(View view, int position);
     }
 
     private OnItemClickListener mOnItemClickListener;
@@ -56,13 +55,6 @@ public class MusicTalkAdapter extends RecyclerView.Adapter<MusicTalkAdapter.Musi
                 public void onClick(View v) {
                     int pos = holder.getLayoutPosition();
                     mOnItemClickListener.onItemClick(holder.itemView, pos);
-                }
-            });
-            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    mOnItemClickListener.onItemLongClick(holder.itemView, position);
-                    return false;
                 }
             });
         }
