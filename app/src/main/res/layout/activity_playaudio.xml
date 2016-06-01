@@ -164,7 +164,7 @@
                     android:layout_height="wrap_content"
                     android:text="00:00"
                     android:textColor="#eeffffff"
-                    android:textSize="@dimen/yc_10" />
+                    android:textSize="10dp" />
 
                 <SeekBar
                     android:id="@+id/playSeekBar"
@@ -186,7 +186,7 @@
                     android:layout_height="wrap_content"
                     android:text="04:01"
                     android:textColor="#eeffffff"
-                    android:textSize="@dimen/yc_10" />
+                    android:textSize="10dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -201,7 +201,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/yc_5"
-                    android:padding="@dimen/yc_10"
+                    android:padding="10dp"
                     android:src="@drawable/ic_play_order" />
 
                 <RelativeLayout
@@ -248,7 +248,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/yc_5"
-                    android:padding="@dimen/yc_10"
+                    android:padding="10dp"
                     android:src="@drawable/ic_play_hot" />
             </LinearLayout>
         </LinearLayout>

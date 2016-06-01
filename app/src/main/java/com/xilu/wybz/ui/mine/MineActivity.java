@@ -153,7 +153,7 @@ public class MineActivity extends BaseActivity implements IUserView {
         mUserSongView.getUserListPresenter().requestListData(userId, 1);
     }
 
-    @OnClick({R.id.iv_setting, R.id.iv_draft, R.id.ll_myfans})
+    @OnClick({R.id.iv_setting, R.id.iv_draft, R.id.ll_myfans, R.id.ll_myfollow})
     public void OnClick(View view) {
         switch (view.getId()) {
             case R.id.iv_setting:

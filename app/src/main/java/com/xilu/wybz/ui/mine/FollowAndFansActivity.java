@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.FansBean;
 import com.xilu.wybz.common.KeySet;
@@ -35,6 +36,7 @@ public class FollowAndFansActivity extends BaseListActivity<FansBean> implements
     private int type;
     private int uid;
     private int ivfollowStates[] = new int[]{R.drawable.ic_user_follow,R.drawable.ic_user_followed,R.drawable.ic_user_each_follow};
+    private int followColors[] = new int[]{R.color.main_text_color,R.color.main_text_color2,R.color.lightblue};
     private String tvfollowStates[] = new String []{"关注","已关注","互相关注"};
     public static void toFollowAndFansActivity(Context context, int type, int uid) {
         Intent intent = new Intent();
@@ -44,6 +46,10 @@ public class FollowAndFansActivity extends BaseListActivity<FansBean> implements
         context.startActivity(intent);
     }
 
+    @Override
+    public boolean hasPadding() {
+        return false;
+    }
 
     @Override
     protected void initPresenter() {
@@ -127,7 +133,7 @@ public class FollowAndFansActivity extends BaseListActivity<FansBean> implements
 
     class FollowAndFansViewHolder extends BaseViewHolder {
         @Bind(R.id.iv_head)
-        CircleImageView ivHead;
+        SimpleDraweeView ivHead;
         @Bind(R.id.user_name)
         TextView userName;
         @Bind(R.id.user_sign)
@@ -153,8 +159,8 @@ public class FollowAndFansActivity extends BaseListActivity<FansBean> implements
             userSign.setText(fansBean.fansign);
             ivFollowState.setImageResource(ivfollowStates[fansBean.status]);
             tvFollowState.setText(tvfollowStates[fansBean.status]);
+            tvFollowState.setTextColor(getResources().getColor(followColors[fansBean.status]));
         }
-
         @Override
         public void onItemClick(View view, int position) {
 

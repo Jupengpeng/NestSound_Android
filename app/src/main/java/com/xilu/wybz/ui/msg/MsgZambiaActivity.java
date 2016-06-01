@@ -35,7 +35,10 @@ public class MsgZambiaActivity extends BaseListActivity<ZambiaBean> implements I
     String nodata = "暂无点赞";
     int nodatares = R.drawable.ic_nozan;
     private MsgZanPresenter zanPresenter;
-
+    @Override
+    public boolean hasPadding() {
+        return false;
+    }
     @Override
     protected void initPresenter() {
         zanPresenter = new MsgZanPresenter(this, this);

@@ -54,7 +54,6 @@ public class MusicTalkMoreActivity extends BaseListActivity<MusicTalk> implement
         setTitle("乐说");
         tvNoData.setText(nodata);
     }
-    public boolean hasPadding() {return true;}
     @Override
     protected void setUpData() {
         super.setUpData();

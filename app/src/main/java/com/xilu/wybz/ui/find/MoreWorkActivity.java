@@ -63,7 +63,6 @@ public class MoreWorkActivity extends BaseListActivity<WorksData> implements IFi
         findMoreWorkPresenter = new FindMoreWorkPresenter(context, this);
         findMoreWorkPresenter.init();
     }
-    public boolean hasPadding() {return true;}
     public void initView() {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {

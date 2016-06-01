@@ -40,7 +40,10 @@ public class MsgFavActivity extends BaseListActivity<CollectionBean> implements 
         collectionPresenter = new MsgCollectionPresenter(this, this);
         collectionPresenter.init();
     }
-
+    @Override
+    public boolean hasPadding() {
+        return false;
+    }
     @Override
     public void initView() {
         setTitle("收藏");
