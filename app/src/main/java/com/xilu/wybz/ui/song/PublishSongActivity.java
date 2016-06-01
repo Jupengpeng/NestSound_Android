@@ -16,8 +16,6 @@ import com.xilu.wybz.ui.base.ToolbarActivity;
 public class PublishSongActivity extends ToolbarActivity {
 
 
-
-
     private WorksData worksData;
 
     @Override

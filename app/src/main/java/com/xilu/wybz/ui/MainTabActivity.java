@@ -4,6 +4,7 @@ import android.app.LocalActivityManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.CheckedTextView;
 
@@ -216,15 +217,18 @@ public class MainTabActivity extends BaseActivity {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
     }
+
     @Override
-    public void onBackPressed() {
-        //关闭作词作曲操作界面
-        if ((System.currentTimeMillis() - exitTime) > 2000) {
-            showMsg("再按一次退出应用");
-            exitTime = System.currentTimeMillis();
-            return;
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            if ((System.currentTimeMillis() - exitTime) > 2000) {
+                showMsg("再按一次退出应用");
+                exitTime = System.currentTimeMillis();
+                return false;
+            }
+            finish();
         }
-        finish();
+        return super.onKeyDown(keyCode, event);
     }
 
 }

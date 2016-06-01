@@ -15,6 +15,7 @@ import com.qiniu.android.storage.UploadManager;
 import com.umeng.message.PushAgent;
 import com.umeng.socialize.PlatformConfig;
 import com.xilu.wybz.common.MyCommon;
+import com.xilu.wybz.utils.PhoneInfoUtil;
 import com.xilu.wybz.utils.PrefsUtil;
 
 import java.lang.reflect.Constructor;
@@ -69,6 +70,11 @@ public class MyApplication extends Application {
         super.onCreate();
         context = this;
         ids = new ArrayList<>();
+        //检查版本
+        if(PrefsUtil.getInt("versionCode",context)==0){
+            PrefsUtil.clearData(context);
+            PrefsUtil.putInt("versionCode", PhoneInfoUtil.getVersionCode(context),context);
+        }
         userid = PrefsUtil.getUserId(context);
         isLogin = userid>0;
         Fresco.initialize(this);
