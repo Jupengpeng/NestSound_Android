@@ -25,4 +25,7 @@
     <string name="progress_dialog">温馨提示</string>
     <string name="please_wait">正在处理中，请稍候…</string>
     <string name="please_wait_down">正在下载中，请稍候…</string>
+
+    <string name="et_digits">0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLIMNOPQRSTUVWXYZ</string>
+    <string name="et_digits_contact">._@0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLIMNOPQRSTUVWXYZ</string>
 </resources>

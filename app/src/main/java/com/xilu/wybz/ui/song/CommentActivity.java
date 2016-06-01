@@ -62,7 +62,6 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
     private int targetUid;
     private String targetName;
     private String content;
-    private int delPos;
 
     String[] actionTitles = new String[]{"删除"};
     String[] actionTypes = new String[]{"del"};
@@ -299,8 +298,8 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
                         actionMoreDialog.showDialog();
                     }
                 } else {
-                    targetUid = commentBean.target_uid;
-                    targetName = commentBean.target_nickname;
+                    targetUid = commentBean.uid;
+                    targetName = commentBean.nickname;
                     commentType = 2;//回复别人
                     etContent.setHint("回复" + commentBean.nickname);
                     etContent.requestFocus();

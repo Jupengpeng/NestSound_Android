@@ -36,9 +36,7 @@ public class FindMoreWorkPresenter extends BasePresenter<IFindMoreWorkView> {
                             iView.loadNoMore();
                         }
                     }else{
-
                         iView.showWorkData(worksDatas);
-
                     }
                 }else{
                     iView.loadFail();

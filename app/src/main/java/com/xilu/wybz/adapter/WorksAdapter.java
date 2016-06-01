@@ -82,19 +82,19 @@ public class WorksAdapter extends RecyclerView.Adapter<WorksAdapter.WorksViewHol
         }
     }
 
-    public void toPlayNewMusic(WorksData worksData) {
-        if (serviceIntent == null) {
-            serviceIntent = new Intent(context, PlayService.class);
-            serviceIntent.putExtra("id", worksData.itemid);
-            serviceIntent.putExtra("from", come);
-            serviceIntent.putExtra("gedanid", "");
-            context.startService(serviceIntent);
-        } else {
-            context.stopService(serviceIntent);
-            serviceIntent = null;
-            toPlayNewMusic(worksData);
-        }
-    }
+//    public void toPlayNewMusic(WorksData worksData) {
+//        if (serviceIntent == null) {
+//            serviceIntent = new Intent(context, PlayService.class);
+//            serviceIntent.putExtra("id", worksData.itemid);
+//            serviceIntent.putExtra("from", come);
+//            serviceIntent.putExtra("gedanid", "");
+//            context.startService(serviceIntent);
+//        } else {
+//            context.stopService(serviceIntent);
+//            serviceIntent = null;
+//            toPlayNewMusic(worksData);
+//        }
+//    }
 
     @Override
     public int getItemCount() {

@@ -24,6 +24,7 @@ import com.xilu.wybz.ui.record.InspireRecordActivity;
 import com.xilu.wybz.ui.song.MakeHotActivity;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.SystemUtils;
+import com.xilu.wybz.utils.VersionUtil;
 import com.xilu.wybz.view.IndexViewPager;
 import com.xilu.wybz.view.MoreWindow;
 
@@ -52,6 +53,7 @@ public class MainTabActivity extends BaseActivity {
     MoreWindow mMoreWindow;
     int oldIndex;
     int currentIndex;
+    long exitTime;
     Intent intent;
     LocalActivityManager manager = null;
     @Override
@@ -65,6 +67,8 @@ public class MainTabActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
+        openPush();
+        checkAppVersion();
         manager = new LocalActivityManager(this, true);
         manager.dispatchCreate(savedInstanceState);
         checkedTextViewList = new ArrayList<>();
@@ -73,6 +77,16 @@ public class MainTabActivity extends BaseActivity {
         checkedTextViewList.add(tvMsg);
         checkedTextViewList.add(tvMine);
         initPagerViewer();
+    }
+    //打开推送
+    public void openPush() {
+        if (PrefsUtil.getBoolean("isPushOpen", context) && !PushAgent.getInstance(context).isEnabled()) {
+            PushAgent.getInstance(context).enable();
+        }
+    }
+    //检测升级
+    public void checkAppVersion() {
+        new VersionUtil().checkUpdateInfo(this);
     }
     private void initPagerViewer() {
         viewpager.setScanScroll(false);
@@ -202,4 +216,15 @@ public class MainTabActivity extends BaseActivity {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
     }
+    @Override
+    public void onBackPressed() {
+        //关闭作词作曲操作界面
+        if ((System.currentTimeMillis() - exitTime) > 2000) {
+            showMsg("再按一次退出应用");
+            exitTime = System.currentTimeMillis();
+            return;
+        }
+        finish();
+    }
+
 }
