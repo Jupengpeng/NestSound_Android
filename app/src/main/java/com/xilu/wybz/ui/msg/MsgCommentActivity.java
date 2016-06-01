@@ -44,7 +44,10 @@ public class MsgCommentActivity extends BaseListActivity<MsgCommentBean> impleme
         commentPresenter = new MsgCommentPresenter(this, this);
         commentPresenter.init();
     }
-
+    @Override
+    public boolean hasPadding() {
+        return false;
+    }
     @Override
     public void initView() {
         setTitle("评论");

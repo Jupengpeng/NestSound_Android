@@ -41,7 +41,7 @@
             android:id="@+id/recycler_view_hot"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/yc_10" />
+            android:paddingTop="10dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -72,8 +72,8 @@
             android:id="@+id/recycler_view_new"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/yc_10"
-            android:paddingBottom="@dimen/yc_10"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             />
     </LinearLayout>
 </ScrollView>

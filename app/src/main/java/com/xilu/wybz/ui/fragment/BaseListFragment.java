@@ -77,7 +77,7 @@ public abstract class BaseListFragment<T> extends BaseFragment implements PullRe
     }
 
     protected abstract void initPresenter();
-    public boolean hasPadding() {return false;}
+    public boolean hasPadding() {return true;}
     protected void setUpData() {
         setUpAdapter();
         if(hasPadding()){

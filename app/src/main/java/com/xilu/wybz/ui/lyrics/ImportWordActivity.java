@@ -38,7 +38,6 @@ public class ImportWordActivity extends BaseListActivity<WorksData> implements I
         importWordPresenter = new ImportWordPresenter(context,this);
         importWordPresenter.init();
     }
-    public boolean hasPadding() {return true;}
     @Override
     public void initView() {
         setTitle("我的歌词");

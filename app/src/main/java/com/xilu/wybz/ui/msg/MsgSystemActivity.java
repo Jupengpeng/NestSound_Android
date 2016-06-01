@@ -34,7 +34,10 @@ public class MsgSystemActivity extends BaseListActivity<SystemBean> implements I
     private int action = 0;
     String nodata = "暂无系统消息";
     private MsgSystemPresenter systemPresenter;
-
+    @Override
+    public boolean hasPadding() {
+        return false;
+    }
     @Override
     protected void initPresenter() {
         systemPresenter = new MsgSystemPresenter(this, this);

@@ -79,8 +79,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:paddingBottom="@dimen/yc_10"
-                    android:paddingTop="@dimen/yc_10"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
                     android:singleLine="true"
                     android:text="堇色流年"
                     android:textColor="@color/main_text_color"
@@ -97,7 +97,7 @@
                 android:ellipsize="end"
                 android:gravity="center_horizontal"
                 android:maxLines="2"
-                android:paddingBottom="@dimen/yc_10"
+                android:paddingBottom="10dp"
                 android:paddingLeft="60px"
                 android:paddingRight="60px"
                 android:text="人人都是作曲家"
@@ -160,16 +160,16 @@
                         <View
                             android:layout_width="2px"
                             android:layout_height="match_parent"
-                            android:layout_marginBottom="@dimen/yc_10"
-                            android:layout_marginTop="@dimen/yc_10"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginTop="10dp"
                             android:background="@color/split_line" />
 
                         <LinearLayout
                             android:id="@+id/ll_myfans"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_marginBottom="@dimen/yc_10"
-                            android:layout_marginTop="@dimen/yc_10"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginTop="10dp"
                             android:layout_weight="1"
                             android:gravity="center"
                             android:orientation="horizontal">

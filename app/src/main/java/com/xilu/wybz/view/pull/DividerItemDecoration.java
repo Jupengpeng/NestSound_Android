@@ -35,12 +35,10 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
         if (dividerDrawable == null) {
             return;
         }
-
         //如果是第一个item，不需要divider，所以直接return
         if (parent.getChildLayoutPosition(view) < 1) {
             return;
         }
-
         //相当于给itemView设置margin，给divider预留空间
         if (orientation == LinearLayoutManager.VERTICAL) {
             outRect.top = dividerDrawable.getIntrinsicHeight();

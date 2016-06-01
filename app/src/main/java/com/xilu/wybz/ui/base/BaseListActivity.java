@@ -7,9 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.xilu.wybz.R;
-import com.xilu.wybz.bean.PhotoBean;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.view.pull.BaseListAdapter;
 import com.xilu.wybz.view.pull.BaseViewHolder;
@@ -17,14 +15,8 @@ import com.xilu.wybz.view.pull.DividerItemDecoration;
 import com.xilu.wybz.view.pull.PullRecycler;
 import com.xilu.wybz.view.pull.layoutmanager.ILayoutManager;
 import com.xilu.wybz.view.pull.layoutmanager.MyLinearLayoutManager;
-
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
-
 import butterknife.Bind;
-import butterknife.ButterKnife;
-
 /**
  * Created by June on 16/5/8.
  */
@@ -72,7 +64,7 @@ public abstract class BaseListActivity<T> extends BasePlayMenuActivity implement
             }
         });
     }
-    public boolean hasPadding() {return false;}
+    public boolean hasPadding() {return true;}
     protected void setUpAdapter() {
         adapter = new ListAdapter();
     }
@@ -82,7 +74,7 @@ public abstract class BaseListActivity<T> extends BasePlayMenuActivity implement
     }
 
     protected RecyclerView.ItemDecoration getItemDecoration() {
-        return new DividerItemDecoration(getApplicationContext(), R.drawable.transparent);
+        return null;
     }
 
     public class ListAdapter extends BaseListAdapter {

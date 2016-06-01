@@ -46,7 +46,6 @@ public class SearchSongFragment extends BaseListFragment<WorksData> implements I
         searchPresenter = new SearchPresenter(context,this);
         searchPresenter.init();
     }
-    public boolean hasPadding() {return true;}
     @Override
     public void initView() {
         recycler.enablePullToRefresh(false);

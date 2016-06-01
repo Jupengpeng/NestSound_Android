@@ -37,18 +37,22 @@ public class FollowPresenter extends BasePresenter<IFollowAndFansView> {
             @Override
             public void onResponse(String response) {
                 List<FansBean> mList = ParseUtils.getFansData(context,response);
-                if (mList.size() == 0) {
-                    if (page == 1) {
-                        iView.loadNoData();
+                if(mList!=null) {
+                    if (mList.size() == 0) {
+                        if (page == 1) {
+                            iView.loadNoData();
+                        } else {
+                            iView.loadNoMore();
+                        }
                     } else {
-                        iView.loadNoMore();
+                        iView.showFansData(mList);
                     }
-                } else {
-                    iView.showFansData(mList);
                 }
             }
 
         });
     }
+    public void follow(){
 
+    }
 }

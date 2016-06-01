@@ -53,10 +53,6 @@ public class SearchUserFragment extends BaseListFragment<FansBean> implements IS
         super.setUpData();
     }
 
-    public boolean hasPadding() {
-        return true;
-    }
-
     @Override
     public void initView() {
         recycler.enablePullToRefresh(false);
