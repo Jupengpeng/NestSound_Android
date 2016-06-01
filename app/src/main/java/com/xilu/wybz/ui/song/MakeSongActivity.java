@@ -15,12 +15,16 @@ import com.xilu.wybz.R;
 import com.xilu.wybz.bean.TemplateBean;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.Event;
+import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.common.PlayMediaInstance;
 import com.xilu.wybz.common.RecordInstance;
 import com.xilu.wybz.dao.DBManager;
+import com.xilu.wybz.presenter.MakeSongPresenter;
 import com.xilu.wybz.ui.IView.IMakeSongView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.ui.lyrics.ImportWordActivity;
+import com.xilu.wybz.utils.FileUtils;
+import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.view.WaveSurfaceView;
 import com.xilu.wybz.view.materialdialogs.GravityEnum;
 import com.xilu.wybz.view.materialdialogs.MaterialDialog;
@@ -45,7 +49,7 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
     EditText etWord;
 
     @Bind(R.id.make_sv_wave)
-    WaveSurfaceView makeSvWave;
+    WaveSurfaceView waveSurface;
 
     @Bind(R.id.iv_record)
     ImageView ivRecord;
@@ -63,7 +67,11 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
     private boolean isQc; //是不是清唱
     private DBManager dbManager;
 
+    private String templateFileName;
+
     private WaveSurfaceHelper helper;
+
+    private MakeSongPresenter makeSongPresenter;
 
 
 
@@ -82,36 +90,69 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initData();
-        initView();
-
-
+        makeSongPresenter = new MakeSongPresenter(context,this);
+        makeSongPresenter.init();
 
         EventBus.getDefault().register(this);
-        setProgress(1);
 
         if (PlayMediaInstance.getInstance().status == 3) {
             PlayMediaInstance.getInstance().pauseMediaPlay();
             EventBus.getDefault().post(new Event.PPStatusEvent(4));
         }
 
-
+        upData();
     }
 
     @Override
     public void initView() {
-//        setTitle("");
-//        RecordInstance.getInstance().setSurfaceView(makeSvWave);
-//        llMain.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 
+        SystemUtils.isWiredHeadsetOn(this);
 
-        helper = makeSvWave.getWaveSurfaceHelper();
+        waveSurface.setDisableTouch();
+
+        helper = waveSurface.getWaveSurfaceHelper();
+
         RecordInstance.getInstance().getMp3Recorder().setListenner(new MP3Recorder.OnWaveChangeListenner() {
             @Override
             public void onChange(List<Short> data) {
                 helper.onDrawWave(data, data.size());
-                helper.isrun = false;
+            }
+
+            @Override
+            public void onstart() {
+
+            }
+
+            @Override
+            public void onPause() {
+
+            }
+
+            @Override
+            public void onStop() {
+
             }
         });
+
+    }
+
+    public void upData(){
+
+        templateFileName = FileUtils.getMusicCachePath(MyCommon.TYPE_TEMPLATE + templateBean.id);
+        //if templateFileName not exists
+        if (!FileUtils.fileExists(templateFileName)){
+
+            materialDialog = new MaterialDialog.Builder(this)
+                    .title("伴奏下载")
+                    .content(R.string.please_wait_down)
+                    .contentGravity(GravityEnum.CENTER)
+                    .progress(false, 100, true)
+                    .canceledOnTouchOutside(false).build();
+
+            materialDialog.show();
+
+            makeSongPresenter.loadFile(templateBean.mp3,templateFileName);
+        }
 
     }
 
@@ -151,20 +192,8 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
     @OnClick({ R.id.iv_play, R.id.iv_record, R.id.iv_restart})
     public void onClick(View view) {
         switch (view.getId()) {
-//            case R.id.iv_import:
-//                startActivity(ImportWordActivity.class);
-//                break;
+
             case R.id.iv_play:
-
-                materialDialog = new MaterialDialog.Builder(this)
-                        .title("伴奏下载")
-                        .content(R.string.please_wait_down)
-                        .contentGravity(GravityEnum.CENTER)
-                        .progress(false, 100, true)
-                        .canceledOnTouchOutside(false).build();
-
-                materialDialog.show();
-                materialDialog.setProgress(20);
 
 
                 break;
@@ -173,7 +202,7 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
                 if (RecordInstance.getInstance().isStart()) {
 
                     RecordInstance.getInstance().toPause();
-                    showRecordPlay();
+                    showRecordStart();
                 } else {
 
                     RecordInstance.getInstance().toStart();
@@ -183,19 +212,25 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
                 break;
             case R.id.iv_restart:
                 break;
-//            case R.id.iv_edit:
-//                MakeWordActivity.toMakeWordActivity(this,worksData);
-//                break;
         }
     }
 
 
-    public void showRecordPlay() {
+    public void showRecordStart() {
         ivRecord.setImageResource(R.drawable.ic_record_unstart);
     }
 
     public void showRecordPause() {
         ivRecord.setImageResource(R.drawable.ic_record_start);
+    }
+
+
+    public void showSongPlay() {
+        ivPlay.setImageResource(R.drawable.ic_replay_play);
+    }
+
+    public void showSongPause() {
+        ivPlay.setImageResource(R.drawable.ic_replay_pause);
     }
 
     @Override

@@ -451,4 +451,10 @@ public class FileUtils {
         }
         return lenght;
     }
+
+
+    public static boolean fileExists(String fileName){
+        File file = new File(fileName);
+        return file.exists();
+    }
 }

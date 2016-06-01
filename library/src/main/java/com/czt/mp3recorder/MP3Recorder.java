@@ -239,5 +239,8 @@ public class MP3Recorder {
 
     public interface OnWaveChangeListenner {
         public void onChange(List<Short> data);
+        public void onstart();
+        public void onPause();
+        public void onStop();
     }
 }

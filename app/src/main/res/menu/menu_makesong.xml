@@ -7,6 +7,6 @@
         app:showAsAction="always" />
     <item
         android:id="@+id/menu_next"
-        android:title="保存"
+        android:title="下一步"
         app:showAsAction="always" />
 </menu>

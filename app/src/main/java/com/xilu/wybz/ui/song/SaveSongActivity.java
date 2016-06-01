@@ -76,6 +76,7 @@ public class SaveSongActivity extends ToolbarActivity {
     public void initView(){
 
         initSeekBar();
+        showWorks();
     }
 
     private void initData(){

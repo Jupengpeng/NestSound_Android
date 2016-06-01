@@ -1,7 +1,6 @@
 package com.xilu.wybz.view;
 
 import android.content.Context;
-import android.graphics.Canvas;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -26,6 +25,8 @@ public class WaveSurfaceView extends SurfaceView {
     private OverScroller mScroller;
 
     private Context mContext;
+
+    private boolean enableTouch = true;
 
 
 
@@ -54,11 +55,6 @@ public class WaveSurfaceView extends SurfaceView {
 
 
     @Override
-    public void draw(Canvas canvas) {
-        super.draw(canvas);
-    }
-
-    @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
         return super.dispatchTouchEvent(event);
     }
@@ -66,6 +62,10 @@ public class WaveSurfaceView extends SurfaceView {
     static float x1 = 0;
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+
+        if (!enableTouch){
+            return false;
+        }
 
         int action = event.getAction() & MotionEvent.ACTION_MASK;
 //        int minx = ViewConfiguration.get(mContext).getScaledTouchSlop();
@@ -100,11 +100,20 @@ public class WaveSurfaceView extends SurfaceView {
         }
 
         return true;
-
-//        return super.onTouchEvent(event);
-
     }
 
+
+    public boolean isEnableTouch() {
+        return enableTouch;
+    }
+
+    public void setDisableTouch() {
+        this.enableTouch = false;
+    }
+
+    public void setEnableTouch() {
+        this.enableTouch = true;
+    }
 
     @Override
     public void computeScroll() {
