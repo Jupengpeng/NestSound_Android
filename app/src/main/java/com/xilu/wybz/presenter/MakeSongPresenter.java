@@ -21,10 +21,12 @@ public class MakeSongPresenter extends BasePresenter<IMakeSongView> {
 
     public void loadFile(String url, String fileName){
 
-        httpUtils.getFile("", new FileCallBack("","") {
+        File file = new File(fileName);
+
+        httpUtils.getFile(url, new FileCallBack(file.getParent(),file.getName()) {
             @Override
             public void inProgress(float progress, long total) {
-
+                iView.setLoadProgress((int)(100*progress));
             }
 
             @Override
@@ -39,8 +41,6 @@ public class MakeSongPresenter extends BasePresenter<IMakeSongView> {
         });
 
     }
-
-
 
 
 

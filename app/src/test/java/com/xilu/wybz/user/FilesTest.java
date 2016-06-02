@@ -24,14 +24,16 @@ public class FilesTest {
 //        println("exists:"+file.exists());
 
 
-        if (!file.isFile()) {
-            file.createNewFile();
-        }
-        
-        if (!file.exists()) {
-            file.mkdirs();
-        }
-        println(file.toString());
+//        if (!file.isFile()) {
+//            file.createNewFile();
+//        }
+//
+//        if (!file.exists()) {
+//            file.mkdirs();
+//        }
+        println(file.getName());
+        println(file.getPath());
+        println(file.getParent());
 
         assertEquals(1, 1);
 
