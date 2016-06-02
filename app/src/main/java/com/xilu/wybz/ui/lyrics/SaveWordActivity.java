@@ -18,6 +18,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.qiniu.android.utils.StringUtils;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.DownLoaderDir;
@@ -30,6 +31,7 @@ import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.utils.ImageUploader;
 import com.xilu.wybz.utils.ImageUtils;
 import com.xilu.wybz.utils.PrefsUtil;
+import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.utils.UploadFileUtil;
 
@@ -93,7 +95,6 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView{
                 if(worksData.pic.startsWith("http"))
                     loadImage(worksData.pic,iv_cover);
                 else if(new File(worksData.pic).exists()) {
-                    coverPath = worksData.pic;
                     loadImage("file:///" + worksData.pic, iv_cover);
                 }
             }
@@ -111,6 +112,7 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView{
             }
             @Override
             public void afterTextChanged(Editable s) {
+                worksData.setDetail(s.toString().trim());
                 if (s.length() == 140) {
                     showMsg("最多可输入140个字");
                 }
@@ -136,7 +138,7 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView{
     public void uploadCoverPic() {
         showPd("正在保存中，请稍候...");
         UploadFileUtil uploadPicUtil = new UploadFileUtil(context);
-        uploadPicUtil.uploadFile(coverPath, ImageUploader.fixxs[1], new UploadFileUtil.UploadResult() {
+        uploadPicUtil.uploadFile(worksData.pic, ImageUploader.fixxs[1], new UploadFileUtil.UploadResult() {
             @Override
             public void onSuccess(String imageUrl) {
                 worksData.setPic(imageUrl);
@@ -160,16 +162,19 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView{
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.menu_save:
-                if(!TextUtils.isEmpty(coverPath)){
-                    String desc = et_content.getText().toString().trim();
-                    if(desc.length()>0){
-                        worksData.setDetail(desc);
-                        uploadCoverPic();
-                    }else{
-                        showMsg("请先添加歌词描述！");
-                    }
-                }else{
+                //先检查歌词的描述
+                if(StringUtil.isBlank(worksData.detail)){
+                    showMsg("请先添加歌词描述！");
+                    return true;
+                }
+                if(StringUtil.isBlank(worksData.pic)){
                     showMsg("请先选择歌词的封面！");
+                    return true;
+                }
+                if(new File(worksData.pic).exists()){
+                    uploadCoverPic();
+                }else{
+                    saveWordPresenter.saveLyrics(worksData);
                 }
                 break;
         }
@@ -208,11 +213,6 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView{
         cancelPd();
     }
     public void closeActivity() {
-        //保存数据
-        if (!TextUtils.isEmpty(coverPath))
-            worksData.setPic(coverPath);
-        if (!TextUtils.isEmpty(et_content.getText().toString().trim()))
-            worksData.setDetail(et_content.getText().toString().trim());
         EventBus.getDefault().post(new Event.UpdateLyricsData(worksData));
         finish();
     }
@@ -255,9 +255,10 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView{
                     Bitmap bitmap = ImageUtils.rotaingImageView(degree, cameraBitmap);
                     ImageUtils.saveBitmap(bitmap, imagePath);
                     coverPath = imagePath;
-                }
 
+                }
                 loadImage("file://" + coverPath, iv_cover);
+                worksData.setPic(coverPath);
             } else {
                 showMsg("图片读取失败！");
             }

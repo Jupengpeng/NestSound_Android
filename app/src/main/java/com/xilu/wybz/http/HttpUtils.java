@@ -35,7 +35,6 @@ public class HttpUtils {
 
     //普通post提交
     public void post(String url, Map<String, String> params, Callback stringCallback) {
-        checkUrl(url);
         if(params==null){
             params = new HashMap<>();
         }
@@ -55,7 +54,6 @@ public class HttpUtils {
     }
     //普通post提交
     public void postUrl(String url, Map<String, String> params, Callback stringCallback) {
-        checkUrl(url);
         OkHttpUtils.post()
                 .url(MyHttpClient.BASE_URL + url)
                 .tag(url)
@@ -66,7 +64,6 @@ public class HttpUtils {
     }
     //提post加密后的json串
     public void postString(String url, String content, Callback stringCallback) {
-        checkUrl(url);
         OkHttpUtils
                 .postString()
                 .tag(url)
@@ -80,7 +77,6 @@ public class HttpUtils {
 
     //put加密后的json串
     public void putString(String url, String content, Callback stringCallback) {
-        checkUrl(url);
         OkHttpUtils
                 .put()
                 .tag(url)
@@ -92,7 +88,6 @@ public class HttpUtils {
     }
     //加密get
     public void get(String url, Map<String, String> params, Callback stringCallback) {
-        checkUrl(url);
         if(params==null){
             params = new HashMap<>();
         }
@@ -111,7 +106,6 @@ public class HttpUtils {
     }
     //普通get
     public void get(String url, Callback stringCallback) {
-        checkUrl(url);
         OkHttpUtils
                 .get()
                 .headers(headers)
