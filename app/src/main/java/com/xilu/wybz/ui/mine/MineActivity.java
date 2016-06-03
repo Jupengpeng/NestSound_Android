@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.UserBean;
+import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.KeySet;
 import com.xilu.wybz.presenter.UserListPresenter;
 import com.xilu.wybz.presenter.UserPresenter;
@@ -25,6 +26,7 @@ import com.xilu.wybz.ui.mine.view.UserSongView;
 import com.xilu.wybz.ui.setting.SettingActivity;
 import com.xilu.wybz.ui.song.CommentActivity;
 import com.xilu.wybz.utils.DensityUtil;
+import com.xilu.wybz.utils.ParseUtils;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.view.TopFloatScrollView;
@@ -264,7 +266,10 @@ public class MineActivity extends BaseActivity implements IUserView {
 
     }
 
-
+    public void onEventMainThread(Event.UpdateUserInfo event){
+        UserBean userBean = PrefsUtil.getUserInfo(context);
+        setLocalUserInfo(userBean);
+    }
     @OnClick({R.id.ll_myrecord, R.id.ll_mysong, R.id.ll_mylyrics, R.id.ll_myfav})
     public void onClick(View view) {
 

@@ -9,8 +9,10 @@ import android.widget.FrameLayout;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.MusicTalk;
+import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.ImageLoadUtil;
+import com.xilu.wybz.utils.StringUtil;
 
 import java.util.List;
 
@@ -47,8 +49,8 @@ public class MusicTalkAdapter extends RecyclerView.Adapter<MusicTalkAdapter.Musi
     @Override
     public void onBindViewHolder(final MusicTalkViewHolder holder, final int position) {
         MusicTalk musicTalk = mList.get(position);
-        String url = musicTalk.pic;
-        ImageLoadUtil.loadImage(url, holder.ivCover);
+        if(StringUtil.isNotBlank(musicTalk.pic))
+        ImageLoadUtil.loadImage(MyCommon.getImageUrl(musicTalk.pic,itemWidth,itemHeight), holder.ivCover);
         if (mOnItemClickListener != null) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

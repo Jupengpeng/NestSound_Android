@@ -250,6 +250,5 @@ public class PlayLocalMediaInstance {
         } else {
             startMediaPlay(FileUtils.getLocalplayurl(czMusicBean.getId()));
         }
-
     }
 }

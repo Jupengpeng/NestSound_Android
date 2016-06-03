@@ -17,6 +17,7 @@ import android.widget.ScrollView;
 import com.xilu.wybz.R;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.GeneralUtil;
+import com.xilu.wybz.utils.ToastUtils;
 
 /**
  * ============================================================
@@ -213,6 +214,7 @@ public class TopFloatScrollView extends FrameLayout implements MonitorScrollView
             // 在它滚动的时候去决定新增容器有多大
             initNewContanier();
             if (y > mFloatToTopHeight - dpi48) {
+                //拦截滑动
                 addFloatToContainer();
             } else {
                 addFloatToRootView();

@@ -1,7 +1,6 @@
 package com.xilu.wybz.ui.fragment;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,15 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
-import com.facebook.drawee.backends.pipeline.PipelineDraweeController;
+import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.facebook.imagepipeline.common.ResizeOptions;
-import com.facebook.imagepipeline.request.ImageRequest;
-import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.xilu.wybz.R;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.view.pull.BaseListAdapter;
@@ -81,7 +76,7 @@ public abstract class BaseListFragment<T> extends BaseFragment implements PullRe
     protected void setUpData() {
         setUpAdapter();
         if(hasPadding()){
-            recycler.setPadding(dip10, dip10, dip10, dip10);
+            recycler.setReclylerPaddiing(dip10);
         }
         recycler.setOnRefreshListener(this);
         recycler.setLayoutManager(getLayoutManager());
@@ -161,16 +156,10 @@ public abstract class BaseListFragment<T> extends BaseFragment implements PullRe
     }
 
     protected void loadImage(String url, SimpleDraweeView mDraweeView) {
-        ImageRequest request =
-                ImageRequestBuilder.newBuilderWithSource(Uri.parse(url))
-                        .setResizeOptions(
-                                new ResizeOptions(mDraweeView.getLayoutParams().width, mDraweeView.getLayoutParams().height))
-                        .setProgressiveRenderingEnabled(true)
-                        .build();
-        PipelineDraweeController controller = (PipelineDraweeController) Fresco.newDraweeControllerBuilder()
+        DraweeController controller = Fresco.newDraweeControllerBuilder()
+                .setCallerContext(null)
+                .setUri(Uri.parse(url))
                 .setOldController(mDraweeView.getController())
-                .setImageRequest(request)
-                .setAutoPlayAnimations(true)
                 .build();
         mDraweeView.setController(controller);
     }

@@ -210,7 +210,12 @@ public class MainTabActivity extends BaseActivity {
         PushAgent.getInstance(context).setExclusiveAlias(ub.userid+"", "yinchao");
     }
     public void onEventMainThread(Event.LoginOutEvent event){
-        viewpager.setCurrentItem(0,false);
+        currentIndex = 0;
+        changeToolbar(currentIndex);
+        checkedTextViewList.get(oldIndex).setChecked(false);
+        checkedTextViewList.get(currentIndex).setChecked(true);
+        viewpager.setCurrentItem(currentIndex, false);
+        oldIndex = currentIndex;
     }
     @Override
     protected void onDestroy() {

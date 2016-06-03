@@ -180,6 +180,9 @@ public class FileUtils {
     public static String getRootPath() {
         return getSDPath() + ROOTPATH;
     }
+    public static boolean fileExists(String path) {
+        return new File(path).exists();
+    }
 
     public static String getMusicCachePath(String cacheName) {
         return makeFileFold(getRootPath() + MUSICCACHEPATH) + "/" + cacheName;

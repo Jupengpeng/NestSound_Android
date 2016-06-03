@@ -51,7 +51,7 @@ public abstract class BaseListActivity<T> extends BasePlayMenuActivity implement
     protected void setUpData() {
         setUpAdapter();
         if(hasPadding()){
-            recycler.setPadding(dip10, dip10, dip10, dip10);
+            recycler.setReclylerPaddiing(dip10);
         }
         recycler.setOnRefreshListener(this);
         recycler.setLayoutManager(getLayoutManager());

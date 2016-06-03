@@ -82,7 +82,7 @@ public class UserBaseView extends LinearLayout implements IUserListView {
         });
 
         mPullRecycler.setLayoutManager(new MyLinearLayoutManager(mContext));
-        mPullRecycler.setNestedScrollingEnabled(false);
+//        mPullRecycler.setNestedScrollingEnabled(false);
         if (mBaseListAdapter != null){
             mPullRecycler.setAdapter(mBaseListAdapter);
         }
@@ -132,7 +132,6 @@ public class UserBaseView extends LinearLayout implements IUserListView {
     }
 
     public void onScrollBottom(){
-
 
     }
 

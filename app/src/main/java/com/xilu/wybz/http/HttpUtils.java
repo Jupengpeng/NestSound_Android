@@ -116,31 +116,33 @@ public class HttpUtils {
     }
     //获取网络图片返回bitmap
     public void getImage(String url, BitmapCallback bitmapCallback) {
-        checkUrl(url);
-        OkHttpUtils
-                .get()
-                .url(url)
-                .tag(url)
-                .headers(headers)
-                .build()
-                .execute(bitmapCallback);
+        if(checkUrl(url)) {
+            OkHttpUtils
+                    .get()
+                    .url(url)
+                    .tag(url)
+                    .headers(headers)
+                    .build()
+                    .execute(bitmapCallback);
+        }
     }
 
     //下载网络问文件 返回file文件
     public void getFile(String url, FileCallBack fileCallBack) {
-        checkUrl(url);
-        OkHttpUtils
-                .get()
-                .url(url)
-                .tag(url)
-                .headers(headers)
-                .build()
-                .execute(fileCallBack);
+        if(checkUrl(url)) {
+            OkHttpUtils
+                    .get()
+                    .url(url)
+                    .tag(url)
+                    .headers(headers)
+                    .build()
+                    .execute(fileCallBack);
+        }
     }
-    public void checkUrl(String url){
+    public boolean checkUrl(String url){
         if (url == null){
             ToastUtils.toast(context,"输入的请求地址不合法！");
-            return;
+            return false;
         }
         // Silently replace websocket URLs with HTTP URLs.
         if (url.regionMatches(true, 0, "ws:", 0, 3)) {
@@ -152,7 +154,8 @@ public class HttpUtils {
         HttpUrl parsed = HttpUrl.parse(url);
         if (parsed == null) {
             ToastUtils.toast(context,"输入的请求地址不合法！");
-            return;
+            return false;
         }
+        return true;
     }
 }

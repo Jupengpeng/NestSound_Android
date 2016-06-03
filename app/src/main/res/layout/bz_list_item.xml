@@ -47,7 +47,7 @@
                     android:src="@drawable/ic_bz_play" />
 
                 <ProgressBar
-                    android:id="@+id/progress"
+                    android:id="@+id/pb_play"
                     style="@style/android:Widget.Holo.Light.ProgressBar.Large.Inverse"
                     android:layout_width="21dip"
                     android:layout_height="21dip"

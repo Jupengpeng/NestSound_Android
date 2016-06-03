@@ -23,7 +23,10 @@ public class HotPresenter extends BasePresenter<IHotView> {
     public HotPresenter(Context context, IHotView iView) {
         super(context, iView);
     }
-
+    /*
+    * name 搜索的关键词
+    * type 1=最新伴奏列表 2=最热伴奏列表 默认为最新
+     */
     public void loadHotData(String name, int type, int page) {
         Map<String, String> params = new HashMap<>();
         params.put("name", name);

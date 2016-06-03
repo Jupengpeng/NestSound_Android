@@ -16,11 +16,13 @@ import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.common.DownLoaderDir;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.MyCommon;
+import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.presenter.ModifyUserInfoPresenter;
 import com.xilu.wybz.ui.IView.IModifyUserInfoView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.utils.ImageUploader;
 import com.xilu.wybz.utils.PrefsUtil;
+import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.utils.UploadFileUtil;
 import com.xilu.wybz.view.materialdialogs.MaterialDialog;
@@ -33,7 +35,7 @@ import de.greenrobot.event.EventBus;
 /**
  * Created by June on 16/5/13.
  */
-public class ModifyActivity extends ToolbarActivity implements IModifyUserInfoView{
+public class ModifyUserInfoActivity extends ToolbarActivity implements IModifyUserInfoView{
     @Bind(R.id.tv_username)
     TextView tv_username;
     @Bind(R.id.iv_head)
@@ -52,7 +54,7 @@ public class ModifyActivity extends ToolbarActivity implements IModifyUserInfoVi
     String titles[] = new String[]{"修改昵称", "修改签名", "修改性别", "修改生日"};
     String genders[] = new String[]{"男", "女"};
     int maxLengths[] = new int[]{16, 30};
-    String headPath, headurl;
+    String headPath;
 
     ModifyUserInfoPresenter modifyUserInfoPresenter;
     @Override
@@ -90,7 +92,7 @@ public class ModifyActivity extends ToolbarActivity implements IModifyUserInfoVi
         tv_usersign.setText(userBean.descr);
         tv_birthday.setText(userBean.birthday);
         tv_gender.setText(genders[userBean.sex]);
-        loadImage(userBean.headurl,iv_head);
+        loadImage(userBean.headurl, iv_head);
         //通知我的个人主页更新
         PrefsUtil.saveUserInfo(context,userBean);
         EventBus.getDefault().post(new Event.UpdateUserInfo());
@@ -232,7 +234,6 @@ public class ModifyActivity extends ToolbarActivity implements IModifyUserInfoVi
             e.printStackTrace();
         }
     }
-
     //上传头像到服务器
     public void uploadUserHead() {
         UploadFileUtil uploadPicUtil = new UploadFileUtil(context);
@@ -242,7 +243,7 @@ public class ModifyActivity extends ToolbarActivity implements IModifyUserInfoVi
                 if (!TextUtils.isEmpty(headPath) && new File(headPath).exists()) {
                     new File(headPath).delete();
                 }
-                headurl = imageUrl;
+                userBean.headurl = MyHttpClient.QINIU_URL+imageUrl;
                 UpdateUserInfo();
             }
 
