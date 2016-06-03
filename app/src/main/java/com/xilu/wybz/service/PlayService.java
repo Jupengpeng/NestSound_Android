@@ -46,7 +46,6 @@ public class PlayService extends Service {
     String gedanid;
     int position;
     TelephonyManager tmgr;
-
     @Override
     public IBinder onBind(Intent intent) {
         return mBinder;

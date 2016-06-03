@@ -25,7 +25,7 @@ public class ToastUtils {
             public void run() {
                 toastDialog.dismiss();
             }
-        }, 1200);
+        }, 2500);
     }
 
     public static void logingTip(Context context, String msg) {

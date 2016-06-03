@@ -9,7 +9,6 @@ import com.xilu.wybz.common.YinChaoConfig;
  * Created by June on 2015/9/2.
  */
 public class UserBean {
-
     public int userid;
     public String phone;//手机号码
     public String loginToken;

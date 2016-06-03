@@ -12,8 +12,6 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.qiniu.android.utils.StringUtils;
-import com.tencent.connect.UserInfo;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.PushAgent;
 import com.xilu.wybz.R;
@@ -86,7 +84,7 @@ public class SettingActivity extends ToolbarActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_modify:
-                startActivity(ModifyActivity.class);
+                startActivity(ModifyUserInfoActivity.class);
                 break;
             case R.id.ll_clear_cache:
                 DelCache();
@@ -101,7 +99,6 @@ public class SettingActivity extends ToolbarActivity {
                 break;
             case R.id.ll_loginout:
                 HttpUtils httpUtils = new HttpUtils(context);
-                Map<String,String> map = new HashMap<String,String>();
                 httpUtils.post(MyHttpClient.getLoginOut(),null,new MyStringCallback(){
 
                 });

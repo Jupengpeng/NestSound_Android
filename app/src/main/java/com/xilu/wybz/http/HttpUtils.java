@@ -14,9 +14,12 @@ import com.xilu.wybz.http.callback.StringCallback;
 import com.xilu.wybz.http.rsa.RSAUtils;
 import com.xilu.wybz.utils.PhoneInfoUtil;
 import com.xilu.wybz.utils.PrefsUtil;
+import com.xilu.wybz.utils.ToastUtils;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import okhttp3.HttpUrl;
 import okhttp3.MediaType;
 /**
  * Created by June on 16/4/28.
@@ -85,7 +88,6 @@ public class HttpUtils {
     }
     //加密get
     public void get(String url, Map<String, String> params, Callback stringCallback) {
-        Log.e("url",url);
         if(params==null){
             params = new HashMap<>();
         }
@@ -104,7 +106,6 @@ public class HttpUtils {
     }
     //普通get
     public void get(String url, Callback stringCallback) {
-        Log.e("url",url);
         OkHttpUtils
                 .get()
                 .headers(headers)
@@ -115,23 +116,46 @@ public class HttpUtils {
     }
     //获取网络图片返回bitmap
     public void getImage(String url, BitmapCallback bitmapCallback) {
-        OkHttpUtils
-                .get()
-                .url(url)
-                .tag(url)
-                .headers(headers)
-                .build()
-                .execute(bitmapCallback);
+        if(checkUrl(url)) {
+            OkHttpUtils
+                    .get()
+                    .url(url)
+                    .tag(url)
+                    .headers(headers)
+                    .build()
+                    .execute(bitmapCallback);
+        }
     }
 
     //下载网络问文件 返回file文件
     public void getFile(String url, FileCallBack fileCallBack) {
-        OkHttpUtils
-                .get()
-                .url(url)
-                .tag(url)
-                .headers(headers)
-                .build()
-                .execute(fileCallBack);
+        if(checkUrl(url)) {
+            OkHttpUtils
+                    .get()
+                    .url(url)
+                    .tag(url)
+                    .headers(headers)
+                    .build()
+                    .execute(fileCallBack);
+        }
+    }
+    public boolean checkUrl(String url){
+        if (url == null){
+            ToastUtils.toast(context,"输入的请求地址不合法！");
+            return false;
+        }
+        // Silently replace websocket URLs with HTTP URLs.
+        if (url.regionMatches(true, 0, "ws:", 0, 3)) {
+            url = "http:" + url.substring(3);
+        } else if (url.regionMatches(true, 0, "wss:", 0, 4)) {
+            url = "https:" + url.substring(4);
+        }
+
+        HttpUrl parsed = HttpUrl.parse(url);
+        if (parsed == null) {
+            ToastUtils.toast(context,"输入的请求地址不合法！");
+            return false;
+        }
+        return true;
     }
 }

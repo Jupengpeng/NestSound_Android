@@ -20,8 +20,8 @@
         >
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/iv_head"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="@dimen/actionbar_size"
+            android:layout_height="@dimen/actionbar_size"
             fresco:actualImageScaleType="centerCrop"
             fresco:fadeDuration="300"
             fresco:failureImage="@drawable/ic_default_head_252"

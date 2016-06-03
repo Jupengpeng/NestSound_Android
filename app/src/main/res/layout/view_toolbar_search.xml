@@ -2,14 +2,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/app_bar_layout"
     android:layout_width="match_parent"
-    android:layout_height="48dp"
+    android:layout_height="@dimen/actionbar_size"
     android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
     app:elevation="0.6dp">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="@dimen/actionbar_size"
         android:background="@color/white"
         android:minHeight="48dp"
         android:theme="@style/ToolBarStyle"
@@ -18,11 +18,11 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp">
+        android:layout_height="@dimen/actionbar_size">
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="48dp"
+            android:layout_height="@dimen/actionbar_size"
             android:layout_weight="1"
             android:gravity="center_vertical">
 
@@ -68,7 +68,7 @@
         <RelativeLayout
             android:id="@+id/rl_right"
             android:layout_width="58dp"
-            android:layout_height="48dp"
+            android:layout_height="@dimen/actionbar_size"
             android:layout_alignParentRight="true">
 
             <TextView

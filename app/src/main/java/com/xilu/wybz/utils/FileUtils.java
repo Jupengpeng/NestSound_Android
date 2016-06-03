@@ -180,6 +180,9 @@ public class FileUtils {
     public static String getRootPath() {
         return getSDPath() + ROOTPATH;
     }
+    public static boolean fileExists(String path) {
+        return new File(path).exists();
+    }
 
     public static String getMusicCachePath(String cacheName) {
         return makeFileFold(getRootPath() + MUSICCACHEPATH) + "/" + cacheName;
@@ -450,11 +453,5 @@ public class FileUtils {
             lenght = conn.getContentLength();
         }
         return lenght;
-    }
-
-
-    public static boolean fileExists(String fileName){
-        File file = new File(fileName);
-        return file.exists();
     }
 }

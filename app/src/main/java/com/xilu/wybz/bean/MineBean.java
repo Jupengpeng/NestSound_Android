@@ -3,15 +3,14 @@ package com.xilu.wybz.bean;
 import java.util.List;
 
 /**
- * Created by Zning on 2015/9/2.
+ * Created by June on 2015/9/2.
  */
 public class MineBean {
 
-    int fansnum;
-    int gznum;
-    UserBean user;
-
-    List<WorksData> list;
+    public int fansnum;
+    public int gznum;
+    public UserBean user;
+    public List<WorksData> list;
 
 
     public int getFansnum() {

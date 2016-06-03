@@ -50,13 +50,13 @@ public class HotListAdapter extends WyBaseAdapter<TemplateBean> {
         rl_cover.setLayoutParams(new LinearLayout.LayoutParams(itemWidth,itemHeight));
         ImageView ivPlay = BaseViewHolder.get(convertView, R.id.iv_play);
         RelativeLayout rlPlay = BaseViewHolder.get(convertView, R.id.rl_play);
-        ProgressBar progress = BaseViewHolder.get(convertView, R.id.progress);
+        ProgressBar progress = BaseViewHolder.get(convertView, R.id.pb_play);
         TextView tvTitle = BaseViewHolder.get(convertView, R.id.tv_title);
         TextView tvAuthor = BaseViewHolder.get(convertView,R.id.tv_author);
         tvTitle.setText(templateBean.title);
         tvAuthor.setText(templateBean.author);
         if(StringUtil.isNotBlank(templateBean.pic)) loadImage(templateBean.pic, iv_cover, itemWidth, itemHeight);
-        if (!TextUtils.isEmpty(MyApplication.musicId) && MyApplication.musicId.equals(templateBean.id)&&PlayMediaInstance.getInstance().status==3) {
+        if (!TextUtils.isEmpty(MyApplication.musicId) && MyApplication.musicId.equals(templateBean.id)&&PlayBanZouInstance.getInstance().status==3) {
             currIv = ivPlay;
             ivPlay.setImageResource(R.drawable.ic_bz_pause);
         }else{

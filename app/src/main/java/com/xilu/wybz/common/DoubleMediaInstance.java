@@ -22,6 +22,7 @@ public class DoubleMediaInstance {
     private IMediaPlayerListener iml;
 
     DoubleMediaInstance() {
+
     }
 
     public synchronized static DoubleMediaInstance getInstance() {
@@ -116,6 +117,7 @@ public class DoubleMediaInstance {
                     }
                 }
             });
+
             mediaPlayer1.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {

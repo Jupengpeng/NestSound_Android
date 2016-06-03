@@ -53,14 +53,6 @@ public abstract class BasePlayMenuActivity extends ToolbarActivity {
         resourceIdList.add(R.drawable.ic_menu_play_17);
         resourceIdList.add(R.drawable.ic_menu_play_18);
         initAnimal();
-        if(!(this instanceof SearchHotActivity)) {
-            rl_right.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onPlayMenuClick();
-                }
-            });
-        }
     }
 
     private void initAnimal() {

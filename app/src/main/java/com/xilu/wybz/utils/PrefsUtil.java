@@ -17,7 +17,6 @@ public class PrefsUtil {
 
     public static final String SETTING = "setting";
     static SharedPreferences preferences;
-    static SharedPreferences.Editor editor;
 
     public static SharedPreferences getSpf(Context context, String name) {
         return context.getSharedPreferences(name, Context.MODE_PRIVATE);
@@ -132,5 +131,10 @@ public class PrefsUtil {
             worksData = new Gson().fromJson(lyrics,WorksData.class);
         }
         return worksData;
+    }
+    public static void clearData(Context context){
+        preferences = context.getSharedPreferences(SETTING, Context.MODE_PRIVATE);
+        preferences.edit().clear().commit();
+
     }
 }

@@ -44,7 +44,7 @@ public class PullRecycler extends FrameLayout implements SwipeRefreshLayout.OnRe
         LayoutInflater.from(getContext()).inflate(R.layout.widget_pull_to_refresh, this, true);
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
         mSwipeRefreshLayout.setOnRefreshListener(this);
-        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        mRecyclerView = (RecyclerView) findViewById(R.id.id_stickynavlayout_innerscrollview);
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -134,8 +134,12 @@ public class PullRecycler extends FrameLayout implements SwipeRefreshLayout.OnRe
     public void setSelection(int position) {
         mRecyclerView.scrollToPosition(position);
     }
-
-
+    public void setItemAnimator(RecyclerView.ItemAnimator itemAnimator){
+        mRecyclerView.setItemAnimator(itemAnimator);
+    }
+    public void setReclylerPaddiing(int padding){
+        mRecyclerView.setPadding(padding, padding, padding, padding);
+    }
     public interface OnRecyclerRefreshListener {
         void onRefresh(int action);
     }

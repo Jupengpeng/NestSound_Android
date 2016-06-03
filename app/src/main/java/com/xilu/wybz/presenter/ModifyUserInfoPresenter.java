@@ -10,6 +10,7 @@ import com.xilu.wybz.ui.IView.IForgetPwdView;
 import com.xilu.wybz.ui.IView.IModifyUserInfoView;
 import com.xilu.wybz.utils.ParseUtils;
 import com.xilu.wybz.utils.PrefsUtil;
+import com.xilu.wybz.utils.StringUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,7 +27,11 @@ public class ModifyUserInfoPresenter extends BasePresenter<IModifyUserInfoView> 
     public void modifyUserInfo(UserBean userBean) {
         params = new HashMap<>();
         params.put("uid", PrefsUtil.getUserId(context)+"");
-        params.put("headurl",userBean.headurl);
+        if(StringUtil.isNotBlank(userBean.headurl)) {
+            String[] parts = userBean.headurl.split("/");
+            String name = parts[parts.length - 1];
+            params.put("headurl", name);
+        }
         params.put("nickname",userBean.name);
         params.put("sex",userBean.sex+"");
         params.put("descr",userBean.descr);
