@@ -20,6 +20,7 @@ import android.widget.OverScroller;
 import android.widget.ScrollView;
 
 import com.xilu.wybz.R;
+import com.xilu.wybz.utils.DensityUtil;
 
 public class StickyNavLayout extends LinearLayout {
 
@@ -41,6 +42,7 @@ public class StickyNavLayout extends LinearLayout {
 
 	private boolean isInControl = false;
 
+	private OnScrollSizeChangeListener onScrollSizeChangeListener;
 	public StickyNavLayout(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		setOrientation(LinearLayout.VERTICAL);
@@ -78,7 +80,14 @@ public class StickyNavLayout extends LinearLayout {
 	@Override
 	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
 		super.onSizeChanged(w, h, oldw, oldh);
-		mTopViewHeight = mTop.getMeasuredHeight();
+		mTopViewHeight = mTop.getMeasuredHeight() - (int)(getContext().getResources().getDimension(R.dimen.actionbar_size));
+
+	}
+
+	@Override
+	protected void onScrollChanged(int l, int t, int oldl, int oldt) {
+		super.onScrollChanged(l, t, oldl, oldt);
+		if(onScrollSizeChangeListener!=null)onScrollSizeChangeListener.onScrollY(t);
 	}
 
 	@Override
@@ -238,15 +247,12 @@ public class StickyNavLayout extends LinearLayout {
 			return true;
 		case MotionEvent.ACTION_MOVE:
 			float dy = y - mLastY;
-
 //			Log.e("TAG", "dy = " + dy + " , y = " + y + " , mLastY = " + mLastY);
-
 			if (!mDragging && Math.abs(dy) > mTouchSlop) {
 				mDragging = true;
 			}
 			if (mDragging) {
 				scrollBy(0, (int) -dy);
-
 				// 如果topView隐藏，且上滑动时，则改变当前事件为ACTION_DOWN
 				if (getScrollY() == mTopViewHeight && dy < 0) {
 					event.setAction(MotionEvent.ACTION_DOWN);
@@ -319,5 +325,10 @@ public class StickyNavLayout extends LinearLayout {
 			mVelocityTracker = null;
 		}
 	}
-
+	public void setOnScrollSizeChangeListener(OnScrollSizeChangeListener onScrollSizeChangeListener){
+		this.onScrollSizeChangeListener = onScrollSizeChangeListener;
+	}
+	public interface OnScrollSizeChangeListener{
+		void onScrollY(int y);
+	}
 }

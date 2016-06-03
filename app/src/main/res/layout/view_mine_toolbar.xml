@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_topbar"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/actionbar_size">
+
+    <View
+        android:id="@+id/v_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/actionbar_size"
+        android:alpha="0"
+        android:background="@color/main_theme_color" />
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="20dp"
+        android:alpha="0"
+        android:gravity="center"
+        android:text="个人主页"
+        android:textColor="@android:color/black"
+        android:textSize="17sp" />
+
+
+    <RelativeLayout
+        android:id="@+id/rl_setting"
+        android:layout_width="@dimen/actionbar_size"
+        android:layout_height="@dimen/actionbar_size"
+        android:layout_alignParentRight="true">
+
+        <ImageView
+            android:id="@+id/iv_setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_mine_setting" />
+    </RelativeLayout>
+</RelativeLayout>

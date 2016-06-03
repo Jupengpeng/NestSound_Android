@@ -1,5 +1,6 @@
 package com.xilu.wybz.ui.IView;
 
+import com.xilu.wybz.bean.MusicTalk;
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.bean.WorksData;
 
@@ -10,9 +11,9 @@ import java.util.List;
  * 用户主页 也可以是我的主页
  */
 public interface IUserView extends IBaseView {
-
-    void setUserInfo(UserBean userBean);
-    void setFollowNumber(int number);
-    void setFansNumber(int number);
-
+    void setUserInfo(UserBean userBean,int fansnum,int follownum);
+    void showWorksData(List<WorksData> worksDataList);
+    void loadFail();
+    void loadNoData();
+    void loadNoMore();
 }

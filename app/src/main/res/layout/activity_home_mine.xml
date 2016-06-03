@@ -1,378 +1,249 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/main_bg"
     android:orientation="vertical">
 
-    <com.xilu.wybz.view.TopFloatScrollView
-        android:id="@+id/myScrollView"
+    <com.xilu.wybz.view.StickyNavLayout
+        android:id="@+id/stickynav_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <LinearLayout
+            android:id="@id/id_stickynavlayout_topview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:orientation="vertical">
-
-                <RelativeLayout
-                    android:id="@+id/user_layout_top"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="top">
-
-                    <ImageView
-                        android:id="@+id/id_bg"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_my_banner"
-                        android:scaleType="centerCrop"
-                        />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="23dp"
-                        android:layout_below="@+id/id_bg"
-                        android:background="@color/white" />
-                </RelativeLayout>
-
-                <!--<com.facebook.drawee.view.SimpleDraweeView-->
-                    <!--android:id="@+id/iv_head"-->
-                    <!--android:layout_width="92dp"-->
-                    <!--android:layout_height="92dp"-->
-                    <!--android:layout_gravity="center_horizontal|bottom"-->
-                    <!--fresco:actualImageScaleType="centerCrop"-->
-                    <!--fresco:fadeDuration="300"-->
-                    <!--fresco:failureImage="@drawable/ic_default_head_252"-->
-                    <!--fresco:failureImageScaleType="centerCrop"-->
-                    <!--fresco:placeholderImage="@drawable/ic_default_head_252"-->
-                    <!--fresco:placeholderImageScaleType="centerCrop"-->
-                    <!--fresco:roundingBorderWidth="2dp"-->
-                    <!--fresco:roundingBorderColor="#a58c23"-->
-                    <!--fresco:roundAsCircle="true" />-->
-                <com.xilu.wybz.view.CircleImageView
-                    android:id="@+id/iv_head"
-                    android:layout_width="92dp"
-                    android:layout_height="92dp"
-                    android:layout_gravity="center_horizontal|bottom"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_default_head_252"
-                    fresco:border_color="#a58c23"
-                    fresco:border_width="@dimen/yc_2" />
-            </FrameLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white">
-
-                <TextView
-                    android:id="@+id/user_tv_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:paddingBottom="10dp"
-                    android:paddingTop="10dp"
-                    android:singleLine="true"
-                    android:text="堇色流年"
-                    android:textColor="@color/main_text_color"
-                    android:textSize="15sp" />
-
-
-            </RelativeLayout>
-
-            <TextView
-                android:id="@+id/user_tv_info"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:ellipsize="end"
-                android:gravity="center_horizontal"
-                android:maxLines="2"
-                android:paddingBottom="10dp"
-                android:paddingLeft="60px"
-                android:paddingRight="60px"
-                android:text="人人都是作曲家"
-                android:textColor="@color/main_text_color3"
-                android:textSize="12sp" />
-
-            <LinearLayout
-                android:id="@+id/user_layout_center"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/user_center1"
-                android:background="@color/white"
-                android:orientation="vertical">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/split_line"
-                    android:paddingBottom="@dimen/spit_line_height"
-                    android:paddingTop="@dimen/spit_line_height">
-
-                    <LinearLayout
-                        android:id="@+id/user_layout_cmenu"
-                        android:layout_width="match_parent"
-                        android:layout_height="42dp"
-                        android:background="@color/white"
-                        android:gravity="center">
-
-
-                        <LinearLayout
-                            android:id="@+id/ll_myfollow"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:id="@+id/user_fans"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:gravity="right"
-                                android:text="关注: "
-                                android:textColor="@color/main_text_color"
-                                android:textSize="15sp" />
-
-                            <TextView
-                                android:id="@+id/user_follownum"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="20px"
-                                android:layout_weight="1"
-                                android:gravity="left"
-                                android:text="0"
-                                android:textColor="@color/main_text_color"
-                                android:textSize="16sp" />
-                        </LinearLayout>
-
-                        <View
-                            android:layout_width="2px"
-                            android:layout_height="match_parent"
-                            android:layout_marginBottom="10dp"
-                            android:layout_marginTop="10dp"
-                            android:background="@color/split_line" />
-
-                        <LinearLayout
-                            android:id="@+id/ll_myfans"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginBottom="10dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:id="@+id/user_follow"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:gravity="right"
-                                android:text="粉丝: "
-                                android:textColor="@color/main_text_color"
-                                android:textSize="15sp" />
-
-                            <TextView
-                                android:id="@+id/user_fansnum"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="20px"
-                                android:layout_weight="1"
-                                android:text="0"
-                                android:textColor="@color/main_text_color"
-                                android:textSize="16sp" />
-
-                        </LinearLayout>
-                    </LinearLayout>
-                </RelativeLayout>
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="20px" />
-
-            <RelativeLayout
-                android:id="@+id/top_float"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/user_layout_center"
-                android:background="@color/split_line"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:paddingBottom="@dimen/spit_line_height"
-                android:paddingTop="@dimen/spit_line_height">
-
-                <LinearLayout
-                    android:id="@+id/user_layout_menu"
-                    android:layout_width="match_parent"
-                    android:layout_height="54dp"
-                    android:background="@color/white"
-                    android:gravity="center">
-                    <LinearLayout
-                        android:id="@+id/ll_myrecord"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:background="@drawable/bg_mine_song"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:drawableTop="@drawable/ic_mine_record"
-                            android:text="灵感记录"
-                            android:drawablePadding="5dp"
-                            android:textColor="@color/main_text_color2"
-                            android:textSize="12dp" />
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="@dimen/spit_line_height"
-                        android:layout_height="match_parent"
-                        android:background="@color/split_line" />
-                    <LinearLayout
-                        android:id="@+id/ll_mysong"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:background="@drawable/bg_mine_song"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:drawableTop="@drawable/ic_mine_song"
-                            android:text="歌曲"
-                            android:drawablePadding="5dp"
-                            android:textColor="@color/main_text_color2"
-                            android:textSize="12dp" />
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="@dimen/spit_line_height"
-                        android:layout_height="match_parent"
-                        android:background="@color/split_line" />
-
-                    <LinearLayout
-                        android:id="@+id/ll_mylyrics"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:background="@drawable/bg_mine_song"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:drawableTop="@drawable/ic_mine_lyrics"
-                            android:text="歌词"
-                            android:drawablePadding="5dp"
-                            android:textColor="@color/main_text_color2"
-                            android:textSize="12dp" />
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="@dimen/spit_line_height"
-                        android:layout_height="match_parent"
-                        android:background="@color/split_line" />
-
-                    <LinearLayout
-                        android:id="@+id/ll_myfav"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:background="@drawable/bg_mine_song"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:drawableTop="@drawable/ic_mine_fav"
-                            android:text="收藏"
-                            android:drawablePadding="5dp"
-                            android:textColor="@color/main_text_color2"
-                            android:textSize="12dp" />
-                    </LinearLayout>
-                </LinearLayout>
-            </RelativeLayout>
-
-
-            <FrameLayout
-                android:id="@+id/user_layout_content"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                >
-            </FrameLayout>
-
-        </LinearLayout>
-    </com.xilu.wybz.view.TopFloatScrollView>
-
-    <RelativeLayout
-        android:id="@+id/rl_topbar"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        >
-        <View
-            android:id="@+id/v_toolbar"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:alpha="0"
-            android:background="@color/main_theme_color" />
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/user_layout_top"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top">
+
+                <ImageView
+                    android:id="@+id/id_bg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_my_banner" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="23dp"
+                    android:layout_below="@+id/id_bg"
+                    android:background="@color/white" />
+            </RelativeLayout>
+
+            <com.xilu.wybz.view.CircleImageView
+                android:id="@+id/iv_head"
+                android:layout_width="92dp"
+                android:layout_height="92dp"
+                android:layout_gravity="center_horizontal|bottom"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_default_head_252"
+                fresco:border_color="#a58c23"
+                fresco:border_width="@dimen/yc_2" />
+        </FrameLayout>
+
         <TextView
-            android:id="@+id/tv_center"
-            android:layout_width="wrap_content"
+            android:id="@+id/user_tv_name"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:background="@color/white"
             android:gravity="center"
-            android:text="个人主页"
-            android:alpha="1"
-            android:textColor="@android:color/black"
-            android:textSize="18sp" />
+            android:paddingBottom="5dp"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:paddingTop="8dp"
+            android:singleLine="true"
+            android:text="@string/app_name"
+            android:textColor="@color/main_text_color"
+            android:textSize="15sp" />
+
+
+        <TextView
+            android:id="@+id/user_tv_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:ellipsize="end"
+            android:gravity="center_horizontal"
+            android:maxLines="2"
+            android:paddingBottom="10dp"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:text="人人都是作曲家"
+            android:textColor="@color/main_text_color3"
+            android:textSize="12sp" />
+            <include layout="@layout/view_spit_line"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="42dp"
+                    android:background="@color/white"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/user_follownum"
+                        android:layout_width="0dp"
+                        android:gravity="center"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="关注:  0"
+                        android:textColor="@color/main_text_color"
+                        android:textSize="15sp" />
+
+                    <View
+                        android:layout_width="0.6dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/split_line" />
+
+                    <TextView
+                        android:id="@+id/user_fansnum"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="粉丝:  0"
+                        android:textColor="@color/main_text_color"
+                        android:textSize="15sp" />
+                </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/spit_line_height"
+                android:layout_marginBottom="10dp"
+                android:background="@color/split_line"
+                android:orientation="horizontal">
+            </View>
+        </LinearLayout>
 
         <RelativeLayout
-            android:id="@+id/rl_draft"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:layout_toLeftOf="@+id/rl_setting"
-            >
-            <ImageView
-                android:id="@+id/iv_draft"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_mine_draft"
-                android:layout_centerInParent="true" />
-        </RelativeLayout>
-        <RelativeLayout
-            android:id="@+id/rl_setting"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="15dp"
-            >
-            <ImageView
-                android:id="@+id/iv_setting"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_mine_setting"
-                android:layout_centerInParent="true" />
-        </RelativeLayout>
-    </RelativeLayout>
+            android:id="@+id/id_stickynavlayout_indicator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/split_line"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:paddingBottom="@dimen/spit_line_height"
+            android:paddingTop="@dimen/spit_line_height">
 
-</RelativeLayout>
+            <LinearLayout
+                android:id="@+id/user_layout_menu"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:background="@color/white"
+                android:gravity="center">
+
+                <LinearLayout
+                    android:id="@+id/ll_myrecord"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_mine_song"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <CheckedTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_mine_song"
+                        android:drawablePadding="5dp"
+                        android:drawableTop="@drawable/ic_mine_record"
+                        android:text="灵感记录"
+                        android:textColor="@color/main_text_color2"
+                        android:textSize="12dp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="@dimen/spit_line_height"
+                    android:layout_height="match_parent"
+                    android:background="@color/split_line" />
+
+                <LinearLayout
+                    android:id="@+id/ll_mysong"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_mine_song"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="5dp"
+                        android:drawableTop="@drawable/ic_mine_song"
+                        android:text="歌曲"
+                        android:textColor="@color/main_text_color2"
+                        android:textSize="12dp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="@dimen/spit_line_height"
+                    android:layout_height="match_parent"
+                    android:background="@color/split_line" />
+
+                <LinearLayout
+                    android:id="@+id/ll_mylyrics"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_mine_song"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="5dp"
+                        android:drawableTop="@drawable/ic_mine_lyrics"
+                        android:text="歌词"
+                        android:textColor="@color/main_text_color2"
+                        android:textSize="12dp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="@dimen/spit_line_height"
+                    android:layout_height="match_parent"
+                    android:background="@color/split_line" />
+
+                <LinearLayout
+                    android:id="@+id/ll_myfav"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_mine_song"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="5dp"
+                        android:drawableTop="@drawable/ic_mine_fav"
+                        android:text="收藏"
+                        android:textColor="@color/main_text_color2"
+                        android:textSize="12dp" />
+                </LinearLayout>
+            </LinearLayout>
+        </RelativeLayout>
+
+        <android.support.v4.view.ViewPager
+            android:layout_marginBottom="48dp"
+            android:id="@id/id_stickynavlayout_viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </com.xilu.wybz.view.StickyNavLayout>
+    <include layout="@layout/view_mine_toolbar" />
+</FrameLayout>

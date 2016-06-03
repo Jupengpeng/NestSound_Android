@@ -149,14 +149,14 @@
         <RelativeLayout
             android:id="@+id/app_bar_layout"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="@dimen/actionbar_size"
             android:layout_below="@+id/status_bar_view"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="@dimen/actionbar_size"
                 android:minHeight="48dp"
                 android:background="@color/tran"
                 android:theme="@style/ToolBarStyle2"

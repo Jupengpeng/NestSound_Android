@@ -2,14 +2,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/app_bar_layout"
     android:layout_width="match_parent"
-    android:layout_height="48dp"
+    android:layout_height="@dimen/actionbar_size"
     android:gravity="center_vertical"
     app:elevation="0.6dp">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="@dimen/actionbar_size"
         android:background="@color/white"
         android:minHeight="48dp"
         android:theme="@style/ToolBarStyle"

@@ -39,14 +39,16 @@ public class MsgCommentPresenter extends BasePresenter<ICommentView> {
             @Override
             public void onResponse(String response) {
                 List<MsgCommentBean> mList = ParseUtils.getMsgCommentsData(context,response);
-                if (mList.size() == 0) {
-                    if (page == 1) {
-                        iView.loadNoData();
+                if(mList!=null) {
+                    if (mList.size() == 0) {
+                        if (page == 1) {
+                            iView.loadNoData();
+                        } else {
+                            iView.loadNoMore();
+                        }
                     } else {
-                        iView.loadNoMore();
+                        iView.showMsgCommentData(mList);
                     }
-                } else {
-                    iView.showMsgCommentData(mList);
                 }
             }
         });
