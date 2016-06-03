@@ -198,7 +198,7 @@ public class FileUtils {
     }
 
     public static String getTempRecordPath() {
-        return makeFileFold(getRootPath() + RECORDTEMPPATH) + "/temp_record";
+        return makeFileFold(getRootPath() + RECORDTEMPPATH) + "/temp_record.mp3";
     }
     public static String getRawRecordPath() {
         return makeFileFold(getRootPath() + RECORDTEMPPATH) + "/raw_record";

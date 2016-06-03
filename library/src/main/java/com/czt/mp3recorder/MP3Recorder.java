@@ -39,21 +39,26 @@ public class MP3Recorder {
     private static final int DEFAULT_LAME_MP3_BIT_RATE = 32;
 
     //==================================================================
-    private ArrayList<Short> inBuf = new ArrayList<Short>();
-    public int sampleRate = 100;
+
     /**
      * 自定义 每160帧作为一个周期，通知一下需要进行编码
      */
-    private static final int FRAME_COUNT = 160;
+    private static final int FRAME_COUNT = 440;
+
+
     private AudioRecord mAudioRecord = null;
-    private int mBufferSize;
-    private short[] mPCMBuffer;
-    private DataEncodeThread mEncodeThread;
-    private boolean mIsRecording = false;
-    private File mRecordFile;
+    private DataEncodeThread dataEncodeThread;
+    private File localRecordCacheFile;
 
-    private ArrayList<Short> buf = new ArrayList<Short>();
+    private boolean isRecording = false;
+    private int bufferSize;
+    private int sampleRate = 100;
+    private int readFrame = 441;
 
+    private short[] cachePCMBuffer;
+
+    private ArrayList<Short> buf = new ArrayList<>();
+    private ArrayList<Short> dataBuffer = new ArrayList<>();
 
     /**
      * Default constructor. Setup recorder with default sampling rate 1 channel,
@@ -62,56 +67,58 @@ public class MP3Recorder {
      * @param recordFile target file
      */
     public MP3Recorder(File recordFile) {
-        mRecordFile = recordFile;
+        localRecordCacheFile = recordFile;
     }
 
     public void setSurfaceView() {
-        inBuf.clear();
+        dataBuffer.clear();
     }
 
     /**
      * Initialize audio recorder
      */
     private void initAudioRecorder() throws IOException {
-        mBufferSize = AudioRecord.getMinBufferSize(DEFAULT_SAMPLING_RATE,
+        bufferSize = AudioRecord.getMinBufferSize(DEFAULT_SAMPLING_RATE,
                 DEFAULT_CHANNEL_CONFIG, DEFAULT_AUDIO_FORMAT.getAudioFormat());
 
-        int bytesPerFrame = DEFAULT_AUDIO_FORMAT.getBytesPerFrame();
+        Log.d("audio","getMinBufferSize:"+bufferSize);
+
+//        int bytesPerFrame = DEFAULT_AUDIO_FORMAT.getBytesPerFrame();
         /* Get number of samples. Calculate the buffer size
          * (round up to the factor of given frame size)
 		 * 使能被整除，方便下面的周期性通知
 		 * */
-//        int frameSize = mBufferSize / bytesPerFrame;
+//        int frameSize = bufferSize / bytesPerFrame;
 //        if (frameSize % FRAME_COUNT != 0) {
 //            frameSize += (FRAME_COUNT - frameSize % FRAME_COUNT);
-//            mBufferSize = frameSize * bytesPerFrame;
+//            bufferSize = frameSize * bytesPerFrame;
 //        }
 
-        if (mBufferSize > 420){
-            mBufferSize = 420;
-            Log.d("auto","mBufferSize:"+420);
-        }
+//        if (bufferSize > readFrame){
+//            bufferSize = readFrame;
+//            Log.d("audio","bufferSize:"+readFrame);
+//        }
 
 		/* Setup audio recorder */
         mAudioRecord = new AudioRecord(DEFAULT_AUDIO_SOURCE,
                 DEFAULT_SAMPLING_RATE, DEFAULT_CHANNEL_CONFIG, DEFAULT_AUDIO_FORMAT.getAudioFormat(),
-                mBufferSize);
+                bufferSize);
 
-        mPCMBuffer = new short[mBufferSize];
+        cachePCMBuffer = new short[bufferSize];
         /*
          * Initialize lame buffer
 		 * mp3 sampling rate is the same as the recorded pcm sampling rate
 		 * The bit rate is 32kbps
-		 *
-		 */
-        LameUtil.init(DEFAULT_SAMPLING_RATE, DEFAULT_LAME_IN_CHANNEL, DEFAULT_SAMPLING_RATE, DEFAULT_LAME_MP3_BIT_RATE, DEFAULT_LAME_MP3_QUALITY);
-        // Create and run thread used to encode data
-        // The thread will
-        mEncodeThread = new DataEncodeThread(mRecordFile, mBufferSize);
-        mEncodeThread.start();
-        mAudioRecord.setRecordPositionUpdateListener(mEncodeThread, mEncodeThread.getHandler());
-        mAudioRecord.setPositionNotificationPeriod(FRAME_COUNT);
-    }
+    *
+            */
+            LameUtil.init(DEFAULT_SAMPLING_RATE, DEFAULT_LAME_IN_CHANNEL, DEFAULT_SAMPLING_RATE, DEFAULT_LAME_MP3_BIT_RATE, DEFAULT_LAME_MP3_QUALITY);
+    // Create and run thread used to encode data
+    // The thread will
+    dataEncodeThread = new DataEncodeThread(localRecordCacheFile, bufferSize);
+    dataEncodeThread.start();
+    mAudioRecord.setRecordPositionUpdateListener(dataEncodeThread, dataEncodeThread.getHandler());
+    mAudioRecord.setPositionNotificationPeriod(bufferSize);
+}
 
 
     /**
@@ -124,43 +131,46 @@ public class MP3Recorder {
     int index = 0;
 
     public void start() throws IOException {
-        if (mIsRecording) return;
-        initAudioRecorder();
+        if (isRecording) {
+            return;
+        }
+//        dataEncodeThread.start();
         mAudioRecord.startRecording();
+
         new Thread() {
 
             @Override
             public void run() {
                 //设置线程权限
                 android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_URGENT_AUDIO);
-                mIsRecording = true;
+                isRecording = true;
 //                long time = System.currentTimeMillis();
-                while (mIsRecording) {
+                while (isRecording) {
 //                    long t1 = System.currentTimeMillis();
-                    int readSize = mAudioRecord.read(mPCMBuffer, 0, mBufferSize );
+                    int readSize = mAudioRecord.read(cachePCMBuffer, 0, readFrame);
 //                    long t2 = System.currentTimeMillis();
                     if (readSize > 0) {
-                        mEncodeThread.addTask(mPCMBuffer, readSize);
+                        dataEncodeThread.addTask(cachePCMBuffer, readSize);
                     }
-//                    Log.d("auto", "size:" + readSize + "-->>:" + mBufferSize);
+//                    Log.d("audio", "size:" + readSize + "-->>:" + bufferSize);
                     if (index < 5 ){
                         index++;
                         continue;
                     }
                     index = 0;
-                    synchronized (inBuf) {
+                    synchronized (dataBuffer) {
 
-                        inBuf.add(calculateRealVolume(mPCMBuffer, readSize));
+                        dataBuffer.add(calculateRealVolume(cachePCMBuffer, readSize));
                     }
 
-//                    Log.d("auto", "inBuf:" + inBuf.size() + " value:" + inBuf.get(inBuf.size() - 1));
+//                    Log.d("audio", "dataBuffer:" + dataBuffer.size() + " value:" + dataBuffer.get(dataBuffer.size() - 1));
 
-                    synchronized (inBuf) {
-                        if (inBuf.size() == 0) {
+                    synchronized (dataBuffer) {
+                        if (dataBuffer.size() == 0) {
                             continue;
                         }
-                        if (mIsRecording){
-                            buf = (ArrayList<Short>) inBuf.clone();// 保存
+                        if (isRecording){
+                            buf = (ArrayList<Short>) dataBuffer.clone();// 保存
                         }
                     }
 //                    long t3 = System.currentTimeMillis();
@@ -169,36 +179,61 @@ public class MP3Recorder {
                     }
 //                    long t4 = System.currentTimeMillis();
 
-//                    Log.d("auto", "times: 1=" + (t1 - t1) + " 2=" + (t2 - t1) + " 3=" + (t3 - t1) + " 4=" + (t4 - t1) + " 5=" + (t4 - t1)+" tx:"+(time-t1));
+//                    Log.d("audio", "times: 1=" + (t1 - t1) + " 2=" + (t2 - t1) + " 3=" + (t3 - t1) + " 4=" + (t4 - t1) + " 5=" + (t4 - t1)+" tx:"+(time-t1));
 //                    time = t4;
                 }
 
                 // release and finalize audioRecord
-                mAudioRecord.stop();
-                mAudioRecord.release();
-                mAudioRecord = null;
+//                mAudioRecord.stop();
+//                mAudioRecord.release();
+//                mAudioRecord = null;
 
                 // stop the encoding thread and try to wait
                 // until the thread finishes its job
-                Message msg = Message.obtain(mEncodeThread.getHandler(),
-                        DataEncodeThread.PROCESS_STOP);
-                msg.sendToTarget();
+//                Message msg = Message.obtain(dataEncodeThread.getHandler(),
+//                        DataEncodeThread.PROCESS_STOP);
+//                msg.sendToTarget();
             }
         }.start();
     }
 
+    public void prepare() throws IOException {
+        if (isRecording) return;
+        initAudioRecorder();
+    }
+
+    public void reStart() throws IOException{
+        start();
+    }
+
     public void pause() {
-        mIsRecording = false;
+
+        isRecording = false;
     }
 
 
     public void stop() {
-        mIsRecording = false;
-        inBuf.clear();
+        if (mAudioRecord != null){
+            mAudioRecord.stop();
+            mAudioRecord.release();
+        }
+        isRecording = false;
+        dataBuffer.clear();
     }
 
+    public void flush(){
+
+        Message msg = Message.obtain(dataEncodeThread.getHandler(),
+                DataEncodeThread.PROCESS_STOP);
+        msg.sendToTarget();
+
+    }
+
+
+
+
     public boolean isRecording() {
-        return mIsRecording;
+        return isRecording;
     }
 
 

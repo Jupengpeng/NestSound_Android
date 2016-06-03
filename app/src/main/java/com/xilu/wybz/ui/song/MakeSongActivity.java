@@ -8,7 +8,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import com.czt.mp3recorder.MP3Recorder;
 import com.xilu.wybz.R;
@@ -25,6 +24,7 @@ import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.ui.lyrics.ImportWordActivity;
 import com.xilu.wybz.utils.FileUtils;
 import com.xilu.wybz.utils.SystemUtils;
+import com.xilu.wybz.utils.ToastUtils;
 import com.xilu.wybz.view.WaveSurfaceView;
 import com.xilu.wybz.view.materialdialogs.GravityEnum;
 import com.xilu.wybz.view.materialdialogs.MaterialDialog;
@@ -41,8 +41,6 @@ import de.greenrobot.event.EventBus;
  */
 public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
 
-    @Bind(R.id.ll_main)
-    LinearLayout llMain;
     @Bind(R.id.et_title)
     EditText etTitle;
     @Bind(R.id.et_word)
@@ -59,19 +57,24 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
     ImageView ivRestart;
 
 
+    private DBManager dbManager;
     private TemplateBean templateBean;
     private WorksData worksData;
-    private long startRecordTime, startPlayTime, allTime;
     private Timer recordTimer, playTimer;
     private String RECORD_TAG;
-    private boolean isQc; //是不是清唱
-    private DBManager dbManager;
+
+    private long startRecordTime, startPlayTime, allTime;
+    private boolean isQc;
+    private boolean isPlay = false;
 
     private String templateFileName;
 
     private WaveSurfaceHelper helper;
 
     private MakeSongPresenter makeSongPresenter;
+
+
+    private int status = 0; //0:未开始:1：录音中2：暂停3：完成
 
 
 
@@ -97,6 +100,7 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
 
         if (PlayMediaInstance.getInstance().status == 3) {
             PlayMediaInstance.getInstance().pauseMediaPlay();
+            PlayMediaInstance.getInstance().mediaPlayer.release();
             EventBus.getDefault().post(new Event.PPStatusEvent(4));
         }
 
@@ -109,6 +113,10 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
         SystemUtils.isWiredHeadsetOn(this);
 
         waveSurface.setDisableTouch();
+
+        if (RecordInstance.getInstance().isStart()){
+            RecordInstance.getInstance().toStop();
+        }
 
         helper = waveSurface.getWaveSurfaceHelper();
 
@@ -162,6 +170,9 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
         if (materialDialog != null){
             materialDialog.setProgress(progress);
         }
+        if (progress == 100){
+            materialDialog.dismiss();
+        }
     }
 
     public void showWorks(){
@@ -194,34 +205,45 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
         switch (view.getId()) {
 
             case R.id.iv_play:
+                if (isPlay){
 
-
-                break;
-            case R.id.iv_record:
-
-                if (RecordInstance.getInstance().isStart()) {
-
-                    RecordInstance.getInstance().toPause();
-                    showRecordStart();
+                    showSongPlay();
                 } else {
 
-                    RecordInstance.getInstance().toStart();
-                    showRecordPause();
+                    showSongPause();
                 }
 
                 break;
+            case R.id.iv_record:
+                if (RecordInstance.getInstance().isStart()) {
+                    stopRecord();
+                } else {
+                    startRecord();
+                }
+                break;
             case R.id.iv_restart:
+
+                RecordInstance.getInstance().toStop();
+                RecordInstance.getInstance().toStart();
+
+                showRecordStart();
                 break;
         }
     }
 
 
     public void showRecordStart() {
-        ivRecord.setImageResource(R.drawable.ic_record_unstart);
+        ivRecord.setImageResource(R.drawable.ic_record_start);
+        ivPlay.setEnabled(false);
+        ivRestart.setEnabled(false);
+        waveSurface.setDisableTouch();
     }
 
     public void showRecordPause() {
-        ivRecord.setImageResource(R.drawable.ic_record_start);
+        ivRecord.setImageResource(R.drawable.ic_record_unstart);
+        ivPlay.setEnabled(true);
+        ivRestart.setEnabled(true);
+        waveSurface.setEnableTouch();
     }
 
 
@@ -231,6 +253,34 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
 
     public void showSongPause() {
         ivPlay.setImageResource(R.drawable.ic_replay_pause);
+    }
+
+
+    public void startRecord(){
+
+        if (!FileUtils.fileExists(templateFileName)){
+            ToastUtils.toast(this,"请先下载伴奏");
+            upData();
+            return;
+        }
+
+        if (status == 2){
+            RecordInstance.getInstance().toReplay();
+        } else {
+            RecordInstance.getInstance().setDataSource(templateFileName);
+            RecordInstance.getInstance().toStart();
+
+            status = 2;
+        }
+
+        showRecordStart();
+        status = 1;
+    }
+    public void stopRecord(){
+        RecordInstance.getInstance().toPause();
+        showRecordPause();
+
+        status = 2;
     }
 
     @Override
@@ -249,13 +299,42 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
             case R.id.menu_next:
                 SaveSongActivity.toSaveSongActivity(this,worksData);
                 return true;
+            case android.R.id.home:
+                onKeyBack();
+                return true;
+
         }
         return super.onOptionsItemSelected(item);
     }
 
     @Override
+    public void onBackPressed(){
+
+    }
+
+    private void onKeyBack(){
+        materialDialog = new MaterialDialog.Builder(this)
+                .title("伴奏下载")
+                .content(R.string.please_wait_down)
+                .contentGravity(GravityEnum.CENTER)
+                .progress(false, 100, true)
+                .canceledOnTouchOutside(false).build();
+
+        materialDialog.show();
+
+    }
+
+
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        RecordInstance.getInstance().destroy();
     }
+
+
+
+
+
 }

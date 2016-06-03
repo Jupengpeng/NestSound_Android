@@ -18,15 +18,19 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
 public class DataEncodeThread extends Thread implements AudioRecord.OnRecordPositionUpdateListener {
-	public static final int PROCESS_STOP = 1;
-	private StopHandler mHandler;
-	private byte[] mMp3Buffer;
-	//	private FileOutputStream mFileOutputStream;
-	private RandomAccessFile randomAccessFile;
 
-	private CountDownLatch mHandlerInitLatch = new CountDownLatch(1);
+	public static final int PROCESS_STOP = 0x01;
+
+	private RandomAccessFile randomAccessFile;
+	private StopHandler mHandler;
+	private CountDownLatch mHandlerInitLatch;
+
+	private byte[] mMp3Buffer;
+
+	private List<Task> mTasks = Collections.synchronizedList(new ArrayList<Task>());
 
 	/**
+	 * StopHandler.
 	 * @see <a>https://groups.google.com/forum/?fromgroups=#!msg/android-developers/1aPZXZG6kWk/lIYDavGYn5UJ</a>
 	 * @author buihong_ha
 	 */
@@ -54,17 +58,40 @@ public class DataEncodeThread extends Thread implements AudioRecord.OnRecordPosi
 	}
 
 	/**
-	 * Constructor
+	 * 缓冲区数据格式.
+	 * TaskByData
+	 */
+	private class Task{
+		private short[] rawData;
+		private int readSize;
+		public Task(short[] rawData, int readSize){
+			this.rawData = rawData.clone();
+			this.readSize = readSize;
+		}
+		public short[] getData(){
+			return rawData;
+		}
+		public int getReadSize(){
+			return readSize;
+		}
+	}
+
+
+	/**
+	 * DataEncodeThread.
 	 * @param file file
 	 * @param bufferSize bufferSize
 	 * @throws FileNotFoundException file not found
 	 */
 	public DataEncodeThread(File file, int bufferSize) throws FileNotFoundException {
-//		this.mFileOutputStream = new FileOutputStream(file);
 		this.randomAccessFile = new RandomAccessFile(file, "rw");
+		this.mHandlerInitLatch = new CountDownLatch(1);
 		mMp3Buffer = new byte[(int) (7200 + (bufferSize * 2 * 1.25))];
 	}
 
+	/**
+	 * 线程run方法.
+	 */
 	@Override
 	public void run() {
 		Looper.prepare();
@@ -94,6 +121,15 @@ public class DataEncodeThread extends Thread implements AudioRecord.OnRecordPosi
 	@Override
 	public void onPeriodicNotification(AudioRecord recorder) {
 		processData();
+	}
+
+	/**
+	 * 添加数据到缓冲区.
+	 * @param rawData
+	 * @param readSize
+     */
+	public void addTask(short[] rawData, int readSize){
+		mTasks.add(new Task(rawData, readSize));
 	}
 	/**
 	 * 从缓冲区中读取并处理数据，使用lame编码MP3
@@ -147,22 +183,5 @@ public class DataEncodeThread extends Thread implements AudioRecord.OnRecordPosi
 			}
 		}
 	}
-	private List<Task> mTasks = Collections.synchronizedList(new ArrayList<Task>());
-	public void addTask(short[] rawData, int readSize){
-		mTasks.add(new Task(rawData, readSize));
-	}
-	private class Task{
-		private short[] rawData;
-		private int readSize;
-		public Task(short[] rawData, int readSize){
-			this.rawData = rawData.clone();
-			this.readSize = readSize;
-		}
-		public short[] getData(){
-			return rawData;
-		}
-		public int getReadSize(){
-			return readSize;
-		}
-	}
+
 }

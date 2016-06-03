@@ -1,6 +1,7 @@
 package com.xilu.wybz.presenter;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.xilu.wybz.http.callback.FileCallBack;
 import com.xilu.wybz.ui.IView.IMakeSongView;
@@ -22,6 +23,11 @@ public class MakeSongPresenter extends BasePresenter<IMakeSongView> {
     public void loadFile(String url, String fileName){
 
         File file = new File(fileName);
+
+        Log.d("url", "url:"+url);
+        if (!url.startsWith("http")){
+            return;
+        }
 
         httpUtils.getFile(url, new FileCallBack(file.getParent(),file.getName()) {
             @Override

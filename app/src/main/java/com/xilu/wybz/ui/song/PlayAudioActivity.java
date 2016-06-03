@@ -508,7 +508,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
         TemplateBean templateBean = new TemplateBean();
         templateBean.id = worksData.hotid + "";
         templateBean.author = worksData.hotAuthor;
-        templateBean.mp3 = worksData.hotmp3;
+        templateBean.mp3 = worksData.playurl;
         templateBean.mp3times = worksData.hotmp3times;
         templateBean.title = worksData.hotTitle;
         MakeSongActivity.ToMakeSongActivity(context, templateBean);

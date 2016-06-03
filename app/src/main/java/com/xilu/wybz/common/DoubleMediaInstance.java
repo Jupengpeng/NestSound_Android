@@ -14,9 +14,12 @@ import java.io.IOException;
  */
 public class DoubleMediaInstance {
 
-    static DoubleMediaInstance mInstance;
-    MediaPlayer mediaPlayer1, mediaPlayer2;
-    IMediaPlayerListener iml;
+    public static DoubleMediaInstance mInstance;
+
+    private MediaPlayer mediaPlayer1;
+    private MediaPlayer mediaPlayer2;
+
+    private IMediaPlayerListener iml;
 
     DoubleMediaInstance() {
     }

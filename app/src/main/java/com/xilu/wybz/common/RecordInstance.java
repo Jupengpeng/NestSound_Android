@@ -2,11 +2,11 @@ package com.xilu.wybz.common;
 
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.util.Log;
 
 import com.czt.mp3recorder.MP3Recorder;
 import com.xilu.wybz.common.interfaces.IMediaPlayerListener;
 import com.xilu.wybz.utils.FileUtils;
+import com.xilu.wybz.utils.StringUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,14 +22,14 @@ public class RecordInstance {
     protected MediaPlayer mediaPlayer;
     protected boolean isStart = false;// 设置正在录制的状态
     protected String tag;
-    protected String NewAudioName = "";//NewAudioName可播放的音频文件
+    protected String localCacheFile;
+    protected String playUrl;
 
     protected IMediaPlayerListener iml;
 
     protected RecordInstance() {
-        this.NewAudioName = FileUtils.getTempRecordPath();
-        this.mp3Recorder = new MP3Recorder(new File(NewAudioName));
-        Log.e("auto", "NewAudioName:"+NewAudioName);
+        this.localCacheFile = FileUtils.getTempRecordPath();
+        this.mp3Recorder = new MP3Recorder(new File(localCacheFile));
     }
 
     public synchronized static RecordInstance getInstance() {
@@ -37,27 +37,6 @@ public class RecordInstance {
             mInstance = new RecordInstance();
         }
         return mInstance;
-    }
-
-    public String startRecord() {
-        //判断是否有外部存储设备sdcard
-        if (!FileUtils.isSdcardExit()) {
-            return "没有SD卡，无法存储录音数据";
-        }
-
-        if (isStart) {
-            return "正在录音中，请先停止录音";
-        } else {
-                startMediaPlay();
-            try {
-                mp3Recorder.start();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            // 让录制状态为true
-            isStart = true;
-        }
-        return "success";
     }
 
 
@@ -73,21 +52,27 @@ public class RecordInstance {
         return isStart;
     }
 
-    public void startMediaPlay(final String url) {
+    /**
+     * 开始播放伴奏音乐文件.
+     * 待prepare好后即开始播放和录音
+     * @param url
+     * @return
+     */
+    public boolean startMediaPlay(final String url) {
         if (!isStart) {
+            isStart = true;
+            creatMediaPlayer();
             try {
-                if (mediaPlayer == null) {
-                    creatMediaPlayer(url);
-                }
+                mediaPlayer.setDataSource(url);
                 mediaPlayer.prepare();
+                return true;
             } catch (IOException e) {
                 isStart = false;
                 stopMediaPlay();
-                mp3Recorder.stop();
                 e.printStackTrace();
             }
         }
-
+        return false;
     }
 
     public void startMediaPlay() {
@@ -103,7 +88,7 @@ public class RecordInstance {
         if (mediaPlayer != null) {
             mediaPlayer.stop();
             mediaPlayer.reset();
-            mediaPlayer = null;
+            mediaPlayer.release();
         }
     }
 
@@ -113,15 +98,19 @@ public class RecordInstance {
         }
     }
 
-    public void creatMediaPlayer(String file) {
+    public void creatMediaPlayer() {
         if (mediaPlayer == null) {
             mediaPlayer = new MediaPlayer();
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);// 设置媒体流类型
+
             mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mp) {
-                    startRecord();
+                    if (!startRecord()){
+                        return;
+                    }
                     mp.start();
+                    isStart = true;
                     if (iml != null) {
                         iml.onStart();
                     }
@@ -131,9 +120,10 @@ public class RecordInstance {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
                     mp3Recorder.stop();
-                    mp.reset();
                     mp.release();
+                    mp.reset();
                     mediaPlayer = null;
+                    isStart = false;
                     if (iml != null) {
                         iml.onOver();
                     }
@@ -146,33 +136,45 @@ public class RecordInstance {
                     mp.reset();
                     mp.release();
                     mediaPlayer = null;
+                    isStart = false;
                     if (iml != null) {
                         iml.onError();
                     }
                     return false;
                 }
             });
-            try {
-                mediaPlayer.setDataSource(file);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+
         }
     }
 
-    public void setData(String url, String tag) {
-        this.tag = tag;
-        startMediaPlay(url);
-
-
+    private boolean startRecord() {
+        try {
+            mp3Recorder.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        isStart = true;
+        return true;
     }
 
-    public void toStart() {
-        startRecord();
-//        startMediaPlay();
-        if (iml != null) {
-            iml.onStart();
+    public void setDataSource(String url){
+        this.playUrl = url;
+    }
+
+    public boolean toStart() {
+        if (playUrl == null || playUrl.length() == 0) {
+            return false;
         }
+        if (isStart){
+            return false;
+        }
+        try {
+            mp3Recorder.prepare();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return startMediaPlay(playUrl);
     }
 
     public void toStop() {
@@ -187,13 +189,44 @@ public class RecordInstance {
     public void toPause() {
         pauseMediaPlay();
         isStart = false;//停止文件写入
-        mp3Recorder.stop();
+        if (mp3Recorder != null){
+
+            mp3Recorder.pause();
+        }
         if (iml != null) {
             iml.onPause();
         }
     }
 
+    public void toReplay() {
+        startMediaPlay();
+        startRecord();
+        isStart = true;
+    }
+
+    public void deleteCacheFile(){
+
+
+        FileUtils.delFile(new File(localCacheFile));
+    }
+
+    public boolean saveRecorderFileTo(String fileName){
+        if (StringUtil.isBlank(fileName)){
+            return false;
+        }
+        return FileUtils.copyFile(localCacheFile,fileName);
+    }
+
     public void setIMediaPlayerListener(IMediaPlayerListener iml) {
         this.iml = iml;
+    }
+
+    public void destroy(){
+        mediaPlayer.stop();
+        mediaPlayer.release();
+        mediaPlayer.reset();
+
+        mp3Recorder.stop();
+        mp3Recorder.flush();
     }
 }

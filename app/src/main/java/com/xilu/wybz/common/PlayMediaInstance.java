@@ -15,14 +15,17 @@ import java.io.File;
  * Created by Zning on 2015/9/16.
  */
 public class PlayMediaInstance {
-    static PlayMediaInstance mInstance;
-    MediaPlayer mediaPlayer;
-    IMediaPlayerListener iml;
+
+    public static PlayMediaInstance mInstance;
     public int status = 1;//1未播放 2 暂停 3 播放
 
-    PlayMediaInstance() {
+    public MediaPlayer mediaPlayer;
+    private IMediaPlayerListener iml;
+
+    private PlayMediaInstance() {
 
     }
+
     public static synchronized PlayMediaInstance getInstance() {
         if (mInstance == null) {
             mInstance = new PlayMediaInstance();
@@ -41,7 +44,7 @@ public class PlayMediaInstance {
                 @Override
                 public void onPrepared(MediaPlayer mp) {
                     status = 3;
-                    Log.e("onPrepared","onPrepared");
+                    Log.e("onPrepared", "onPrepared");
                     mp.start();
                     if (iml != null) {
                         iml.onStart();
@@ -60,7 +63,7 @@ public class PlayMediaInstance {
                 @Override
                 public boolean onError(MediaPlayer mp, int what, int extra) {
                     status = 1;
-                    Log.e("onError","onError");
+                    Log.e("onError", "onError");
                     mp.reset();
                     if (iml != null) {
                         iml.onError();
