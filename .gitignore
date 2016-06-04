@@ -17,11 +17,15 @@ gen/
 
 .idea/
 
+/captures
 build/
 
 /*/build/
 
 /*/*.iml
+/Pushlib/Pushlib.iml
+/library/library.iml
+/app/app.iml
 *.iml
 
 
