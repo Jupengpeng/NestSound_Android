@@ -20,6 +20,8 @@ public class MP3Recorder {
      * 以下三项为默认配置参数。Google Android文档明确表明只有以下3个参数是可以在所有设备上保证支持的。
      */
     private static final int DEFAULT_SAMPLING_RATE = 44100;//模拟器仅支持从麦克风输入8kHz采样率
+
+
     private static final int DEFAULT_CHANNEL_CONFIG = AudioFormat.CHANNEL_IN_MONO;
     /**
      * 下面是对此的封装
@@ -57,7 +59,7 @@ public class MP3Recorder {
 
     private short[] cachePCMBuffer;
 
-    private ArrayList<Short> buf = new ArrayList<>();
+    public ArrayList<Short> buf = new ArrayList<>();
     private ArrayList<Short> dataBuffer = new ArrayList<>();
 
     /**
@@ -68,20 +70,18 @@ public class MP3Recorder {
      */
     public MP3Recorder(File recordFile) {
         localRecordCacheFile = recordFile;
+//        initAudioRecorder();
     }
 
-    public void setSurfaceView() {
-        dataBuffer.clear();
-    }
 
     /**
      * Initialize audio recorder
      */
-    private void initAudioRecorder() throws IOException {
+    private void initAudioRecorder() {
         bufferSize = AudioRecord.getMinBufferSize(DEFAULT_SAMPLING_RATE,
                 DEFAULT_CHANNEL_CONFIG, DEFAULT_AUDIO_FORMAT.getAudioFormat());
 
-        Log.d("audio","getMinBufferSize:"+bufferSize);
+        Log.d("audio", "getMinBufferSize:" + bufferSize);
 
 //        int bytesPerFrame = DEFAULT_AUDIO_FORMAT.getBytesPerFrame();
         /* Get number of samples. Calculate the buffer size
@@ -94,10 +94,11 @@ public class MP3Recorder {
 //            bufferSize = frameSize * bytesPerFrame;
 //        }
 
-//        if (bufferSize > readFrame){
-//            bufferSize = readFrame;
+//        if (bufferSize < readFrame*5){
+//            bufferSize = readFrame*5;
 //            Log.d("audio","bufferSize:"+readFrame);
 //        }
+
 
 		/* Setup audio recorder */
         mAudioRecord = new AudioRecord(DEFAULT_AUDIO_SOURCE,
@@ -111,14 +112,18 @@ public class MP3Recorder {
 		 * The bit rate is 32kbps
     *
             */
-            LameUtil.init(DEFAULT_SAMPLING_RATE, DEFAULT_LAME_IN_CHANNEL, DEFAULT_SAMPLING_RATE, DEFAULT_LAME_MP3_BIT_RATE, DEFAULT_LAME_MP3_QUALITY);
-    // Create and run thread used to encode data
-    // The thread will
-    dataEncodeThread = new DataEncodeThread(localRecordCacheFile, bufferSize);
-    dataEncodeThread.start();
-    mAudioRecord.setRecordPositionUpdateListener(dataEncodeThread, dataEncodeThread.getHandler());
-    mAudioRecord.setPositionNotificationPeriod(bufferSize);
-}
+        LameUtil.init(DEFAULT_SAMPLING_RATE, DEFAULT_LAME_IN_CHANNEL, DEFAULT_SAMPLING_RATE, DEFAULT_LAME_MP3_BIT_RATE, DEFAULT_LAME_MP3_QUALITY);
+        // Create and run thread used to encode data
+        // The thread will
+        try {
+//            dataEncodeThread = new DataEncodeThread(localRecordCacheFile, bufferSize);
+//            dataEncodeThread.start();
+//            mAudioRecord.setRecordPositionUpdateListener(dataEncodeThread, dataEncodeThread.getHandler());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        mAudioRecord.setPositionNotificationPeriod(readFrame);
+    }
 
 
     /**
@@ -131,29 +136,26 @@ public class MP3Recorder {
     int index = 0;
 
     public void start() throws IOException {
+
         if (isRecording) {
             return;
         }
-//        dataEncodeThread.start();
+
+        initAudioRecorder();
+
         mAudioRecord.startRecording();
-
         new Thread() {
-
             @Override
             public void run() {
                 //设置线程权限
                 android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_URGENT_AUDIO);
                 isRecording = true;
-//                long time = System.currentTimeMillis();
                 while (isRecording) {
-//                    long t1 = System.currentTimeMillis();
                     int readSize = mAudioRecord.read(cachePCMBuffer, 0, readFrame);
-//                    long t2 = System.currentTimeMillis();
                     if (readSize > 0) {
-                        dataEncodeThread.addTask(cachePCMBuffer, readSize);
+//                        dataEncodeThread.addTask(cachePCMBuffer, readSize);
                     }
-//                    Log.d("audio", "size:" + readSize + "-->>:" + bufferSize);
-                    if (index < 5 ){
+                    if (index < 5) {
                         index++;
                         continue;
                     }
@@ -163,73 +165,66 @@ public class MP3Recorder {
                         dataBuffer.add(calculateRealVolume(cachePCMBuffer, readSize));
                     }
 
-//                    Log.d("audio", "dataBuffer:" + dataBuffer.size() + " value:" + dataBuffer.get(dataBuffer.size() - 1));
 
                     synchronized (dataBuffer) {
                         if (dataBuffer.size() == 0) {
                             continue;
                         }
-                        if (isRecording){
+                        if (isRecording) {
                             buf = (ArrayList<Short>) dataBuffer.clone();// 保存
                         }
                     }
-//                    long t3 = System.currentTimeMillis();
-                    if (listenner != null) {
-                        listenner.onChange(buf);
+                    if (mOnWaveChangeListener != null) {
+                        mOnWaveChangeListener.onChange(buf);
                     }
-//                    long t4 = System.currentTimeMillis();
 
-//                    Log.d("audio", "times: 1=" + (t1 - t1) + " 2=" + (t2 - t1) + " 3=" + (t3 - t1) + " 4=" + (t4 - t1) + " 5=" + (t4 - t1)+" tx:"+(time-t1));
-//                    time = t4;
                 }
-
-                // release and finalize audioRecord
-//                mAudioRecord.stop();
-//                mAudioRecord.release();
-//                mAudioRecord = null;
-
-                // stop the encoding thread and try to wait
-                // until the thread finishes its job
-//                Message msg = Message.obtain(dataEncodeThread.getHandler(),
-//                        DataEncodeThread.PROCESS_STOP);
-//                msg.sendToTarget();
+                flush();
             }
         }.start();
     }
 
     public void prepare() throws IOException {
-        if (isRecording) return;
-        initAudioRecorder();
+//        if (isRecording) return;
+//        initAudioRecorder();
     }
 
-    public void reStart() throws IOException{
+    public void reStart() throws IOException {
         start();
     }
 
     public void pause() {
-
+        mAudioRecord.stop();
         isRecording = false;
     }
 
 
     public void stop() {
-        if (mAudioRecord != null){
+        Log.d("audio","stop");
+        if (mAudioRecord != null) {
             mAudioRecord.stop();
-            mAudioRecord.release();
+//            mAudioRecord.release();
         }
         isRecording = false;
         dataBuffer.clear();
     }
 
-    public void flush(){
+    public void flush() {
+        Log.d("audio","flush");
+        if (isRecording) {
+            stop();
+        }
 
-        Message msg = Message.obtain(dataEncodeThread.getHandler(),
-                DataEncodeThread.PROCESS_STOP);
-        msg.sendToTarget();
+        if (dataEncodeThread != null) {
+
+            Message msg = Message.obtain(dataEncodeThread.getHandler(),
+                    DataEncodeThread.PROCESS_STOP);
+            msg.sendToTarget();
+
+            dataEncodeThread.flush();
+        }
 
     }
-
-
 
 
     public boolean isRecording() {
@@ -257,25 +252,52 @@ public class MP3Recorder {
         return (short) Math.sqrt(value / lenth);
     }
 
+
     /**
-     * OnWaveChangeListenner.
-     * class
+     * listener.
      */
-    public OnWaveChangeListenner listenner;
+    public OnWaveChangeListener mOnWaveChangeListener;
+    public OnStatuChangeListner mOnStatuChangeListner;
 
 
-    public OnWaveChangeListenner getListenner() {
-        return listenner;
+    public OnWaveChangeListener getOnWaveChangeListener() {
+        return mOnWaveChangeListener;
     }
 
-    public void setListenner(OnWaveChangeListenner listenner) {
-        this.listenner = listenner;
+    public void setOnWaveChangeListener(OnWaveChangeListener onWaveChangeListener) {
+        this.mOnWaveChangeListener = onWaveChangeListener;
     }
 
-    public interface OnWaveChangeListenner {
+    public OnStatuChangeListner getOnStatuChangeListner() {
+        return mOnStatuChangeListner;
+    }
+
+    public void setOnStatuChangeListner(OnStatuChangeListner onStatuChangeListner) {
+        this.mOnStatuChangeListner = onStatuChangeListner;
+    }
+
+    /**
+     * OnWaveChangeListener.
+     */
+    public interface OnWaveChangeListener {
+
         public void onChange(List<Short> data);
-        public void onstart();
-        public void onPause();
-        public void onStop();
+
+    }
+
+    /**
+     * OnStatuChangeListner.
+     */
+    interface OnStatuChangeListner {
+
+        void onStart();
+
+        void onPause();
+
+        void onRestart();
+
+        void onStop();
+
+        void onError();
     }
 }

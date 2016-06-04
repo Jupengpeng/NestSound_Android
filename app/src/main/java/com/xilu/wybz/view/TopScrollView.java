@@ -10,7 +10,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 
-import com.xilu.wybz.R;
 import com.xilu.wybz.utils.GeneralUtil;
 
 /**
@@ -124,7 +123,7 @@ public class TopScrollView extends FrameLayout implements MonitorScrollView.OnSc
         mContainerSv.addView(mRootView);
 
         // 获取悬浮的View
-        mFloatView = mRootView.findViewById(R.id.top_float);
+//        mFloatView = mRootView.findViewById(R.id.top_float);
 
         if (mFloatView == null) {
             throw new RuntimeException(

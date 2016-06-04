@@ -4,6 +4,7 @@ import android.media.AudioRecord;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.util.Log;
 
 import com.czt.mp3recorder.util.LameUtil;
 
@@ -24,6 +25,8 @@ public class DataEncodeThread extends Thread implements AudioRecord.OnRecordPosi
 	private RandomAccessFile randomAccessFile;
 	private StopHandler mHandler;
 	private CountDownLatch mHandlerInitLatch;
+
+	private CountDownLatch stopCount;
 
 	private byte[] mMp3Buffer;
 
@@ -52,6 +55,7 @@ public class DataEncodeThread extends Thread implements AudioRecord.OnRecordPosi
 				removeCallbacksAndMessages(null);
 				threadRef.flushAndRelease();
 				getLooper().quit();
+				Log.d("audio","handleMessage");
 			}
 			super.handleMessage(msg);
 		}
@@ -86,6 +90,7 @@ public class DataEncodeThread extends Thread implements AudioRecord.OnRecordPosi
 	public DataEncodeThread(File file, int bufferSize) throws FileNotFoundException {
 		this.randomAccessFile = new RandomAccessFile(file, "rw");
 		this.mHandlerInitLatch = new CountDownLatch(1);
+		this.stopCount = new CountDownLatch(1);
 		mMp3Buffer = new byte[(int) (7200 + (bufferSize * 2 * 1.25))];
 	}
 
@@ -113,6 +118,14 @@ public class DataEncodeThread extends Thread implements AudioRecord.OnRecordPosi
 		return mHandler;
 	}
 
+	public void flush(){
+		try {
+			stopCount.await();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
 	@Override
 	public void onMarkerReached(AudioRecord recorder) {
 		// Do nothing		
@@ -137,6 +150,7 @@ public class DataEncodeThread extends Thread implements AudioRecord.OnRecordPosi
 	 * 			缓冲区中没有数据时返回0 
 	 */
 	private int processData() {
+//		Log.d("audio","processData");
 		if (mTasks.size() > 0) {
 			Task task = mTasks.remove(0);
 			short[] buffer = task.getData();
@@ -182,6 +196,7 @@ public class DataEncodeThread extends Thread implements AudioRecord.OnRecordPosi
 				LameUtil.close();
 			}
 		}
+		stopCount.countDown();
 	}
 
 }

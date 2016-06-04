@@ -29,6 +29,7 @@ public class WaveSurfaceHelper {
 
     protected Thread runThead;
     public boolean isrun = false;
+    public boolean prepare = false;
 
     private List<Short> data;
 
@@ -71,6 +72,8 @@ public class WaveSurfaceHelper {
 
             @Override
             public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+                prepare = true;
+
                 Log.d("surface","surfaceChanged");
                 calculateViewRect(viewRect = new Rect());
                 Log.d("surface",viewRect+":"+viewRect.right);
@@ -81,12 +84,11 @@ public class WaveSurfaceHelper {
 
                 onDrawWave();
 
-
-//                onDrawWaveByThread();
             }
 
             @Override
             public void surfaceDestroyed(SurfaceHolder holder) {
+                prepare = false;
                 Log.d("surface","surfaceDestroyed");
                 isrun = false;
             }
@@ -185,7 +187,9 @@ public class WaveSurfaceHelper {
         if (position >= 0){
             this.currentPosition = position;
         }
-        onDrawKernel();
+        if (prepare){
+            onDrawKernel();
+        }
     }
 
 

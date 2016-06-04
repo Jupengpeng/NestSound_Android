@@ -15,8 +15,11 @@ import com.xilu.wybz.R;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.KeySet;
+import com.xilu.wybz.common.RecordInstance;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.view.WaveSurfaceView;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -33,7 +36,7 @@ public class SaveSongActivity extends ToolbarActivity {
     @Bind(R.id.et_word)
     TextView etWord;
     @Bind(R.id.make_sv_wave)
-    WaveSurfaceView makeSvWave;
+    WaveSurfaceView waveSurface;
     @Bind(R.id.iv_play)
     ImageView ivPlay;
     @Bind(R.id.tv_play)
@@ -53,6 +56,7 @@ public class SaveSongActivity extends ToolbarActivity {
 
 
     private WorksData worksData;
+    private List<Short> waveDatas;
 
 
     @Override
@@ -77,6 +81,13 @@ public class SaveSongActivity extends ToolbarActivity {
 
         initSeekBar();
         showWorks();
+
+        waveDatas = RecordInstance.getInstance().waveDatas;
+        if (waveDatas != null){
+            waveSurface.getWaveSurfaceHelper().onDrawWave(waveDatas,0);
+            waveSurface.setEnableTouch();
+        }
+
     }
 
     private void initData(){
@@ -132,8 +143,10 @@ public class SaveSongActivity extends ToolbarActivity {
 
     public void showWorks() {
 
-        etTitle.setText(worksData.title);
-        etWord.setText(worksData.lyrics);
+        if (worksData != null){
+            etTitle.setText(worksData.title);
+            etWord.setText(worksData.lyrics);
+        }
 
     }
 

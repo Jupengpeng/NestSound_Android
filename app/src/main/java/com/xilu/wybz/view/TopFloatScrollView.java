@@ -2,22 +2,17 @@ package com.xilu.wybz.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 
-import com.xilu.wybz.R;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.GeneralUtil;
-import com.xilu.wybz.utils.ToastUtils;
 
 /**
  * ============================================================
@@ -148,7 +143,7 @@ public class TopFloatScrollView extends FrameLayout implements MonitorScrollView
         mContainerSv.addView(mRootView);
 
         // 获取悬浮的View
-        mFloatView = mRootView.findViewById(R.id.top_float);
+//        mFloatView = mRootView.findViewById(R.id.top_float);
 
         if (mFloatView == null) {
             throw new RuntimeException(

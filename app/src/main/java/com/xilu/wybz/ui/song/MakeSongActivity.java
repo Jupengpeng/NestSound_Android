@@ -2,7 +2,9 @@ package com.xilu.wybz.ui.song;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,6 +28,7 @@ import com.xilu.wybz.utils.FileUtils;
 import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.utils.ToastUtils;
 import com.xilu.wybz.view.WaveSurfaceView;
+import com.xilu.wybz.view.materialdialogs.DialogAction;
 import com.xilu.wybz.view.materialdialogs.GravityEnum;
 import com.xilu.wybz.view.materialdialogs.MaterialDialog;
 
@@ -77,6 +80,8 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
     private int status = 0; //0:未开始:1：录音中2：暂停3：完成
 
 
+    protected MaterialDialog loadDialog;
+    protected MaterialDialog backDialog;
 
     public static void ToMakeSongActivity(Context context, TemplateBean templateBean) {
         Intent intent = new Intent(context, MakeSongActivity.class);
@@ -120,26 +125,12 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
 
         helper = waveSurface.getWaveSurfaceHelper();
 
-        RecordInstance.getInstance().getMp3Recorder().setListenner(new MP3Recorder.OnWaveChangeListenner() {
+        RecordInstance.getInstance().getMp3Recorder().setOnWaveChangeListener(new MP3Recorder.OnWaveChangeListener() {
             @Override
             public void onChange(List<Short> data) {
                 helper.onDrawWave(data, data.size());
             }
 
-            @Override
-            public void onstart() {
-
-            }
-
-            @Override
-            public void onPause() {
-
-            }
-
-            @Override
-            public void onStop() {
-
-            }
         });
 
     }
@@ -150,14 +141,17 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
         //if templateFileName not exists
         if (!FileUtils.fileExists(templateFileName)){
 
-            materialDialog = new MaterialDialog.Builder(this)
-                    .title("伴奏下载")
-                    .content(R.string.please_wait_down)
-                    .contentGravity(GravityEnum.CENTER)
-                    .progress(false, 100, true)
-                    .canceledOnTouchOutside(false).build();
+            if (loadDialog == null){
 
-            materialDialog.show();
+                loadDialog = new MaterialDialog.Builder(this)
+                        .title("伴奏下载")
+                        .content(R.string.please_wait_down)
+                        .contentGravity(GravityEnum.CENTER)
+                        .progress(false, 100, true)
+                        .canceledOnTouchOutside(false).build();
+            }
+
+            loadDialog.show();
 
             makeSongPresenter.loadFile(templateBean.mp3,templateFileName);
         }
@@ -167,11 +161,12 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
 
     @Override
     public void setLoadProgress(int progress) {
-        if (materialDialog != null){
-            materialDialog.setProgress(progress);
-        }
-        if (progress == 100){
-            materialDialog.dismiss();
+        if (loadDialog != null){
+            if (progress == 100) {
+                loadDialog.cancel();
+            } else {
+                loadDialog.setProgress(progress);
+            }
         }
     }
 
@@ -205,13 +200,16 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
         switch (view.getId()) {
 
             case R.id.iv_play:
-                if (isPlay){
+//                if (isPlay){
+//
+//                    showSongPlay();
+//                } else {
+//
+//                    showSongPause();
+//                }
+//                RecordInstance.getInstance().toStart();
 
-                    showSongPlay();
-                } else {
-
-                    showSongPause();
-                }
+                RecordInstance.getInstance().startRecord();
 
                 break;
             case R.id.iv_record:
@@ -224,9 +222,9 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
             case R.id.iv_restart:
 
                 RecordInstance.getInstance().toStop();
-                RecordInstance.getInstance().toStart();
 
-                showRecordStart();
+
+//                showRecordStart();
                 break;
         }
     }
@@ -265,7 +263,7 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
         }
 
         if (status == 2){
-            RecordInstance.getInstance().toReplay();
+            RecordInstance.getInstance().toRestart();
         } else {
             RecordInstance.getInstance().setDataSource(templateFileName);
             RecordInstance.getInstance().toStart();
@@ -277,6 +275,7 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
         status = 1;
     }
     public void stopRecord(){
+
         RecordInstance.getInstance().toPause();
         showRecordPause();
 
@@ -297,7 +296,15 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
                 startActivity(ImportWordActivity.class);
                 return true;
             case R.id.menu_next:
+                if (worksData == null){
+                    worksData = new WorksData();
+                }
+
+                worksData.hotid = Integer.valueOf(templateBean.id);
+                RecordInstance.getInstance().saveWaveDatas();
+                RecordInstance.getInstance().saveRecorderFileTo(FileUtils.getLocalRecordPath(MyCommon.TYPE_MAKE+templateBean.id));
                 SaveSongActivity.toSaveSongActivity(this,worksData);
+
                 return true;
             case android.R.id.home:
                 onKeyBack();
@@ -306,21 +313,53 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
         }
         return super.onOptionsItemSelected(item);
     }
+    @Override
+    public void onPause(){
+        super.onPause();
+
+        if (status == 1){
+            RecordInstance.getInstance().toPause();
+            status = 2;
+            showRecordPause();
+        }
+    }
+
 
     @Override
     public void onBackPressed(){
-
+        onKeyBack();
     }
 
     private void onKeyBack(){
-        materialDialog = new MaterialDialog.Builder(this)
-                .title("伴奏下载")
-                .content(R.string.please_wait_down)
-                .contentGravity(GravityEnum.CENTER)
-                .progress(false, 100, true)
-                .canceledOnTouchOutside(false).build();
 
-        materialDialog.show();
+        if (status == 0){
+            RecordInstance.getInstance().destroy();
+            finish();
+            return;
+        }
+        if (status == 1){
+            RecordInstance.getInstance().toPause();
+        }
+        if (backDialog == null){
+
+            backDialog = new MaterialDialog.Builder(this)
+                    .title("请确认操作")
+                    .content("如果你确认放弃录音，请点击左边“确认放弃”按钮。")
+                    .positiveText("取消")
+                    .neutralText("确认放弃")
+                    .negativeColor(Color.parseColor("#ff0000"))
+                    .onNeutral(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            RecordInstance.getInstance().destroy();
+                            finish();
+                        }
+                    })
+                    .contentGravity(GravityEnum.CENTER)
+                    .canceledOnTouchOutside(true).build();
+        }
+
+        backDialog.show();
 
     }
 
@@ -330,7 +369,17 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        //关闭及清理录音
         RecordInstance.getInstance().destroy();
+
+        if (backDialog != null){
+            backDialog.cancel();
+            backDialog = null;
+        }
+        if (loadDialog != null){
+            loadDialog.cancel();
+            loadDialog = null;
+        }
     }
 
 

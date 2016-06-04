@@ -4,12 +4,12 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 
 import com.czt.mp3recorder.MP3Recorder;
-import com.xilu.wybz.common.interfaces.IMediaPlayerListener;
 import com.xilu.wybz.utils.FileUtils;
 import com.xilu.wybz.utils.StringUtil;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by June on 2016/5/4.
@@ -25,7 +25,9 @@ public class RecordInstance {
     protected String localCacheFile;
     protected String playUrl;
 
-    protected IMediaPlayerListener iml;
+    protected OnRecordStatuListener listener;
+
+    public List<Short> waveDatas;
 
     protected RecordInstance() {
         this.localCacheFile = FileUtils.getTempRecordPath();
@@ -55,6 +57,7 @@ public class RecordInstance {
     /**
      * 开始播放伴奏音乐文件.
      * 待prepare好后即开始播放和录音
+     *
      * @param url
      * @return
      */
@@ -86,7 +89,9 @@ public class RecordInstance {
 
     public void stopMediaPlay() {
         if (mediaPlayer != null) {
-            mediaPlayer.stop();
+            if (isStart){
+                mediaPlayer.stop();
+            }
             mediaPlayer.reset();
             mediaPlayer.release();
         }
@@ -106,13 +111,11 @@ public class RecordInstance {
             mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mp) {
-                    if (!startRecord()){
-                        return;
-                    }
+//                    startRecord();
                     mp.start();
                     isStart = true;
-                    if (iml != null) {
-                        iml.onStart();
+                    if (listener != null) {
+                        listener.onRecordStart();
                     }
                 }
             });
@@ -120,25 +123,21 @@ public class RecordInstance {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
                     mp3Recorder.stop();
+                    mp.stop();
                     mp.release();
-                    mp.reset();
-                    mediaPlayer = null;
                     isStart = false;
-                    if (iml != null) {
-                        iml.onOver();
+                    if (listener != null) {
+                        listener.onRecordComplete();
                     }
                 }
             });
             mediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
                 @Override
                 public boolean onError(MediaPlayer mp, int what, int extra) {
-                    mp3Recorder.stop();
-                    mp.reset();
                     mp.release();
-                    mediaPlayer = null;
                     isStart = false;
-                    if (iml != null) {
-                        iml.onError();
+                    if (listener != null) {
+                        listener.onRecordError();
                     }
                     return false;
                 }
@@ -147,7 +146,7 @@ public class RecordInstance {
         }
     }
 
-    private boolean startRecord() {
+    public boolean startRecord() {
         try {
             mp3Recorder.start();
         } catch (Exception e) {
@@ -158,7 +157,7 @@ public class RecordInstance {
         return true;
     }
 
-    public void setDataSource(String url){
+    public void setDataSource(String url) {
         this.playUrl = url;
     }
 
@@ -166,9 +165,10 @@ public class RecordInstance {
         if (playUrl == null || playUrl.length() == 0) {
             return false;
         }
-        if (isStart){
+        if (isStart) {
             return false;
         }
+//        deleteCacheFile();
         try {
             mp3Recorder.prepare();
         } catch (Exception e) {
@@ -179,54 +179,84 @@ public class RecordInstance {
 
     public void toStop() {
         stopMediaPlay();
-        isStart = false;//停止文件写入
-        mp3Recorder.stop();
-        if (iml != null) {
-            iml.onStop();
+//        mp3Recorder.stop();
+//        mp3Recorder.flush();
+        if (listener != null) {
+            listener.onRecordStop();
         }
     }
 
     public void toPause() {
-        pauseMediaPlay();
-        isStart = false;//停止文件写入
-        if (mp3Recorder != null){
-
-            mp3Recorder.pause();
+        if (mp3Recorder != null) {
+//            mp3Recorder.pause();
         }
-        if (iml != null) {
-            iml.onPause();
+        pauseMediaPlay();
+        isStart = false;
+        if (listener != null) {
+            listener.onRecordPause();
         }
     }
 
-    public void toReplay() {
+    public void toRestart() {
         startMediaPlay();
         startRecord();
-        isStart = true;
+        if (listener != null) {
+            listener.onRecordRestart();
+        }
     }
 
-    public void deleteCacheFile(){
+    public void deleteCacheFile() {
 
 
         FileUtils.delFile(new File(localCacheFile));
     }
 
-    public boolean saveRecorderFileTo(String fileName){
-        if (StringUtil.isBlank(fileName)){
+    public boolean saveRecorderFileTo(String fileName) {
+        if (StringUtil.isBlank(fileName)) {
             return false;
         }
-        return FileUtils.copyFile(localCacheFile,fileName);
+        return FileUtils.copyFile(localCacheFile, fileName);
     }
 
-    public void setIMediaPlayerListener(IMediaPlayerListener iml) {
-        this.iml = iml;
+    public void saveWaveDatas(){
+        waveDatas = mp3Recorder.buf;
     }
 
-    public void destroy(){
-        mediaPlayer.stop();
-        mediaPlayer.release();
-        mediaPlayer.reset();
+    public void setOnRecordStatuListener(OnRecordStatuListener listener) {
+        this.listener = listener;
+    }
 
-        mp3Recorder.stop();
-        mp3Recorder.flush();
+    public void destroy() {
+        if (mediaPlayer != null) {
+            if (isStart){
+                mediaPlayer.stop();
+            }
+            mediaPlayer.release();
+        }
+
+        if (mp3Recorder != null) {
+            mp3Recorder.stop();
+            mp3Recorder.flush();
+        }
+        mInstance = null;
+        waveDatas = null;
+
+    }
+
+
+    interface OnRecordStatuListener {
+
+        void onRecordStart();
+
+        void onRecordPause();
+
+        void onRecordStop();
+
+        void onRecordRestart();
+
+        void onRecordError();
+
+        void onRecordComplete();
+
     }
 }

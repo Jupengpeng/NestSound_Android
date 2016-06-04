@@ -28,6 +28,7 @@ public class FileUtils {
     public static final String RECORDRAWPATH = "/cache/record/raw";
     public static final String IMGCACHEPATH = "/cache/img";
     public static final String LOCALplayurl = "/local/music";
+    public static final String LOCAL_RECORD = "/local/record";
     public static final String LOCALIMGPATH = "/local/img";
     public static final String USERIMGPATH = "/user/img";
     //采用频率
@@ -166,6 +167,7 @@ public class FileUtils {
         FileUtils.delFile(new File(getRootPath() + LOCALIMGPATH));
         FileUtils.delFile(new File(getRootPath() + IMGCACHEPATH));
         FileUtils.delFile(new File(getRootPath() + MUSICCACHEPATH));
+        FileUtils.delFile(new File(getRootPath() + LOCAL_RECORD));
     }
 
     public static String getSDPath() {
@@ -202,6 +204,9 @@ public class FileUtils {
 
     public static String getTempRecordPath() {
         return makeFileFold(getRootPath() + RECORDTEMPPATH) + "/temp_record.mp3";
+    }
+    public static String getLocalRecordPath(String fileName) {
+        return makeFileFold(getRootPath() + LOCAL_RECORD) + "/"+ fileName + ".mp3";
     }
     public static String getRawRecordPath() {
         return makeFileFold(getRootPath() + RECORDTEMPPATH) + "/raw_record";
