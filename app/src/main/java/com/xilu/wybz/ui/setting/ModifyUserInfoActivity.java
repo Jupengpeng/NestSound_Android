@@ -92,7 +92,12 @@ public class ModifyUserInfoActivity extends ToolbarActivity implements IModifyUs
         tv_usersign.setText(userBean.descr);
         tv_birthday.setText(userBean.birthday);
         tv_gender.setText(genders[userBean.sex]);
-        loadImage(userBean.headurl, iv_head);
+        if(StringUtil.isNotBlank(userBean.headurl)){
+            if(!userBean.headurl.startsWith("http")){
+                userBean.headurl = MyHttpClient.QINIU_URL+userBean.headurl;
+            }
+            loadImage(userBean.headurl, iv_head);
+        }
         //通知我的个人主页更新
         PrefsUtil.saveUserInfo(context,userBean);
         EventBus.getDefault().post(new Event.UpdateUserInfo());
@@ -243,7 +248,7 @@ public class ModifyUserInfoActivity extends ToolbarActivity implements IModifyUs
                 if (!TextUtils.isEmpty(headPath) && new File(headPath).exists()) {
                     new File(headPath).delete();
                 }
-                userBean.headurl = MyHttpClient.QINIU_URL+imageUrl;
+                userBean.headurl = imageUrl;
                 UpdateUserInfo();
             }
 

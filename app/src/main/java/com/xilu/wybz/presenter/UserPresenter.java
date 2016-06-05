@@ -45,7 +45,10 @@ public class UserPresenter extends BasePresenter<IUserView> {
                 super.onResponse(response);
                 MineBean mineBean = ParseUtils.getMineBean(context,response);
                 if(mineBean!=null){
-                    iView.setUserInfo(mineBean.user,mineBean.fansnum,mineBean.gznum);
+                    mineBean.user.fansnum = mineBean.fansnum;
+                    mineBean.user.gznum = mineBean.gznum;
+                    mineBean.user.isFocus = mineBean.isFocus;
+                    iView.setUserInfo(mineBean.user);
                     if(mineBean.list!=null){
                         if (mineBean.list.size() == 0) {
                             if (page == 1) {

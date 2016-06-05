@@ -73,7 +73,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:lineSpacingMultiplier="1.5"
+            android:lineSpacingMultiplier="1.2"
             android:layout_alignParentBottom="true"
             tools:text="市文化\n市文化\n市文化馆五规划为一个号欧冠为欧冠"
             android:textSize="14sp"

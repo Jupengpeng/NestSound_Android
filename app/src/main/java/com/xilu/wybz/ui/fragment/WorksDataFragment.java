@@ -11,8 +11,10 @@ import com.xilu.wybz.adapter.InspireRecordViewHolder;
 import com.xilu.wybz.adapter.WorksViewHolder;
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.bean.WorksData;
+import com.xilu.wybz.common.Event;
 import com.xilu.wybz.presenter.UserPresenter;
 import com.xilu.wybz.ui.IView.IUserView;
+import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.view.SpacesItemDecoration;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.DividerItemDecoration;
@@ -20,6 +22,8 @@ import com.xilu.wybz.view.pull.PullRecycler;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by hujunwei on 16/6/3.
@@ -52,6 +56,9 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
         if (getArguments() != null) {
             type = getArguments().getInt(TYPE);
             userId = getArguments().getInt(UID);
+            if(userId!= PrefsUtil.getUserId(context)){
+                type = type+1;
+            }
             author = getArguments().getString(AUTHOR);
         }
         COME = COMES[type];
@@ -95,8 +102,8 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
     }
 
     @Override
-    public void setUserInfo(UserBean userBean, int fansnum, int follownum) {
-
+    public void setUserInfo(UserBean userBean) {
+        EventBus.getDefault().post(new Event.UpdataUserBean(userBean,PrefsUtil.getUserId(context)==userId?1:2));
     }
 
     @Override
@@ -104,9 +111,18 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
         if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
             mDataList.clear();
         }
-        if (type < 3) {
-            for (WorksData worksData : worksDataList) {
+
+        for (WorksData worksData : worksDataList) {
+            if(type<3)
                 worksData.setAuthor(author);
+            if(type==0){
+                worksData.status = 4;
+            }else if(type==1){
+                worksData.status = 1;
+            }else if(type==2){
+                worksData.status = 2;
+            }else if(type==3){
+                worksData.status = worksData.type;
             }
         }
         recycler.enableLoadMore(true);

@@ -16,6 +16,7 @@ import com.xilu.wybz.utils.PhoneInfoUtil;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.ToastUtils;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 

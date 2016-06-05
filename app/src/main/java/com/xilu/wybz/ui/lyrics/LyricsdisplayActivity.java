@@ -51,7 +51,7 @@ import de.greenrobot.event.EventBus;
 /**
  * Created by Administrator on 2016/3/10 0010.
  */
-public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsView,AdapterView.OnItemClickListener {
+public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsView, AdapterView.OnItemClickListener {
     @Bind(R.id.ll_loading)
     LinearLayout ll_loading;
     @Bind(R.id.ll_nonet)
@@ -77,10 +77,11 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
     List<ActionBean> actionBeanList;
     ActionMoreDialog actionMoreDialog;
     LyricsPresenter lyricsPresenter;
-    String[] actionTitles = new String[]{"分享","举报","编辑"};
-    String[] actionTypes = new String[]{"share","jubao","edit"};
+    String[] actionTitles = new String[]{"分享", "举报", "编辑"};
+    String[] actionTypes = new String[]{"share", "jubao", "edit"};
+
     public static void toLyricsdisplayActivity(Context context, int id, int from, String title) {
-        Intent intent = new Intent(context,LyricsdisplayActivity.class);
+        Intent intent = new Intent(context, LyricsdisplayActivity.class);
         intent.putExtra("id", id);
         intent.putExtra("from", from);
         intent.putExtra("title", title);
@@ -117,8 +118,8 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
             loadData();
         }
         actionBeanList = new ArrayList<>();
-        for(int i = 0;i<actionTitles.length;i++) {
-            if(i==2&&from==0){//不是我的歌词列表进来的 不允许编辑
+        for (int i = 0; i < actionTitles.length; i++) {
+            if (i == 2 && from == 0) {//不是我的歌词列表进来的 不允许编辑
                 break;
             }
             ActionBean actionBean = new ActionBean();
@@ -148,10 +149,8 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
                 toCommentActivity();
                 break;
             case R.id.rl_head:
-                if (worksData.getUid()>0) {
-                    Intent intent = new Intent(LyricsdisplayActivity.this, UserInfoActivity.class);
-                    intent.putExtra("authorid", worksData.getUid()+"");
-                    startActivity(intent);
+                if (worksData.uid > 0) {
+                    UserInfoActivity.ToUserInfoActivity(context, worksData.uid, worksData.author);
                 }
                 break;
         }
@@ -161,6 +160,7 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
     public void loadData() {
         lyricsPresenter.getLyric(id);
     }
+
     //修改歌词以后 更新
     public void onEventMainThread(Event.SaveLyricsSuccessEvent event) {
         if (event.getWhich() == 2) {
@@ -168,10 +168,11 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
             loadTitleContent();
         }
     }
+
     //更新评论数量
-    public void onEventMainThread(Event.UpdataCommentNumEvent event){
-        if(event.getType()==2){
-            tvCommentNum.setText(worksData.getCommentnum()+event.getNum()+"");
+    public void onEventMainThread(Event.UpdataCommentNumEvent event) {
+        if (event.getType() == 2) {
+            tvCommentNum.setText(worksData.getCommentnum() + event.getNum() + "");
         }
     }
 
@@ -183,7 +184,7 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
         //根据不同的模板id来显示歌词
         if (!TextUtils.isEmpty(str))
             ly_content.setText(StringStyleUtil.getLyrics(worksData));
-        if(worksData.commentnum>0)
+        if (worksData.commentnum > 0)
             tvCommentNum.setText(worksData.commentnum);
 
     }
@@ -269,10 +270,10 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_more:
-                if(actionMoreDialog==null){
-                    actionMoreDialog = new ActionMoreDialog(this,this,actionBeanList);
+                if (actionMoreDialog == null) {
+                    actionMoreDialog = new ActionMoreDialog(this, this, actionBeanList);
                 }
-                if(!actionMoreDialog.isShowing()){
+                if (!actionMoreDialog.isShowing()) {
                     actionMoreDialog.showDialog();
                 }
                 break;
@@ -297,14 +298,14 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         ActionBean actionBean = actionBeanList.get(position);
         Intent intent;
-        if(actionBean.getType().equals("share")){
-            if (worksData != null && worksData.getItemid()>0) {
+        if (actionBean.getType().equals("share")) {
+            if (worksData != null && worksData.getItemid() > 0) {
                 if (shareDialog == null) {
                     String shareTitle = worksData.title;
                     String shareAuthor = worksData.author;
                     String shareLink = worksData.shareurl;
                     String sharePic = worksData.pic;
-                    String shareBody = PrefsUtil.getUserId(context)==worksData.uid ? "我用音巢app创作了一首歌词，快来看看吧!" : "我在音巢app上发现一首好歌词，太棒了~";
+                    String shareBody = PrefsUtil.getUserId(context) == worksData.uid ? "我用音巢app创作了一首歌词，快来看看吧!" : "我在音巢app上发现一首好歌词，太棒了~";
                     String shareContent = shareBody + " 《" + shareTitle + "》 ▷" + shareLink + " (@音巢音乐)";
                     shareDialog = new ShareDialog(LyricsdisplayActivity.this, new ShareBean(shareTitle, shareAuthor, shareContent, shareLink, sharePic, ""));
                 }
@@ -312,15 +313,16 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
                     shareDialog.showDialog();
                 }
             }
-        }else if(actionBean.getType().equals("edit")){
+        } else if (actionBean.getType().equals("edit")) {
 
-        }else if(actionBean.getType().equals("jubao")){
+        } else if (actionBean.getType().equals("jubao")) {
             intent = new Intent(context, SettingFeedActivity.class);
             intent.putExtra("type", 1);
             startActivity(intent);
         }
     }
+
     public void toCommentActivity() {
-        CommentActivity.ToCommentActivity(context,worksData);
+        CommentActivity.ToCommentActivity(context, worksData);
     }
 }

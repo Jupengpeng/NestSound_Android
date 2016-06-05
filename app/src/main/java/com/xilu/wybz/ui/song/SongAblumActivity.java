@@ -22,9 +22,12 @@ import com.xilu.wybz.adapter.SongListAdapter;
 import com.xilu.wybz.bean.GleeDetailBean;
 import com.xilu.wybz.bean.SongAlbum;
 import com.xilu.wybz.bean.WorksData;
+import com.xilu.wybz.common.DownLoaderDir;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.common.YinChaoConfig;
 import com.xilu.wybz.common.ZnImageLoader;
+import com.xilu.wybz.http.HttpUtils;
+import com.xilu.wybz.http.callback.BitmapCallback;
 import com.xilu.wybz.presenter.SongAlbumPresenter;
 import com.xilu.wybz.ui.IView.IRecSongView;
 import com.xilu.wybz.ui.MyApplication;
@@ -33,15 +36,18 @@ import com.xilu.wybz.ui.lyrics.LyricsdisplayActivity;
 import com.xilu.wybz.ui.main.SongablumMoreActivity;
 import com.xilu.wybz.utils.BitmapUtils;
 import com.xilu.wybz.utils.DensityUtil;
+import com.xilu.wybz.utils.FileUtils;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.view.YcScrollView;
 
 import org.w3c.dom.Text;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import butterknife.Bind;
 import butterknife.OnClick;
+import okhttp3.Call;
 
 /**
  * Created by June on 2016/3/11.
@@ -144,29 +150,29 @@ public class SongAblumActivity extends ToolbarActivity implements IRecSongView {
     }
     private void loadPic(){
         String url = songAlbum.getPic();
-        ImageLoader.getInstance().displayImage(url, ivCover, ZnImageLoader.getInstance().playOptions, new ImageLoadingListener() {
-            @Override
-            public void onLoadingStarted(String s, View view) {
+        File file = new File(DownLoaderDir.cacheDir);
+        if(!file.exists())file.mkdirs();
 
-            }
+        String path = DownLoaderDir.cacheDir+"music_blur"+songAlbum.id+".png";
+        if(new File(path).exists()){//加载本地
+            ivToolbarBg.setImageBitmap(BitmapUtils.getSDCardImg(path));
+            ivTopBg.setImageBitmap(BitmapUtils.getSDCardImg(path));
+        }else{//下载并保存到本地
+            HttpUtils httpUtils = new HttpUtils(context);
+            httpUtils.getImage(url, new BitmapCallback() {
+                @Override
+                public void onError(Call call, Exception e) {
 
-            @Override
-            public void onLoadingFailed(String s, View view, FailReason failReason) {
-            }
-
-            @Override
-            public void onLoadingComplete(String s, View view, Bitmap bitmap) {
-                Bitmap bmp = NativeStackBlur.process(BitmapUtils.zoomBitmap(bitmap, 100), 60);
-                ivToolbarBg.setImageBitmap(bmp);
-                ivTopBg.setImageBitmap(bmp);
-            }
-
-            @Override
-            public void onLoadingCancelled(String s, View view) {
-
-            }
-        });
-
+                }
+                @Override
+                public void onResponse(Bitmap response) {
+                    Bitmap bmp = NativeStackBlur.process(BitmapUtils.zoomBitmap(response, 100), 60);
+                    FileUtils.saveBmp(path,bmp);
+                    ivToolbarBg.setImageBitmap(bmp);
+                    ivTopBg.setImageBitmap(bmp);
+                }
+            });
+        }
     }
     @OnClick({R.id.iv_play_all})
     public void onClick(View view) {

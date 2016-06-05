@@ -116,11 +116,11 @@ public class InspireRecordViewHolder extends com.xilu.wybz.view.pull.BaseViewHol
 
     @Override
     public void onItemClick(View view, int position) {
-        if (mDataList.get(position).status == 1) {
-            toPlayPos(position);
-        } else {
-            LyricsdisplayActivity.toLyricsdisplayActivity(mContext, mDataList.get(position).getItemid(), 0, mDataList.get(position).name);
-        }
+//        if (mDataList.get(position).status == 1) {
+//            toPlayPos(position);
+//        } else {
+//            LyricsdisplayActivity.toLyricsdisplayActivity(mContext, mDataList.get(position).getItemid(), 0, mDataList.get(position).name);
+//        }
     }
 
     public void toPlayPos(int position) {

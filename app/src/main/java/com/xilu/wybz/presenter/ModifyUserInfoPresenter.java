@@ -27,11 +27,7 @@ public class ModifyUserInfoPresenter extends BasePresenter<IModifyUserInfoView> 
     public void modifyUserInfo(UserBean userBean) {
         params = new HashMap<>();
         params.put("uid", PrefsUtil.getUserId(context)+"");
-        if(StringUtil.isNotBlank(userBean.headurl)) {
-            String[] parts = userBean.headurl.split("/");
-            String name = parts[parts.length - 1];
-            params.put("headurl", name);
-        }
+        params.put("headurl", userBean.headurl);
         params.put("nickname",userBean.name);
         params.put("sex",userBean.sex+"");
         params.put("descr",userBean.descr);
@@ -42,15 +38,12 @@ public class ModifyUserInfoPresenter extends BasePresenter<IModifyUserInfoView> 
                 e.printStackTrace();
                 iView.modifyUserInfoFail();
             }
-
             @Override
             public void onResponse(String response) {
                 DataBean dataBean = ParseUtils.getDataBean(context,response);
                 if(dataBean.code==200)
                 iView.modifyUserInfoSuccess();
             }
-
         });
     }
-
 }

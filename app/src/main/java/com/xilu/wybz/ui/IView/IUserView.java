@@ -11,7 +11,7 @@ import java.util.List;
  * 用户主页 也可以是我的主页
  */
 public interface IUserView extends IBaseView {
-    void setUserInfo(UserBean userBean,int fansnum,int follownum);
+    void setUserInfo(UserBean userBean);
     void showWorksData(List<WorksData> worksDataList);
     void loadFail();
     void loadNoData();
