@@ -116,9 +116,9 @@ public class MP3Recorder {
         // Create and run thread used to encode data
         // The thread will
         try {
-//            dataEncodeThread = new DataEncodeThread(localRecordCacheFile, bufferSize);
-//            dataEncodeThread.start();
-//            mAudioRecord.setRecordPositionUpdateListener(dataEncodeThread, dataEncodeThread.getHandler());
+            dataEncodeThread = new DataEncodeThread(localRecordCacheFile, bufferSize);
+            dataEncodeThread.start();
+            mAudioRecord.setRecordPositionUpdateListener(dataEncodeThread, dataEncodeThread.getHandler());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -141,9 +141,10 @@ public class MP3Recorder {
             return;
         }
 
-        initAudioRecorder();
+//        initAudioRecorder();
 
         mAudioRecord.startRecording();
+
         new Thread() {
             @Override
             public void run() {
@@ -153,7 +154,7 @@ public class MP3Recorder {
                 while (isRecording) {
                     int readSize = mAudioRecord.read(cachePCMBuffer, 0, readFrame);
                     if (readSize > 0) {
-//                        dataEncodeThread.addTask(cachePCMBuffer, readSize);
+                        dataEncodeThread.addTask(cachePCMBuffer, readSize);
                     }
                     if (index < 5) {
                         index++;
@@ -185,8 +186,8 @@ public class MP3Recorder {
     }
 
     public void prepare() throws IOException {
-//        if (isRecording) return;
-//        initAudioRecorder();
+        if (isRecording) return;
+        initAudioRecorder();
     }
 
     public void reStart() throws IOException {
@@ -194,6 +195,7 @@ public class MP3Recorder {
     }
 
     public void pause() {
+        Log.d("audio","pause");
         mAudioRecord.stop();
         isRecording = false;
     }

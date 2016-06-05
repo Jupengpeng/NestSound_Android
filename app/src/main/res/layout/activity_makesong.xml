@@ -77,9 +77,18 @@
         android:layout_width="match_parent"
         android:layout_height="76dp">
 
-        <Space
-            android:layout_width="60dp"
-            android:layout_height="match_parent" />
+        <!--<Space-->
+            <!--android:layout_width="60dp"-->
+            <!--android:layout_height="match_parent" />-->
+
+        <ImageView
+            android:id="@+id/iv_import"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="center"
+            android:background="?selectableItemBackground"
+            android:src="@drawable/ic_record_import" />
 
         <ImageView
             android:id="@+id/iv_play"
@@ -87,6 +96,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:scaleType="center"
+            android:background="?selectableItemBackground"
             android:src="@drawable/ic_replay_play" />
 
 
@@ -94,8 +104,9 @@
             android:id="@+id/iv_record"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="1.2"
             android:scaleType="center"
+            android:background="?selectableItemBackground"
             android:src="@drawable/ic_record_unstart" />
 
 
@@ -105,10 +116,20 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:scaleType="center"
+            android:background="?selectableItemBackground"
             android:src="@drawable/ic_record_restart" />
-        <Space
-            android:layout_width="60dp"
-            android:layout_height="match_parent" />
+
+        <ImageView
+            android:id="@+id/iv_edit"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="center"
+            android:background="?selectableItemBackground"
+            android:src="@drawable/ic_record_edit" />
+        <!--<Space-->
+            <!--android:layout_width="60dp"-->
+            <!--android:layout_height="match_parent" />-->
 
 
     </LinearLayout>

@@ -1,16 +1,8 @@
 package com.xilu.wybz.bean;
 
-import com.litesuits.orm.db.annotation.Column;
-import com.litesuits.orm.db.annotation.Mapping;
-import com.litesuits.orm.db.annotation.PrimaryKey;
 import com.litesuits.orm.db.annotation.Table;
-import com.litesuits.orm.db.enums.AssignType;
-import com.litesuits.orm.db.enums.Relation;
-import com.xilu.wybz.utils.DateTimeUtil;
-import com.xilu.wybz.utils.StringUtil;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * Created by June on 16/5/3.
@@ -55,6 +47,11 @@ public class WorksData extends BaseModel implements Serializable {
     public String pics;//灵感记录的图片集合
     public boolean isPlay;
     public int draftType;//1歌曲 2歌词 3灵感记录
+
+    public String createtype;//HOT/DIY
+    public String useheadset;//耳机1是，0否
+    public String recordmp3;
+    public int is_issue;//0不发布,1发布
 
     public int getDraftType() {
         return draftType;

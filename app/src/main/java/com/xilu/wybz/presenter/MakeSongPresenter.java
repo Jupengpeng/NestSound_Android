@@ -19,11 +19,12 @@ public class MakeSongPresenter extends BasePresenter<IMakeSongView> {
         super(context, iView);
     }
 
-
+    File file;
+    String filename;
     public void loadFile(String url, String fileName){
 
-        File file = new File(fileName);
-
+        this.file = new File(fileName);
+        this.filename = fileName;
         Log.d("url", "url:"+url);
         if (!url.startsWith("http")){
             return;
@@ -32,7 +33,19 @@ public class MakeSongPresenter extends BasePresenter<IMakeSongView> {
         httpUtils.getFile(url, new FileCallBack(file.getParent(),file.getName()) {
             @Override
             public void inProgress(float progress, long total) {
+
                 iView.setLoadProgress((int)(100*progress));
+                Log.d("url","loadFile ok..:"+progress);
+
+                if (progress == 1.0f){
+                    Log.d("url","loadFile ok..");
+                    try{
+                        file.renameTo(new File(filename+".mp3"));
+
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
             }
 
             @Override

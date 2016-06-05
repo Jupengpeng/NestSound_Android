@@ -115,6 +115,10 @@ public class MyHttpClient {
     public static String getMsgSystemList(){return  "message/sysNoteList";}
     //发布歌词
     public static String getSaveLyricsUrl(){return  "lyricsopt/optLyrics";}
+    //合成歌曲
+    public static String getTuningSongUrl(){return  "musiopt/tuningMusic";}
+    //发布歌曲
+    public static String getSaveSongUrl(){return  "musiopt/optMusic";}
     //保存灵感记录
     public static String getSaveInspireUrl(){return  "inspire/save";}
     //个人主页

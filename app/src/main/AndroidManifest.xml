@@ -74,8 +74,8 @@
 
         <activity android:name=".ui.song.MakeHotActivity"  />
         <activity android:name=".ui.song.MakeSongActivity" android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity android:name=".ui.song.ComposeSongActivity"  />
         <activity android:name=".ui.song.SaveSongActivity"  />
-        <activity android:name=".ui.song.PublishSongActivity"  />
         <activity android:name=".ui.song.SearchHotActivity"  />
         <activity android:name=".ui.song.TestActivity"  />
         <activity android:name=".ui.song.CommentActivity"  />

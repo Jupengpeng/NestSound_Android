@@ -4,7 +4,6 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 
 import com.xilu.wybz.common.interfaces.IMediaPlayerListener;
-import com.xilu.wybz.ui.MyApplication;
 
 import java.io.IOException;
 
@@ -16,7 +15,10 @@ public class MediaInstance {
     MediaPlayer mediaPlayer;
     IMediaPlayerListener iml;
 
+    public boolean isPlay = false;
+
     MediaInstance() {
+
     }
 
     public synchronized static MediaInstance getInstance() {
@@ -26,28 +28,23 @@ public class MediaInstance {
     }
 
     public void startMediaPlay(final String path) {
-        if (!MyApplication.isPlay) {
-            MyThreadPool.getInstance().doTask(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        MyApplication.isPlay = true;
-                        if (mediaPlayer == null) {
-                            creatMediaPlayer(path);
-                        }
-                        mediaPlayer.prepare();
-                    } catch (IOException e) {
-                        MyApplication.isPlay = false;
-                        e.printStackTrace();
-                    }
+        if (!isPlay) {
+            try {
+                isPlay = true;
+                if (mediaPlayer == null) {
+                    creatMediaPlayer(path);
                 }
-            });
+                mediaPlayer.prepare();
+            } catch (IOException e) {
+                isPlay = false;
+                e.printStackTrace();
+            }
         }
     }
 
     public void stopMediaPlay() {
-        if (mediaPlayer != null && MyApplication.isPlay) {
-            MyApplication.isPlay = false;
+        if (mediaPlayer != null && isPlay) {
+            isPlay = false;
             mediaPlayer.stop();
             mediaPlayer.reset();
             mediaPlayer = null;
@@ -58,8 +55,8 @@ public class MediaInstance {
     }
 
     public void pauseMediaPlay() {
-        if (mediaPlayer != null && MyApplication.isPlay) {
-            MyApplication.isPlay = false;
+        if (mediaPlayer != null && isPlay) {
+            isPlay = false;
             mediaPlayer.pause();
             if (iml != null) {
                 iml.onPause();
@@ -69,18 +66,18 @@ public class MediaInstance {
 
 
     public void resumeMediaPlay() {
-        if (mediaPlayer != null && !MyApplication.isPlay) {
-            MyApplication.isPlay = true;
+        if (mediaPlayer != null && !isPlay) {
+            isPlay = true;
             mediaPlayer.start();
             if (iml != null) {
-                iml.onStart();
+                iml.onPlay();
             }
         }
     }
 
     public boolean isPlay() {
         if (mediaPlayer != null) {
-            return MyApplication.isPlay;
+            return isPlay;
         }
         return false;
     }
@@ -96,10 +93,11 @@ public class MediaInstance {
         if (mediaPlayer == null) {
             mediaPlayer = new MediaPlayer();
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);// 设置媒体流类型
+
             mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mp) {
-                    MyApplication.isPlay = true;
+                    isPlay = true;
                     mp.start();
                     if (iml != null) {
                         iml.onStart();
@@ -109,7 +107,7 @@ public class MediaInstance {
             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
-                    MyApplication.isPlay = false;
+                    isPlay = false;
                     mp.reset();
                     mp.release();
                     mediaPlayer = null;
@@ -122,7 +120,7 @@ public class MediaInstance {
             mediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
                 @Override
                 public boolean onError(MediaPlayer mp, int what, int extra) {
-                    MyApplication.isPlay = false;
+                    isPlay = false;
                     mp.reset();
                     if (iml != null) {
                         iml.onError();
