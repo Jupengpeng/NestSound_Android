@@ -237,7 +237,7 @@ public class ModifyUserInfoActivity extends ToolbarActivity implements IModifyUs
     //上传头像到服务器
     public void uploadUserHead() {
         UploadFileUtil uploadPicUtil = new UploadFileUtil(context);
-        uploadPicUtil.uploadFile(headPath, ImageUploader.fixxs[4],new UploadFileUtil.UploadResult() {
+        uploadPicUtil.uploadFile(headPath, MyCommon.fixxs[4],new UploadFileUtil.UploadResult() {
             @Override
             public void onSuccess(String imageUrl) {
                 if (!TextUtils.isEmpty(headPath) && new File(headPath).exists()) {

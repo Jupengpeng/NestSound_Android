@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.xilu.wybz.common.DownLoaderDir;
+import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.common.MyHttpClient;
 
 import net.bither.util.NativeUtil;
@@ -63,7 +64,7 @@ public class UploadMorePicUtil {
 
     public void upLoadPic(String imgPath, int pos, UploadPicResult uploadPicsInterface) {
         ImageUploader imageUploader = new ImageUploader();
-        imageUploader.setFilePath(imgPath, ImageUploader.fixxs[0]);
+        imageUploader.setFilePath(imgPath, MyCommon.fixxs[0]);
         imageUploader.UpLoad(context);
         imageUploader.setOnUploadListener(new ImageUploader.OnUploadListener() {
             @Override

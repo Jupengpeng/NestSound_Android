@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.qiniu.android.http.ResponseInfo;
 import com.qiniu.android.storage.UpCompletionHandler;
+import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.ui.MyApplication;
 
 import org.json.JSONObject;
@@ -15,16 +16,16 @@ import org.json.JSONObject;
 public class ImageUploader {
     String filePath;
     String fixx;
-    public static String[] fixxs = new String[]{"inspire","lyrcover","muscover","music","headport"};
     String endStrs[] = new String[]{".jpg", ".mp3"};
     String endStr = "";
     int fileType;
+
     public void setFilePath(String filePath, String fixx) {
         this.filePath = filePath;
         this.fixx = fixx;
-        if(fixx.equals("music")) {
+        if (fixx.equals(MyCommon.fixxs[3])) {
             fileType = 1;
-        }else{
+        } else {
             fileType = 0;
         }
         endStr = endStrs[fileType];
@@ -63,13 +64,13 @@ public class ImageUploader {
                         Log.e("response", response.toString());
                         if (response == null) {
                             onUploadListener.onFailure();
-                        } else
+                        } else {
                             try {
                                 onUploadListener.onSuccess(response.toString());
                             } catch (Exception ex) {
-
                                 onUploadListener.onFailure();
                             }
+                        }
                     }
                 }, null);
     }

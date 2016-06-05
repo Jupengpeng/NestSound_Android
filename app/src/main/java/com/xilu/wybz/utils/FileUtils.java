@@ -324,6 +324,20 @@ public class FileUtils {
 
     }
 
+    public static boolean renameFile(String oldPath, String newPath) {
+        try {
+            File oldfile = new File(oldPath);
+            if (oldfile.exists()) { //文件存在时
+                oldfile.renameTo(new File(newPath));
+            }
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
+    }
+
     public static boolean saveSqBmp(String savePath, Bitmap bitmap) {
         try {
             File picFile = new File(savePath);

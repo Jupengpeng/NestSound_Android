@@ -29,10 +29,9 @@ public class GetToken {
 
     public void getToken(int type, String fixx) {
         Map<String, String> params = new HashMap<>();
-        params.put("type", type + "");
+        params.put("type", (type+1) + "");
         params.put("fixx", fixx);
         new HttpUtils(context).get(MyHttpClient.getQnToken(), params, new MyStringCallback() {
-
             @Override
             public void onError(Call call, Exception e) {
                 super.onError(call, e);

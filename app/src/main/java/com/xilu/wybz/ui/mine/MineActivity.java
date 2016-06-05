@@ -91,7 +91,7 @@ public class MineActivity extends BaseActivity {
         tabs.add(llMysong);
         tabs.add(llMylyrics);
         tabs.add(llMyfav);
-        MineAdapter pagerAdapter = new MineAdapter(getSupportFragmentManager(), PrefsUtil.getUserId(context));
+        MineAdapter pagerAdapter = new MineAdapter(getSupportFragmentManager(), PrefsUtil.getUserId(context),PrefsUtil.getUserInfo(context).name);
         container.setAdapter(pagerAdapter);
         container.setOffscreenPageLimit(tabs.size());
         container.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
