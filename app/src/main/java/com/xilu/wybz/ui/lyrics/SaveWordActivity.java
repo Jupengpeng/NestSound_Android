@@ -138,7 +138,7 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView{
     public void uploadCoverPic() {
         showPd("正在保存中，请稍候...");
         UploadFileUtil uploadPicUtil = new UploadFileUtil(context);
-        uploadPicUtil.uploadFile(worksData.pic, ImageUploader.fixxs[1], new UploadFileUtil.UploadResult() {
+        uploadPicUtil.uploadFile(worksData.pic, MyCommon.fixxs[1], new UploadFileUtil.UploadResult() {
             @Override
             public void onSuccess(String imageUrl) {
                 worksData.setPic(imageUrl);

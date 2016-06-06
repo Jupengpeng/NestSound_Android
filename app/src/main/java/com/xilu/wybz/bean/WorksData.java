@@ -8,8 +8,8 @@ import java.io.Serializable;
  * Created by June on 16/5/3.
  * 歌曲 歌词 或者 灵感记录
  */
-@Table("workdata")
-public class WorksData extends BaseModel implements Serializable {
+//@Table("workdata")
+public class WorksData implements Serializable {
     public int itemid;//歌曲id
     public String pic;//歌曲封面
     public String title;//标题
@@ -27,11 +27,12 @@ public class WorksData extends BaseModel implements Serializable {
     public String hotmp3;//伴奏播放地址
     public int hotmp3times;//伴奏时长 秒
     public int status;//1歌曲 2歌词 歌词是否公开 0不公开 1公开
+    public int type;//1歌曲 2歌词 歌词是否公开 0不公开 1公开
     public String lyrics;//歌词
     public String detail;//歌词详情 灵感记录的内容
     public int prev;//上一首
     public int next;//下一首
-    public String come;
+    public String come;//列表来源
     public int iscollect;//1=已收藏，0=未收藏
     public int isZan;//1=已赞，0=未赞
     public int uid;//作者id
@@ -39,7 +40,7 @@ public class WorksData extends BaseModel implements Serializable {
     public String hotAuthor;//伴奏作者
     public String hotTitle;//伴奏标题
     public long createTime;//创建时间
-    public String createdate;//创建时间
+    public long createdate;//创建时间
     public int recordtimes;//录音时长
     public String recordPath;//录歌时人声或者灵感记录的音频
     public String audio;//录歌时人声或者灵感记录的音频

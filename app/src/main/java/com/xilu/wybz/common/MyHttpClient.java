@@ -127,7 +127,7 @@ public class MyHttpClient {
     //个人主页
     public static String getUserCenter(){return  "userCenter/index";}
     //他人主页
-    public static String getOtherCenter(){return  "otherCenter/index";}
+    public static String getOtherCenter(){return  "common/otherCenter/index";}
     //歌词
     public static String getLyricatsUrl(){return  "lyricsopt/getLyriCats";}
     //发表评论
@@ -147,6 +147,10 @@ public class MyHttpClient {
     //搜索接口
     public static String getSearchList(){
         return "common/search/search";
+    }
+    //搜索接口
+    public static String getFanFocusList(){
+        return "fanfocus/optFans";
     }
 }
 

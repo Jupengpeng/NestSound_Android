@@ -112,9 +112,10 @@ public class MainTabActivity extends BaseActivity {
     public class MyOnPageChangeListener implements ViewPager.OnPageChangeListener {
         @Override
         public void onPageSelected(int arg0) {
-            changeToolbar(arg0);
             if(arg0==1){
                 ((FindActivity)manager.getActivity("FIND")).initView();
+            }else if(arg0==3){
+                ((MineActivity)manager.getActivity("MINE")).initData();
             }
         }
 
@@ -183,24 +184,7 @@ public class MainTabActivity extends BaseActivity {
             }
         }
     };
-    private void changeToolbar(int index){
-        switch (index){
-            case 0:
-                setTitle(getResources().getString(R.string.app_name));
-                break;
-            case 1:
-                setTitle("");
-                break;
-            case 2:
-                setTitle(getResources().getString(R.string.app_msg));
-                break;
-            case 3:
-                setTitle("");
-                break;
-        }
-    }
     public void onEventMainThread(Event.LoginSuccessEvent event){
-        ((MineActivity)manager.getActivity("MINE")).initData();//登录成功更新我的页面
         UserBean ub = event.getUserBean();
         MyApplication.getInstance().setUserid(ub.userid);
         MyApplication.getInstance().setIsLogin(true);
@@ -211,7 +195,6 @@ public class MainTabActivity extends BaseActivity {
     }
     public void onEventMainThread(Event.LoginOutEvent event){
         currentIndex = 0;
-        changeToolbar(currentIndex);
         checkedTextViewList.get(oldIndex).setChecked(false);
         checkedTextViewList.get(currentIndex).setChecked(true);
         viewpager.setCurrentItem(currentIndex, false);

@@ -24,6 +24,7 @@ import com.xilu.wybz.bean.PhotoBean;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.DownLoaderDir;
 import com.xilu.wybz.common.Event;
+import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.common.NewPlayInstance;
 import com.xilu.wybz.presenter.InspireRecordPresenter;
 import com.xilu.wybz.ui.IView.IInspireRecordView;
@@ -129,8 +130,11 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
         });
     }
     private void uploadRecord(){
+        if(!new File(recordPath).exists()){
+            showMsg("本地录音文件不存在！");
+        }
         UploadFileUtil uploadFileUtil = new UploadFileUtil(context);
-        uploadFileUtil.uploadFile(recordPath, ImageUploader.fixxs[3], new UploadFileUtil.UploadResult() {
+        uploadFileUtil.uploadFile(recordPath, MyCommon.fixxs[3], new UploadFileUtil.UploadResult() {
             @Override
             public void onSuccess(String filrUrl) {
                 if(!TextUtils.isEmpty(filrUrl)){

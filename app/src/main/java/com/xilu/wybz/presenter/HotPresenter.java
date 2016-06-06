@@ -7,6 +7,7 @@ import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.callback.FileCallBack;
 import com.xilu.wybz.http.callback.MyStringCallback;
 import com.xilu.wybz.ui.IView.IHotView;
+import com.xilu.wybz.utils.FileUtils;
 import com.xilu.wybz.utils.ParseUtils;
 
 import java.io.File;
@@ -59,14 +60,13 @@ public class HotPresenter extends BasePresenter<IHotView> {
             public void inProgress(float progress, long total) {
 
             }
-
             @Override
             public void onError(Call call, Exception e) {
 
             }
-
             @Override
             public void onResponse(File response) {
+                FileUtils.renameFile(fileDir+fileName,fileDir+fileName+".mp3");
                 iView.downloadSuccess();
             }
         });

@@ -29,8 +29,8 @@ public class MyCommon {
     public static String RANK_SONG = "rank_song";
     public static String TUIJIAN = "tuijian";
     public static String ZUIXIN = "zuixin";
-
-    public static final String AGREEMENT = "http://api.wuyuebuzuo.com/html/xieyi.html";
+    public static String[] fixxs = new String[]{"inspire","lyrcover","muscover","music","headport"};
+    public static final String AGREEMENT = "http://api.yinchao.cn/html/xieyi.html";
 
     public static final String TAG_RECORD_IN = "tag_record_in";
     public static final String TAG_RECORD_OUT = "tag_record_out";

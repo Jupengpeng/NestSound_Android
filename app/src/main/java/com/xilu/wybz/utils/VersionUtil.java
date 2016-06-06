@@ -11,6 +11,7 @@ import com.umeng.update.UmengUpdateListener;
 import com.umeng.update.UpdateResponse;
 import com.umeng.update.UpdateStatus;
 import com.xilu.wybz.R;
+import com.xilu.wybz.common.DownLoaderDir;
 import com.xilu.wybz.view.materialdialogs.DialogAction;
 import com.xilu.wybz.view.materialdialogs.GravityEnum;
 import com.xilu.wybz.view.materialdialogs.MaterialDialog;
@@ -90,7 +91,8 @@ public class VersionUtil {
         });
     }
     public void showUpdataInfo() {
-        apkFilePath = FileUtils.APKPATH + "yinchao" + mUpdateResponse.version + ".apk";
+        if(!new File(DownLoaderDir.apkDir).exists())new File(DownLoaderDir.apkDir).mkdirs();
+        apkFilePath = DownLoaderDir.apkDir + mUpdateResponse.version + ".apk";
         String content = mUpdateResponse.updateLog;
         materialDialog1 = new MaterialDialog.Builder(mContext)
                 .title("发现新版本" + mUpdateResponse.version)

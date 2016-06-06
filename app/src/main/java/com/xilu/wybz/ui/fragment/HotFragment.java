@@ -145,7 +145,7 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
 
     @Override
     public void downloadSuccess() {
-        PlayBanZouInstance.getInstance().setData(MyCommon.TYPE_TEMPLATE, tb.id);
+        PlayBanZouInstance.getInstance().setData(MyCommon.TYPE_TEMPLATE, tb.id+".mp3");
     }
 
     @Override
@@ -273,9 +273,9 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
 
     public void playTemplateMusic() {
         PlayBanZouInstance.getInstance().stopMediaPlay();
-        String playPath = FileUtils.getMusicCachePath(MyCommon.TYPE_TEMPLATE + tb.id);
+        String playPath = FileUtils.getMusicCachePath(MyCommon.TYPE_TEMPLATE + tb.id+".mp3");
         if (new File(playPath).exists()) {
-            PlayBanZouInstance.getInstance().setData(MyCommon.TYPE_TEMPLATE, tb.id);
+            PlayBanZouInstance.getInstance().setData(MyCommon.TYPE_TEMPLATE, tb.id+".mp3");
         } else {
             String filePath = FileUtils.getRootPath() + FileUtils.MUSICCACHEPATH;
             if (!new File(filePath).exists()) {

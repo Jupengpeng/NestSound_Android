@@ -137,9 +137,10 @@ public class PullRecycler extends FrameLayout implements SwipeRefreshLayout.OnRe
     public void setItemAnimator(RecyclerView.ItemAnimator itemAnimator){
         mRecyclerView.setItemAnimator(itemAnimator);
     }
-    public void setReclylerPaddiing(int padding){
-        mRecyclerView.setPadding(padding, padding, padding, padding);
+    public void setReclylerPaddiing(int paddingLeft,int paddingTop,int paddingRight,int paddingBottom){
+        mRecyclerView.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
     }
+
     public interface OnRecyclerRefreshListener {
         void onRefresh(int action);
     }

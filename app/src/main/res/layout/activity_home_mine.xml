@@ -42,15 +42,17 @@
                     android:background="@color/white" />
             </RelativeLayout>
 
-            <com.xilu.wybz.view.CircleImageView
+            <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/iv_head"
                 android:layout_width="92dp"
                 android:layout_height="92dp"
                 android:layout_gravity="center_horizontal|bottom"
-                android:scaleType="centerCrop"
                 android:src="@drawable/ic_default_head_252"
-                fresco:border_color="#a58c23"
-                fresco:border_width="@dimen/yc_2" />
+                fresco:failureImage="@drawable/ic_default_head_252"
+                fresco:placeholderImageScaleType="centerCrop"
+                fresco:roundAsCircle="true"
+                fresco:roundingBorderColor="#a58c23"
+                fresco:roundingBorderWidth="2dp" />
         </FrameLayout>
 
         <TextView
@@ -239,7 +241,6 @@
         </RelativeLayout>
 
         <android.support.v4.view.ViewPager
-            android:layout_marginBottom="48dp"
             android:id="@id/id_stickynavlayout_viewpager"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />

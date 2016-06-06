@@ -76,7 +76,11 @@ public abstract class BaseListFragment<T> extends BaseFragment implements PullRe
     protected void setUpData() {
         setUpAdapter();
         if(hasPadding()){
-            recycler.setReclylerPaddiing(dip10);
+            if(this instanceof WorksDataFragment){
+                recycler.setReclylerPaddiing(dip10, dip10, dip10, dip10+DensityUtil.dip2px(context,48));
+            }else {
+                recycler.setReclylerPaddiing(dip10, dip10, dip10, dip10);
+            }
         }
         recycler.setOnRefreshListener(this);
         recycler.setLayoutManager(getLayoutManager());

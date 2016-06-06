@@ -13,7 +13,26 @@ import java.util.List;
 public class Event {
     public static class DelFocusEvent {
     }
+    public static class UpdataUserBean{
+        UserBean userBean;
+        int type;
+        public UpdataUserBean(UserBean userBean,int type){
+            this.type=type;
+            this.userBean=userBean;
+        }
 
+        public int getType() {
+            return type;
+        }
+
+        public void setType(int type) {
+            this.type = type;
+        }
+
+        public UserBean getUserBean() {
+            return userBean;
+        }
+    }
     public static class UpdataCommentNumEvent {
         int type;
         int num;

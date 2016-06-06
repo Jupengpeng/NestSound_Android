@@ -5,12 +5,15 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
 import com.xilu.wybz.adapter.MineAdapter;
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.KeySet;
 import com.xilu.wybz.ui.base.BaseActivity;
+import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.ui.setting.SettingActivity;
 import com.xilu.wybz.utils.NumberUtil;
 import com.xilu.wybz.utils.PrefsUtil;
@@ -22,13 +25,12 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
-
 /**
  * Created by hujunwei on 16/6/2.
  */
-public class MineActivity extends BaseActivity {
+public class MineActivity extends ToolbarActivity {
     @Bind(R.id.iv_head)
-    CircleImageView ivHead;
+    SimpleDraweeView ivHead;
     @Bind(R.id.user_tv_name)
     TextView userTvName;
     @Bind(R.id.user_tv_info)
@@ -39,10 +41,6 @@ public class MineActivity extends BaseActivity {
     TextView userFansnum;
     @Bind(R.id.stickynav_layout)
     StickyNavLayout stickynavLayout;
-    @Bind(R.id.tv_title)
-    TextView tvTitle;
-    @Bind(R.id.v_toolbar)
-    View vToolbar;
     @Bind(R.id.id_stickynavlayout_viewpager)
     ViewPager container;
     boolean firstLoadUserInfo;
@@ -56,21 +54,20 @@ public class MineActivity extends BaseActivity {
     @Bind(R.id.ll_myfav)
     LinearLayout llMyfav;
     private List<LinearLayout> tabs;
+    private boolean isFirst;
+    @Override
+    public boolean canBack() {
+        return false;
+    }
 
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_home_mine;
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (PrefsUtil.getUserId(this) > 0) {
-            initData();
-        }
-    }
-
     public void initData() {
+        if(isFirst)return;
+        else isFirst = true;
         EventBus.getDefault().register(this);
         setLocalUserInfo(PrefsUtil.getUserInfo(this));
         stickynavLayout.setOnScrollSizeChangeListener(new StickyNavLayout.OnScrollSizeChangeListener() {
@@ -78,20 +75,19 @@ public class MineActivity extends BaseActivity {
             public void onScrollY(int y) {
                 if (y >= 0 && y <= 300) {
                     float alpha = y / 300f;
-                    tvTitle.setAlpha(alpha);
-                    vToolbar.setAlpha(alpha);
+                    mToolbar.setAlpha(alpha);
                 } else if (y > 300) {
-                    tvTitle.setAlpha(1);
-                    vToolbar.setAlpha(1);
+                    mToolbar.setAlpha(1);
                 }
             }
         });
         tabs = new ArrayList<>();
+        llMyrecord.setSelected(true);
         tabs.add(llMyrecord);
         tabs.add(llMysong);
         tabs.add(llMylyrics);
         tabs.add(llMyfav);
-        MineAdapter pagerAdapter = new MineAdapter(getSupportFragmentManager(), PrefsUtil.getUserId(context));
+        MineAdapter pagerAdapter = new MineAdapter(context,getSupportFragmentManager(), PrefsUtil.getUserId(context),PrefsUtil.getUserInfo(context).name);
         container.setAdapter(pagerAdapter);
         container.setOffscreenPageLimit(tabs.size());
         container.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -119,15 +115,13 @@ public class MineActivity extends BaseActivity {
         }
     }
 
-    public void setUserFollownum(int follownum, int fansnum) {
-        userFollownum.setText(NumberUtil.format(follownum));
-        userFansnum.setText(NumberUtil.format(fansnum));
-    }
 
     public void setUserInfo(UserBean userBean) {
         if (!firstLoadUserInfo) {
             //更新本地数据
             UserBean localUserBean = PrefsUtil.getUserInfo(context);
+            localUserBean.fansnum = userBean.fansnum;
+            localUserBean.gznum = userBean.gznum;
             if (userBean.userid > 0) localUserBean.userid = userBean.userid;
             if (StringUtil.isNotBlank(userBean.nickname)) localUserBean.name = userBean.nickname;
             if (StringUtil.isNotBlank(userBean.signature)) localUserBean.descr = userBean.signature;
@@ -136,15 +130,16 @@ public class MineActivity extends BaseActivity {
             //更新本地我的信息
             setLocalUserInfo(userBean);
             firstLoadUserInfo = true;
-
         }
     }
 
     public void setLocalUserInfo(UserBean userBean) {
         loadImage(userBean.headurl, ivHead);
+        userFansnum.setText("粉丝:  "+NumberUtil.format(userBean.fansnum));
+        userFollownum.setText("关注:  "+NumberUtil.format(userBean.gznum));
         if (StringUtil.isNotBlank(userBean.name)) userTvName.setText(userBean.name);
         if (StringUtil.isNotBlank(userBean.descr)) userTvInfo.setText(userBean.descr);
-        if (StringUtil.isNotBlank(userBean.name)) tvTitle.setText(userBean.name);
+        if (StringUtil.isNotBlank(userBean.name)) setTitle(userBean.name);
     }
 
     @OnClick({R.id.user_fansnum, R.id.user_follownum, R.id.ll_myrecord, R.id.ll_mysong, R.id.ll_mylyrics, R.id.ll_myfav, R.id.rl_setting})
@@ -197,12 +192,17 @@ public class MineActivity extends BaseActivity {
                 break;
         }
     }
-
+    //在修改个人资料页面发送过来的
     public void onEventMainThread(Event.UpdateUserInfo event) {
         UserBean userBean = PrefsUtil.getUserInfo(context);
         setLocalUserInfo(userBean);
     }
-
+    //在灵感记录的列表 发送过来的
+    public void onEventMainThread(Event.UpdataUserBean event) {
+        if(event.getType()==1) {
+            setUserInfo(event.getUserBean());
+        }
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();

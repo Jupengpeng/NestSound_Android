@@ -499,8 +499,9 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
 
     @Override
     public void toUserInfo() {
-        intent = new Intent(context, UserInfoActivity.class);
-        startActivity(intent);
+        if (worksData.uid>0) {
+            UserInfoActivity.ToUserInfoActivity(context,worksData.uid,worksData.author);
+        }
     }
 
     @Override
