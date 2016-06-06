@@ -34,6 +34,10 @@ public class WaveSurfaceHelper {
     private List<Short> data;
 
 
+
+    protected int totalSize = 0;
+    protected int currentSize = 0;
+
     //private
     int backgroundColor;
 
@@ -203,6 +207,8 @@ public class WaveSurfaceHelper {
             drawWave(canvas);
             drawsRuler(canvas);
 
+            drawsText(canvas);
+
         }
         if (canvas != null){
             surfaceHolder.unlockCanvasAndPost(canvas);
@@ -215,6 +221,30 @@ public class WaveSurfaceHelper {
 
 
         return scale;
+    }
+
+
+
+    public int caculateCurrentSize(){
+        int size = currentPosition/20;
+//        if (currentPosition%20 >2){
+//            size++;
+//        }
+        return size;
+    }
+
+
+    public void drawsText(Canvas canvas){
+
+        currentSize = caculateCurrentSize();
+
+        String total =  DateFormatUtils.formatTime(totalSize);
+        String curent =  DateFormatUtils.formatTime(currentSize);
+
+        Rect v=viewRect;
+
+        canvas.drawText(curent+"/"+total, v.right - configure.offy*3, v.bottom - configure.offy/2, p1);
+
     }
 
 
@@ -516,6 +546,11 @@ public class WaveSurfaceHelper {
         onDrawWave();
     }
 
+
+
+    public void setTotalSize(int totalSize) {
+        this.totalSize = totalSize;
+    }
 
     public List<Short> getList(){
         List<Short> list = new ArrayList<>();

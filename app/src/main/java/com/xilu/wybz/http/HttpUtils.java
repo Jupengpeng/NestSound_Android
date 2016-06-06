@@ -4,18 +4,16 @@ import android.content.Context;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.callback.BitmapCallback;
 import com.xilu.wybz.http.callback.Callback;
 import com.xilu.wybz.http.callback.FileCallBack;
-import com.xilu.wybz.http.callback.Callback;
-import com.xilu.wybz.http.callback.StringCallback;
 import com.xilu.wybz.http.rsa.RSAUtils;
 import com.xilu.wybz.utils.PhoneInfoUtil;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.ToastUtils;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -52,6 +50,9 @@ public class HttpUtils {
                 .execute(stringCallback);
 
     }
+
+
+
     //普通post提交
     public void postUrl(String url, Map<String, String> params, Callback stringCallback) {
         OkHttpUtils.post()
@@ -139,6 +140,27 @@ public class HttpUtils {
                     .execute(fileCallBack);
         }
     }
+
+    public void uploadFile(String url, String fileName,Callback callback){
+        if(!checkUrl(url)) {
+            return;
+        }
+
+        Log.d("upload","url:"+url);
+        File file = new File(fileName);
+        OkHttpUtils
+                .post()
+                .url(url)
+                .tag(url)
+                .addFile("file",file.getName(),file)
+                .headers(headers)
+                .build()
+                .execute(callback);
+    }
+
+
+
+
     public boolean checkUrl(String url){
         if (url == null){
             ToastUtils.toast(context,"输入的请求地址不合法！");

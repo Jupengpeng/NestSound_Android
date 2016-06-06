@@ -67,6 +67,27 @@ public class ResponseJsonTest {
 
 
     @Test
+    public void testjson() throws Exception {
+
+        String decode = "/sds/sad.mp3";
+//        String decode = "/uploadfiles2/2016/06/06/20160606102422512.mp3";
+        Type type = new TypeToken<String>(){}.getClass();
+        System.out.println(type.getClass().getName());
+        System.out.println(String.class.getName());
+
+
+        if (String.class.getName().equals( String.class.getName())){
+            System.out.println("type == String.class");
+        }
+
+        decode = new Gson().toJson(decode,String.class);
+
+        System.out.println("decode:"+new Gson().fromJson(decode,String.class));
+
+    }
+
+
+    @Test
     public void testError() throws Exception {
 //        String json = "{\"data\":\"{\"filename\":\"lyrcover\\/2016052516553094741175\",\"token\":\"nUdQcDzxiYQzP9tClx85tec8GWq7ZMMqvqufWd8f:d85OOPuqm3FFz6d0MObkdk6m9RM=:eyJzY29wZSI6InVwbG9hZGZpbGVzIiwiZGVhZGxpbmUiOjE0NjQxNzAxMzB9\",\"domain_qiliu\":\"http:\\/\\/7xru8x.com2.z0.glb.qiniucdn.com\"}\",\"message\":\"\",\"code\":200}";
         String json = "{\"data\":{\"filename\":\"75\",\"token\":\"nUdQczB9\",\"domain_qiliu\":\"iucdncom\"},\"message\":\"qwe\",\"code\":200}";
@@ -93,10 +114,9 @@ public class ResponseJsonTest {
 
         assertEquals(1,1);
 
-
-
-
     }
+
+
 
 
 }

@@ -1,5 +1,6 @@
 package com.xilu.wybz.ui.song;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -14,6 +15,8 @@ import android.widget.ImageView;
 import com.czt.mp3recorder.MP3Recorder;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.TemplateBean;
+import com.xilu.wybz.bean.TruningMusicBean;
+import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.MyCommon;
@@ -24,6 +27,8 @@ import com.xilu.wybz.ui.IView.IMakeSongView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.ui.lyrics.ImportWordActivity;
 import com.xilu.wybz.utils.FileUtils;
+import com.xilu.wybz.utils.PrefsUtil;
+import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.utils.ToastUtils;
 import com.xilu.wybz.view.WaveSurfaceView;
@@ -68,6 +73,8 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
 
     private boolean isQc;
     private boolean isPlay = false;
+
+    private boolean useheadset = false;
 
     private String templateFileName;
     private String cacheFileName;
@@ -125,6 +132,8 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
 
         helper = waveSurface.getWaveSurfaceHelper();
 
+        helper.setTotalSize(templateBean.mp3times/1000);
+
         RecordInstance.getInstance().getMp3Recorder().setOnWaveChangeListener(new MP3Recorder.OnWaveChangeListener() {
             @Override
             public void onChange(List<Short> data) {
@@ -133,10 +142,14 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
 
         });
 
+        etTitle.setEnabled(false);
+        etWord.setEnabled(false);
+
         RecordInstance.getInstance().setOnRecordStatuListener(new RecordInstance.OnRecordStatuListener() {
             @Override
             public void onRecordStart() {
-
+                int duration = RecordInstance.getInstance().getMediaPlayer().getDuration();
+                helper.setTotalSize(duration/1000);
             }
 
             @Override
@@ -166,7 +179,8 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
 
             @Override
             public void onRecordComplete() {
-
+                status = 3;
+                showRecordStart();
             }
         });
 
@@ -175,7 +189,7 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
     public void upData() {
 
         cacheFileName = FileUtils.getMusicCachePath(MyCommon.TYPE_TEMPLATE + templateBean.id);
-        templateFileName = cacheFileName+".mp3";
+        templateFileName = cacheFileName + ".mp3";
         //if templateFileName not exists
         if (!FileUtils.fileExists(templateFileName)) {
 
@@ -209,6 +223,36 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
         }
     }
 
+    @Override
+    public void uploadSuccess(String musicurl) {
+        worksData.musicurl = musicurl;
+        makeSongPresenter.tuningMusic("" + worksData.uid, worksData);
+
+        cancelPd();
+    }
+
+    @Override
+    public void uploadFailed(String message) {
+        cancelPd();
+        showMsg("uploadFailed");
+    }
+
+    @Override
+    public void tuningMusicSuccess(TruningMusicBean bean) {
+
+        worksData.recordurl = bean.oldPath;
+        worksData.musicurl = bean.newPath;
+        cancelPd();
+        SaveSongActivity.toSaveSongActivity(this, worksData);
+    }
+
+    @Override
+    public void tuningMusicFailed() {
+        worksData.musicurl = templateBean.mp3;
+        cancelPd();
+        SaveSongActivity.toSaveSongActivity(this, worksData);
+    }
+
     public void showWorks() {
 
         etTitle.setText(worksData.title);
@@ -222,8 +266,8 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
     }
 
     public void onEventMainThread(Event.SaveLyricsSuccessEvent event) {
-        this.worksData = event.getLyricsdisplayBean();
-        showWorks();
+//        this.worksData = event.getLyricsdisplayBean();
+//        showWorks();
     }
 
     private void initData() {
@@ -257,7 +301,7 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
                     return;
                 }
 
-                if (RecordInstance.getInstance().toRestart()){
+                if (RecordInstance.getInstance().toRestart()) {
                     status = 1;
                     showRecordStart();
                 } else {
@@ -266,6 +310,8 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
 
                 break;
             case R.id.iv_record:
+
+                useheadset = SystemUtils.isWiredHeadsetOn(this);
                 if (RecordInstance.getInstance().isStart()) {
                     stopRecord();
                 } else {
@@ -274,14 +320,15 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
                 break;
 
             case R.id.iv_import:
-                if (status == 1){
+                if (status == 1) {
                     showMsg("请先停止录音");
                     return;
                 }
+                startActivity(ImportWordActivity.class);
                 break;
 
             case R.id.iv_edit:
-                if (etTitle.isEnabled()){
+                if (etTitle.isEnabled()) {
                     etTitle.setEnabled(false);
                     etWord.setEnabled(false);
                     showMsg("关闭歌词编辑");
@@ -352,18 +399,57 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-            case R.id.menu_import:
-                startActivity(ImportWordActivity.class);
-                return true;
+
             case R.id.menu_next:
+
+//                if (worksData == null) {
+//                    worksData = new WorksData();
+//                }
+//
+//                worksData.hotid = 1;
+//                worksData.musicurl = "Zero.mp3";
+//
+//                worksData.useheadset= "1";
+//
+//                makeSongPresenter.tuningMusic("1234",worksData);
+
+
+                if (status == 1) {
+                    showMsg("请先停止录音");
+                    return true;
+                }
+                if (StringUtil.isBlank(etTitle.getText().toString())) {
+                    showMsg("请填写标题");
+                    return true;
+
+                }
                 if (worksData == null) {
                     worksData = new WorksData();
                 }
+
                 worksData.hotid = Integer.valueOf(templateBean.id);
-                worksData.recordmp3 = templateFileName;
+                worksData.title = etTitle.getText().toString();
+                worksData.lyrics = etWord.getText().toString();
+
+                worksData.useheadset = useheadset == true ? "1":"0";
+                UserBean user = PrefsUtil.getUserInfo(this);
+
+                worksData.uid = user.userid;
+                worksData.author = user.name;
+
+                RecordInstance.getInstance().toStop();
                 RecordInstance.getInstance().saveWaveDatas();
-                RecordInstance.getInstance().saveRecorderFileTo(FileUtils.getLocalRecordPath(MyCommon.TYPE_MAKE + templateBean.id));
-                SaveSongActivity.toSaveSongActivity(this, worksData);
+                boolean copyok = RecordInstance.getInstance().saveRecorderFileTo(FileUtils.getLocalRecordPath(MyCommon.TYPE_MAKE + templateBean.id));
+                if (copyok){
+                    worksData.recordmp3 = FileUtils.getLocalRecordPath(MyCommon.TYPE_MAKE + templateBean.id);
+                } else {
+                    showMsg("保存录音文件失败");
+                    return true;
+                }
+//
+                showPd("正在合成歌曲中");
+                makeSongPresenter.uploadmp3File(FileUtils.getLocalRecordPath(MyCommon.TYPE_MAKE + templateBean.id));
+
                 return true;
             case android.R.id.home:
                 onKeyBack();
@@ -420,6 +506,22 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
 
         backDialog.show();
 
+    }
+
+
+    public class HeadSetPlugListenner extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.hasExtra("state")) {
+                if (intent.getIntExtra("state", 2) == 0){
+                    //拔出
+                    useheadset = false;
+                }else if (intent.getIntExtra("state", 2) == 1) {
+                    //插入
+                    useheadset = true;
+                }
+            }
+        }
     }
 
 

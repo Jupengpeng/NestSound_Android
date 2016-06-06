@@ -4,14 +4,15 @@ import android.content.Context;
 import android.util.Log;
 
 import com.xilu.wybz.bean.JsonResponse;
+import com.xilu.wybz.bean.ShareResponseBean;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.MyHttpClient;
-import com.xilu.wybz.http.callback.AppStringCallback;
+import com.xilu.wybz.http.callback.AppJsonCalback;
 import com.xilu.wybz.ui.IView.ISaveSongView;
 import com.xilu.wybz.utils.PrefsUtil;
 
+import java.lang.reflect.Type;
 import java.util.HashMap;
-import java.util.Map;
 
 import okhttp3.Call;
 
@@ -26,26 +27,47 @@ public class SaveSongPresenter extends BasePresenter<ISaveSongView> {
 
 
     public void saveSong(WorksData worksData) {
-        Map<String, String> map = new HashMap<>();
+        params = new HashMap<>();
         try {
-            map.put("uid", PrefsUtil.getUserId(context)+"");
-            map.put("title", worksData.title);
-            map.put("author", worksData.author);
-            map.put("lyrics", worksData.lyrics);
-            map.put("createtype", "HOT");
-            map.put("useheadset", worksData.useheadset);//耳机
-            map.put("hotid", ""+worksData.hotid);
-            map.put("pic", worksData.pic);
-            map.put("is_issue", ""+worksData.is_issue);
-            map.put("mp3", worksData.recordmp3 );
+            params.put("uid", PrefsUtil.getUserId(context) + "");
+            params.put("title", worksData.title);
+            params.put("author", worksData.author);
+            params.put("lyrics", worksData.lyrics);
+            params.put("createtype", "HOT");
+            params.put("useheadset", worksData.useheadset);//耳机
+            params.put("hotid", "" + worksData.hotid);
+            params.put("pic", worksData.pic);
+            params.put("is_issue", "" + worksData.is_issue);
+            params.put("mp3", worksData.musicurl);
+            params.put("diyids", worksData.diyids);
+
         } catch (Exception e) {
             Log.e("Exception", e.toString());
         }
-        httpUtils.post(MyHttpClient.getSaveSongUrl(), map, new AppStringCallback(context) {
+        Log.e("url", params.toString());
+
+        httpUtils.post(MyHttpClient.getSaveSongUrl(), params, new AppJsonCalback(context) {
+
                     @Override
-                    public void onResponse(JsonResponse<? extends Object> response) {
-                        super.onResponse(response);
-                        iView.saveWordSuccess(response.getData());
+                    public Type getDataType() {
+                        return ShareResponseBean.class;
+                    }
+
+                    @Override
+                    public void onResult(JsonResponse<? extends Object> response) {
+                        super.onResult(response);
+                        ShareResponseBean sharebean = response.getData();
+                        if (sharebean != null){
+                            iView.saveWordSuccess(sharebean.getCompleteShareUrl());
+                        } else {
+                            iView.saveWordFail();
+                        }
+                    }
+
+                    @Override
+                    public void onResultError(JsonResponse<? extends Object> response) {
+                        super.onResultError(response);
+                        iView.saveWordFail();
                     }
 
                     @Override
@@ -53,16 +75,9 @@ public class SaveSongPresenter extends BasePresenter<ISaveSongView> {
                         super.onError(call, e);
                         iView.saveWordFail();
                     }
-
-                    @Override
-                    public void onAfter() {
-                        super.onAfter();
-                        iView.onFinish();
-                    }
                 }
         );
     }
-
 
 
 }

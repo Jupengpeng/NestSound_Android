@@ -122,21 +122,23 @@ public class RecordInstance {
                     }
                 }
             });
+
             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
-                    try {
-                        mp3Recorder.stop();
-                    }catch (Exception e){
-                        e.printStackTrace();
-                    }
 
                     isStart = false;
                     if (listener != null) {
                         listener.onRecordComplete();
                     }
+                    try {
+                        mp3Recorder.stop();
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
                 }
             });
+
             mediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
                 @Override
                 public boolean onError(MediaPlayer mp, int what, int extra) {

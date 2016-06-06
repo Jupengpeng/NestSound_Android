@@ -24,15 +24,18 @@ import com.xilu.wybz.common.DownLoaderDir;
 import com.xilu.wybz.common.MediaInstance;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.common.interfaces.IMediaPlayerListener;
+import com.xilu.wybz.presenter.DownloadMusicPresenter;
 import com.xilu.wybz.presenter.SaveSongPresenter;
+import com.xilu.wybz.ui.IView.IDownloadMusicView;
 import com.xilu.wybz.ui.IView.ISaveSongView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
-import com.xilu.wybz.utils.FileUtils;
+import com.xilu.wybz.ui.lyrics.ShareActivity;
 import com.xilu.wybz.utils.ImageUploader;
 import com.xilu.wybz.utils.ImageUtils;
 import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.utils.UploadFileUtil;
+import com.xilu.wybz.view.materialdialogs.MaterialDialog;
 
 import java.io.File;
 
@@ -42,7 +45,7 @@ import butterknife.OnClick;
 /**
  * Created by Administrator on 2016/6/1.
  */
-public class SaveSongActivity extends ToolbarActivity implements ISaveSongView {
+public class SaveSongActivity extends ToolbarActivity implements ISaveSongView ,IDownloadMusicView{
 
 
     @Bind(R.id.et_content)
@@ -60,7 +63,12 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView {
 
     private int status = 0;
 
+    protected MaterialDialog loadDialog;
+
+    private String cacheFileName;
+
     SaveSongPresenter saveSongPresenter;
+    DownloadMusicPresenter downloadMusicPresenter;
 
     @Override
     protected int getLayoutRes() {
@@ -78,8 +86,11 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView {
         super.onCreate(savedInstanceState);
         initData();
 
+        downloadMusicPresenter = new DownloadMusicPresenter(context,this);
+
         saveSongPresenter = new SaveSongPresenter(context, this);
         saveSongPresenter.init();
+
     }
 
 
@@ -173,7 +184,7 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView {
             @Override
             public void onSuccess(String imageUrl) {
                 worksData.setPic(imageUrl);
-//                saveSongPresenter.saveSong(worksData);
+                saveSongPresenter.saveSong(worksData);
             }
 
             @Override
@@ -186,19 +197,33 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView {
 
 
     @Override
+    public void downloadSuccess(String message) {
+
+    }
+
+    @Override
+    public void downloadFailed(String message) {
+
+    }
+
+    @Override
+    public void downloadProgress(int progress) {
+
+    }
+
+    @Override
     public void saveWordSuccess(String response) {
+
+        worksData.shareurl = response;
+        ShareActivity.toShareActivity(this,worksData);
 
     }
 
     @Override
     public void saveWordFail() {
-
+        cancelPd();
     }
 
-    @Override
-    public void onFinish() {
-
-    }
 
     @OnClick(R.id.cb_isopen)
     public void onClickOpen() {
@@ -213,13 +238,14 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView {
     @OnClick(R.id.iv_play)
     public void onClickPlay() {
 
-        if (StringUtil.isBlank(worksData.recordmp3) || !FileUtils.fileExists(worksData.recordmp3)){
-            showMsg("没有找到录音文件");
+        if (StringUtil.isBlank(worksData.musicurl)){
+            showMsg("没有找到合成mp3文件");
             return;
         }
 
         if(status == 0 || status == 6){
-            MediaInstance.getInstance().startMediaPlay(worksData.recordmp3);
+            MediaInstance.getInstance().startMediaPlayAsync(worksData.musicurl);
+//            MediaInstance.getInstance().startMediaPlayAsync(MyHttpClient.ROOT_URL+worksData.musicurl);
             showbuttonPause();
             return;
         }
@@ -241,6 +267,7 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_publish) {
+
             //先检查歌词的描述
             if(StringUtil.isBlank(worksData.detail)){
                 showMsg("请先添加歌曲描述！");
@@ -250,6 +277,9 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView {
                 showMsg("请先选择歌曲的封面！");
                 return true;
             }
+
+            worksData.is_issue = cbIsopen.isChecked() ? 1:0;
+
             if(new File(worksData.pic).exists()){
                 uploadCoverPic();
             }else{
@@ -316,6 +346,7 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView {
     protected void onDestroy() {
         super.onDestroy();
         MediaInstance.getInstance().stopMediaPlay();
+        MediaInstance.getInstance().destroy();
     }
 
 

@@ -1,7 +1,6 @@
 package com.xilu.wybz.utils;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.qiniu.android.http.ResponseInfo;
 import com.qiniu.android.storage.UpCompletionHandler;
@@ -60,7 +59,7 @@ public class ImageUploader {
                 new UpCompletionHandler() {
                     @Override
                     public void complete(String key, ResponseInfo info, JSONObject response) {
-                        Log.e("response", response.toString());
+//                        Log.e("response", response.toString());
                         if (response == null) {
                             onUploadListener.onFailure();
                         } else

@@ -51,6 +51,9 @@ public class WorksData extends BaseModel implements Serializable {
     public String createtype;//HOT/DIY
     public String useheadset;//耳机1是，0否
     public String recordmp3;
+    public String recordurl;
+    public String musicurl;
+    public String diyids;
     public int is_issue;//0不发布,1发布
 
     public int getDraftType() {

@@ -189,6 +189,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 .content(msg)
                 .progress(true, 0)
                 .progressIndeterminateStyle(false)
+                .canceledOnTouchOutside(false)
                 .show();
     }
     @Override

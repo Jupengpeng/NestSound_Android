@@ -4,6 +4,7 @@ package com.xilu.wybz.common;
  */
 public class MyHttpClient {
     public static final String ROOT_URL = "http://112.124.125.2/";
+//    public static final String ROOT_URL = "http://192.168.0.134/";
 //    public static final String ROOT_URL = "http://192.168.0.123:8080/";
     public static String QINIU_URL = "http://7xru8x.com2.z0.glb.qiniucdn.com/";
     public static final String BASE_URL = ROOT_URL+"java/";
@@ -115,6 +116,8 @@ public class MyHttpClient {
     public static String getMsgSystemList(){return  "message/sysNoteList";}
     //发布歌词
     public static String getSaveLyricsUrl(){return  "lyricsopt/optLyrics";}
+    //合成歌曲
+    public static String getuploadmp3Url(){return  BASE_URL+"common/uploadcallback/uploadmp3";}
     //合成歌曲
     public static String getTuningSongUrl(){return  "musiopt/tuningMusic";}
     //发布歌曲

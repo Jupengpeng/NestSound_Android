@@ -52,6 +52,7 @@
                 android:background="@color/tran"
                 android:elegantTextHeight="true"
                 android:gravity="center_horizontal|top"
+                android:minLines="16"
                 android:textColor="@color/main_text_color"
                 android:textSize="@dimen/yc_15" />
         </ScrollView>

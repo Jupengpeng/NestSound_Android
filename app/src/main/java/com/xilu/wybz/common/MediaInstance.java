@@ -11,11 +11,12 @@ import java.io.IOException;
  * Created by June on 2015/9/16.
  */
 public class MediaInstance {
-    static MediaInstance mInstance;
-    MediaPlayer mediaPlayer;
-    IMediaPlayerListener iml;
-
+    public static MediaInstance mInstance;
+    public MediaPlayer mediaPlayer;
     public boolean isPlay = false;
+
+    public boolean asynchronization = false;
+    private IMediaPlayerListener iml;
 
     MediaInstance() {
 
@@ -35,12 +36,38 @@ public class MediaInstance {
                     creatMediaPlayer(path);
                 }
                 mediaPlayer.prepare();
+                asynchronization = false;
             } catch (IOException e) {
                 isPlay = false;
                 e.printStackTrace();
             }
         }
     }
+
+
+    public void startMediaPlayAsync(final String path) {
+
+        MyThreadPool.getInstance().doTask(new Runnable() {
+            @Override
+            public void run() {
+
+                if (!isPlay) {
+                    try {
+                        isPlay = true;
+                        if (mediaPlayer == null) {
+                            creatMediaPlayer(path);
+                        }
+                        mediaPlayer.prepareAsync();
+                        asynchronization = true;
+                    } catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
+    }
+
 
     public void stopMediaPlay() {
         if (mediaPlayer != null && isPlay) {
@@ -134,6 +161,15 @@ public class MediaInstance {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void destroy(){
+        try{
+            mediaPlayer.release();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        mInstance = null;
     }
 
 

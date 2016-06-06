@@ -196,7 +196,11 @@ public class MP3Recorder {
 
     public void pause() {
         Log.d("audio","pause");
-        mAudioRecord.stop();
+        try {
+            mAudioRecord.stop();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         isRecording = false;
     }
 

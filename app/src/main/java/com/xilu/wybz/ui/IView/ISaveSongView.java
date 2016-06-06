@@ -6,5 +6,4 @@ package com.xilu.wybz.ui.IView;
 public interface ISaveSongView extends IBaseView{
     void saveWordSuccess(String response);
     void saveWordFail();
-    void onFinish();
 }
