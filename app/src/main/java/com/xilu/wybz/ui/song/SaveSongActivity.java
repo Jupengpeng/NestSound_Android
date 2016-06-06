@@ -30,7 +30,6 @@ import com.xilu.wybz.ui.IView.IDownloadMusicView;
 import com.xilu.wybz.ui.IView.ISaveSongView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.ui.lyrics.ShareActivity;
-import com.xilu.wybz.utils.ImageUploader;
 import com.xilu.wybz.utils.ImageUtils;
 import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.utils.SystemUtils;
@@ -180,7 +179,7 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView ,
     public void uploadCoverPic() {
         showPd("正在保存中，请稍候...");
         UploadFileUtil uploadPicUtil = new UploadFileUtil(context);
-        uploadPicUtil.uploadFile(worksData.pic, ImageUploader.fixxs[1], new UploadFileUtil.UploadResult() {
+        uploadPicUtil.uploadFile(worksData.pic, MyCommon.fixxs[2], new UploadFileUtil.UploadResult() {
             @Override
             public void onSuccess(String imageUrl) {
                 worksData.setPic(imageUrl);
