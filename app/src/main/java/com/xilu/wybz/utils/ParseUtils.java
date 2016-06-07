@@ -270,7 +270,7 @@ public class ParseUtils {
     }
     //我的主页数据
     public static MineBean getMineBean(Context context, String response) {
-        MineBean dataBean = new MineBean();
+        MineBean dataBean = null;
         try {
             JSONObject jsonObject = new JSONObject(response);
             int code = jsonObject.getInt("code");

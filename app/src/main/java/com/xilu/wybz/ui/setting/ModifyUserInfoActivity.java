@@ -13,14 +13,13 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.UserBean;
-import com.xilu.wybz.common.DownLoaderDir;
+import com.xilu.wybz.common.FileDir;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.presenter.ModifyUserInfoPresenter;
 import com.xilu.wybz.ui.IView.IModifyUserInfoView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
-import com.xilu.wybz.utils.ImageUploader;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.utils.SystemUtils;
@@ -224,11 +223,11 @@ public class ModifyUserInfoActivity extends ToolbarActivity implements IModifyUs
     // 保存裁剪后的图片
     public void saveBitmap(Bitmap bitmap) {
         // TODO Auto-generated method stub
-        File file = new File(DownLoaderDir.rootpicDir);
+        File file = new File(FileDir.rootpicDir);
         if (!file.exists())
             file.mkdirs();
         try {
-            headPath = DownLoaderDir.rootpicDir + System.currentTimeMillis() + ".jpg";
+            headPath = FileDir.rootpicDir + System.currentTimeMillis() + ".jpg";
             FileOutputStream b = new FileOutputStream(headPath);
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, b);
             b.flush();

@@ -15,6 +15,7 @@ import com.xilu.wybz.adapter.MyPagerAdapter;
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.ui.base.BaseActivity;
+import com.xilu.wybz.ui.base.BlankActivity;
 import com.xilu.wybz.ui.find.FindActivity;
 import com.xilu.wybz.ui.login.LoginActivity;
 import com.xilu.wybz.ui.lyrics.MakeWordActivity;
@@ -51,11 +52,13 @@ public class MainTabActivity extends BaseActivity {
     @Bind(R.id.tv_mine)
     CheckedTextView tvMine;
     List<CheckedTextView> checkedTextViewList;
+    ArrayList<View> list;
     MoreWindow mMoreWindow;
     int oldIndex;
     int currentIndex;
     long exitTime;
     Intent intent;
+    MyPagerAdapter adapter;
     LocalActivityManager manager = null;
     @Override
     protected int getLayoutRes() {
@@ -91,16 +94,24 @@ public class MainTabActivity extends BaseActivity {
     }
     private void initPagerViewer() {
         viewpager.setScanScroll(false);
-        ArrayList<View> list = new ArrayList<>();
+        list = new ArrayList<>();
         intent = new Intent(this, MainActivity.class);
         list.add(getView("MAIN", intent));
         intent = new Intent(this, FindActivity.class);
         list.add(getView("FIND", intent));
-        intent = new Intent(this, MsgActivity.class);
-        list.add(getView("MSG", intent));
-        intent = new Intent(this, MineActivity.class);
-        list.add(getView("MINE", intent));
-        viewpager.setAdapter(new MyPagerAdapter(list));
+        if(PrefsUtil.getUserId(context)>0) {
+            intent = new Intent(this, MsgActivity.class);
+            list.add(getView("MSG", intent));
+            intent = new Intent(this, MineActivity.class);
+            list.add(getView("MINE", intent));
+        }else{
+            intent = new Intent(this, BlankActivity.class);
+            list.add(getView("MSG", intent));
+            intent = new Intent(this, BlankActivity.class);
+            list.add(getView("MINE", intent));
+        }
+        adapter = new MyPagerAdapter(list);
+        viewpager.setAdapter(adapter);
         viewpager.setCurrentItem(0);
         viewpager.setOffscreenPageLimit(4);
         viewpager.setOnPageChangeListener(new MyOnPageChangeListener());
@@ -192,13 +203,15 @@ public class MainTabActivity extends BaseActivity {
         MobclickAgent.onProfileSignIn(ub.userid+"");
         PushAgent.getInstance(context).setAlias(ub.userid+"", "yinchao");
         PushAgent.getInstance(context).setExclusiveAlias(ub.userid+"", "yinchao");
+        startActivity(MainTabActivity.class);
+        finish();
+        overridePendingTransition(R.anim.none,R.anim.none);
+
     }
     public void onEventMainThread(Event.LoginOutEvent event){
-        currentIndex = 0;
-        checkedTextViewList.get(oldIndex).setChecked(false);
-        checkedTextViewList.get(currentIndex).setChecked(true);
-        viewpager.setCurrentItem(currentIndex, false);
-        oldIndex = currentIndex;
+        startActivity(MainTabActivity.class);
+        finish();
+        overridePendingTransition(R.anim.none,R.anim.none);
     }
     @Override
     protected void onDestroy() {

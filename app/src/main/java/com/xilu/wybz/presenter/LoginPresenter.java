@@ -28,7 +28,6 @@ public class LoginPresenter extends BasePresenter<ILoginView>{
                 super.onBefore(request);
                 iView.loginStart();
             }
-
             @Override
             public void onResponse(String response) {
                 super.onResponse(response);
@@ -38,7 +37,6 @@ public class LoginPresenter extends BasePresenter<ILoginView>{
                 else
                     ToastUtils.toast(context,"用户Id获取失败");
             }
-
             @Override
             public void onError(Call call, Exception e) {
                 super.onError(call, e);

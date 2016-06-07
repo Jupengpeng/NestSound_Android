@@ -18,17 +18,15 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.qiniu.android.utils.StringUtils;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.WorksData;
-import com.xilu.wybz.common.DownLoaderDir;
+import com.xilu.wybz.common.FileDir;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.KeySet;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.SaveWordPresenter;
 import com.xilu.wybz.ui.IView.ISaveWordView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
-import com.xilu.wybz.utils.ImageUploader;
 import com.xilu.wybz.utils.ImageUtils;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtil;
@@ -183,6 +181,8 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView{
     @Override
     public void saveWordSuccess(String result) {
         cancelPd();
+        worksData.createdate=System.currentTimeMillis();
+        EventBus.getDefault().post(new Event.UpdataWorksList(worksData,2,0,0));
         try {
             String shareurl = new JSONObject(result).getString("shareurl");
             int itemid = new JSONObject(result).getInt("itemid");
@@ -199,7 +199,7 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView{
         EventBus.getDefault().post(new Event.SaveLyricsSuccessEvent(4, worksData));
 
         //录音编辑歌词
-        EventBus.getDefault().post(new Event.SaveLyricsSuccessEvent(5, worksData));
+//        EventBus.getDefault().post(new Event.SaveLyricsSuccessEvent(5, worksData));
 
     }
     @Override
@@ -250,7 +250,7 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView{
                 //获取图片的旋转角度
                 int degree = ImageUtils.readPictureDegree(picture.getAbsolutePath());
                 if (degree > 0) {//大于0的时候需要调整角度
-                    String imagePath = DownLoaderDir.coverPic + System.currentTimeMillis() + ".jpg";
+                    String imagePath = FileDir.coverPic + System.currentTimeMillis() + ".jpg";
                     Bitmap cameraBitmap = BitmapFactory.decodeFile(coverPath, bitmapOptions);
                     Bitmap bitmap = ImageUtils.rotaingImageView(degree, cameraBitmap);
                     ImageUtils.saveBitmap(bitmap, imagePath);

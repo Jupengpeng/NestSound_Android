@@ -3,6 +3,7 @@ package com.xilu.wybz.presenter;
 import android.content.Context;
 
 import com.google.gson.Gson;
+import com.xilu.wybz.bean.DataBean;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.callback.MyStringCallback;
@@ -66,7 +67,28 @@ public class LyricsPresenter extends BasePresenter<ILyricsView> {
             }
         });
     }
+    public void setCollectionState(int music_id, int target_uid) {
+        params = new HashMap<>();
+        params.put("user_id",PrefsUtil.getUserId(context)+"");;
+        params.put("work_id", music_id+"");
+        params.put("target_uid", target_uid+"");
+        params.put("wtype", "2");
+        httpUtils.post(MyHttpClient.getWorkFovUrl(), params, new MyStringCallback() {
+            @Override
+            public void onResponse(String response) {
+                DataBean dataBean = ParseUtils.getDataBean(context,response);
+                if(dataBean!=null&&dataBean.code==200)
+                    iView.favSuccess();
+                else
+                    iView.favFail();
+            }
 
+            @Override
+            public void onError(Call call, Exception e) {
+                iView.favFail();
+            }
+        });
+    }
     public void zan(int id, int target_uid) {
         Map<String, String> params = new HashMap<>();
         params.put("target_uid", target_uid+"");//作者id
@@ -77,13 +99,11 @@ public class LyricsPresenter extends BasePresenter<ILyricsView> {
             @Override
             public void onResponse(String response) {
                 super.onResponse(response);
-                try {
-                    if (ParseUtils.checkCode(response)) {
-                        iView.zanSuccess();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                DataBean dataBean = ParseUtils.getDataBean(context,response);
+                if(dataBean!=null&&dataBean.code==200)
+                    iView.zanSuccess();
+                else
+                    iView.zanFail();
             }
 
             @Override

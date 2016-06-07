@@ -31,7 +31,12 @@ public class MyStaggeredGridLayoutManager extends StaggeredGridLayoutManager imp
         positions = findLastVisibleItemPositions(positions);
         return positions[0];
     }
-
+    @Override
+    public int findFirstVisiblePosition() {
+        int[] positions = null;
+        positions = findFirstVisibleItemPositions(positions);
+        return positions[0];
+    }
     @Override
     public void setUpAdapter(BaseListAdapter adapter) {
 

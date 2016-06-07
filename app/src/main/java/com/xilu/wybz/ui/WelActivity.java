@@ -8,7 +8,7 @@ import android.view.KeyEvent;
 import android.widget.RelativeLayout;
 
 import com.xilu.wybz.R;
-import com.xilu.wybz.common.DownLoaderDir;
+import com.xilu.wybz.common.FileDir;
 import com.xilu.wybz.service.GetDomainService;
 import com.xilu.wybz.ui.base.BaseActivity;
 import com.xilu.wybz.utils.BitmapUtils;
@@ -36,7 +36,7 @@ public class WelActivity extends BaseActivity {
         String page_start_pic = PrefsUtil.getString("applogo", context);
         if (StringUtil.isNotBlank(page_start_pic)) {
             String fileName = MD5Util.getMD5String(page_start_pic) + ".png";
-            String filePath = DownLoaderDir.logoDir + fileName;
+            String filePath = FileDir.logoDir + fileName;
             if (new File(filePath).exists()) {
                 rlMain.setBackground(new BitmapDrawable(BitmapUtils.getSDCardImg(filePath)));
             }

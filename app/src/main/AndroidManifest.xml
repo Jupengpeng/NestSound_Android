@@ -43,6 +43,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.MainTabActivity" android:theme="@style/MainTheme" />
+        <activity android:name=".ui.base.BlankActivity" />
         <activity android:name=".ui.BrowserActivity" />
         <activity android:name=".ui.SplashActivity" />
 
@@ -68,11 +69,11 @@
         <activity android:name=".ui.setting.SettingFeedActivity" />
         <activity android:name=".ui.setting.ModifyUserInfoActivity" />
 
-        <activity android:name=".ui.login.RegisterActivity" android:theme="@style/LoginTheme" />
-        <activity android:name=".ui.login.ForgetPwdActivity" />
-        <activity android:name=".ui.login.PasswordActivity" />
-        <activity android:name=".ui.login.ModifyPwdActivity" />
-        <activity android:name=".ui.login.LoginActivity" android:theme="@style/LoginTheme" />
+        <activity android:name=".ui.login.RegisterActivity" android:theme="@style/LoginTheme" android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity android:name=".ui.login.ForgetPwdActivity" android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity android:name=".ui.login.PasswordActivity" android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity android:name=".ui.login.ModifyPwdActivity" android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity android:name=".ui.login.LoginActivity" android:theme="@style/LoginTheme" android:windowSoftInputMode="stateHidden|adjustResize" />
 
         <activity android:name=".ui.song.MakeHotActivity"  />
         <activity android:name=".ui.song.MakeSongActivity" android:windowSoftInputMode="stateHidden|adjustPan" />
@@ -93,7 +94,7 @@
         <activity android:name=".ui.lyrics.ShareActivity" android:theme="@style/PlayTheme" />
         <activity android:name=".ui.lyrics.ImportWordActivity" />
         <activity android:name=".ui.lyrics.MakeCourseActivity" />
-        <activity android:name=".ui.lyrics.SaveWordActivity" android:windowSoftInputMode="stateUnchanged" />
+        <activity android:name=".ui.lyrics.SaveWordActivity" android:windowSoftInputMode="stateHidden|adjustResize" />
 
         <service android:name=".service.PlayService" />
 

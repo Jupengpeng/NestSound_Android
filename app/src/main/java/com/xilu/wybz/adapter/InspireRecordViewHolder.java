@@ -1,6 +1,7 @@
 package com.xilu.wybz.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -21,6 +22,7 @@ import com.xilu.wybz.utils.ImageLoadUtil;
 import com.xilu.wybz.utils.NumberUtil;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtil;
+import com.xilu.wybz.view.materialdialogs.MaterialDialog;
 
 import java.util.List;
 
@@ -50,17 +52,25 @@ public class InspireRecordViewHolder extends com.xilu.wybz.view.pull.BaseViewHol
     ImageView ivFrequency;
     @Bind(R.id.tv_text)
     TextView tvText;
-
-    public InspireRecordViewHolder(View view, Context context, List<WorksData> worksDataList, String from) {
+    OnDeleteListener onDeleteListener;
+    public InspireRecordViewHolder(View view, Context context, List<WorksData> worksDataList, String from,OnDeleteListener onDeleteListener) {
         super(view);
         mDataList = worksDataList;
         COME = from;
+        this.onDeleteListener = onDeleteListener;
         mContext = context;
         itemWidth = DensityUtil.getScreenW(context) - DensityUtil.dip2px(context, 20);
         itemHeight = itemWidth / 3;
         ivCover.setLayoutParams(new FrameLayout.LayoutParams(itemWidth, itemHeight));
         flMain.setLayoutParams(new ViewGroup.LayoutParams(itemWidth, itemHeight));
         ivFrequency.setPadding(0, 0, 0, itemHeight / 6);
+        itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                onItemLongClick(v,getAdapterPosition());
+                return false;
+            }
+        });
     }
 
     @Override
@@ -113,28 +123,26 @@ public class InspireRecordViewHolder extends com.xilu.wybz.view.pull.BaseViewHol
             ivCover.setImageResource(R.drawable.transparent);
         }
     }
-
+    public void onItemLongClick(View view, int position) {
+        if(onDeleteListener==null)return;
+        new MaterialDialog.Builder(mContext)
+                .title(R.string.dialog_title)
+                .items(R.array.states)
+                .itemsColor(Color.RED)
+                .itemsCallback(new MaterialDialog.ListCallback() {
+                    @Override
+                    public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        if(which==0){
+                            onDeleteListener.deletePos(position);
+                        }
+                    }
+                }).show();
+    }
     @Override
     public void onItemClick(View view, int position) {
-//        if (mDataList.get(position).status == 1) {
-//            toPlayPos(position);
-//        } else {
-//            LyricsdisplayActivity.toLyricsdisplayActivity(mContext, mDataList.get(position).getItemid(), 0, mDataList.get(position).name);
-//        }
     }
 
-    public void toPlayPos(int position) {
-        if (mDataList.size() > 0) {
-            String playFrom = PrefsUtil.getString("playFrom", mContext);
-            if (!playFrom.equals(COME) || MyApplication.ids.size() == 0) {
-                if (MyApplication.ids.size() > 0)
-                    MyApplication.ids.clear();
-                for (WorksData worksData : mDataList) {
-                    MyApplication.ids.add(worksData.getItemid());
-                }
-            }
-            WorksData worksData = mDataList.get(position);
-            PlayAudioActivity.toPlayAudioActivity(mContext, worksData.getItemid(), "", COME, position);
-        }
+    public interface OnDeleteListener{
+        void deletePos(int pos);
     }
 }

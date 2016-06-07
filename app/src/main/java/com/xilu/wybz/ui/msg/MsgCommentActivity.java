@@ -163,7 +163,7 @@ public class MsgCommentActivity extends BaseListActivity<MsgCommentBean> impleme
                 PlayAudioActivity.toPlayAudioActivity(context, msgCommentBean.workid, "", MyCommon.MSG_COMMENT, 0);
             }else{
                 if(msgCommentBean.workid>0)
-                    LyricsdisplayActivity.toLyricsdisplayActivity(context, msgCommentBean.workid, 0, msgCommentBean.title);
+                    LyricsdisplayActivity.toLyricsdisplayActivity(context, msgCommentBean.workid, 0, msgCommentBean.title,0);
             }
         }
         public SampleViewHolder(View itemView) {

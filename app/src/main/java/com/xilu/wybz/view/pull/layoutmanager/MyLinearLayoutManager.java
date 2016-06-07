@@ -34,7 +34,10 @@ public class MyLinearLayoutManager extends LinearLayoutManager implements ILayou
     public int findLastVisiblePosition() {
         return findLastVisibleItemPosition();
     }
-
+    @Override
+    public int findFirstVisiblePosition() {
+        return findFirstVisibleItemPosition();
+    }
     @Override
     public void setUpAdapter(BaseListAdapter adapter) {
 

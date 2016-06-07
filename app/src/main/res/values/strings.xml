@@ -19,10 +19,12 @@
     <string name="tab_3">活动</string>
 
     <string name="submit">提交</string>
+    <string name="del">删除</string>
     <string name="luzhi">进入此伴奏进行录制</string>
     <string name="jubao">举报</string>
 
     <string name="progress_dialog">温馨提示</string>
+    <string name="dialog_title">操作提示</string>
     <string name="please_wait">正在处理中，请稍候…</string>
     <string name="please_wait_down">正在下载中，请稍候…</string>
 

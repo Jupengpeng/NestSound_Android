@@ -10,5 +10,6 @@ import com.xilu.wybz.view.pull.BaseListAdapter;
 public interface ILayoutManager {
     RecyclerView.LayoutManager getLayoutManager();
     int findLastVisiblePosition();
+    int findFirstVisiblePosition();
     void setUpAdapter(BaseListAdapter adapter);
 }

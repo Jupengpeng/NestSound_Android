@@ -22,7 +22,7 @@ import com.xilu.wybz.R;
 import com.xilu.wybz.adapter.RecordImageAdapter;
 import com.xilu.wybz.bean.PhotoBean;
 import com.xilu.wybz.bean.WorksData;
-import com.xilu.wybz.common.DownLoaderDir;
+import com.xilu.wybz.common.FileDir;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.common.NewPlayInstance;
@@ -32,7 +32,6 @@ import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.utils.DateTimeUtil;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.FileUtils;
-import com.xilu.wybz.utils.ImageUploader;
 import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.utils.UploadFileUtil;
@@ -249,10 +248,10 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
                         if (!FileUtils.isSdcardExit()) {
                             showMsg("没有SD卡，无法存储录音数据");
                         }
-                        if(!new File(DownLoaderDir.inspireMp3Dir).exists()){
-                            new File(DownLoaderDir.inspireMp3Dir).mkdirs();
+                        if(!new File(FileDir.inspireMp3Dir).exists()){
+                            new File(FileDir.inspireMp3Dir).mkdirs();
                         }
-                        recordPath = DownLoaderDir.inspireMp3Dir+System.currentTimeMillis()+".mp3";
+                        recordPath = FileDir.inspireMp3Dir+System.currentTimeMillis()+".mp3";
                         mp3Recorder = new MP3Recorder(new File(recordPath));
                         try {
                             mp3Recorder.start();
@@ -452,6 +451,8 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
     public void pubSuccess() {
         cancelPd();
         showMsg("发布成功！");
+        worksData.createdate=System.currentTimeMillis();
+        EventBus.getDefault().post(new Event.UpdataWorksList(worksData,0,0,0));
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

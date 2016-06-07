@@ -1,9 +1,12 @@
 package com.xilu.wybz.presenter;
 
 import android.content.Context;
+
+import com.xilu.wybz.bean.DataBean;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.callback.MyStringCallback;
 import com.xilu.wybz.ui.IView.IPlayView;
+import com.xilu.wybz.utils.ParseUtils;
 import com.xilu.wybz.utils.PrefsUtil;
 
 import java.util.HashMap;
@@ -22,34 +25,40 @@ public class PlayPresenter extends BasePresenter<IPlayView> {
 
     public void setCollectionState(int music_id, int target_uid) {
         params = new HashMap<>();
-        params.put("uid",PrefsUtil.getUserId(context)+"");;
+        params.put("user_id",PrefsUtil.getUserId(context)+"");;
         params.put("work_id", music_id+"");
         params.put("target_uid", target_uid+"");
         params.put("wtype", "1");
-        httpUtils.get(MyHttpClient.getWorkFovUrl(), params, new MyStringCallback() {
+        httpUtils.post(MyHttpClient.getWorkFovUrl(), params, new MyStringCallback() {
             @Override
             public void onResponse(String response) {
-                iView.collectionMusicSuccess(response);
+                DataBean dataBean = ParseUtils.getDataBean(context,response);
+                if(dataBean!=null&&dataBean.code==200)
+                    iView.collectionMusicSuccess();
+                else
+                    iView.collectionMusicFail();
             }
 
             @Override
             public void onError(Call call, Exception e) {
-                iView.collectionMusicFail(e.getMessage());
+                iView.collectionMusicFail();
             }
         });
     }
-
     public void setZambiaState(int music_id, int target_uid) {
         params = new HashMap<>();
-        params.put("uid",PrefsUtil.getUserId(context)+"");;
+        params.put("user_id",PrefsUtil.getUserId(context)+"");;
         params.put("work_id", music_id+"");
         params.put("target_uid", target_uid+"");
         params.put("wtype", "1");
         httpUtils.post(MyHttpClient.getUpvoteUrl(), params, new MyStringCallback() {
             public void onResponse(String response) {
-                iView.zambiaMusicSuccess(response);
+                DataBean dataBean = ParseUtils.getDataBean(context,response);
+                if(dataBean!=null&&dataBean.code==200)
+                    iView.zambiaMusicSuccess();
+                else
+                    iView.zambiaMusicFail();
             }
-
             @Override
             public void onError(Call call, Exception e) {
                 iView.zambiaMusicFail();

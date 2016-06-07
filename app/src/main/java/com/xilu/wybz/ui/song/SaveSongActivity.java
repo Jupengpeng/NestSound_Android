@@ -20,7 +20,7 @@ import android.widget.ImageView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.WorksData;
-import com.xilu.wybz.common.DownLoaderDir;
+import com.xilu.wybz.common.FileDir;
 import com.xilu.wybz.common.MediaInstance;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.common.interfaces.IMediaPlayerListener;
@@ -309,7 +309,7 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView ,
                 //获取图片的旋转角度
                 int degree = ImageUtils.readPictureDegree(picture.getAbsolutePath());
                 if (degree > 0) {//大于0的时候需要调整角度
-                    String imagePath = DownLoaderDir.coverPic + System.currentTimeMillis() + ".jpg";
+                    String imagePath = FileDir.coverPic + System.currentTimeMillis() + ".jpg";
                     Bitmap cameraBitmap = BitmapFactory.decodeFile(coverPath, bitmapOptions);
                     Bitmap bitmap = ImageUtils.rotaingImageView(degree, cameraBitmap);
                     ImageUtils.saveBitmap(bitmap, imagePath);

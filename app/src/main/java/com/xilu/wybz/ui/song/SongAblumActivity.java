@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -14,33 +13,25 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.commit451.nativestackblur.NativeStackBlur;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.xilu.wybz.R;
 import com.xilu.wybz.adapter.SongListAdapter;
 import com.xilu.wybz.bean.GleeDetailBean;
 import com.xilu.wybz.bean.SongAlbum;
 import com.xilu.wybz.bean.WorksData;
-import com.xilu.wybz.common.DownLoaderDir;
+import com.xilu.wybz.common.FileDir;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.common.YinChaoConfig;
-import com.xilu.wybz.common.ZnImageLoader;
 import com.xilu.wybz.http.HttpUtils;
 import com.xilu.wybz.http.callback.BitmapCallback;
 import com.xilu.wybz.presenter.SongAlbumPresenter;
 import com.xilu.wybz.ui.IView.IRecSongView;
 import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.ui.base.ToolbarActivity;
-import com.xilu.wybz.ui.lyrics.LyricsdisplayActivity;
-import com.xilu.wybz.ui.main.SongablumMoreActivity;
 import com.xilu.wybz.utils.BitmapUtils;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.FileUtils;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.view.YcScrollView;
-
-import org.w3c.dom.Text;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -150,10 +141,10 @@ public class SongAblumActivity extends ToolbarActivity implements IRecSongView {
     }
     private void loadPic(){
         String url = songAlbum.getPic();
-        File file = new File(DownLoaderDir.cacheDir);
+        File file = new File(FileDir.cacheDir);
         if(!file.exists())file.mkdirs();
 
-        String path = DownLoaderDir.cacheDir+"music_blur"+songAlbum.id+".png";
+        String path = FileDir.cacheDir+"music_blur"+songAlbum.id+".png";
         if(new File(path).exists()){//加载本地
             ivToolbarBg.setImageBitmap(BitmapUtils.getSDCardImg(path));
             ivTopBg.setImageBitmap(BitmapUtils.getSDCardImg(path));

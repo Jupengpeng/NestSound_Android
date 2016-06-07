@@ -11,14 +11,13 @@ import java.util.List;
  * Created by Administrator on 2016/3/4.
  */
 public class Event {
-    public static class DelFocusEvent {
-    }
-    public static class UpdataUserBean{
+    public static class UpdataUserBean {
         UserBean userBean;
         int type;
-        public UpdataUserBean(UserBean userBean,int type){
-            this.type=type;
-            this.userBean=userBean;
+
+        public UpdataUserBean(UserBean userBean, int type) {
+            this.type = type;
+            this.userBean = userBean;
         }
 
         public int getType() {
@@ -33,6 +32,41 @@ public class Event {
             return userBean;
         }
     }
+
+    public static class UpdataWorksList {
+        WorksData worksData;
+        int type;//0 灵感记录 1我的歌曲 2我的歌词 3我的收藏
+        int position;
+        int change;//0 加 1减
+
+        public int getChange() {
+            return change;
+        }
+
+        public int getPosition() {
+            return position;
+        }
+
+        public UpdataWorksList(WorksData worksData, int type, int change, int position) {
+            this.type = type;
+            this.change = change;
+            this.position = position;
+            this.worksData = worksData;
+        }
+
+        public int getType() {
+            return type;
+        }
+
+        public void setType(int type) {
+            this.type = type;
+        }
+
+        public WorksData getWorksData() {
+            return worksData;
+        }
+    }
+
     public static class UpdataCommentNumEvent {
         int type;
         int num;
@@ -54,9 +88,6 @@ public class Event {
             return num;
         }
 
-        public void setNum(int num) {
-            this.num = num;
-        }
     }
 
     public static class ShowSearchTabEvent {
@@ -85,9 +116,6 @@ public class Event {
             return pics;
         }
 
-        public void setPics(List<PhotoBean> pics) {
-            this.pics = pics;
-        }
     }
 
     public static class ImportWordEvent {
@@ -106,9 +134,6 @@ public class Event {
         }
     }
 
-    public static class PublishSuccessEvent {
-    }
-
     public static class SaveLyricsSuccessEvent {
         int which;
         WorksData worksData;
@@ -120,10 +145,6 @@ public class Event {
 
         public WorksData getLyricsdisplayBean() {
             return worksData;
-        }
-
-        public void setLyricsdisplayBean(WorksData worksData) {
-            this.worksData = worksData;
         }
 
         public int getWhich() {
@@ -158,70 +179,6 @@ public class Event {
         }
     }
 
-    public static class PlayMusicEvent {
-        int pos;
-        String from;
-
-        public PlayMusicEvent(int pos, String from) {
-            this.pos = pos;
-            this.from = from;
-        }
-
-        public int getPos() {
-            return pos;
-        }
-
-        public void setPos(int pos) {
-            this.pos = pos;
-        }
-
-        public String getFrom() {
-            return from;
-        }
-
-        public void setFrom(String from) {
-            this.from = from;
-        }
-    }
-
-    public static class ReplyComment {
-        String id;
-
-        public ReplyComment(String mId) {
-            id = mId;
-        }
-
-        public String getId() {
-            return id;
-        }
-    }
-
-    public static class ChangeLeftEvent {
-    }
-
-    public static class HideMsgEvent {
-        int type;
-
-        public HideMsgEvent(int mType) {
-            type = mType;
-        }
-
-        public int getType() {
-            return type;
-        }
-    }
-
-    public static class ChangeFocusNumEvent {
-        int type;
-
-        public ChangeFocusNumEvent(int mType) {
-            type = mType;
-        }
-
-        public int getType() {
-            return type;
-        }
-    }
 
     public static class LoginSuccessEvent {
         UserBean userBean;
@@ -236,26 +193,28 @@ public class Event {
     }
 
     public static class LoginOutEvent {
+
     }
 
-    public static class HideMsgNumEvent {
-    }
+    public static class UpdateFollowNumEvent {
+        /*
+        * type 0加 1减
+        *  from 0 关注 1粉丝
+         */
+        int type;
+        int from;
 
-    public static class DelPosEvent {
-        HashSet<Integer> ids;
-        HashSet<Integer> postions;
-
-        public DelPosEvent(HashSet<Integer> mIds, HashSet<Integer> mPositions) {
-            ids = mIds;
-            postions = mPositions;
+        public UpdateFollowNumEvent(int type, int from) {
+            this.type = type;
+            this.from = from;
         }
 
-        public HashSet<Integer> getIds() {
-            return ids;
+        public int getType() {
+            return type;
         }
 
-        public HashSet<Integer> getPositions() {
-            return postions;
+        public int getFrom() {
+            return from;
         }
     }
 }
