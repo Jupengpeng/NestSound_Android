@@ -1,11 +1,7 @@
 package com.xilu.wybz.ui.fragment;
 
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -153,6 +149,7 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
         recycler.enableLoadMore(true);
         mDataList.addAll(worksDataList);
         adapter.notifyDataSetChanged();
+        recycler.setAdapter(adapter);
         recycler.onRefreshCompleted();
     }
 
@@ -207,6 +204,11 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
         deletePos = pos;
         WorksData worksData = mDataList.get(pos);
         userPresenter.unfav(worksData.itemid, worksData.uid, worksData.status);
+    public void deleteWorksData(int pos){
+        mDataList.remove(pos);
+        adapter.notifyItemRemoved(pos);
+//        adapter.notifyDataSetChanged();
+        recycler.getRecyclerView().requestLayout();
     }
 
     public void removeData(WorksData worksData) {

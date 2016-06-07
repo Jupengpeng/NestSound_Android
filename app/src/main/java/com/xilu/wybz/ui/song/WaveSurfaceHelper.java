@@ -227,9 +227,9 @@ public class WaveSurfaceHelper {
 
     public int caculateCurrentSize(){
         int size = currentPosition/20;
-//        if (currentPosition%20 >2){
-//            size++;
-//        }
+        if (currentPosition%20 > 1){
+            size++;
+        }
         return size;
     }
 
@@ -268,13 +268,16 @@ public class WaveSurfaceHelper {
         if (x < 0){
             start = -(x/(2*s));
             x += 2*s*start;
+        } else {
+            start = -(x/(2*s));
+            x += 2*s*(start-1);
         }
 
         x -= screenOff;
 
         Rect r;
 
-        r = new Rect(x, y, v.right, y+d);
+        r = new Rect(v.left, y, v.right, y+d);
 
         canvas.drawRect(r,p1);
 
@@ -543,9 +546,16 @@ public class WaveSurfaceHelper {
             }
         }
 
+        notifyChanged();
+
         onDrawWave();
     }
 
+    private void notifyChanged () {
+        if (progressChangedListener != null) {
+            progressChangedListener.onChanged(currentPosition);
+        }
+    }
 
 
     public void setTotalSize(int totalSize) {
@@ -609,4 +619,18 @@ public class WaveSurfaceHelper {
 
     }
 
+    ProgressChangedListener progressChangedListener;
+
+    public interface ProgressChangedListener{
+        void onChanged(int progress);
+    }
+
+
+    public void setProgressChangedListener(ProgressChangedListener progressChangedListener) {
+        this.progressChangedListener = progressChangedListener;
+    }
+
+    public int getCurrentPosition(){
+        return currentPosition;
+    }
 }

@@ -56,7 +56,7 @@ public class AppJsonCalback extends JsonCallback {
      */
     public void onResultError(JsonResponse<? extends Object> response){
         if (response.getCode() == 999){
-            ToastUtils.toast(getContext(),"解码失败");
+            ToastUtils.toast(getContext(),"数据解码失败");
             return;
         }
         if(response.getCode()==53001){

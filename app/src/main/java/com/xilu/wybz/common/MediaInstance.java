@@ -2,6 +2,7 @@ package com.xilu.wybz.common;
 
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.TimedText;
 
 import com.xilu.wybz.common.interfaces.IMediaPlayerListener;
 
@@ -153,6 +154,19 @@ public class MediaInstance {
                         iml.onError();
                     }
                     return false;
+                }
+            });
+            mediaPlayer.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
+                @Override
+                public void onBufferingUpdate(MediaPlayer mp, int percent) {
+
+                }
+            });
+
+            mediaPlayer.setOnTimedTextListener(new MediaPlayer.OnTimedTextListener() {
+                @Override
+                public void onTimedText(MediaPlayer mp, TimedText text) {
+
                 }
             });
             try {
