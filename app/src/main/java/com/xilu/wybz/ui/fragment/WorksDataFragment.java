@@ -149,7 +149,8 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
     }
     public void deleteWorksData(int pos){
         mDataList.remove(pos);
-        adapter.notifyDataSetChanged();
+        adapter.notifyItemRemoved(pos);
+//        adapter.notifyDataSetChanged();
         recycler.getRecyclerView().requestLayout();
     }
     @Override
