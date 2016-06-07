@@ -15,8 +15,12 @@ public class DateFormatUtils {
 
 
     public static String formatTime(int time){
-        if (time <= 0){
+        if (time == 0){
             return String.format("00.00");
+        }
+        if (time <= 0){
+            time = -time;
+            return String.format("-%02d:%02d",(time/60)%60,time%60);
         }
 
         return String.format("%02d:%02d",(time/60)%60,time%60);

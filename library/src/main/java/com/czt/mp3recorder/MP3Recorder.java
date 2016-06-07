@@ -156,7 +156,7 @@ public class MP3Recorder {
                     if (readSize > 0) {
                         dataEncodeThread.addTask(cachePCMBuffer, readSize);
                     }
-                    if (index < 5) {
+                    if (index < 4) {
                         index++;
                         continue;
                     }
@@ -199,7 +199,7 @@ public class MP3Recorder {
         try {
             mAudioRecord.stop();
         }catch (Exception e){
-            e.printStackTrace();
+
         }
         isRecording = false;
     }

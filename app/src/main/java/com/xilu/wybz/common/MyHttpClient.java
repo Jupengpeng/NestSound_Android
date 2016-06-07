@@ -116,7 +116,7 @@ public class MyHttpClient {
     public static String getMsgSystemList(){return  "message/sysNoteList";}
     //发布歌词
     public static String getSaveLyricsUrl(){return  "lyricsopt/optLyrics";}
-    //合成歌曲
+    //上传歌曲
     public static String getuploadmp3Url(){return  BASE_URL+"common/uploadcallback/uploadmp3";}
     //合成歌曲
     public static String getTuningSongUrl(){return  "musiopt/tuningMusic";}
