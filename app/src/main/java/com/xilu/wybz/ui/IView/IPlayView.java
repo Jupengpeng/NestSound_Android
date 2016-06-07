@@ -12,13 +12,13 @@ public interface IPlayView extends IBaseView {
 
     void collectionMusic();
 
-    void collectionMusicSuccess(String result);
+    void collectionMusicSuccess();
 
-    void collectionMusicFail(String msg);
+    void collectionMusicFail();
 
     void zambiaMusic();
 
-    void zambiaMusicSuccess(String result);
+    void zambiaMusicSuccess();
 
     void zambiaMusicFail();
 

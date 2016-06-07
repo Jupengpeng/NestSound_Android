@@ -136,11 +136,13 @@ public class LoginActivity extends BaseActivity implements ILoginView,TextWatche
 
     @Override
     public void loginStart() {
+        showPd("正在登陆中...");
         mloginLogin.setEnabled(false);
     }
 
     @Override
     public void loginSuccess(UserBean ub) {
+        showMsg("登陆成功！");
         EventBus.getDefault().post(new Event.LoginSuccessEvent(ub));
     }
 
@@ -152,5 +154,6 @@ public class LoginActivity extends BaseActivity implements ILoginView,TextWatche
     @Override
     public void loginFinish() {
         mloginLogin.setEnabled(true);
+
     }
 }

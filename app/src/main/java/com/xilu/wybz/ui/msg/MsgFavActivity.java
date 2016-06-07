@@ -128,7 +128,7 @@ public class MsgFavActivity extends BaseListActivity<CollectionBean> implements 
                     PlayAudioActivity.toPlayAudioActivity(context, collectionBean.workid, "", MyCommon.MSG_COMMENT, 0);
             }else{
                 if(collectionBean.workid>0)
-                    LyricsdisplayActivity.toLyricsdisplayActivity(context, collectionBean.workid, 0, collectionBean.title);
+                    LyricsdisplayActivity.toLyricsdisplayActivity(context, collectionBean.workid, 0, collectionBean.title,0);
             }
         }
         public SampleViewHolder(View itemView) {

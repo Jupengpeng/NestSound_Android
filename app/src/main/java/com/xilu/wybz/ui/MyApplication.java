@@ -15,14 +15,18 @@ import com.qiniu.android.storage.UploadManager;
 import com.umeng.message.PushAgent;
 import com.umeng.socialize.PlatformConfig;
 import com.xilu.wybz.common.MyCommon;
+import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.utils.PhoneInfoUtil;
 import com.xilu.wybz.utils.PrefsUtil;
+import com.xilu.wybz.utils.StringUtil;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by June on 2016/3/1.
@@ -34,6 +38,7 @@ public class MyApplication extends Application {
     public static String from;
     public static String id;
     public static List<Integer> ids;
+    public static Map<Integer,Integer> posMap;
     public static boolean isPlay;
     public static UploadManager uploadManager;
     public int userid;
@@ -70,10 +75,15 @@ public class MyApplication extends Application {
         super.onCreate();
         context = this;
         ids = new ArrayList<>();
+        posMap = new HashMap<>();
         //检查版本
         if(PrefsUtil.getInt("versionCode",context)==0){
             PrefsUtil.clearData(context);
             PrefsUtil.putInt("versionCode", PhoneInfoUtil.getVersionCode(context),context);
+        }
+        String url= PrefsUtil.getString("domain", this);
+        if(StringUtil.isNotBlank(url)){
+            MyHttpClient.ROOT_URL = url;
         }
         userid = PrefsUtil.getUserId(context);
         isLogin = userid>0;

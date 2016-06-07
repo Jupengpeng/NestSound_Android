@@ -1,16 +1,9 @@
 package com.xilu.wybz.bean;
 
-import com.litesuits.orm.db.annotation.Column;
-import com.litesuits.orm.db.annotation.Mapping;
-import com.litesuits.orm.db.annotation.PrimaryKey;
-import com.litesuits.orm.db.annotation.Table;
-import com.litesuits.orm.db.enums.AssignType;
-import com.litesuits.orm.db.enums.Relation;
-import com.xilu.wybz.utils.DateTimeUtil;
-import com.xilu.wybz.utils.StringUtil;
 
+import com.xilu.wybz.common.MyHttpClient;
+import com.xilu.wybz.utils.StringUtil;
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * Created by June on 16/5/3.
@@ -138,6 +131,9 @@ public class WorksData implements Serializable {
     }
 
     public String getPic() {
+        if(StringUtil.isNotBlank(pic)&&!pic.startsWith("http")){
+            pic = MyHttpClient.QINIU_URL+pic;
+        }
         return pic;
     }
 

@@ -35,10 +35,12 @@ public class MsgZambiaActivity extends BaseListActivity<ZambiaBean> implements I
     String nodata = "暂无点赞";
     int nodatares = R.drawable.ic_nozan;
     private MsgZanPresenter zanPresenter;
+
     @Override
     public boolean hasPadding() {
         return false;
     }
+
     @Override
     protected void initPresenter() {
         zanPresenter = new MsgZanPresenter(this, this);
@@ -118,17 +120,19 @@ public class MsgZambiaActivity extends BaseListActivity<ZambiaBean> implements I
         TextView tvAuthor;
         @Bind(R.id.tv_music_name)
         TextView tvMusicName;
+
         @OnClick(R.id.ll_works)
-        void toWorks(){
-            ZambiaBean zambiaBean = (ZambiaBean)itemView.getTag();
-            if(zambiaBean.type==1){
-                if(zambiaBean.workid>0)
+        void toWorks() {
+            ZambiaBean zambiaBean = (ZambiaBean) itemView.getTag();
+            if (zambiaBean.type == 1) {
+                if (zambiaBean.workid > 0)
                     PlayAudioActivity.toPlayAudioActivity(context, zambiaBean.workid, "", MyCommon.MSG_COMMENT, 0);
-            }else{
-                if(zambiaBean.workid>0)
-                    LyricsdisplayActivity.toLyricsdisplayActivity(context, zambiaBean.workid, 0, zambiaBean.title);
+            } else {
+                if (zambiaBean.workid > 0)
+                    LyricsdisplayActivity.toLyricsdisplayActivity(context, zambiaBean.workid, 0, zambiaBean.title, 0);
             }
         }
+
         public SampleViewHolder(View itemView) {
             super(itemView);
         }
@@ -139,7 +143,7 @@ public class MsgZambiaActivity extends BaseListActivity<ZambiaBean> implements I
             tvTime.setText(DateTimeUtil.timestamp2DateTime(zanbiaBean.add_time));
             tvUserName.setText(zanbiaBean.nickname);
             tvAuthor.setText(zanbiaBean.author);
-            if(StringUtil.isEmpty(zanbiaBean.title))zanbiaBean.title="未命名";
+            if (StringUtil.isEmpty(zanbiaBean.title)) zanbiaBean.title = "未命名";
             tvMusicName.setText(zanbiaBean.title);
             loadImage(zanbiaBean.pic, ivCover);
             String headUrl = zanbiaBean.headerurl;

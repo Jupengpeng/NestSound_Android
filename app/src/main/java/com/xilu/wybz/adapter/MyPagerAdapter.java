@@ -34,6 +34,11 @@ public class MyPagerAdapter extends PagerAdapter {
     }
 
     @Override
+    public int getItemPosition(Object object) {
+        return POSITION_NONE;
+    }
+
+    @Override
     public int getCount() {
         return list.size();
     }
@@ -57,5 +62,6 @@ public class MyPagerAdapter extends PagerAdapter {
 
     @Override
     public void startUpdate(View arg0) {
+
     }
 }

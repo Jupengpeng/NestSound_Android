@@ -3,7 +3,7 @@ package com.xilu.wybz.common;
  * Created by June on 2016/5/4.
  */
 public class MyHttpClient {
-    public static final String ROOT_URL = "http://112.124.125.2/";
+    public static String ROOT_URL = "http://112.124.125.2/";
 //    public static final String ROOT_URL = "http://192.168.0.123:8080/";
     public static String QINIU_URL = "http://7xru8x.com2.z0.glb.qiniucdn.com/";
     public static final String BASE_URL = ROOT_URL+"java/";
@@ -136,6 +136,10 @@ public class MyHttpClient {
     //粉丝列表
     public static String getFansList(){
         return "fanfocus/fanslist";
+    }
+    //他人粉丝列表
+    public static String getOtherFansList(){
+        return "fanfocus/otherfanslist";
     }
     //搜索接口
     public static String getSearchList(){

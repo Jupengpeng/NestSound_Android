@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by Zning on 2015/8/31.
+ * Created by June on 2015/8/31.
  */
 public class MyCommon {
     public static int requestCode_photo = 200;
@@ -76,9 +76,8 @@ public class MyCommon {
         map.put(RED, 2);//发现最热
         map.put(MUSICTALK, 2);//乐说
 
-        map.put("mywork", 3);//我的作品
-        map.put("myfov", 3);//我的收藏
-        map.put("myzan", 3);//我的收藏
+        map.put("mywork", 2);//我的作品
+        map.put("myfav", 2);//我的收藏
 
         return map.get(from) == null ? 1 : map.get(from);
     }

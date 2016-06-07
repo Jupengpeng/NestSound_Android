@@ -97,6 +97,11 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
         initData();
     }
 
+    @Override
+    public boolean hasPadding() {
+        return false;
+    }
+
     public void initData() {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {

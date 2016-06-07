@@ -39,7 +39,7 @@ import com.xilu.wybz.bean.ActionBean;
 import com.xilu.wybz.bean.ShareBean;
 import com.xilu.wybz.bean.TemplateBean;
 import com.xilu.wybz.bean.WorksData;
-import com.xilu.wybz.common.DownLoaderDir;
+import com.xilu.wybz.common.FileDir;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.common.PlayMediaInstance;
@@ -49,6 +49,7 @@ import com.xilu.wybz.presenter.PlayPresenter;
 import com.xilu.wybz.service.PlayService;
 import com.xilu.wybz.ui.ExitApplication;
 import com.xilu.wybz.ui.IView.IPlayView;
+import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.ui.mine.UserInfoActivity;
 import com.xilu.wybz.ui.setting.SettingFeedActivity;
@@ -56,7 +57,6 @@ import com.xilu.wybz.utils.BitmapUtils;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.FileUtils;
 import com.xilu.wybz.utils.FormatHelper;
-import com.xilu.wybz.utils.ParseUtils;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.view.dialog.ActionMoreDialog;
@@ -349,10 +349,10 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     }
 
     public void loadPic(String imageUrl) {
-        File file = new File(DownLoaderDir.cacheDir);
+        File file = new File(FileDir.cacheDir);
         if(!file.exists())file.mkdirs();
 
-        String path = DownLoaderDir.cacheDir+"music_blur"+worksData.itemid+".png";
+        String path = FileDir.cacheDir+"music_blur"+worksData.itemid+".png";
         if(new File(path).exists()){//加载本地
             blurImageView.setImageBitmap(BitmapUtils.getSDCardImg(path));
         }else{//下载并保存到本地
@@ -523,25 +523,23 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     @Override
     public void collectionMusic() {
         rlFav.setEnabled(false);
-        playPresenter.setCollectionState(id, is_fov);
+        playPresenter.setCollectionState(worksData.itemid, worksData.uid);
     }
 
     @Override
-    public void collectionMusicSuccess(String result) {
+    public void collectionMusicSuccess() {
         rlFav.setEnabled(true);
-        if (ParseUtils.checkCode(result)) {
-            is_fov = 1 - is_fov;
-            if (is_fov == 1) showMsg("收藏成功！");
-            tvFav.setChecked(is_fov == 1);
-            tvFav.startAnimation(AnimationUtils.loadAnimation(context, R.anim.dianzan_anim));
-            worksData.setIscollect(is_fov);
-            worksData.setFovnum(is_fov == 1 ? worksData.getFovnum() + 1 : worksData.getFovnum() - 1);
-            PrefsUtil.putString("playdata" + id, new Gson().toJson(worksData), context);
-        }
+        is_fov = 1 - is_fov;
+        if (is_fov == 1) showMsg("收藏成功！");
+        tvFav.setChecked(is_fov == 1);
+        tvFav.startAnimation(AnimationUtils.loadAnimation(context, R.anim.dianzan_anim));
+        worksData.setIscollect(is_fov);
+        worksData.setFovnum(is_fov == 1 ? worksData.getFovnum() + 1 : worksData.getFovnum() - 1);
+        PrefsUtil.putString("playdata" + id, new Gson().toJson(worksData), context);
     }
 
     @Override
-    public void collectionMusicFail(String msg) {
+    public void collectionMusicFail() {
         rlFav.setEnabled(true);
     }
 
@@ -552,17 +550,15 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     }
 
     @Override
-    public void zambiaMusicSuccess(String result) {
+    public void zambiaMusicSuccess() {
         rlZan.setEnabled(true);
-        if (ParseUtils.checkCode(result)) {
-            is_zan = 1 - is_zan;
-            if (is_zan == 1) showMsg("点赞成功！");
-            tvZan.setChecked(is_zan == 1);
-            tvZan.startAnimation(AnimationUtils.loadAnimation(context, R.anim.dianzan_anim));
-            worksData.setIsZan(is_zan);
-            worksData.setZannum(is_zan == 1 ? worksData.getZannum() + 1 : worksData.getZannum() - 1);
-            saveMusicBean();
-        }
+        is_zan = 1 - is_zan;
+        if (is_zan == 1) showMsg("点赞成功！");
+        tvZan.setChecked(is_zan == 1);
+        tvZan.startAnimation(AnimationUtils.loadAnimation(context, R.anim.dianzan_anim));
+        worksData.setIsZan(is_zan);
+        worksData.setZannum(is_zan == 1 ? worksData.getZannum() + 1 : worksData.getZannum() - 1);
+        saveMusicBean();
     }
     @Override
     public void zambiaMusicFail() {
@@ -639,6 +635,9 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     protected void onDestroy() {
         super.onDestroy();
         closeTimer();
+        if(worksData!=null&&worksData.itemid>0&&from.equals("myfav")&&worksData.iscollect==0){//在我的收藏页面进来 取消了收藏
+            EventBus.getDefault().post(new Event.UpdataWorksList(worksData,3,1, MyApplication.posMap.get(worksData.itemid)));
+        }
         unbindService(serviceConnection);
         EventBus.getDefault().unregister(this);
     }

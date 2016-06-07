@@ -8,10 +8,14 @@ import java.util.List;
 /**
  * Created by Administrator on 2016/5/24.
  */
-public interface IFollowAndFansView extends IBaseView{
+public interface IFollowAndFansView extends IBaseView {
     void showFansData(List<FansBean> fansBeanList);
 
     void loadFail();
+
+    void followFail();
+
+    void followSuccess();
 
     void loadNoMore();
 

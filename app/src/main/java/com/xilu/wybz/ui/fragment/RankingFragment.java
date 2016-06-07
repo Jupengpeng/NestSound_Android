@@ -87,7 +87,7 @@ public class RankingFragment extends BaseFragment implements IRankingView {
         rankingLyricsAdapter.setOnItemClickListener(new RankingAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                LyricsdisplayActivity.toLyricsdisplayActivity(context,lyricsDatas.get(position).itemid,0,lyricsDatas.get(position).title);
+                LyricsdisplayActivity.toLyricsdisplayActivity(context,lyricsDatas.get(position).itemid,0,lyricsDatas.get(position).title,position);
             }
 
         });

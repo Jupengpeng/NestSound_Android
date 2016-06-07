@@ -5,15 +5,16 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
-import com.loopj.android.http.TextHttpResponseHandler;
-import com.xilu.wybz.common.DownLoaderDir;
+
+import com.xilu.wybz.common.FileDir;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.HttpUtils;
 import com.xilu.wybz.http.callback.FileCallBack;
-import com.xilu.wybz.http.callback.MyStringCallback;
 import com.xilu.wybz.http.callback.StringCallback;
 import com.xilu.wybz.utils.MD5Util;
 import com.xilu.wybz.utils.PrefsUtil;
+import com.xilu.wybz.utils.StringUtil;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -45,24 +46,25 @@ public class GetDomainService extends Service {
                 try {
                     String api_domain = new JSONObject(response).getString("api_domain");
                     String page_start_pic = new JSONObject(response).getString("page_start_pic");
-                    PrefsUtil.putString("domain", api_domain, GetDomainService.this);
+                    if(StringUtil.isNotBlank(api_domain)) {
+                        PrefsUtil.putString("domain", api_domain, GetDomainService.this);
+                        MyHttpClient.ROOT_URL = api_domain;
+                    }
                     PrefsUtil.putString("applogo", page_start_pic, GetDomainService.this);
-                    if (!new File(DownLoaderDir.logoDir).exists())
-                        new File(DownLoaderDir.logoDir).mkdirs();
+                    if (!new File(FileDir.logoDir).exists())
+                        new File(FileDir.logoDir).mkdirs();
                     String fileName = MD5Util.getMD5String(page_start_pic) + ".png";
-                    String filePath = DownLoaderDir.logoDir + fileName;
+                    String filePath = FileDir.logoDir + fileName;
                     if (!new File(filePath).exists()) {
-                        httpUtil.getFile(page_start_pic, new FileCallBack(DownLoaderDir.logoDir, fileName) {
+                        httpUtil.getFile(page_start_pic, new FileCallBack(FileDir.logoDir, fileName) {
                             @Override
                             public void inProgress(float progress, long total) {
 
                             }
-
                             @Override
                             public void onError(Call call, Exception e) {
 
                             }
-
                             @Override
                             public void onResponse(File response) {
                                 Log.e("LogoFile", response.toString());

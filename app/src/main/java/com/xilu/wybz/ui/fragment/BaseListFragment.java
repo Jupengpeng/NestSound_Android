@@ -105,7 +105,19 @@ public abstract class BaseListFragment<T> extends BaseFragment implements PullRe
     protected RecyclerView.ItemDecoration getItemDecoration() {
         return new DividerItemDecoration(getActivity().getApplicationContext(), R.drawable.transparent);
     }
-
+    public void removeItem(int position){
+        mDataList.remove(position);
+        adapter.notifyItemRemoved(position);
+        if(position != mDataList.size()){
+            adapter.notifyItemRangeChanged(position, mDataList.size() - position);
+        }
+    }
+    public void addItem(T t){
+        mDataList.add(0,t);
+        recycler.setSelection(0);
+        adapter.notifyItemInserted(0);
+        adapter.notifyItemRangeChanged(0, mDataList.size());
+    }
     public class ListAdapter extends BaseListAdapter {
         @Override
         protected BaseViewHolder onCreateNormalViewHolder(ViewGroup parent, int viewType) {

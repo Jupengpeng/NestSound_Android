@@ -147,7 +147,7 @@ public class SearchLyricsFragment extends BaseListFragment<WorksData> implements
 
         @Override
         public void onItemClick(View view, int position) {
-            LyricsdisplayActivity.toLyricsdisplayActivity(context,mDataList.get(position).getItemid(),0,mDataList.get(position).name);
+            LyricsdisplayActivity.toLyricsdisplayActivity(context,mDataList.get(position).getItemid(),0,mDataList.get(position).name,position);
         }
     }
 }

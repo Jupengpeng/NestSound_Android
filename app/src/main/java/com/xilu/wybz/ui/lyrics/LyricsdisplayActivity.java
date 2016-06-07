@@ -59,31 +59,34 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
     @Bind(R.id.ly_content)
     TextView ly_content;
     @Bind(R.id.iv_head)
-    SimpleDraweeView iv_head;
+    SimpleDraweeView ivHead;
     @Bind(R.id.tv_author)
-    TextView tv_author;
+    TextView tvAuthor;
     @Bind(R.id.tv_time)
     TextView tvTime;
     @Bind(R.id.tv_comment_num)
     TextView tvCommentNum;
     @Bind(R.id.iv_zan)
-    ImageView iv_zan;
+    ImageView ivZan;
+    @Bind(R.id.iv_fav)
+    ImageView ivFav;
     String title;
     int id;
+    int pos;
     WorksData worksData;
     ShareDialog shareDialog;
-    int isZan;
-    int from;//0 默认 1是我的歌词列表
+    int from;//0 默认 1是我的歌词列表 2我的收藏列表
     List<ActionBean> actionBeanList;
     ActionMoreDialog actionMoreDialog;
     LyricsPresenter lyricsPresenter;
     String[] actionTitles = new String[]{"分享", "举报", "编辑"};
     String[] actionTypes = new String[]{"share", "jubao", "edit"};
 
-    public static void toLyricsdisplayActivity(Context context, int id, int from, String title) {
+    public static void toLyricsdisplayActivity(Context context, int id, int from, String title,int pos) {
         Intent intent = new Intent(context, LyricsdisplayActivity.class);
         intent.putExtra("id", id);
         intent.putExtra("from", from);
+        intent.putExtra("pos", pos);
         intent.putExtra("title", title);
         context.startActivity(intent);
     }
@@ -114,12 +117,13 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
             if (!TextUtils.isEmpty(title))
                 setTitle(title);
             id = bundle.getInt("id");
+            pos = bundle.getInt("pos");
             from = bundle.getInt("from");
             loadData();
         }
         actionBeanList = new ArrayList<>();
         for (int i = 0; i < actionTitles.length; i++) {
-            if (i == 2 && from == 0) {//不是我的歌词列表进来的 不允许编辑
+            if (i == 2 && from != 1) {//不是我的歌词列表进来的 不允许编辑
                 break;
             }
             ActionBean actionBean = new ActionBean();
@@ -128,13 +132,12 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
             actionBeanList.add(actionBean);
         }
     }
-
     @OnClick({R.id.rl_zan, R.id.rl_fav, R.id.iv_nonet, R.id.rl_head, R.id.iv_comment})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.rl_fav:
-                if (!SystemUtils.isLogin(context)) {
-                    return;
+                if (SystemUtils.isLogin(context)) {
+                    lyricsPresenter.setCollectionState(worksData.itemid, worksData.uid);
                 }
                 break;
             case R.id.rl_zan:
@@ -209,25 +212,24 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
     @Override
     public void loadLyrics(WorksData worksData) {
         this.worksData = worksData;
-        isZan = worksData.getIsZan();
-        iv_zan.setImageResource(isZan == 0 ? R.drawable.ic_lyrics_zan1 : R.drawable.ic_lyrics_zan2);
+        ivZan.setImageResource(worksData.getIsZan() == 0 ? R.drawable.ic_lyrics_zan1 : R.drawable.ic_lyrics_zan2);
         loadTitleContent();
-        tv_author.setText(worksData.getAuthor());
+        tvAuthor.setText(worksData.getAuthor());
         tvTime.setText(DateTimeUtil.timestamp2DateTime(worksData.getCreateTime()));
-        loadImage(worksData.getPic(), iv_head);
+        loadImage(worksData.getPic(), ivHead);
     }
 
     @Override
     public void zanStart() {
-        iv_zan.setEnabled(false);
+        ivZan.setEnabled(false);
     }
 
     @Override
     public void zanSuccess() {
-        isZan = 1 - isZan;
-        worksData.setZannum(isZan == 0 ? worksData.getZannum() - 1 : worksData.getZannum() + 1);
-        iv_zan.startAnimation(AnimationUtils.loadAnimation(context, R.anim.dianzan_anim));
-        iv_zan.setImageResource(isZan == 0 ? R.drawable.ic_lyrics_zan1 : R.drawable.ic_lyrics_zan2);
+        worksData.isZan = 1 - worksData.isZan;
+        ivZan.startAnimation(AnimationUtils.loadAnimation(context, R.anim.dianzan_anim));
+        ivZan.setImageResource(worksData.isZan == 0 ? R.drawable.ic_lyrics_zan1 : R.drawable.ic_lyrics_zan2);
+        showMsg("点赞成功");
     }
 
     @Override
@@ -237,7 +239,7 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
 
     @Override
     public void zanFinish() {
-        iv_zan.setClickable(true);
+        ivZan.setClickable(true);
     }
 
     @Override
@@ -247,6 +249,9 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
 
     @Override
     public void favSuccess() {
+        worksData.iscollect = 1-worksData.iscollect;
+        ivFav.startAnimation(AnimationUtils.loadAnimation(context, R.anim.dianzan_anim));
+        ivFav.setImageResource(worksData.iscollect == 0 ? R.drawable.ic_lyrics_fav1 : R.drawable.ic_lyrics_fav2);
         showMsg("收藏成功");
     }
 
@@ -292,6 +297,9 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        if(worksData!=null&&worksData.itemid>0&&from==2&&worksData.iscollect==0){//在我的收藏页面进来 取消了收藏
+            EventBus.getDefault().post(new Event.UpdataWorksList(worksData,3,1,pos));
+        }
     }
 
     @Override
@@ -314,12 +322,14 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
                 }
             }
         } else if (actionBean.getType().equals("edit")) {
-
+            MakeWordActivity.toMakeWordActivity(context,worksData);
         } else if (actionBean.getType().equals("jubao")) {
             intent = new Intent(context, SettingFeedActivity.class);
             intent.putExtra("type", 1);
             startActivity(intent);
         }
+        if(actionMoreDialog!=null)
+        actionMoreDialog.dismiss();
     }
 
     public void toCommentActivity() {

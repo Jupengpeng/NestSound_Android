@@ -3,19 +3,12 @@ package com.xilu.wybz.utils;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.xilu.wybz.common.DownLoaderDir;
 import com.xilu.wybz.common.MyCommon;
-import com.xilu.wybz.common.MyHttpClient;
 
-import net.bither.util.NativeUtil;
-
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Created by hujunwei on 16/4/7.
@@ -40,10 +33,10 @@ public class UploadMorePicUtil {
             imageUrls.add("");
             String imgPath = pics.get(i);
 //            double size = FileUtils.getFileOrFilesSize(imgPath, 2);
-//            if(!new File(DownLoaderDir.inspirePicDir).exists()) {
-//                new File(DownLoaderDir.inspirePicDir).mkdirs();
+//            if(!new File(FileDir.inspirePicDir).exists()) {
+//                new File(FileDir.inspirePicDir).mkdirs();
 //            }
-//            String newPath = DownLoaderDir.inspirePicDir + UUID.randomUUID() + ".jpg";
+//            String newPath = FileDir.inspirePicDir + UUID.randomUUID() + ".jpg";
 //            if (size > 300) {
 //                NativeUtil.CompressionPic(imgPath, newPath, new NativeUtil.CompressPicInterface() {
 //                    @Override

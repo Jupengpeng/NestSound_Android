@@ -38,6 +38,11 @@ public class MyGridLayoutManager extends GridLayoutManager implements ILayoutMan
     }
 
     @Override
+    public int findFirstVisiblePosition() {
+        return findFirstVisibleItemPosition();
+    }
+
+    @Override
     public void setUpAdapter(BaseListAdapter adapter) {
         FooterSpanSizeLookup lookup = new FooterSpanSizeLookup(adapter, getSpanCount());
         setSpanSizeLookup(lookup);

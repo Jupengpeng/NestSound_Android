@@ -1,14 +1,14 @@
 package com.xilu.wybz.dao;
 
 import android.content.Context;
-import android.util.Log;
+
 import com.litesuits.orm.LiteOrm;
 import com.litesuits.orm.db.DataBaseConfig;
 import com.litesuits.orm.db.assit.QueryBuilder;
 import com.litesuits.orm.db.assit.WhereBuilder;
 import com.litesuits.orm.db.model.ConflictAlgorithm;
 import com.xilu.wybz.bean.WorksData;
-import com.xilu.wybz.common.DownLoaderDir;
+import com.xilu.wybz.common.FileDir;
 
 import java.util.List;
 /**
@@ -18,7 +18,7 @@ public class DBManager {
     public static LiteOrm liteOrm;
     public static void createDb(Context context,Object userId){
         if(liteOrm==null){
-            String DB_NAME = DownLoaderDir.rootDir + "/data/works_"+userId.toString()+".db";
+            String DB_NAME = FileDir.rootDir + "/data/works_"+userId.toString()+".db";
             DataBaseConfig config = new DataBaseConfig(context, DB_NAME);
             config.debugged = true; // open the log
             config.dbVersion = 1; // set database version

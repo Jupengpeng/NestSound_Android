@@ -17,7 +17,6 @@ import com.xilu.wybz.ui.IView.IUserView;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.view.SpacesItemDecoration;
 import com.xilu.wybz.view.pull.BaseViewHolder;
-import com.xilu.wybz.view.pull.DividerItemDecoration;
 import com.xilu.wybz.view.pull.PullRecycler;
 
 import java.util.ArrayList;
@@ -28,7 +27,7 @@ import de.greenrobot.event.EventBus;
 /**
  * Created by hujunwei on 16/6/3.
  */
-public class WorksDataFragment extends BaseListFragment<WorksData> implements IUserView {
+public class WorkDataFragment extends BaseFragment implements IUserView {
     UserPresenter userPresenter;
     public static String TYPE = "type";
     public static String UID = "uid";
@@ -38,15 +37,17 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
     private String COME;
     private String author;
     private String[] COMES = new String[]{"myrecord", "mysong", "mylyrics", "myfav"};
+    private List<WorksData> mDataList;
+
+    @Override
+    protected int getLayoutResId() {
+        return R.layout.activity_base_list;
+    }
 
     @Override
     protected void initPresenter() {
         userPresenter = new UserPresenter(context, this);
         userPresenter.init();
-    }
-    @Override
-    public boolean hasPadding() {
-        return true;
     }
 
     @Override
@@ -63,8 +64,8 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
         COME = COMES[type];
     }
 
-    public static WorksDataFragment newInstance(int type, int userId, String author) {
-        WorksDataFragment tabFragment = new WorksDataFragment();
+    public static WorkDataFragment newInstance(int type, int userId, String author) {
+        WorkDataFragment tabFragment = new WorkDataFragment();
         Bundle bundle = new Bundle();
         bundle.putInt(TYPE, type);
         bundle.putInt(UID, userId);
@@ -73,32 +74,22 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
         return tabFragment;
     }
 
-    protected RecyclerView.ItemDecoration getItemDecoration() {
-        return new SpacesItemDecoration(dip10);
-    }
 
     @Override
     public void initView() {
-        recycler.enablePullToRefresh(false);
-    }
 
-    @Override
-    protected void setUpData() {
-        super.setUpData();
-        recycler.setRefreshing();
     }
-
-    @Override
-    public void onRefresh(int action) {
-        this.action = action;
-        if (mDataList == null) {
-            mDataList = new ArrayList<>();
-        }
-        if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
-            page = 1;
-        }
-        userPresenter.loadData(userId, type, page++);
-    }
+//    @Override
+//    public void onRefresh(int action) {
+//        this.action = action;
+//        if (mDataList == null) {
+//            mDataList = new ArrayList<>();
+//        }
+//        if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
+//            page = 1;
+//        }
+//        userPresenter.loadData(userId, type, page++);
+//    }
 
     @Override
     public void setUserInfo(UserBean userBean) {
@@ -107,10 +98,6 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
 
     @Override
     public void showWorksData(List<WorksData> worksDataList) {
-        if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
-            mDataList.clear();
-        }
-
         for (WorksData worksData : worksDataList) {
             if(type<3)
                 worksData.setAuthor(author);
@@ -124,52 +111,39 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
                 worksData.status = worksData.type;
             }
         }
-        recycler.enableLoadMore(true);
-        mDataList.addAll(worksDataList);
-        adapter.notifyDataSetChanged();
-        recycler.onRefreshCompleted();
+//        recycler.enableLoadMore(true);
+//        mDataList.addAll(worksDataList);
+//        adapter.notifyDataSetChanged();
+//        recycler.onRefreshCompleted();
     }
 
     @Override
     public void loadFail() {
-        recycler.onRefreshCompleted();
+//        recycler.onRefreshCompleted();
     }
 
     @Override
     public void loadNoMore() {
-        recycler.onRefreshCompleted();
-        recycler.enableLoadMore(false);
+//        recycler.onRefreshCompleted();
+//        recycler.enableLoadMore(false);
     }
 
     @Override
     public void loadNoData() {
-        llNoData.setVisibility(View.VISIBLE);
-        recycler.onRefreshCompleted();
-        recycler.enableLoadMore(false);
+//        llNoData.setVisibility(View.VISIBLE);
+//        recycler.onRefreshCompleted();
+//        recycler.enableLoadMore(false);
     }
-    public void deleteWorksData(int pos){
-
-    }
-    @Override
-    protected BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
-        if(type==0){
-            View view = LayoutInflater.from(context).inflate(R.layout.fragment_inspirerecord_item, parent, false);
-            InspireRecordViewHolder holder = new InspireRecordViewHolder(view, context, mDataList, COME, new InspireRecordViewHolder.OnDeleteListener() {
-                @Override
-                public void deletePos(int pos) {
-                    deleteWorksData(pos);
-                }
-            });
-            return holder;
-        }else{
-            View view = LayoutInflater.from(context).inflate(R.layout.activity_work_list_item, parent, false);
-            WorksViewHolder holder = new WorksViewHolder(view, context, mDataList, COME, new WorksViewHolder.OnDeleteListener() {
-                @Override
-                public void deletePos(int pos) {
-                    deleteWorksData(pos);
-                }
-            });
-            return holder;
-        }
-    }
+//    @Override
+//    protected BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
+//        if(type==0){
+//            View view = LayoutInflater.from(context).inflate(R.layout.fragment_inspirerecord_item, parent, false);
+//            InspireRecordViewHolder holder = new InspireRecordViewHolder(view, context, mDataList, COME);
+//            return holder;
+//        }else{
+//            View view = LayoutInflater.from(context).inflate(R.layout.activity_work_list_item, parent, false);
+//            WorksViewHolder holder = new WorksViewHolder(view, context, mDataList, COME);
+//            return holder;
+//        }
+//    }
 }

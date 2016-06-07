@@ -167,7 +167,7 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
                 if (recommendWorkList.size() > 0) {
                     WorksData worksData = recommendWorkList.get(position);
                     if (worksData.status == 2) {
-                        LyricsdisplayActivity.toLyricsdisplayActivity(context, worksData.itemid, 0, worksData.getTitle());
+                        LyricsdisplayActivity.toLyricsdisplayActivity(context, worksData.itemid, 0, worksData.getTitle(),position);
                     } else {
                         String playFrom = PrefsUtil.getString("playFrom", context);
                         if (!playFrom.equals(MyCommon.TUIJIAN) || MyApplication.ids.size() == 0) {
@@ -202,7 +202,7 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
                 if (newWorkList.size() > 0) {
                     WorksData worksData = newWorkList.get(position);
                     if (worksData.status == 2) {
-                        LyricsdisplayActivity.toLyricsdisplayActivity(context, worksData.itemid, 0, worksData.getTitle());
+                        LyricsdisplayActivity.toLyricsdisplayActivity(context, worksData.itemid, 0, worksData.getTitle(),position);
                     } else {
                         String playFrom = PrefsUtil.getString("playFrom", context);
                         if (!playFrom.equals(MyCommon.ZUIXIN) || MyApplication.ids.size() == 0) {

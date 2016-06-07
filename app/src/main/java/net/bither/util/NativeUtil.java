@@ -22,7 +22,7 @@ import android.graphics.Rect;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import com.xilu.wybz.common.DownLoaderDir;
+import com.xilu.wybz.common.FileDir;
 import com.xilu.wybz.utils.BitmapUtils;
 import com.xilu.wybz.utils.FileUtils;
 import java.io.File;
@@ -106,7 +106,7 @@ public class NativeUtil {
 						zoomSize = bitmapWidth/baseWifth;
 					}
 					File originalFile = new File(newImagePath);
-					File posterDir = new File(DownLoaderDir.inspirePicDir);
+					File posterDir = new File(FileDir.inspirePicDir);
 					if (!posterDir.exists()) {
 						posterDir.mkdirs();
 					}

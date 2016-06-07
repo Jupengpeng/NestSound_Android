@@ -20,9 +20,11 @@ import com.xilu.wybz.http.HttpUtils;
 import com.xilu.wybz.http.callback.MyStringCallback;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.ui.setting.SettingActivity;
+import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.NumberUtil;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtil;
+import com.xilu.wybz.view.IndexViewPager;
 import com.xilu.wybz.view.StickyNavLayout;
 
 import java.util.ArrayList;
@@ -52,7 +54,7 @@ public class UserInfoActivity extends ToolbarActivity {
     @Bind(R.id.stickynav_layout)
     StickyNavLayout stickynavLayout;
     @Bind(R.id.id_stickynavlayout_viewpager)
-    ViewPager container;
+    IndexViewPager container;
     int currentIndex;
     @Bind(R.id.ll_myrecord)
     LinearLayout llMyrecord;
@@ -68,7 +70,9 @@ public class UserInfoActivity extends ToolbarActivity {
     ImageView ivSetting;
     private List<LinearLayout> tabs;
     private boolean isFirst;
-    private int[] followIcon = new int[]{R.drawable.ic_user_follow,R.drawable.ic_user_followed,R.drawable.ic_user_each_follow};
+    private int isFocus = -1;
+    private int[] followIcon = new int[]{R.drawable.ic_user_follow, R.drawable.ic_user_followed, R.drawable.ic_user_each_follow};
+
     public static void ToUserInfoActivity(Context context, int userId, String userName) {
         Intent intent = new Intent(context, UserInfoActivity.class);
         intent.putExtra("userId", userId);
@@ -109,6 +113,7 @@ public class UserInfoActivity extends ToolbarActivity {
         } else {
             finish();
         }
+        container.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, DensityUtil.getScreenH(context)-DensityUtil.dip2px(context,102+40)));
         ivSetting.setImageResource(R.drawable.ic_user_follow);
         EventBus.getDefault().register(this);
         stickynavLayout.setOnScrollSizeChangeListener(new StickyNavLayout.OnScrollSizeChangeListener() {
@@ -158,8 +163,8 @@ public class UserInfoActivity extends ToolbarActivity {
     }
 
     public void setUserInfo(UserBean userBean) {
-        if(isFirst)return;
-            isFirst = true;
+        if (isFirst) return;
+        isFirst = true;
         loadImage(userBean.headurl, ivHead);
         if (StringUtil.isNotBlank(userBean.nickname)) userTvName.setText(userBean.nickname);
         if (StringUtil.isNotBlank(userBean.signature)) userTvInfo.setText(userBean.signature);
@@ -167,6 +172,7 @@ public class UserInfoActivity extends ToolbarActivity {
         userFansnum.setText("粉丝:  " + NumberUtil.format(userBean.fansnum));
         userFollownum.setText("关注:  " + NumberUtil.format(userBean.gznum));
         ivSetting.setImageResource(followIcon[userBean.isFocus]);
+        isFocus = userBean.isFocus;
     }
 
     @OnClick({R.id.user_fansnum, R.id.user_follownum, R.id.ll_mysong, R.id.ll_mylyrics, R.id.ll_myfav, R.id.rl_setting})
@@ -210,23 +216,30 @@ public class UserInfoActivity extends ToolbarActivity {
                 break;
         }
     }
-    private void FollowUser(){
-        HttpUtils httpUtils = new HttpUtils(context);
-        Map<String,String> params = new HashMap<>();
-        params.put("userid",userId+"");
-        params.put("fansid",PrefsUtil.getUserId(context)+"");
-        httpUtils.post(MyHttpClient.getFanFocusList(),params,new MyStringCallback(){
-            @Override
-            public void onResponse(String response) {
-                super.onResponse(response);
-            }
 
-            @Override
-            public void onError(Call call, Exception e) {
-                super.onError(call, e);
-            }
-        });
+    private void FollowUser() {
+        if (isFocus > -1) {
+            HttpUtils httpUtils = new HttpUtils(context);
+            Map<String, String> params = new HashMap<>();
+            params.put("userid", userId + "");
+            params.put("fansid", PrefsUtil.getUserId(context) + "");
+            httpUtils.post(MyHttpClient.getFanFocusList(), params, new MyStringCallback() {
+                @Override
+                public void onResponse(String response) {
+                    super.onResponse(response);
+                    isFocus = 1 - isFocus;
+                    showMsg(isFocus==0?"取消关注成功！":"关注成功！");
+                    ivSetting.setImageResource(followIcon[isFocus]);
+                }
+
+                @Override
+                public void onError(Call call, Exception e) {
+                    super.onError(call, e);
+                }
+            });
+        }
     }
+
     //在灵感记录的列表 发送过来的
     public void onEventMainThread(Event.UpdataUserBean event) {
         if (event.getType() == 2) {

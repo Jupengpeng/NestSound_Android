@@ -116,7 +116,7 @@ public class MoreWorkActivity extends BaseListActivity<WorksData> implements IFi
     @Override
     protected BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.activity_work_list_item, parent, false);
-        WorksViewHolder holder = new WorksViewHolder(view,context,mDataList,COME);
+        WorksViewHolder holder = new WorksViewHolder(view,context,mDataList,COME,null);
         return holder;
     }
 }
