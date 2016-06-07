@@ -50,6 +50,102 @@ public class WorksData implements Serializable {
     public boolean isPlay;
     public int draftType;//1歌曲 2歌词 3灵感记录
 
+    public String createtype;//HOT/DIY
+    public String useheadset;//耳机1是，0否
+    public String recordmp3;
+    public String recordurl;
+    public String musicurl;
+    public String diyids;
+    public int is_issue;//0不发布,1发布
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public long getCreatedate() {
+        return createdate;
+    }
+
+    public void setCreatedate(long createdate) {
+        this.createdate = createdate;
+    }
+
+    public String getAudio() {
+        return audio;
+    }
+
+    public void setAudio(String audio) {
+        this.audio = audio;
+    }
+
+    public String getSpirecontent() {
+        return spirecontent;
+    }
+
+    public void setSpirecontent(String spirecontent) {
+        this.spirecontent = spirecontent;
+    }
+
+    public String getCreatetype() {
+        return createtype;
+    }
+
+    public void setCreatetype(String createtype) {
+        this.createtype = createtype;
+    }
+
+    public String getUseheadset() {
+        return useheadset;
+    }
+
+    public void setUseheadset(String useheadset) {
+        this.useheadset = useheadset;
+    }
+
+    public String getRecordmp3() {
+        return recordmp3;
+    }
+
+    public void setRecordmp3(String recordmp3) {
+        this.recordmp3 = recordmp3;
+    }
+
+    public String getRecordurl() {
+        return recordurl;
+    }
+
+    public void setRecordurl(String recordurl) {
+        this.recordurl = recordurl;
+    }
+
+    public String getMusicurl() {
+        return musicurl;
+    }
+
+    public void setMusicurl(String musicurl) {
+        this.musicurl = musicurl;
+    }
+
+    public String getDiyids() {
+        return diyids;
+    }
+
+    public void setDiyids(String diyids) {
+        this.diyids = diyids;
+    }
+
+    public int getIs_issue() {
+        return is_issue;
+    }
+
+    public void setIs_issue(int is_issue) {
+        this.is_issue = is_issue;
+    }
+
     public int getDraftType() {
         return draftType;
     }
