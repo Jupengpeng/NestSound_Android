@@ -64,6 +64,7 @@ public class InspireRecordViewHolder extends com.xilu.wybz.view.pull.BaseViewHol
         ivCover.setLayoutParams(new FrameLayout.LayoutParams(itemWidth, itemHeight));
         flMain.setLayoutParams(new ViewGroup.LayoutParams(itemWidth, itemHeight));
         ivFrequency.setPadding(0, 0, 0, itemHeight / 6);
+        if(onDeleteListener==null)return;
         itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {

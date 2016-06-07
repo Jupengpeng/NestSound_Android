@@ -57,20 +57,24 @@ import com.xilu.wybz.utils.BitmapUtils;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.FileUtils;
 import com.xilu.wybz.utils.FormatHelper;
+import com.xilu.wybz.utils.MD5Util;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.view.dialog.ActionMoreDialog;
 import com.xilu.wybz.view.dialog.ShareDialog;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
 import butterknife.Bind;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 import okhttp3.Call;
+
 /**
  * Created by June on 16/5/4.
  */
@@ -115,14 +119,11 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     String authorid;
     String author;
     String headurl;
-    int is_fov;
-    int is_zan;
     String name;
     int id;
     PlayService.MusicBinder musicBinder;
     String from;
     String gedanid;
-    int position;
     ActionMoreDialog actionMoreDialog;
     boolean isCurrentMusic;
     boolean isSeek;
@@ -156,12 +157,11 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
         }
     };
 
-    public static void toPlayAudioActivity(Context context, int id, String gedanid, String from, int position) {
+    public static void toPlayAudioActivity(Context context, int id, String gedanid, String from) {
         Intent intent = new Intent(context, PlayAudioActivity.class);
         intent.putExtra("id", id);
         intent.putExtra("from", from);
         intent.putExtra("gedanid", gedanid);
-        intent.putExtra("position", position);
         context.startActivity(intent);
     }
 
@@ -268,8 +268,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
             from = bundle.getString("from", "");
             gedanid = bundle.getString("gedanid", "");
             authorid = bundle.getString("authorid");
-            position = bundle.getInt("position");
-            isCurrentMusic = (id==PrefsUtil.getInt("playId", context)) && from.equals(PrefsUtil.getString("playFrom", context));
+            isCurrentMusic = (id == PrefsUtil.getInt("playId", context)) && from.equals(PrefsUtil.getString("playFrom", context));
         }
         viewPager.setAdapter(new PlayPagerAdapter(viewList));
         if (serviceIntent == null) {
@@ -277,8 +276,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
             bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
         }
         if (isCurrentMusic && PlayMediaInstance.getInstance().status != 1) {//正在播放的是本首
-            String localData = PrefsUtil.getString("playdata" + id, context);
-            worksData = new Gson().fromJson(localData, WorksData.class);
+            worksData = PrefsUtil.getMusicData(context,id);
             adapterData();
             playSeekBar.setMax(PlayMediaInstance.getInstance().getDuration());
             playSeekBar.setProgress(PlayMediaInstance.getInstance().getCurrentPosition());
@@ -294,7 +292,6 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
             serviceIntent.putExtra("id", id);
             serviceIntent.putExtra("from", from);
             serviceIntent.putExtra("gedanid", gedanid);
-            serviceIntent.putExtra("position", position);
             startService(serviceIntent);
         }
     }
@@ -315,10 +312,8 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
             headurl = worksData.getHeadurl();
             authorid = worksData.getUid() + "";
             hotid = worksData.getHotid();
-            is_zan = worksData.getIsZan();
-            is_fov = worksData.getIscollect();
-            tvZan.setChecked(is_zan == 1);
-            tvFav.setChecked(is_fov == 1);
+            tvZan.setChecked(worksData.getIsZan() == 1);
+            tvFav.setChecked(worksData.getIscollect() == 1);
             int times = Integer.valueOf(worksData.getMp3times());
             tvAlltime.setText(FormatHelper.formatDuration(times));
             toolbar.setSubtitle(author);
@@ -338,6 +333,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
                 public void onScrollStateChanged(AbsListView view, int scrollState) {
 
                 }
+
                 @Override
                 public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 
@@ -350,28 +346,30 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
 
     public void loadPic(String imageUrl) {
         File file = new File(FileDir.cacheDir);
-        if(!file.exists())file.mkdirs();
+        if (!file.exists()) file.mkdirs();
 
-        String path = FileDir.cacheDir+"music_blur"+worksData.itemid+".png";
-        if(new File(path).exists()){//加载本地
+        String path = FileDir.cacheDir + MD5Util.getMD5String(worksData.pic) + ".jpg";
+        if (new File(path).exists()) {//加载本地
             blurImageView.setImageBitmap(BitmapUtils.getSDCardImg(path));
-        }else{//下载并保存到本地
-            imageUrl = MyCommon.getImageUrl(imageUrl,200,200);
+        } else {//下载并保存到本地
+            imageUrl = MyCommon.getImageUrl(imageUrl, 200, 200);
             HttpUtils httpUtils = new HttpUtils(context);
             httpUtils.getImage(imageUrl, new BitmapCallback() {
                 @Override
                 public void onError(Call call, Exception e) {
 
                 }
+
                 @Override
                 public void onResponse(Bitmap response) {
                     Bitmap bmp = NativeStackBlur.process(BitmapUtils.zoomBitmap(response, 200), 30);
-                    FileUtils.saveBmp(path,bmp);
+                    FileUtils.saveBmp(path, bmp);
                     blurImageView.setImageBitmap(bmp);
                 }
             });
         }
     }
+
     //关闭时间
     public void closeTimer() {
         if (timer != null) {
@@ -422,7 +420,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_share:
-                if (worksData != null && worksData.itemid>0) {
+                if (worksData != null && worksData.itemid > 0) {
                     if (shareDialog == null) {
                         String shareTitle = worksData.title;
                         String shareAuthor = worksData.author;
@@ -499,8 +497,8 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
 
     @Override
     public void toUserInfo() {
-        if (worksData.uid>0) {
-            UserInfoActivity.ToUserInfoActivity(context,worksData.uid,worksData.author);
+        if (worksData.uid > 0) {
+            UserInfoActivity.ToUserInfoActivity(context, worksData.uid, worksData.author);
         }
     }
 
@@ -517,7 +515,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
 
     @Override
     public void toCommentActivity() {
-        CommentActivity.ToCommentActivity(context,worksData);
+        CommentActivity.ToCommentActivity(context, worksData);
     }
 
     @Override
@@ -529,13 +527,13 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     @Override
     public void collectionMusicSuccess() {
         rlFav.setEnabled(true);
-        is_fov = 1 - is_fov;
-        if (is_fov == 1) showMsg("收藏成功！");
-        tvFav.setChecked(is_fov == 1);
+        worksData.iscollect = 1 - worksData.iscollect;
+        if (worksData.iscollect == 1) showMsg("收藏成功！");
+        EventBus.getDefault().post(new Event.UpdataWorksList(worksData, 3, 1 - worksData.iscollect));
+        tvFav.setChecked(worksData.iscollect == 1);
         tvFav.startAnimation(AnimationUtils.loadAnimation(context, R.anim.dianzan_anim));
-        worksData.setIscollect(is_fov);
-        worksData.setFovnum(is_fov == 1 ? worksData.getFovnum() + 1 : worksData.getFovnum() - 1);
-        PrefsUtil.putString("playdata" + id, new Gson().toJson(worksData), context);
+        worksData.setIscollect(worksData.iscollect);
+        worksData.setFovnum(worksData.iscollect == 1 ? worksData.getFovnum() + 1 : worksData.getFovnum() - 1);
     }
 
     @Override
@@ -552,29 +550,27 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     @Override
     public void zambiaMusicSuccess() {
         rlZan.setEnabled(true);
-        is_zan = 1 - is_zan;
-        if (is_zan == 1) showMsg("点赞成功！");
-        tvZan.setChecked(is_zan == 1);
+        worksData.isZan = 1 - worksData.isZan;
+        if (worksData.isZan == 1) showMsg("点赞成功！");
+        tvZan.setChecked(worksData.isZan == 1);
         tvZan.startAnimation(AnimationUtils.loadAnimation(context, R.anim.dianzan_anim));
-        worksData.setIsZan(is_zan);
-        worksData.setZannum(is_zan == 1 ? worksData.getZannum() + 1 : worksData.getZannum() - 1);
-        saveMusicBean();
+        worksData.setIsZan(worksData.isZan);
+        worksData.setZannum(worksData.isZan == 1 ? worksData.getZannum() + 1 : worksData.getZannum() - 1);
     }
+
     @Override
     public void zambiaMusicFail() {
         rlZan.setEnabled(true);
     }
 
-    public void saveMusicBean() {
-        PrefsUtil.putString("playdata" + id, new Gson().toJson(worksData), context);
-    }
 
     //更新评论数量
-    public void onEventMainThread(Event.UpdataCommentNumEvent event){
-        if(event.getType()==1){
-            tvCommentNum.setText(worksData.getCommentnum()+event.getNum()+"");
+    public void onEventMainThread(Event.UpdataCommentNumEvent event) {
+        if (event.getType() == 1) {
+            tvCommentNum.setText(worksData.getCommentnum() + event.getNum() + "");
         }
     }
+
     public void onEventMainThread(Event.PPStatusEvent event) {
         switch (event.getStatus()) {
             case 1://开始
@@ -628,6 +624,8 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
 
     public void onEventMainThread(Event.MusicDataEvent event) {
         worksData = musicBinder.getWorksData();
+        worksData.type = 1;
+        worksData.status = 1;
         adapterData();
     }
 
@@ -635,9 +633,10 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     protected void onDestroy() {
         super.onDestroy();
         closeTimer();
-        if(worksData!=null&&worksData.itemid>0&&from.equals("myfav")&&worksData.iscollect==0){//在我的收藏页面进来 取消了收藏
-            EventBus.getDefault().post(new Event.UpdataWorksList(worksData,3,1, MyApplication.posMap.get(worksData.itemid)));
+        if(!PlayMediaInstance.getInstance().isPlaying()){
+            PlayMediaInstance.getInstance().release();
         }
+        PrefsUtil.saveMusicData(context, worksData);
         unbindService(serviceConnection);
         EventBus.getDefault().unregister(this);
     }

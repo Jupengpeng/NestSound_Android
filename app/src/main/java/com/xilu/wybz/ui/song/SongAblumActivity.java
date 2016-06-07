@@ -185,7 +185,7 @@ public class SongAblumActivity extends ToolbarActivity implements IRecSongView {
                 }
             }
             WorksData worksData = musicBeans.get(position);
-            PlayAudioActivity.toPlayAudioActivity(context, worksData.getItemid(), songAlbum.id, MyCommon.GEDAN, position);
+            PlayAudioActivity.toPlayAudioActivity(context, worksData.getItemid(), songAlbum.id, MyCommon.GEDAN);
         }
     }
     @Override

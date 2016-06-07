@@ -16,4 +16,6 @@ public interface IUserView extends IBaseView {
     void loadFail();
     void loadNoData();
     void loadNoMore();
+    void deleteSuccess();
+    void deleteFail();
 }

@@ -22,8 +22,10 @@ import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.view.IndexViewPager;
 import com.xilu.wybz.view.StickyNavLayout;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.Bind;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
@@ -45,7 +47,7 @@ public class MineActivity extends ToolbarActivity {
     @Bind(R.id.stickynav_layout)
     StickyNavLayout stickynavLayout;
     @Bind(R.id.id_stickynavlayout_viewpager)
-    IndexViewPager container;
+    ViewPager container;
     boolean firstLoadUserInfo;
     int currentIndex;
     @Bind(R.id.ll_myrecord)
@@ -59,10 +61,12 @@ public class MineActivity extends ToolbarActivity {
     private MineAdapter pagerAdapter;
     private List<LinearLayout> tabs;
     public boolean isFirst;
+
     @Override
     public boolean canBack() {
         return false;
     }
+
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_home_mine;
@@ -73,7 +77,7 @@ public class MineActivity extends ToolbarActivity {
         else isFirst = true;
         EventBus.getDefault().register(this);
         setLocalUserInfo(PrefsUtil.getUserInfo(this));
-        container.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, DensityUtil.getScreenH(context)-DensityUtil.dip2px(context,102+40)));
+        container.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, DensityUtil.getScreenH(context)-DensityUtil.dip2px(context,102+20)));
         stickynavLayout.setOnScrollSizeChangeListener(new StickyNavLayout.OnScrollSizeChangeListener() {
             @Override
             public void onScrollY(int y) {
@@ -215,12 +219,12 @@ public class MineActivity extends ToolbarActivity {
     public void onEventMainThread(Event.UpdataWorksList event) {
         WorksData worksData = event.getWorksData();
         int type = event.getType();
-        int position = event.getPosition();
-        if(event.getChange()==0)
+        if (event.getChange() == 0)
             (pagerAdapter.getFragment(type)).addItem(worksData);
         else
-            (pagerAdapter.getFragment(type)).removeItem(position);
+            (pagerAdapter.getFragment(type)).removeData(worksData);
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();

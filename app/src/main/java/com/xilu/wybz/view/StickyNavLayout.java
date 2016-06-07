@@ -19,12 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.OverScroller;
 import android.widget.ScrollView;
-
 import com.xilu.wybz.R;
-import com.xilu.wybz.ui.mine.MineActivity;
-import com.xilu.wybz.utils.DensityUtil;
-import com.xilu.wybz.utils.ToastUtils;
-import com.xilu.wybz.view.pull.layoutmanager.MyLinearLayoutManager;
 
 public class StickyNavLayout extends LinearLayout {
 
@@ -133,10 +128,10 @@ public class StickyNavLayout extends LinearLayout {
                     }
                 } else if (mInnerScrollView instanceof RecyclerView) {
                     RecyclerView rv = (RecyclerView) mInnerScrollView;
-                    LinearLayoutManager lM = (LinearLayoutManager) rv.getLayoutManager();
-                    boolean isTop = (lM != null && lM.findFirstVisibleItemPosition() == 0 && lM.findViewByPosition(lM.findFirstVisibleItemPosition()).getTop() == 0);
-                    if ((!isInControl && android.support.v4.view.ViewCompat.canScrollVertically(rv, -1) && isTopHidden
-                            && dy > 0)||isTop) {
+//                    LinearLayoutManager lM = (LinearLayoutManager) rv.getLayoutManager();
+//                    boolean isTop = (lM != null && lM.findFirstVisibleItemPosition() == 0 && lM.findViewByPosition(lM.findFirstVisibleItemPosition()).getTop() == 0);
+                    if ((!isInControl && android.support.v4.view.ViewCompat.canScrollVertically(rv, -1)
+                            && dy > 0)) {
                         isInControl = true;
                         ev.setAction(MotionEvent.ACTION_CANCEL);
                         MotionEvent ev2 = MotionEvent.obtain(ev);
@@ -197,16 +192,15 @@ public class StickyNavLayout extends LinearLayout {
                         }
                     } else if (mInnerScrollView instanceof RecyclerView) {
                         RecyclerView rv = (RecyclerView) mInnerScrollView;
-                        LinearLayoutManager lM = (LinearLayoutManager) rv.getLayoutManager();
-                        boolean isTop = (lM != null && lM.findFirstVisibleItemPosition() == 0 && lM.findViewByPosition(lM.findFirstVisibleItemPosition()).getTop() == 0);
-                        if (!isTopHidden || (!android.support.v4.view.ViewCompat.canScrollVertically(rv, -1) && isTopHidden && dy > 0)||isTop) {
+//                        LinearLayoutManager lM = (LinearLayoutManager) rv.getLayoutManager();
+//                        boolean isTop = (lM != null && lM.findFirstVisibleItemPosition() == 0 && lM.findViewByPosition(lM.findFirstVisibleItemPosition()).getTop() == 0);
+                        if (!isTopHidden || (!android.support.v4.view.ViewCompat.canScrollVertically(rv, -1) && isTopHidden && dy > 0)) {
                             initVelocityTrackerIfNotExists();
                             mVelocityTracker.addMovement(ev);
                             mLastY = y;
                             return true;
                         }
                     }
-
                 }
                 break;
             case MotionEvent.ACTION_CANCEL:

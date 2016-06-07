@@ -160,7 +160,7 @@ public class SearchSongFragment extends BaseListFragment<WorksData> implements I
                 }
             }
             WorksData worksData = mDataList.get(position);
-            PlayAudioActivity.toPlayAudioActivity(context, worksData.getItemid(), "", MyCommon.SEARCH, position);
+            PlayAudioActivity.toPlayAudioActivity(context, worksData.getItemid(), "", MyCommon.SEARCH);
         }
     }
 }

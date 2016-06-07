@@ -36,21 +36,15 @@ public class Event {
     public static class UpdataWorksList {
         WorksData worksData;
         int type;//0 灵感记录 1我的歌曲 2我的歌词 3我的收藏
-        int position;
         int change;//0 加 1减
 
         public int getChange() {
             return change;
         }
 
-        public int getPosition() {
-            return position;
-        }
-
-        public UpdataWorksList(WorksData worksData, int type, int change, int position) {
+        public UpdataWorksList(WorksData worksData, int type, int change) {
             this.type = type;
             this.change = change;
-            this.position = position;
             this.worksData = worksData;
         }
 

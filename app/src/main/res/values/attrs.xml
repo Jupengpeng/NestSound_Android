@@ -151,4 +151,10 @@
     <declare-styleable name="KPSwitchPanelLayout">
         <attr name="ignore_recommend_height" format="boolean" />
     </declare-styleable>
+    <declare-styleable name="StickNavLayout">
+        <!--默认是否悬停tab-->
+        <attr name="isStickNav" format="boolean" />
+        <!--距离悬浮的位置-->
+        <attr name="stickOffset" format="dimension" />
+    </declare-styleable>
 </resources>

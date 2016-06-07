@@ -76,8 +76,10 @@ public class MyCommon {
         map.put(RED, 2);//发现最热
         map.put(MUSICTALK, 2);//乐说
 
-        map.put("mywork", 2);//我的作品
+        map.put("mysong", 2);//我的作品
         map.put("myfav", 2);//我的收藏
+        map.put("userfav", 2);//别人的收藏
+        map.put("usersong", 2);//别人的歌曲
 
         return map.get(from) == null ? 1 : map.get(from);
     }

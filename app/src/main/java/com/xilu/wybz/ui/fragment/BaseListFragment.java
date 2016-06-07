@@ -111,12 +111,14 @@ public abstract class BaseListFragment<T> extends BaseFragment implements PullRe
         if(position != mDataList.size()){
             adapter.notifyItemRangeChanged(position, mDataList.size() - position);
         }
+        if(mDataList.size()==0)llNoData.setVisibility(View.VISIBLE);
     }
     public void addItem(T t){
         mDataList.add(0,t);
         recycler.setSelection(0);
         adapter.notifyItemInserted(0);
         adapter.notifyItemRangeChanged(0, mDataList.size());
+        llNoData.setVisibility(View.GONE);
     }
     public class ListAdapter extends BaseListAdapter {
         @Override

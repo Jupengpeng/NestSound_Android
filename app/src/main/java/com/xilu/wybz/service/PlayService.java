@@ -42,9 +42,9 @@ public class PlayService extends Service {
     MusicBinder mBinder = new MusicBinder();
     int userId;
     int id;
+    int position;
     String from;
     String gedanid;
-    int position;
     TelephonyManager tmgr;
     @Override
     public IBinder onBind(Intent intent) {
@@ -157,6 +157,15 @@ public class PlayService extends Service {
         params.put("id", itemid+"");
         params.put("gedanid", gedanid);
         params.put("com", from);
+        if(MyApplication.ids.size()>1){
+            for(int i = 0;i<MyApplication.ids.size();i++){
+                if(MyApplication.ids.get(i)==itemid){
+                    position = i;//遍历当前播放音乐的位置 用来切歌
+                }
+            }
+        }else{//默认
+            position = 0;
+        }
         new HttpUtils(PlayService.this).get(MyHttpClient.getMusicWorkUrl(), params, new MyStringCallback() {
             @Override
             public void onError(Call call, Exception e) {
@@ -170,7 +179,7 @@ public class PlayService extends Service {
                         currMdb = new Gson().fromJson(data, WorksData.class);
                         id = currMdb.getItemid();
                         PrefsUtil.putInt("playId", id, PlayService.this);
-                        PrefsUtil.putString("playdata" + id, new Gson().toJson(currMdb), PlayService.this);
+                        PrefsUtil.saveMusicData(PlayService.this,currMdb);
                         PlayMediaInstance.getInstance().startMediaPlay(currMdb.getPlayurl());
                         EventBus.getDefault().post(new Event.MusicDataEvent());
                     } catch (JSONException e) {
@@ -190,7 +199,6 @@ public class PlayService extends Service {
             position = intent.getIntExtra("position", -1);
             PrefsUtil.putString("playFrom", from, this);
             PrefsUtil.putInt("playId", id, this);
-            PrefsUtil.putInt("playPos", position, this);
             PrefsUtil.putString("playGedanId", gedanid, this);
         } catch (Exception e) {
             e.printStackTrace();

@@ -237,5 +237,11 @@ public class MyHttpClient {
     public static String getSaveSongUrl() {
         return "musiopt/optMusic";
     }
+
+
+    //删除我的作品
+    public static String getDeleteWorksUrl(){
+        return "userCenter/deleteWork";
+    }
 }
 

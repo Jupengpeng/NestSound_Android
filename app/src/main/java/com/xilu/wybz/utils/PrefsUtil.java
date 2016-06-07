@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.tencent.connect.UserInfo;
+import com.xilu.wybz.bean.MusicBean;
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.KeySet;
@@ -130,6 +131,28 @@ public class PrefsUtil {
         if (!TextUtils.isEmpty(lyrics)) {
             worksData = new Gson().fromJson(lyrics,WorksData.class);
         }
+        return worksData;
+    }
+
+    //保存正在播放的音乐
+    public static void saveMusicData(Context context, WorksData worksData){
+        putString("musicData_"+worksData.itemid,new Gson().toJson(worksData),context);
+    }
+    //
+    //保存正在播放的音乐
+    public static void clearMusicData(Context context, int id){
+        putString("musicData_"+id,null,context);
+        putInt("playId",0,context);
+        putString("playGedanId","",context);
+        putString("playFrom","",context);
+    }
+    //
+    public static WorksData getMusicData(Context context,int id){
+        WorksData worksData = null;
+        String data = getString("musicData_"+id,context);
+        if(StringUtil.isNotBlank(data)){
+            worksData = new Gson().fromJson(data,WorksData.class);
+        };
         return worksData;
     }
     public static void clearData(Context context){

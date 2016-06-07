@@ -182,7 +182,7 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView{
     public void saveWordSuccess(String result) {
         cancelPd();
         worksData.createdate=System.currentTimeMillis();
-        EventBus.getDefault().post(new Event.UpdataWorksList(worksData,2,0,0));
+        EventBus.getDefault().post(new Event.UpdataWorksList(worksData,2,0));
         try {
             String shareurl = new JSONObject(result).getString("shareurl");
             int itemid = new JSONObject(result).getInt("itemid");

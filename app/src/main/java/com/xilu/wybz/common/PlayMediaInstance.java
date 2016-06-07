@@ -107,13 +107,21 @@ public class PlayMediaInstance {
         }
     }
 
+    public void release(){
+        if (mediaPlayer != null) {
+            if(status>1)
+                mediaPlayer.stop();
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+    }
 
     public void stopMediaPlay() {
-        if (mediaPlayer != null) {
+        if (mediaPlayer != null&&status>1) {
             status = 1;
             MyApplication.musicId = "";
             mediaPlayer.stop();
-            mediaPlayer.reset();
+            mediaPlayer.release();
             mediaPlayer = null;
             if (iml != null) {
                 iml.onStop();
