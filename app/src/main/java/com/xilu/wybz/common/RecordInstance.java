@@ -66,8 +66,10 @@ public class RecordInstance {
             isStart = true;
             creatMediaPlayer();
             try {
+                mediaPlayer.reset();
                 mediaPlayer.setDataSource(url);
                 mediaPlayer.prepare();
+                startRecord();
                 return true;
             } catch (IOException e) {
                 isStart = false;
@@ -83,6 +85,7 @@ public class RecordInstance {
             if (mediaPlayer != null) {
                 mediaPlayer.start();
             }
+            isStart = true;
         }
 
     }
@@ -92,8 +95,7 @@ public class RecordInstance {
             if (isStart){
                 mediaPlayer.stop();
             }
-            mediaPlayer.reset();
-            mediaPlayer.release();
+            isStart = false;
         }
     }
 
@@ -101,17 +103,18 @@ public class RecordInstance {
         if (mediaPlayer != null) {
             mediaPlayer.pause();
         }
+        isStart = false;
     }
 
     public void creatMediaPlayer() {
         if (mediaPlayer == null) {
             mediaPlayer = new MediaPlayer();
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);// 设置媒体流类型
+            mediaPlayer.setLooping(false);
 
             mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mp) {
-//                    startRecord();
                     mp.start();
                     isStart = true;
                     if (listener != null) {
@@ -119,22 +122,27 @@ public class RecordInstance {
                     }
                 }
             });
+
             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
-                    mp3Recorder.stop();
-                    mp.stop();
-                    mp.release();
+
                     isStart = false;
                     if (listener != null) {
                         listener.onRecordComplete();
                     }
+                    try {
+                        mp3Recorder.stop();
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
                 }
             });
+
             mediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
                 @Override
                 public boolean onError(MediaPlayer mp, int what, int extra) {
-                    mp.release();
+                    mediaPlayer = null;
                     isStart = false;
                     if (listener != null) {
                         listener.onRecordError();
@@ -168,7 +176,7 @@ public class RecordInstance {
         if (isStart) {
             return false;
         }
-//        deleteCacheFile();
+        deleteCacheFile();
         try {
             mp3Recorder.prepare();
         } catch (Exception e) {
@@ -179,8 +187,8 @@ public class RecordInstance {
 
     public void toStop() {
         stopMediaPlay();
-//        mp3Recorder.stop();
-//        mp3Recorder.flush();
+        mp3Recorder.stop();
+        mp3Recorder.flush();
         if (listener != null) {
             listener.onRecordStop();
         }
@@ -188,7 +196,7 @@ public class RecordInstance {
 
     public void toPause() {
         if (mp3Recorder != null) {
-//            mp3Recorder.pause();
+            mp3Recorder.pause();
         }
         pauseMediaPlay();
         isStart = false;
@@ -197,7 +205,7 @@ public class RecordInstance {
         }
     }
 
-    public void toRestart() {
+    public void toReplay() {
         startMediaPlay();
         startRecord();
         if (listener != null) {
@@ -205,8 +213,22 @@ public class RecordInstance {
         }
     }
 
-    public void deleteCacheFile() {
+    public boolean toRestart() {
+        try{
+            toStop();
+            deleteCacheFile();
+            toStart();
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        if (listener != null) {
+            listener.onRecordRestart();
+        }
+        return true;
+    }
 
+    public void deleteCacheFile() {
 
         FileUtils.delFile(new File(localCacheFile));
     }
@@ -219,6 +241,7 @@ public class RecordInstance {
     }
 
     public void saveWaveDatas(){
+
         waveDatas = mp3Recorder.buf;
     }
 
@@ -244,13 +267,15 @@ public class RecordInstance {
     }
 
 
-    interface OnRecordStatuListener {
+    public interface OnRecordStatuListener {
 
         void onRecordStart();
 
         void onRecordPause();
 
         void onRecordStop();
+
+        void onRecordReplay();
 
         void onRecordRestart();
 

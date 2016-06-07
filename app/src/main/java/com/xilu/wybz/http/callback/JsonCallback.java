@@ -4,11 +4,9 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.xilu.wybz.bean.JsonResponse;
 import com.xilu.wybz.http.rsa.RSAUtils;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Type;
@@ -24,7 +22,7 @@ public class JsonCallback extends Callback<JsonResponse>{
     protected Type type = null;
 
     public JsonCallback() {
-
+        this.type = getDataType();
     }
 
     public JsonCallback(Type type) {
@@ -36,6 +34,7 @@ public class JsonCallback extends Callback<JsonResponse>{
 
         String body = response.body().string();
         JsonResponse jsonResponse = new JsonResponse();
+        String decode = "";
 
         try {
             JSONObject jsonObject = new JSONObject(body);
@@ -48,15 +47,19 @@ public class JsonCallback extends Callback<JsonResponse>{
             jsonResponse.setMessage(message);
 
             if (!TextUtils.isEmpty(data)) {
-                String decode = RSAUtils.decryptByPublicKey(new String(RSAUtils.decodeConvert(data), "UTF-8"));
-                jsonResponse.setData(new Gson().fromJson(decode,type!=null?type:getDataType()));
+                decode = RSAUtils.decryptByPublicKey(new String(RSAUtils.decodeConvert(data), "UTF-8"));
+                if (type == null){
+                    jsonResponse.setData(decode);
+                } else {
+                    jsonResponse.setData( new Gson().fromJson(decode,type));
+                }
             }
 
-        } catch (JSONException e) {
+        } catch (Exception e) {
             Log.e("JSONException", e.toString());
             jsonResponse.setCode(999);
             jsonResponse.setMessage("json decode error.");
-
+            jsonResponse.setData(decode);
             e.printStackTrace();
 
         }
@@ -74,7 +77,7 @@ public class JsonCallback extends Callback<JsonResponse>{
     }
 
     public Type getDataType(){
-        return new TypeToken<JsonResponse<String>>(){}.getType();
+        return null;
     }
 
 

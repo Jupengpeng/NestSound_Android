@@ -1,17 +1,12 @@
 package com.xilu.wybz.http.callback;
 
 import android.content.Context;
-import android.content.Intent;
-import android.support.annotation.NonNull;
 
 import com.xilu.wybz.bean.JsonResponse;
 import com.xilu.wybz.ui.MyApplication;
-import com.xilu.wybz.ui.login.LoginActivity;
 import com.xilu.wybz.utils.NetWorkUtil;
 import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.utils.ToastUtils;
-import com.xilu.wybz.view.materialdialogs.DialogAction;
-import com.xilu.wybz.view.materialdialogs.MaterialDialog;
 
 import java.lang.reflect.Type;
 
@@ -61,6 +56,7 @@ public class AppJsonCalback extends JsonCallback {
      */
     public void onResultError(JsonResponse<? extends Object> response){
         if (response.getCode() == 999){
+            ToastUtils.toast(getContext(),"解码失败");
             return;
         }
         if(response.getCode()==53001){
