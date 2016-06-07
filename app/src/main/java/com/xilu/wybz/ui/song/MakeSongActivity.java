@@ -20,6 +20,7 @@ import com.xilu.wybz.bean.TruningMusicBean;
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.Event;
+import com.xilu.wybz.common.MediaInstance;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.common.PlayMediaInstance;
 import com.xilu.wybz.common.RecordInstance;
@@ -85,7 +86,7 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
     private MakeSongPresenter makeSongPresenter;
 
 
-    private int status = 0; //0:未开始:1：录音中2：暂停3：完成
+    private int status = 0; //0:未开始  1：录音中  2：暂停  3：完成
 
 
     protected MaterialDialog loadDialog;
@@ -118,6 +119,7 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
         }
 
         upData();
+
     }
 
     @Override
@@ -290,9 +292,13 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
                     showMsg("请先停止录音");
                     return;
                 }
+
                 if (isPlay) {
+                    pausePlay();
                     showSongPlay();
+
                 } else {
+                    startPlay();
                     showSongPause();
                 }
 
@@ -313,8 +319,10 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
 
                 break;
             case R.id.iv_record:
+                if (useheadset){
+                    useheadset = SystemUtils.isWiredHeadsetOn(this);
+                }
 
-                useheadset = SystemUtils.isWiredHeadsetOn(this);
                 if (RecordInstance.getInstance().isStart()) {
                     stopRecord();
                 } else {
@@ -342,6 +350,19 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
                 }
                 break;
         }
+    }
+
+
+
+    private void startPlay(){
+        MediaInstance.getInstance().creatMediaPlayer("");
+//        DoubleMediaInstance.getInstance().startMediaPlay("","");
+    }
+    private void pausePlay(){
+;
+    }
+    private void stopPlay(){
+
     }
 
 
@@ -404,18 +425,6 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
         switch (item.getItemId()) {
 
             case R.id.menu_next:
-
-//                if (worksData == null) {
-//                    worksData = new WorksData();
-//                }
-//
-//                worksData.hotid = 1;
-//                worksData.musicurl = "Zero.mp3";
-//
-//                worksData.useheadset= "1";
-//
-//                makeSongPresenter.tuningMusic("1234",worksData);
-
 
                 if (status == 1) {
                     showMsg("请先停止录音");
@@ -547,7 +556,6 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
     }
 
 
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -566,6 +574,5 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
             loadDialog = null;
         }
     }
-
 
 }

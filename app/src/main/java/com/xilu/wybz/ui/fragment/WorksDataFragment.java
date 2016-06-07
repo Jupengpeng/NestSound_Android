@@ -17,7 +17,6 @@ import com.xilu.wybz.ui.IView.IUserView;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.view.SpacesItemDecoration;
 import com.xilu.wybz.view.pull.BaseViewHolder;
-import com.xilu.wybz.view.pull.DividerItemDecoration;
 import com.xilu.wybz.view.pull.PullRecycler;
 
 import java.util.ArrayList;
@@ -127,6 +126,7 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
         recycler.enableLoadMore(true);
         mDataList.addAll(worksDataList);
         adapter.notifyDataSetChanged();
+        recycler.setAdapter(adapter);
         recycler.onRefreshCompleted();
     }
 
@@ -148,7 +148,9 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
         recycler.enableLoadMore(false);
     }
     public void deleteWorksData(int pos){
-
+        mDataList.remove(pos);
+        adapter.notifyDataSetChanged();
+        recycler.getRecyclerView().requestLayout();
     }
     @Override
     protected BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {

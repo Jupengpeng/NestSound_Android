@@ -227,7 +227,7 @@ public class WaveSurfaceHelper {
 
     public int caculateCurrentSize(){
         int size = currentPosition/20;
-        if (currentPosition%20 > 0){
+        if (currentPosition%20 > 1){
             size++;
         }
         return size;
@@ -546,9 +546,16 @@ public class WaveSurfaceHelper {
             }
         }
 
+        notifyChanged();
+
         onDrawWave();
     }
 
+    private void notifyChanged () {
+        if (progressChangedListener != null) {
+            progressChangedListener.onChanged(currentPosition);
+        }
+    }
 
 
     public void setTotalSize(int totalSize) {
@@ -612,4 +619,18 @@ public class WaveSurfaceHelper {
 
     }
 
+    ProgressChangedListener progressChangedListener;
+
+    public interface ProgressChangedListener{
+        void onChanged(int progress);
+    }
+
+
+    public void setProgressChangedListener(ProgressChangedListener progressChangedListener) {
+        this.progressChangedListener = progressChangedListener;
+    }
+
+    public int getCurrentPosition(){
+        return currentPosition;
+    }
 }

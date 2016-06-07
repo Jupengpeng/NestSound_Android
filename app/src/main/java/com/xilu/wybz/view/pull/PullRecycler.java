@@ -25,6 +25,11 @@ public class PullRecycler extends FrameLayout implements SwipeRefreshLayout.OnRe
     private ILayoutManager mLayoutManager;
     private BaseListAdapter adapter;
 
+
+    public RecyclerView getRecyclerView(){
+        return mRecyclerView;
+    }
+
     public PullRecycler(Context context) {
         super(context);
         setUpView();
