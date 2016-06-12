@@ -25,9 +25,23 @@ public class ToastUtils {
             public void run() {
                 toastDialog.dismiss();
             }
+        }, 1000);
+    }
+    public static void toastLong(Context context, String text) {
+        final ToastDialog toastDialog = new ToastDialog(context, text);
+        if (!toastDialog.isShowing()) {
+            toastDialog.show();
+            WindowManager.LayoutParams params = toastDialog.getWindow().getAttributes();
+            params.width = DensityUtil.getScreenW(context);
+            toastDialog.getWindow().setAttributes(params);
+        }
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                toastDialog.dismiss();
+            }
         }, 2500);
     }
-
     public static void logingTip(Context context, String msg) {
         new MaterialDialog.Builder(context)
                 .content(msg)

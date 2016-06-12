@@ -20,6 +20,7 @@ import com.xilu.wybz.bean.TruningMusicBean;
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.Event;
+import com.xilu.wybz.common.FileDir;
 import com.xilu.wybz.common.MediaInstance;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.common.PlayMediaInstance;
@@ -29,6 +30,7 @@ import com.xilu.wybz.ui.IView.IMakeSongView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.ui.lyrics.ImportWordActivity;
 import com.xilu.wybz.utils.FileUtils;
+import com.xilu.wybz.utils.MD5Util;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.utils.SystemUtils;
@@ -38,6 +40,7 @@ import com.xilu.wybz.view.materialdialogs.DialogAction;
 import com.xilu.wybz.view.materialdialogs.GravityEnum;
 import com.xilu.wybz.view.materialdialogs.MaterialDialog;
 
+import java.io.File;
 import java.util.List;
 
 import butterknife.Bind;
@@ -114,7 +117,7 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
 
         if (PlayMediaInstance.getInstance().status == 3) {
             PlayMediaInstance.getInstance().pauseMediaPlay();
-            PlayMediaInstance.getInstance().mediaPlayer.release();
+//            PlayMediaInstance.getInstance().mediaPlayer.release();
             EventBus.getDefault().post(new Event.PPStatusEvent(4));
         }
 
@@ -192,8 +195,8 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
     }
 
     public void upData() {
-
-        cacheFileName = FileUtils.getMusicCachePath(MyCommon.TYPE_TEMPLATE + templateBean.id);
+        if(!new File(FileDir.hotDir).exists())new File(FileDir.hotDir).mkdirs();
+        String cacheFileName = FileDir.hotDir+ MD5Util.getMD5String(templateBean.mp3);
         templateFileName = cacheFileName + ".mp3";
         //if templateFileName not exists
         if (!FileUtils.fileExists(templateFileName)) {

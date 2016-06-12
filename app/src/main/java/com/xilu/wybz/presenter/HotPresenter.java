@@ -44,7 +44,7 @@ public class HotPresenter extends BasePresenter<IHotView> {
                         iView.loadNoMore();
                     }
                 } else {
-                    iView.showHotData(mList);
+                    iView.showHotData(mList,type);
                 }
             }
 
@@ -65,8 +65,11 @@ public class HotPresenter extends BasePresenter<IHotView> {
 
             }
             @Override
-            public void onResponse(File response) {
-                FileUtils.renameFile(fileDir+fileName,fileDir+fileName+".mp3");
+            public void onResponse(File file) {
+                try {
+                    FileUtils.renameFile(fileDir+fileName,fileDir+fileName+".mp3");
+                }catch (Exception e){
+                }
                 iView.downloadSuccess();
             }
         });

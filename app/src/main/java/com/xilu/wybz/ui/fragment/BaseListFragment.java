@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -76,11 +77,11 @@ public abstract class BaseListFragment<T> extends BaseFragment implements PullRe
     protected void setUpData() {
         setUpAdapter();
         if(hasPadding()){
-            if(this instanceof WorksDataFragment){
-                recycler.setReclylerPaddiing(dip10, dip10, dip10, dip10+DensityUtil.dip2px(context,48));
-            }else {
+//            if(this instanceof WorksDataFragment){
+//                recycler.setReclylerPaddiing(dip10, dip10, dip10, dip10+DensityUtil.dip2px(context,48));
+//            }else {
                 recycler.setReclylerPaddiing(dip10, dip10, dip10, dip10);
-            }
+//            }
         }
         recycler.setOnRefreshListener(this);
         recycler.setLayoutManager(getLayoutManager());
@@ -99,15 +100,22 @@ public abstract class BaseListFragment<T> extends BaseFragment implements PullRe
     }
 
     protected ILayoutManager getLayoutManager() {
-        return new MyLinearLayoutManager(getActivity().getApplicationContext());
+        MyLinearLayoutManager myLinearLayoutManager = new MyLinearLayoutManager(getActivity().getApplicationContext());
+        return myLinearLayoutManager;
     }
 
     protected RecyclerView.ItemDecoration getItemDecoration() {
         return new DividerItemDecoration(getActivity().getApplicationContext(), R.drawable.transparent);
     }
+    public void moveToFirst(){
+        if(mDataList!=null&&mDataList.size()>0&&recycler!=null){
+            recycler.setSelection(0);
+        }
+    }
     public void removeItem(int position){
         mDataList.remove(position);
         adapter.notifyItemRemoved(position);
+        recycler.getRecyclerView().requestLayout();
         if(position != mDataList.size()){
             adapter.notifyItemRangeChanged(position, mDataList.size() - position);
         }
@@ -159,11 +167,13 @@ public abstract class BaseListFragment<T> extends BaseFragment implements PullRe
     }
 
     public void clearData() {
+        llNoData.setVisibility(View.GONE);
         if (mDataList != null) {
+            adapter.notifyItemRangeRemoved(0, mDataList.size());
+            recycler.getRecyclerView().requestLayout();
+            recycler.enableLoadMore(false);
             mDataList.clear();
             keyWord = null;
-            llNoData.setVisibility(View.GONE);
-            adapter.notifyDataSetChanged();
             page = 1;
         }
     }

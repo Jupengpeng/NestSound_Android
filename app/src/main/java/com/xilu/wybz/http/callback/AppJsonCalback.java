@@ -56,15 +56,15 @@ public class AppJsonCalback extends JsonCallback {
      */
     public void onResultError(JsonResponse<? extends Object> response){
         if (response.getCode() == 999){
-            ToastUtils.toast(getContext(),"数据解码失败");
+            ToastUtils.toastLong(getContext(),"数据解码失败");
             return;
         }
         if(response.getCode()==53001){
-            ToastUtils.toast(getContext(),"登录状态失效，请重新进行登录！");
+            ToastUtils.toastLong(getContext(),"登录状态失效，请重新进行登录！");
             return;
         }
         if (StringUtil.isNotBlank(response.getMessage())){
-            ToastUtils.toast(getContext(),response.getMessage());
+            ToastUtils.toastLong(getContext(),response.getMessage());
         }
 
 

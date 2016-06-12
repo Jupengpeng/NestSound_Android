@@ -30,6 +30,7 @@ import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.utils.BitmapUtils;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.FileUtils;
+import com.xilu.wybz.utils.MD5Util;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.view.YcScrollView;
 
@@ -116,7 +117,7 @@ public class SongAblumActivity extends ToolbarActivity implements IRecSongView {
             statusbarHeight = DensityUtil.getStatusBarHeight(context);
         }
         statusBarView.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, statusbarHeight));
-        int coverPicWith = DensityUtil.dip2px(context, 120*DensityUtil.getScreenDensity(context)/2);
+        int coverPicWith = DensityUtil.getScreenW(context)/3;
         ivCover.setLayoutParams(new LinearLayout.LayoutParams(coverPicWith,coverPicWith));
         baseScrollHeight = DensityUtil.dip2px(context, 25) + coverPicWith;
         rlTop.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, statusbarHeight + DensityUtil.dip2px(context, 48 + 25) + coverPicWith));
@@ -141,10 +142,10 @@ public class SongAblumActivity extends ToolbarActivity implements IRecSongView {
     }
     private void loadPic(){
         String url = songAlbum.getPic();
+        loadImage(url,ivCover);
         File file = new File(FileDir.cacheDir);
         if(!file.exists())file.mkdirs();
-
-        String path = FileDir.cacheDir+"music_blur"+songAlbum.id+".png";
+        String path = FileDir.cacheDir+ MD5Util.getMD5String(url)+".png";
         if(new File(path).exists()){//加载本地
             ivToolbarBg.setImageBitmap(BitmapUtils.getSDCardImg(path));
             ivTopBg.setImageBitmap(BitmapUtils.getSDCardImg(path));

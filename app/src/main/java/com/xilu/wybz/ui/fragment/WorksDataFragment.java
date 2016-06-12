@@ -1,6 +1,8 @@
 package com.xilu.wybz.ui.fragment;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +24,8 @@ import com.xilu.wybz.view.materialdialogs.MaterialDialog;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.DividerItemDecoration;
 import com.xilu.wybz.view.pull.PullRecycler;
+import com.xilu.wybz.view.pull.layoutmanager.ILayoutManager;
+import com.xilu.wybz.view.pull.layoutmanager.MyLinearLayoutManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,7 +89,10 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
         }
 
     }
-
+    protected ILayoutManager getLayoutManager() {
+        MyLinearLayoutManager myLinearLayoutManager = new MyLinearLayoutManager(getActivity().getApplicationContext(), OrientationHelper.VERTICAL, false);
+        return myLinearLayoutManager;
+    }
     public static WorksDataFragment newInstance(int type, int userId, String author) {
         WorksDataFragment tabFragment = new WorksDataFragment();
         Bundle bundle = new Bundle();
@@ -204,11 +211,6 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
         deletePos = pos;
         WorksData worksData = mDataList.get(pos);
         userPresenter.unfav(worksData.itemid, worksData.uid, worksData.status);
-    public void deleteWorksData(int pos){
-        mDataList.remove(pos);
-        adapter.notifyItemRemoved(pos);
-//        adapter.notifyDataSetChanged();
-        recycler.getRecyclerView().requestLayout();
     }
 
     public void removeData(WorksData worksData) {

@@ -54,7 +54,7 @@ public class UserInfoActivity extends ToolbarActivity {
     @Bind(R.id.stickynav_layout)
     StickyNavLayout stickynavLayout;
     @Bind(R.id.id_stickynavlayout_viewpager)
-    IndexViewPager container;
+    ViewPager container;
     int currentIndex;
     @Bind(R.id.ll_myrecord)
     LinearLayout llMyrecord;
@@ -116,17 +116,6 @@ public class UserInfoActivity extends ToolbarActivity {
         container.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, DensityUtil.getScreenH(context)-DensityUtil.dip2px(context,102+40)));
         ivSetting.setImageResource(R.drawable.ic_user_follow);
         EventBus.getDefault().register(this);
-        stickynavLayout.setOnScrollSizeChangeListener(new StickyNavLayout.OnScrollSizeChangeListener() {
-            @Override
-            public void onScrollY(int y) {
-                if (y >= 0 && y <= 300) {
-                    float alpha = y / 300f;
-                    mToolbar.setAlpha(alpha);
-                } else if (y > 300) {
-                    mToolbar.setAlpha(1);
-                }
-            }
-        });
         tabs = new ArrayList<>();
         llMyrecord.setVisibility(View.GONE);
         llMysong.setSelected(true);
@@ -136,6 +125,22 @@ public class UserInfoActivity extends ToolbarActivity {
         MineAdapter pagerAdapter = new MineAdapter(context, getSupportFragmentManager(), userId, userName);
         container.setAdapter(pagerAdapter);
         container.setOffscreenPageLimit(tabs.size());
+        stickynavLayout.setOnStickStateChangeListener(new StickyNavLayout.onStickStateChangeListener() {
+            @Override
+            public void isStick(boolean isStick) {
+//                if(!isStick) {
+//                    for (int i = 0; i < 4; i++) {
+//                        if (i != container.getCurrentItem()) {
+//                            pagerAdapter.getFragment(i).moveToFirst();
+//                        }
+//                    }
+//                }
+            }
+            @Override
+            public void scrollPercent(float percent) {
+                mToolbar.setAlpha(percent);
+            }
+        });
         container.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {

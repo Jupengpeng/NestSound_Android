@@ -86,7 +86,8 @@ public class Event {
 
     public static class ShowSearchTabEvent {
     }
-
+    public static class HideKeyboardEvent {
+    }
     public static class UpdateLyricsData {
         WorksData worksData;
 

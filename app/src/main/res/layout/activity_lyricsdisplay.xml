@@ -46,7 +46,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="52dp"
+                android:layout_height="48dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingLeft="@dimen/yc_15">
@@ -108,7 +108,7 @@
                     <RelativeLayout
                         android:id="@+id/rl_fav"
                         android:layout_width="46dp"
-                        android:layout_height="52dp">
+                        android:layout_height="48dp">
                     <ImageView
                         android:id="@+id/iv_fav"
                         android:layout_width="wrap_content"

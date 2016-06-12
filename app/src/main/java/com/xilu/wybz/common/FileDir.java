@@ -11,6 +11,7 @@ public class FileDir {
     public static String inspireMp3Dir = SD + "/yinchao/inspire_record/mp3/";
     public static String inspirePicDir = SD + "/yinchao/inspire_record/img/";
     public static String rootpicDir = SD + "/yinchao/image/";
+    public static String hotDir = SD + "/yinchao/hot/";
     public static String apkDir = SD + "/yinchao/apk/";
     public static String logoDir = SD + "/yinchao/image/logo/";
     public static String coverPic = SD + "/yinchao/image/cover/";

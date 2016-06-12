@@ -1,6 +1,7 @@
 package com.xilu.wybz.view;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -21,39 +22,82 @@ import android.widget.OverScroller;
 import android.widget.ScrollView;
 import com.xilu.wybz.R;
 
+/**
+ * 上滑悬停控件，底部内容区域支持 ScrollView ，ListView,RecyclerView
+ */
 public class StickyNavLayout extends LinearLayout {
-
+    private boolean isSticky;//mNav-view 是否悬停的标志
+    private static final String TAG = "StickyNavLayout";
     private View mTop;
     private View mNav;
     private ViewPager mViewPager;
-
     private int mTopViewHeight;
     private ViewGroup mInnerScrollView;
     private boolean isTopHidden = false;
-
     private OverScroller mScroller;
     private VelocityTracker mVelocityTracker;
     private int mTouchSlop;
     private int mMaximumVelocity, mMinimumVelocity;
-
     private float mLastY;
     private boolean mDragging;
-
+    private boolean isStickNav;
     private boolean isInControl = false;
+    private int stickOffset;
+    private int mViewPagerMaxHeight;
+    private int mTopViewMaxHeight;
 
-    private OnScrollSizeChangeListener onScrollSizeChangeListener;
+    public StickyNavLayout(Context context) {
+        this(context, null);
+    }
 
     public StickyNavLayout(Context context, AttributeSet attrs) {
-        super(context, attrs);
+        this(context, attrs, 0);
+    }
+
+    public StickyNavLayout(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
         setOrientation(LinearLayout.VERTICAL);
 
+        TypedArray a = context.obtainStyledAttributes(attrs,
+                R.styleable.StickNavLayout);
+        isStickNav = a.getBoolean(R.styleable.StickNavLayout_isStickNav, false);
+        stickOffset = a.getDimensionPixelSize(R.styleable.StickNavLayout_stickOffset, 0);
+        a.recycle();
+
         mScroller = new OverScroller(context);
+        mVelocityTracker = VelocityTracker.obtain();
         mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
         mMaximumVelocity = ViewConfiguration.get(context)
                 .getScaledMaximumFlingVelocity();
         mMinimumVelocity = ViewConfiguration.get(context)
                 .getScaledMinimumFlingVelocity();
+    }
 
+    public void setisStickNav(boolean isStickNav) {
+        this.isStickNav = isStickNav;
+    }
+
+    /****
+     * 设置顶部区域的高度
+     *
+     * @param height height
+     */
+    public void setTopViewHeight(int height) {
+        mTopViewHeight = height;
+        if (isStickNav)
+            scrollTo(0, mTopViewHeight);
+    }
+
+    /****
+     * 设置顶部区域的高度
+     *
+     * @param height height
+     * @param offset offset
+     */
+    public void setTopViewHeight(int height, int offset) {
+        mTopViewHeight = height;
+        if (isStickNav)
+            scrollTo(0, mTopViewHeight - offset);
     }
 
     @Override
@@ -69,24 +113,26 @@ public class StickyNavLayout extends LinearLayout {
         mViewPager = (ViewPager) view;
     }
 
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-//        ViewGroup.LayoutParams params = mViewPager.getLayoutParams();
-//        params.height = getMeasuredHeight() - mNav.getMeasuredHeight();
+        ViewGroup.LayoutParams params = mViewPager.getLayoutParams();
+        //修复键盘弹出后键盘关闭布局高度不对问题
+        int height = getMeasuredHeight() - mNav.getMeasuredHeight();
+        mViewPagerMaxHeight = (height >= mViewPagerMaxHeight ? height : mViewPagerMaxHeight);
+        params.height = mViewPagerMaxHeight - stickOffset;
+        //修复键盘弹出后Top高度不对问题
+        ViewGroup.LayoutParams topParams = mTop.getLayoutParams();
+        int topHeight = mTop.getMeasuredHeight();
+        mTopViewMaxHeight = (topHeight >= mTopViewMaxHeight ? topHeight : mTopViewMaxHeight);
+        topParams.height = mTopViewMaxHeight;
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        mTopViewHeight = mTop.getMeasuredHeight() - (int) (getContext().getResources().getDimension(R.dimen.actionbar_size));
-
-    }
-
-    @Override
-    protected void onScrollChanged(int l, int t, int oldl, int oldt) {
-        super.onScrollChanged(l, t, oldl, oldt);
-        if (onScrollSizeChangeListener != null) onScrollSizeChangeListener.onScrollY(t);
+        mTopViewHeight = mTop.getMeasuredHeight() - stickOffset;
     }
 
     @Override
@@ -110,6 +156,7 @@ public class StickyNavLayout extends LinearLayout {
                         MotionEvent ev2 = MotionEvent.obtain(ev);
                         dispatchTouchEvent(ev);
                         ev2.setAction(MotionEvent.ACTION_DOWN);
+                        isSticky = true;
                         return dispatchTouchEvent(ev2);
                     }
                 } else if (mInnerScrollView instanceof ListView) {
@@ -123,24 +170,35 @@ public class StickyNavLayout extends LinearLayout {
                         ev.setAction(MotionEvent.ACTION_CANCEL);
                         MotionEvent ev2 = MotionEvent.obtain(ev);
                         dispatchTouchEvent(ev);
+                        isSticky = true;
                         ev2.setAction(MotionEvent.ACTION_DOWN);
                         return dispatchTouchEvent(ev2);
                     }
                 } else if (mInnerScrollView instanceof RecyclerView) {
+
                     RecyclerView rv = (RecyclerView) mInnerScrollView;
-//                    LinearLayoutManager lM = (LinearLayoutManager) rv.getLayoutManager();
-//                    boolean isTop = (lM != null && lM.findFirstVisibleItemPosition() == 0 && lM.findViewByPosition(lM.findFirstVisibleItemPosition()).getTop() == 0);
-                    if ((!isInControl && android.support.v4.view.ViewCompat.canScrollVertically(rv, -1)
-                            && dy > 0)) {
+
+                    if (!isInControl && android.support.v4.view.ViewCompat.canScrollVertically(rv, -1) && isTopHidden
+                            && dy > 0) {
                         isInControl = true;
                         ev.setAction(MotionEvent.ACTION_CANCEL);
                         MotionEvent ev2 = MotionEvent.obtain(ev);
                         dispatchTouchEvent(ev);
                         ev2.setAction(MotionEvent.ACTION_DOWN);
+                        isSticky = true;
                         return dispatchTouchEvent(ev2);
                     }
                 }
                 break;
+            case MotionEvent.ACTION_UP:
+                float distance = y - mLastY;
+                if (isSticky && /*distance==0.0f*/Math.abs(distance) <= mTouchSlop) {
+                    isSticky = false;
+                    return true;
+                } else {
+                    isSticky = false;
+                    return super.dispatchTouchEvent(ev);
+                }
         }
         return super.dispatchTouchEvent(ev);
     }
@@ -192,8 +250,6 @@ public class StickyNavLayout extends LinearLayout {
                         }
                     } else if (mInnerScrollView instanceof RecyclerView) {
                         RecyclerView rv = (RecyclerView) mInnerScrollView;
-//                        LinearLayoutManager lM = (LinearLayoutManager) rv.getLayoutManager();
-//                        boolean isTop = (lM != null && lM.findFirstVisibleItemPosition() == 0 && lM.findViewByPosition(lM.findFirstVisibleItemPosition()).getTop() == 0);
                         if (!isTopHidden || (!android.support.v4.view.ViewCompat.canScrollVertically(rv, -1) && isTopHidden && dy > 0)) {
                             initVelocityTrackerIfNotExists();
                             mVelocityTracker.addMovement(ev);
@@ -201,6 +257,7 @@ public class StickyNavLayout extends LinearLayout {
                             return true;
                         }
                     }
+
                 }
                 break;
             case MotionEvent.ACTION_CANCEL:
@@ -232,6 +289,7 @@ public class StickyNavLayout extends LinearLayout {
 
     }
 
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         initVelocityTrackerIfNotExists();
@@ -247,7 +305,7 @@ public class StickyNavLayout extends LinearLayout {
                 return true;
             case MotionEvent.ACTION_MOVE:
                 float dy = y - mLastY;
-//			Log.e("TAG", "dy = " + dy + " , y = " + y + " , mLastY = " + mLastY);
+
                 if (!mDragging && Math.abs(dy) > mTouchSlop) {
                     mDragging = true;
                 }
@@ -258,9 +316,11 @@ public class StickyNavLayout extends LinearLayout {
                         event.setAction(MotionEvent.ACTION_DOWN);
                         dispatchTouchEvent(event);
                         isInControl = false;
+                        isSticky = true;
+                    } else {
+                        isSticky = false;
                     }
                 }
-
                 mLastY = y;
                 break;
             case MotionEvent.ACTION_CANCEL:
@@ -303,13 +363,23 @@ public class StickyNavLayout extends LinearLayout {
 
         isTopHidden = getScrollY() == mTopViewHeight;
 
+
+        //set  listener 设置悬浮监听回调
+        if (listener != null) {
+//            if(lastIsTopHidden!=isTopHidden){
+//                lastIsTopHidden=isTopHidden;
+            listener.isStick(isTopHidden);
+//            }
+            listener.scrollPercent((float) getScrollY() / (float) mTopViewHeight);
+        }
     }
+//    private  boolean lastIsTopHidden;//记录上次是否悬浮
 
     @Override
     public void computeScroll() {
         if (mScroller.computeScrollOffset()) {
             scrollTo(0, mScroller.getCurrY());
-            invalidate();
+            postInvalidate();
         }
     }
 
@@ -326,11 +396,29 @@ public class StickyNavLayout extends LinearLayout {
         }
     }
 
-    public void setOnScrollSizeChangeListener(OnScrollSizeChangeListener onScrollSizeChangeListener) {
-        this.onScrollSizeChangeListener = onScrollSizeChangeListener;
+    private onStickStateChangeListener listener;
+
+    /**
+     * 悬浮状态回调
+     */
+    public interface onStickStateChangeListener {
+        /**
+         * 是否悬浮的回调
+         *
+         * @param isStick true 悬浮 ,false 没有悬浮
+         */
+        void isStick(boolean isStick);
+
+        /**
+         * 距离悬浮的距离的百分比
+         *
+         * @param percent 0~1(向上) or 1~0(向下) 的浮点数
+         */
+        void scrollPercent(float percent);
     }
 
-    public interface OnScrollSizeChangeListener {
-        void onScrollY(int y);
+    public void setOnStickStateChangeListener(onStickStateChangeListener listener) {
+        this.listener = listener;
     }
+
 }

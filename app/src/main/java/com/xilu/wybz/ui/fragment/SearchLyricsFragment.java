@@ -1,5 +1,6 @@
 package com.xilu.wybz.ui.fragment;
 
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import com.xilu.wybz.R;
 import com.xilu.wybz.bean.FansBean;
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.bean.WorksData;
+import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.SearchPresenter;
 import com.xilu.wybz.ui.IView.ISearchView;
@@ -31,6 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by hujunwei on 16/5/22.
@@ -71,13 +74,18 @@ public class SearchLyricsFragment extends BaseListFragment<WorksData> implements
     }
     @Override
     public void showWorksData(List<WorksData> worksDataList) {
-        if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
-            mDataList.clear();
-        }
-        recycler.enableLoadMore(true);
-        mDataList.addAll(worksDataList);
-        adapter.notifyDataSetChanged();
-        recycler.onRefreshCompleted();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(mDataList.size()==0){
+                    EventBus.getDefault().post(new Event.ShowSearchTabEvent());
+                }
+                recycler.enableLoadMore(true);
+                mDataList.addAll(worksDataList);
+                adapter.notifyDataSetChanged();
+                recycler.onRefreshCompleted();
+            }
+        },600);
     }
 
     @Override
@@ -99,6 +107,9 @@ public class SearchLyricsFragment extends BaseListFragment<WorksData> implements
 
     @Override
     public void loadNoData() {
+        if(mDataList.size()==0){
+            EventBus.getDefault().post(new Event.ShowSearchTabEvent());
+        }
         llNoData.setVisibility(View.VISIBLE);
         recycler.onRefreshCompleted();
         recycler.enableLoadMore(false);

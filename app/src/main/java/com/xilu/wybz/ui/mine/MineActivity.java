@@ -2,6 +2,7 @@ package com.xilu.wybz.ui.mine;
 
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -77,18 +78,7 @@ public class MineActivity extends ToolbarActivity {
         else isFirst = true;
         EventBus.getDefault().register(this);
         setLocalUserInfo(PrefsUtil.getUserInfo(this));
-        container.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, DensityUtil.getScreenH(context)-DensityUtil.dip2px(context,102+20)));
-        stickynavLayout.setOnScrollSizeChangeListener(new StickyNavLayout.OnScrollSizeChangeListener() {
-            @Override
-            public void onScrollY(int y) {
-                if (y >= 0 && y <= 300) {
-                    float alpha = y / 300f;
-                    mToolbar.setAlpha(alpha);
-                } else if (y > 300) {
-                    mToolbar.setAlpha(1);
-                }
-            }
-        });
+//        container.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, DensityUtil.getScreenH(context)-DensityUtil.dip2px(context,102+20)));
         tabs = new ArrayList<>();
         llMyrecord.setSelected(true);
         tabs.add(llMyrecord);
@@ -98,6 +88,22 @@ public class MineActivity extends ToolbarActivity {
         pagerAdapter = new MineAdapter(context, getSupportFragmentManager(), PrefsUtil.getUserId(context), PrefsUtil.getUserInfo(context).name);
         container.setAdapter(pagerAdapter);
         container.setOffscreenPageLimit(tabs.size());
+        stickynavLayout.setOnStickStateChangeListener(new StickyNavLayout.onStickStateChangeListener() {
+            @Override
+            public void isStick(boolean isStick) {
+//                if(!isStick) {
+//                    for (int i = 0; i < 4; i++) {
+//                        if (i != container.getCurrentItem()) {
+//                            pagerAdapter.getFragment(i).moveToFirst();
+//                        }
+//                    }
+//                }
+            }
+            @Override
+            public void scrollPercent(float percent) {
+                mToolbar.setAlpha(percent);
+            }
+        });
         container.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -219,15 +225,19 @@ public class MineActivity extends ToolbarActivity {
     public void onEventMainThread(Event.UpdataWorksList event) {
         WorksData worksData = event.getWorksData();
         int type = event.getType();
-        if (event.getChange() == 0)
-            (pagerAdapter.getFragment(type)).addItem(worksData);
-        else
-            (pagerAdapter.getFragment(type)).removeData(worksData);
+//        if (event.getChange() == 0)
+//            (pagerAdapter.getFragment(type)).addItem(worksData);
+//        else
+//            (pagerAdapter.getFragment(type)).removeData(worksData);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+    }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        return false;
     }
 }

@@ -162,12 +162,12 @@ public class PlayBanZouInstance {
         this.iml = iml;
     }
 
-    public void setData(String tag, String id) {
+    public void setData(String path, String id) {
         if (id == null) {
             stopMediaPlay();
             return;
         }
         MyApplication.musicId = id;
-        startMediaPlay(FileUtils.getMusicCachePath(tag + id));
+        startMediaPlay(path);
     }
 }

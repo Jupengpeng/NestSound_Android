@@ -61,6 +61,7 @@
                     android:layout_height="match_parent"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
+                    android:visibility="gone"
                     android:src="@drawable/icon_cancle" />
             </LinearLayout>
         </LinearLayout>
