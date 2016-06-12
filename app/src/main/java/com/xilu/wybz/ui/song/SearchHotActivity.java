@@ -133,7 +133,7 @@ public class SearchHotActivity extends ToolbarActivity {
         }
     }
     public void onEventMainThread(Event.HideKeyboardEvent event) {
-        KeyBoardUtil.closeKeybord(etkeyWord,context);
+        KeyBoardUtil.openAndCloseKeybord(context);
     }
     @Override
     protected void onDestroy() {

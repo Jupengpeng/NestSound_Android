@@ -1,6 +1,7 @@
 package com.xilu.wybz.ui.fragment;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -102,6 +103,7 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
             keyWord = "";
             page = 1;
             mDataList.clear();
+            llNoData.setVisibility(View.GONE);
             adapter.notifyDataSetChanged();
             recycler.requestLayout();
         }
@@ -112,23 +114,23 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
         if (mDataList == null) {
             mDataList = new ArrayList<>();
         }
-        if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
-            page = 1;
-        }
         hotPresenter.loadHotData(keyWord, type + 1, page++);
     }
 
     @Override
     public void showHotData(List<TemplateBean> templateBeens,int currentType) {
-        if(mDataList.size()==0)
-        EventBus.getDefault().post(new Event.HideKeyboardEvent());
-        if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
-            mDataList.clear();
-        }
-        recycler.enableLoadMore(true);
-        mDataList.addAll(templateBeens);
-        adapter.notifyDataSetChanged();
-        recycler.onRefreshCompleted();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(mDataList.size()==0){
+                    EventBus.getDefault().post(new Event.HideKeyboardEvent());
+                }
+                recycler.enableLoadMore(true);
+                mDataList.addAll(templateBeens);
+                adapter.notifyDataSetChanged();
+                recycler.onRefreshCompleted();
+            }
+        },600);
     }
 
     @Override

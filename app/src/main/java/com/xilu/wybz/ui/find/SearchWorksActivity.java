@@ -161,7 +161,7 @@ public class SearchWorksActivity extends ToolbarActivity {
             rlTab.setVisibility(View.VISIBLE);
             isShowTab = true;
         }
-        KeyBoardUtil.closeKeybord(etKeyword,context);
+        KeyBoardUtil.openAndCloseKeybord(context);
     }
 
     @Override
