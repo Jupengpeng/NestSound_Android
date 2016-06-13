@@ -45,7 +45,7 @@ public class FollowAndFansActivity extends BaseListActivity<FansBean> implements
     private TextView tvFollow;
     private ImageView ivFollow;
     private int ivfollowStates[] = new int[]{R.drawable.ic_user_follow, R.drawable.ic_user_followed, R.drawable.ic_user_each_follow};
-    private int followColors[] = new int[]{R.color.main_text_color, R.color.main_text_color2, R.color.lightblue};
+    private int followColors[] = new int[]{R.color.main_text_color, R.color.main_text_color3, R.color.type_blue};
     private String tvfollowStates[] = new String[]{"关注", "已关注", "互相关注"};
 
     public static void toFollowAndFansActivity(Context context, int type, int uid) {

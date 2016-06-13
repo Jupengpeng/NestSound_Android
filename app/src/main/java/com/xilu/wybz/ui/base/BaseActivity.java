@@ -22,6 +22,7 @@ import com.xilu.wybz.ui.find.FindActivity;
 import com.xilu.wybz.ui.login.LoginActivity;
 import com.xilu.wybz.ui.main.MainActivity;
 import com.xilu.wybz.ui.mine.MineActivity;
+import com.xilu.wybz.ui.mine.UserInfoActivity;
 import com.xilu.wybz.ui.msg.MsgActivity;
 import com.xilu.wybz.ui.song.PlayAudioActivity;
 import com.xilu.wybz.utils.NetWorkUtil;
@@ -97,7 +98,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             if (PhoneInfoUtil.isMIUI()) {
                 PhoneInfoUtil.MiuiCj(this, !(this instanceof PlayAudioActivity));
             }
-            if (this instanceof MainTabActivity) {
+            if (this instanceof MainTabActivity||this instanceof UserInfoActivity) {
                 setStatusColor(getResources().getColor(R.color.main_theme_color));
             }
         }

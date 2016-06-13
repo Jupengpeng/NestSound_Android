@@ -5,9 +5,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 import com.xilu.wybz.R;
 import com.xilu.wybz.adapter.InspireRecordViewHolder;
+import com.xilu.wybz.adapter.WorkAdapter;
 import com.xilu.wybz.adapter.WorksViewHolder;
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.bean.WorksData;
@@ -22,26 +24,35 @@ import com.xilu.wybz.view.pull.PullRecycler;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
 import de.greenrobot.event.EventBus;
 
 /**
  * Created by hujunwei on 16/6/3.
  */
 public class WorkDataFragment extends BaseFragment implements IUserView {
+    @Bind(R.id.id_stickynavlayout_innerscrollview)
+    ListView listView;
+    WorkAdapter adapter;
     UserPresenter userPresenter;
     public static String TYPE = "type";
     public static String UID = "uid";
     public static String AUTHOR = "author";
     private int type;
     private int userId;
+    private int deletePos;
     private String COME;
     private String author;
-    private String[] COMES = new String[]{"myrecord", "mysong", "mylyrics", "myfav"};
     private List<WorksData> mDataList;
+    private boolean isMe;
+    private int workType;
+
+    private String[] COMES = new String[]{"myrecord", "mysong", "mylyrics", "myfav"};
+    private String[] COMESs = new String[]{"usersong", "userlyrics", "userfav"};
 
     @Override
     protected int getLayoutResId() {
-        return R.layout.activity_base_list;
+        return R.layout.base_listview;
     }
 
     @Override
@@ -53,15 +64,25 @@ public class WorkDataFragment extends BaseFragment implements IUserView {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            type = getArguments().getInt(TYPE);
-            userId = getArguments().getInt(UID);
-            if(userId!= PrefsUtil.getUserId(context)){
-                type = type+1;
-            }
-            author = getArguments().getString(AUTHOR);
-        }
-        COME = COMES[type];
+//        if (getArguments() != null) {
+//            type = getArguments().getInt(TYPE);
+//            userId = getArguments().getInt(UID);
+//            isMe = (userId == PrefsUtil.getUserId(context));
+//            if (!isMe) {
+//                COME = COMESs[type];
+//                type = type + 1;
+//            } else {
+//                COME = COMES[type];
+//                if (type == 0) {
+//                    type = 4;
+//                    workType = 3;
+//                } else {
+//                    workType = type;
+//                }
+//            }
+//            author = getArguments().getString(AUTHOR);
+//        }
+
     }
 
     public static WorkDataFragment newInstance(int type, int userId, String author) {
@@ -76,74 +97,72 @@ public class WorkDataFragment extends BaseFragment implements IUserView {
 
 
     @Override
-    public void initView() {
-
-    }
-//    @Override
-//    public void onRefresh(int action) {
-//        this.action = action;
-//        if (mDataList == null) {
-//            mDataList = new ArrayList<>();
-//        }
-//        if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
-//            page = 1;
-//        }
-//        userPresenter.loadData(userId, type, page++);
-//    }
-
-    @Override
     public void setUserInfo(UserBean userBean) {
-        EventBus.getDefault().post(new Event.UpdataUserBean(userBean,PrefsUtil.getUserId(context)==userId?1:2));
+        EventBus.getDefault().post(new Event.UpdataUserBean(userBean, PrefsUtil.getUserId(context) == userId ? 1 : 2));
     }
 
     @Override
     public void showWorksData(List<WorksData> worksDataList) {
-        for (WorksData worksData : worksDataList) {
-            if(type<3)
-                worksData.setAuthor(author);
-            if(type==0){
-                worksData.status = 4;
-            }else if(type==1){
-                worksData.status = 1;
-            }else if(type==2){
-                worksData.status = 2;
-            }else if(type==3){
-                worksData.status = worksData.type;
-            }
-        }
-//        recycler.enableLoadMore(true);
-//        mDataList.addAll(worksDataList);
-//        adapter.notifyDataSetChanged();
-//        recycler.onRefreshCompleted();
+
     }
+
 
     @Override
     public void loadFail() {
-//        recycler.onRefreshCompleted();
+
     }
 
     @Override
     public void loadNoMore() {
-//        recycler.onRefreshCompleted();
-//        recycler.enableLoadMore(false);
+    }
+
+    @Override
+    public void deleteSuccess() {
+        cancelPd();
+    }
+
+    @Override
+    public void deleteFail() {
+        cancelPd();
     }
 
     @Override
     public void loadNoData() {
-//        llNoData.setVisibility(View.VISIBLE);
-//        recycler.onRefreshCompleted();
-//        recycler.enableLoadMore(false);
     }
-//    @Override
-//    protected BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
-//        if(type==0){
-//            View view = LayoutInflater.from(context).inflate(R.layout.fragment_inspirerecord_item, parent, false);
-//            InspireRecordViewHolder holder = new InspireRecordViewHolder(view, context, mDataList, COME);
-//            return holder;
-//        }else{
-//            View view = LayoutInflater.from(context).inflate(R.layout.activity_work_list_item, parent, false);
-//            WorksViewHolder holder = new WorksViewHolder(view, context, mDataList, COME);
-//            return holder;
+
+    public void deleteWorksData(int pos) {
+        showPd("正在删除中...");
+        deletePos = pos;
+        userPresenter.delete(mDataList.get(pos).getItemid(), workType);
+    }
+
+    public void unfavWorksData(int pos) {
+        showPd("正在删除中...");
+        deletePos = pos;
+        WorksData worksData = mDataList.get(pos);
+        userPresenter.unfav(worksData.itemid, worksData.uid, worksData.status);
+    }
+
+    public void removeData(WorksData worksData) {
+//        int index = -1;
+//        for(int i=0;i<mDataList.size();i++){
+//            if(worksData.itemid==mDataList.get(i).itemid&&worksData.status==mDataList.get(i).status){
+//                index = i;
+//                break;
+//            }
 //        }
-//    }
+//        if(index>-1){
+//            removeItem(index);
+//        }
+    }
+
+    @Override
+    public void initView() {
+        mDataList = new ArrayList<>();
+        for(int i=0;i<12;i++){
+            mDataList.add(new WorksData());
+        }
+        adapter = new WorkAdapter(context,mDataList);
+        listView.setAdapter(adapter);
+    }
 }

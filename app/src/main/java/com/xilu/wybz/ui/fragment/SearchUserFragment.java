@@ -1,5 +1,6 @@
 package com.xilu.wybz.ui.fragment;
 
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import com.xilu.wybz.bean.FansBean;
 import com.xilu.wybz.bean.FindSongBean;
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.bean.WorksData;
+import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.SearchPresenter;
 import com.xilu.wybz.ui.IView.ISearchView;
@@ -35,6 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by hujunwei on 16/5/22.
@@ -81,10 +84,19 @@ public class SearchUserFragment extends BaseListFragment<FansBean> implements IS
 
     @Override
     public void showUserData(List<FansBean> userBeenList) {
-        recycler.enableLoadMore(true);
-        mDataList.addAll(userBeenList);
-        adapter.notifyDataSetChanged();
-        recycler.onRefreshCompleted();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(mDataList.size()==0){
+                    EventBus.getDefault().post(new Event.ShowSearchTabEvent());
+                }
+                recycler.enableLoadMore(true);
+                mDataList.addAll(userBeenList);
+                adapter.notifyDataSetChanged();
+                recycler.onRefreshCompleted();
+            }
+        },600);
+
     }
 
     @Override
@@ -101,6 +113,9 @@ public class SearchUserFragment extends BaseListFragment<FansBean> implements IS
 
     @Override
     public void loadNoData() {
+        if(mDataList.size()==0){
+            EventBus.getDefault().post(new Event.ShowSearchTabEvent());
+        }
         llNoData.setVisibility(View.VISIBLE);
         recycler.onRefreshCompleted();
         recycler.enableLoadMore(false);
@@ -136,7 +151,7 @@ public class SearchUserFragment extends BaseListFragment<FansBean> implements IS
         @Override
         public void onBindViewHolder(int position) {
             FansBean fansBean = mDataList.get(position);
-            if(StringUtil.isNotBlank(fansBean.headurl)) {
+            if(StringUtil.isNotBlank(fansBean.headurl)&&!fansBean.headurl.equals("http://pic.yinchao.cn/uploadfiles/2015/09/14/201509141121211442200881.png")) {
                 String url = MyCommon.getImageUrl(fansBean.headurl, itemWidth, itemWidth);
                 loadImage(url, ivHead);
             }

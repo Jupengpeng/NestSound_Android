@@ -3,6 +3,7 @@ package com.xilu.wybz.ui.find;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.view.KeyEvent;
 import android.view.View;
 
 import com.xilu.wybz.R;
@@ -52,5 +53,9 @@ public class FindActivity extends BasePlayMenuActivity{
                 return;
         }
 
+    }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        return false;
     }
 }

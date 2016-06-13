@@ -36,6 +36,7 @@ import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.FileUtils;
 import com.xilu.wybz.utils.KeyBoardUtil;
 import com.xilu.wybz.utils.StringUtil;
+import com.xilu.wybz.view.KeyboardListenLayout;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.PullRecycler;
 
@@ -57,10 +58,10 @@ public class SearchHotActivity extends ToolbarActivity {
     ImageView ivCancle;
     HotFragment hotFragment;
     String keyWord;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
         initView();
         initEvent();
     }
@@ -72,7 +73,7 @@ public class SearchHotActivity extends ToolbarActivity {
 
 
     public void initView() {
-        hotFragment = HotFragment.newInstance(2);
+        hotFragment = HotFragment.newInstance(-1);
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, hotFragment).commit();
 
     }
@@ -88,7 +89,6 @@ public class SearchHotActivity extends ToolbarActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
             }
-
             @Override
             public void afterTextChanged(Editable s) {
                 keyWord = s.toString().trim();
@@ -96,6 +96,8 @@ public class SearchHotActivity extends ToolbarActivity {
                     if(hotFragment!=null){
                         hotFragment.clearData();
                     }
+                    etkeyWord.requestFocus();
+                    KeyBoardUtil.openKeybord(etkeyWord,context);
                     ivCancle.setVisibility(View.GONE);
                 } else {
                     ivCancle.setVisibility(View.VISIBLE);
@@ -122,13 +124,16 @@ public class SearchHotActivity extends ToolbarActivity {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_cancle:
-                KeyBoardUtil.openKeybord(etkeyWord, context);
-                hotFragment.clearData();
+                etkeyWord.setText("");
                 break;
             case R.id.rl_right:
+                KeyBoardUtil.closeKeybord(etkeyWord,context);
                 finish();
                 break;
         }
+    }
+    public void onEventMainThread(Event.HideKeyboardEvent event) {
+        KeyBoardUtil.openAndCloseKeybord(context);
     }
     @Override
     protected void onDestroy() {
@@ -136,5 +141,6 @@ public class SearchHotActivity extends ToolbarActivity {
         if(PlayBanZouInstance.getInstance().status>1){
             PlayBanZouInstance.getInstance().stopMediaPlay();
         }
+        EventBus.getDefault().unregister(this);
     }
 }

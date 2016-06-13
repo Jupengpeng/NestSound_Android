@@ -114,7 +114,7 @@ public class SongFragment extends BaseFragment implements ISongView {
                 }
             }
             WorksData worksData = worksDataList.get(position);
-            PlayAudioActivity.toPlayAudioActivity(context, worksData.getItemid(), "", COME, position);
+            PlayAudioActivity.toPlayAudioActivity(context, worksData.getItemid(), "", COME);
         }
     }
 }

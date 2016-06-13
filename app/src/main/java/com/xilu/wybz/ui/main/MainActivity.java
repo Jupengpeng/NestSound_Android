@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -167,7 +168,7 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
                 if (recommendWorkList.size() > 0) {
                     WorksData worksData = recommendWorkList.get(position);
                     if (worksData.status == 2) {
-                        LyricsdisplayActivity.toLyricsdisplayActivity(context, worksData.itemid, 0, worksData.getTitle(),position);
+                        LyricsdisplayActivity.toLyricsdisplayActivity(context, worksData.itemid, 0, worksData.getTitle());
                     } else {
                         String playFrom = PrefsUtil.getString("playFrom", context);
                         if (!playFrom.equals(MyCommon.TUIJIAN) || MyApplication.ids.size() == 0) {
@@ -179,7 +180,7 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
                                 }
                             }
                         }
-                        PlayAudioActivity.toPlayAudioActivity(context, worksData.itemid, "", MyCommon.TUIJIAN, position);
+                        PlayAudioActivity.toPlayAudioActivity(context, worksData.itemid, "", MyCommon.TUIJIAN);
                     }
                 }
             }
@@ -202,7 +203,7 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
                 if (newWorkList.size() > 0) {
                     WorksData worksData = newWorkList.get(position);
                     if (worksData.status == 2) {
-                        LyricsdisplayActivity.toLyricsdisplayActivity(context, worksData.itemid, 0, worksData.getTitle(),position);
+                        LyricsdisplayActivity.toLyricsdisplayActivity(context, worksData.itemid, 0, worksData.getTitle());
                     } else {
                         String playFrom = PrefsUtil.getString("playFrom", context);
                         if (!playFrom.equals(MyCommon.ZUIXIN) || MyApplication.ids.size() == 0) {
@@ -214,7 +215,7 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
                                 }
                             }
                         }
-                        PlayAudioActivity.toPlayAudioActivity(context, worksData.itemid, "", MyCommon.ZUIXIN, position);
+                        PlayAudioActivity.toPlayAudioActivity(context, worksData.itemid, "", MyCommon.ZUIXIN);
                     }
                 }
             }
@@ -236,7 +237,7 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
                         }
                     }
                     MusicTalk worksData = musicTalkList.get(position);
-                    PlayAudioActivity.toPlayAudioActivity(context, worksData.itemid, "", MyCommon.MUSICTALK, position);
+                    PlayAudioActivity.toPlayAudioActivity(context, worksData.itemid, "", MyCommon.MUSICTALK);
                 }
             }
         });
@@ -331,7 +332,7 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
                                 MyApplication.ids.add(bannerListBean.getItemid());
                         }
                     }
-                    PlayAudioActivity.toPlayAudioActivity(context, bannerList.get(pos).getItemid(), "", MyCommon.BANNER, pos);
+                    PlayAudioActivity.toPlayAudioActivity(context, bannerList.get(pos).getItemid(), "", MyCommon.BANNER);
                 } else {
                     BrowserActivity.toBrowserActivity(context, bannerList.get(pos).getPlayurl());
                 }
@@ -447,5 +448,9 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        return false;
     }
 }

@@ -148,7 +148,7 @@ public class MusicTalkMoreActivity extends BaseListActivity<MusicTalk> implement
                 }
             }
             MusicTalk worksData = mDataList.get(position);
-            PlayAudioActivity.toPlayAudioActivity(context, worksData.itemid, "", MyCommon.MUSICTALK_MORE, position);
+            PlayAudioActivity.toPlayAudioActivity(context, worksData.itemid, "", MyCommon.MUSICTALK_MORE);
         }
     }
 }

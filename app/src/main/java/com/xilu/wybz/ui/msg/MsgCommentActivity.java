@@ -160,10 +160,10 @@ public class MsgCommentActivity extends BaseListActivity<MsgCommentBean> impleme
             MsgCommentBean msgCommentBean = (MsgCommentBean)itemView.getTag();
             if(msgCommentBean.type==1){
                 if(msgCommentBean.workid>0)
-                PlayAudioActivity.toPlayAudioActivity(context, msgCommentBean.workid, "", MyCommon.MSG_COMMENT, 0);
+                PlayAudioActivity.toPlayAudioActivity(context, msgCommentBean.workid, "", MyCommon.MSG_COMMENT);
             }else{
                 if(msgCommentBean.workid>0)
-                    LyricsdisplayActivity.toLyricsdisplayActivity(context, msgCommentBean.workid, 0, msgCommentBean.title,0);
+                    LyricsdisplayActivity.toLyricsdisplayActivity(context, msgCommentBean.workid, 0, msgCommentBean.title);
             }
         }
         public SampleViewHolder(View itemView) {

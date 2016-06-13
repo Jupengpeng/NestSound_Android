@@ -163,21 +163,6 @@ public class MyHttpClient {
         return "lyricsopt/optLyrics";
     }
 
-    //上传歌曲
-    public static String getuploadmp3Url() {
-        return BASE_URL + "common/uploadcallback/uploadmp3";
-    }
-
-    //合成歌曲
-    public static String getTuningSongUrl() {
-        return "musiopt/tuningMusic";
-    }
-
-    //发布歌曲
-    public static String getSaveSongUrl() {
-        return "musiopt/optMusic";
-    }
-
     //保存灵感记录
     public static String getSaveInspireUrl() {
         return "inspire/save";
@@ -236,6 +221,27 @@ public class MyHttpClient {
     //搜索接口
     public static String getFanFocusList() {
         return "fanfocus/optFans";
+    }
+
+    //上传歌曲
+    public static String getuploadmp3Url() {
+        return BASE_URL + "common/uploadcallback/uploadmp3";
+    }
+
+    //合成歌曲
+    public static String getTuningSongUrl() {
+        return "musiopt/tuningMusic";
+    }
+
+    //发布歌曲
+    public static String getSaveSongUrl() {
+        return "musiopt/optMusic";
+    }
+
+
+    //删除我的作品
+    public static String getDeleteWorksUrl(){
+        return "userCenter/deleteWork";
     }
 
 }

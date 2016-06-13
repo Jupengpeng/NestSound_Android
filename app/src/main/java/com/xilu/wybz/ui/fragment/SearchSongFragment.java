@@ -1,6 +1,7 @@
 package com.xilu.wybz.ui.fragment;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
@@ -71,14 +72,19 @@ public class SearchSongFragment extends BaseListFragment<WorksData> implements I
     }
 
     @Override
-    public void showWorksData(List<WorksData> worksDataList) {
-        if(mDataList.size()==0){
-            EventBus.getDefault().post(new Event.ShowSearchTabEvent());
-        }
-        recycler.enableLoadMore(true);
-        mDataList.addAll(worksDataList);
-        adapter.notifyDataSetChanged();
-        recycler.onRefreshCompleted();
+    public void showWorksData(List<WorksData> worksDataList){
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(mDataList.size()==0){
+                    EventBus.getDefault().post(new Event.ShowSearchTabEvent());
+                }
+                recycler.enableLoadMore(true);
+                mDataList.addAll(worksDataList);
+                adapter.notifyDataSetChanged();
+                recycler.onRefreshCompleted();
+            }
+        },600);
     }
 
     @Override
@@ -100,6 +106,9 @@ public class SearchSongFragment extends BaseListFragment<WorksData> implements I
 
     @Override
     public void loadNoData() {
+        if(mDataList.size()==0){
+            EventBus.getDefault().post(new Event.ShowSearchTabEvent());
+        }
         llNoData.setVisibility(View.VISIBLE);
         recycler.onRefreshCompleted();
         recycler.enableLoadMore(false);
@@ -160,7 +169,7 @@ public class SearchSongFragment extends BaseListFragment<WorksData> implements I
                 }
             }
             WorksData worksData = mDataList.get(position);
-            PlayAudioActivity.toPlayAudioActivity(context, worksData.getItemid(), "", MyCommon.SEARCH, position);
+            PlayAudioActivity.toPlayAudioActivity(context, worksData.getItemid(), "", MyCommon.SEARCH);
         }
     }
 }

@@ -359,7 +359,7 @@ public class ParseUtils {
     }
 
     public static void showMsg(Context context, String msg) {
-        ToastUtils.toast(context, msg);
+        ToastUtils.toastLong(context, msg);
     }
 
 

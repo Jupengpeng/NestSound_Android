@@ -1,6 +1,7 @@
 package com.xilu.wybz.ui.fragment;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,8 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.TemplateBean;
+import com.xilu.wybz.common.Event;
+import com.xilu.wybz.common.FileDir;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.common.PlayBanZouInstance;
 import com.xilu.wybz.common.interfaces.IMediaPlayerListener;
@@ -24,6 +27,7 @@ import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.ui.song.MakeSongActivity;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.FileUtils;
+import com.xilu.wybz.utils.MD5Util;
 import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.PullRecycler;
@@ -33,6 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
+import de.greenrobot.event.EventBus;
 
 public class HotFragment extends BaseListFragment<TemplateBean> implements IHotView {
     public static final String TYPE = "type";
@@ -45,7 +50,7 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
     private int oldPos = -1;
     private ImageView oldIvPlay;
     private ProgressBar oldPbPlay;
-
+    String playPath;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,7 +86,7 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
     @Override
     protected void setUpData() {
         super.setUpData();
-        if (type < 2) {
+        if (type ==0||type==1) {
             recycler.setRefreshing();
         }
     }
@@ -94,35 +99,38 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
     }
 
     public void clearData() {
-
         if (mDataList != null && mDataList.size() > 0) {
             keyWord = "";
+            page = 1;
             mDataList.clear();
+            llNoData.setVisibility(View.GONE);
             adapter.notifyDataSetChanged();
+            recycler.requestLayout();
         }
     }
-
     @Override
     public void onRefresh(int action) {
         this.action = action;
         if (mDataList == null) {
             mDataList = new ArrayList<>();
         }
-        if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
-            page = 1;
-        }
         hotPresenter.loadHotData(keyWord, type + 1, page++);
     }
 
     @Override
-    public void showHotData(List<TemplateBean> templateBeens) {
-        if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
-            mDataList.clear();
-        }
-        recycler.enableLoadMore(true);
-        mDataList.addAll(templateBeens);
-        adapter.notifyDataSetChanged();
-        recycler.onRefreshCompleted();
+    public void showHotData(List<TemplateBean> templateBeens,int currentType) {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(mDataList.size()==0){
+                    EventBus.getDefault().post(new Event.HideKeyboardEvent());
+                }
+                recycler.enableLoadMore(true);
+                mDataList.addAll(templateBeens);
+                adapter.notifyDataSetChanged();
+                recycler.onRefreshCompleted();
+            }
+        },600);
     }
 
     @Override
@@ -138,6 +146,8 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
 
     @Override
     public void loadNoData() {
+        if(mDataList.size()==0)
+            EventBus.getDefault().post(new Event.HideKeyboardEvent());
         llNoData.setVisibility(View.VISIBLE);
         recycler.onRefreshCompleted();
         recycler.enableLoadMore(false);
@@ -145,7 +155,7 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
 
     @Override
     public void downloadSuccess() {
-        PlayBanZouInstance.getInstance().setData(MyCommon.TYPE_TEMPLATE, tb.id+".mp3");
+        PlayBanZouInstance.getInstance().setData(playPath, tb.id);
     }
 
     @Override
@@ -273,15 +283,16 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
 
     public void playTemplateMusic() {
         PlayBanZouInstance.getInstance().stopMediaPlay();
-        String playPath = FileUtils.getMusicCachePath(MyCommon.TYPE_TEMPLATE + tb.id+".mp3");
+        String filePath = FileDir.hotDir;
+        if (!new File(filePath).exists()) {
+            new File(filePath).mkdirs();
+        }
+        String fileName = MD5Util.getMD5String(tb.mp3);
+        playPath = filePath+fileName+".mp3";
         if (new File(playPath).exists()) {
-            PlayBanZouInstance.getInstance().setData(MyCommon.TYPE_TEMPLATE, tb.id+".mp3");
+            PlayBanZouInstance.getInstance().setData(playPath, tb.id);
         } else {
-            String filePath = FileUtils.getRootPath() + FileUtils.MUSICCACHEPATH;
-            if (!new File(filePath).exists()) {
-                new File(filePath).mkdirs();
-            }
-            hotPresenter.downHot(filePath, MyCommon.TYPE_TEMPLATE + tb.id, tb.mp3);
+            hotPresenter.downHot(filePath, fileName, tb.mp3);
         }
         PlayBanZouInstance.getInstance().setIMediaPlayerListener(new IMediaPlayerListener() {
             @Override

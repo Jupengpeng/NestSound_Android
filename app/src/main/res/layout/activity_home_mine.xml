@@ -1,14 +1,16 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    xmlns:stick="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <com.xilu.wybz.view.StickyNavLayout
         android:id="@+id/stickynav_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        stick:isStickNav="false"
+        stick:stickOffset="@dimen/actionbar_size"
+        >
 
         <LinearLayout
             android:id="@id/id_stickynavlayout_topview"
@@ -240,11 +242,11 @@
             </LinearLayout>
         </RelativeLayout>
 
-        <com.xilu.wybz.view.IndexViewPager
+        <android.support.v4.view.ViewPager
             android:id="@id/id_stickynavlayout_viewpager"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
     </com.xilu.wybz.view.StickyNavLayout>
     <include layout="@layout/view_mine_toolbar" />
-</FrameLayout>
+</RelativeLayout>

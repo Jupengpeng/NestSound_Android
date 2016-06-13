@@ -9,10 +9,12 @@ import android.view.ViewGroup;
 
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.ToastUtils;
+import com.xilu.wybz.view.materialdialogs.MaterialDialog;
 
 import butterknife.ButterKnife;
 public abstract class BaseFragment extends Fragment {
     protected Context context;
+    protected MaterialDialog materialDialog;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(getLayoutResId(), container, false);
@@ -21,7 +23,23 @@ public abstract class BaseFragment extends Fragment {
         initPresenter();
         return view;
     }
+    protected void showPd(String msg) {
+        showIndeterminateProgressDialog(msg);
+    }
 
+    protected void cancelPd() {
+        if (materialDialog != null && materialDialog.isShowing())
+            materialDialog.dismiss();
+    }
+
+    protected void showIndeterminateProgressDialog(String msg) {
+        materialDialog = new MaterialDialog.Builder(getActivity())
+                .content(msg)
+                .progress(true, 0)
+                .progressIndeterminateStyle(false)
+                .canceledOnTouchOutside(false)
+                .show();
+    }
     protected abstract int getLayoutResId();
 
     protected abstract void initPresenter();

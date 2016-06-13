@@ -55,6 +55,8 @@ public class WorksViewHolder extends com.xilu.wybz.view.pull.BaseViewHolder {
         this.onDeleteListener = onDeleteListener;
         itemWidth = DensityUtil.dip2px(context, 66);
         ivCover.setLayoutParams(new LinearLayout.LayoutParams(itemWidth, itemWidth));
+        //只有我的作品才可以长按删除
+        if(onDeleteListener==null)return;
         itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -102,7 +104,7 @@ public class WorksViewHolder extends com.xilu.wybz.view.pull.BaseViewHolder {
             int from = 0;
             if (COME.equals("mylyrics")) from = 1;
             else if (COME.equals("myfav")) from = 2;
-            LyricsdisplayActivity.toLyricsdisplayActivity(mContext, mDataList.get(position).getItemid(), from, mDataList.get(position).name, position);
+            LyricsdisplayActivity.toLyricsdisplayActivity(mContext, mDataList.get(position).getItemid(), from, mDataList.get(position).name);
         }
     }
 
@@ -120,7 +122,7 @@ public class WorksViewHolder extends com.xilu.wybz.view.pull.BaseViewHolder {
                 }
             }
             WorksData worksData = mDataList.get(position);
-            PlayAudioActivity.toPlayAudioActivity(mContext, worksData.getItemid(), "", COME, position);
+            PlayAudioActivity.toPlayAudioActivity(mContext, worksData.getItemid(), "", COME);
         }
     }
 }

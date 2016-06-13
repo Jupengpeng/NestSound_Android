@@ -41,12 +41,14 @@ public class InspireRecordPresenter extends BasePresenter<IInspireRecordView>{
                 DataBean dataBean = ParseUtils.getDataBean(context,response);
                 if(dataBean.code==200){
                     iView.pubSuccess();
+                }else{
+                    iView.pubFail();
                 }
             }
             @Override
             public void onError(Call call, Exception e) {
                 super.onError(call, e);
-
+                iView.pubFail();
             }
         });
     }

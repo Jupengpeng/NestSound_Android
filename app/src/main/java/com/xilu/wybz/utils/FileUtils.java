@@ -356,28 +356,16 @@ public class FileUtils {
         }
     }
 
-    public static boolean saveBmp(String savePath, Bitmap bitmap, boolean restart) {
+    public static void saveBmp(String savePath, Bitmap bitmap) {
         try {
-            if (!restart) {
-                File picFile = new File(savePath);
-                if (picFile.isFile() && picFile.length() > 0) {
-                    return true;
-                }
-            }
             BufferedOutputStream bos = new BufferedOutputStream(
                     new FileOutputStream(savePath));
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
             bos.flush();
             bos.close();
-            return true;
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
         }
-    }
-
-    public static boolean saveBmp(String savePath, Bitmap bitmap) {
-        return saveBmp(savePath, bitmap, false);
     }
 
     public static boolean uniteAMRFile(File[] partsPaths, String unitedFilePath) {

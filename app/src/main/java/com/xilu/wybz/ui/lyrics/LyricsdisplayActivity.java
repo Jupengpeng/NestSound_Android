@@ -82,11 +82,10 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
     String[] actionTitles = new String[]{"分享", "举报", "编辑"};
     String[] actionTypes = new String[]{"share", "jubao", "edit"};
 
-    public static void toLyricsdisplayActivity(Context context, int id, int from, String title,int pos) {
+    public static void toLyricsdisplayActivity(Context context, int id, int from, String title) {
         Intent intent = new Intent(context, LyricsdisplayActivity.class);
         intent.putExtra("id", id);
         intent.putExtra("from", from);
-        intent.putExtra("pos", pos);
         intent.putExtra("title", title);
         context.startActivity(intent);
     }
@@ -132,6 +131,7 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
             actionBeanList.add(actionBean);
         }
     }
+
     @OnClick({R.id.rl_zan, R.id.rl_fav, R.id.iv_nonet, R.id.rl_head, R.id.iv_comment})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -212,6 +212,8 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
     @Override
     public void loadLyrics(WorksData worksData) {
         this.worksData = worksData;
+        worksData.type=0;
+        worksData.status=0;
         ivZan.setImageResource(worksData.getIsZan() == 0 ? R.drawable.ic_lyrics_zan1 : R.drawable.ic_lyrics_zan2);
         loadTitleContent();
         tvAuthor.setText(worksData.getAuthor());
@@ -249,10 +251,11 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
 
     @Override
     public void favSuccess() {
-        worksData.iscollect = 1-worksData.iscollect;
+        worksData.iscollect = 1 - worksData.iscollect;
+        if (worksData.iscollect == 1) showMsg("收藏成功！");
+        EventBus.getDefault().post(new Event.UpdataWorksList(worksData, 3, 1-worksData.iscollect));
         ivFav.startAnimation(AnimationUtils.loadAnimation(context, R.anim.dianzan_anim));
         ivFav.setImageResource(worksData.iscollect == 0 ? R.drawable.ic_lyrics_fav1 : R.drawable.ic_lyrics_fav2);
-        showMsg("收藏成功");
     }
 
     @Override
@@ -297,9 +300,6 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
-        if(worksData!=null&&worksData.itemid>0&&from==2&&worksData.iscollect==0){//在我的收藏页面进来 取消了收藏
-            EventBus.getDefault().post(new Event.UpdataWorksList(worksData,3,1,pos));
-        }
     }
 
     @Override
@@ -322,14 +322,14 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
                 }
             }
         } else if (actionBean.getType().equals("edit")) {
-            MakeWordActivity.toMakeWordActivity(context,worksData);
+            MakeWordActivity.toMakeWordActivity(context, worksData);
         } else if (actionBean.getType().equals("jubao")) {
             intent = new Intent(context, SettingFeedActivity.class);
             intent.putExtra("type", 1);
             startActivity(intent);
         }
-        if(actionMoreDialog!=null)
-        actionMoreDialog.dismiss();
+        if (actionMoreDialog != null)
+            actionMoreDialog.dismiss();
     }
 
     public void toCommentActivity() {

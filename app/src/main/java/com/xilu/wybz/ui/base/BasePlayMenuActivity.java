@@ -75,7 +75,7 @@ public abstract class BasePlayMenuActivity extends ToolbarActivity {
         if (playId>0) {
             PlayAudioActivity.toPlayAudioActivity(context, PrefsUtil.getInt("playId", context),
                     PrefsUtil.getString("playGedanId", context),
-                    PrefsUtil.getString("playFrom", context), PrefsUtil.getInt("playdPos", context));
+                    PrefsUtil.getString("playFrom", context));
         }
     }
     protected void hideRight(){

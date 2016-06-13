@@ -40,6 +40,7 @@ import com.xilu.wybz.view.GridSpacingItemDecoration;
 import com.xilu.wybz.view.kpswitch.util.KPSwitchConflictUtil;
 import com.xilu.wybz.view.kpswitch.util.KeyboardUtil;
 import com.xilu.wybz.view.kpswitch.widget.KPSwitchPanelLinearLayout;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -54,7 +55,7 @@ import de.greenrobot.event.EventBus;
 /**
  * Created by June on 16/5/11.
  */
-public class InspireRecordActivity extends ToolbarActivity implements IInspireRecordView,NewPlayInstance.IPlayerListener{
+public class InspireRecordActivity extends ToolbarActivity implements IInspireRecordView, NewPlayInstance.IPlayerListener {
 
     @Bind(R.id.recycler_view_pic)
     RecyclerView recyclerViewPic;
@@ -87,6 +88,7 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
     int column = 3;
     int itemSpace;
     InspireRecordPresenter inspireRecordPresenter;
+
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_publish_record;
@@ -96,7 +98,7 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
-        inspireRecordPresenter = new InspireRecordPresenter(context,this);
+        inspireRecordPresenter = new InspireRecordPresenter(context, this);
         inspireRecordPresenter.init();
         initData();
     }
@@ -106,21 +108,23 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
         getMenuInflater().inflate(R.menu.menu_send, menu);
         return true;
     }
-    private void uploadPics(){
+
+    private void uploadPics() {
         UploadMorePicUtil uploadMorePicUtil = new UploadMorePicUtil(context);
         List<String> pics = new ArrayList<>();
-        for(PhotoBean photoBean:list){
-            if(StringUtil.isNotBlank(photoBean.path)&&new File(photoBean.path).exists())
+        for (PhotoBean photoBean : list) {
+            if (StringUtil.isNotBlank(photoBean.path) && new File(photoBean.path).exists())
                 pics.add(photoBean.path);
         }
         uploadMorePicUtil.uploadPics(pics, new UploadMorePicUtil.UploadPicResult() {
             @Override
             public void onSuccess(String images) {
-                if(!TextUtils.isEmpty(images)){
+                if (!TextUtils.isEmpty(images)) {
                     worksData.pics = images;
                     inspireRecordPresenter.publishData(worksData);
                 }
             }
+
             @Override
             public void onFail() {
                 cancelPd();
@@ -128,19 +132,21 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
             }
         });
     }
-    private void uploadRecord(){
-        if(!new File(recordPath).exists()){
+
+    private void uploadRecord() {
+        if (!new File(recordPath).exists()) {
             showMsg("本地录音文件不存在！");
         }
         UploadFileUtil uploadFileUtil = new UploadFileUtil(context);
         uploadFileUtil.uploadFile(recordPath, MyCommon.fixxs[3], new UploadFileUtil.UploadResult() {
             @Override
             public void onSuccess(String filrUrl) {
-                if(!TextUtils.isEmpty(filrUrl)){
+                if (!TextUtils.isEmpty(filrUrl)) {
                     worksData.audio = filrUrl;
                     inspireRecordPresenter.publishData(worksData);
                 }
             }
+
             @Override
             public void onFail() {
                 cancelPd();
@@ -148,12 +154,13 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
             }
         });
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.menu_send:
                 String content = etContent.getText().toString().trim();
-                if(!TextUtils.isEmpty(content)||list.size()>0||!TextUtils.isEmpty(recordPath)) {
+                if (!TextUtils.isEmpty(content) || list.size() > 0 || !TextUtils.isEmpty(recordPath)) {
                     showPd("正在发布中，请稍候...");
                     worksData.spirecontent = content;
                     if (list.size() > 0) {
@@ -170,6 +177,7 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
         }
         return super.onOptionsItemSelected(item);
     }
+
     public void initView() {
         setTitle(DateTimeUtil.timestamp2DateTime(System.currentTimeMillis()));
         itemSpace = DensityUtil.dip2px(context, 10);
@@ -207,10 +215,11 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
         adapter.setOnItemClickListener(new RecordImageAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                if(list.get(position).isAddPic){
+                if (list.get(position).isAddPic) {
                     ToSelectPicActivity();
                 }
             }
+
             @Override
             public void onDelClick(View view, int position) {
                 adapter.removeItem(position);
@@ -222,10 +231,10 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_del_record:
-                if(new File(recordPath).exists()){
+                if (new File(recordPath).exists()) {
                     new File(recordPath).delete();
                 }
-                if(playState>0){
+                if (playState > 0) {
                     NewPlayInstance.getInstance().stopMediaPlay();
                 }
                 tvRecordStatus.setText("点击录音");
@@ -243,15 +252,15 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
                 ToSelectPicActivity();
                 break;
             case R.id.iv_record_status:
-                switch (recordStatus){
+                switch (recordStatus) {
                     case 0://开始录音
                         if (!FileUtils.isSdcardExit()) {
                             showMsg("没有SD卡，无法存储录音数据");
                         }
-                        if(!new File(FileDir.inspireMp3Dir).exists()){
+                        if (!new File(FileDir.inspireMp3Dir).exists()) {
                             new File(FileDir.inspireMp3Dir).mkdirs();
                         }
-                        recordPath = FileDir.inspireMp3Dir+System.currentTimeMillis()+".mp3";
+                        recordPath = FileDir.inspireMp3Dir + System.currentTimeMillis() + ".mp3";
                         mp3Recorder = new MP3Recorder(new File(recordPath));
                         try {
                             mp3Recorder.start();
@@ -278,12 +287,12 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
                         ivDelRecord.setVisibility(View.VISIBLE);
                         break;
                     case 2://录音完成
-                        switch (playState){
+                        switch (playState) {
                             case 0://开始播放
-                                if(new File(recordPath).exists()){
+                                if (new File(recordPath).exists()) {
                                     NewPlayInstance.getInstance().setIMediaPlayerListener(InspireRecordActivity.this);
                                     NewPlayInstance.getInstance().creatMediaPlayer(recordPath);
-                                }else{
+                                } else {
                                     showMsg("本地录音文件不存在！");
                                 }
                                 break;
@@ -380,7 +389,7 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
                     break;
                 case 1:
                     playIndex++;
-                    tvTime.setText(SystemUtils.getTimeFormat(playIndex * 1000)+"/"+SystemUtils.getTimeFormat(allTime));
+                    tvTime.setText(SystemUtils.getTimeFormat(playIndex * 1000) + "/" + SystemUtils.getTimeFormat(allTime));
                     break;
             }
         }
@@ -427,7 +436,8 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
         tvTime.setText(SystemUtils.getTimeFormat(allTime));
         ivRecordStatus.setImageResource(R.drawable.ic_record_play);
     }
-    private void ToSelectPicActivity(){
+
+    private void ToSelectPicActivity() {
         Intent intent = new Intent(this, SelectPicActivity.class);
         ArrayList<String> pics = new ArrayList<>();
         if (list.size() > 0) {
@@ -443,22 +453,17 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
     }
 
     @Override
-    public void pubStart() {
-
-    }
-
-    @Override
     public void pubSuccess() {
         cancelPd();
         showMsg("发布成功！");
-        worksData.createdate=System.currentTimeMillis();
-        EventBus.getDefault().post(new Event.UpdataWorksList(worksData,0,0,0));
+        worksData.createdate = System.currentTimeMillis();
+        EventBus.getDefault().post(new Event.UpdataWorksList(worksData, 0, 0));
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 finish();
             }
-        },1000);
+        }, 1000);
     }
 
     @Override

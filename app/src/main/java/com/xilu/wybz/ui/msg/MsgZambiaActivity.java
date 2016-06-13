@@ -126,10 +126,10 @@ public class MsgZambiaActivity extends BaseListActivity<ZambiaBean> implements I
             ZambiaBean zambiaBean = (ZambiaBean) itemView.getTag();
             if (zambiaBean.type == 1) {
                 if (zambiaBean.workid > 0)
-                    PlayAudioActivity.toPlayAudioActivity(context, zambiaBean.workid, "", MyCommon.MSG_COMMENT, 0);
+                    PlayAudioActivity.toPlayAudioActivity(context, zambiaBean.workid, "", MyCommon.MSG_COMMENT);
             } else {
                 if (zambiaBean.workid > 0)
-                    LyricsdisplayActivity.toLyricsdisplayActivity(context, zambiaBean.workid, 0, zambiaBean.title, 0);
+                    LyricsdisplayActivity.toLyricsdisplayActivity(context, zambiaBean.workid, 0, zambiaBean.title);
             }
         }
 

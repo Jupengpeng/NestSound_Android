@@ -86,9 +86,10 @@ public class CommentPresenter extends BasePresenter<ICommentView>{
         });
     }
     //删除评论
-    public void delComment(int id, int pos, int type){
+    public void delComment(int id, int itemid, int pos, int type){
         Map<String,String> params = new HashMap<>();
         params.put("id", id+"");
+        params.put("itemid", itemid+"");
         params.put("type", type+"");
         httpUtils.post(MyHttpClient.getDelCommentUrl(), params, new MyStringCallback(){
             @Override
