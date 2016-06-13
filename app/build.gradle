@@ -1,7 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 
-
 //apply from: "${rootProject.projectDir}/app/config/keystore.gradle"
 
 def releaseTime() {
@@ -109,29 +108,50 @@ android {
                     //输出apk名称为yinchao_yinchao_v1.0_20160426_release.apk
                     def fileName = "yinchao_v${properties.versionName}_${variant.productFlavors[0].name}_${releaseTime()}_release.apk"
                     output.outputFile = new File(outputFile.parent, fileName)
-                }
-                else if (outputFile != null && outputFile.name.endsWith('debug.apk')) {
+                } else if (outputFile != null && outputFile.name.endsWith('debug.apk')) {
                     // 输出apk名称为yinchao_yinchao_v1.0_20160426_debug.apk
                     def fileName = "yinchao_v${properties.versionName}_${variant.productFlavors[0].name}_${releaseTime()}_debug.apk"
                     output.outputFile = new File(outputFile.parent, fileName)
                 }
 
-                println "yinchao apk name:"+fileName
+                println "yinchao apk name:" + fileName
             }
         }
 
     }
 
-
-
+    //渠道 360，百度，豌豆荚，应用宝，小米商店，魅族手机，华为手机，PP助手，oppo，锤子，三星，应用汇，应用贝，安智，乐视，木蚂蚁，网易，联想，搜狗，机锋，其他
 
     productFlavors {
+//        _360 {}
+//        baidu {}
+//        wandoujia {}
+//        qq {}
+//        yinchao {}
+//        xiaomi {}
+//        meizu {}
+//        huawei {}
+//        ppzs {}
+//        oppo {}
+//        smartisan {}
+//        samsung {}
+//        appchina {}
+//        yybei {}
+//        anzhi {}
+//        leshi {}
+//        mumayi {}
+//        wangyi {}
+//        lenove {}
+//        sogou {}
+//        push {}
+//        gfan {}
+//        jinli {}
+//        vivo {}
+//        other1 {}
+//        other2 {}
+//        other3 {}
 
-//        Yinchao {
-//        }
-//        Umeng {
-//        }
-        Meizu {
+        devloper {
         }
 
         productFlavors.each { flavor ->
