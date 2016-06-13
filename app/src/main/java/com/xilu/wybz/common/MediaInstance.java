@@ -2,11 +2,13 @@ package com.xilu.wybz.common;
 
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.media.TimedText;
+import android.util.Log;
 
 import com.xilu.wybz.common.interfaces.IMediaPlayerListener;
 
 import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by June on 2015/9/16.
@@ -122,6 +124,7 @@ public class MediaInstance {
             mediaPlayer = new MediaPlayer();
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);// 设置媒体流类型
 
+
             mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mp) {
@@ -132,6 +135,7 @@ public class MediaInstance {
                     }
                 }
             });
+
             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
@@ -150,25 +154,15 @@ public class MediaInstance {
                 public boolean onError(MediaPlayer mp, int what, int extra) {
                     isPlay = false;
                     mp.reset();
+                    mp.release();
+                    mediaPlayer = null;
                     if (iml != null) {
                         iml.onError();
                     }
                     return false;
                 }
             });
-            mediaPlayer.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
-                @Override
-                public void onBufferingUpdate(MediaPlayer mp, int percent) {
 
-                }
-            });
-
-            mediaPlayer.setOnTimedTextListener(new MediaPlayer.OnTimedTextListener() {
-                @Override
-                public void onTimedText(MediaPlayer mp, TimedText text) {
-
-                }
-            });
             try {
                 mediaPlayer.setDataSource(file);
             } catch (IOException e) {
@@ -177,8 +171,74 @@ public class MediaInstance {
         }
     }
 
+
+    Timer timer;
+    OnProgressLitsener onProgressLitsener;
+
+
+
+
+    /**
+     *
+     */
+    public void startTimerTask(){
+        if (timer != null){
+            timer.cancel();
+            timer = null;
+        }
+        timer = new Timer();
+
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                if (mediaPlayer != null){
+                    int current = mediaPlayer.getCurrentPosition();
+                    Log.d("timer","time:"+current);
+                    if (onProgressLitsener != null && current != 1){
+                        onProgressLitsener.progress(current);
+                    }
+                } else {
+                    Log.d("timer","cancel");
+                    timer.cancel();
+                    timer = null;
+                }
+            }
+        };
+
+        timer.schedule(task,50,50);
+
+    }
+
+
+    /**
+     *
+     */
+    public void stopTimerTask(){
+        if (timer != null){
+            timer.cancel();
+            timer = null;
+        }
+    }
+
+    public void setOnProgressLitsener(OnProgressLitsener onProgressLitsener) {
+        this.onProgressLitsener = onProgressLitsener;
+    }
+
+    public interface OnProgressLitsener{
+        void progress(int progress);
+    }
+
+
+
+
+
+
     public void destroy(){
+        if (isPlay){
+            mediaPlayer.stop();
+        }
         try{
+            mediaPlayer.reset();
             mediaPlayer.release();
         }catch (Exception e){
             e.printStackTrace();

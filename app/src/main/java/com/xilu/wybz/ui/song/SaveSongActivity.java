@@ -23,6 +23,7 @@ import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.FileDir;
 import com.xilu.wybz.common.MediaInstance;
 import com.xilu.wybz.common.MyCommon;
+import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.common.interfaces.IMediaPlayerListener;
 import com.xilu.wybz.presenter.DownloadMusicPresenter;
 import com.xilu.wybz.presenter.SaveSongPresenter;
@@ -137,6 +138,7 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView ,
             public void onStart() {
                 status = 1;
                 showMsg("播放开始");
+                cancelWait();
             }
 
             @Override
@@ -170,6 +172,7 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView ,
                 status = 6;
                 showbuttonPlay();
                 showMsg("播放错误");
+                cancelWait();
             }
         });
     }
@@ -243,8 +246,11 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView ,
         }
 
         if(status == 0 || status == 6){
-            MediaInstance.getInstance().startMediaPlayAsync(worksData.musicurl);
-//            MediaInstance.getInstance().startMediaPlayAsync(MyHttpClient.ROOT_URL+worksData.musicurl);
+//            MediaInstance.getInstance().startMediaPlayAsync(worksData.musicurl);
+            MediaInstance.getInstance().startMediaPlayAsync(MyHttpClient.ROOT_URL+worksData.musicurl);
+
+            showWait();
+
             showbuttonPause();
             return;
         }
@@ -256,6 +262,24 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView ,
             showbuttonPause();
         }
     }
+
+    MaterialDialog wait;
+    private void showWait(){
+        wait = new MaterialDialog.Builder(this)
+                .content("正在准备歌曲")
+                .progress(true, 0)
+                .progressIndeterminateStyle(false)
+                .canceledOnTouchOutside(false)
+                .show();
+    }
+
+    private void cancelWait(){
+        if (wait != null){
+            wait.cancel();
+            wait = null;
+        }
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -276,6 +300,7 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView ,
                 showMsg("请先选择歌曲的封面！");
                 return true;
             }
+
 
             worksData.is_issue = cbIsopen.isChecked() ? 1:0;
 

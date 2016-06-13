@@ -214,7 +214,6 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                // TODO Auto-generated method stub
                 if (isSeek) {
                     isSeek = false;
                     musicBinder.setCurrentPosition(progress);
@@ -223,14 +222,12 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                // TODO Auto-generated method stub
                 isSeek = musicBinder.getIsPlaying();
             }
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress,
                                           boolean fromUser) {
-                // TODO Auto-generated method stub
                 if (isSeek) {
                     this.progress = progress;
                     tvTime.setText(FormatHelper.formatDuration(progress / 1000));
