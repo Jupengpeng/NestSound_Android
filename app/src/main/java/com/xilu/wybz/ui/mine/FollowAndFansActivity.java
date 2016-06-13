@@ -3,6 +3,7 @@ package com.xilu.wybz.ui.mine;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,7 +46,7 @@ public class FollowAndFansActivity extends BaseListActivity<FansBean> implements
     private TextView tvFollow;
     private ImageView ivFollow;
     private int ivfollowStates[] = new int[]{R.drawable.ic_user_follow, R.drawable.ic_user_followed, R.drawable.ic_user_each_follow};
-    private int followColors[] = new int[]{R.color.main_text_color, R.color.main_text_color3, R.color.type_blue};
+    private int followColors[] = new int[]{R.color.main_text_color, R.color.main_text_color3, R.color.follow_blue};
     private String tvfollowStates[] = new String[]{"关注", "已关注", "互相关注"};
 
     public static void toFollowAndFansActivity(Context context, int type, int uid) {
@@ -110,13 +111,18 @@ public class FollowAndFansActivity extends BaseListActivity<FansBean> implements
 
     @Override
     public void showFansData(List<FansBean> fansBeanList) {
-        if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
-            mDataList.clear();
-        }
-        recycler.enableLoadMore(true);
-        mDataList.addAll(fansBeanList);
-        adapter.notifyDataSetChanged();
-        recycler.onRefreshCompleted();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
+                    mDataList.clear();
+                }
+                recycler.enableLoadMore(true);
+                mDataList.addAll(fansBeanList);
+                adapter.notifyDataSetChanged();
+                recycler.onRefreshCompleted();
+            }
+        },600);
     }
 
     @Override

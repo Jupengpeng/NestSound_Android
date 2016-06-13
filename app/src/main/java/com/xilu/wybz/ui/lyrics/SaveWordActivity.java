@@ -187,6 +187,7 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView{
             String shareurl = new JSONObject(result).getString("shareurl");
             int itemid = new JSONObject(result).getInt("itemid");
             worksData.setShareurl(shareurl+"?id="+itemid);
+            worksData.setItemid(itemid);
             ShareActivity.toShareActivity(context,worksData);
         } catch (JSONException e) {
             e.printStackTrace();

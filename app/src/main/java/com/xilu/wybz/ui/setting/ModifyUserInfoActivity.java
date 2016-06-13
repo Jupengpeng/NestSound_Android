@@ -223,11 +223,11 @@ public class ModifyUserInfoActivity extends ToolbarActivity implements IModifyUs
     // 保存裁剪后的图片
     public void saveBitmap(Bitmap bitmap) {
         // TODO Auto-generated method stub
-        File file = new File(FileDir.rootpicDir);
+        File file = new File(FileDir.picDir);
         if (!file.exists())
             file.mkdirs();
         try {
-            headPath = FileDir.rootpicDir + System.currentTimeMillis() + ".jpg";
+            headPath = FileDir.picDir + System.currentTimeMillis() + ".jpg";
             FileOutputStream b = new FileOutputStream(headPath);
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, b);
             b.flush();

@@ -3,6 +3,7 @@ package com.xilu.wybz.ui.song;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.SpannableString;
@@ -78,11 +79,6 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     protected int getLayoutRes() {
         return super.getLayoutRes();
     }
@@ -96,6 +92,8 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
     @Override
     public void initView() {
         setTitle("评论");
+        tvNoData.setText("暂无评论内容！");
+        ivNoData.setImageResource(R.drawable.ic_nocomment);
         hideRight();
         loadFootBar();
         initData();
@@ -180,13 +178,18 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
 
     @Override
     public void showCommentData(List<CommentBean> commentBeans) {
-        if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
-            mDataList.clear();
-        }
-        recycler.enableLoadMore(true);
-        mDataList.addAll(commentBeans);
-        adapter.notifyDataSetChanged();
-        recycler.onRefreshCompleted();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
+                    mDataList.clear();
+                }
+                recycler.enableLoadMore(true);
+                mDataList.addAll(commentBeans);
+                adapter.notifyDataSetChanged();
+                recycler.onRefreshCompleted();
+            }
+        },600);
     }
 
     @Override

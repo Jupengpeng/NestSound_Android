@@ -78,7 +78,6 @@
             android:id="@+id/tv_follow_state"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/yc_2"
             android:text="加关注"
             android:textColor="@color/main_text_color"
             android:textSize="10sp" />

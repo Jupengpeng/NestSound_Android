@@ -254,14 +254,16 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
 
     @Override
     protected BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
-        if (type == 0) {
+        if (type == 4) {//灵感记录
             View view = LayoutInflater.from(context).inflate(R.layout.fragment_inspirerecord_item, parent, false);
-            InspireRecordViewHolder holder = new InspireRecordViewHolder(view, context, mDataList, COME, isMe ? null : new InspireRecordViewHolder.OnDeleteListener() {
+            InspireRecordViewHolder holder = new InspireRecordViewHolder(view, context, mDataList, COME, !isMe ? null : new InspireRecordViewHolder.OnDeleteListener() {
                 @Override
                 public void deletePos(int pos) {
                     showDeleteDialog(pos);
                 }
             });
+
+
             return holder;
         } else {
             View view = LayoutInflater.from(context).inflate(R.layout.activity_work_list_item, parent, false);

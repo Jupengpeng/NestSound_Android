@@ -6,6 +6,7 @@ package com.xilu.wybz.bean;
 public class FansBean {
     public int id;
     public int fansid;
+    public int uid;
     public String fansign;
     public String fansname;
     public String nickname;

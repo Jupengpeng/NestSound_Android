@@ -15,6 +15,7 @@ import com.xilu.wybz.adapter.MineAdapter;
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.KeySet;
+import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.HttpUtils;
 import com.xilu.wybz.http.callback.MyStringCallback;
@@ -128,13 +129,13 @@ public class UserInfoActivity extends ToolbarActivity {
         stickynavLayout.setOnStickStateChangeListener(new StickyNavLayout.onStickStateChangeListener() {
             @Override
             public void isStick(boolean isStick) {
-//                if(!isStick) {
-//                    for (int i = 0; i < 4; i++) {
-//                        if (i != container.getCurrentItem()) {
-//                            pagerAdapter.getFragment(i).moveToFirst();
-//                        }
-//                    }
-//                }
+                if(!isStick) {
+                    for (int i = 0; i < 4; i++) {
+                        if (i != container.getCurrentItem()) {
+                            pagerAdapter.getFragment(i).moveToFirst();
+                        }
+                    }
+                }
             }
             @Override
             public void scrollPercent(float percent) {
@@ -170,7 +171,10 @@ public class UserInfoActivity extends ToolbarActivity {
     public void setUserInfo(UserBean userBean) {
         if (isFirst) return;
         isFirst = true;
-        loadImage(userBean.headurl, ivHead);
+        if(StringUtil.isNotBlank(userBean.headurl)&&!userBean.headurl.equals("http://pic.yinchao.cn/uploadfiles/2015/09/14/201509141121211442200881.png")) {
+            int headWidth = DensityUtil.dip2px(context,92);
+            loadImage(MyCommon.getImageUrl(userBean.headurl,headWidth,headWidth), ivHead);
+        }
         if (StringUtil.isNotBlank(userBean.nickname)) userTvName.setText(userBean.nickname);
         if (StringUtil.isNotBlank(userBean.signature)) userTvInfo.setText(userBean.signature);
         if (StringUtil.isNotBlank(userBean.nickname)) setTitle(userBean.nickname);

@@ -15,19 +15,24 @@ import com.google.gson.JsonObject;
 import com.xilu.wybz.bean.MusicDetailBean;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.Event;
+import com.xilu.wybz.common.FileDir;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.common.PlayMediaInstance;
 import com.xilu.wybz.common.interfaces.IMediaPlayerListener;
 import com.xilu.wybz.http.HttpUtils;
+import com.xilu.wybz.http.callback.FileCallBack;
 import com.xilu.wybz.http.callback.MyStringCallback;
 import com.xilu.wybz.ui.MyApplication;
+import com.xilu.wybz.utils.FileUtils;
+import com.xilu.wybz.utils.MD5Util;
 import com.xilu.wybz.utils.ParseUtils;
 import com.xilu.wybz.utils.PrefsUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,6 +51,7 @@ public class PlayService extends Service {
     String from;
     String gedanid;
     TelephonyManager tmgr;
+    HttpUtils httpUtils;
     @Override
     public IBinder onBind(Intent intent) {
         return mBinder;
@@ -54,6 +60,7 @@ public class PlayService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        httpUtils = new HttpUtils(this);
         initPlayListener();
         initCallListener();
     }
@@ -62,7 +69,7 @@ public class PlayService extends Service {
         PlayMediaInstance.getInstance().setIMediaPlayerListener(new IMediaPlayerListener() {
             @Override
             public void onStart() {
-                EventBus.getDefault().post(new Event.PPStatusEvent(1));
+                EventBus.getDefault().post(new Event.PPStatusEvent(MyCommon.PP_START));
             }
 
             @Override
@@ -71,17 +78,17 @@ public class PlayService extends Service {
 
             @Override
             public void onPlay() {
-                EventBus.getDefault().post(new Event.PPStatusEvent(3));
+                EventBus.getDefault().post(new Event.PPStatusEvent(MyCommon.PP_PLAY));
             }
 
             @Override
             public void onPause() {
-                EventBus.getDefault().post(new Event.PPStatusEvent(4));
+                EventBus.getDefault().post(new Event.PPStatusEvent(MyCommon.PP_PAUSE));
             }
 
             @Override
             public void onOver() {
-                EventBus.getDefault().post(new Event.PPStatusEvent(8));
+                EventBus.getDefault().post(new Event.PPStatusEvent(MyCommon.PP_OVER));
                 switch (MyCommon.getFromMusicType(from)) {
                     case 1://列表只有一首 无线循环
                         PlayMediaInstance.getInstance().stopMediaPlay();
@@ -114,7 +121,7 @@ public class PlayService extends Service {
 
             @Override
             public void onError() {
-                EventBus.getDefault().post(new Event.PPStatusEvent(6));
+                EventBus.getDefault().post(new Event.PPStatusEvent(MyCommon.PP_ERROR));
             }
         });
     }
@@ -133,7 +140,7 @@ public class PlayService extends Service {
 
     public void initPreData() {
         if (currMdb == null || currMdb.getPrev() == 0) {
-            EventBus.getDefault().post(new Event.PPStatusEvent(9));
+            EventBus.getDefault().post(new Event.PPStatusEvent(MyCommon.PP_NO_PRE));
             return;
         }
         loadData(currMdb.getPrev());
@@ -141,7 +148,7 @@ public class PlayService extends Service {
 
     public void initNextData() {
         if (currMdb == null || currMdb.getNext() == 0) {
-            EventBus.getDefault().post(new Event.PPStatusEvent(10));
+            EventBus.getDefault().post(new Event.PPStatusEvent(MyCommon.PP_NO_NEXT));
             return;
         }
         loadData(currMdb.getNext());
@@ -166,25 +173,20 @@ public class PlayService extends Service {
         }else{//默认
             position = 0;
         }
-        new HttpUtils(PlayService.this).get(MyHttpClient.getMusicWorkUrl(), params, new MyStringCallback() {
+        httpUtils.get(MyHttpClient.getMusicWorkUrl(), params, new MyStringCallback() {
             @Override
             public void onError(Call call, Exception e) {
-                EventBus.getDefault().post(new Event.PPStatusEvent(7));
+                EventBus.getDefault().post(new Event.PPStatusEvent(MyCommon.PP_NO_DATA));
             }
             @Override
             public void onResponse(String response) {
-                if (ParseUtils.checkCode(response)) {
-                    try {
-                        String data = new JSONObject(response).getString("data");
-                        currMdb = new Gson().fromJson(data, WorksData.class);
-                        id = currMdb.getItemid();
-                        PrefsUtil.putInt("playId", id, PlayService.this);
-                        PrefsUtil.saveMusicData(PlayService.this,currMdb);
-                        PlayMediaInstance.getInstance().startMediaPlay(currMdb.getPlayurl());
-                        EventBus.getDefault().post(new Event.MusicDataEvent());
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                currMdb = ParseUtils.getWorkData(PlayService.this,response);
+                if (currMdb!=null&&currMdb.itemid>0) {
+                    PrefsUtil.putInt("playId", currMdb.itemid, PlayService.this);
+                    PrefsUtil.saveMusicData(PlayService.this,currMdb);
+                    PlayMediaInstance.getInstance().startMediaPlay(currMdb.getPlayurl());
+                    EventBus.getDefault().post(new Event.MusicDataEvent());
+                    downLoadMp3(currMdb.playurl);
                 }
             }
         });
@@ -276,7 +278,7 @@ public class PlayService extends Service {
         }
 
         public void toNextMusic() {
-            EventBus.getDefault().post(new Event.PPStatusEvent(8));
+            EventBus.getDefault().post(new Event.PPStatusEvent(MyCommon.PP_OVER));
             switch (MyCommon.getFromMusicType(from)) {
                 case 1://列表只有一首 无线循环
                     PlayMediaInstance.getInstance().stopMediaPlay();
@@ -351,4 +353,28 @@ public class PlayService extends Service {
             }
         }
     };
+    public void downLoadMp3(String url){
+        String fileName = MD5Util.getMD5String(url);
+        String filePath = FileDir.songMp3Dir+fileName+".mp3";
+        File file = new File(filePath);
+        if(file.exists())return;
+        if(!new File(FileDir.songMp3Dir).exists())new File(FileDir.songMp3Dir).mkdirs();
+
+        httpUtils.getFile(url, new FileCallBack(FileDir.songMp3Dir,fileName) {
+            @Override
+            public void inProgress(float progress, long total) {
+
+            }
+
+            @Override
+            public void onError(Call call, Exception e) {
+
+            }
+
+            @Override
+            public void onResponse(File response) {
+                FileUtils.renameFile(FileDir.songMp3Dir+fileName,filePath);
+            }
+        });
+    }
 }

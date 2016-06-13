@@ -151,8 +151,8 @@ public class VersionUtil {
                             .openConnection();
                     conn.setConnectTimeout(5000);
                     InputStream is = conn.getInputStream();
-                    if (!new File(FileUtils.APKPATH).exists()) {
-                        new File(FileUtils.APKPATH).mkdirs();
+                    if (!new File(FileDir.apkDir).exists()) {
+                        new File(FileDir.apkDir).mkdirs();
                     }
                     File file = new File(apkFilePath);
                     FileOutputStream fos = new FileOutputStream(file);

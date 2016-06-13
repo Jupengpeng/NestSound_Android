@@ -345,10 +345,10 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     }
 
     public void loadPic(String imageUrl) {
-        File file = new File(FileDir.cacheDir);
+        File file = new File(FileDir.blurPic);
         if (!file.exists()) file.mkdirs();
 
-        String path = FileDir.cacheDir + MD5Util.getMD5String(worksData.pic) + ".jpg";
+        String path = FileDir.blurPic + MD5Util.getMD5String(worksData.pic) + ".png";
         if (new File(path).exists()) {//加载本地
             blurImageView.setImageBitmap(BitmapUtils.getSDCardImg(path));
         } else {//下载并保存到本地
@@ -571,46 +571,53 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
         }
     }
 
+    //更新缓存进度
+    public void onEventMainThread(Event.UpdataSecondProgressEvent event) {
+        if(event.getPercent()>0){
+//            playSeekBar.setSecondaryProgress(event.getPercent());
+//            if(event.getPercent()==100){
+//            }
+        }
+    }
+
     public void onEventMainThread(Event.PPStatusEvent event) {
         switch (event.getStatus()) {
-            case 1://开始
+            case MyCommon.PP_START://开始
                 ivPlay.setEnabled(true);
                 playSeekBar.setMax(musicBinder.getDuration());
                 ivPlay.setImageResource(R.drawable.ic_play_pause);
                 startTimer();
                 break;
-            case 2://停止
+            case MyCommon.PP_STOP://停止
                 closeTimer();
                 ivPlay.setImageResource(R.drawable.ic_play_play);
                 break;
-            case 3://播放
+            case MyCommon.PP_PLAY://播放
                 startTimer();
                 ivPlay.setImageResource(R.drawable.ic_play_pause);
                 break;
-            case 4://暂停
+            case MyCommon.PP_PAUSE://暂停
                 closeTimer();
                 ivPlay.setImageResource(R.drawable.ic_play_play);
                 break;
-            case 5://完成
+            case MyCommon.PP_OVER://完成
                 closeTimer();
                 ivPlay.setImageResource(R.drawable.ic_play_play);
                 tvTime.setText("00:00");
                 break;
-            case 6://出错
+            case MyCommon.PP_ERROR://出错
                 closeTimer();
                 ivPlay.setImageResource(R.drawable.ic_play_play);
                 break;
-            case 7://网络错误
-                showNetErrorMsg();
-                break;
-            case 8://网络错误
+            case MyCommon.PP_NO_DATA://获取数据失败
                 closeTimer();
+                ivPlay.setImageResource(R.drawable.ic_play_play);
                 playSeekBar.setProgress(0);
                 tvTime.setText("00:00");
                 break;
-            case 9://
+            case MyCommon.PP_NO_PRE://
                 showMsg("没有上一首");
-            case 10://
+            case MyCommon.PP_NO_NEXT://
                 showMsg("没有下一首");
                 break;
         }

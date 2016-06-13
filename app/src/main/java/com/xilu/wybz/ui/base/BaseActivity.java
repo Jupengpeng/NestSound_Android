@@ -27,6 +27,7 @@ import com.xilu.wybz.ui.msg.MsgActivity;
 import com.xilu.wybz.ui.song.PlayAudioActivity;
 import com.xilu.wybz.utils.NetWorkUtil;
 import com.xilu.wybz.utils.PhoneInfoUtil;
+import com.xilu.wybz.utils.StatusBarUtil;
 import com.xilu.wybz.utils.ToastUtils;
 import com.xilu.wybz.view.AnimImageView;
 import com.xilu.wybz.view.SystemBarTintManager;
@@ -89,6 +90,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 //            }
 //        }
 //    }
+    //开启透明状态栏目
     @TargetApi(Build.VERSION_CODES.KITKAT)
     protected void adaptTheme(boolean isTranslucentStatusFitSystemWindowTrue) {
         if (isTranslucentStatusFitSystemWindowTrue) {
@@ -98,7 +100,10 @@ public abstract class BaseActivity extends AppCompatActivity {
             if (PhoneInfoUtil.isMIUI()) {
                 PhoneInfoUtil.MiuiCj(this, !(this instanceof PlayAudioActivity));
             }
+
+
             if (this instanceof MainTabActivity||this instanceof UserInfoActivity) {
+                StatusBarUtil.StatusBarLightMode(this);
                 setStatusColor(getResources().getColor(R.color.main_theme_color));
             }
         }

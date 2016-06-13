@@ -218,6 +218,22 @@ public class ParseUtils {
         return actBeans;
     }
     //作品列表
+    public static WorksData getWorkData(Context context, String response) {
+        WorksData worksDatas = new WorksData();
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            int code = jsonObject.getInt("code");
+            if (code == 200) {
+                worksDatas = new Gson().fromJson(jsonObject.getString("data"), WorksData.class);
+            } else {
+                showMsg(context, jsonObject.getString("message"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return worksDatas;
+    }
+    //作品列表
     public static List<WorksData> getWorksData(Context context, String response) {
         List<WorksData> worksDatas = new ArrayList<>();
         try {

@@ -90,13 +90,14 @@
 
         <activity android:name=".ui.record.InspireRecordActivity"  />
         <activity android:name=".ui.record.SelectPicActivity"  />
+        <activity android:name=".ui.record.ModifyInspireRecordActivity"  />
 
         <activity android:name=".ui.lyrics.LyricsdisplayActivity" />
         <activity android:name=".ui.lyrics.MakeWordActivity" />
         <activity android:name=".ui.lyrics.ShareActivity" android:theme="@style/PlayTheme" />
         <activity android:name=".ui.lyrics.ImportWordActivity" />
         <activity android:name=".ui.lyrics.MakeCourseActivity" />
-        <activity android:name=".ui.lyrics.SaveWordActivity" android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity android:name=".ui.lyrics.SaveWordActivity" />
 
         <service android:name=".service.PlayService" />
 

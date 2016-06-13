@@ -143,9 +143,9 @@ public class SongAblumActivity extends ToolbarActivity implements IRecSongView {
     private void loadPic(){
         String url = songAlbum.getPic();
         loadImage(url,ivCover);
-        File file = new File(FileDir.cacheDir);
+        File file = new File(FileDir.blurPic);
         if(!file.exists())file.mkdirs();
-        String path = FileDir.cacheDir+ MD5Util.getMD5String(url)+".png";
+        String path = FileDir.blurPic+ MD5Util.getMD5String(url)+".png";
         if(new File(path).exists()){//加载本地
             ivToolbarBg.setImageBitmap(BitmapUtils.getSDCardImg(path));
             ivTopBg.setImageBitmap(BitmapUtils.getSDCardImg(path));

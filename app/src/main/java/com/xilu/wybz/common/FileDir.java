@@ -8,12 +8,17 @@ import android.os.Environment;
 public class FileDir {
     public static String SD = Environment.getExternalStorageDirectory() + "";
     public static String rootDir = SD + "/yinchao/";
-    public static String inspireMp3Dir = SD + "/yinchao/inspire_record/mp3/";
-    public static String inspirePicDir = SD + "/yinchao/inspire_record/img/";
-    public static String rootpicDir = SD + "/yinchao/image/";
-    public static String hotDir = SD + "/yinchao/hot/";
+    public static String mp3Dir = SD + "/yinchao/mp3/";
+    public static String picDir = SD + "/yinchao/image/";
     public static String apkDir = SD + "/yinchao/apk/";
-    public static String logoDir = SD + "/yinchao/image/logo/";
-    public static String coverPic = SD + "/yinchao/image/cover/";
-    public static String cacheDir = SD + "/yinchao/image/cache/";
+
+
+    public static String inspireMp3Dir = mp3Dir+"inspire/";
+    public static String songMp3Dir = mp3Dir+"music/";
+    public static String hotDir = mp3Dir+"hot/";
+
+    public static String logoDir = picDir+"logo/";
+    public static String coverPic = picDir+"cover/";
+    public static String blurPic = picDir+"blur/";
+    public static String inspirePicDir = picDir+"inspire/";
 }
