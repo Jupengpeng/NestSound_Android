@@ -1,8 +1,11 @@
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 
+
+//apply from: "${rootProject.projectDir}/app/config/keystore.gradle"
+
 def releaseTime() {
-    return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
+    return new Date().format("yyyyMMdd", TimeZone.getTimeZone("UTC"))
 }
 
 android {
@@ -11,12 +14,22 @@ android {
 
     defaultConfig {
         applicationId rootProject.ext.android.applicationId
+
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion rootProject.ext.android.targetSdkVersion
+
         versionCode rootProject.ext.android.versionCode
         versionName rootProject.ext.android.versionName
+
         multiDexEnabled true
     }
+
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES.txt'
         exclude 'META-INF/LICENSE.txt'
@@ -29,54 +42,106 @@ android {
         exclude 'META-INF/dependencies.txt'
         exclude 'META-INF/LGPL2.1'
     }
-    dexOptions{
+
+    dexOptions {
         javaMaxHeapSize "2g"
     }
+
     lintOptions {
         abortOnError false
     }
 
+
+    signingConfigs {
+        println ":yinchao:keystore dir:" + $ { projectDir } + "/config/"
+        signrelease {
+            keyAlias "wybz"
+            keyPassword "yinchao2016"
+            storeFile file("${projectDir}/keystore/yinchao.keystore")
+            storePassword "123456"
+
+        }
+        signdebug {
+            keyAlias 'wybz'
+            keyPassword 'yinchao2016'
+            storeFile file("${projectDir}/keystore/yinchao.keystore")
+            storePassword '123456'
+        }
+    }
+
     buildTypes {
-//        release {
-//            // 不显示Log
-//            buildConfigField "boolean", "LOG_DEBUG", "false"
-//
-//            debuggable false
-//            minifyEnabled true
-//            shrinkResources true
-//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        release {
+            // 不显示Log
+            buildConfigField "boolean", "LOG_DEBUG", "false"
 
-//            applicationVariants.all { variant ->
-//                variant.outputs.each { output ->
-//                    def outputFile = output.outputFile
-//                    if (outputFile != null && outputFile.name.endsWith('.apk')) {
-//                        // 输出apk名称为Yinchao_v1.0_2016-04-26_yinchao.apk
-//                        def fileName = "Yinchao_v${defaultConfig.versionName}_${releaseTime()}_${variant.productFlavors[0].name}.apk"
-//                        output.outputFile = new File(outputFile.parent, fileName)
-//                    }
-//                }
-//            }
-//        }
+            debuggable false
+            shrinkResources true
 
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            signingConfig signingConfigs.signrelease
+            zipAlignEnabled true
+        }
+
+
+        debug {
+
+            debuggable true
+            shrinkResources true
+
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+//            versionNameSuffix '_debug'
+
+            signingConfig signingConfigs.signdebug
+            zipAlignEnabled true
+
+        }
+
+
+        applicationVariants.all { variant ->
+            variant.outputs.each { output ->
+                def outputFile = output.outputFile
+
+                if (outputFile != null && outputFile.name.endsWith('release.apk')) {
+                    //输出apk名称为yinchao_yinchao_v1.0_20160426_release.apk
+                    def fileName = "yinchao_v${properties.versionName}_${variant.productFlavors[0].name}_${releaseTime()}_release.apk"
+                    output.outputFile = new File(outputFile.parent, fileName)
+                }
+                else if (outputFile != null && outputFile.name.endsWith('debug.apk')) {
+                    // 输出apk名称为yinchao_yinchao_v1.0_20160426_debug.apk
+                    def fileName = "yinchao_v${properties.versionName}_${variant.productFlavors[0].name}_${releaseTime()}_debug.apk"
+                    output.outputFile = new File(outputFile.parent, fileName)
+                }
+
+                println "yinchao apk name:"+fileName
+            }
+        }
 
     }
+
+
+
 
     productFlavors {
-        Yinchao {
-            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "yinchao"]
+
+//        Yinchao {
+//        }
+//        Umeng {
+//        }
+        Meizu {
         }
-//            Umeng {
-//                manifestPlaceholders = [UMENG_CHANNEL_VALUE: "push"]
-//            }
-//            Meizu {
-//                manifestPlaceholders = [UMENG_CHANNEL_VALUE: "meizu"]
-//            }
+
+        productFlavors.each { flavor ->
+            flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
+            println "flavor name:" + name
+        }
+
     }
 
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
+
 }
 
 dependencies {
@@ -118,6 +183,9 @@ dependencies {
     compile files('libs/universal-image-loader-1.9.4.jar')
     compile files('libs/weiboSDKCore_3.1.4.jar')
     compile files('libs/commons-lang3-3.4.jar')
+
+
+
     testCompile 'junit:junit:4.12'
 }
 

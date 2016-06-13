@@ -216,6 +216,7 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView ,
     @Override
     public void saveWordSuccess(String response) {
 
+        cancelPd();
         worksData.shareurl = response;
         ShareActivity.toShareActivity(this,worksData);
 
