@@ -12,9 +12,9 @@
         android:padding="1px"
         fresco:actualImageScaleType="centerCrop"
         fresco:fadeDuration="300"
-        fresco:failureImage="@drawable/ic_default_pic"
+        fresco:failureImage="@drawable/ic_default_head_252"
         fresco:failureImageScaleType="centerCrop"
-        fresco:placeholderImage="@drawable/ic_default_pic"
+        fresco:placeholderImage="@drawable/ic_default_head_252"
         fresco:placeholderImageScaleType="centerCrop"
         fresco:pressedStateOverlayImage="@drawable/selector2" />
     <TextView

@@ -73,6 +73,8 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
     @Override
     public void initView() {
         recycler.enablePullToRefresh(false);
+        tvNoData.setText("暂无搜索结果！");
+        ivNoData.setImageResource(R.drawable.ic_nosearch);
     }
 
     public static HotFragment newInstance(int type) {

@@ -19,18 +19,14 @@
             android:listSelector="?selectableItemBackground"
             android:overScrollMode="never" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="3dp"
-            android:background="@color/split_line"
-            />
-
+        <include layout="@layout/view_spit_line" />
         <TextView
             android:id="@+id/tv_cancle"
             android:layout_width="match_parent"
             android:layout_height="47dp"
             android:gravity="center"
             android:text="取消"
+            android:background="?selectableItemBackground"
             android:textColor="@color/main_text_color"
             android:textSize="17sp" />
     </LinearLayout>

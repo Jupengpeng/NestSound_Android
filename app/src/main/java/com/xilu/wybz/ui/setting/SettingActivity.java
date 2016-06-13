@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.CheckBox;
@@ -24,6 +25,7 @@ import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.ui.login.LoginActivity;
 import com.xilu.wybz.utils.FileUtils;
 import com.xilu.wybz.utils.PrefsUtil;
+import com.xilu.wybz.view.materialdialogs.DialogAction;
 import com.xilu.wybz.view.materialdialogs.MaterialDialog;
 
 import java.util.HashMap;
@@ -98,19 +100,38 @@ public class SettingActivity extends ToolbarActivity {
                 startActivity(SettingFeedActivity.class);
                 break;
             case R.id.ll_loginout:
-                HttpUtils httpUtils = new HttpUtils(context);
-                httpUtils.post(MyHttpClient.getLoginOut(),null,new MyStringCallback(){
-
-                });
-                PrefsUtil.saveUserInfo(context, new UserBean());
-                MobclickAgent.onProfileSignOff();
-                EventBus.getDefault().post(new Event.LoginOutEvent());
-                finish();
-                startActivity(LoginActivity.class);
+                loginOut();
                 break;
         }
     }
+    private void loginOut(){
+        new MaterialDialog.Builder(context)
+                .title(getString(R.string.dialog_title))
+                .content("请确认是否退出当前账号?")
+                .positiveText("退出登录")
+                .positiveColor(getResources().getColor(R.color.red))
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        HttpUtils httpUtils = new HttpUtils(context);
+                        httpUtils.post(MyHttpClient.getLoginOut(),null,new MyStringCallback(){
 
+                        });
+                        PrefsUtil.saveUserInfo(context, new UserBean());
+                        MobclickAgent.onProfileSignOff();
+                        EventBus.getDefault().post(new Event.LoginOutEvent());
+                        finish();
+                        startActivity(LoginActivity.class);
+                    }
+                }).negativeText("取消")
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+
+                    }
+                })
+                .show();
+    }
     private void DelCache() {
         showIndeterminateProgressDialog(true);
         //删除图片缓存文件夹和本地音乐缓存文件夹
@@ -142,7 +163,7 @@ public class SettingActivity extends ToolbarActivity {
 
     private void showIndeterminateProgressDialog(boolean horizontal) {
         materialDialog = new MaterialDialog.Builder(this)
-                .title(R.string.progress_dialog)
+                .title(R.string.dialog_title)
                 .content(R.string.please_wait)
                 .progress(true, 0)
                 .progressIndeterminateStyle(horizontal)

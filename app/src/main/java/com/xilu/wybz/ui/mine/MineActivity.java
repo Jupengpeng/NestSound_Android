@@ -15,6 +15,7 @@ import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.KeySet;
+import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.ui.setting.SettingActivity;
 import com.xilu.wybz.utils.DensityUtil;
@@ -78,7 +79,6 @@ public class MineActivity extends ToolbarActivity {
         else isFirst = true;
         EventBus.getDefault().register(this);
         setLocalUserInfo(PrefsUtil.getUserInfo(this));
-//        container.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, DensityUtil.getScreenH(context)-DensityUtil.dip2px(context,102+20)));
         tabs = new ArrayList<>();
         llMyrecord.setSelected(true);
         tabs.add(llMyrecord);
@@ -91,13 +91,13 @@ public class MineActivity extends ToolbarActivity {
         stickynavLayout.setOnStickStateChangeListener(new StickyNavLayout.onStickStateChangeListener() {
             @Override
             public void isStick(boolean isStick) {
-//                if(!isStick) {
-//                    for (int i = 0; i < 4; i++) {
-//                        if (i != container.getCurrentItem()) {
-//                            pagerAdapter.getFragment(i).moveToFirst();
-//                        }
-//                    }
-//                }
+                if(!isStick) {
+                    for (int i = 0; i < 4; i++) {
+                        if (i != container.getCurrentItem()) {
+                            pagerAdapter.getFragment(i).moveToFirst();
+                        }
+                    }
+                }
             }
             @Override
             public void scrollPercent(float percent) {
@@ -149,7 +149,10 @@ public class MineActivity extends ToolbarActivity {
     }
 
     public void setLocalUserInfo(UserBean userBean) {
-        loadImage(userBean.headurl, ivHead);
+        if(StringUtil.isNotBlank(userBean.headurl)&&!userBean.headurl.equals("http://pic.yinchao.cn/uploadfiles/2015/09/14/201509141121211442200881.png")) {
+            int headWidth = DensityUtil.dip2px(context,92);
+            loadImage(MyCommon.getImageUrl(userBean.headurl,headWidth,headWidth), ivHead);
+        }
         userFansnum.setText("粉丝:  " + NumberUtil.format(userBean.fansnum));
         userFollownum.setText("关注:  " + NumberUtil.format(userBean.gznum));
         if (StringUtil.isNotBlank(userBean.name)) userTvName.setText(userBean.name);
@@ -225,10 +228,10 @@ public class MineActivity extends ToolbarActivity {
     public void onEventMainThread(Event.UpdataWorksList event) {
         WorksData worksData = event.getWorksData();
         int type = event.getType();
-//        if (event.getChange() == 0)
-//            (pagerAdapter.getFragment(type)).addItem(worksData);
-//        else
-//            (pagerAdapter.getFragment(type)).removeData(worksData);
+        if (event.getChange() == 0)
+            (pagerAdapter.getFragment(type)).addItem(worksData);
+        else
+            (pagerAdapter.getFragment(type)).removeData(worksData);
     }
 
     @Override

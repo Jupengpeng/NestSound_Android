@@ -8,8 +8,12 @@ import android.util.Log;
 import com.xilu.wybz.common.interfaces.IMediaPlayerListener;
 import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.utils.FileUtils;
+import com.xilu.wybz.utils.MD5Util;
+import com.xilu.wybz.utils.StringUtil;
 
 import java.io.File;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by Zning on 2015/9/16.
@@ -59,6 +63,13 @@ public class PlayMediaInstance {
                     }
                 }
             });
+            mediaPlayer.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
+                @Override
+                public void onBufferingUpdate(MediaPlayer mp, int percent) {
+                    Log.e("percent",percent+"");
+                    EventBus.getDefault().post(new Event.UpdataSecondProgressEvent(percent));
+                }
+            });
             mediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
                 @Override
                 public boolean onError(MediaPlayer mp, int what, int extra) {
@@ -74,11 +85,14 @@ public class PlayMediaInstance {
         }
         try {
             mediaPlayer.reset();
-            if (!TextUtils.isEmpty(url) && new File(url).exists()) {
-                mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            if(StringUtil.isNotBlank(url)){
+                String fileName = MD5Util.getMD5String(url)+".mp3";
+                String filePath = FileDir.songMp3Dir+fileName;
+                File file = new File(filePath);
+                if(file.exists())url = filePath;
             }
             mediaPlayer.setDataSource(url);
-            status = 3;
             mediaPlayer.prepareAsync();
         } catch (Exception e) {
             status = 1;

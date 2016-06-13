@@ -112,6 +112,9 @@ public class SearchHotActivity extends ToolbarActivity {
                         showMsg("关键字不能为空");
                         return false;
                     } else {
+                        if(hotFragment!=null){
+                            hotFragment.clearData();
+                        }
                         hotFragment.loadData(keyWord);
                     }
                 }
@@ -133,7 +136,7 @@ public class SearchHotActivity extends ToolbarActivity {
         }
     }
     public void onEventMainThread(Event.HideKeyboardEvent event) {
-        KeyBoardUtil.openAndCloseKeybord(context);
+        KeyBoardUtil.closeKeybord(etkeyWord,context);
     }
     @Override
     protected void onDestroy() {

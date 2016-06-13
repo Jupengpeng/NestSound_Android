@@ -3,6 +3,9 @@ package com.xilu.wybz.utils;
 import android.graphics.Bitmap;
 import android.os.Environment;
 import android.util.Log;
+
+import com.xilu.wybz.common.FileDir;
+
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
@@ -21,16 +24,11 @@ import java.text.DecimalFormat;
 public class FileUtils {
 
     public static final String ROOTPATH = "/yinchao";
-    public static final String APKPATH = getSDPath()+"/yinchao/apk/";
-    public static final String MUSICDOWNLOADPATH = "/download/music";
     public static final String MUSICCACHEPATH = "/cache/music";
     public static final String RECORDTEMPPATH = "/cache/record/temp";
     public static final String RECORDRAWPATH = "/cache/record/raw";
-    public static final String IMGCACHEPATH = "/cache/img";
     public static final String LOCALplayurl = "/local/music";
     public static final String LOCAL_RECORD = "/local/record";
-    public static final String LOCALIMGPATH = "/local/img";
-    public static final String USERIMGPATH = "/user/img";
     //采用频率
     //44100是目前的标准，但是某些设备仍然支持22050，16000，11025
     public final static int AUDIO_SAMPLE_RATE = 44100;  //44.1KHz,普遍使用的频率
@@ -159,15 +157,15 @@ public class FileUtils {
     }
 
     public static void delAllFile() {
-        FileUtils.delFile(new File(getRootPath() + USERIMGPATH));
-        FileUtils.delFile(new File(getRootPath() + APKPATH));
         FileUtils.delFile(new File(getRootPath() + LOCALplayurl));
         FileUtils.delFile(new File(getRootPath() + RECORDRAWPATH));
         FileUtils.delFile(new File(getRootPath() + RECORDTEMPPATH));
-        FileUtils.delFile(new File(getRootPath() + LOCALIMGPATH));
-        FileUtils.delFile(new File(getRootPath() + IMGCACHEPATH));
         FileUtils.delFile(new File(getRootPath() + MUSICCACHEPATH));
         FileUtils.delFile(new File(getRootPath() + LOCAL_RECORD));
+
+        FileUtils.delFile(new File(FileDir.apkDir));
+        FileUtils.delFile(new File(FileDir.picDir));
+        FileUtils.delFile(new File(FileDir.mp3Dir));
     }
 
     public static String getSDPath() {
@@ -190,59 +188,17 @@ public class FileUtils {
         return makeFileFold(getRootPath() + MUSICCACHEPATH) + "/" + cacheName;
     }
 
-    public static String getMusicCachePath(String foldName, String fileName) {
-        return makeFileFold(getRootPath() + MUSICCACHEPATH + "/" + foldName) + "/" + fileName;
-    }
-
-    public static String getMusicDownloadPath(String name) {
-        return makeFileFold(getRootPath() + MUSICDOWNLOADPATH) + "/" + name;
-    }
-
-    public static String getTempDiyPath() {
-        return makeFileFold(getRootPath() + RECORDTEMPPATH) + "/temp_diy";
-    }
-
     public static String getTempRecordPath() {
         return makeFileFold(getRootPath() + RECORDTEMPPATH) + "/temp_record.mp3";
     }
     public static String getLocalRecordPath(String fileName) {
         return makeFileFold(getRootPath() + LOCAL_RECORD) + "/"+ fileName + ".mp3";
     }
-    public static String getRawRecordPath() {
-        return makeFileFold(getRootPath() + RECORDTEMPPATH) + "/raw_record";
-    }
-
-    public static String getRawRecordPath(String foldName, String fileName) {
-        return makeFileFold(getRootPath() + RECORDRAWPATH + "/" + foldName) + "/" + fileName;
-    }
-
-    public static String getRawRecordFoldPath(String foldName) {
-        return makeFileFold(getRootPath() + RECORDRAWPATH + "/" + foldName);
-    }
-
-    public static String getTempMusicSharePath() {
-        return makeFileFold(getRootPath() + RECORDTEMPPATH) + "/temp_music";
-    }
-
-    public static String getTempImgSharePath() {
-        return makeFileFold(getRootPath() + RECORDTEMPPATH) + "/temp_img";
-    }
-
-    public static String getTempMusicImgPath() {
-        return makeFileFold(getRootPath() + IMGCACHEPATH) + "/temp_music";
-    }
 
     public static String getLocalplayurl(String id) {
         return makeFileFold(getRootPath() + LOCALplayurl) + "/" + id + ".mp3";
     }
 
-    public static String getLocalImgPath(String id) {
-        return makeFileFold(getRootPath() + LOCALIMGPATH) + "/" + id + ".png";
-    }
-
-    public static String getUserImgPath() {
-        return makeFileFold(getRootPath() + USERIMGPATH) + "/user.png";
-    }
 
     static String makeFileFold(String file) {
         File filePath = new File(file);

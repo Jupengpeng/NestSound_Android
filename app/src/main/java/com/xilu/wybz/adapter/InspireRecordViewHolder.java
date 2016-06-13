@@ -64,7 +64,7 @@ public class InspireRecordViewHolder extends com.xilu.wybz.view.pull.BaseViewHol
         ivCover.setLayoutParams(new FrameLayout.LayoutParams(itemWidth, itemHeight));
         flMain.setLayoutParams(new ViewGroup.LayoutParams(itemWidth, itemHeight));
         ivFrequency.setPadding(0, 0, 0, itemHeight / 6);
-        if(onDeleteListener==null)return;
+        if(onDeleteListener== null)return;
         itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -112,8 +112,8 @@ public class InspireRecordViewHolder extends com.xilu.wybz.view.pull.BaseViewHol
             tvText.setTextColor(0xffffffff);
             ivFrequencyIcon.setImageResource(R.drawable.ic_user_frequency_white);
             ivFrequency.setImageResource(R.drawable.user_frequency_white);
-            String url = MyCommon.getImageUrl(worksData.pics.split(",")[0], itemWidth, itemHeight);
-            ImageLoadUtil.loadImage(url, ivCover);
+//            String url = MyCommon.getImageUrl(worksData.pics.split(",")[0], itemWidth, itemHeight);
+            ImageLoadUtil.loadImage(worksData.pics.split(",")[0], ivCover);
         } else {
             ivMb.setVisibility(View.GONE);
             tvDateTime.setTextColor(0xff999999);

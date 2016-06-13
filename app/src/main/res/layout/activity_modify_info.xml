@@ -16,8 +16,8 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/actionbar_size"
             android:gravity="center_vertical"
-            android:paddingLeft="@dimen/yc_15"
-            android:paddingRight="@dimen/yc_15">
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp">
 
             <TextView
                 android:layout_width="0dp"
@@ -25,7 +25,7 @@
                 android:layout_weight="1"
                 android:text="头像"
                 android:textColor="@color/main_text_color"
-                android:textSize="@dimen/yc_15" />
+                android:textSize="15sp" />
 
             <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/iv_head"
@@ -42,7 +42,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/yc_15"
+                android:layout_marginLeft="15dp"
                 android:src="@drawable/ic_setting_arrow" />
         </LinearLayout>
 
@@ -51,10 +51,10 @@
         <LinearLayout
             android:id="@+id/ll_username"
             android:layout_width="match_parent"
-            android:layout_height="42dp"
+            android:layout_height="46dp"
             android:gravity="center_vertical"
-            android:paddingLeft="@dimen/yc_15"
-            android:paddingRight="@dimen/yc_15">
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp">
 
             <TextView
                 android:layout_width="0dp"
@@ -62,7 +62,7 @@
                 android:layout_weight="1"
                 android:text="昵称"
                 android:textColor="@color/main_text_color"
-                android:textSize="@dimen/yc_15" />
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/tv_username"
@@ -70,12 +70,12 @@
                 android:layout_height="wrap_content"
                 android:text=""
                 android:textColor="@color/main_text_color2"
-                android:textSize="@dimen/yc_12" />
+                android:textSize="15sp" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/yc_15"
+                android:layout_marginLeft="15dp"
                 android:src="@drawable/ic_setting_arrow" />
         </LinearLayout>
 
@@ -84,10 +84,10 @@
         <LinearLayout
             android:id="@+id/ll_gender"
             android:layout_width="match_parent"
-            android:layout_height="42dp"
+            android:layout_height="46dp"
             android:gravity="center_vertical"
-            android:paddingLeft="@dimen/yc_15"
-            android:paddingRight="@dimen/yc_15">
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp">
 
             <TextView
                 android:layout_width="0dp"
@@ -95,7 +95,7 @@
                 android:layout_weight="1"
                 android:text="性别"
                 android:textColor="@color/main_text_color"
-                android:textSize="@dimen/yc_15" />
+                android:textSize="15dp" />
 
             <TextView
                 android:id="@+id/tv_gender"
@@ -103,12 +103,12 @@
                 android:layout_height="wrap_content"
                 android:text=""
                 android:textColor="@color/main_text_color2"
-                android:textSize="@dimen/yc_12" />
+                android:textSize="15sp" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/yc_15"
+                android:layout_marginLeft="15dp"
                 android:src="@drawable/ic_setting_arrow" />
         </LinearLayout>
 
@@ -117,10 +117,10 @@
         <LinearLayout
             android:id="@+id/ll_birthday"
             android:layout_width="match_parent"
-            android:layout_height="42dp"
+            android:layout_height="46dp"
             android:gravity="center_vertical"
-            android:paddingLeft="@dimen/yc_15"
-            android:paddingRight="@dimen/yc_15">
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp">
 
             <TextView
                 android:layout_width="0dp"
@@ -128,7 +128,7 @@
                 android:layout_weight="1"
                 android:text="生日"
                 android:textColor="@color/main_text_color"
-                android:textSize="@dimen/yc_15" />
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/tv_birthday"
@@ -136,12 +136,12 @@
                 android:layout_height="wrap_content"
                 android:text=""
                 android:textColor="@color/main_text_color2"
-                android:textSize="@dimen/yc_12" />
+                android:textSize="15sp" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/yc_15"
+                android:layout_marginLeft="15dp"
                 android:src="@drawable/ic_setting_arrow" />
         </LinearLayout>
 
@@ -150,10 +150,10 @@
         <LinearLayout
             android:id="@+id/ll_sign"
             android:layout_width="match_parent"
-            android:layout_height="42dp"
+            android:layout_height="46dp"
             android:gravity="center_vertical"
-            android:paddingLeft="@dimen/yc_15"
-            android:paddingRight="@dimen/yc_15">
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp">
 
             <TextView
                 android:layout_width="0dp"
@@ -161,7 +161,7 @@
                 android:layout_weight="1"
                 android:text="个性签名"
                 android:textColor="@color/main_text_color"
-                android:textSize="@dimen/yc_15" />
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/tv_usersign"
@@ -171,12 +171,12 @@
                 android:maxLength="10"
                 android:text=""
                 android:textColor="@color/main_text_color2"
-                android:textSize="@dimen/yc_12" />
+                android:textSize="15sp" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/yc_15"
+                android:layout_marginLeft="15dp"
                 android:src="@drawable/ic_setting_arrow" />
         </LinearLayout>
 

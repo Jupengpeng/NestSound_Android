@@ -50,6 +50,8 @@ public class SearchSongFragment extends BaseListFragment<WorksData> implements I
     @Override
     public void initView() {
         recycler.enablePullToRefresh(false);
+        tvNoData.setText("暂无搜索结果！");
+        ivNoData.setImageResource(R.drawable.ic_nosearch);
     }
     public void loadData(String name){
         if(TextUtils.isEmpty(keyWord)) {

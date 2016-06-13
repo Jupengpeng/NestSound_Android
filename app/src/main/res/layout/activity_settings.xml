@@ -4,10 +4,16 @@
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/main_bg"
     android:orientation="vertical">
 
     <include layout="@layout/view_toolbar" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/main_bg"
+        android:orientation="vertical"
+        >
     <LinearLayout
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
@@ -29,7 +35,7 @@
             fresco:placeholderImage="@drawable/ic_default_pic"
             fresco:placeholderImageScaleType="centerCrop"
             fresco:roundingBorderWidth="0.6dp"
-            fresco:roundingBorderColor="@color/main_text_color"
+            fresco:roundingBorderColor="@color/main_text_color3"
             fresco:roundAsCircle="true" />
         <LinearLayout
             android:layout_width="0dp"
@@ -77,16 +83,16 @@
         <LinearLayout
             android:id="@+id/ll_clear_cache"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/yc_42"
+            android:layout_height="46dp"
             android:background="?selectableItemBackground"
             android:gravity="center_vertical"
-            android:paddingLeft="@dimen/yc_15"
-            android:paddingRight="@dimen/yc_15">
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp">
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:text="清理缓存"
                 android:textColor="@color/main_text_color"
                 android:textSize="@dimen/yc_15" />
@@ -103,11 +109,12 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/yc_42"
+            android:layout_height="46dp"
             android:gravity="center_vertical"
             android:background="?selectableItemBackground"
-            android:paddingLeft="@dimen/yc_15"
-            android:paddingRight="@dimen/yc_15">
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            >
 
             <TextView
                 android:layout_width="0dp"
@@ -115,7 +122,7 @@
                 android:layout_weight="1"
                 android:text="新消息提示"
                 android:textColor="@color/main_text_color"
-                android:textSize="@dimen/yc_15" />
+                android:textSize="15sp" />
 
             <CheckBox
                 android:id="@+id/cb_notice"
@@ -130,11 +137,11 @@
         <LinearLayout
             android:id="@+id/ll_score"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/yc_42"
+            android:layout_height="46dp"
             android:gravity="center_vertical"
             android:background="?selectableItemBackground"
-            android:paddingLeft="@dimen/yc_15"
-            android:paddingRight="@dimen/yc_15">
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp">
 
             <TextView
                 android:layout_width="0dp"
@@ -142,7 +149,7 @@
                 android:layout_weight="1"
                 android:text="去评分"
                 android:textColor="@color/main_text_color"
-                android:textSize="@dimen/yc_15" />
+                android:textSize="15sp" />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -158,11 +165,11 @@
         <LinearLayout
             android:id="@+id/ll_feedback"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/yc_42"
+            android:layout_height="46dp"
             android:gravity="center_vertical"
             android:background="?selectableItemBackground"
-            android:paddingLeft="@dimen/yc_15"
-            android:paddingRight="@dimen/yc_15">
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp">
 
             <TextView
                 android:layout_width="0dp"
@@ -180,29 +187,29 @@
         </LinearLayout>
 
         <include layout="@layout/view_spit_line" />
-
-
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/ll_loginout"
-        android:layout_marginTop="15dp"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/yc_42"
-        android:orientation="vertical"
-        android:background="?selectableItemBackground"
-        >
-        <include layout="@layout/view_spit_line" />
-        <TextView
+        <LinearLayout
+            android:id="@+id/ll_loginout"
+            android:layout_marginTop="15dp"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="退出登录"
-            android:textColor="@color/main_text_color"
-            android:background="@color/white"
-            android:textSize="@dimen/yc_15"
-            />
-        <include layout="@layout/view_spit_line" />
+            android:layout_height="46dp"
+            android:orientation="vertical"
+            android:background="?selectableItemBackground"
+            >
+            <include layout="@layout/view_spit_line" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="退出登录"
+                android:textColor="@color/main_text_color"
+                android:textSize="15sp"
+                />
+            <include layout="@layout/view_spit_line" />
+        </LinearLayout>
+
     </LinearLayout>
 
+
+</LinearLayout>
 </LinearLayout>

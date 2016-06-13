@@ -52,4 +52,29 @@ public class InspireRecordPresenter extends BasePresenter<IInspireRecordView>{
             }
         });
     }
+    public void updateData(WorksData worksData){
+        params = new HashMap<>();
+        params.put("itemid", worksData.itemid+"");
+        params.put("uid", PrefsUtil.getUserId(context)+"");
+        params.put("spirecontent",worksData.spirecontent);
+        params.put("pics",worksData.pics);
+        params.put("audio",worksData.audio);
+        httpUtils.post(MyHttpClient.getSaveInspireUrl(),params,new MyStringCallback(){
+            @Override
+            public void onResponse(String response) {
+                super.onResponse(response);
+                DataBean dataBean = ParseUtils.getDataBean(context,response);
+                if(dataBean.code==200){
+                    iView.pubSuccess();
+                }else{
+                    iView.pubFail();
+                }
+            }
+            @Override
+            public void onError(Call call, Exception e) {
+                super.onError(call, e);
+                iView.pubFail();
+            }
+        });
+    }
 }

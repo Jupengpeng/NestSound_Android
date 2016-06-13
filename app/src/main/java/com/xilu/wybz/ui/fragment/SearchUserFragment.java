@@ -60,6 +60,8 @@ public class SearchUserFragment extends BaseListFragment<FansBean> implements IS
     @Override
     public void initView() {
         recycler.enablePullToRefresh(false);
+        tvNoData.setText("暂无搜索结果！");
+        ivNoData.setImageResource(R.drawable.ic_nosearch);
     }
 
     public void loadData(String name) {
@@ -160,7 +162,7 @@ public class SearchUserFragment extends BaseListFragment<FansBean> implements IS
 
         @Override
         public void onItemClick(View view, int position) {
-            if (mDataList.get(position).fansid>0) {
+            if (mDataList.get(position).uid>0) {
                 UserInfoActivity.ToUserInfoActivity(context,mDataList.get(position).fansid,mDataList.get(position).fansname);
             }
         }

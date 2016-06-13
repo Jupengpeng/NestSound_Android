@@ -5,7 +5,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.xilu.wybz.ui.fragment.WorkDataFragment;
 import com.xilu.wybz.ui.fragment.WorksDataFragment;
 import com.xilu.wybz.utils.PrefsUtil;
 

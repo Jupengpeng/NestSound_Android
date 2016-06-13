@@ -1,23 +1,19 @@
 package com.xilu.wybz.ui.base;
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-
 import com.xilu.wybz.R;
 import com.xilu.wybz.common.Event;
+import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.common.PlayMediaInstance;
 import com.xilu.wybz.ui.song.PlayAudioActivity;
-import com.xilu.wybz.ui.song.SearchHotActivity;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.view.AnimImageView;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import de.greenrobot.event.EventBus;
 
 /**
@@ -53,6 +49,12 @@ public abstract class BasePlayMenuActivity extends ToolbarActivity {
         resourceIdList.add(R.drawable.ic_menu_play_17);
         resourceIdList.add(R.drawable.ic_menu_play_18);
         initAnimal();
+        rl_right.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onPlayMenuClick();
+            }
+        });
     }
 
     private void initAnimal() {
@@ -66,6 +68,7 @@ public abstract class BasePlayMenuActivity extends ToolbarActivity {
     }
 
     public void stopAnimal() {
+        if(animImageView!=null)
         animImageView.stop();
         ivPlay.setImageResource(R.drawable.ic_menu_play_4);
     }
@@ -105,16 +108,12 @@ public abstract class BasePlayMenuActivity extends ToolbarActivity {
 
     public void onEventMainThread(Event.PPStatusEvent event) {
         switch (event.getStatus()) {
-            case 1://开始
+            case MyCommon.PP_START://开始
+            case MyCommon.PP_PLAY://播放
                 startAnimal();
                 break;
-            case 2://停止
-                stopAnimal();
-                break;
-            case 3://播放
-                startAnimal();
-                break;
-            case 4://暂停
+            case MyCommon.PP_STOP://停止
+            case MyCommon.PP_PAUSE://暂停
                 stopAnimal();
                 break;
         }

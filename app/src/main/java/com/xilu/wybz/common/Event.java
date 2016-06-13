@@ -86,8 +86,10 @@ public class Event {
 
     public static class ShowSearchTabEvent {
     }
+
     public static class HideKeyboardEvent {
     }
+
     public static class UpdateLyricsData {
         WorksData worksData;
 
@@ -210,6 +212,18 @@ public class Event {
 
         public int getFrom() {
             return from;
+        }
+    }
+
+    public static class UpdataSecondProgressEvent {
+        int percent;
+
+        public UpdataSecondProgressEvent(int percent) {
+            this.percent = percent;
+        }
+
+        public int getPercent() {
+            return percent;
         }
     }
 }
