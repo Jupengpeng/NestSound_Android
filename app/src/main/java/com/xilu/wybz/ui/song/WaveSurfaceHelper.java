@@ -189,7 +189,11 @@ public class WaveSurfaceHelper {
             this.data = data;
         }
         if (position >= 0){
-            this.currentPosition = position;
+            if (position > this.data.size()){
+                this.currentPosition = this.data.size();
+            } else {
+                this.currentPosition = position;
+            }
         }
         if (prepare){
             onDrawKernel();

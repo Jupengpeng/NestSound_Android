@@ -141,7 +141,7 @@ public class MP3Recorder {
             return;
         }
 
-//        initAudioRecorder();
+        initAudioRecorder();
 
         mAudioRecord.startRecording();
 
@@ -186,8 +186,8 @@ public class MP3Recorder {
     }
 
     public void prepare() throws IOException {
-        if (isRecording) return;
-        initAudioRecorder();
+//        if (isRecording) return;
+//        initAudioRecorder();
     }
 
     public void reStart() throws IOException {

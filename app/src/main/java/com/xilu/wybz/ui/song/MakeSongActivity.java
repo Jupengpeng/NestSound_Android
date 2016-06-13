@@ -19,12 +19,14 @@ import com.xilu.wybz.bean.TemplateBean;
 import com.xilu.wybz.bean.TruningMusicBean;
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.bean.WorksData;
+import com.xilu.wybz.common.DoubleMediaInstance;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.FileDir;
 import com.xilu.wybz.common.MediaInstance;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.common.PlayMediaInstance;
 import com.xilu.wybz.common.RecordInstance;
+import com.xilu.wybz.common.interfaces.IMediaPlayerListener;
 import com.xilu.wybz.presenter.MakeSongPresenter;
 import com.xilu.wybz.ui.IView.IMakeSongView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
@@ -91,6 +93,7 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
 
     private int status = 0; //0:未开始  1：录音中  2：暂停  3：完成
 
+    private int playInstance = 1;
 
     protected MaterialDialog loadDialog;
     protected MaterialDialog backDialog;
@@ -138,7 +141,7 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
 
         helper = waveSurface.getWaveSurfaceHelper();
 
-        helper.setTotalSize(templateBean.mp3times/1000);
+        helper.setTotalSize(templateBean.mp3times / 1000);
 
         RecordInstance.getInstance().getMp3Recorder().setOnWaveChangeListener(new MP3Recorder.OnWaveChangeListener() {
             @Override
@@ -157,7 +160,7 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
             @Override
             public void onRecordStart() {
                 int duration = RecordInstance.getInstance().getMediaPlayer().getDuration();
-                helper.setTotalSize(duration/1000);
+                helper.setTotalSize(duration / 1000);
             }
 
             @Override
@@ -313,6 +316,13 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
                     return;
                 }
 
+                if (isPlay) {
+                    showMsg("请先停止播放");
+                    return;
+                }
+
+                reSetPlayer();
+
                 if (RecordInstance.getInstance().toRestart()) {
                     status = 1;
                     showRecordStart();
@@ -322,7 +332,14 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
 
                 break;
             case R.id.iv_record:
-                if (useheadset){
+                if (isPlay) {
+                    showMsg("请先停止播放");
+                    return;
+                }
+
+                reSetPlayer();
+
+                if (useheadset) {
                     useheadset = SystemUtils.isWiredHeadsetOn(this);
                 }
 
@@ -356,15 +373,164 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
     }
 
 
+    private void reSetPlayer(){
+        if (isPause){
+            stopPlay();
+            isPause =  false;
+        }
+    }
 
-    private void startPlay(){
-        MediaInstance.getInstance().creatMediaPlayer("");
-//        DoubleMediaInstance.getInstance().startMediaPlay("","");
+    private void startPlay() {
+        if (isPause){
+            if (playInstance == 1) {
+                MediaInstance.getInstance().resumeMediaPlay();
+            } else {
+                DoubleMediaInstance.getInstance().resumeMediaPlay();
+            }
+
+            isPause = false;
+            isPlay = true;
+            return;
+        }
+
+
+        if (!useheadset) {
+
+            MediaInstance.getInstance().setIMediaPlayerListener(new IMediaPlayerListener() {
+                @Override
+                public void onStart() {
+                    MediaInstance.getInstance().startTimerTask();
+                }
+
+
+                @Override
+                public void onPlay() {
+                    MediaInstance.getInstance().startTimerTask();
+                }
+
+                @Override
+                public void onPause() {
+                    MediaInstance.getInstance().stopTimerTask();
+                }
+
+
+                @Override
+                public void onStop() {
+                    MediaInstance.getInstance().stopTimerTask();
+                    showSongPlay();
+                    isPlay = false;
+                    isPause = false;
+                }
+
+                @Override
+                public void onOver() {
+                    MediaInstance.getInstance().stopTimerTask();
+                    showSongPlay();
+                    isPlay = false;
+                    isPause = false;
+                }
+
+                @Override
+                public void onError() {
+                    MediaInstance.getInstance().stopTimerTask();
+                    showSongPlay();
+                    isPlay = false;
+                    isPause = false;
+                }
+            });
+
+            MediaInstance.getInstance().setOnProgressLitsener(new MediaInstance.OnProgressLitsener() {
+                @Override
+                public void progress(int progress) {
+                    helper.onDrawWave(progress / 50);
+                }
+            });
+
+            MediaInstance.getInstance().startMediaPlay(FileUtils.getTempRecordPath());
+
+            playInstance = 1;
+
+        } else {
+
+            DoubleMediaInstance.getInstance().setIMediaPlayerListener(new IMediaPlayerListener() {
+                @Override
+                public void onStart() {
+                    DoubleMediaInstance.getInstance().startTimerTask();
+                }
+
+
+
+                @Override
+                public void onPlay() {
+                    DoubleMediaInstance.getInstance().startTimerTask();
+                }
+
+                @Override
+                public void onPause() {
+                    DoubleMediaInstance.getInstance().stopTimerTask();
+                }
+
+                @Override
+                public void onStop() {
+                    DoubleMediaInstance.getInstance().stopTimerTask();
+                    showSongPlay();
+                    isPlay = false;
+                    isPause = false;
+                }
+
+                @Override
+                public void onOver() {
+                    showSongPlay();
+                    isPlay = false;
+                    isPause = false;
+                }
+
+                @Override
+                public void onError() {
+                    DoubleMediaInstance.getInstance().stopTimerTask();
+                    showSongPlay();
+                    isPlay = false;
+                    isPause = false;
+                }
+            });
+
+            DoubleMediaInstance.getInstance().setOnProgressLitsener(new DoubleMediaInstance.OnProgressLitsener() {
+                @Override
+                public void progress(int progress) {
+                    helper.onDrawWave(progress / 50);
+                }
+            });
+
+            DoubleMediaInstance.getInstance().startMediaPlay(FileUtils.getTempRecordPath(), templateFileName);
+
+            playInstance = 2;
+        }
+        isPlay = true;
     }
-    private void pausePlay(){
-;
+
+    boolean isPause = false;
+
+    private void pausePlay() {
+
+        if (playInstance == 1) {
+            MediaInstance.getInstance().pauseMediaPlay();
+        } else {
+            DoubleMediaInstance.getInstance().pauseMediaPlay();
+        }
+        isPause = true;
+        isPlay = false;
+
     }
-    private void stopPlay(){
+
+    private void stopPlay() {
+
+        if (playInstance == 1) {
+            MediaInstance.getInstance().destroy();
+        } else {
+            DoubleMediaInstance.getInstance().destroy();
+        }
+        isPause = false;
+        isPlay = false;
 
     }
 
@@ -378,6 +544,7 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
         ivRecord.setImageResource(R.drawable.ic_record_unstart);
         waveSurface.setEnableTouch();
     }
+
 
 
     public void showSongPlay() {
@@ -398,6 +565,10 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
         }
         if (status == 2) {
             RecordInstance.getInstance().toReplay();
+//            RecordInstance.getInstance().destroy();
+//            RecordInstance.getInstance().setDataSource(templateFileName);
+//            RecordInstance.getInstance().toStart();
+
             status = 1;
         } else {
             RecordInstance.getInstance().setDataSource(templateFileName);
@@ -446,7 +617,7 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
                 worksData.title = etTitle.getText().toString();
                 worksData.lyrics = etWord.getText().toString();
 
-                worksData.useheadset = useheadset == true ? "1":"0";
+                worksData.useheadset = useheadset == true ? "1" : "0";
                 UserBean user = PrefsUtil.getUserInfo(this);
 
                 worksData.uid = user.userid;
@@ -455,7 +626,7 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
                 RecordInstance.getInstance().toStop();
                 RecordInstance.getInstance().saveWaveDatas();
                 boolean copyok = RecordInstance.getInstance().saveRecorderFileTo(FileUtils.getLocalRecordPath(MyCommon.TYPE_MAKE + templateBean.id));
-                if (copyok){
+                if (copyok) {
                     worksData.recordmp3 = FileUtils.getLocalRecordPath(MyCommon.TYPE_MAKE + templateBean.id);
                 } else {
                     showMsg("保存录音文件失败");
@@ -524,16 +695,14 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
     }
 
 
-
-
     public class HeadSetPlugListenner extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.hasExtra("state")) {
-                if (intent.getIntExtra("state", 2) == 0){
+                if (intent.getIntExtra("state", 2) == 0) {
                     //拔出
                     useheadset = false;
-                }else if (intent.getIntExtra("state", 2) == 1) {
+                } else if (intent.getIntExtra("state", 2) == 1) {
                     //插入
 //                    useheadset = true;
                 }
@@ -543,16 +712,17 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
 
     BroadcastReceiver INSTANCE;
 
-    private void registerHeadSetReceiver(){
-        if (INSTANCE == null){
+    private void registerHeadSetReceiver() {
+        if (INSTANCE == null) {
             INSTANCE = new HeadSetPlugListenner();
         }
         IntentFilter filter = new IntentFilter();
         filter.addAction("android.intent.action.HEADSET_PLUG");
         context.registerReceiver(INSTANCE, filter);
     }
-    private void unregisterHeadSetReceiver(){
-        if (INSTANCE != null){
+
+    private void unregisterHeadSetReceiver() {
+        if (INSTANCE != null) {
             context.unregisterReceiver(INSTANCE);
             INSTANCE = null;
         }
@@ -565,6 +735,10 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
         EventBus.getDefault().unregister(this);
         //关闭及清理录音
         RecordInstance.getInstance().destroy();
+
+        MediaInstance.getInstance().destroy();
+
+        DoubleMediaInstance.getInstance().destroy();
 
         unregisterHeadSetReceiver();
 

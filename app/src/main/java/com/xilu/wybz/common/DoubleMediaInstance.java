@@ -8,6 +8,8 @@ import com.xilu.wybz.common.interfaces.IMediaPlayerListener;
 import com.xilu.wybz.ui.MyApplication;
 
 import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by Zning on 2015/9/16.
@@ -122,6 +124,7 @@ public class DoubleMediaInstance {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
                     MyApplication.isPlay = false;
+                    stopTimerTask();
                     releaseMp();
                     if (iml != null) {
                         iml.onOver();
@@ -182,5 +185,83 @@ public class DoubleMediaInstance {
     public void setIMediaPlayerListener(IMediaPlayerListener iml) {
         this.iml = iml;
     }
+
+
+
+
+    Timer timer;
+    OnProgressLitsener onProgressLitsener;
+
+
+
+
+    /**
+     *
+     */
+    public void startTimerTask(){
+        if (timer != null){
+            timer.cancel();
+            timer = null;
+        }
+        timer = new Timer();
+
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                if (mediaPlayer1 != null){
+                    int current = mediaPlayer1.getCurrentPosition();
+                    Log.d("timer","time:"+current);
+                    if (onProgressLitsener != null){
+                        onProgressLitsener.progress(current);
+                    }
+                } else {
+                    Log.d("timer","cancel");
+                    timer.cancel();
+                    timer = null;
+                }
+            }
+        };
+
+        timer.schedule(task,50,50);
+
+    }
+
+
+    /**
+     *
+     */
+    public void stopTimerTask(){
+        if (timer != null){
+            timer.cancel();
+            timer = null;
+        }
+    }
+
+    public void setOnProgressLitsener(OnProgressLitsener onProgressLitsener) {
+        this.onProgressLitsener = onProgressLitsener;
+    }
+
+    public interface OnProgressLitsener{
+        void progress(int progress);
+    }
+
+
+    public void destroy(){
+
+        if (isPlay()){
+            mediaPlayer1.stop();
+            mediaPlayer2.stop();
+        }
+        try{
+            mediaPlayer1.reset();
+            mediaPlayer1.release();
+            mediaPlayer2.reset();
+            mediaPlayer2.release();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        mInstance = null;
+    }
+
 
 }

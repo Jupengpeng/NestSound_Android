@@ -9,7 +9,6 @@ import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.callback.AppJsonCalback;
 import com.xilu.wybz.ui.IView.ISaveSongView;
-import com.xilu.wybz.utils.PrefsUtil;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -29,7 +28,7 @@ public class SaveSongPresenter extends BasePresenter<ISaveSongView> {
     public void saveSong(WorksData worksData) {
         params = new HashMap<>();
         try {
-            params.put("uid", PrefsUtil.getUserId(context) + "");
+            params.put("uid", worksData.uid+"");
             params.put("title", worksData.title);
             params.put("author", worksData.author);
             params.put("lyrics", worksData.lyrics);
@@ -39,7 +38,7 @@ public class SaveSongPresenter extends BasePresenter<ISaveSongView> {
             params.put("pic", worksData.pic);
             params.put("is_issue", "" + worksData.is_issue);
             params.put("mp3", worksData.musicurl);
-            params.put("diyids", worksData.diyids);
+            params.put("diyids", worksData.detail);
 
         } catch (Exception e) {
             Log.e("Exception", e.toString());
