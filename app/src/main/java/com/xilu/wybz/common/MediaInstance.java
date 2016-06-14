@@ -21,6 +21,9 @@ public class MediaInstance {
     public boolean asynchronization = false;
     private IMediaPlayerListener iml;
 
+
+    public int seek = -1;
+
     MediaInstance() {
 
     }
@@ -47,6 +50,12 @@ public class MediaInstance {
         }
     }
 
+    public void seekTo(int msec) {
+
+        int d = mediaPlayer.getDuration();
+
+        mediaPlayer.seekTo(Math.min(d, msec));
+    }
 
     public void startMediaPlayAsync(final String path) {
 
@@ -62,7 +71,7 @@ public class MediaInstance {
                         }
                         mediaPlayer.prepareAsync();
                         asynchronization = true;
-                    } catch (Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
@@ -98,7 +107,12 @@ public class MediaInstance {
     public void resumeMediaPlay() {
         if (mediaPlayer != null && !isPlay) {
             isPlay = true;
-            mediaPlayer.start();
+            if (seek != -1) {
+                mediaPlayer.seekTo(seek);
+                seek = -1;
+            } else {
+                mediaPlayer.start();
+            }
             if (iml != null) {
                 iml.onPlay();
             }
@@ -124,12 +138,23 @@ public class MediaInstance {
             mediaPlayer = new MediaPlayer();
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);// 设置媒体流类型
 
-
+            mediaPlayer.setOnSeekCompleteListener(new MediaPlayer.OnSeekCompleteListener() {
+                @Override
+                public void onSeekComplete(MediaPlayer mp) {
+                    mediaPlayer.start();
+                }
+            });
             mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mp) {
                     isPlay = true;
-                    mp.start();
+
+                    if (seek != -1) {
+                        mp.seekTo(seek);
+                        seek = -1;
+                    } else {
+                        mp.start();
+                    }
                     if (iml != null) {
                         iml.onStart();
                     }
@@ -176,13 +201,11 @@ public class MediaInstance {
     OnProgressLitsener onProgressLitsener;
 
 
-
-
     /**
      *
      */
-    public void startTimerTask(){
-        if (timer != null){
+    public void startTimerTask() {
+        if (timer != null) {
             timer.cancel();
             timer = null;
         }
@@ -191,21 +214,21 @@ public class MediaInstance {
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                if (mediaPlayer != null){
+                if (mediaPlayer != null) {
                     int current = mediaPlayer.getCurrentPosition();
-                    Log.d("timer","time:"+current);
-                    if (onProgressLitsener != null && current != 1){
+                    Log.d("timer", "time:" + current);
+                    if (onProgressLitsener != null && current != 1) {
                         onProgressLitsener.progress(current);
                     }
                 } else {
-                    Log.d("timer","cancel");
+                    Log.d("timer", "cancel");
                     timer.cancel();
                     timer = null;
                 }
             }
         };
 
-        timer.schedule(task,50,50);
+        timer.schedule(task, 50, 50);
 
     }
 
@@ -213,8 +236,8 @@ public class MediaInstance {
     /**
      *
      */
-    public void stopTimerTask(){
-        if (timer != null){
+    public void stopTimerTask() {
+        if (timer != null) {
             timer.cancel();
             timer = null;
         }
@@ -224,23 +247,19 @@ public class MediaInstance {
         this.onProgressLitsener = onProgressLitsener;
     }
 
-    public interface OnProgressLitsener{
+    public interface OnProgressLitsener {
         void progress(int progress);
     }
 
 
-
-
-
-
-    public void destroy(){
-        if (isPlay){
+    public void destroy() {
+        if (isPlay) {
             mediaPlayer.stop();
         }
-        try{
+        try {
             mediaPlayer.reset();
             mediaPlayer.release();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         mInstance = null;

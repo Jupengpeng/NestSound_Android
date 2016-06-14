@@ -5,9 +5,8 @@ package com.xilu.wybz.bean;
  */
 public class ShareResponseBean {
 
-    public String itemid;
+    public int itemid;
     public String shareurl;
-
 
     public String getCompleteShareUrl(){
         return shareurl+"?id="+itemid;

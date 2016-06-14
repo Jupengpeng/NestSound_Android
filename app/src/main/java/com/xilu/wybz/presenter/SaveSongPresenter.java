@@ -57,7 +57,7 @@ public class SaveSongPresenter extends BasePresenter<ISaveSongView> {
                         super.onResult(response);
                         ShareResponseBean sharebean = response.getData();
                         if (sharebean != null){
-                            iView.saveWordSuccess(sharebean.getCompleteShareUrl());
+                            iView.saveWordSuccess(sharebean);
                         } else {
                             iView.saveWordFail();
                         }
