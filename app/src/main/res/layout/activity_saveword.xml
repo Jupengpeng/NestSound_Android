@@ -96,6 +96,7 @@
 
                 <CheckBox
                     android:id="@+id/cb_isopen"
+                    android:checked="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:button="@drawable/check_btn" />
