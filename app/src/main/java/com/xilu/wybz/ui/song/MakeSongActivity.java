@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -100,6 +99,7 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
 
     protected MaterialDialog loadDialog;
     protected MaterialDialog backDialog;
+    protected MaterialDialog reStartDialog;
 
     public static void ToMakeSongActivity(Context context, TemplateBean templateBean) {
         Intent intent = new Intent(context, MakeSongActivity.class);
@@ -334,14 +334,32 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
                     return;
                 }
 
-                reSetPlayer();
-
-                if (RecordInstance.getInstance().toRestart()) {
-                    status = 1;
-                    showRecordStart();
-                } else {
-                    showMsg("录音出错");
+                if (status == 0){
+                    showMsg("还未开始录音");
+                    return;
                 }
+
+                reStartDialog = new MaterialDialog.Builder(this)
+                        .title("请确认操作")
+                        .content("请确认是否重新录音？")
+                        .negativeText("取消")
+                        .positiveText("重新录音")
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+
+                                reSetPlayer();
+                                if (RecordInstance.getInstance().toRestart()) {
+                                    status = 1;
+                                    showRecordStart();
+                                } else {
+                                    showMsg("录音出错");
+                                }
+                            }
+                        })
+                        .canceledOnTouchOutside(true).build();
+                reStartDialog.show();
+
 
                 break;
             case R.id.iv_record:
@@ -405,7 +423,7 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
             isPlay = true;
             return;
         }
-//        useheadset = true;
+        useheadset = true;
 
         if (!useheadset) {
 
@@ -655,8 +673,9 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
                 worksData.uid = user.userid;
                 worksData.author = user.name;
 
-                RecordInstance.getInstance().toStop();
-                RecordInstance.getInstance().saveWaveDatas();
+//                RecordInstance.getInstance().toStop();
+//                RecordInstance.getInstance().saveWaveDatas();
+
                 boolean copyok = RecordInstance.getInstance().saveRecorderFileTo(FileUtils.getLocalRecordPath(MyCommon.TYPE_MAKE + templateBean.id));
                 if (copyok) {
                     worksData.recordmp3 = FileUtils.getLocalRecordPath(MyCommon.TYPE_MAKE + templateBean.id);
@@ -707,18 +726,16 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
 
             backDialog = new MaterialDialog.Builder(this)
                     .title("请确认操作")
-                    .content("如果你确认放弃录音，请点击左边“确认放弃”按钮。")
-                    .positiveText("取消")
-                    .neutralText("确认放弃")
-                    .negativeColor(Color.parseColor("#ff0000"))
-                    .onNeutral(new MaterialDialog.SingleButtonCallback() {
+                    .content("是否放弃当前录音？")
+                    .negativeText("取消")
+                    .positiveText("确认放弃")
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
                         @Override
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                             RecordInstance.getInstance().destroy();
                             finish();
                         }
                     })
-                    .contentGravity(GravityEnum.CENTER)
                     .canceledOnTouchOutside(true).build();
         }
 

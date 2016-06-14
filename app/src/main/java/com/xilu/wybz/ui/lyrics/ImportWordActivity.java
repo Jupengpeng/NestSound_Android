@@ -91,20 +91,26 @@ public class ImportWordActivity extends BaseListActivity<WorksData> implements I
 
     @Override
     public void loadFail() {
-        recycler.onRefreshCompleted();
+        if (recycler != null){
+            recycler.onRefreshCompleted();
+        }
     }
 
     @Override
     public void loadNoMore() {
-        recycler.onRefreshCompleted();
-        recycler.enableLoadMore(false);
+        if (recycler != null){
+            recycler.onRefreshCompleted();
+            recycler.enableLoadMore(false);
+        }
     }
 
     @Override
     public void loadNoData() {
-        llNoData.setVisibility(View.VISIBLE);
-        recycler.onRefreshCompleted();
-        recycler.enableLoadMore(false);
+        if (recycler != null){
+            llNoData.setVisibility(View.VISIBLE);
+            recycler.onRefreshCompleted();
+            recycler.enableLoadMore(false);
+        }
     }
 
     @Override

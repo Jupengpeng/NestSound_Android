@@ -155,6 +155,7 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView ,
             public void onPlay() {
                 status = 3;
                 showMsg("继续播放");
+                cancelWait();
             }
 
             @Override
@@ -180,10 +181,10 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView ,
         });
     }
 
-//
-//    public void onEventMainThread(Event.SaveSongSeccess event) {
+
+    public void onEventMainThread(Event.SaveSongSeccess event) {
 //        finish();
-//    }
+    }
 
 
     //上传封面图片
