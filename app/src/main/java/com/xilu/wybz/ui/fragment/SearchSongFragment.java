@@ -53,12 +53,6 @@ public class SearchSongFragment extends BaseListFragment<WorksData> implements I
         tvNoData.setText("暂无搜索结果！");
         ivNoData.setImageResource(R.drawable.ic_nosearch);
     }
-    public void loadData(String name){
-        if(TextUtils.isEmpty(keyWord)) {
-            keyWord = name;
-            recycler.setRefreshing();
-        }
-    }
 
     @Override
     protected void setUpData() {
@@ -79,7 +73,7 @@ public class SearchSongFragment extends BaseListFragment<WorksData> implements I
             @Override
             public void run() {
                 if(mDataList.size()==0){
-                    EventBus.getDefault().post(new Event.ShowSearchTabEvent());
+                    EventBus.getDefault().post(new Event.ShowSearchTabEvent(true));
                 }
                 recycler.enableLoadMore(true);
                 mDataList.addAll(worksDataList);
@@ -109,7 +103,7 @@ public class SearchSongFragment extends BaseListFragment<WorksData> implements I
     @Override
     public void loadNoData() {
         if(mDataList.size()==0){
-            EventBus.getDefault().post(new Event.ShowSearchTabEvent());
+            EventBus.getDefault().post(new Event.ShowSearchTabEvent(false));
         }
         llNoData.setVisibility(View.VISIBLE);
         recycler.onRefreshCompleted();

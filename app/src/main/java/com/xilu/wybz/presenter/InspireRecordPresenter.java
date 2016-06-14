@@ -12,6 +12,7 @@ import com.xilu.wybz.ui.IView.IInspireRecordView;
 import com.xilu.wybz.ui.IView.ILoginView;
 import com.xilu.wybz.utils.ParseUtils;
 import com.xilu.wybz.utils.PrefsUtil;
+import com.xilu.wybz.utils.StringUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -59,7 +60,7 @@ public class InspireRecordPresenter extends BasePresenter<IInspireRecordView>{
         params.put("spirecontent",worksData.spirecontent);
         params.put("pics",worksData.pics);
         params.put("audio",worksData.audio);
-        httpUtils.post(MyHttpClient.getSaveInspireUrl(),params,new MyStringCallback(){
+        httpUtils.post(MyHttpClient.getUpdateInspireUrl(),params,new MyStringCallback(){
             @Override
             public void onResponse(String response) {
                 super.onResponse(response);

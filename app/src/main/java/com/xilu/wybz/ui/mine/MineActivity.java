@@ -1,6 +1,7 @@
 package com.xilu.wybz.ui.mine;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
 import android.view.View;
@@ -17,6 +18,7 @@ import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.KeySet;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.ui.base.ToolbarActivity;
+import com.xilu.wybz.ui.fragment.WorksDataFragment;
 import com.xilu.wybz.ui.setting.SettingActivity;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.NumberUtil;
@@ -114,6 +116,15 @@ public class MineActivity extends ToolbarActivity {
             public void onPageSelected(int position) {
                 currentIndex = position;
                 changeTabColor();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(position>0){
+                            WorksDataFragment worksDataFragment = pagerAdapter.getFragment(position);
+                            worksDataFragment.loadData();
+                        }
+                    }
+                },120);
             }
 
             @Override
@@ -230,8 +241,10 @@ public class MineActivity extends ToolbarActivity {
         int type = event.getType();
         if (event.getChange() == 0)
             (pagerAdapter.getFragment(type)).addItem(worksData);
-        else
+        else if (event.getChange() == 1)
             (pagerAdapter.getFragment(type)).removeData(worksData);
+        else if (event.getChange() == 2)
+            (pagerAdapter.getFragment(type)).updateData(worksData);
     }
 
     @Override

@@ -58,7 +58,16 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
             type = getArguments().getInt(TYPE);
         }
     }
-
+    public void loadData(String name){
+        if (mDataList != null && mDataList.size() > 0) {
+            mDataList.clear();
+            adapter.notifyDataSetChanged();
+        }
+        keyWord = name;
+        page = 1;
+        llNoData.setVisibility(View.GONE);
+        recycler.setRefreshing();
+    }
     @Override
     public boolean hasPadding() {
         return false;
@@ -93,23 +102,6 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
         }
     }
 
-    public void loadData(String name) {
-        if (StringUtil.isBlank(keyWord)) {
-            keyWord = name;
-            recycler.setRefreshing();
-        }
-    }
-
-    public void clearData() {
-        if (mDataList != null && mDataList.size() > 0) {
-            keyWord = "";
-            page = 1;
-            mDataList.clear();
-            llNoData.setVisibility(View.GONE);
-            adapter.notifyDataSetChanged();
-            recycler.requestLayout();
-        }
-    }
     @Override
     public void onRefresh(int action) {
         this.action = action;
@@ -127,6 +119,7 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
                 if(mDataList.size()==0){
                     EventBus.getDefault().post(new Event.HideKeyboardEvent());
                 }
+                llNoData.setVisibility(View.GONE);
                 recycler.enableLoadMore(true);
                 mDataList.addAll(templateBeens);
                 adapter.notifyDataSetChanged();
@@ -148,8 +141,6 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
 
     @Override
     public void loadNoData() {
-        if(mDataList.size()==0)
-            EventBus.getDefault().post(new Event.HideKeyboardEvent());
         llNoData.setVisibility(View.VISIBLE);
         recycler.onRefreshCompleted();
         recycler.enableLoadMore(false);

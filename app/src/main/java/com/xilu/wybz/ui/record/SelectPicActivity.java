@@ -118,6 +118,7 @@ public class SelectPicActivity extends ToolbarActivity {
         getMenuInflater().inflate(R.menu.menu_select_pic, menu);
         MenuItem menuItem = menu.findItem(R.id.menu_select);
         selectPicProvider = (SelectPicProvider)MenuItemCompat.getActionProvider(menuItem);;
+        selectPicProvider.onCreateActionView();
         if(picList.size()>0){
             selectPicProvider.setCount(picList.size());
         }

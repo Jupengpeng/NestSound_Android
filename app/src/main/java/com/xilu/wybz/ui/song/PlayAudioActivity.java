@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -191,7 +192,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
             actionBean.setType(actionTypes[i]);
             actionBeanList.add(actionBean);
         }
-        toolbar.setTitleTextColor(0xFFFFFFFF);
+        toolbar.setTitleTextColor(Color.WHITE);
         worksData = new WorksData();
         LayoutInflater lf = getLayoutInflater().from(this);
         View view1 = lf.inflate(R.layout.ll_lyrics, null);

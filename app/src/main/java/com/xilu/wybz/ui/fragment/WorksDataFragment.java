@@ -1,6 +1,7 @@
 package com.xilu.wybz.ui.fragment;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
@@ -49,13 +50,18 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
     private int workType;
     private String[] COMES = new String[]{"myrecord", "mysong", "mylyrics", "myfav"};
     private String[] COMESs = new String[]{"usersong", "userlyrics", "userfav"};
-
+    private boolean isFirst;
+    private boolean isFirstTab;
     @Override
     protected void initPresenter() {
         userPresenter = new UserPresenter(context, this);
         userPresenter.init();
     }
-
+    public void loadData(){
+        if(isFirst)return;
+        else isFirst = true;
+        recycler.setRefreshing();
+    }
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -73,6 +79,7 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
             type = getArguments().getInt(TYPE);
             userId = getArguments().getInt(UID);
             isMe = (userId == PrefsUtil.getUserId(context));
+            if(type==0)isFirstTab = true;
             if (!isMe) {
                 COME = COMESs[type];
                 type = type + 1;
@@ -89,10 +96,12 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
         }
 
     }
+
     protected ILayoutManager getLayoutManager() {
         MyLinearLayoutManager myLinearLayoutManager = new MyLinearLayoutManager(getActivity().getApplicationContext(), OrientationHelper.VERTICAL, false);
         return myLinearLayoutManager;
     }
+
     public static WorksDataFragment newInstance(int type, int userId, String author) {
         WorksDataFragment tabFragment = new WorksDataFragment();
         Bundle bundle = new Bundle();
@@ -115,7 +124,7 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
     @Override
     protected void setUpData() {
         super.setUpData();
-        recycler.setRefreshing();
+        if(isFirstTab)recycler.setRefreshing();
     }
 
     @Override
@@ -137,27 +146,31 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
 
     @Override
     public void showWorksData(List<WorksData> worksDataList) {
-        if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
-            mDataList.clear();
-        }
-        for (WorksData worksData : worksDataList) {
-            if (type < 3)
-                worksData.setAuthor(author);
-            if (type == 0) {
-                worksData.status = 4;
-            } else if (type == 1) {
-                worksData.status = 1;
-            } else if (type == 2) {
-                worksData.status = 2;
-            } else if (type == 3) {
-                worksData.status = worksData.type;
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
+                    mDataList.clear();
+                }
+                for (WorksData worksData : worksDataList) {
+                    if (type < 3)
+                        worksData.setAuthor(author);
+                    if (type == 0) {
+                        worksData.status = 4;
+                    } else if (type == 1) {
+                        worksData.status = 1;
+                    } else if (type == 2) {
+                        worksData.status = 2;
+                    } else if (type == 3) {
+                        worksData.status = worksData.type;
+                    }
+                    mDataList.add(worksData);
+                }
+                recycler.enableLoadMore(true);
+                adapter.notifyDataSetChanged();
+                recycler.onRefreshCompleted();
             }
-        }
-        recycler.enableLoadMore(true);
-        mDataList.addAll(worksDataList);
-        adapter.notifyDataSetChanged();
-        recycler.setAdapter(adapter);
-        recycler.onRefreshCompleted();
+        },600);
     }
 
     @Override
@@ -213,6 +226,19 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
         userPresenter.unfav(worksData.itemid, worksData.uid, worksData.status);
     }
 
+    public void updateData(WorksData worksData) {
+        int index = -1;
+        for (int i = 0; i < mDataList.size(); i++) {
+            if (worksData.itemid == mDataList.get(i).itemid && worksData.status == mDataList.get(i).status) {
+                index = i;
+                break;
+            }
+        }
+        if (index > -1) {
+            updateItem(index, worksData);
+        }
+    }
+
     public void removeData(WorksData worksData) {
         int index = -1;
         for (int i = 0; i < mDataList.size(); i++) {
@@ -262,8 +288,6 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
                     showDeleteDialog(pos);
                 }
             });
-
-
             return holder;
         } else {
             View view = LayoutInflater.from(context).inflate(R.layout.activity_work_list_item, parent, false);

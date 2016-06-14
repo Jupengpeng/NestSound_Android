@@ -11,4 +11,5 @@ public interface ISongView extends IBaseView{
     void showNewSong(List<WorksData> newWorksDatas);
     void showHotSong(List<WorksData> hotWorksDatas);
     void showErrorView();
+    void loadingFinish();
 }

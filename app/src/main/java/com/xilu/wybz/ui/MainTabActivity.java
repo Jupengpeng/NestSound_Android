@@ -131,12 +131,10 @@ public class MainTabActivity extends BaseActivity {
                 ((MineActivity)manager.getActivity("MINE")).initData();
             }
         }
-
         @Override
         public void onPageScrollStateChanged(int arg0) {
 
         }
-
         @Override
         public void onPageScrolled(int arg0, float arg1, int arg2) {
 
@@ -208,7 +206,6 @@ public class MainTabActivity extends BaseActivity {
         startActivity(MainTabActivity.class);
         finish();
         overridePendingTransition(R.anim.none,R.anim.none);
-
     }
     public void onEventMainThread(Event.LoginOutEvent event){
         startActivity(MainTabActivity.class);

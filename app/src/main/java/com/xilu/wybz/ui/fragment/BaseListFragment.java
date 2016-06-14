@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
+import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.view.pull.BaseListAdapter;
 import com.xilu.wybz.view.pull.BaseViewHolder;
@@ -51,6 +53,7 @@ public abstract class BaseListFragment<T> extends BaseFragment implements PullRe
     int action;
     int page = 1;
     int dip10;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(getLayoutResId(), container, false);
@@ -64,7 +67,7 @@ public abstract class BaseListFragment<T> extends BaseFragment implements PullRe
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         context = activity;
-        dip10 = DensityUtil.dip2px(context,10);
+        dip10 = DensityUtil.dip2px(context, 10);
     }
 
     @Override
@@ -73,14 +76,18 @@ public abstract class BaseListFragment<T> extends BaseFragment implements PullRe
     }
 
     protected abstract void initPresenter();
-    public boolean hasPadding() {return true;}
+
+    public boolean hasPadding() {
+        return true;
+    }
+
     protected void setUpData() {
         setUpAdapter();
-        if(hasPadding()){
+        if (hasPadding()) {
 //            if(this instanceof WorksDataFragment){
 //                recycler.setReclylerPaddiing(dip10, dip10, dip10, dip10+DensityUtil.dip2px(context,48));
 //            }else {
-                recycler.setReclylerPaddiing(dip10, dip10, dip10, dip10);
+            recycler.setReclylerPaddiing(dip10, dip10, dip10, dip10);
 //            }
         }
         recycler.setOnRefreshListener(this);
@@ -107,27 +114,36 @@ public abstract class BaseListFragment<T> extends BaseFragment implements PullRe
     protected RecyclerView.ItemDecoration getItemDecoration() {
         return new DividerItemDecoration(getActivity().getApplicationContext(), R.drawable.transparent);
     }
-    public void moveToFirst(){
-        if(mDataList!=null&&mDataList.size()>0&&recycler!=null){
+
+    public void moveToFirst() {
+        if (mDataList != null && mDataList.size() > 0 && recycler != null) {
             recycler.setSelection(0);
         }
     }
-    public void removeItem(int position){
+
+    public void removeItem(int position) {
         mDataList.remove(position);
         adapter.notifyItemRemoved(position);
         recycler.getRecyclerView().requestLayout();
-        if(position != mDataList.size()){
+        if (position != mDataList.size()) {
             adapter.notifyItemRangeChanged(position, mDataList.size() - position);
         }
-        if(mDataList.size()==0)llNoData.setVisibility(View.VISIBLE);
+        if (mDataList.size() == 0) llNoData.setVisibility(View.VISIBLE);
     }
-    public void addItem(T t){
-        mDataList.add(0,t);
+
+    public void updateItem(int position, T worksData) {
+        mDataList.set(position, worksData);
+        adapter.notifyItemChanged(position);
+    }
+
+    public void addItem(T t) {
+        mDataList.add(0, t);
         recycler.setSelection(0);
         adapter.notifyItemInserted(0);
         adapter.notifyItemRangeChanged(0, mDataList.size());
         llNoData.setVisibility(View.GONE);
     }
+
     public class ListAdapter extends BaseListAdapter {
         @Override
         protected BaseViewHolder onCreateNormalViewHolder(ViewGroup parent, int viewType) {
@@ -165,7 +181,12 @@ public abstract class BaseListFragment<T> extends BaseFragment implements PullRe
         super.onDestroyView();
         ButterKnife.unbind(this);
     }
-
+    public void loadData(String name) {
+        if (TextUtils.isEmpty(keyWord)) {
+            keyWord = name;
+            recycler.setRefreshing();
+        }
+    }
     public void clearData() {
         llNoData.setVisibility(View.GONE);
         if (mDataList != null) {
@@ -173,7 +194,7 @@ public abstract class BaseListFragment<T> extends BaseFragment implements PullRe
             recycler.getRecyclerView().requestLayout();
             recycler.enableLoadMore(false);
             mDataList.clear();
-            keyWord = null;
+            keyWord = "";
             page = 1;
         }
     }

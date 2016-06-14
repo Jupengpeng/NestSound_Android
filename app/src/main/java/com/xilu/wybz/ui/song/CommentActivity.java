@@ -46,6 +46,7 @@ import com.xilu.wybz.view.materialdialogs.MaterialDialog;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.PullRecycler;
 
+import java.security.Key;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -189,7 +190,7 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
                 adapter.notifyDataSetChanged();
                 recycler.onRefreshCompleted();
             }
-        },600);
+        }, 600);
     }
 
     @Override
@@ -217,6 +218,7 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
 
     @Override
     public void commentSuccess(int id) {
+        KeyBoardUtil.closeKeybord(etContent, context);
         EventBus.getDefault().post(new Event.UpdataCommentNumEvent(type, 1));
         CommentBean commentBean = new CommentBean();
         commentBean.setUid(PrefsUtil.getUserId(context));

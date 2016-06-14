@@ -36,7 +36,7 @@ public class Event {
     public static class UpdataWorksList {
         WorksData worksData;
         int type;//0 灵感记录 1我的歌曲 2我的歌词 3我的收藏
-        int change;//0 加 1减
+        int change;//0 加 1减 2修改
 
         public int getChange() {
             return change;
@@ -85,6 +85,14 @@ public class Event {
     }
 
     public static class ShowSearchTabEvent {
+        boolean hasData;
+        public ShowSearchTabEvent(boolean hasData){
+            this.hasData = hasData;
+        }
+
+        public boolean isHasData() {
+            return hasData;
+        }
     }
 
     public static class HideKeyboardEvent {
@@ -176,7 +184,9 @@ public class Event {
         }
     }
 
+    public  static class LoginEvent{
 
+    }
     public static class LoginSuccessEvent {
         UserBean userBean;
 

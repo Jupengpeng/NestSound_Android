@@ -62,13 +62,7 @@ public class MyCommon {
     public static final String SINA_APP_KEY = "4209676241";
     public static final String SINA_APP_SECRET = "8856a07ab99f27d94005a3fb536ad4c8";
     //默认歌词图片
-    public static List<String> getLyricsPic() {
-        List<String> lyricsPics = new ArrayList<>();
-        for (int i = 1; i < 11; i++) {
-            lyricsPics.add("lrycirs_backgroup" + ((i < 10) ? "0" : "") + i + ".png");
-        }
-        return lyricsPics;
-    }
+
     //音乐的类型 1本地单曲循环 2本地的列表去播放 3按照网络返回的上下首去播放（目前网络接口这边返回的不对 暂时都按照本地的去播放）
     public static int getFromMusicType(String from) {
         Map<String, Integer> map = new HashMap<>();

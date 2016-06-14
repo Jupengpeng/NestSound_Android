@@ -53,6 +53,12 @@ public class SongPresenter extends BasePresenter<ISongView> {
                     }
                 }
             }
+
+            @Override
+            public void onAfter() {
+                super.onAfter();
+                iView.loadingFinish();
+            }
         });
     }
 

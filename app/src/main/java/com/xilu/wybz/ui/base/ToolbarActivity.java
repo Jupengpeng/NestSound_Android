@@ -44,9 +44,6 @@ public abstract class ToolbarActivity extends BaseActivity {
             ActionBar actionBar = getSupportActionBar();
             if (actionBar != null) actionBar.setDisplayHomeAsUpEnabled(true);
         }
-        if (Build.VERSION.SDK_INT >= 21) {
-            mAppBar.setElevation(10.6f);
-        }
     }
     public boolean canBack() {
         return true;

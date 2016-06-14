@@ -24,6 +24,7 @@ import com.xilu.wybz.ui.IView.IMakeWordView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.PrefsUtil;
+import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.view.dialog.LyricsDialog;
 import com.xilu.wybz.view.materialdialogs.DialogAction;
 import com.xilu.wybz.view.materialdialogs.MaterialDialog;
@@ -66,7 +67,10 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView {
     }
     public void initData(){
         etTitle.setText(worksData.getTitle());
-        etWord.setText(worksData.getLyrics());
+        if(StringUtil.isNotBlank(worksData.getLyrics())) {
+            etWord.setText(worksData.getLyrics());
+            etWord.setSelection(worksData.getLyrics().length() - 1);
+        }
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -149,7 +153,7 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView {
     }
 
     public void onEventMainThread(Event.SaveLyricsSuccessEvent event) {
-        if (event.getWhich() == 3) {
+        if (event.getWhich() == 1) {
             finish();
         }
     }

@@ -44,6 +44,8 @@ public class RankingPresenter extends BasePresenter<IRankingView>{
                             iView.showRankingLyrics(worksDatas);
                             break;
                     }
+                }else{
+                    iView.showNoData(modelType);
                 }
             }
 
@@ -51,6 +53,12 @@ public class RankingPresenter extends BasePresenter<IRankingView>{
             public void onError(Call call, Exception e) {
                 super.onError(call, e);
                 iView.showErrorView();
+            }
+
+            @Override
+            public void onAfter() {
+                super.onAfter();
+                iView.loadFinish();
             }
         });
     }

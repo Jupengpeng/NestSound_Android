@@ -468,6 +468,7 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
 
     @Override
     public void pubFail() {
+        cancelPd();
         showMsg("发布失败！");
     }
 }

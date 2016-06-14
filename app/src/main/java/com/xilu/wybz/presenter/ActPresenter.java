@@ -48,6 +48,12 @@ public class ActPresenter extends BasePresenter<IActView> {
             public void onError(Call call, Exception e) {
                 iView.showErrorView();
             }
+
+            @Override
+            public void onAfter() {
+                super.onAfter();
+                iView.loadOver();
+            }
         });
     }
 }

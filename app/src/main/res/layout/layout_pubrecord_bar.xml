@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/pubRecordLayout"
     android:layout_width="match_parent"
-    android:layout_height="55dp"
+    android:layout_height="wrap_content"
     android:background="#fefefe"
     android:focusable="true"
     android:focusableInTouchMode="true"
@@ -42,5 +42,4 @@
                 android:src="@drawable/ic_record_luyin" />
         </RelativeLayout>
     </LinearLayout>
-    <include layout="@layout/view_spit_line" />
 </LinearLayout>

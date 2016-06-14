@@ -12,9 +12,11 @@ import android.widget.RelativeLayout;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.PhotoBean;
+import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.ImageLoadUtil;
 
+import java.io.File;
 import java.util.List;
 
 import butterknife.Bind;
@@ -55,7 +57,11 @@ public class RecordImageAdapter extends RecyclerView.Adapter<RecordImageAdapter.
             holder.ivDel.setVisibility(View.GONE);
         }else{
             String imgPath = mList.get(position).path;
-            ImageLoadUtil.loadImage("file:///"+imgPath, holder.ivCover);
+            if(new File(imgPath).exists()) {
+                ImageLoadUtil.loadImage("file:///" + imgPath, holder.ivCover);
+            }else{
+                ImageLoadUtil.loadImage(MyCommon.getImageUrl(imgPath,itemWidth,itemHeight), holder.ivCover);
+            }
             holder.ivDel.setVisibility(View.VISIBLE);
         }
         if (mOnItemClickListener != null) {

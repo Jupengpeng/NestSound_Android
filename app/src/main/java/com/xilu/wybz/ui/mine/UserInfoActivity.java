@@ -3,6 +3,7 @@ package com.xilu.wybz.ui.mine;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageView;
@@ -20,6 +21,7 @@ import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.HttpUtils;
 import com.xilu.wybz.http.callback.MyStringCallback;
 import com.xilu.wybz.ui.base.ToolbarActivity;
+import com.xilu.wybz.ui.fragment.WorksDataFragment;
 import com.xilu.wybz.ui.setting.SettingActivity;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.NumberUtil;
@@ -73,7 +75,7 @@ public class UserInfoActivity extends ToolbarActivity {
     private boolean isFirst;
     private int isFocus = -1;
     private int[] followIcon = new int[]{R.drawable.ic_user_follow, R.drawable.ic_user_followed, R.drawable.ic_user_each_follow};
-
+    MineAdapter pagerAdapter;
     public static void ToUserInfoActivity(Context context, int userId, String userName) {
         Intent intent = new Intent(context, UserInfoActivity.class);
         intent.putExtra("userId", userId);
@@ -123,14 +125,14 @@ public class UserInfoActivity extends ToolbarActivity {
         tabs.add(llMysong);
         tabs.add(llMylyrics);
         tabs.add(llMyfav);
-        MineAdapter pagerAdapter = new MineAdapter(context, getSupportFragmentManager(), userId, userName);
+        pagerAdapter = new MineAdapter(context, getSupportFragmentManager(), userId, userName);
         container.setAdapter(pagerAdapter);
         container.setOffscreenPageLimit(tabs.size());
         stickynavLayout.setOnStickStateChangeListener(new StickyNavLayout.onStickStateChangeListener() {
             @Override
             public void isStick(boolean isStick) {
                 if(!isStick) {
-                    for (int i = 0; i < 4; i++) {
+                    for (int i = 0; i < 3; i++) {
                         if (i != container.getCurrentItem()) {
                             pagerAdapter.getFragment(i).moveToFirst();
                         }
@@ -152,6 +154,15 @@ public class UserInfoActivity extends ToolbarActivity {
             public void onPageSelected(int position) {
                 currentIndex = position;
                 changeTabColor();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(position>0){
+                            WorksDataFragment worksDataFragment = pagerAdapter.getFragment(position);
+                            worksDataFragment.loadData();
+                        }
+                    }
+                },120);
             }
 
             @Override

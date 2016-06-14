@@ -124,6 +124,7 @@ public class LoginActivity extends BaseActivity implements ILoginView,TextWatche
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().post(new Event.LoginEvent());
         EventBus.getDefault().unregister(this);
     }
 
@@ -154,6 +155,6 @@ public class LoginActivity extends BaseActivity implements ILoginView,TextWatche
     @Override
     public void loginFinish() {
         mloginLogin.setEnabled(true);
-
     }
+
 }

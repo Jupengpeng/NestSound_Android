@@ -13,8 +13,10 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.MyCommon;
+import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.ui.lyrics.LyricsdisplayActivity;
+import com.xilu.wybz.ui.record.ModifyInspireRecordActivity;
 import com.xilu.wybz.ui.song.PlayAudioActivity;
 import com.xilu.wybz.utils.DateFormatUtils;
 import com.xilu.wybz.utils.DensityUtil;
@@ -107,13 +109,14 @@ public class InspireRecordViewHolder extends com.xilu.wybz.view.pull.BaseViewHol
         }
         if (hasPic) {//修改字体颜色
             ivMb.setVisibility(View.VISIBLE);
-            tvDateTime.setTextColor(0xffffffff);
-            tvDateDay.setTextColor(0xffffffff);
-            tvText.setTextColor(0xffffffff);
+            tvDateTime.setTextColor(Color.WHITE);
+            tvDateDay.setTextColor(Color.WHITE);
+            tvText.setTextColor(Color.WHITE);
             ivFrequencyIcon.setImageResource(R.drawable.ic_user_frequency_white);
             ivFrequency.setImageResource(R.drawable.user_frequency_white);
-//            String url = MyCommon.getImageUrl(worksData.pics.split(",")[0], itemWidth, itemHeight);
-            ImageLoadUtil.loadImage(worksData.pics.split(",")[0], ivCover);
+            String pic = worksData.pics.split(",")[0];
+            String url = MyCommon.getImageUrl(pic.startsWith("http")?pic: MyHttpClient.QINIU_URL+pic, itemWidth, itemHeight);
+            ImageLoadUtil.loadImage(url, ivCover);
         } else {
             ivMb.setVisibility(View.GONE);
             tvDateTime.setTextColor(0xff999999);
@@ -141,6 +144,7 @@ public class InspireRecordViewHolder extends com.xilu.wybz.view.pull.BaseViewHol
     }
     @Override
     public void onItemClick(View view, int position) {
+        ModifyInspireRecordActivity.toModifyInspireRecordActivity(mContext, mDataList.get(position));
     }
 
     public interface OnDeleteListener{

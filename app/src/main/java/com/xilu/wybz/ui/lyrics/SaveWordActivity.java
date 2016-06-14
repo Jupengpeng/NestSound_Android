@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.WorksData;
@@ -45,7 +46,7 @@ import de.greenrobot.event.EventBus;
 /**
  * Created by hujunwei on 16/5/13.
  */
-public class SaveWordActivity extends ToolbarActivity implements ISaveWordView{
+public class SaveWordActivity extends ToolbarActivity implements ISaveWordView {
     @Bind(R.id.cb_isopen)
     CheckBox cb_isopen;
     @Bind(R.id.et_content)
@@ -55,11 +56,13 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView{
     WorksData worksData;
     String coverPath;
     SaveWordPresenter saveWordPresenter;
-    public static void toSaveWordActivity(Context context, WorksData worksData){
-        Intent intent = new Intent(context,SaveWordActivity.class);
-        intent.putExtra("worksData",worksData);
+
+    public static void toSaveWordActivity(Context context, WorksData worksData) {
+        Intent intent = new Intent(context, SaveWordActivity.class);
+        intent.putExtra(KeySet.WORKS_DATA, worksData);
         context.startActivity(intent);
     }
+
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_saveword;
@@ -68,46 +71,49 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        saveWordPresenter = new SaveWordPresenter(context,this);
+        saveWordPresenter = new SaveWordPresenter(context, this);
         saveWordPresenter.init();
     }
 
     @Override
     public void initView() {
-        EventBus.getDefault().register(this);
         Bundle bundle = getIntent().getExtras();
-        if(bundle!=null){
-            worksData = (WorksData) bundle.getSerializable("worksData");
+        if (bundle != null) {
+            worksData = (WorksData) bundle.getSerializable(KeySet.WORKS_DATA);
         }
         initEvent();
         initData();
     }
-    private void initData(){
+
+    private void initData() {
         //修改歌词的时候 还原数据
-        if(worksData!=null){
-            cb_isopen.setChecked(worksData.status==1?true:false);
-            if(!TextUtils.isEmpty(worksData.detail)){
+        if (worksData != null) {
+            cb_isopen.setChecked(worksData.type == 1 ? true : false);
+            if (StringUtil.isNotBlank(worksData.detail)) {
                 et_content.setText(worksData.detail);
             }
-            if(!TextUtils.isEmpty(worksData.pic)){
-                if(worksData.pic.startsWith("http"))
-                    loadImage(worksData.pic,iv_cover);
-                else if(new File(worksData.pic).exists()) {
+            if (!TextUtils.isEmpty(worksData.pic)) {
+                if (worksData.pic.startsWith("http"))
+                    loadImage(worksData.pic, iv_cover);
+                else if (new File(worksData.pic).exists()) {
                     loadImage("file:///" + worksData.pic, iv_cover);
                 }
             }
         }
     }
-    private void initEvent(){
+
+    private void initEvent() {
         et_content.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
             }
+
             @Override
             public void afterTextChanged(Editable s) {
                 worksData.setDetail(s.toString().trim());
@@ -119,7 +125,7 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView{
         cb_isopen.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                worksData.setStatus(cb_isopen.isChecked() ? 1 : 0);
+                worksData.setType(cb_isopen.isChecked() ? 1 : 0);
             }
         });
     }
@@ -132,6 +138,7 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView{
                 break;
         }
     }
+
     //上传封面图片
     public void uploadCoverPic() {
         showPd("正在保存中，请稍候...");
@@ -150,6 +157,7 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView{
             }
         });
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_makeword, menu);
@@ -158,51 +166,50 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView{
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.menu_save:
                 //先检查歌词的描述
-                if(StringUtil.isBlank(worksData.detail)){
+                if (StringUtil.isBlank(worksData.detail)) {
                     showMsg("请先添加歌词描述！");
                     return true;
                 }
-                if(StringUtil.isBlank(worksData.pic)){
+                if (StringUtil.isBlank(worksData.pic)) {
                     showMsg("请先选择歌词的封面！");
                     return true;
                 }
-                if(new File(worksData.pic).exists()){
+                if (new File(worksData.pic).exists()) {
                     uploadCoverPic();
-                }else{
+                } else {
                     saveWordPresenter.saveLyrics(worksData);
                 }
                 break;
         }
         return true;
     }
+
     @Override
     public void saveWordSuccess(String result) {
         cancelPd();
-        worksData.createdate=System.currentTimeMillis();
-        EventBus.getDefault().post(new Event.UpdataWorksList(worksData,2,0));
-        try {
-            String shareurl = new JSONObject(result).getString("shareurl");
-            int itemid = new JSONObject(result).getInt("itemid");
-            worksData.setShareurl(shareurl+"?id="+itemid);
-            worksData.setItemid(itemid);
-            ShareActivity.toShareActivity(context,worksData);
-        } catch (JSONException e) {
-            e.printStackTrace();
+        worksData.createdate = System.currentTimeMillis();
+        //新增或者更新
+        EventBus.getDefault().post(new Event.UpdataWorksList(worksData, 2, worksData.itemid==0?0:2));
+        if(worksData.itemid==0) {
+            try {
+                String shareurl = new JSONObject(result).getString("shareurl");
+                int itemid = new JSONObject(result).getInt("itemid");
+                worksData.setShareurl(shareurl + "?id=" + itemid);
+                worksData.setItemid(itemid);
+                ShareActivity.toShareActivity(context, worksData);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
-
         PrefsUtil.putString(KeySet.LOCAL_LYRICS, "", context);
-        EventBus.getDefault().post(new Event.SaveLyricsSuccessEvent(1, worksData));
-        EventBus.getDefault().post(new Event.SaveLyricsSuccessEvent(2, worksData));
-        EventBus.getDefault().post(new Event.SaveLyricsSuccessEvent(3, worksData));
-        EventBus.getDefault().post(new Event.SaveLyricsSuccessEvent(4, worksData));
-
-        //录音编辑歌词
-//        EventBus.getDefault().post(new Event.SaveLyricsSuccessEvent(5, worksData));
-
+        EventBus.getDefault().post(new Event.SaveLyricsSuccessEvent(1, worksData));//新建歌词页面
+        EventBus.getDefault().post(new Event.SaveLyricsSuccessEvent(2, worksData));//歌词展示页面
+        finish();
     }
+
     @Override
     public void saveWordFail() {
         cancelPd();
@@ -213,6 +220,7 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView{
     public void onFinish() {
         cancelPd();
     }
+
     public void closeActivity() {
         EventBus.getDefault().post(new Event.UpdateLyricsData(worksData));
         finish();
@@ -226,11 +234,7 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView{
         }
         return super.onKeyDown(keyCode, event);
     }
-    public void onEventMainThread(Event.SaveLyricsSuccessEvent event) {
-        if (event.getWhich() == 4) {
-            finish();
-        }
-    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == MyCommon.requestCode_photo && data != null) {
@@ -264,10 +268,5 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView{
                 showMsg("图片读取失败！");
             }
         }
-    }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
     }
 }

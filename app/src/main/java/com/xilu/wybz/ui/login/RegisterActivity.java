@@ -144,7 +144,6 @@ public class RegisterActivity extends BaseActivity implements IRegisterView,Text
                 toReg();
                 break;
             case R.id.mreg_login:
-                startActivity(LoginActivity.class);
                 finish();
                 break;
         }

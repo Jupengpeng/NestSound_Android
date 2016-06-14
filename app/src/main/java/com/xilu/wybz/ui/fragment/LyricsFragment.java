@@ -1,8 +1,10 @@
 package com.xilu.wybz.ui.fragment;
 
+import android.os.Handler;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.xilu.wybz.R;
@@ -31,11 +33,14 @@ public class LyricsFragment extends BaseFragment implements ISongView {
     TextView tvHotsong;
     @Bind(R.id.tv_newsong)
     TextView tvNewsong;
+    @Bind(R.id.ll_loading)
+    LinearLayout ll_loading;
     private WorksAdapter newWorksAdapter;
     private WorksAdapter hotWorksAdapter;
     private SongPresenter songPresenter;
-    int column = 3;
-
+    private int column = 3;
+    private boolean isFirst;
+    private long time;
     @Override
     protected int getLayoutResId() {
         return R.layout.fragment_song;
@@ -44,9 +49,13 @@ public class LyricsFragment extends BaseFragment implements ISongView {
     @Override
     protected void initPresenter() {
         songPresenter = new SongPresenter(context, this);
+        showLoading(ll_loading);
+    }
+    public void loadData(){
+        if (isFirst) return;
+        else isFirst = true;
         songPresenter.init();
     }
-
     @Override
     public void showNewSong(List<WorksData> newWorksDatas) {
         for (WorksData worksData : newWorksDatas) {
@@ -79,6 +88,16 @@ public class LyricsFragment extends BaseFragment implements ISongView {
     }
 
     @Override
+    public void loadingFinish() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                disMissLoading(ll_loading);
+            }
+        },1000-(System.currentTimeMillis()-time));
+    }
+
+    @Override
     public void initView() {
         tvNewsong.setText("最新歌词");
         tvHotsong.setText("热门歌词");
@@ -89,8 +108,12 @@ public class LyricsFragment extends BaseFragment implements ISongView {
         recyclerViewNew.setNestedScrollingEnabled(false);
         recyclerViewNew.setLayoutManager(new GridLayoutManager(context, column));
         recyclerViewNew.addItemDecoration(new GridSpacingItemDecoration(column, space10, false));
-
-        songPresenter.getWorkList(2);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                songPresenter.getWorkList(2);
+            }
+        },200);
     }
 
     @OnClick({R.id.tv_hot_more, R.id.tv_new_more})

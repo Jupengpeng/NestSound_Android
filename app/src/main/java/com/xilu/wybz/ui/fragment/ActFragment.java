@@ -1,9 +1,11 @@
 package com.xilu.wybz.ui.fragment;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
@@ -22,15 +24,21 @@ import butterknife.Bind;
  * Created by June on 16/5/7.
  */
 public class ActFragment extends BaseListFragment<ActBean> implements IActView {
+    @Bind(R.id.ll_loading)
+    LinearLayout ll_loading;
+    long time;
     private ActPresenter findPresenter;
     @Override
     protected void initPresenter() {
         findPresenter = new ActPresenter(context, this);
+        showLoading(ll_loading);
         findPresenter.init();
     }
     @Override
     public void initView() {
         recycler.enablePullToRefresh(false);
+        time = System.currentTimeMillis();
+        findPresenter.getActList(page++);
     }
     @Override
     public void showActList(List<ActBean> actBeanList) {
@@ -42,12 +50,11 @@ public class ActFragment extends BaseListFragment<ActBean> implements IActView {
         adapter.notifyDataSetChanged();
         recycler.onRefreshCompleted();
     }
-
-    @Override
-    protected void setUpData() {
-        super.setUpData();
-        recycler.onRefresh();
-    }
+//    @Override
+//    protected void setUpData() {
+//        super.setUpData();
+//        recycler.onRefresh();
+//    }
 
     @Override
     public void showNoData() {
@@ -60,6 +67,16 @@ public class ActFragment extends BaseListFragment<ActBean> implements IActView {
     public void showNoMore() {
         recycler.onRefreshCompleted();
         recycler.enableLoadMore(false);
+    }
+
+    @Override
+    public void loadOver() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                disMissLoading(ll_loading);
+            }
+        },1000-(System.currentTimeMillis()-time));
     }
 
     @Override

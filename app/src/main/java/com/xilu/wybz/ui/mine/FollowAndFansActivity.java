@@ -37,8 +37,8 @@ import de.greenrobot.event.EventBus;
  */
 public class FollowAndFansActivity extends BaseListActivity<FansBean> implements IFollowAndFansView {
 
-    FollowPresenter mFollowPresenter;
-    FollowAndFansViewHolder followAndFansViewHolder;
+    private FollowPresenter mFollowPresenter;
+    private FollowAndFansViewHolder followAndFansViewHolder;
     private int type;
     private int uid;
     private int fromType;

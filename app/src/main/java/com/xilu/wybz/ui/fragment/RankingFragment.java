@@ -1,11 +1,13 @@
 package com.xilu.wybz.ui.fragment;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.xilu.wybz.R;
@@ -36,6 +38,8 @@ public class RankingFragment extends BaseFragment implements IRankingView {
     RankingAdapter rankingLyricsAdapter;
     List<WorksData> songDatas;
     List<WorksData> lyricsDatas;
+    @Bind(R.id.ll_loading)
+    LinearLayout ll_loading;
     @Bind(R.id.tv_song_ranking)
     TextView tvSongRanking;
     @Bind(R.id.recycler_view_song)
@@ -44,7 +48,9 @@ public class RankingFragment extends BaseFragment implements IRankingView {
     TextView tvLyricsRanking;
     @Bind(R.id.recycler_view_lyrics)
     RecyclerView recyclerViewLyrics;
-
+    private boolean isFirst;
+    private int count;
+    private long time;
     @Override
     protected int getLayoutResId() {
         return R.layout.fragment_ranking;
@@ -53,6 +59,12 @@ public class RankingFragment extends BaseFragment implements IRankingView {
     @Override
     protected void initPresenter() {
         rankingPresenter = new RankingPresenter(context, this);
+        showLoading(ll_loading);
+    }
+
+    public void loadData() {
+        if (isFirst) return;
+        else isFirst = true;
         rankingPresenter.init();
     }
 
@@ -70,11 +82,11 @@ public class RankingFragment extends BaseFragment implements IRankingView {
         recyclerViewLyrics.addItemDecoration(new SpacesItemDecoration(space10));
         recyclerViewLyrics.setNestedScrollingEnabled(false);
 
-        rankingSongAdapter = new RankingAdapter(context,songDatas);
-        rankingLyricsAdapter = new RankingAdapter(context,lyricsDatas);
+        rankingSongAdapter = new RankingAdapter(context, songDatas);
+        rankingLyricsAdapter = new RankingAdapter(context, lyricsDatas);
         recyclerViewSong.setAdapter(rankingSongAdapter);
         recyclerViewLyrics.setAdapter(rankingLyricsAdapter);
-
+        time = System.currentTimeMillis();
         rankingPresenter.loadRankingData(1);
         rankingPresenter.loadRankingData(2);
         rankingSongAdapter.setOnItemClickListener(new RankingAdapter.OnItemClickListener() {
@@ -87,16 +99,16 @@ public class RankingFragment extends BaseFragment implements IRankingView {
         rankingLyricsAdapter.setOnItemClickListener(new RankingAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                LyricsdisplayActivity.toLyricsdisplayActivity(context,lyricsDatas.get(position).itemid,0,lyricsDatas.get(position).title);
+                LyricsdisplayActivity.toLyricsdisplayActivity(context, lyricsDatas.get(position).itemid, 0, lyricsDatas.get(position).title);
             }
-
         });
 
     }
-    public void toPlayPos(int position){
+
+    public void toPlayPos(int position) {
         if (songDatas.size() > 0) {
-            String playFrom = PrefsUtil.getString("playFrom",context);
-            if(!playFrom.equals(MyCommon.RANK_SONG)||MyApplication.ids.size()==0){
+            String playFrom = PrefsUtil.getString("playFrom", context);
+            if (!playFrom.equals(MyCommon.RANK_SONG) || MyApplication.ids.size() == 0) {
                 if (MyApplication.ids.size() > 0)
                     MyApplication.ids.clear();
                 for (WorksData worksData : songDatas) {
@@ -107,6 +119,7 @@ public class RankingFragment extends BaseFragment implements IRankingView {
             PlayAudioActivity.toPlayAudioActivity(context, worksData.getItemid(), "", MyCommon.RANK_SONG);
         }
     }
+
     @Override
     public void showRankingSong(List<WorksData> songWorksDatas) {
         songDatas.addAll(songWorksDatas);
@@ -122,6 +135,25 @@ public class RankingFragment extends BaseFragment implements IRankingView {
     @Override
     public void showErrorView() {
 
+    }
+
+    @Override
+    public void showNoData(int type) {
+        if (type == 1) tvSongRanking.setVisibility(View.GONE);
+        if (type == 2) tvLyricsRanking.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void loadFinish() {
+        count++;
+        if (count == 2) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    disMissLoading(ll_loading);
+                }
+            },1000-(System.currentTimeMillis()-time));
+        }
     }
 
     @Override

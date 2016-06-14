@@ -150,6 +150,7 @@ public class SearchWorksActivity extends ToolbarActivity {
                             }
                         }
                     }
+                    return true;
                 }
                 return false;
             }
@@ -161,6 +162,7 @@ public class SearchWorksActivity extends ToolbarActivity {
             rlTab.setVisibility(View.VISIBLE);
             isShowTab = true;
         }
+        if(event.isHasData())
         KeyBoardUtil.closeKeybord(etKeyword,context);
     }
 

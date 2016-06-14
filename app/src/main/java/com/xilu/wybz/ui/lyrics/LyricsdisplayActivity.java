@@ -212,13 +212,13 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
     @Override
     public void loadLyrics(WorksData worksData) {
         this.worksData = worksData;
-        worksData.type=0;
-        worksData.status=0;
+        worksData.type=worksData.status;//type表示是否公开
+        worksData.status=2;//status=2歌词
         ivZan.setImageResource(worksData.getIsZan() == 0 ? R.drawable.ic_lyrics_zan1 : R.drawable.ic_lyrics_zan2);
         loadTitleContent();
         tvAuthor.setText(worksData.getAuthor());
         tvTime.setText(DateTimeUtil.timestamp2DateTime(worksData.getCreateTime()));
-        loadImage(worksData.getPic(), ivHead);
+        loadImage(worksData.headurl, ivHead);
     }
 
     @Override

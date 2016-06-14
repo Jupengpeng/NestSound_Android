@@ -3,23 +3,29 @@ package com.xilu.wybz.ui.base;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.umeng.common.message.Log;
 import com.umeng.message.PushAgent;
 import com.xilu.wybz.R;
 import com.xilu.wybz.common.ZnImageLoader;
 import com.xilu.wybz.ui.MainTabActivity;
+import com.xilu.wybz.ui.WelActivity;
 import com.xilu.wybz.ui.find.FindActivity;
+import com.xilu.wybz.ui.login.ForgetPwdActivity;
 import com.xilu.wybz.ui.login.LoginActivity;
+import com.xilu.wybz.ui.login.RegisterActivity;
 import com.xilu.wybz.ui.main.MainActivity;
 import com.xilu.wybz.ui.mine.MineActivity;
 import com.xilu.wybz.ui.mine.UserInfoActivity;
@@ -43,6 +49,7 @@ import butterknife.ButterKnife;
  */
 public abstract class BaseActivity extends AppCompatActivity {
     protected abstract int getLayoutRes();
+
     protected boolean isChenjin;
     protected Context context;
     boolean isHomeActivity;
@@ -58,56 +65,34 @@ public abstract class BaseActivity extends AppCompatActivity {
         adaptTheme(true);
         setContentView(getLayoutRes());
         ButterKnife.bind(this);
-        isChenjin = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
+        isChenjin = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
         isHomeActivity = this instanceof MainActivity || this instanceof FindActivity
                 || this instanceof MsgActivity || this instanceof MineActivity;
         PushAgent.getInstance(context).onAppStart();
     }
 
-    //适配不同手机以及sdk_int的状态栏
-//    private void initStatusBar() {
-//        isChenjin = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
-//        if (isChenjin && !Build.MANUFACTURER.toUpperCase().equals("OPPO")) {
-//            if (PhoneInfoUtil.isMIUI()) {
-//                PhoneInfoUtil.MiuiCj(this, !(this instanceof PlayAudioActivity));
-//            } else {
-//                getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-//                getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-//            }
-//            if (!(this instanceof PlayAudioActivity ||this instanceof SongAblumActivity || this instanceof SplashActivity || this instanceof WelActivity) && !isHomeActivity) {
-//                if (this instanceof LoginActivity || this instanceof PasswordActivity
-//                        || this instanceof RegisterActivity) {
-//                    setStatusColor(0xff3a3937);
-//                } else if (this instanceof MainTabActivity) {
-//                    setStatusColor(getResources().getColor(R.color.main_theme_color));
-//                } else {
-//                    if (Build.MANUFACTURER.toUpperCase().equals("MEIZU") || PhoneInfoUtil.isMIUI()) {
-//                        setStatusColor(0xffffffff);
-//                    } else {
-//                        setStatusRes(R.drawable.bg_statusbar);
-//                    }
-//                }
-//            }
-//        }
-//    }
     //开启透明状态栏目
-    @TargetApi(Build.VERSION_CODES.KITKAT)
     protected void adaptTheme(boolean isTranslucentStatusFitSystemWindowTrue) {
         if (isTranslucentStatusFitSystemWindowTrue) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                Window window = getWindow();
+                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
+                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                if (this instanceof PlayAudioActivity || this instanceof WelActivity) {
+                    window.setStatusBarColor(Color.TRANSPARENT);
+                } else if (this instanceof MainTabActivity || this instanceof UserInfoActivity) {
+                    window.setStatusBarColor(getResources().getColor(R.color.main_theme_color));
+                } else if (this instanceof LoginActivity || this instanceof RegisterActivity || this instanceof ForgetPwdActivity) {
+                    window.setStatusBarColor(getResources().getColor(R.color.login_bg_color));
+                }
             }
-            if (PhoneInfoUtil.isMIUI()) {
-                PhoneInfoUtil.MiuiCj(this, !(this instanceof PlayAudioActivity));
-            }
-
-
-            if (this instanceof MainTabActivity||this instanceof UserInfoActivity) {
+            if (!(this instanceof PlayAudioActivity || this instanceof LoginActivity || this instanceof RegisterActivity || this instanceof ForgetPwdActivity)) {
                 StatusBarUtil.StatusBarLightMode(this);
-                setStatusColor(getResources().getColor(R.color.main_theme_color));
             }
         }
     }
+
     protected void showMsg(String msg) {
         ToastUtils.toast(context, msg);
     }
@@ -122,17 +107,17 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    public void setStatusColor(int color) {
-        SystemBarTintManager systemBarTintManager = new SystemBarTintManager(this);
-        systemBarTintManager.setStatusBarTintEnabled(true);
-        systemBarTintManager.setStatusBarTintColor(color);
-    }
-
-    protected void setStatusRes(int res) {
-        SystemBarTintManager systemBarTintManager = new SystemBarTintManager(this);
-        systemBarTintManager.setStatusBarTintEnabled(true);
-        systemBarTintManager.setStatusBarTintResource(res);
-    }
+//    public void setStatusColor(int color) {
+//        SystemBarTintManager systemBarTintManager = new SystemBarTintManager(this);
+//        systemBarTintManager.setStatusBarTintEnabled(true);
+//        systemBarTintManager.setStatusBarTintColor(color);
+//    }
+//
+//    protected void setStatusRes(int res) {
+//        SystemBarTintManager systemBarTintManager = new SystemBarTintManager(this);
+//        systemBarTintManager.setStatusBarTintEnabled(true);
+//        systemBarTintManager.setStatusBarTintResource(res);
+//    }
 
     protected void loadImage(String url, SimpleDraweeView mDraweeView) {
         DraweeController controller = Fresco.newDraweeControllerBuilder()
@@ -143,9 +128,11 @@ public abstract class BaseActivity extends AppCompatActivity {
                 .build();
         mDraweeView.setController(controller);
     }
-    protected void loadImage(String picUrl, ImageView imageView){
-        ZnImageLoader.getInstance().displayImage(picUrl,ZnImageLoader.getInstance().options,imageView);
+
+    protected void loadImage(String picUrl, ImageView imageView) {
+        ZnImageLoader.getInstance().displayImage(picUrl, ZnImageLoader.getInstance().options, imageView);
     }
+
     /*
     * 通过Class跳转界面
     **/
@@ -153,8 +140,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         Intent intent = new Intent();
         intent.setClass(context, cls);
         startActivity(intent);
-        if(cls == LoginActivity.class){
-            overridePendingTransition(R.anim.activity_open,0);
+        if (cls == LoginActivity.class) {
+            overridePendingTransition(R.anim.activity_open, 0);
         }
     }
 
@@ -179,8 +166,8 @@ public abstract class BaseActivity extends AppCompatActivity {
             ll_loading.setVisibility(View.GONE);
             animImageView.stop();
         }
-
     }
+
     protected void showPd(String msg) {
         showIndeterminateProgressDialog(msg);
     }
@@ -198,6 +185,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 .canceledOnTouchOutside(false)
                 .show();
     }
+
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);

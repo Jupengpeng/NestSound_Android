@@ -6,11 +6,15 @@ package com.xilu.wybz.common;
 public class MyHttpClient {
     public static String ROOT_URL = "http://112.124.125.2/";
     //    public static final String ROOT_URL = "http://192.168.0.123:8080/";
-    public static String QINIU_URL = "http://7xru8x.com2.z0.glb.qiniucdn.com/";
+    public static String QINIU_URL = "http://pic.yinchao.cn/";
+    public static String QINIU_AUDIO_URL = "http://audio.yinchao.cn/";
     public static final String BASE_URL = ROOT_URL + "java/";
 
     public static String getQnToken() {
         return "common/uploadcallback/qiniutoken";
+    }
+    public static String getTokenCheck() {
+        return "common/login/tokenCheck";
     }
 
     //伴奏列表
@@ -167,7 +171,10 @@ public class MyHttpClient {
     public static String getSaveInspireUrl() {
         return "inspire/save";
     }
-
+    //修改灵感记录
+    public static String getUpdateInspireUrl() {
+        return "inspire/update";
+    }
     //个人主页
     public static String getUserCenter() {
         return "userCenter/index";

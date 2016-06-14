@@ -3,6 +3,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     >
+    <include layout="@layout/ll_loading" />
     <include layout="@layout/ll_nodata" />
     <include layout="@layout/ll_nonet" />
     <com.xilu.wybz.view.pull.PullRecycler

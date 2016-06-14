@@ -11,5 +11,6 @@ public interface IActView extends IBaseView{
     void showActList(List<ActBean> actBeanList);
     void showNoData();
     void showNoMore();
+    void loadOver();
     void showErrorView();
 }

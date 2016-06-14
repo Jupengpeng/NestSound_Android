@@ -13,4 +13,8 @@ public interface IRankingView extends IBaseView {
     void showRankingLyrics(List<WorksData> lyricsWorksDatas);
 
     void showErrorView();
+
+    void showNoData(int type);
+
+    void loadFinish();
 }

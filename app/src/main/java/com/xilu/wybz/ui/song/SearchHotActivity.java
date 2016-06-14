@@ -93,9 +93,6 @@ public class SearchHotActivity extends ToolbarActivity {
             public void afterTextChanged(Editable s) {
                 keyWord = s.toString().trim();
                 if (keyWord.equals("")) {
-                    if(hotFragment!=null){
-                        hotFragment.clearData();
-                    }
                     etkeyWord.requestFocus();
                     KeyBoardUtil.openKeybord(etkeyWord,context);
                     ivCancle.setVisibility(View.GONE);
@@ -112,11 +109,9 @@ public class SearchHotActivity extends ToolbarActivity {
                         showMsg("关键字不能为空");
                         return false;
                     } else {
-                        if(hotFragment!=null){
-                            hotFragment.clearData();
-                        }
                         hotFragment.loadData(keyWord);
                     }
+                    return true;
                 }
                 return false;
             }

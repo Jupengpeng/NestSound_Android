@@ -25,7 +25,9 @@ import com.xilu.wybz.bean.PhotoBean;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.FileDir;
+import com.xilu.wybz.common.KeySet;
 import com.xilu.wybz.common.MyCommon;
+import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.common.NewPlayInstance;
 import com.xilu.wybz.presenter.InspireRecordPresenter;
 import com.xilu.wybz.ui.IView.IInspireRecordView;
@@ -90,11 +92,13 @@ public class ModifyInspireRecordActivity extends ToolbarActivity implements IIns
     int column = 3;
     int itemSpace;
     InspireRecordPresenter inspireRecordPresenter;
-    public static void toModifyInspireRecordActivity(Context mContext, WorksData worksData){
+
+    public static void toModifyInspireRecordActivity(Context mContext, WorksData worksData) {
         Intent intent = new Intent(mContext, ModifyInspireRecordActivity.class);
-        intent.putExtra("worksdata", worksData);
+        intent.putExtra(KeySet.WORKS_DATA, worksData);
         mContext.startActivity(intent);
     }
+
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_publish_record;
@@ -116,18 +120,41 @@ public class ModifyInspireRecordActivity extends ToolbarActivity implements IIns
     }
 
     private void uploadPics() {
+        worksData.pics = "";
         UploadMorePicUtil uploadMorePicUtil = new UploadMorePicUtil(context);
         List<String> pics = new ArrayList<>();
         for (PhotoBean photoBean : list) {
             if (StringUtil.isNotBlank(photoBean.path) && new File(photoBean.path).exists())
                 pics.add(photoBean.path);
+            else {
+                if (StringUtil.isNotBlank(photoBean.path))
+                    worksData.pics += photoBean.path.replace(MyHttpClient.QINIU_URL, "") + ",";
+            }
+        }
+        if (StringUtil.isNotBlank(worksData.pics) && worksData.pics.endsWith(",")) {
+            worksData.pics = worksData.pics.substring(0, worksData.pics.length() - 1);
+        }
+        if (pics.size() == 0) {
+            if (StringUtil.isNotBlank(recordPath) && new File(recordPath).exists()) {
+                uploadRecord();
+            } else {
+                inspireRecordPresenter.updateData(worksData);
+            }
+            return;
         }
         uploadMorePicUtil.uploadPics(pics, new UploadMorePicUtil.UploadPicResult() {
             @Override
             public void onSuccess(String images) {
                 if (!TextUtils.isEmpty(images)) {
-                    worksData.pics = images;
-                    inspireRecordPresenter.updateData(worksData);
+                    if (StringUtil.isBlank(worksData.pics))
+                        worksData.pics = images;
+                    else
+                        worksData.pics = worksData.pics + "," + images;
+                    if (StringUtil.isNotBlank(recordPath) && new File(recordPath).exists()) {
+                        uploadRecord();
+                    } else {
+                        inspireRecordPresenter.updateData(worksData);
+                    }
                 }
             }
 
@@ -149,7 +176,7 @@ public class ModifyInspireRecordActivity extends ToolbarActivity implements IIns
             public void onSuccess(String filrUrl) {
                 if (!TextUtils.isEmpty(filrUrl)) {
                     worksData.audio = filrUrl;
-                    inspireRecordPresenter.publishData(worksData);
+                    inspireRecordPresenter.updateData(worksData);
                 }
             }
 
@@ -167,13 +194,14 @@ public class ModifyInspireRecordActivity extends ToolbarActivity implements IIns
             case R.id.menu_send:
                 String content = etContent.getText().toString().trim();
                 if (!TextUtils.isEmpty(content) || list.size() > 0 || !TextUtils.isEmpty(recordPath)) {
-                    showPd("正在发布中，请稍候...");
+                    showPd("正在修改中，请稍候...");
                     worksData.spirecontent = content;
                     if (list.size() > 0) {
                         uploadPics();
                     } else {
+                        worksData.pics = "";
                         if (TextUtils.isEmpty(recordPath) || StringUtil.isNotBlank(worksData.audio)) {
-                            inspireRecordPresenter.publishData(worksData);
+                            inspireRecordPresenter.updateData(worksData);
                         } else {
                             uploadRecord();
                         }
@@ -216,20 +244,30 @@ public class ModifyInspireRecordActivity extends ToolbarActivity implements IIns
     private void initData() {
         list = new ArrayList<>();
         Bundle bundle = getIntent().getExtras();
-        if(bundle!=null){
-            worksData = (WorksData) bundle.getSerializable("worksData");
-        }else{
+        if (bundle != null) {
+            worksData = (WorksData) bundle.getSerializable(KeySet.WORKS_DATA);
+        } else {
             finish();
         }
-        if(!TextUtils.isEmpty(worksData.pic)){
-            String[] pics = worksData.pic.split(",");
+        //初始化文字
+        if (StringUtil.isNotBlank(worksData.spirecontent)) {
+            etContent.setText(worksData.spirecontent);
+            etContent.setSelection(etContent.length());
+        }
+        //初始化图片
+        if (StringUtil.isNotBlank(worksData.pics)) {
+            String[] pics = worksData.pics.split(",");
             List<String> picss = Arrays.asList(pics);
-            for(String str:picss){
+            for (String str : picss) {
                 PhotoBean photoBean = new PhotoBean();
-                photoBean.path = str;
+                photoBean.path = (str.startsWith("http") ? "" : MyHttpClient.QINIU_URL) + str;
                 list.add(photoBean);
             }
-
+            if (list.size() < 9) {
+                PhotoBean photoBean = new PhotoBean();
+                photoBean.isAddPic = true;
+                list.add(photoBean);
+            }
         }
         adapter = new RecordImageAdapter(context, list, column);
         recyclerViewPic.setAdapter(adapter);
@@ -240,20 +278,32 @@ public class ModifyInspireRecordActivity extends ToolbarActivity implements IIns
                     ToSelectPicActivity();
                 }
             }
+
             @Override
             public void onDelClick(View view, int position) {
                 adapter.removeItem(position);
             }
         });
+        //初始化语音
+        if (StringUtil.isNotBlank(worksData.audio)) {
+            recordStatus = 2;
+            playState = 0;
+            tvRecordStatus.setText("录音完成");
+            ivAddVoice.setImageResource(R.drawable.ic_record_luyin_ed);
+            tvTime.setText(SystemUtils.getTimeFormat(allTime));
+            ivRecordStatus.setImageResource(R.drawable.ic_record_play);
+            ivDelRecord.setVisibility(View.VISIBLE);
+        }
     }
 
     @OnClick({R.id.rl_add_pic, R.id.iv_record_status, R.id.iv_del_record})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_del_record:
-                if (new File(recordPath).exists()) {
+                if (StringUtil.isNotBlank(recordPath) && new File(recordPath).exists()) {
                     new File(recordPath).delete();
                 }
+                worksData.audio = "";
                 if (playState > 0) {
                     NewPlayInstance.getInstance().stopMediaPlay();
                 }
@@ -299,21 +349,22 @@ public class ModifyInspireRecordActivity extends ToolbarActivity implements IIns
                         ivAddVoice.setImageResource(R.drawable.ic_record_luyin_ed);
                         tvTime.setText(SystemUtils.getTimeFormat(allTime));
                         ivRecordStatus.setImageResource(R.drawable.ic_record_play);
+                        ivDelRecord.setVisibility(View.VISIBLE);
                         try {
                             mp3Recorder.stop();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                        ivDelRecord.setVisibility(View.VISIBLE);
                         break;
                     case 2://录音完成
                         switch (playState) {
                             case 0://开始播放
-                                if (new File(recordPath).exists()) {
+                                if (StringUtil.isNotBlank(recordPath) && new File(recordPath).exists()) {
                                     NewPlayInstance.getInstance().setIMediaPlayerListener(ModifyInspireRecordActivity.this);
                                     NewPlayInstance.getInstance().creatMediaPlayer(recordPath);
-                                } else {
-                                    showMsg("本地录音文件不存在！");
+                                } else if (StringUtil.isNotBlank(worksData.audio)) {
+                                    NewPlayInstance.getInstance().setIMediaPlayerListener(ModifyInspireRecordActivity.this);
+                                    NewPlayInstance.getInstance().creatMediaPlayer(MyHttpClient.QINIU_AUDIO_URL + worksData.audio);
                                 }
                                 break;
                             case 1://暂停
@@ -475,9 +526,9 @@ public class ModifyInspireRecordActivity extends ToolbarActivity implements IIns
     @Override
     public void pubSuccess() {
         cancelPd();
-        showMsg("发布成功！");
+        showMsg("修改成功！");
         worksData.createdate = System.currentTimeMillis();
-        EventBus.getDefault().post(new Event.UpdataWorksList(worksData, 0, 0));
+        EventBus.getDefault().post(new Event.UpdataWorksList(worksData, 0, 2));
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -488,6 +539,7 @@ public class ModifyInspireRecordActivity extends ToolbarActivity implements IIns
 
     @Override
     public void pubFail() {
-        showMsg("发布失败！");
+        cancelPd();
+        showMsg("修改失败！");
     }
 }

@@ -36,6 +36,7 @@ public class SelectPicProvider extends ActionProvider {
         mOnClickListener = onClickListener;
     }
     public void setCount(int count){
+        if(tv_count==null)return;
         tv_count.setVisibility(count==0?View.GONE:View.VISIBLE);
         tv_count.setText(""+count);
     }
