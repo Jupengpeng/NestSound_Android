@@ -19,7 +19,9 @@ import android.widget.ImageView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
+import com.xilu.wybz.bean.ShareResponseBean;
 import com.xilu.wybz.bean.WorksData;
+import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.FileDir;
 import com.xilu.wybz.common.MediaInstance;
 import com.xilu.wybz.common.MyCommon;
@@ -41,6 +43,7 @@ import java.io.File;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by Administrator on 2016/6/1.
@@ -85,7 +88,7 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView ,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initData();
-
+        EventBus.getDefault().register(this);
         downloadMusicPresenter = new DownloadMusicPresenter(context,this);
 
         saveSongPresenter = new SaveSongPresenter(context, this);
@@ -177,6 +180,11 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView ,
         });
     }
 
+//
+//    public void onEventMainThread(Event.SaveSongSeccess event) {
+//        finish();
+//    }
+
 
     //上传封面图片
     public void uploadCoverPic() {
@@ -214,11 +222,19 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView ,
     }
 
     @Override
-    public void saveWordSuccess(String response) {
+    public void saveWordSuccess(ShareResponseBean response) {
+        EventBus.getDefault().post(new Event.SaveSongSeccess());
 
-        worksData.shareurl = response;
+        worksData.shareurl = response.getCompleteShareUrl();
+        worksData.itemid = response.itemid;
+
+        EventBus.getDefault().post(new Event.UpdataWorksList(worksData, 1, 0));
+
+
+        cancelPd();
         ShareActivity.toShareActivity(this,worksData);
 
+        finish();
     }
 
     @Override
@@ -369,6 +385,7 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView ,
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
         MediaInstance.getInstance().stopMediaPlay();
         MediaInstance.getInstance().destroy();
     }

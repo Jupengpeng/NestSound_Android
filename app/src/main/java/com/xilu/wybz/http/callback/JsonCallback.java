@@ -48,6 +48,7 @@ public class JsonCallback extends Callback<JsonResponse>{
 
             if (!TextUtils.isEmpty(data)) {
                 decode = RSAUtils.decryptByPublicKey(new String(RSAUtils.decodeConvert(data), "UTF-8"));
+                Log.d("url",decode);
                 if (type == null){
                     jsonResponse.setData(decode);
                 } else {

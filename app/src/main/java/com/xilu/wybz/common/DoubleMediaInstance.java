@@ -23,6 +23,16 @@ public class DoubleMediaInstance {
 
     private IMediaPlayerListener iml;
 
+    public int seek = -1;
+
+    public boolean seek1ok = false;
+    public boolean seek2ok = false;
+
+    public boolean prepare1ok = false;
+    public boolean prepare2ok = false;
+
+
+
     DoubleMediaInstance() {
 
     }
@@ -43,6 +53,10 @@ public class DoubleMediaInstance {
                 if (mediaPlayer2 == null) {
                     creatMediaPlayer2(url2);
                 }
+
+                prepare1ok = false;
+                prepare1ok = false;
+
                 mediaPlayer1.prepare();
                 mediaPlayer2.prepare();
             } catch (IOException e) {
@@ -82,8 +96,14 @@ public class DoubleMediaInstance {
     public void resumeMediaPlay() {
         if (mediaPlayer1 != null && mediaPlayer2 != null && !MyApplication.isPlay) {
             MyApplication.isPlay = true;
-            mediaPlayer1.start();
-            mediaPlayer2.start();
+
+            if (seek != -1){
+                seekTo(seek);
+                seek = -1;
+            } else {
+                mediaPlayer1.start();
+                mediaPlayer2.start();
+            }
             if (iml != null) {
                 iml.onStart();
             }
@@ -109,13 +129,37 @@ public class DoubleMediaInstance {
         if (mediaPlayer1 == null) {
             mediaPlayer1 = new MediaPlayer();
             mediaPlayer1.setAudioStreamType(AudioManager.STREAM_MUSIC);// 设置媒体流类型
+
+
+            mediaPlayer1.setOnSeekCompleteListener(new MediaPlayer.OnSeekCompleteListener() {
+                @Override
+                public void onSeekComplete(MediaPlayer mp) {
+                    seek1ok = true;
+
+                    if (seek1ok && seek2ok){
+                        mediaPlayer1.start();
+                        mediaPlayer2.start();
+                    }
+                }
+            });
+
             mediaPlayer1.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mp) {
-                    MyApplication.isPlay = true;
-                    mp.start();
-                    if (iml != null) {
-                        iml.onStart();
+                    prepare1ok = true;
+                    if (prepare1ok && prepare2ok){
+                        MyApplication.isPlay = true;
+
+                        if (seek != -1){
+                            seekTo(seek);
+                            seek = -1;
+                        } else {
+                            mediaPlayer1.start();
+                            mediaPlayer2.start();
+                        }
+                        if (iml != null) {
+                            iml.onStart();
+                        }
                     }
                 }
             });
@@ -155,21 +199,81 @@ public class DoubleMediaInstance {
         if (mediaPlayer2 == null) {
             mediaPlayer2 = new MediaPlayer();
             mediaPlayer2.setAudioStreamType(AudioManager.STREAM_MUSIC);// 设置媒体流类型
-            mediaPlayer2.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+
+            mediaPlayer2.setOnSeekCompleteListener(new MediaPlayer.OnSeekCompleteListener() {
                 @Override
-                public void onPrepared(MediaPlayer mp) {
-                    mp.start();
-                    if (iml != null) {
-                        iml.onStart();
+                public void onSeekComplete(MediaPlayer mp) {
+                    seek2ok = true;
+
+                    if (seek1ok && seek2ok){
+                        mediaPlayer1.start();
+                        mediaPlayer2.start();
                     }
                 }
             });
+
+            mediaPlayer2.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mp) {
+                    MyApplication.isPlay = true;
+                    prepare2ok = true;
+                    if (prepare1ok && prepare2ok){
+
+                        mediaPlayer1.start();
+                        mediaPlayer2.start();
+
+                        if (iml != null) {
+                            iml.onStart();
+                        }
+                    }
+                }
+            });
+
+            mediaPlayer2.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    MyApplication.isPlay = false;
+                    stopTimerTask();
+                    releaseMp();
+                    if (iml != null) {
+                        iml.onOver();
+                    }
+                }
+            });
+            mediaPlayer2.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+                @Override
+                public boolean onError(MediaPlayer mp, int what, int extra) {
+                    MyApplication.isPlay = false;
+                    releaseMp();
+                    if (iml != null) {
+                        iml.onError();
+                    }
+                    return false;
+                }
+            });
+
             try {
                 mediaPlayer2.setDataSource(file);
                 Log.i("hehe", "mediaPlayer>>prepare");
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+
+    public void seekTo(int msec){
+
+        int d1 = mediaPlayer1.getDuration();
+        int d2 = mediaPlayer2.getDuration();
+
+        int md = Math.min(d1,d2);
+        if (msec > md ){
+            mediaPlayer1.seekTo(md);
+            mediaPlayer2.seekTo(md);
+        } else {
+            mediaPlayer1.seekTo(msec);
+            mediaPlayer2.seekTo(msec);
         }
     }
 

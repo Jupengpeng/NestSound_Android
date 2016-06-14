@@ -38,6 +38,8 @@ public class WaveSurfaceHelper {
     protected int totalSize = 0;
     protected int currentSize = 0;
 
+    public boolean scroll = false;
+
     //private
     int backgroundColor;
 
@@ -508,7 +510,7 @@ public class WaveSurfaceHelper {
         if (data == null || data.size() == 0){
             return;
         }
-
+        scroll = true;
         if (offx > 0){
 
             int i = offx/configure.waveSpace;

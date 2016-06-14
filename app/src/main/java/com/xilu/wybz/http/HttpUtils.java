@@ -19,6 +19,7 @@ import java.util.Map;
 
 import okhttp3.HttpUrl;
 import okhttp3.MediaType;
+
 /**
  * Created by June on 16/4/28.
  */
@@ -156,6 +157,12 @@ public class HttpUtils {
                 .headers(headers)
                 .build()
                 .execute(callback);
+    }
+
+
+    public void cancelHttpByTag(String url){
+
+        OkHttpUtils.getInstance().cancelTag(url);
     }
 
 

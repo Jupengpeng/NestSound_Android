@@ -4,7 +4,6 @@ import com.xilu.wybz.bean.PhotoBean;
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.bean.WorksData;
 
-import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -96,6 +95,10 @@ public class Event {
     }
 
     public static class HideKeyboardEvent {
+    }
+
+    public static class SaveSongSeccess {
+
     }
 
     public static class UpdateLyricsData {

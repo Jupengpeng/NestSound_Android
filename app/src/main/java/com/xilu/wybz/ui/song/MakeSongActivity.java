@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -94,6 +95,8 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
     private int status = 0; //0:未开始  1：录音中  2：暂停  3：完成
 
     private int playInstance = 1;
+
+    private int playProgress = -1;
 
     protected MaterialDialog loadDialog;
     protected MaterialDialog backDialog;
@@ -276,9 +279,8 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
         showWorks();
     }
 
-    public void onEventMainThread(Event.SaveLyricsSuccessEvent event) {
-//        this.worksData = event.getLyricsdisplayBean();
-//        showWorks();
+    public void onEventMainThread(Event.SaveSongSeccess event) {
+        finish();
     }
 
     private void initData() {
@@ -302,8 +304,19 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
                 if (isPlay) {
                     pausePlay();
                     showSongPlay();
-
+                    helper.scroll = false;
                 } else {
+
+                    if (helper.scroll){
+                        playProgress = helper.getCurrentPosition()*50;
+                        MediaInstance.getInstance().seek = playProgress;
+                        DoubleMediaInstance.getInstance().seek = playProgress;
+                        Log.d("play","playProgress="+playProgress);
+                    } else {
+                        MediaInstance.getInstance().seek = -1;
+                        DoubleMediaInstance.getInstance().seek = -1;
+                    }
+
                     startPlay();
                     showSongPause();
                 }
@@ -392,7 +405,7 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
             isPlay = true;
             return;
         }
-
+//        useheadset = true;
 
         if (!useheadset) {
 
@@ -400,42 +413,52 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
                 @Override
                 public void onStart() {
                     MediaInstance.getInstance().startTimerTask();
+                    waveSurface.setDisableTouch();
                 }
 
 
                 @Override
                 public void onPlay() {
                     MediaInstance.getInstance().startTimerTask();
+                    waveSurface.setDisableTouch();
                 }
 
                 @Override
                 public void onPause() {
                     MediaInstance.getInstance().stopTimerTask();
+                    waveSurface.setEnableTouch();
+                    helper.scroll = false;
                 }
 
 
                 @Override
                 public void onStop() {
                     MediaInstance.getInstance().stopTimerTask();
+                    waveSurface.setEnableTouch();
                     showSongPlay();
                     isPlay = false;
                     isPause = false;
+                    helper.scroll = false;
                 }
 
                 @Override
                 public void onOver() {
                     MediaInstance.getInstance().stopTimerTask();
+                    waveSurface.setEnableTouch();
                     showSongPlay();
                     isPlay = false;
                     isPause = false;
+                    helper.scroll = false;
                 }
 
                 @Override
                 public void onError() {
                     MediaInstance.getInstance().stopTimerTask();
+                    waveSurface.setEnableTouch();
                     showSongPlay();
                     isPlay = false;
                     isPause = false;
+                    helper.scroll = false;
                 }
             });
 
@@ -456,41 +479,50 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
                 @Override
                 public void onStart() {
                     DoubleMediaInstance.getInstance().startTimerTask();
+                    waveSurface.setDisableTouch();
                 }
-
-
 
                 @Override
                 public void onPlay() {
                     DoubleMediaInstance.getInstance().startTimerTask();
+                    waveSurface.setDisableTouch();
                 }
 
                 @Override
                 public void onPause() {
                     DoubleMediaInstance.getInstance().stopTimerTask();
+                    waveSurface.setEnableTouch();
+                    helper.scroll = false;
                 }
 
                 @Override
                 public void onStop() {
                     DoubleMediaInstance.getInstance().stopTimerTask();
+                    waveSurface.setEnableTouch();
                     showSongPlay();
                     isPlay = false;
                     isPause = false;
+                    helper.scroll = false;
                 }
 
                 @Override
                 public void onOver() {
+                    DoubleMediaInstance.getInstance().stopTimerTask();
                     showSongPlay();
+                    waveSurface.setEnableTouch();
                     isPlay = false;
                     isPause = false;
+                    helper.scroll = false;
                 }
 
                 @Override
                 public void onError() {
                     DoubleMediaInstance.getInstance().stopTimerTask();
+                    waveSurface.setEnableTouch();
                     showSongPlay();
                     isPlay = false;
                     isPause = false;
+                    helper.scroll = false;
                 }
             });
 

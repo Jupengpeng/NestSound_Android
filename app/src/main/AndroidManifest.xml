@@ -136,10 +136,17 @@
             android:process=":push" />
         <service android:name=".service.GetDomainService" />
         <service android:name=".service.GetDomainService" />
+
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="${UMENG_CHANNEL_VALUE}" >
+        </meta-data>
+
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="56a8610ce0f55afc29001dca" >
         </meta-data>
+
         <meta-data
             android:name="UMENG_MESSAGE_SECRET"
             android:value="f1168f7bdf262938f02024ea1b1acc92" >

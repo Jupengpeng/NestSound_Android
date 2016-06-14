@@ -1,0 +1,86 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.1.0'
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+
+def releaseTime() {
+    return new Date().format("yyyyMMdd", TimeZone.getTimeZone("UTC"))
+}
+
+task testChannel << {
+
+    getChannels()
+
+}
+
+android {
+    productFlavors{
+
+        channels.each { channel ->
+            "${channel}"{
+                manifestPlaceholders = [UMENG_CHANNEL_VALUE: channel + "_${rootProject.ext.android.versionCode}"]
+            }
+        }
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            def outputFile = output.outputFile
+
+
+            if (outputFile != null && outputFile.name.endsWith('release.apk')) {
+                //输出apk名称为yinchao_yinchao_v1.0_20160426_release.apk
+                def fileName = "yinchao_v${properties.versionName}_${variant.productFlavors[0].name}_${releaseTime()}_release.apk"
+                output.outputFile = new File(outputFile.parent, fileName)
+            } else if (outputFile != null && outputFile.name.endsWith('debug.apk')) {
+                // 输出apk名称为yinchao_yinchao_v1.0_20160426_debug.apk
+                def fileName = "yinchao_v${properties.versionName}_${variant.productFlavors[0].name}_${releaseTime()}_debug.apk"
+                output.outputFile = new File(outputFile.parent, fileName)
+            }
+
+            println "yinchao apk name:" + output.outputFile.path
+        }
+    }
+}
+
+
+
+
+
+def getChannels(){
+
+    def properties = loadPropertiesFile("config/config.properties");
+
+    def channels = properties["channels"].toString().split(",")
+
+    channels.each { channel ->
+        println "channel="+channel
+    }
+    return channels
+}
+
+
+
+def loadPropertiesFile (String fileName){
+    def pathDir = "${projectDir}/"+fileName
+
+    println "properties file:"+pathDir
+    def properties = new Properties()
+    properties.load(new FileInputStream(new File(pathDir)))
+
+    properties.each{ keySet ->
+        println "properties name:"+keySet.key+"="+keySet.value
+    }
+
+    return properties
+}
+
+
+
