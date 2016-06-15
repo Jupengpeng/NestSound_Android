@@ -36,6 +36,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".ui.SplashActivity"
+            android:theme="@style/MainTheme"
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -45,7 +46,7 @@
         <activity android:name=".ui.MainTabActivity" android:theme="@style/MainTheme" />
         <activity android:name=".ui.base.BlankActivity" />
         <activity android:name=".ui.BrowserActivity" />
-        <activity android:name=".ui.WelActivity" />
+        <activity android:name=".ui.WelActivity" android:theme="@style/MainTheme" />
 
         <activity android:name=".ui.main.MainActivity" />
         <activity android:name=".ui.main.SongablumMoreActivity" />
@@ -63,8 +64,7 @@
 
         <activity android:name=".ui.mine.FollowAndFansActivity" />
         <activity android:name=".ui.mine.MineActivity" />
-        <activity android:name=".ui.mine.NewMineActivity" />
-        <activity android:name=".ui.mine.UserInfoActivity" />
+        <activity android:name=".ui.mine.UserInfoActivity" android:theme="@style/MainTheme" />
 
         <activity android:name=".ui.setting.SettingActivity" />
         <activity android:name=".ui.setting.SettingFeedActivity" />
@@ -88,7 +88,7 @@
         <activity android:name=".ui.song.PlayAudioActivity" android:theme="@style/PlayTheme" />
 
 
-        <activity android:name=".ui.record.InspireRecordActivity"  android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity android:name=".ui.record.InspireRecordActivity" />
         <activity android:name=".ui.record.SelectPicActivity"  />
         <activity android:name=".ui.record.ModifyInspireRecordActivity"  />
 

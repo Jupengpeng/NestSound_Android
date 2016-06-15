@@ -51,25 +51,7 @@ public class GetDomainUtil {
                         MyHttpClient.ROOT_URL = api_domain;
                     }
                     PrefsUtil.putString("applogo", page_start_pic, mContext);
-                    if (!new File(FileDir.logoDir).exists())
-                        new File(FileDir.logoDir).mkdirs();
-                    String fileName = MD5Util.getMD5String(page_start_pic) + ".png";
-                    String filePath = FileDir.logoDir + fileName;
-                    if (!new File(filePath).exists()) {
-                        httpUtils.getFile(page_start_pic, new FileCallBack(FileDir.logoDir, fileName) {
-                            @Override
-                            public void inProgress(float progress, long total) {
-
-                            }
-                            @Override
-                            public void onError(Call call, Exception e) {
-
-                            }
-                            @Override
-                            public void onResponse(File response) {
-                            }
-                        });
-                    }
+                    downLoadLogo(page_start_pic);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -79,6 +61,27 @@ public class GetDomainUtil {
                 super.onError(call, e);
             }
         });
+    }
+    public void downLoadLogo(String url){
+        if (!new File(FileDir.logoDir).exists())
+            new File(FileDir.logoDir).mkdirs();
+        String fileName = MD5Util.getMD5String(url) + ".png";
+        String filePath = FileDir.logoDir + fileName;
+        if (!new File(filePath).exists()) {
+            httpUtils.getFile(url, new FileCallBack(FileDir.logoDir, fileName) {
+                @Override
+                public void inProgress(float progress, long total) {
+
+                }
+                @Override
+                public void onError(Call call, Exception e) {
+
+                }
+                @Override
+                public void onResponse(File response) {
+                }
+            });
+        }
     }
     public void getCheck(){
         Map<String, String> params = new HashMap<>();

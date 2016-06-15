@@ -37,17 +37,20 @@ public class WelActivity extends BaseActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String page_start_pic = PrefsUtil.getString("applogo", context);
-        if (StringUtil.isNotBlank(page_start_pic)) {
-            String fileName = MD5Util.getMD5String(page_start_pic) + ".png";
-            String filePath = FileDir.logoDir + fileName;
+        GetDomainUtil getDomainUtil = new GetDomainUtil(context);
+        String appLogo = PrefsUtil.getString("applogo", context);
+        String fileName = MD5Util.getMD5String(appLogo) + ".png";
+        String filePath = FileDir.logoDir + fileName;
+        if (StringUtil.isNotBlank(appLogo)) {
             if (new File(filePath).exists()) {
                 rlMain.setBackground(new BitmapDrawable(BitmapUtils.getSDCardImg(filePath)));
+            }else{
+                rlMain.setBackgroundResource(R.drawable.bg_wel);
+                getDomainUtil.downLoadLogo(appLogo);
             }
         }else{
             rlMain.setBackgroundResource(R.drawable.bg_wel);
         }
-        GetDomainUtil getDomainUtil = new GetDomainUtil(context);
 //        getDomainUtil.getNewIp();
         if(PrefsUtil.getUserId(context)>0)getDomainUtil.getCheck();
         toHome();

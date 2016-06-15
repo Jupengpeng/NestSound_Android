@@ -21,6 +21,7 @@ import android.widget.ListView;
 import android.widget.OverScroller;
 import android.widget.ScrollView;
 import com.xilu.wybz.R;
+import com.xilu.wybz.utils.DensityUtil;
 
 /**
  * 上滑悬停控件，底部内容区域支持 ScrollView ，ListView,RecyclerView
@@ -58,11 +59,8 @@ public class StickyNavLayout extends LinearLayout {
         super(context, attrs, defStyleAttr);
         setOrientation(LinearLayout.VERTICAL);
 
-        TypedArray a = context.obtainStyledAttributes(attrs,
-                R.styleable.StickNavLayout);
-        isStickNav = a.getBoolean(R.styleable.StickNavLayout_isStickNav, false);
-        stickOffset = a.getDimensionPixelSize(R.styleable.StickNavLayout_stickOffset, 0);
-        a.recycle();
+
+        stickOffset = DensityUtil.dip2px(context,48)+DensityUtil.getStatusBarHeight(context);
 
         mScroller = new OverScroller(context);
         mVelocityTracker = VelocityTracker.obtain();

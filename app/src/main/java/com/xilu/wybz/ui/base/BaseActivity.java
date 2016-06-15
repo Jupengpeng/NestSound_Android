@@ -77,23 +77,18 @@ public abstract class BaseActivity extends AppCompatActivity {
     //开启透明状态栏目
     protected void adaptTheme(boolean isTranslucentStatusFitSystemWindowTrue) {
         if (isTranslucentStatusFitSystemWindowTrue) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
+//                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+//                if (this instanceof PlayAudioActivity || this instanceof WelActivity || this instanceof SplashActivity) {
+//                    window.setStatusBarColor(Color.TRANSPARENT);
+//                }
+//                  else if (this instanceof LoginActivity || this instanceof RegisterActivity || this instanceof ForgetPwdActivity) {
+//                    window.setStatusBarColor(getResources().getColor(R.color.login_bg_color));
+//                }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 Window window = getWindow();
-                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-                window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
-                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                if (this instanceof PlayAudioActivity || this instanceof WelActivity || this instanceof SplashActivity) {
-                    window.setStatusBarColor(Color.TRANSPARENT);
-                } else if (this instanceof MainTabActivity || this instanceof UserInfoActivity) {
-                    window.setStatusBarColor(getResources().getColor(R.color.main_theme_color));
-                } else if (this instanceof LoginActivity || this instanceof RegisterActivity || this instanceof ForgetPwdActivity) {
-                    window.setStatusBarColor(getResources().getColor(R.color.login_bg_color));
-                }
-            }
-            if (!(this instanceof PlayAudioActivity || this instanceof LoginActivity
-                    || this instanceof RegisterActivity || this instanceof ForgetPwdActivity
-                    || this instanceof SongAblumActivity)) {
-                StatusBarUtil.StatusBarLightMode(this);
+                window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             }
         }
     }
@@ -111,18 +106,6 @@ public abstract class BaseActivity extends AppCompatActivity {
             showNoNetMsg();
         }
     }
-
-//    public void setStatusColor(int color) {
-//        SystemBarTintManager systemBarTintManager = new SystemBarTintManager(this);
-//        systemBarTintManager.setStatusBarTintEnabled(true);
-//        systemBarTintManager.setStatusBarTintColor(color);
-//    }
-//
-//    protected void setStatusRes(int res) {
-//        SystemBarTintManager systemBarTintManager = new SystemBarTintManager(this);
-//        systemBarTintManager.setStatusBarTintEnabled(true);
-//        systemBarTintManager.setStatusBarTintResource(res);
-//    }
 
     protected void loadImage(String url, SimpleDraweeView mDraweeView) {
         DraweeController controller = Fresco.newDraweeControllerBuilder()

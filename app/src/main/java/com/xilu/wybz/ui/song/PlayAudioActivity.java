@@ -352,20 +352,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
             blurImageView.setImageBitmap(BitmapUtils.getSDCardImg(path));
         } else {//下载并保存到本地
             imageUrl = MyCommon.getImageUrl(imageUrl, 200, 200);
-            HttpUtils httpUtils = new HttpUtils(context);
-            httpUtils.getImage(imageUrl, new BitmapCallback() {
-                @Override
-                public void onError(Call call, Exception e) {
-
-                }
-
-                @Override
-                public void onResponse(Bitmap response) {
-                    Bitmap bmp = NativeStackBlur.process(BitmapUtils.zoomBitmap(response, 200), 30);
-                    FileUtils.saveBmp(path, bmp);
-                    blurImageView.setImageBitmap(bmp);
-                }
-            });
+            playPresenter.downLoadPic(imageUrl, path);
         }
     }
 
@@ -566,6 +553,12 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
         rlZan.setEnabled(true);
     }
 
+    @Override
+    public void setPic(Bitmap bitmap) {
+        if(blurImageView!=null)
+            blurImageView.setImageBitmap(bitmap);
+    }
+
 
     //更新评论数量
     public void onEventMainThread(Event.UpdataCommentNumEvent event) {
@@ -646,6 +639,8 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
         if(!PlayMediaInstance.getInstance().isPlaying()){
             PlayMediaInstance.getInstance().release();
         }
+        if(playPresenter!=null)
+        playPresenter.cancleRequest();
         PrefsUtil.saveMusicData(context, worksData);
         unbindService(serviceConnection);
         EventBus.getDefault().unregister(this);

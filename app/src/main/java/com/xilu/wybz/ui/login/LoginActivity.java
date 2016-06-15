@@ -152,6 +152,7 @@ public class LoginActivity extends BaseActivity implements ILoginView,TextWatche
 
     @Override
     public void loginFinish() {
+        cancelPd();
         mloginLogin.setEnabled(true);
     }
 

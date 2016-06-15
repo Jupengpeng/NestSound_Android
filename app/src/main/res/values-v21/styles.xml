@@ -7,10 +7,12 @@
     </style>
 
     <style name="MainTheme" parent="@style/BaseTheme">
-        <item name="colorPrimary">@color/main_theme_color</item>
-        <item name="colorPrimaryDark">@color/main_theme_color</item>
+        <item name="colorPrimary">@color/tran</item>
+        <item name="colorPrimaryDark">@color/tran</item>
         <item name="android:colorControlNormal">@color/main_theme_color</item>
         <item name="android:windowIsTranslucent">false</item>
+        <item name="android:fitsSystemWindows">false</item>
+
     </style>
     <style name="PlayTheme" parent="@style/BaseTheme2">
         <item name="colorPrimary">@color/tran</item>

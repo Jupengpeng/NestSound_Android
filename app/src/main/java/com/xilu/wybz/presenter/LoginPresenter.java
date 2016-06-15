@@ -34,8 +34,6 @@ public class LoginPresenter extends BasePresenter<ILoginView>{
                 UserBean userBean = ParseUtils.getUserBean(context,response);
                 if(userBean.userid>0)
                     iView.loginSuccess(userBean);
-                else
-                    ToastUtils.toast(context,"用户Id获取失败");
             }
             @Override
             public void onError(Call call, Exception e) {

@@ -21,7 +21,6 @@ import de.greenrobot.event.EventBus;
  */
 public abstract class BasePlayMenuActivity extends ToolbarActivity {
     protected RelativeLayout rl_right;
-    protected RelativeLayout app_bar_layout;
     private ImageView ivPlay;
     private AnimImageView animImageView;
     private List<Integer> resourceIdList;
@@ -32,7 +31,6 @@ public abstract class BasePlayMenuActivity extends ToolbarActivity {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
         rl_right = (RelativeLayout) findViewById(R.id.rl_right);
-        app_bar_layout = (RelativeLayout) findViewById(R.id.app_bar_layout);
         ll_search = (LinearLayout) findViewById(R.id.ll_search);
         ivPlay = (ImageView) findViewById(R.id.iv_right);
         resourceIdList = new ArrayList<>();

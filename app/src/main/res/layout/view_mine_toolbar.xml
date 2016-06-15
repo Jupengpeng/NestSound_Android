@@ -4,12 +4,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/app_bar_layout"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/actionbar_size"
-    android:gravity="center_vertical"
-    app:elevation="0.6dp">
-
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical">
+    <View
+        android:id="@+id/status_bar_view"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:background="@color/main_theme_color"
+        android:layout_height="25dp" />
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
+        android:layout_below="@+id/status_bar_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/actionbar_size"
         android:background="@color/main_theme_color"
@@ -25,6 +30,7 @@
 
     <RelativeLayout
         android:id="@+id/rl_topbar"
+        android:layout_below="@+id/status_bar_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/actionbar_size">
 
