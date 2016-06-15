@@ -81,6 +81,7 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView {
         if (bundle != null) {
             worksData = (WorksData) bundle.getSerializable(KeySet.WORKS_DATA);
         }
+        if(worksData.itemid==0)worksData.type=1;
         initEvent();
         initData();
     }

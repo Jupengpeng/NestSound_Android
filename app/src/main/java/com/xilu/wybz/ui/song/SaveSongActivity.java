@@ -183,7 +183,6 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView ,
 
 
     public void onEventMainThread(Event.SaveSongSeccess event) {
-//        finish();
     }
 
 

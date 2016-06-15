@@ -32,7 +32,7 @@ public class SaveWordPresenter extends BasePresenter<ISaveWordView> {
             map.put("pic", worksData.pic);
             map.put("detail", worksData.detail);
             map.put("itemid", worksData.itemid+"");
-            map.put("type", worksData.type + "");
+            map.put("status", worksData.type + "");
         } catch (Exception e) {
             Log.e("Exception", e.toString());
         }
