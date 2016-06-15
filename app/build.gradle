@@ -91,7 +91,7 @@ android {
             debuggable true
             shrinkResources true
 
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
 //            versionNameSuffix '_debug'
@@ -127,6 +127,7 @@ dependencies {
 
 
     testCompile 'junit:junit:4.12'
+    compile 'com.google.android.gms:play-services-appindexing:8.1.0'
 }
 
 

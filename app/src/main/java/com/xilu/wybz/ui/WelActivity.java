@@ -5,17 +5,14 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.view.KeyEvent;
 import android.widget.RelativeLayout;
 
-import com.google.gson.Gson;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.PushAgent;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.FileDir;
-import com.xilu.wybz.common.KeySet;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.HttpUtils;
 import com.xilu.wybz.http.callback.MyStringCallback;
@@ -30,7 +27,6 @@ import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.view.materialdialogs.DialogAction;
 import com.xilu.wybz.view.materialdialogs.MaterialDialog;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;

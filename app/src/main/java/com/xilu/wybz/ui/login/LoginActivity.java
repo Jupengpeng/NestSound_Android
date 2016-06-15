@@ -3,15 +3,10 @@ package com.xilu.wybz.ui.login;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.umeng.analytics.MobclickAgent;
-import com.umeng.message.PushAgent;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.common.Event;
@@ -19,11 +14,7 @@ import com.xilu.wybz.presenter.LoginPresenter;
 import com.xilu.wybz.ui.IView.ILoginView;
 import com.xilu.wybz.ui.base.BaseActivity;
 import com.xilu.wybz.utils.MD5Util;
-import com.xilu.wybz.utils.ParseUtils;
-import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtil;
-
-import org.json.JSONObject;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -33,6 +24,7 @@ import de.greenrobot.event.EventBus;
  * Created by June on 2016/5/4.
  */
 public class LoginActivity extends BaseActivity implements ILoginView,TextWatcher {
+
     @Bind(R.id.mlogin_user)
     EditText mloginUser;
     @Bind(R.id.mlogin_pass)
@@ -40,6 +32,7 @@ public class LoginActivity extends BaseActivity implements ILoginView,TextWatche
     @Bind(R.id.mlogin_login)
     TextView mloginLogin;
     LoginPresenter loginPresenter;
+
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_login;
@@ -129,7 +122,6 @@ public class LoginActivity extends BaseActivity implements ILoginView,TextWatche
     }
 
     public void finish() {
-        // TODO Auto-generated method stub
         super.finish();
         //关闭窗体动画显示
         overridePendingTransition(0, R.anim.activity_close);
@@ -137,8 +129,8 @@ public class LoginActivity extends BaseActivity implements ILoginView,TextWatche
 
     @Override
     public void loginStart() {
-        showPd("正在登陆中...");
         mloginLogin.setEnabled(false);
+        showPd("正在登陆中...");
     }
 
     @Override
@@ -155,6 +147,7 @@ public class LoginActivity extends BaseActivity implements ILoginView,TextWatche
     @Override
     public void loginFinish() {
         mloginLogin.setEnabled(true);
+        cancelPd();
     }
 
 }

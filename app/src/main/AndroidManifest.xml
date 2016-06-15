@@ -42,7 +42,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.MainTabActivity" android:theme="@style/MainTheme" />
+        <activity android:name=".ui.MainTabActivity" android:launchMode="singleTask" android:theme="@style/MainTheme" />
         <activity android:name=".ui.base.BlankActivity" />
         <activity android:name=".ui.BrowserActivity" />
         <activity android:name=".ui.SplashActivity" />
@@ -150,7 +150,11 @@
         <meta-data
             android:name="UMENG_MESSAGE_SECRET"
             android:value="f1168f7bdf262938f02024ea1b1acc92" >
-        </meta-data>
+        </meta-data><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
+     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
     </application>
 
 </manifest>

@@ -17,7 +17,7 @@ import okhttp3.Call;
  */
 public class AppJsonCalback extends JsonCallback {
 
-    Context context;
+    protected Context context;
 
     public AppJsonCalback(Type type) {
         super(type);

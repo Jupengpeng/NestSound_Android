@@ -4,6 +4,7 @@ import android.app.LocalActivityManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.CheckedTextView;
@@ -21,10 +22,8 @@ import com.xilu.wybz.ui.login.LoginActivity;
 import com.xilu.wybz.ui.lyrics.MakeWordActivity;
 import com.xilu.wybz.ui.main.MainActivity;
 import com.xilu.wybz.ui.mine.MineActivity;
-import com.xilu.wybz.ui.mine.NewMineActivity;
 import com.xilu.wybz.ui.msg.MsgActivity;
 import com.xilu.wybz.ui.record.InspireRecordActivity;
-import com.xilu.wybz.ui.song.MakeHotActivity;
 import com.xilu.wybz.ui.song.NewMakeHotActivity;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.SystemUtils;
@@ -119,6 +118,14 @@ public class MainTabActivity extends BaseActivity {
         viewpager.setOnPageChangeListener(new MyOnPageChangeListener());
     }
 
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        Log.d("d","onNewIntent");
+    }
+
     private View getView(String id, Intent intent) {
         return manager.startActivity(id, intent).getDecorView();
     }
@@ -145,6 +152,7 @@ public class MainTabActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.rl_main_home:
+                startActivity(MainTabActivity.class);
                 currentIndex = 0;
                 break;
             case R.id.rl_main_find:
