@@ -4,6 +4,8 @@ package com.xilu.wybz.common;
  * Created by June on 2016/5/4.
  */
 public class MyHttpClient {
+
+
     public static String ROOT_URL = "http://112.124.125.2/";
     public static String QINIU_URL = "http://pic.yinchao.cn/";
     public static String QINIU_AUDIO_URL = "http://audio.yinchao.cn/";

@@ -155,6 +155,7 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView ,
             public void onPlay() {
                 status = 3;
                 showMsg("继续播放");
+                cancelWait();
             }
 
             @Override
