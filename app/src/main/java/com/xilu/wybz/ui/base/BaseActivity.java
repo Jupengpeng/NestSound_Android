@@ -21,6 +21,7 @@ import com.umeng.message.PushAgent;
 import com.xilu.wybz.R;
 import com.xilu.wybz.common.ZnImageLoader;
 import com.xilu.wybz.ui.MainTabActivity;
+import com.xilu.wybz.ui.SplashActivity;
 import com.xilu.wybz.ui.WelActivity;
 import com.xilu.wybz.ui.find.FindActivity;
 import com.xilu.wybz.ui.login.ForgetPwdActivity;
@@ -81,7 +82,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
                 window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
                 window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                if (this instanceof PlayAudioActivity || this instanceof WelActivity) {
+                if (this instanceof PlayAudioActivity || this instanceof WelActivity || this instanceof SplashActivity) {
                     window.setStatusBarColor(Color.TRANSPARENT);
                 } else if (this instanceof MainTabActivity || this instanceof UserInfoActivity) {
                     window.setStatusBarColor(getResources().getColor(R.color.main_theme_color));

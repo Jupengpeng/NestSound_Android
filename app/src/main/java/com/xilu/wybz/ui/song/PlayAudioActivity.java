@@ -61,6 +61,7 @@ import com.xilu.wybz.utils.FormatHelper;
 import com.xilu.wybz.utils.MD5Util;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.SystemUtils;
+import com.xilu.wybz.utils.ToastUtils;
 import com.xilu.wybz.view.dialog.ActionMoreDialog;
 import com.xilu.wybz.view.dialog.ShareDialog;
 
@@ -480,7 +481,11 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
                 break;
             case R.id.iv_hot:
                 if (worksData.hotid > 0)
-                    toHotActivity();
+                    if(PrefsUtil.getUserId(context)>0) {
+                        toHotActivity();
+                    }else{
+                        ToastUtils.logingTip(context,"登录后才能录歌，确认要登录吗？");
+                    }
                 else
                     showMsg("该伴奏不存在！");
                 break;

@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.view.WindowManager;
 
+import com.xilu.wybz.R;
 import com.xilu.wybz.ui.login.LoginActivity;
 import com.xilu.wybz.view.dialog.ToastDialog;
 import com.xilu.wybz.view.materialdialogs.DialogAction;
@@ -44,6 +45,7 @@ public class ToastUtils {
     }
     public static void logingTip(Context context, String msg) {
         new MaterialDialog.Builder(context)
+                .title(context.getResources().getString(R.string.progress_dialog))
                 .content(msg)
                 .positiveText("登录")
                 .onPositive(new MaterialDialog.SingleButtonCallback() {

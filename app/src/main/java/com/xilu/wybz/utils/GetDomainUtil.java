@@ -1,44 +1,45 @@
-package com.xilu.wybz.service;
+package com.xilu.wybz.utils;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.common.FileDir;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.HttpUtils;
 import com.xilu.wybz.http.callback.FileCallBack;
+import com.xilu.wybz.http.callback.MyStringCallback;
 import com.xilu.wybz.http.callback.StringCallback;
 import com.xilu.wybz.utils.MD5Util;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtil;
+import com.xilu.wybz.view.materialdialogs.MaterialDialog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 import okhttp3.Call;
 
 /**
  * Created by hujunwei on 16/5/18.
  */
-public class GetDomainService extends Service {
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
+public class GetDomainUtil {
+    Context mContext;
+    HttpUtils httpUtils;
+    public GetDomainUtil(Context context){
+        mContext = context;
+        httpUtils = new HttpUtils(mContext);
     }
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        getNewIp();
-    }
-    private void getNewIp() {
-        HttpUtils httpUtil = new HttpUtils(GetDomainService.this);
-        httpUtil.get(MyHttpClient.getDomain(), new StringCallback(){
+    public void getNewIp() {
+        httpUtils.get(MyHttpClient.getDomain(), new StringCallback(){
             @Override
             public void onResponse(String response) {
                 super.onResponse(response);
@@ -46,16 +47,16 @@ public class GetDomainService extends Service {
                     String api_domain = new JSONObject(response).getString("api_domain");
                     String page_start_pic = new JSONObject(response).getString("page_start_pic");
                     if(StringUtil.isNotBlank(api_domain)) {
-                        PrefsUtil.putString("domain", api_domain, GetDomainService.this);
+                        PrefsUtil.putString("domain", api_domain, mContext);
                         MyHttpClient.ROOT_URL = api_domain;
                     }
-                    PrefsUtil.putString("applogo", page_start_pic, GetDomainService.this);
+                    PrefsUtil.putString("applogo", page_start_pic, mContext);
                     if (!new File(FileDir.logoDir).exists())
                         new File(FileDir.logoDir).mkdirs();
                     String fileName = MD5Util.getMD5String(page_start_pic) + ".png";
                     String filePath = FileDir.logoDir + fileName;
                     if (!new File(filePath).exists()) {
-                        httpUtil.getFile(page_start_pic, new FileCallBack(FileDir.logoDir, fileName) {
+                        httpUtils.getFile(page_start_pic, new FileCallBack(FileDir.logoDir, fileName) {
                             @Override
                             public void inProgress(float progress, long total) {
 
@@ -66,20 +67,40 @@ public class GetDomainService extends Service {
                             }
                             @Override
                             public void onResponse(File response) {
-                                Log.e("LogoFile", response.toString());
                             }
                         });
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                }finally {
-                    stopSelf();
                 }
             }
             @Override
             public void onError(Call call, Exception e) {
                 super.onError(call, e);
-                stopSelf();
+            }
+        });
+    }
+    public void getCheck(){
+        Map<String, String> params = new HashMap<>();
+        UserBean userBean = PrefsUtil.getUserInfo(mContext);
+        params.put("token", userBean.loginToken);
+        httpUtils.post(MyHttpClient.getTokenCheck(),params,new MyStringCallback(){
+            @Override
+            public void onResponse(String response) {
+                super.onResponse(response);
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    int code = jsonObject.getInt("code");
+                    if(code==200){
+                        UserBean userBean1 = ParseUtils.getUserBean(mContext,response);
+                        PrefsUtil.saveUserInfo(mContext, userBean1);
+                    }else{
+                        //清除本地用户信息
+                        PrefsUtil.saveUserInfo(mContext, new UserBean());
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
