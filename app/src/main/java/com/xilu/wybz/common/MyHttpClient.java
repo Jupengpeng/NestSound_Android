@@ -5,10 +5,9 @@ package com.xilu.wybz.common;
  */
 public class MyHttpClient {
     public static String ROOT_URL = "http://112.124.125.2/";
-    //    public static final String ROOT_URL = "http://192.168.0.123:8080/";
     public static String QINIU_URL = "http://pic.yinchao.cn/";
     public static String QINIU_AUDIO_URL = "http://audio.yinchao.cn/";
-    public static final String BASE_URL = ROOT_URL + "java/";
+    public static String BASE_URL = ROOT_URL + "java/";
 
     public static String getQnToken() {
         return "common/uploadcallback/qiniutoken";

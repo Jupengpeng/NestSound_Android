@@ -107,15 +107,6 @@ public class PrefsUtil {
         editor.commit();
     }
 
-    //获取本地们关键词
-    public static List<String> getWordkeys(Context context){
-        List<String> keywords = new ArrayList<>();
-        String keys = PrefsUtil.getString("keywords", context);
-        if (!TextUtils.isEmpty(keys)) {
-            keywords = new Gson().fromJson(keys,new TypeToken<List<String>>(){}.getType());
-        }
-        return keywords;
-    }
     //获取歌词
     public static WorksData getLyrics(String id, Context context){
         WorksData lyricsdisplayBean = new WorksData();
@@ -158,6 +149,5 @@ public class PrefsUtil {
     public static void clearData(Context context){
         preferences = context.getSharedPreferences(SETTING, Context.MODE_PRIVATE);
         preferences.edit().clear().commit();
-
     }
 }
