@@ -63,8 +63,8 @@ public class WelActivity extends BaseActivity {
         }else{
             rlMain.setBackgroundResource(R.drawable.bg_wel);
         }
-        Intent getDomainService = new Intent(this, GetDomainService.class);
-        startService(getDomainService);
+//        Intent getDomainService = new Intent(this, GetDomainService.class);
+//        startService(getDomainService);
         if(PrefsUtil.getUserId(context)>0) {
             HttpUtils httpUtils = new HttpUtils(context);
             Map<String, String> params = new HashMap<>();

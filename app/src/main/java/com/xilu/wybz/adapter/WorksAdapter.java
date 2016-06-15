@@ -37,13 +37,9 @@ public class WorksAdapter extends RecyclerView.Adapter<WorksAdapter.WorksViewHol
     private List<WorksData> mList;
     private Context context;
     private int itemWidth;
-    private String come;
-    private Intent serviceIntent;
-    private int oldPos=-1;//记录上次播放的位置
     public WorksAdapter(Context context, List<WorksData> worksDataList, int column, String come) {
         this.context = context;
         this.mList = worksDataList;
-        this.come = come;
         itemWidth = (DensityUtil.getScreenW(context) - DensityUtil.dip2px(context, (column + 1) * 10)) / column;
     }
 
@@ -81,20 +77,6 @@ public class WorksAdapter extends RecyclerView.Adapter<WorksAdapter.WorksViewHol
             });
         }
     }
-
-//    public void toPlayNewMusic(WorksData worksData) {
-//        if (serviceIntent == null) {
-//            serviceIntent = new Intent(context, PlayService.class);
-//            serviceIntent.putExtra("id", worksData.itemid);
-//            serviceIntent.putExtra("from", come);
-//            serviceIntent.putExtra("gedanid", "");
-//            context.startService(serviceIntent);
-//        } else {
-//            context.stopService(serviceIntent);
-//            serviceIntent = null;
-//            toPlayNewMusic(worksData);
-//        }
-//    }
 
     @Override
     public int getItemCount() {

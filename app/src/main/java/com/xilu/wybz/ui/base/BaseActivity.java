@@ -27,10 +27,12 @@ import com.xilu.wybz.ui.login.ForgetPwdActivity;
 import com.xilu.wybz.ui.login.LoginActivity;
 import com.xilu.wybz.ui.login.RegisterActivity;
 import com.xilu.wybz.ui.main.MainActivity;
+import com.xilu.wybz.ui.main.SongablumMoreActivity;
 import com.xilu.wybz.ui.mine.MineActivity;
 import com.xilu.wybz.ui.mine.UserInfoActivity;
 import com.xilu.wybz.ui.msg.MsgActivity;
 import com.xilu.wybz.ui.song.PlayAudioActivity;
+import com.xilu.wybz.ui.song.SongAblumActivity;
 import com.xilu.wybz.utils.NetWorkUtil;
 import com.xilu.wybz.utils.PhoneInfoUtil;
 import com.xilu.wybz.utils.StatusBarUtil;
@@ -87,7 +89,9 @@ public abstract class BaseActivity extends AppCompatActivity {
                     window.setStatusBarColor(getResources().getColor(R.color.login_bg_color));
                 }
             }
-            if (!(this instanceof PlayAudioActivity || this instanceof LoginActivity || this instanceof RegisterActivity || this instanceof ForgetPwdActivity)) {
+            if (!(this instanceof PlayAudioActivity || this instanceof LoginActivity
+                    || this instanceof RegisterActivity || this instanceof ForgetPwdActivity
+                    || this instanceof SongAblumActivity)) {
                 StatusBarUtil.StatusBarLightMode(this);
             }
         }
