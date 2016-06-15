@@ -187,9 +187,6 @@ public class Event {
         }
     }
 
-    public  static class LoginEvent{
-
-    }
     public static class LoginSuccessEvent {
         UserBean userBean;
 

@@ -12,6 +12,7 @@ import com.xilu.wybz.ui.IView.ICommentView;
 import com.xilu.wybz.ui.IView.ILoginView;
 import com.xilu.wybz.utils.ParseUtils;
 import com.xilu.wybz.utils.PrefsUtil;
+import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.utils.ToastUtils;
 
 import java.util.HashMap;
@@ -103,5 +104,11 @@ public class CommentPresenter extends BasePresenter<ICommentView>{
                 iView.delFail();
             }
         });
+    }
+
+    public void cancleRequest(){
+        httpUtils.cancelHttpByTag(MyHttpClient.getDelCommentUrl());
+        httpUtils.cancelHttpByTag(MyHttpClient.getSaveCommentUrl());
+        httpUtils.cancelHttpByTag(MyHttpClient.getCommentListUrl());
     }
 }

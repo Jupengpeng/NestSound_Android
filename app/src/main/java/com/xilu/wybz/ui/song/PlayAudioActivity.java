@@ -61,6 +61,7 @@ import com.xilu.wybz.utils.FormatHelper;
 import com.xilu.wybz.utils.MD5Util;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.SystemUtils;
+import com.xilu.wybz.utils.ToastUtils;
 import com.xilu.wybz.view.dialog.ActionMoreDialog;
 import com.xilu.wybz.view.dialog.ShareDialog;
 
@@ -351,20 +352,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
             blurImageView.setImageBitmap(BitmapUtils.getSDCardImg(path));
         } else {//下载并保存到本地
             imageUrl = MyCommon.getImageUrl(imageUrl, 200, 200);
-            HttpUtils httpUtils = new HttpUtils(context);
-            httpUtils.getImage(imageUrl, new BitmapCallback() {
-                @Override
-                public void onError(Call call, Exception e) {
-
-                }
-
-                @Override
-                public void onResponse(Bitmap response) {
-                    Bitmap bmp = NativeStackBlur.process(BitmapUtils.zoomBitmap(response, 200), 30);
-                    FileUtils.saveBmp(path, bmp);
-                    blurImageView.setImageBitmap(bmp);
-                }
-            });
+            playPresenter.downLoadPic(imageUrl, path);
         }
     }
 
@@ -480,7 +468,11 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
                 break;
             case R.id.iv_hot:
                 if (worksData.hotid > 0)
-                    toHotActivity();
+                    if(PrefsUtil.getUserId(context)>0) {
+                        toHotActivity();
+                    }else{
+                        ToastUtils.logingTip(context,"登录后才能录歌，确认要登录吗？");
+                    }
                 else
                     showMsg("该伴奏不存在！");
                 break;
@@ -559,6 +551,12 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     @Override
     public void zambiaMusicFail() {
         rlZan.setEnabled(true);
+    }
+
+    @Override
+    public void setPic(Bitmap bitmap) {
+        if(blurImageView!=null)
+            blurImageView.setImageBitmap(bitmap);
     }
 
 
@@ -641,6 +639,8 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
         if(!PlayMediaInstance.getInstance().isPlaying()){
             PlayMediaInstance.getInstance().release();
         }
+        if(playPresenter!=null)
+        playPresenter.cancleRequest();
         PrefsUtil.saveMusicData(context, worksData);
         unbindService(serviceConnection);
         EventBus.getDefault().unregister(this);

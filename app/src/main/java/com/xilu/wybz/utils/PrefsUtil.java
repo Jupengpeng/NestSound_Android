@@ -95,18 +95,6 @@ public class PrefsUtil {
         putString("userInfo",new Gson().toJson(ub),context);
     }
 
-    public static boolean getFrist(Context context) {
-        SharedPreferences spf = getSpf(context, "frist");
-        return spf.getBoolean("status", true);
-    }
-
-    public static void saveFrist(Context context) {
-        SharedPreferences spf = getSpf(context, "frist");
-        SharedPreferences.Editor editor = spf.edit();
-        editor.putBoolean("status", false);
-        editor.commit();
-    }
-
     //获取歌词
     public static WorksData getLyrics(String id, Context context){
         WorksData lyricsdisplayBean = new WorksData();

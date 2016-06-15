@@ -26,6 +26,7 @@ import com.xilu.wybz.ui.song.PlayAudioActivity;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.ImageLoadUtil;
 import com.xilu.wybz.utils.PrefsUtil;
+import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.utils.ToastUtils;
 
 import java.util.List;
@@ -37,13 +38,9 @@ public class WorksAdapter extends RecyclerView.Adapter<WorksAdapter.WorksViewHol
     private List<WorksData> mList;
     private Context context;
     private int itemWidth;
-    private String come;
-    private Intent serviceIntent;
-    private int oldPos=-1;//记录上次播放的位置
     public WorksAdapter(Context context, List<WorksData> worksDataList, int column, String come) {
         this.context = context;
         this.mList = worksDataList;
-        this.come = come;
         itemWidth = (DensityUtil.getScreenW(context) - DensityUtil.dip2px(context, (column + 1) * 10)) / column;
     }
 
@@ -67,7 +64,11 @@ public class WorksAdapter extends RecyclerView.Adapter<WorksAdapter.WorksViewHol
         WorksData worksData = mList.get(position);
         String url = MyCommon.getImageUrl(worksData.getPic(), itemWidth, itemWidth);
         ImageLoadUtil.loadImage(url, holder.ivCover);
-        holder.tvName.setText(worksData.name);
+        if(StringUtil.isNotBlank(worksData.name)) {
+            holder.tvName.setText(worksData.name);
+        }else{
+            holder.tvName.setText(worksData.title);
+        }
         holder.tvAuthor.setText(worksData.author);
         holder.tvCount.setText(worksData.looknum + "");
         holder.ivType.setImageResource(worksData.status == 1 ? R.drawable.ic_song_type : R.drawable.ic_lyric_type);
@@ -81,20 +82,6 @@ public class WorksAdapter extends RecyclerView.Adapter<WorksAdapter.WorksViewHol
             });
         }
     }
-
-//    public void toPlayNewMusic(WorksData worksData) {
-//        if (serviceIntent == null) {
-//            serviceIntent = new Intent(context, PlayService.class);
-//            serviceIntent.putExtra("id", worksData.itemid);
-//            serviceIntent.putExtra("from", come);
-//            serviceIntent.putExtra("gedanid", "");
-//            context.startService(serviceIntent);
-//        } else {
-//            context.stopService(serviceIntent);
-//            serviceIntent = null;
-//            toPlayNewMusic(worksData);
-//        }
-//    }
 
     @Override
     public int getItemCount() {

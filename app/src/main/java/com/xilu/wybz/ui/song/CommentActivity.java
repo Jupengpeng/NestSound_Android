@@ -326,4 +326,11 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
             }
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(commentPresenter!=null)
+        commentPresenter.cancleRequest();
+    }
 }

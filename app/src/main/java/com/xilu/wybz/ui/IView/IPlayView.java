@@ -1,5 +1,7 @@
 package com.xilu.wybz.ui.IView;
 
+import android.graphics.Bitmap;
+
 /**
  * Created by June on 16/4/5.
  */
@@ -21,5 +23,7 @@ public interface IPlayView extends IBaseView {
     void zambiaMusicSuccess();
 
     void zambiaMusicFail();
+
+    void setPic(Bitmap bitmap);
 
 }

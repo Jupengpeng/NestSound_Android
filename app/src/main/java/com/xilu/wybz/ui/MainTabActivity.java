@@ -204,6 +204,7 @@ public class MainTabActivity extends BaseActivity {
         }
     };
     public void onEventMainThread(Event.LoginSuccessEvent event){
+        showMsg("登陆成功！");
         UserBean ub = event.getUserBean();
         MyApplication.getInstance().setUserid(ub.userid);
         MyApplication.getInstance().setIsLogin(true);

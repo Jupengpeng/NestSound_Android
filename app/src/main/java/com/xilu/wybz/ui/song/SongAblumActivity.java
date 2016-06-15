@@ -32,6 +32,7 @@ import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.FileUtils;
 import com.xilu.wybz.utils.MD5Util;
 import com.xilu.wybz.utils.PrefsUtil;
+import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.view.YcScrollView;
 
 import java.io.File;
@@ -106,7 +107,9 @@ public class SongAblumActivity extends ToolbarActivity implements IRecSongView {
 
     public void getIntentData() {
         songAlbum = (SongAlbum) getIntent().getSerializableExtra(YinChaoConfig.RECOMMENTSONG);
-        tvTitle.setText(songAlbum.getName());
+        if(StringUtil.isNotBlank(songAlbum.getName()))
+        tvTitle.setText("『" + songAlbum.name + "』");
+        if(StringUtil.isNotBlank(songAlbum.getDetail()))
         tvDesc.setText(songAlbum.getDetail());
         recSongPresenter.getMusicList(songAlbum.getId(),1);
     }

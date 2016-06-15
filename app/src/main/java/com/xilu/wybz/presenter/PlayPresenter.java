@@ -1,13 +1,19 @@
 package com.xilu.wybz.presenter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 
+import com.commit451.nativestackblur.NativeStackBlur;
 import com.xilu.wybz.bean.DataBean;
 import com.xilu.wybz.common.MyHttpClient;
+import com.xilu.wybz.http.callback.BitmapCallback;
 import com.xilu.wybz.http.callback.MyStringCallback;
 import com.xilu.wybz.ui.IView.IPlayView;
+import com.xilu.wybz.utils.BitmapUtils;
+import com.xilu.wybz.utils.FileUtils;
 import com.xilu.wybz.utils.ParseUtils;
 import com.xilu.wybz.utils.PrefsUtil;
+import com.xilu.wybz.utils.StringUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,7 +24,7 @@ import okhttp3.Call;
  */
 public class PlayPresenter extends BasePresenter<IPlayView> {
 
-
+    String imageUrl;
     public PlayPresenter(Context context, IPlayView iView) {
         super(context, iView);
     }
@@ -65,5 +71,26 @@ public class PlayPresenter extends BasePresenter<IPlayView> {
             }
         });
     }
+    public void downLoadPic(String imageUrl, String path){
+        this.imageUrl = imageUrl;
+        httpUtils.getImage(imageUrl, new BitmapCallback() {
+            @Override
+            public void onError(Call call, Exception e) {
 
+            }
+
+            @Override
+            public void onResponse(Bitmap response) {
+                Bitmap bmp = NativeStackBlur.process(BitmapUtils.zoomBitmap(response, 200), 30);
+                FileUtils.saveBmp(path, bmp);
+                iView.setPic(bmp);
+            }
+        });
+    }
+    public void cancleRequest(){
+        if(StringUtil.isNotBlank(imageUrl))
+        httpUtils.cancelHttpByTag(imageUrl);
+        httpUtils.cancelHttpByTag(MyHttpClient.getUpvoteUrl());
+        httpUtils.cancelHttpByTag(MyHttpClient.getUpvoteUrl());
+    }
 }

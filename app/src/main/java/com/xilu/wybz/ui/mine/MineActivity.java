@@ -103,6 +103,7 @@ public class MineActivity extends ToolbarActivity {
             }
             @Override
             public void scrollPercent(float percent) {
+                statusbar_view.setAlpha(percent);
                 mToolbar.setAlpha(percent);
             }
         });

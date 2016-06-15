@@ -5,8 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
+import com.xilu.wybz.adapter.SongablumViewHolder;
 import com.xilu.wybz.bean.SongAlbum;
 import com.xilu.wybz.presenter.SongablumMorePresenter;
 import com.xilu.wybz.ui.IView.ISongablumMoreView;
@@ -18,9 +20,12 @@ import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.PullRecycler;
 import com.xilu.wybz.view.pull.layoutmanager.ILayoutManager;
 import com.xilu.wybz.view.pull.layoutmanager.MyGridLayoutManager;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.Bind;
+
 /**
  * Created by hujunwei on 16/5/20.
  */
@@ -35,12 +40,17 @@ public class SongablumMoreActivity extends BaseListActivity<SongAlbum> implement
         songablumMorePresenter = new SongablumMorePresenter(this, this);
         songablumMorePresenter.init();
     }
+
     @Override
     public void initView() {
         setTitle("歌单");
         tvNoData.setText(nodata);
     }
-    public boolean hasPadding() {return true;}
+
+    public boolean hasPadding() {
+        return true;
+    }
+
     @Override
     protected void setUpData() {
         super.setUpData();
@@ -58,6 +68,7 @@ public class SongablumMoreActivity extends BaseListActivity<SongAlbum> implement
         }
         songablumMorePresenter.loadData(page++);
     }
+
     protected ILayoutManager getLayoutManager() {
         return new MyGridLayoutManager(getApplicationContext(), 2);
     }
@@ -99,28 +110,7 @@ public class SongablumMoreActivity extends BaseListActivity<SongAlbum> implement
     @Override
     protected BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_home_songalbum_item, parent, false);
-        return new SampleViewHolder(view);
-    }
-
-    class SampleViewHolder extends BaseViewHolder {
-        @Bind(R.id.iv_cover)
-        SimpleDraweeView mDraweeView;
-
-        public SampleViewHolder(View itemView) {
-            super(itemView);
-            int itemWidth = (DensityUtil.getScreenW(context) - DensityUtil.dip2px(context, 30)) / 2;
-            int itemHeight = itemWidth * 21 / 32;
-            mDraweeView.setLayoutParams(new FrameLayout.LayoutParams(itemWidth, itemHeight));
-        }
-        @Override
-        public void onBindViewHolder(int position) {
-            String pic = mDataList.get(position).getPic();
-            loadImage(pic, mDraweeView);
-        }
-        @Override
-        public void onItemClick(View view, int position) {
-            SongAblumActivity.toSongAblumActivity(context,mDataList.get(position));
-        }
+        return new SongablumViewHolder(view, context, mDataList);
     }
 
 }

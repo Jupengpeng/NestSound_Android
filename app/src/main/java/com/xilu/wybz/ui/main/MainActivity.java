@@ -85,7 +85,7 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
     private WorksAdapter newworksAdapter;
     private SongAlbumAdapter songAlbumAdapter;
     private MusicTalkAdapter musicTalkAdapter;
-    public List<Banner> bannerList;    //banner
+    public List<Banner> bannerList;//banner
     public List<WorksData> recommendWorkList;//推荐作品
     public List<SongAlbum> songAlbumList;//歌单
     public List<WorksData> newWorkList;//最新作品
