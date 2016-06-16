@@ -152,7 +152,7 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
                 toCommentActivity();
                 break;
             case R.id.rl_head:
-                if (worksData.uid > 0) {
+                if (worksData.uid > 0 && worksData.uid!=PrefsUtil.getUserId(context)) {
                     UserInfoActivity.ToUserInfoActivity(context, worksData.uid, worksData.author);
                 }
                 break;

@@ -22,7 +22,6 @@ public class SystemUtils {
     public static void toAct(Context context, Class<?> clazz) {
         Intent intent = new Intent(context, clazz);
         context.startActivity(intent);
-        ((Activity) context).overridePendingTransition(R.anim.activity_open, 0);
     }
     //打图库
     public static void openGallery(Activity activity) {

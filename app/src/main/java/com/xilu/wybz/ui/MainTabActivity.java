@@ -2,12 +2,12 @@ package com.xilu.wybz.ui;
 
 import android.app.LocalActivityManager;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.CheckedTextView;
-
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.PushAgent;
 import com.xilu.wybz.R;
@@ -15,30 +15,26 @@ import com.xilu.wybz.adapter.MyPagerAdapter;
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.ui.base.BaseActivity;
-import com.xilu.wybz.ui.base.BlankActivity;
 import com.xilu.wybz.ui.find.FindActivity;
 import com.xilu.wybz.ui.login.LoginActivity;
 import com.xilu.wybz.ui.lyrics.MakeWordActivity;
 import com.xilu.wybz.ui.main.MainActivity;
 import com.xilu.wybz.ui.mine.MineActivity;
-import com.xilu.wybz.ui.mine.NewMineActivity;
 import com.xilu.wybz.ui.msg.MsgActivity;
 import com.xilu.wybz.ui.record.InspireRecordActivity;
-import com.xilu.wybz.ui.song.MakeHotActivity;
 import com.xilu.wybz.ui.song.NewMakeHotActivity;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.utils.VersionUtil;
 import com.xilu.wybz.view.IndexViewPager;
 import com.xilu.wybz.view.MoreWindow;
+import com.xilu.wybz.view.SystemBarHelper;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.Bind;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
-
 /**
  * Created by June on 16/4/28.
  */
@@ -101,17 +97,10 @@ public class MainTabActivity extends BaseActivity {
         list.add(getView("MAIN", intent));
         intent = new Intent(this, FindActivity.class);
         list.add(getView("FIND", intent));
-        if(PrefsUtil.getUserId(context)>0) {
-            intent = new Intent(this, MsgActivity.class);
-            list.add(getView("MSG", intent));
-            intent = new Intent(this, MineActivity.class);
-            list.add(getView("MINE", intent));
-        }else{
-            intent = new Intent(this, BlankActivity.class);
-            list.add(getView("MSG", intent));
-            intent = new Intent(this, BlankActivity.class);
-            list.add(getView("MINE", intent));
-        }
+        intent = new Intent(this, MsgActivity.class);
+        list.add(getView("MSG", intent));
+        intent = new Intent(this, MineActivity.class);
+        list.add(getView("MINE", intent));
         adapter = new MyPagerAdapter(list);
         viewpager.setAdapter(adapter);
         viewpager.setCurrentItem(0);
@@ -169,12 +158,16 @@ public class MainTabActivity extends BaseActivity {
             startActivity(LoginActivity.class);
             return;
         }
+        changeTab();
+    }
+    public void changeTab(){
         if(oldIndex!=currentIndex) {
             checkedTextViewList.get(oldIndex).setChecked(false);
             checkedTextViewList.get(currentIndex).setChecked(true);
             viewpager.setCurrentItem(currentIndex, false);
             oldIndex = currentIndex;
         }
+        SystemBarHelper.tintStatusBar(this, Color.argb(currentIndex==3?0:255,0xFF,0xD7,0x05));
     }
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
@@ -198,20 +191,19 @@ public class MainTabActivity extends BaseActivity {
     public void onEventMainThread(Event.LoginSuccessEvent event){
         showMsg("登陆成功！");
         UserBean ub = event.getUserBean();
-        MyApplication.getInstance().setUserid(ub.userid);
-        MyApplication.getInstance().setIsLogin(true);
         PrefsUtil.saveUserInfo(context, ub);
         MobclickAgent.onProfileSignIn(ub.userid+"");
         PushAgent.getInstance(context).setAlias(ub.userid+"", "yinchao");
-        PushAgent.getInstance(context).setExclusiveAlias(ub.userid+"", "yinchao");
-        startActivity(MainTabActivity.class);
-        finish();
-        overridePendingTransition(R.anim.none,R.anim.none);
     }
     public void onEventMainThread(Event.LoginOutEvent event){
-        startActivity(MainTabActivity.class);
-        finish();
-        overridePendingTransition(R.anim.none,R.anim.none);
+        if(viewpager.getCurrentItem()>1){
+            viewpager.setCurrentItem(0);
+            currentIndex = 0;
+            changeTab();
+        }
+        try {
+            ((MineActivity) manager.getActivity("MINE")).clearData();
+        }catch (Exception e){}
     }
     @Override
     protected void onDestroy() {

@@ -44,22 +44,6 @@ public class MyApplication extends Application {
     public int userid;
     public boolean isLogin;
     public static MyApplication instance;
-    public int getUserid() {
-        return userid;
-    }
-
-    public void setUserid(int userid) {
-        this.userid = userid;
-    }
-
-    public boolean getIsLogin() {
-        return isLogin;
-    }
-
-    public void setIsLogin(boolean isLogin) {
-        this.isLogin = isLogin;
-    }
-
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
         MultiDex.install(this);

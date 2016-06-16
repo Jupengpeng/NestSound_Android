@@ -72,19 +72,19 @@ android {
 
     buildTypes {
 
-        release {
-            // 不显示Log
-            buildConfigField "boolean", "LOG_DEBUG", "false"
-
-            debuggable false
-            shrinkResources true
-
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-
-            signingConfig signingConfigs.signrelease
-            zipAlignEnabled true
-        }
+//        release {
+//            // 不显示Log
+//            buildConfigField "boolean", "LOG_DEBUG", "false"
+//
+//            debuggable false
+//            shrinkResources true
+//
+//            minifyEnabled true
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//
+//            signingConfig signingConfigs.signrelease
+//            zipAlignEnabled true
+//        }
 
         debug {
 

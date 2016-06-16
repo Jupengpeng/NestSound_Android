@@ -31,22 +31,19 @@
         android:label="@string/app_name"
         android:name=".ui.MyApplication"
         android:largeHeap="true"
-        android:supportsRtl="true"
         android:hardwareAccelerated="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme" >
         <activity
             android:name=".ui.SplashActivity"
-            android:theme="@style/MainTheme"
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.MainTabActivity" android:theme="@style/MainTheme" />
-        <activity android:name=".ui.base.BlankActivity" />
+        <activity android:name=".ui.MainTabActivity" />
         <activity android:name=".ui.BrowserActivity" />
-        <activity android:name=".ui.WelActivity" android:theme="@style/MainTheme" />
+        <activity android:name=".ui.WelActivity" />
 
         <activity android:name=".ui.main.MainActivity" />
         <activity android:name=".ui.main.SongablumMoreActivity" />
@@ -64,7 +61,7 @@
 
         <activity android:name=".ui.mine.FollowAndFansActivity" />
         <activity android:name=".ui.mine.MineActivity" />
-        <activity android:name=".ui.mine.UserInfoActivity" android:theme="@style/MainTheme" />
+        <activity android:name=".ui.mine.UserInfoActivity" />
 
         <activity android:name=".ui.setting.SettingActivity" />
         <activity android:name=".ui.setting.SettingFeedActivity" />
@@ -72,7 +69,7 @@
 
         <activity android:name=".ui.login.RegisterActivity" android:theme="@style/LoginTheme" android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity android:name=".ui.login.ForgetPwdActivity" android:windowSoftInputMode="stateHidden|adjustResize" />
-        <activity android:name=".ui.login.PasswordActivity" android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity android:name=".ui.login.PasswordActivity" android:theme="@style/LoginTheme" android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity android:name=".ui.login.ModifyPwdActivity" android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity android:name=".ui.login.LoginActivity" android:theme="@style/LoginTheme" android:windowSoftInputMode="stateHidden|adjustResize" />
 
@@ -82,10 +79,9 @@
         <activity android:name=".ui.song.ComposeSongActivity"  />
         <activity android:name=".ui.song.SaveSongActivity" android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity android:name=".ui.song.SearchHotActivity"  />
-        <activity android:name=".ui.song.TestActivity"  />
         <activity android:name=".ui.song.CommentActivity"  />
-        <activity android:name=".ui.song.SongAblumActivity" android:theme="@style/PlayTheme" />
-        <activity android:name=".ui.song.PlayAudioActivity" android:theme="@style/PlayTheme" />
+        <activity android:name=".ui.song.SongAblumActivity" android:theme="@style/LoginTheme" />
+        <activity android:name=".ui.song.PlayAudioActivity" android:theme="@style/LoginTheme" />
 
 
         <activity android:name=".ui.record.InspireRecordActivity" />
@@ -94,7 +90,7 @@
 
         <activity android:name=".ui.lyrics.LyricsdisplayActivity" />
         <activity android:name=".ui.lyrics.MakeWordActivity" android:windowSoftInputMode="stateHidden|adjustResize" />
-        <activity android:name=".ui.lyrics.ShareActivity" android:theme="@style/PlayTheme" />
+        <activity android:name=".ui.lyrics.ShareActivity" />
         <activity android:name=".ui.lyrics.ImportWordActivity" />
         <activity android:name=".ui.lyrics.MakeCourseActivity" />
         <activity android:name=".ui.lyrics.SaveWordActivity" android:windowSoftInputMode="stateHidden|adjustResize" />

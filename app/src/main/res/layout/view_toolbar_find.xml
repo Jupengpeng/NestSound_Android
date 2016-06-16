@@ -2,14 +2,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/app_bar_layout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="@dimen/actionbar_size"
     android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
-    <View
-        android:id="@+id/status_bar_view"
-        android:layout_width="match_parent"
-        android:visibility="gone"
-        android:background="@color/main_theme_color"
-        android:layout_height="25dp" />
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_below="@+id/status_bar_view"
@@ -21,7 +15,6 @@
         app:layout_scrollFlags="scroll|enterAlways"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
     <LinearLayout
-        android:layout_below="@+id/status_bar_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/actionbar_size">
         <LinearLayout

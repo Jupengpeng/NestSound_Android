@@ -83,8 +83,6 @@ import okhttp3.Call;
 public class PlayAudioActivity extends ToolbarActivity implements AdapterView.OnItemClickListener, IPlayView {
     @Bind(R.id.blurImageView)
     ImageView blurImageView;
-    @Bind(R.id.status_bar_view)
-    View statusBarView;
     @Bind(R.id.toolbar)
     Toolbar toolbar;
     @Bind(R.id.viewPager)
@@ -180,12 +178,6 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
 
     public void initView() {
         ExitApplication.getInstance().addActivity(this);
-        if (!isChenjin) { //没有沉浸的时候 导航栏不需要上边距
-            statusBarView.setVisibility(View.GONE);
-        } else {
-            statusBarView.setVisibility(View.VISIBLE);
-            statusBarView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, DensityUtil.getStatusBarHeight(context)));
-        }
         actionBeanList = new ArrayList<>();
         for (int i = 0; i < actionTitles.length; i++) {
             ActionBean actionBean = new ActionBean();

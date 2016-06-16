@@ -2,6 +2,7 @@ package com.xilu.wybz.ui.mine;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
@@ -29,6 +30,7 @@ import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.view.IndexViewPager;
 import com.xilu.wybz.view.StickyNavLayout;
+import com.xilu.wybz.view.SystemBarHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -141,8 +143,8 @@ public class UserInfoActivity extends ToolbarActivity {
             }
             @Override
             public void scrollPercent(float percent) {
-                statusbar_view.setAlpha(percent);
                 mToolbar.setAlpha(percent);
+                SystemBarHelper.tintStatusBar(UserInfoActivity.this, Color.argb((int) (percent*255),0xFF,0xD7,0x05));
             }
         });
         container.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {

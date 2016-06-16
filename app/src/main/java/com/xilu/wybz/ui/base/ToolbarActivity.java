@@ -1,5 +1,6 @@
 package com.xilu.wybz.ui.base;
 
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -19,13 +20,14 @@ import com.xilu.wybz.ui.mine.MineActivity;
 import com.xilu.wybz.ui.mine.UserInfoActivity;
 import com.xilu.wybz.ui.msg.MsgActivity;
 import com.xilu.wybz.ui.song.PlayAudioActivity;
+import com.xilu.wybz.ui.song.SongAblumActivity;
 import com.xilu.wybz.utils.DensityUtil;
+import com.xilu.wybz.view.SystemBarHelper;
 
 import butterknife.ButterKnife;
 
 public abstract class ToolbarActivity extends BaseActivity {
     protected RelativeLayout mAppBar;
-    protected View statusbar_view;
     protected Toolbar mToolbar;
     protected boolean mIsHidden = false;
 
@@ -34,11 +36,8 @@ public abstract class ToolbarActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         mAppBar = (RelativeLayout) findViewById(R.id.app_bar_layout);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (this instanceof MainActivity || this instanceof FindActivity
-                || this instanceof MsgActivity || this instanceof MineActivity || this instanceof UserInfoActivity) {
-            statusbar_view = findViewById(R.id.status_bar_view);
-            statusbar_view.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, DensityUtil.getStatusBarHeight(context)));
-            statusbar_view.setVisibility(isChenjin ? View.VISIBLE : View.GONE);
+        if (isHomeActivity || this instanceof UserInfoActivity || this instanceof PlayAudioActivity|| this instanceof SongAblumActivity) {
+              SystemBarHelper.setHeightAndPadding(this, mAppBar);
         }
         View view = findViewById(R.id.view);
         if (mToolbar == null || mAppBar == null) {

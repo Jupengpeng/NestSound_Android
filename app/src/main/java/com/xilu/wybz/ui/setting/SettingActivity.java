@@ -115,13 +115,16 @@ public class SettingActivity extends ToolbarActivity {
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         HttpUtils httpUtils = new HttpUtils(context);
                         httpUtils.post(MyHttpClient.getLoginOut(),null,new MyStringCallback(){
-
                         });
                         PrefsUtil.saveUserInfo(context, new UserBean());
                         MobclickAgent.onProfileSignOff();
                         EventBus.getDefault().post(new Event.LoginOutEvent());
-                        finish();
-                        startActivity(LoginActivity.class);
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                finish();
+                            }
+                        },120);
                     }
                 }).negativeText("取消")
                 .onNegative(new MaterialDialog.SingleButtonCallback() {
@@ -129,8 +132,7 @@ public class SettingActivity extends ToolbarActivity {
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
 
                     }
-                })
-                .show();
+                }).show();
     }
     private void DelCache() {
         showIndeterminateProgressDialog(true);

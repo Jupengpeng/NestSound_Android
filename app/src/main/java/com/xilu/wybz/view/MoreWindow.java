@@ -8,8 +8,10 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
+import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,29 +36,30 @@ public class MoreWindow extends PopupWindow {
 
     private String TAG = MoreWindow.class.getSimpleName();
     Activity mContext;
-//    private int mWidth;
-//    private int mHeight;
-//    private int statusBarHeight;
+    private int mWidth;
+    private int mHeight;
+    private int statusBarHeight;
     private Bitmap mBitmap = null;
     private Bitmap overlay = null;
     private Handler mHandler = new Handler();
 
     public MoreWindow(Activity context) {
         mContext = context;
+
     }
 
     public void init() {
-//        Rect frame = new Rect();
-//        mContext.getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
-//        statusBarHeight = frame.top;
-//        DisplayMetrics metrics = new DisplayMetrics();
-//        mContext.getWindowManager().getDefaultDisplay()
-//                .getMetrics(metrics);
-//        mWidth = metrics.widthPixels;
-//        mHeight = metrics.heightPixels;
-//
-//        setWidth(mWidth);
-//        setHeight(mHeight);
+        Rect frame = new Rect();
+        mContext.getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
+        statusBarHeight = frame.top;
+        DisplayMetrics metrics = new DisplayMetrics();
+        mContext.getWindowManager().getDefaultDisplay()
+                .getMetrics(metrics);
+        mWidth = metrics.widthPixels;
+        mHeight = metrics.heightPixels;
+
+        setWidth(mWidth);
+        setHeight(mHeight);
     }
 
     private Bitmap blur() {
@@ -113,16 +116,9 @@ public class MoreWindow extends PopupWindow {
         });
         return set;
     }
-    public void showMoreWindow(MainTabActivity activity, View anchor, OnClickListener onClickListener) {
-//        mActivity.setStatusColor(0x90000000);
-        final RelativeLayout layout = (RelativeLayout) LayoutInflater.from(mContext).inflate(R.layout.popup_publish, null);
+    public void showMoreWindow(Activity activity, View anchor, OnClickListener onClickListener) {
+        RelativeLayout layout = (RelativeLayout) LayoutInflater.from(mContext).inflate(R.layout.popup_publish, null);
         setContentView(layout);
-        //设置SelectPicPopupWindow弹出窗体的宽
-        setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
-        //设置SelectPicPopupWindow弹出窗体的高
-        setHeight(ViewGroup.LayoutParams.MATCH_PARENT);
-        //实例化一个ColorDrawable颜色为半透明
-        setBackgroundDrawable(new BitmapDrawable());
         ImageView close = (ImageView) layout.findViewById(R.id.buttonFloat);
         TextView tv_zuoci = (TextView) layout.findViewById(R.id.tv_zuoci);
         TextView tv_zuoqu = (TextView) layout.findViewById(R.id.tv_zuoqu);
@@ -150,7 +146,7 @@ public class MoreWindow extends PopupWindow {
         setBackgroundDrawable(new BitmapDrawable(mContext.getResources(), blur()));
         setOutsideTouchable(true);
         setFocusable(true);
-        showAtLocation(anchor, Gravity.BOTTOM, 0, 0);
+        showAtLocation(anchor, Gravity.BOTTOM, 0, statusBarHeight);
     }
 
     private void showAnimation(ViewGroup layout) {
@@ -177,7 +173,6 @@ public class MoreWindow extends PopupWindow {
     }
 
     private void closeAnimation(final ViewGroup layout) {
-//        mActivity.setStatusColor(0xffffd705);
         for (int i = 0; i < layout.getChildCount(); i++) {
             final View child = layout.getChildAt(i);
             if (child.getId() == R.id.rl_bottom) {

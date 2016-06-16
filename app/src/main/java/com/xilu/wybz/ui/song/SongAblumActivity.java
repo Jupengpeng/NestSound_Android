@@ -49,8 +49,6 @@ import okhttp3.Call;
 public class SongAblumActivity extends ToolbarActivity implements IRecSongView {
     @Bind(R.id.recycler_view_songalbum)
     RecyclerView recyclerViewSong;
-    @Bind(R.id.status_bar_view)
-    View statusBarView;
     @Bind(R.id.rl_top)
     RelativeLayout rlTop;
     @Bind(R.id.tv_title)
@@ -119,7 +117,6 @@ public class SongAblumActivity extends ToolbarActivity implements IRecSongView {
         if(isChenjin) {
             statusbarHeight = DensityUtil.getStatusBarHeight(context);
         }
-        statusBarView.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, statusbarHeight));
         int coverPicWith = DensityUtil.getScreenW(context)/3;
         ivCover.setLayoutParams(new LinearLayout.LayoutParams(coverPicWith,coverPicWith));
         baseScrollHeight = DensityUtil.dip2px(context, 25) + coverPicWith;

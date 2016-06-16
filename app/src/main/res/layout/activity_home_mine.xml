@@ -38,7 +38,7 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="23dp"
+                    android:layout_height="48dp"
                     android:layout_below="@+id/id_bg"
                     android:background="@color/white" />
             </RelativeLayout>
@@ -49,7 +49,6 @@
                 android:layout_height="92dp"
                 android:layout_gravity="center_horizontal|bottom"
                 fresco:failureImage="@drawable/ic_default_head_252"
-                android:src="@drawable/default_pic"
                 fresco:placeholderImageScaleType="centerCrop"
                 fresco:placeholderImage="@drawable/ic_default_head_252"
                 fresco:roundAsCircle="true"

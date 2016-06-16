@@ -26,6 +26,7 @@ import com.xilu.wybz.ui.WelActivity;
 import com.xilu.wybz.ui.find.FindActivity;
 import com.xilu.wybz.ui.login.ForgetPwdActivity;
 import com.xilu.wybz.ui.login.LoginActivity;
+import com.xilu.wybz.ui.login.PasswordActivity;
 import com.xilu.wybz.ui.login.RegisterActivity;
 import com.xilu.wybz.ui.main.MainActivity;
 import com.xilu.wybz.ui.main.SongablumMoreActivity;
@@ -39,6 +40,7 @@ import com.xilu.wybz.utils.PhoneInfoUtil;
 import com.xilu.wybz.utils.StatusBarUtil;
 import com.xilu.wybz.utils.ToastUtils;
 import com.xilu.wybz.view.AnimImageView;
+import com.xilu.wybz.view.SystemBarHelper;
 import com.xilu.wybz.view.SystemBarTintManager;
 import com.xilu.wybz.view.materialdialogs.MaterialDialog;
 
@@ -68,7 +70,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         adaptTheme(true);
         setContentView(getLayoutRes());
         ButterKnife.bind(this);
-        isChenjin = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
+        isChenjin = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
         isHomeActivity = this instanceof MainActivity || this instanceof FindActivity
                 || this instanceof MsgActivity || this instanceof MineActivity;
         PushAgent.getInstance(context).onAppStart();
@@ -77,18 +79,22 @@ public abstract class BaseActivity extends AppCompatActivity {
     //开启透明状态栏目
     protected void adaptTheme(boolean isTranslucentStatusFitSystemWindowTrue) {
         if (isTranslucentStatusFitSystemWindowTrue) {
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//                window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
-//                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-//                if (this instanceof PlayAudioActivity || this instanceof WelActivity || this instanceof SplashActivity) {
-//                    window.setStatusBarColor(Color.TRANSPARENT);
-//                }
-//                  else if (this instanceof LoginActivity || this instanceof RegisterActivity || this instanceof ForgetPwdActivity) {
-//                    window.setStatusBarColor(getResources().getColor(R.color.login_bg_color));
-//                }
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                Window window = getWindow();
-                window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            if (!(this instanceof PlayAudioActivity || this instanceof LoginActivity
+                    || this instanceof RegisterActivity || this instanceof PasswordActivity
+                    || this instanceof SongAblumActivity)) {
+                if (SystemBarHelper.isMIUI6Later() || SystemBarHelper.isFlyme4Later() || Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    SystemBarHelper.setStatusBarDarkMode(this);
+                }
+            }
+            if (this instanceof WelActivity || this instanceof PlayAudioActivity || this instanceof SongAblumActivity
+                    || this instanceof SplashActivity || this instanceof UserInfoActivity) {
+                SystemBarHelper.immersiveStatusBar(this);
+                SystemBarHelper.tintStatusBar(this, Color.argb(0, 0xFF, 0xD7, 0x05));
+            } else if (this instanceof MainTabActivity) {
+                SystemBarHelper.immersiveStatusBar(this);
+                SystemBarHelper.tintStatusBar(this, Color.parseColor("#ffd705"));
+            } else if (this instanceof LoginActivity || this instanceof RegisterActivity || this instanceof PasswordActivity) {
+                SystemBarHelper.tintStatusBar(this, Color.parseColor("#3a3937"));
             }
         }
     }
@@ -128,9 +134,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         Intent intent = new Intent();
         intent.setClass(context, cls);
         startActivity(intent);
-        if (cls == LoginActivity.class) {
-            overridePendingTransition(R.anim.activity_open, 0);
-        }
+//        if (cls == LoginActivity.class) {
+//            overridePendingTransition(R.anim.activity_open, 0);
+//        }
     }
 
     protected void showLoading(View ll_loading) {

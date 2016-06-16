@@ -7,13 +7,16 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.xilu.wybz.R;
 import com.xilu.wybz.adapter.ViewPagerAdapter;
 import com.xilu.wybz.ui.base.BaseActivity;
 import com.xilu.wybz.ui.main.MainActivity;
 import com.xilu.wybz.utils.FileUtils;
 import com.xilu.wybz.utils.PrefsUtil;
+
 import java.util.ArrayList;
+
 import butterknife.Bind;
 
 /**
@@ -30,7 +33,7 @@ public class SplashActivity extends BaseActivity implements View.OnClickListener
     //定义ViewPager适配器
     ViewPagerAdapter vpAdapter;
     //引导图片资源
-    final int[] pics = {R.drawable.guide1, R.drawable.guide2, R.drawable.guide3};
+    final int[] pics = {R.drawable.guide1, R.drawable.guide2, R.drawable.guide3, R.drawable.guide4};
     //底部小点的图片
     ImageView[] points;
     //记录当前选中位置
@@ -59,7 +62,7 @@ public class SplashActivity extends BaseActivity implements View.OnClickListener
         tv_toHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(MainActivity.class);
+                startActivity(MainTabActivity.class);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 finish();
             }

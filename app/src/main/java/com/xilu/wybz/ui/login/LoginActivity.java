@@ -45,11 +45,9 @@ public class LoginActivity extends BaseActivity implements ILoginView,TextWatche
         return R.layout.activity_login;
     }
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EventBus.getDefault().register(this);
         loginPresenter = new LoginPresenter(this,this);
         loginPresenter.init();
     }
@@ -115,26 +113,7 @@ public class LoginActivity extends BaseActivity implements ILoginView,TextWatche
             mloginLogin.setBackgroundResource(R.drawable.corner_login2);
         }
 
-    }
-
-    public void onEventMainThread(Event.LoginSuccessEvent event) {
-        finish();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
-    }
-
-    public void finish() {
-        // TODO Auto-generated method stub
-        super.finish();
-        //关闭窗体动画显示
-        overridePendingTransition(0, R.anim.activity_close);
-    }
-
-    @Override
+    }    @Override
     public void loginStart() {
         showPd("正在登陆中...");
         mloginLogin.setEnabled(false);
@@ -143,6 +122,7 @@ public class LoginActivity extends BaseActivity implements ILoginView,TextWatche
     @Override
     public void loginSuccess(UserBean ub) {
         EventBus.getDefault().post(new Event.LoginSuccessEvent(ub));
+        finish();
     }
 
     @Override
