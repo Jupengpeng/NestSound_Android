@@ -12,6 +12,7 @@ import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.presenter.LoginPresenter;
 import com.xilu.wybz.ui.IView.ILoginView;
+import com.xilu.wybz.ui.MainTabActivity;
 import com.xilu.wybz.ui.base.BaseActivity;
 import com.xilu.wybz.utils.MD5Util;
 import com.xilu.wybz.utils.StringUtil;
@@ -135,6 +136,7 @@ public class LoginActivity extends BaseActivity implements ILoginView,TextWatche
     @Override
     public void loginSuccess(UserBean ub) {
         EventBus.getDefault().post(new Event.LoginSuccessEvent(ub));
+        startActivity(MainTabActivity.class);
     }
 
     @Override

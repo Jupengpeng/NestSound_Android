@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.CheckedTextView;
+import android.widget.RelativeLayout;
 
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.PushAgent;
@@ -162,8 +163,10 @@ public class MainTabActivity extends BaseActivity {
                 if(SystemUtils.isLogin(context)){
                     if (null == mMoreWindow) {
                         mMoreWindow = new MoreWindow(this);
+                        RelativeLayout v = (RelativeLayout)findViewById(R.id.window);
+                        mMoreWindow.init(this,v,view, onClickListener);
                     }
-                    mMoreWindow.showMoreWindow(MainTabActivity.this, view, onClickListener);
+                    mMoreWindow.showto();
                 }
                 return;
             case R.id.rl_main_msg:
