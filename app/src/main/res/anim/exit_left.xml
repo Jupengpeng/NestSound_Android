@@ -6,5 +6,5 @@
         android:fillBefore="true"
         android:fillEnabled="true"
         android:fromXDelta="0.0%"
-        android:toXDelta="-100.0%p" />
+        android:toXDelta="0.0%" />
 </set>

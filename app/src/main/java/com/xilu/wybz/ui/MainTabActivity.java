@@ -23,10 +23,8 @@ import com.xilu.wybz.ui.login.LoginActivity;
 import com.xilu.wybz.ui.lyrics.MakeWordActivity;
 import com.xilu.wybz.ui.main.MainActivity;
 import com.xilu.wybz.ui.mine.MineActivity;
-import com.xilu.wybz.ui.mine.NewMineActivity;
 import com.xilu.wybz.ui.msg.MsgActivity;
 import com.xilu.wybz.ui.record.InspireRecordActivity;
-import com.xilu.wybz.ui.song.MakeHotActivity;
 import com.xilu.wybz.ui.song.NewMakeHotActivity;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.SystemUtils;
@@ -157,9 +155,9 @@ public class MainTabActivity extends BaseActivity {
             case R.id.rl_main_publish:
                 if(SystemUtils.isLogin(context)){
                     if (null == mMoreWindow) {
-                        mMoreWindow = new MoreWindow(this);
-                        RelativeLayout v = (RelativeLayout)findViewById(R.id.window);
-                        mMoreWindow.init(this,v,view, onClickListener);
+                        mMoreWindow = new MoreWindow();
+                        RelativeLayout parent = (RelativeLayout)findViewById(R.id.window);
+                        mMoreWindow.init(this,parent, onClickListener);
                     }
                     mMoreWindow.showto();
                 }

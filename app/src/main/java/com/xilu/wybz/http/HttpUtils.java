@@ -39,9 +39,12 @@ public class HttpUtils {
         }
         params.put("expiretime",System.currentTimeMillis()+ PhoneInfoUtil.getPhoneImei(context));
         params.put("token", PrefsUtil.getUserInfo(context).loginToken);
-        Log.e("params",new Gson().toJson(params));
-        String content = RSAUtils.encodeConvert(RSAUtils.encryptByPublicKey(new Gson().toJson(params)).getBytes());
-        Log.e("content",content);
+
+        String paramString = new Gson().toJson(params);
+
+        Log.d("url","url:"+url+"params:"+paramString);
+        String content = RSAUtils.encodeConvert(RSAUtils.encryptByPublicKey(paramString).getBytes());
+        Log.d("url","encode:"+content);
         OkHttpUtils.post()
                 .url(MyHttpClient.BASE_URL + url)
                 .tag(url)
@@ -95,8 +98,12 @@ public class HttpUtils {
         }
         params.put("expiretime",System.currentTimeMillis()+ PhoneInfoUtil.getPhoneImei(context));
         params.put("token",PrefsUtil.getUserInfo(context).loginToken);
-        String content = RSAUtils.encodeConvert(RSAUtils.encryptByPublicKey(new Gson().toJson(params)).getBytes());
-        Log.e("content",content);
+
+        String paramString = new Gson().toJson(params);
+        Log.d("url","url:"+url+"params:"+paramString);
+
+        String content = RSAUtils.encodeConvert(RSAUtils.encryptByPublicKey(paramString).getBytes());
+        Log.d("url","encode:"+content);
         OkHttpUtils
                 .get()
                 .headers(headers)

@@ -23,15 +23,12 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.CheckedTextView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.commit451.nativestackblur.NativeStackBlur;
-import com.google.gson.Gson;
 import com.umeng.socialize.UMShareAPI;
 import com.xilu.wybz.R;
 import com.xilu.wybz.adapter.PlayLyricsAdapter;
@@ -40,23 +37,18 @@ import com.xilu.wybz.bean.ActionBean;
 import com.xilu.wybz.bean.ShareBean;
 import com.xilu.wybz.bean.TemplateBean;
 import com.xilu.wybz.bean.WorksData;
-import com.xilu.wybz.common.FileDir;
 import com.xilu.wybz.common.Event;
+import com.xilu.wybz.common.FileDir;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.common.PlayMediaInstance;
-import com.xilu.wybz.http.HttpUtils;
-import com.xilu.wybz.http.callback.BitmapCallback;
 import com.xilu.wybz.presenter.PlayPresenter;
 import com.xilu.wybz.service.PlayService;
 import com.xilu.wybz.ui.ExitApplication;
 import com.xilu.wybz.ui.IView.IPlayView;
-import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.ui.mine.UserInfoActivity;
 import com.xilu.wybz.ui.setting.SettingFeedActivity;
 import com.xilu.wybz.utils.BitmapUtils;
-import com.xilu.wybz.utils.DensityUtil;
-import com.xilu.wybz.utils.FileUtils;
 import com.xilu.wybz.utils.FormatHelper;
 import com.xilu.wybz.utils.MD5Util;
 import com.xilu.wybz.utils.PrefsUtil;
@@ -75,7 +67,6 @@ import java.util.TimerTask;
 import butterknife.Bind;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
-import okhttp3.Call;
 
 /**
  * Created by June on 16/5/4.
@@ -489,7 +480,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
         TemplateBean templateBean = new TemplateBean();
         templateBean.id = worksData.hotid + "";
         templateBean.author = worksData.hotAuthor;
-        templateBean.mp3 = worksData.playurl;
+        templateBean.mp3 = worksData.hotmp3;
         templateBean.mp3times = worksData.hotmp3times;
         templateBean.title = worksData.hotTitle;
         MakeSongActivity.ToMakeSongActivity(context, templateBean);
