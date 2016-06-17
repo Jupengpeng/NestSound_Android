@@ -29,6 +29,7 @@ import com.xilu.wybz.ui.setting.SettingFeedActivity;
 import com.xilu.wybz.ui.song.CommentActivity;
 import com.xilu.wybz.utils.DateTimeUtil;
 import com.xilu.wybz.utils.NetWorkUtil;
+import com.xilu.wybz.utils.NumberUtil;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringStyleUtil;
 import com.xilu.wybz.utils.SystemUtils;
@@ -46,6 +47,8 @@ import de.greenrobot.event.EventBus;
  * Created by Administrator on 2016/3/10 0010.
  */
 public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsView, AdapterView.OnItemClickListener {
+    @Bind(R.id.iv_comment)
+    ImageView ivComment;
     @Bind(R.id.ll_loading)
     LinearLayout ll_loading;
     @Bind(R.id.ll_nonet)
@@ -177,7 +180,8 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
     //更新评论数量
     public void onEventMainThread(Event.UpdataCommentNumEvent event) {
         if (event.getType() == 2) {
-            tvCommentNum.setText(worksData.getCommentnum() + event.getNum() + "");
+            worksData.commentnum = worksData.getCommentnum() + event.getNum();
+            updateCommentNum();
         }
     }
 
@@ -189,11 +193,17 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
         //根据不同的模板id来显示歌词
         if (!TextUtils.isEmpty(str))
             ly_content.setText(StringStyleUtil.getLyrics(worksData));
-        if (worksData.commentnum > 0)
-            tvCommentNum.setText(worksData.commentnum);
-
+        updateCommentNum();
     }
-
+    public void updateCommentNum(){
+        if (worksData.commentnum > 0) {
+            tvCommentNum.setText(NumberUtil.format(worksData.commentnum));
+            ivComment.setImageResource(R.drawable.ic_lyrics_reply);
+        }else{
+            tvCommentNum.setText("");
+            ivComment.setImageResource(R.drawable.ic_lyrics_reply);
+        }
+    }
     @Override
     public void showProgressBar() {
         showLoading(ll_loading);

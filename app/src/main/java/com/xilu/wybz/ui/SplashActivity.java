@@ -144,7 +144,7 @@ public class SplashActivity extends BaseActivity implements View.OnClickListener
         if (positon < 0 || positon > pics.length - 1 || currentIndex == positon) {
             return;
         }
-        if (positon == 2) {
+        if (positon == pics.length-1) {
             ll.setVisibility(View.GONE);
             tv_toHome.setVisibility(View.VISIBLE);
             tv_toHome.startAnimation(AnimationUtils.loadAnimation(context, android.R.anim.fade_in));
