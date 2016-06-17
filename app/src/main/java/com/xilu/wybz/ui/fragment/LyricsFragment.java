@@ -10,10 +10,13 @@ import android.widget.TextView;
 import com.xilu.wybz.R;
 import com.xilu.wybz.adapter.WorksAdapter;
 import com.xilu.wybz.bean.WorksData;
+import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.SongPresenter;
 import com.xilu.wybz.ui.IView.ISongView;
 import com.xilu.wybz.ui.find.MoreWorkActivity;
+import com.xilu.wybz.ui.lyrics.LyricsdisplayActivity;
 import com.xilu.wybz.utils.DensityUtil;
+import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.view.GridSpacingItemDecoration;
 
 import java.util.List;
@@ -67,6 +70,13 @@ public class LyricsFragment extends BaseFragment implements ISongView {
         } else {
             tvNewsong.setVisibility(View.GONE);
         }
+        newWorksAdapter.setOnItemClickListener(new WorksAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                String title = StringUtil.isBlank(newWorksDatas.get(position).name)?newWorksDatas.get(position).title:newWorksDatas.get(position).name;
+                LyricsdisplayActivity.toLyricsdisplayActivity(context,newWorksDatas.get(position).itemid, 0, title);
+            }
+        });
     }
 
     @Override
@@ -80,6 +90,13 @@ public class LyricsFragment extends BaseFragment implements ISongView {
         } else {
             tvHotsong.setVisibility(View.GONE);
         }
+        hotWorksAdapter.setOnItemClickListener(new WorksAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                String title = StringUtil.isBlank(hotWorksDatas.get(position).name)?hotWorksDatas.get(position).title:hotWorksDatas.get(position).name;
+                LyricsdisplayActivity.toLyricsdisplayActivity(context,hotWorksDatas.get(position).itemid, 0, title);
+            }
+        });
     }
 
     @Override
@@ -111,6 +128,7 @@ public class LyricsFragment extends BaseFragment implements ISongView {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                time = System.currentTimeMillis();
                 songPresenter.getWorkList(2);
             }
         },200);

@@ -251,6 +251,7 @@ public class UserInfoActivity extends ToolbarActivity {
                 public void onResponse(String response) {
                     super.onResponse(response);
                     isFocus = 1 - isFocus;
+                    EventBus.getDefault().post(new Event.UpdateFollowNumEvent(1-isFocus, 0));
                     showMsg(isFocus==0?"取消关注成功！":"关注成功！");
                     ivSetting.setImageResource(followIcon[isFocus]);
                 }

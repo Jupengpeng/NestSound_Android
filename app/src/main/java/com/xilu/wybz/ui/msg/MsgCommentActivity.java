@@ -159,10 +159,10 @@ public class MsgCommentActivity extends BaseListActivity<MsgCommentBean> impleme
         void toWorks(){
             MsgCommentBean msgCommentBean = (MsgCommentBean)itemView.getTag();
             if(msgCommentBean.type==1){
-                if(msgCommentBean.workid>0)
+                if(msgCommentBean.itemid>0)
                 PlayAudioActivity.toPlayAudioActivity(context, msgCommentBean.workid, "", MyCommon.MSG_COMMENT);
             }else{
-                if(msgCommentBean.workid>0)
+                if(msgCommentBean.itemid>0)
                     LyricsdisplayActivity.toLyricsdisplayActivity(context, msgCommentBean.workid, 0, msgCommentBean.title);
             }
         }
@@ -180,7 +180,7 @@ public class MsgCommentActivity extends BaseListActivity<MsgCommentBean> impleme
             if (StringUtil.isNotBlank(commentBean.nickname))tvUserName.setText(commentBean.nickname);
             if (StringUtil.isNotBlank(commentBean.headerurl)) loadImage(commentBean.headerurl, ivHead);
 
-            if(commentBean.workid>0) {
+            if(commentBean.itemid>0) {
                 tvMusicName.setVisibility(View.VISIBLE);
                 if (StringUtil.isNotBlank(commentBean.author)) tvAuthor.setText(commentBean.author);
                 if (StringUtil.isBlank(commentBean.title))commentBean.title = "未命名";

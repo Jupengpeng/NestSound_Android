@@ -124,7 +124,7 @@ public class SettingActivity extends ToolbarActivity {
                             public void run() {
                                 finish();
                             }
-                        },120);
+                        },300);
                     }
                 }).negativeText("取消")
                 .onNegative(new MaterialDialog.SingleButtonCallback() {

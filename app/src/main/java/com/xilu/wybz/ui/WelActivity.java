@@ -60,7 +60,6 @@ public class WelActivity extends BaseActivity {
     private void toMainAct(){
         Intent intent = new Intent(WelActivity.this, MainTabActivity.class);
         startActivity(intent);
-        overridePendingTransition(R.anim.activity_logo_scale_enter, R.anim.activity_logo_scale_exit);
         finish();
     }
     @Override

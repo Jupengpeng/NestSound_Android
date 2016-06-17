@@ -68,11 +68,6 @@ public class MineActivity extends ToolbarActivity {
     private List<LinearLayout> tabs;
     public boolean isFirst;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
 
     @Override
     public boolean canBack() {
@@ -180,13 +175,15 @@ public class MineActivity extends ToolbarActivity {
             int headWidth = DensityUtil.dip2px(context,92);
             loadImage(MyCommon.getImageUrl(userBean.headurl,headWidth,headWidth), ivHead);
         }
-        userFansnum.setText("粉丝:  " + NumberUtil.format(userBean.fansnum));
-        userFollownum.setText("关注:  " + NumberUtil.format(userBean.gznum));
+        updateUserFansNum(userBean);
         if (StringUtil.isNotBlank(userBean.name)) userTvName.setText(userBean.name);
         if (StringUtil.isNotBlank(userBean.descr)) userTvInfo.setText(userBean.descr);
         if (StringUtil.isNotBlank(userBean.name)) setTitle(userBean.name);
     }
-
+    public void updateUserFansNum(UserBean userBean){
+        userFansnum.setText("粉丝:  " + NumberUtil.format(userBean.fansnum));
+        userFollownum.setText("关注:  " + NumberUtil.format(userBean.gznum));
+    }
     @OnClick({R.id.user_fansnum, R.id.user_follownum, R.id.ll_myrecord, R.id.ll_mysong, R.id.ll_mylyrics, R.id.ll_myfav, R.id.rl_setting})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -250,7 +247,31 @@ public class MineActivity extends ToolbarActivity {
             setUserInfo(event.getUserBean());
         }
     }
-
+    //修改粉丝数量
+    public void onEventMainThread(Event.UpdateFollowNumEvent event) {
+        int from = event.getFrom();
+        int type = event.getType();
+        UserBean userBean = PrefsUtil.getUserInfo(context);
+        switch (from){
+            case 0:
+                if(type==0){
+                    userBean.gznum+=1;
+                }else{
+                    userBean.gznum-=1;
+                }
+                userFollownum.setText(NumberUtil.format(userBean.gznum));
+                break;
+            case 1:
+                if(type==0){
+                    userBean.fansnum+=1;
+                }else{
+                    userBean.fansnum-=1;
+                }
+                userFansnum.setText(NumberUtil.format(userBean.fansnum));
+                break;
+        }
+        PrefsUtil.saveUserInfo(context,userBean);
+    }
     //灵感记录 歌曲  歌词 发布成功 更新列表数据
     public void onEventMainThread(Event.UpdataWorksList event) {
         WorksData worksData = event.getWorksData();

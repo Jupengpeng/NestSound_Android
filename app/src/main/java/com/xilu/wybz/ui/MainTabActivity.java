@@ -2,7 +2,6 @@ package com.xilu.wybz.ui;
 
 import android.app.LocalActivityManager;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -23,21 +22,16 @@ import com.xilu.wybz.ui.login.LoginActivity;
 import com.xilu.wybz.ui.lyrics.MakeWordActivity;
 import com.xilu.wybz.ui.main.MainActivity;
 import com.xilu.wybz.ui.mine.MineActivity;
-import com.xilu.wybz.ui.mine.NewMineActivity;
 import com.xilu.wybz.ui.msg.MsgActivity;
 import com.xilu.wybz.ui.record.InspireRecordActivity;
-import com.xilu.wybz.ui.song.MakeHotActivity;
 import com.xilu.wybz.ui.song.NewMakeHotActivity;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.utils.VersionUtil;
 import com.xilu.wybz.view.IndexViewPager;
 import com.xilu.wybz.view.MoreWindow;
-import com.xilu.wybz.view.SystemBarHelper;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.Bind;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
@@ -68,9 +62,6 @@ public class MainTabActivity extends BaseActivity {
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_maintab;
-    }
-    public boolean canBack() {
-        return false;
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -184,7 +175,7 @@ public class MainTabActivity extends BaseActivity {
             viewpager.setCurrentItem(currentIndex, false);
             oldIndex = currentIndex;
         }
-        SystemBarHelper.tintStatusBar(this, Color.argb(currentIndex==3?0:255,0xFF,0xD7,0x05));
+//        SystemBarHelper.tintStatusBar(this, Color.argb(currentIndex==3?0:0,0xFF,0xD7,0x05));
     }
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
