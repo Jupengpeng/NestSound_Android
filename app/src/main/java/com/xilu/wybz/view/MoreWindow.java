@@ -149,7 +149,7 @@ public class MoreWindow extends PopupWindow {
         });
         return set;
     }
-    public void showMoreWindow(MainTabActivity activity, View anchor, OnClickListener onClickListener) {
+    public void showMoreWindow(Activity activity, View anchor, OnClickListener onClickListener) {
 //        mActivity.setStatusColor(0x90000000);
         final RelativeLayout layout = (RelativeLayout) LayoutInflater.from(mContext).inflate(R.layout.popup_publish, null);
         setContentView(layout);

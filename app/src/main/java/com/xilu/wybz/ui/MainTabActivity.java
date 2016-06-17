@@ -2,11 +2,14 @@ package com.xilu.wybz.ui;
 
 import android.app.LocalActivityManager;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.CheckedTextView;
+import android.widget.RelativeLayout;
 
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.PushAgent;
@@ -15,7 +18,6 @@ import com.xilu.wybz.adapter.MyPagerAdapter;
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.ui.base.BaseActivity;
-import com.xilu.wybz.ui.base.BlankActivity;
 import com.xilu.wybz.ui.find.FindActivity;
 import com.xilu.wybz.ui.login.LoginActivity;
 import com.xilu.wybz.ui.lyrics.MakeWordActivity;
@@ -31,6 +33,7 @@ import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.utils.VersionUtil;
 import com.xilu.wybz.view.IndexViewPager;
 import com.xilu.wybz.view.MoreWindow;
+import com.xilu.wybz.view.SystemBarHelper;
 
 import java.util.ArrayList;
 import java.util.List;
