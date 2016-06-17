@@ -4,6 +4,42 @@ import android.graphics.Bitmap;
 
 public class FastBlur {
 
+
+	public static Bitmap doGradual (Bitmap sentBitmap,int height){
+		Bitmap bitmap;
+		bitmap = sentBitmap;
+
+		int w = bitmap.getWidth();
+		int h = bitmap.getHeight();
+
+		int[] pix = new int[w * h];
+		bitmap.getPixels(pix, 0, w, 0, 0, w, h);
+
+
+		int x,y,a,p;
+		int index;
+		int apha;
+		int space = 255/height;
+
+		for (y = 0; y < height; y++) {
+			apha = y*space;
+			apha = apha << 24;
+
+			for (x = 0; x <= w; x++) {
+				index = y*w+x;
+				p = pix[index];
+
+				p = ((0x00ffffff & p) | (apha));
+
+				pix[index] = p;
+			}
+		}
+
+		bitmap.setPixels(pix, 0, w, 0, 0, w, h);
+
+		return bitmap;
+	}
+
 	public static Bitmap doBlur(Bitmap sentBitmap, int radius,
 			boolean canReuseInBitmap) {
 		Bitmap bitmap;
@@ -161,7 +197,10 @@ public class FastBlur {
 			stackpointer = radius;
 			for (y = 0; y < h; y++) {
 				// Preserve alpha channel: ( 0xff000000 & pix[yi] )
-				pix[yi] = (0xff000000 & pix[yi]) | (dv[rsum] << 16)
+
+				int apha = 255;
+
+				pix[yi] = (0xff000000 & apha << 24) | (dv[rsum] << 16)
 						| (dv[gsum] << 8) | dv[bsum];
 
 				rsum -= routsum;

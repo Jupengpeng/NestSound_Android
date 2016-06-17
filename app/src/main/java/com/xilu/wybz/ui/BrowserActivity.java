@@ -1,24 +1,29 @@
 package com.xilu.wybz.ui;
 
 import android.annotation.SuppressLint;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Message;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.webkit.DownloadListener;
+import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
+
 import com.xilu.wybz.R;
 import com.xilu.wybz.ui.base.ToolbarActivity;
-import java.util.ArrayList;
-import java.util.List;
+import com.xilu.wybz.utils.PhoneDeviceUtil;
 
 import butterknife.Bind;
 
@@ -26,17 +31,24 @@ import butterknife.Bind;
  * Created by June on 2016/3/2.
  */
 public class BrowserActivity extends ToolbarActivity {
+
+    public static final int FILECHOOSER_RESULTCODE = 200;
+
     @Bind(R.id.pb)
     ProgressBar mProgressBar;
     @Bind(R.id.webview)
     WebView mWebView;
-    String url = "";
-    List<String> loadHistoryUrls;
-    public static void toBrowserActivity(Context context,String url){
+
+    private ValueCallback<Uri> mUploadMessage;
+    private ValueCallback<Uri[]> mUploadCallbackAboveL;
+    private String url = "";
+
+    public static void toBrowserActivity(Context context, String url) {
         Intent intent = new Intent(context, BrowserActivity.class);
         intent.putExtra("url", url);
         context.startActivity(intent);
     }
+
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_webview;
@@ -47,17 +59,17 @@ public class BrowserActivity extends ToolbarActivity {
         super.onCreate(savedInstanceState);
         initViews();
         initData();
+
+        mProgressBar.setProgress(20);
     }
 
     public void initViews() {
-        // TODO Auto-generated method stub
         setTitle("网页加载中...");
         initWebView();
     }
 
     @SuppressLint({"SetJavaScriptEnabled", "NewApi"})
     public void initWebView() {
-        // TODO Auto-generated method stub
         WebSettings webSettings = mWebView.getSettings(); // webView使用设置
         webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         webSettings.setUseWideViewPort(true);//扩大比例的缩放
@@ -70,11 +82,12 @@ public class BrowserActivity extends ToolbarActivity {
         webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE); // 不带缓存
 
         mWebView.setDownloadListener(new MyWebViewDownLoadListener());
-        mWebView.setWebChromeClient(new mWebViewChromeClient()); // 处理解析，渲染网页等浏览器做的事情
+        mWebView.setWebChromeClient(new MyWebViewChromeClient()); // 处理解析，渲染网页等浏览器做的事情
         mWebView.setWebViewClient(new WebViewClient() {
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 // 重写此方法表明点击网页里面的链接还是在当前的webview里跳转，不跳到浏览器那边
-                loadHistoryUrls.add(url);
+                synCookies(context,url, "@@"+ PhoneDeviceUtil.getPhoneImei(context)+"@@");
+                Log.e("cookies",getCookies(context,url));
                 view.loadUrl(url);
                 return true;
             }
@@ -87,7 +100,6 @@ public class BrowserActivity extends ToolbarActivity {
             @Override
             public void onReceivedError(WebView view, int errorCode,
                                         String description, String failingUrl) {
-                // TODO Auto-generated method stub
 
             }
         });
@@ -100,38 +112,116 @@ public class BrowserActivity extends ToolbarActivity {
 
     }
 
-    public class mWebViewChromeClient extends WebChromeClient {
+
+    public void synCookies(Context context, String url, String cookies) {
+        CookieSyncManager.createInstance(context);
+        CookieManager cookieManager = CookieManager.getInstance();
+        cookieManager.setAcceptCookie(true);
+        cookieManager.removeSessionCookie();//移除
+        cookieManager.setCookie(url, cookies);
+        CookieSyncManager.getInstance().sync();
+    }
+    public String getCookies(Context context, String url) {
+        CookieSyncManager.createInstance(context);
+        CookieManager cookieManager = CookieManager.getInstance();
+        cookieManager.setAcceptCookie(true);
+        return cookieManager.getCookie(url);
+    }
+
+
+    public class MyWebViewChromeClient extends WebChromeClient {
         // 监听网页加载进度
         public void onProgressChanged(WebView view, int newProgress) {
             // 设置进度条进度
             mProgressBar.setProgress(newProgress);
             if (newProgress == 100) {
                 mProgressBar.setVisibility(View.GONE);
+            } else {
+                mProgressBar.setVisibility(View.VISIBLE);
             }
-            super.onProgressChanged(view, newProgress);
+            Log.d("load", "" + newProgress);
         }
 
         @Override
         public void onReceivedTitle(WebView view, String title) {
-            // TODO Auto-generated method stub
             if (!TextUtils.isEmpty(title)) {
                 setTitle(title);
-                if(title.equals("正在跳转")){
-                    loadHistoryUrls.remove(loadHistoryUrls.size()-1);
-                }
             }
             super.onReceivedTitle(view, title);
         }
+
+        // For Android < 3.0
+        public void openFileChooser(ValueCallback<Uri> uploadMsg) {
+            mUploadMessage = uploadMsg;
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.setType("*/*");
+            startActivityForResult(Intent.createChooser(intent, "选择照片"),
+                    FILECHOOSER_RESULTCODE);
+        }
+
+        // For Android  > 4.1.1
+        public void openFileChooser(ValueCallback<Uri> uploadMsg, String acceptType, String capture) {
+            mUploadMessage = uploadMsg;
+            Intent i = new Intent(Intent.ACTION_GET_CONTENT);
+            i.addCategory(Intent.CATEGORY_OPENABLE);
+            i.setType("*/*");
+            startActivityForResult(Intent.createChooser(i, "选择照片"), FILECHOOSER_RESULTCODE);
+        }
+
+        // For Android 5.0+
+        public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, WebChromeClient.FileChooserParams fileChooserParams) {
+            mUploadCallbackAboveL = filePathCallback;
+            Intent i = new Intent(Intent.ACTION_GET_CONTENT);
+            i.addCategory(Intent.CATEGORY_OPENABLE);
+            i.setType("*/*");
+            startActivityForResult(
+                    Intent.createChooser(i, "选择照片"),
+                    FILECHOOSER_RESULTCODE);
+            return true;
+        }
     }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == FILECHOOSER_RESULTCODE) {
+            if (mUploadMessage != null) {
+                Uri result = data == null || resultCode != RESULT_OK ? null
+                        : data.getData();
+                mUploadMessage.onReceiveValue(result);
+                mUploadMessage = null;
+            } else if (mUploadCallbackAboveL != null) {
+                Uri[] results = null;
+                if (data == null) {
+                } else {
+                    String dataString = data.getDataString();
+                    ClipData clipData = data.getClipData();
+                    if (clipData != null) {
+                        results = new Uri[clipData.getItemCount()];
+                        for (int i = 0; i < clipData.getItemCount(); i++) {
+                            ClipData.Item item = clipData.getItemAt(i);
+                            results[i] = item.getUri();
+                        }
+                    }
+                    if (dataString != null)
+                        results = new Uri[]{Uri.parse(dataString)};
+                }
+                mUploadCallbackAboveL.onReceiveValue(results);
+                mUploadCallbackAboveL = null;
+            }
+        }
+    }
+
+
+    // 内部类
     public void initData() {
-        // TODO Auto-generated method stub
-        loadHistoryUrls = new ArrayList<>();
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             url = bundle.getString("url");
-            loadHistoryUrls.add(url);
         }
+        synCookies(context,url,"@@"+ PhoneDeviceUtil.getPhoneImei(context)+"@@");
+        Log.e("cookies",getCookies(context,url));
         mWebView.loadUrl(url);
     }
 
@@ -139,14 +229,8 @@ public class BrowserActivity extends ToolbarActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         //判断是否可以返回操作
         if (mWebView.canGoBack() && event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
-            //过滤是否为重定向后的链接
-            if (loadHistoryUrls.size() > 1 ) {
-                //移除加载栈中的最后一个链接
-                loadHistoryUrls.remove(loadHistoryUrls.get(loadHistoryUrls.size() - 1));
-                //加载重定向之前的页
-                mWebView.loadUrl(loadHistoryUrls.get(loadHistoryUrls.size() - 1));
-                return false;
-            }
+            mWebView.goBack();
+            return true;
         }
         return super.onKeyDown(keyCode, event);
     }
@@ -176,12 +260,17 @@ public class BrowserActivity extends ToolbarActivity {
     }
 
     @Override
+    public void finish() {
+        super.finish();
+    }
+
+    @Override
     protected void onDestroy() {
-        super.onDestroy();
         if (mWebView != null) {
             mWebView.removeAllViews();
             mWebView.destroy();
             mWebView = null;
         }
+        super.onDestroy();
     }
 }

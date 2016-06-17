@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="main_theme_color">#ffd705</color>
-    <color name="main_theme_color_dark">#b79b04</color>
+    <color name="main_theme_color">#ffffd705</color>
+    <color name="main_theme_color_dark">#ffb79b04</color>
     <color name="black">#ff000000</color>
     <color name="main_bg">#f8f8f8</color>
     <color name="split_line">#ffe5e5e5</color>

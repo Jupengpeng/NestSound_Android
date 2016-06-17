@@ -6,12 +6,19 @@
     android:background="@color/main_bg"
     android:orientation="vertical" >
     <include layout="@layout/view_toolbar" />
+
     <ProgressBar
         android:id="@+id/pb"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
-        android:layout_height="2dp"
+        android:layout_height="wrap_content"
+        android:progressDrawable="@drawable/browser_progress_bar"
+        android:minHeight="2dp"
+        android:maxHeight="2dp"
         android:max="100"/>
+
+    <!--android:progressDrawable="@android:drawable/progress_horizontal"-->
+
     <WebView
         android:id="@+id/webview"
         android:layout_width="match_parent"

@@ -6,24 +6,18 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.widget.RelativeLayout;
 
-import com.umeng.analytics.MobclickAgent;
-import com.umeng.message.PushAgent;
 import com.xilu.wybz.R;
-import com.xilu.wybz.bean.UserBean;
-import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.FileDir;
-import com.xilu.wybz.utils.GetDomainUtil;
 import com.xilu.wybz.ui.base.BaseActivity;
 import com.xilu.wybz.utils.BitmapUtils;
+import com.xilu.wybz.utils.GetDomainUtil;
 import com.xilu.wybz.utils.MD5Util;
-import com.xilu.wybz.utils.ParseUtils;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtil;
 
 import java.io.File;
 
 import butterknife.Bind;
-import de.greenrobot.event.EventBus;
 
 
 public class WelActivity extends BaseActivity {

@@ -2,12 +2,12 @@ package com.xilu.wybz.ui;
 
 import android.app.LocalActivityManager;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.CheckedTextView;
+
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.PushAgent;
 import com.xilu.wybz.R;
@@ -15,26 +15,30 @@ import com.xilu.wybz.adapter.MyPagerAdapter;
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.ui.base.BaseActivity;
+import com.xilu.wybz.ui.base.BlankActivity;
 import com.xilu.wybz.ui.find.FindActivity;
 import com.xilu.wybz.ui.login.LoginActivity;
 import com.xilu.wybz.ui.lyrics.MakeWordActivity;
 import com.xilu.wybz.ui.main.MainActivity;
 import com.xilu.wybz.ui.mine.MineActivity;
+import com.xilu.wybz.ui.mine.NewMineActivity;
 import com.xilu.wybz.ui.msg.MsgActivity;
 import com.xilu.wybz.ui.record.InspireRecordActivity;
+import com.xilu.wybz.ui.song.MakeHotActivity;
 import com.xilu.wybz.ui.song.NewMakeHotActivity;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.utils.VersionUtil;
 import com.xilu.wybz.view.IndexViewPager;
 import com.xilu.wybz.view.MoreWindow;
-import com.xilu.wybz.view.SystemBarHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.Bind;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
+
 /**
  * Created by June on 16/4/28.
  */
@@ -108,6 +112,14 @@ public class MainTabActivity extends BaseActivity {
         viewpager.setOnPageChangeListener(new MyOnPageChangeListener());
     }
 
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        Log.d("d","onNewIntent");
+    }
+
     private View getView(String id, Intent intent) {
         return manager.startActivity(id, intent).getDecorView();
     }
@@ -143,8 +155,10 @@ public class MainTabActivity extends BaseActivity {
                 if(SystemUtils.isLogin(context)){
                     if (null == mMoreWindow) {
                         mMoreWindow = new MoreWindow(this);
+                        RelativeLayout v = (RelativeLayout)findViewById(R.id.window);
+                        mMoreWindow.init(this,v,view, onClickListener);
                     }
-                    mMoreWindow.showMoreWindow(MainTabActivity.this, view, onClickListener);
+                    mMoreWindow.showto();
                 }
                 return;
             case R.id.rl_main_msg:
