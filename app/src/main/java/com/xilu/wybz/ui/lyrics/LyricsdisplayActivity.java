@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,35 +14,30 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.google.gson.Gson;
 import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.utils.Log;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.ActionBean;
 import com.xilu.wybz.bean.ShareBean;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.Event;
-import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.presenter.LyricsPresenter;
 import com.xilu.wybz.ui.IView.ILyricsView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.ui.mine.UserInfoActivity;
 import com.xilu.wybz.ui.setting.SettingFeedActivity;
 import com.xilu.wybz.ui.song.CommentActivity;
-import com.xilu.wybz.utils.DateFormatUtils;
 import com.xilu.wybz.utils.DateTimeUtil;
 import com.xilu.wybz.utils.NetWorkUtil;
 import com.xilu.wybz.utils.NumberUtil;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringStyleUtil;
 import com.xilu.wybz.utils.SystemUtils;
-import com.xilu.wybz.view.CircleImageView;
 import com.xilu.wybz.view.dialog.ActionMoreDialog;
 import com.xilu.wybz.view.dialog.ShareDialog;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -101,11 +95,19 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d("post","onCreate:"+System.currentTimeMillis());
         EventBus.getDefault().register(this);
         lyricsPresenter = new LyricsPresenter(this, this);
         lyricsPresenter.init();
         initData();
     }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        Log.d("post","onPostCreate:"+System.currentTimeMillis());
+    }
+
 
     public void initView() {
         title = getResources().getString(R.string.app_name);

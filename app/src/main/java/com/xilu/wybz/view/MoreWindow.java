@@ -10,52 +10,75 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.Animation.AnimationListener;
-import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
-import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xilu.wybz.R;
-import com.xilu.wybz.ui.MainTabActivity;
 import com.xilu.wybz.utils.FastBlur;
 import com.xilu.wybz.utils.KickBackAnimator;
 
 public class MoreWindow extends PopupWindow {
 
-    private String TAG = MoreWindow.class.getSimpleName();
-    Activity mContext;
+    public static String TAG = MoreWindow.class.getSimpleName();
+
+    private Activity mContext;
+    private Handler mHandler = new Handler();
     private Bitmap mBitmap = null;
     private Bitmap overlay = null;
-    private Handler mHandler = new Handler();
+
+    ImageView layer;
+    ImageView close;
 
     private ViewGroup parent;
+    private RelativeLayout layout;
 
-    public MoreWindow(Activity context) {
-        mContext = context;
+
+    private boolean isShow = false;
+
+    /**
+     * MoreWindow.
+     */
+    public MoreWindow(){
+
     }
-    RelativeLayout layout;
-    public void init(Activity activity, ViewGroup parent, View anchor, OnClickListener onClickListener) {
+
+    /**
+     * MoreWindow.
+     * @param context
+     * @param parent
+     * @param onClickListener
+     */
+    public MoreWindow(Activity context, ViewGroup parent, OnClickListener onClickListener) {
+
+        init(context,parent,onClickListener);
+    }
+
+    /**
+     * init.
+     * @param context
+     * @param parent
+     * @param onClickListener
+     */
+    public void init( Activity context, ViewGroup parent, OnClickListener onClickListener) {
+
+        this.mContext = context;
         this.parent = parent;
 
 
-        layout = (RelativeLayout) LayoutInflater.from(mContext).inflate(R.layout.popup_publish, null);
+//        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
+//        layout = (RelativeLayout) LayoutInflater.from(mContext).inflate(R.layout.popup_publish, null);
+//        parent.addView(layout,params);
 
-        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
+        layout = (RelativeLayout)parent.findViewById(R.id.windows_root);
 
-        parent.addView(layout,params);
-
-
-        ImageView close = (ImageView) layout.findViewById(R.id.buttonFloat);
+        close = (ImageView) layout.findViewById(R.id.buttonFloat);
+        layer = (ImageView) layout.findViewById(R.id.over_layer);
 
         TextView tv_zuoci = (TextView) layout.findViewById(R.id.tv_zuoci);
         TextView tv_zuoqu = (TextView) layout.findViewById(R.id.tv_zuoqu);
@@ -68,29 +91,26 @@ public class MoreWindow extends PopupWindow {
         close.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                closeAnimation(layout);
+                closeAnimation();
             }
         });
         layout.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                closeAnimation(layout);
+                closeAnimation();
             }
         });
     }
 
     private Bitmap blur() {
-//        if (null != overlay) {
-//            return overlay;
-//        }
+
         View view = mContext.getWindow().getDecorView();
         view.setDrawingCacheEnabled(true);
         view.destroyDrawingCache();
         view.buildDrawingCache(true);
+
         mBitmap = view.getDrawingCache();
 
-
-//        mBitmap = Bitmap.createBitmap(mBitmap,0,50,mBitmap.getWidth(),mBitmap.getHeight()-50);
 
 
         float scaleFactor = 8;
@@ -105,107 +125,87 @@ public class MoreWindow extends PopupWindow {
         paint.setFlags(Paint.FILTER_BITMAP_FLAG);
         canvas.drawBitmap(mBitmap, 0, 0, paint);
 
-        overlay = FastBlur.doBlur(overlay, (int) radius, true);
+        mBitmap.recycle();
 
-//
-//        Bitmap bitmap = Bitmap.createBitmap((int) (width ), (int) (height), Bitmap.Config.ARGB_8888);
-//        canvas = new Canvas(bitmap);
-//        canvas.scale(scaleFactor,scaleFactor);
-//        paint = new Paint();
-//        paint.setFlags(Paint.FILTER_BITMAP_FLAG);
-//        canvas.drawBitmap(overlay, 0, 0, paint);
-//
-//        bitmap = FastBlur.doGradual(bitmap, (int) (20));
+        overlay = FastBlur.doBlur(overlay, (int) radius, true);
 
         return overlay;
     }
 
-    private Animation showAnimation1(final View view, int fromY, int toY) {
-        AnimationSet set = new AnimationSet(true);
-        TranslateAnimation go = new TranslateAnimation(0, 0, fromY, toY);
-        go.setDuration(300);
-        TranslateAnimation go1 = new TranslateAnimation(0, 0, -10, 2);
-        go1.setDuration(100);
-        go1.setStartOffset(250);
-        set.addAnimation(go1);
-        set.addAnimation(go);
-
-        set.setAnimationListener(new AnimationListener() {
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-        });
-        return set;
-    }
-    public void showMoreWindow(Activity activity, View anchor, OnClickListener onClickListener) {
-//        mActivity.setStatusColor(0x90000000);
-        final RelativeLayout layout = (RelativeLayout) LayoutInflater.from(mContext).inflate(R.layout.popup_publish, null);
-        setContentView(layout);
-        //设置SelectPicPopupWindow弹出窗体的宽
-        setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
-        //设置SelectPicPopupWindow弹出窗体的高
-        setHeight(ViewGroup.LayoutParams.MATCH_PARENT);
-        //实例化一个ColorDrawable颜色为半透明
-        setBackgroundDrawable(new BitmapDrawable());
-        ImageView close = (ImageView) layout.findViewById(R.id.buttonFloat);
-        TextView tv_zuoci = (TextView) layout.findViewById(R.id.tv_zuoci);
-        TextView tv_zuoqu = (TextView) layout.findViewById(R.id.tv_zuoqu);
-        TextView tv_record = (TextView) layout.findViewById(R.id.tv_record);
-        tv_zuoci.setOnClickListener(onClickListener);
-        tv_zuoqu.setOnClickListener(onClickListener);
-        tv_record.setOnClickListener(onClickListener);
-        close.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isShowing()) {
-                    closeAnimation(layout);
-                }
-            }
-        });
-        layout.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isShowing()) {
-                    closeAnimation(layout);
-                }
-            }
-        });
-        showAnimation(layout);
-        setBackgroundDrawable(new BitmapDrawable(mContext.getResources(), blur()));
-        setOutsideTouchable(true);
-        setFocusable(true);
-        showAtLocation(anchor, Gravity.TOP, 0, 0);
-    }
+//
+//    public void showMoreWindow(Activity activity, View anchor, OnClickListener onClickListener) {
+//
+//        final RelativeLayout layout = (RelativeLayout) LayoutInflater.from(mContext).inflate(R.layout.popup_publish, null);
+//        setContentView(layout);
+//        //设置SelectPicPopupWindow弹出窗体的宽
+//        setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+//        //设置SelectPicPopupWindow弹出窗体的高
+//        setHeight(ViewGroup.LayoutParams.MATCH_PARENT);
+//        //实例化一个ColorDrawable颜色为半透明
+//        setBackgroundDrawable(new BitmapDrawable());
+//        ImageView close = (ImageView) layout.findViewById(R.id.buttonFloat);
+//        TextView tv_zuoci = (TextView) layout.findViewById(R.id.tv_zuoci);
+//        TextView tv_zuoqu = (TextView) layout.findViewById(R.id.tv_zuoqu);
+//        TextView tv_record = (TextView) layout.findViewById(R.id.tv_record);
+//        tv_zuoci.setOnClickListener(onClickListener);
+//        tv_zuoqu.setOnClickListener(onClickListener);
+//        tv_record.setOnClickListener(onClickListener);
+//        close.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (isShowing()) {
+//                    closeAnimation();
+//                }
+//            }
+//        });
+//        layout.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (isShowing()) {
+//                    closeAnimation();
+//                }
+//            }
+//        });
+//        showAnimation();
+//        setBackgroundDrawable(new BitmapDrawable(mContext.getResources(), blur()));
+//        setOutsideTouchable(true);
+//        setFocusable(true);
+//        showAtLocation(anchor, Gravity.BOTTOM, 0, 0);
+//    }
 
 
     public void showto(){
 
-        parent.setBackgroundDrawable(new BitmapDrawable(mContext.getResources(), blur()));
+//        layer.setImageDrawable(new BitmapDrawable(mContext.getResources(), blur()));
+        layer.setBackground(new BitmapDrawable(mContext.getResources(), blur()));
         setFocusable(true);
         parent.setVisibility(View.VISIBLE);
-        showAnimation(layout);
+        showAnimation();
+    }
+
+
+
+    public void showByAnimation(){
+
+    }
+    public void closeByAnimation(){
 
     }
 
-    private void showAnimation(ViewGroup layout) {
-        layout.startAnimation(AnimationUtils.loadAnimation(mContext, R.anim.fade_in));
+
+    private void showAnimation() {
+
+        layer.startAnimation(AnimationUtils.loadAnimation(mContext, R.anim.fade_in));
+
         for (int i = 0; i < layout.getChildCount(); i++) {
             final View child = layout.getChildAt(i);
             if (child.getId() == R.id.rl_bottom) {
                 continue;
             }
+            if (child.getId() == R.id.over_layer) {
+                continue;
+            }
+
             child.setVisibility(View.INVISIBLE);
             mHandler.postDelayed(new Runnable() {
                 @Override
@@ -224,13 +224,20 @@ public class MoreWindow extends PopupWindow {
 
 
 
-    private void closeAnimation(final ViewGroup layout) {
+    private void closeAnimation() {
+
+        layer.startAnimation(AnimationUtils.loadAnimation(mContext, R.anim.fade_out));
 
         for (int i = 0; i < layout.getChildCount(); i++) {
             final View child = layout.getChildAt(i);
             if (child.getId() == R.id.rl_bottom) {
                 continue;
             }
+            if (child.getId() == R.id.over_layer) {
+                continue;
+            }
+
+
             mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -253,7 +260,6 @@ public class MoreWindow extends PopupWindow {
                         @Override
                         public void onAnimationEnd(Animator animation) {
                             child.setVisibility(View.INVISIBLE);
-                            parent.setVisibility(View.INVISIBLE);
                         }
 
                         @Override
@@ -262,15 +268,18 @@ public class MoreWindow extends PopupWindow {
                         }
                     });
                 }
-            }, (layout.getChildCount() - i - 1) * 50);
+            }, (layout.getChildCount() - i - 2) * 50);
         }
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                dismiss();
+                parent.setVisibility(View.GONE);
             }
-        }, 200);
+        }, 300);
     }
+
+
+
 
     public void destroy() {
         if (null != overlay) {

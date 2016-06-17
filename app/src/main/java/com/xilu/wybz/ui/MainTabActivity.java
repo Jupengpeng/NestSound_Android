@@ -148,9 +148,9 @@ public class MainTabActivity extends BaseActivity {
             case R.id.rl_main_publish:
                 if(SystemUtils.isLogin(context)){
                     if (null == mMoreWindow) {
-                        mMoreWindow = new MoreWindow(this);
-                        RelativeLayout v = (RelativeLayout)findViewById(R.id.window);
-                        mMoreWindow.init(this,v,view, onClickListener);
+                        mMoreWindow = new MoreWindow();
+                        RelativeLayout parent = (RelativeLayout)findViewById(R.id.window);
+                        mMoreWindow.init(this,parent, onClickListener);
                     }
                     mMoreWindow.showto();
                 }
