@@ -2,6 +2,7 @@ package com.xilu.wybz.ui.fragment;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -48,6 +49,8 @@ public class RankingFragment extends BaseFragment implements IRankingView {
     TextView tvLyricsRanking;
     @Bind(R.id.recycler_view_lyrics)
     RecyclerView recyclerViewLyrics;
+    @Bind(R.id.swipeRefreshLayout)
+    SwipeRefreshLayout swipeRefreshLayout;
     private boolean isFirst;
     private int count;
     private long time;
@@ -66,6 +69,14 @@ public class RankingFragment extends BaseFragment implements IRankingView {
         if (isFirst) return;
         else isFirst = true;
         rankingPresenter.init();
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                count = 0;
+                rankingPresenter.loadRankingData(1);
+                rankingPresenter.loadRankingData(2);
+            }
+        });
     }
 
     @Override
@@ -122,12 +133,16 @@ public class RankingFragment extends BaseFragment implements IRankingView {
 
     @Override
     public void showRankingSong(List<WorksData> songWorksDatas) {
+        if(songDatas==null)songDatas = new ArrayList<>();
+        if(songDatas.size()>0)songDatas.clear();
         songDatas.addAll(songWorksDatas);
         rankingSongAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void showRankingLyrics(List<WorksData> lyricsWorksDatas) {
+        if(lyricsDatas==null)lyricsDatas = new ArrayList<>();
+        if(lyricsDatas.size()>0)lyricsDatas.clear();
         lyricsDatas.addAll(lyricsWorksDatas);
         rankingLyricsAdapter.notifyDataSetChanged();
     }
@@ -142,11 +157,12 @@ public class RankingFragment extends BaseFragment implements IRankingView {
         if (type == 1) tvSongRanking.setVisibility(View.GONE);
         if (type == 2) tvLyricsRanking.setVisibility(View.GONE);
     }
-
     @Override
     public void loadFinish() {
         count++;
         if (count == 2) {
+            if(swipeRefreshLayout!=null)
+                swipeRefreshLayout.setRefreshing(false);
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {

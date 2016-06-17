@@ -51,6 +51,7 @@ import com.xilu.wybz.ui.setting.SettingFeedActivity;
 import com.xilu.wybz.utils.BitmapUtils;
 import com.xilu.wybz.utils.FormatHelper;
 import com.xilu.wybz.utils.MD5Util;
+import com.xilu.wybz.utils.NumberUtil;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.utils.ToastUtils;
@@ -72,6 +73,8 @@ import de.greenrobot.event.EventBus;
  * Created by June on 16/5/4.
  */
 public class PlayAudioActivity extends ToolbarActivity implements AdapterView.OnItemClickListener, IPlayView {
+    @Bind(R.id.iv_reply)
+    ImageView ivReply;
     @Bind(R.id.blurImageView)
     ImageView blurImageView;
     @Bind(R.id.toolbar)
@@ -304,8 +307,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
                 String[] lyricss = lyrics.split("\\n");
                 lyricsList = Arrays.asList(lyricss);
             }
-            if (worksData.commentnum > 0)
-                tvCommentNum.setText(worksData.commentnum + "");
+            updateCommentNum();
             playLyricsAdapter = new PlayLyricsAdapter(context, lyricsList);
             tvHotName.setText(worksData.getHotTitle());
             tvDetail.setText(worksData.getDetail());
@@ -546,10 +548,21 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     //更新评论数量
     public void onEventMainThread(Event.UpdataCommentNumEvent event) {
         if (event.getType() == 1) {
-            tvCommentNum.setText(worksData.getCommentnum() + event.getNum() + "");
+            worksData.commentnum = worksData.getCommentnum() + event.getNum();
+            updateCommentNum();
         }
-    }
 
+    }
+    public void updateCommentNum(){
+        if (worksData.commentnum > 0) {
+            tvCommentNum.setText(NumberUtil.format(worksData.commentnum));
+            ivReply.setImageResource(R.drawable.ic_play_comment);
+        }else{
+            tvCommentNum.setText("");
+            ivReply.setImageResource(R.drawable.ic_music_reply_full);
+        }
+        PrefsUtil.saveMusicData(context,worksData);
+    }
     //更新缓存进度
     public void onEventMainThread(Event.UpdataSecondProgressEvent event) {
         if(event.getPercent()>0){

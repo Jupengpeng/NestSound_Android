@@ -18,6 +18,7 @@ import com.xilu.wybz.presenter.RegisterPresenter;
 import com.xilu.wybz.ui.IView.IRegisterView;
 import com.xilu.wybz.ui.base.BaseActivity;
 import com.xilu.wybz.ui.BrowserActivity;
+import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.utils.MD5Util;
 import com.xilu.wybz.utils.MyCountTimer;
 import com.xilu.wybz.utils.ParseUtils;
@@ -34,7 +35,7 @@ import de.greenrobot.event.EventBus;
 /**
  * Created by June on 2016/5/4.
  */
-public class RegisterActivity extends BaseActivity implements IRegisterView,TextWatcher {
+public class RegisterActivity extends ToolbarActivity implements IRegisterView,TextWatcher {
     RegisterPresenter registerPresenter;
     @Bind(R.id.mreg_user)
     EditText mregUser;
@@ -128,12 +129,9 @@ public class RegisterActivity extends BaseActivity implements IRegisterView,Text
         mregYpass.addTextChangedListener(this);
     }
 
-    @OnClick({R.id.mreg_phonebut, R.id.mreg_pass, R.id.tv_agreement, R.id.mreg_reg, R.id.mreg_login, R.id.iv_back})
+    @OnClick({R.id.mreg_phonebut, R.id.mreg_pass, R.id.tv_agreement, R.id.mreg_reg, R.id.mreg_login})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.iv_back:
-                finish();
-                break;
             case R.id.mreg_phonebut:
                 getSmsCode();
                 break;

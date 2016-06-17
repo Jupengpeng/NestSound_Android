@@ -1,12 +1,10 @@
 package com.xilu.wybz.ui.mine;
 
 import android.graphics.Color;
-import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -25,7 +23,6 @@ import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.NumberUtil;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtil;
-import com.xilu.wybz.view.IndexViewPager;
 import com.xilu.wybz.view.StickyNavLayout;
 import com.xilu.wybz.view.SystemBarHelper;
 
@@ -171,7 +168,7 @@ public class MineActivity extends ToolbarActivity {
     }
 
     public void setLocalUserInfo(UserBean userBean) {
-        if(StringUtil.isNotBlank(userBean.headurl)&&!userBean.headurl.equals("http://pic.yinchao.cn/uploadfiles/2015/09/14/201509141121211442200881.png")) {
+        if(StringUtil.isNotBlank(userBean.headurl)&&!userBean.headurl.equals(MyCommon.defult_head)) {
             int headWidth = DensityUtil.dip2px(context,92);
             loadImage(MyCommon.getImageUrl(userBean.headurl,headWidth,headWidth), ivHead);
         }

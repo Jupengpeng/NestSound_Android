@@ -18,6 +18,7 @@ import com.xilu.wybz.common.Event;
 import com.xilu.wybz.presenter.LoginPresenter;
 import com.xilu.wybz.ui.IView.ILoginView;
 import com.xilu.wybz.ui.base.BaseActivity;
+import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.utils.MD5Util;
 import com.xilu.wybz.utils.ParseUtils;
 import com.xilu.wybz.utils.PrefsUtil;
@@ -32,7 +33,7 @@ import de.greenrobot.event.EventBus;
 /**
  * Created by June on 2016/5/4.
  */
-public class LoginActivity extends BaseActivity implements ILoginView,TextWatcher {
+public class LoginActivity extends ToolbarActivity implements ILoginView,TextWatcher {
     @Bind(R.id.mlogin_user)
     EditText mloginUser;
     @Bind(R.id.mlogin_pass)
@@ -43,6 +44,11 @@ public class LoginActivity extends BaseActivity implements ILoginView,TextWatche
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_login;
+    }
+
+    @Override
+    public boolean canBack() {
+        return true;
     }
 
     @Override
@@ -60,7 +66,7 @@ public class LoginActivity extends BaseActivity implements ILoginView,TextWatche
         mloginUser.setText("");
     }
 
-    @OnClick({R.id.iv_back, R.id.mlogin_login, R.id.mlogin_forget, R.id.mlogin_reg})
+    @OnClick({R.id.mlogin_login, R.id.mlogin_forget, R.id.mlogin_reg})
     public void onClick(View v) {
 
         switch (v.getId()) {
@@ -72,9 +78,6 @@ public class LoginActivity extends BaseActivity implements ILoginView,TextWatche
                 break;
             case R.id.mlogin_login:
                 toLoin();
-                break;
-            case R.id.iv_back:
-                finish();
                 break;
         }
     }

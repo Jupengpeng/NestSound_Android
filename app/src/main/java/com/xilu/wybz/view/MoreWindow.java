@@ -23,7 +23,7 @@ import com.xilu.wybz.R;
 import com.xilu.wybz.utils.FastBlur;
 import com.xilu.wybz.utils.KickBackAnimator;
 
-public class MoreWindow extends PopupWindow {
+public class MoreWindow{
 
     public static String TAG = MoreWindow.class.getSimpleName();
 
@@ -39,7 +39,7 @@ public class MoreWindow extends PopupWindow {
     private RelativeLayout layout;
 
 
-    private boolean isShow = false;
+    public boolean isShow;
 
     ObjectAnimator toCloseAnim;
     ObjectAnimator toAddAnim;
@@ -181,11 +181,12 @@ public class MoreWindow extends PopupWindow {
 
 //        layer.setImageDrawable(new BitmapDrawable(mContext.getResources(), blur()));
         layer.setBackground(new BitmapDrawable(mContext.getResources(), blur()));
-        setFocusable(true);
         parent.setVisibility(View.VISIBLE);
         showAnimation();
     }
-
+    public void closeByAnimation(){
+        closeAnimation();
+    }
 
     public void onCreateActionAnim() {
         toCloseAnim = ObjectAnimator.ofFloat(close, "rotation", 0, 45);
@@ -207,7 +208,7 @@ public class MoreWindow extends PopupWindow {
 
 
     private void showAnimation() {
-
+        isShow = true;
         layer.startAnimation(AnimationUtils.loadAnimation(mContext, R.anim.fade_in));
 
         moveToClose();
@@ -239,8 +240,8 @@ public class MoreWindow extends PopupWindow {
 
 
 
-    private void closeAnimation() {
-
+    public void closeAnimation() {
+        isShow = false;
         layer.startAnimation(AnimationUtils.loadAnimation(mContext, R.anim.fade_out));
 
         moveToAdd();
@@ -302,12 +303,10 @@ public class MoreWindow extends PopupWindow {
         if (null != overlay) {
             overlay.recycle();
             overlay = null;
-            System.gc();
         }
         if (null != mBitmap) {
             mBitmap.recycle();
             mBitmap = null;
-            System.gc();
         }
     }
 }

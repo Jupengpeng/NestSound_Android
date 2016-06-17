@@ -1,6 +1,7 @@
 package com.xilu.wybz.ui.fragment;
 
 import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -19,6 +20,7 @@ import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.view.GridSpacingItemDecoration;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -34,9 +36,13 @@ public class SongFragment extends BaseFragment implements ISongView {
     RecyclerView recyclerViewNew;
     @Bind(R.id.ll_loading)
     LinearLayout ll_loading;
+    @Bind(R.id.swipeRefreshLayout)
+    SwipeRefreshLayout swipeRefreshLayout;
     private WorksAdapter newWorksAdapter;
     private WorksAdapter hotWorksAdapter;
     private SongPresenter songPresenter;
+    private List<WorksData> newSongDatas;
+    private List<WorksData> hotSongDatas;
     private int column = 3;
     private boolean isFirst;
     private long time;
@@ -53,36 +59,58 @@ public class SongFragment extends BaseFragment implements ISongView {
     public void loadData(){
         if (isFirst) return;
         else isFirst = true;
-        songPresenter.init();
-    }
-    @Override
-    public void showNewSong(List<WorksData> newWorksDatas) {
-        for(WorksData worksData:newWorksDatas){
-            worksData.status = 1;
-        }
-        newWorksAdapter = new WorksAdapter(context, newWorksDatas, column, MyCommon.NEWS);
+        newSongDatas = new ArrayList<>();
+        hotSongDatas = new ArrayList<>();
+        newWorksAdapter = new WorksAdapter(context, newSongDatas, column, MyCommon.NEWS);
         recyclerViewNew.setAdapter(newWorksAdapter);
+        hotWorksAdapter = new WorksAdapter(context, hotSongDatas, column, MyCommon.RED);
+        recyclerViewHot.setAdapter(hotWorksAdapter);
         newWorksAdapter.setOnItemClickListener(new WorksAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                toPlayPos(newWorksDatas,position,MyCommon.NEWS);
+                toPlayPos(newSongDatas,position,MyCommon.NEWS);
             }
         });
+        hotWorksAdapter.setOnItemClickListener(new WorksAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                toPlayPos(hotSongDatas,position,MyCommon.RED);
+            }
+        });
+        songPresenter.init();
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                songPresenter.getWorkList(2);
+            }
+        });
+    }
+    @Override
+    public void showNewSong(List<WorksData> newWorksDatas) {
+        if(newSongDatas==null){
+            newSongDatas = new ArrayList<>();
+        }else{
+            if(newWorksDatas.size()>0)newSongDatas.clear();
+        }
+        for(WorksData worksData:newWorksDatas){
+            worksData.status = 1;
+            newSongDatas.add(worksData);
+        }
+        newWorksAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void showHotSong(List<WorksData> hotWorksDatas) {
+        if(hotSongDatas==null){
+            hotSongDatas = new ArrayList<>();
+        }else{
+            if(hotSongDatas.size()>0)hotSongDatas.clear();
+        }
         for(WorksData worksData:hotWorksDatas){
             worksData.status = 1;
+            hotSongDatas.add(worksData);
         }
-        hotWorksAdapter = new WorksAdapter(context, hotWorksDatas, column, MyCommon.RED);
-        recyclerViewHot.setAdapter(hotWorksAdapter);
-        hotWorksAdapter.setOnItemClickListener(new WorksAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                toPlayPos(hotWorksDatas,position,MyCommon.RED);
-            }
-        });
+        hotWorksAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -91,6 +119,8 @@ public class SongFragment extends BaseFragment implements ISongView {
 
     @Override
     public void loadingFinish() {
+        if(swipeRefreshLayout!=null)
+            swipeRefreshLayout.setRefreshing(false);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -111,6 +141,7 @@ public class SongFragment extends BaseFragment implements ISongView {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                time = System.currentTimeMillis();
                 songPresenter.getWorkList(1);
             }
         },200);

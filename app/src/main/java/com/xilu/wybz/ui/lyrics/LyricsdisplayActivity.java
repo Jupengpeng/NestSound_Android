@@ -21,6 +21,7 @@ import com.xilu.wybz.bean.ActionBean;
 import com.xilu.wybz.bean.ShareBean;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.Event;
+import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.LyricsPresenter;
 import com.xilu.wybz.ui.IView.ILyricsView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
@@ -201,7 +202,7 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
             ivComment.setImageResource(R.drawable.ic_lyrics_reply);
         }else{
             tvCommentNum.setText("");
-            ivComment.setImageResource(R.drawable.ic_lyrics_reply);
+            ivComment.setImageResource(R.drawable.ic_lyrics_reply_full);
         }
     }
     @Override
@@ -230,7 +231,7 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
         loadTitleContent();
         tvAuthor.setText(worksData.getAuthor());
         tvTime.setText(DateTimeUtil.timestamp2DateTime(worksData.getCreateTime()));
-        loadImage(worksData.headurl, ivHead);
+        loadImage(worksData.headurl.replace(MyCommon.defult_head,""), ivHead);
     }
 
     @Override

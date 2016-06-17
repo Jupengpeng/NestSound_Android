@@ -103,6 +103,8 @@ public class MainTabActivity extends BaseActivity {
         viewpager.setAdapter(adapter);
         viewpager.setCurrentItem(0);
         viewpager.setOffscreenPageLimit(4);
+        if(manager.getActivity("MAIN")!=null)
+        ((MainActivity) manager.getActivity("MAIN")).onResume();
         viewpager.setOnPageChangeListener(new MyOnPageChangeListener());
     }
 
@@ -175,23 +177,22 @@ public class MainTabActivity extends BaseActivity {
             viewpager.setCurrentItem(currentIndex, false);
             oldIndex = currentIndex;
         }
-//        SystemBarHelper.tintStatusBar(this, Color.argb(currentIndex==3?0:0,0xFF,0xD7,0x05));
     }
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             switch (v.getId()){
                 case R.id.tv_zuoci:
-                    mMoreWindow.dismiss();
                     MakeWordActivity.toMakeWordActivity(context,PrefsUtil.getLocalLyrics(context));
+                    mMoreWindow.closeByAnimation();
                     break;
                 case R.id.tv_record:
                     startActivity(InspireRecordActivity.class);
-                    mMoreWindow.dismiss();
+                    mMoreWindow.closeByAnimation();
                     break;
                 case R.id.tv_zuoqu:
                     startActivity(NewMakeHotActivity.class);
-                    mMoreWindow.dismiss();
+                    mMoreWindow.closeByAnimation();
                     break;
             }
         }
@@ -213,9 +214,13 @@ public class MainTabActivity extends BaseActivity {
             ((MineActivity) manager.getActivity("MINE")).clearData();
         }catch (Exception e){}
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if(mMoreWindow!=null){
+            mMoreWindow.destroy();
+        }
         EventBus.getDefault().unregister(this);
     }
 
@@ -223,9 +228,14 @@ public class MainTabActivity extends BaseActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if(keyCode == KeyEvent.KEYCODE_BACK){
             if ((System.currentTimeMillis() - exitTime) > 2000) {
-                showMsg("再按一次退出应用");
-                exitTime = System.currentTimeMillis();
-                return false;
+                if(mMoreWindow!=null&&mMoreWindow.isShow){
+                    mMoreWindow.closeByAnimation();
+                    return false;
+                }else {
+                    showMsg("再按一次退出应用");
+                    exitTime = System.currentTimeMillis();
+                    return false;
+                }
             }
             finish();
         }

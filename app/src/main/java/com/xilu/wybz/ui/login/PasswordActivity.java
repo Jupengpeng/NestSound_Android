@@ -16,6 +16,7 @@ import com.xilu.wybz.common.Event;
 import com.xilu.wybz.presenter.PasswordPresenter;
 import com.xilu.wybz.ui.IView.IPasswordView;
 import com.xilu.wybz.ui.base.BaseActivity;
+import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.utils.MD5Util;
 import com.xilu.wybz.utils.MyCountTimer;
 import com.xilu.wybz.utils.ParseUtils;
@@ -32,7 +33,7 @@ import de.greenrobot.event.EventBus;
 /**
  * Created by June on 2016/5/4.
  */
-public class PasswordActivity extends BaseActivity implements IPasswordView, TextWatcher {
+public class PasswordActivity extends ToolbarActivity implements IPasswordView, TextWatcher {
     PasswordPresenter passwordPresenter;
     @Bind(R.id.mpass_phone)
     EditText mpassPhone;
@@ -126,12 +127,9 @@ public class PasswordActivity extends BaseActivity implements IPasswordView, Tex
     }
 
 
-    @OnClick({R.id.iv_back, R.id.mpass_phonebut, R.id.mpass_login})
+    @OnClick({R.id.mpass_phonebut, R.id.mpass_login})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.iv_back:
-                finish();
-                break;
             case R.id.mpass_phonebut:
                 break;
             case R.id.mpass_login:

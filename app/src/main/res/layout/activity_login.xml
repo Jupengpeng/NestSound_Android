@@ -5,12 +5,7 @@
     android:background="@drawable/bg_login"
     android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/iv_back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/yc_15"
-        android:src="@drawable/ic_login_cancle" />
+    <include layout="@layout/view_login_toolbar" />
 
     <ScrollView
         android:id="@+id/scrollView"

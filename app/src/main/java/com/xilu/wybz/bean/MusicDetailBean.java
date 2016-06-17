@@ -2,6 +2,7 @@ package com.xilu.wybz.bean;
 
 import android.text.TextUtils;
 
+import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.common.YinChaoConfig;
 import com.xilu.wybz.utils.StringStyleUtil;
 
@@ -172,7 +173,7 @@ public class MusicDetailBean implements Serializable {
 
     public String getHeadurl() {
         if (!TextUtils.isEmpty(headurl)) {
-            headurl = headurl.replace(YinChaoConfig.DEFAULT_HEAD_URL, "");
+            headurl = headurl.replace(MyCommon.defult_head, "");
         }
         return headurl;
     }

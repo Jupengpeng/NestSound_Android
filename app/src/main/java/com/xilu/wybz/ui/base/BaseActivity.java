@@ -91,7 +91,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 SystemBarHelper.immersiveStatusBar(this);
                 SystemBarHelper.tintStatusBar(this, Color.argb(0, 0xFF, 0xD7, 0x05));
             } else if (this instanceof LoginActivity || this instanceof RegisterActivity || this instanceof PasswordActivity) {
-                SystemBarHelper.tintStatusBar(this, Color.parseColor("#3a3937"));
+                SystemBarHelper.immersiveStatusBar(this);
             }
         }
     }

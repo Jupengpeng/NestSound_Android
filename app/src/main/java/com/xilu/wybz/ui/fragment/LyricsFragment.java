@@ -1,6 +1,7 @@
 package com.xilu.wybz.ui.fragment;
 
 import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -19,6 +20,7 @@ import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.view.GridSpacingItemDecoration;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -38,9 +40,13 @@ public class LyricsFragment extends BaseFragment implements ISongView {
     TextView tvNewsong;
     @Bind(R.id.ll_loading)
     LinearLayout ll_loading;
+    @Bind(R.id.swipeRefreshLayout)
+    SwipeRefreshLayout swipeRefreshLayout;
     private WorksAdapter newWorksAdapter;
     private WorksAdapter hotWorksAdapter;
     private SongPresenter songPresenter;
+    private List<WorksData> newLyricsDatas;
+    private List<WorksData> hotLyricsDatas;
     private int column = 3;
     private boolean isFirst;
     private long time;
@@ -57,46 +63,60 @@ public class LyricsFragment extends BaseFragment implements ISongView {
     public void loadData(){
         if (isFirst) return;
         else isFirst = true;
-        songPresenter.init();
-    }
-    @Override
-    public void showNewSong(List<WorksData> newWorksDatas) {
-        for (WorksData worksData : newWorksDatas) {
-            worksData.status = 2;
-        }
-        if (newWorksDatas.size() > 0) {
-            newWorksAdapter = new WorksAdapter(context, newWorksDatas, column, "");
-            recyclerViewNew.setAdapter(newWorksAdapter);
-        } else {
-            tvNewsong.setVisibility(View.GONE);
-        }
+        newLyricsDatas = new ArrayList<>();
+        hotLyricsDatas = new ArrayList<>();
+        newWorksAdapter = new WorksAdapter(context, newLyricsDatas, column, MyCommon.NEWS);
+        recyclerViewNew.setAdapter(newWorksAdapter);
+        hotWorksAdapter = new WorksAdapter(context, hotLyricsDatas, column, MyCommon.RED);
+        recyclerViewHot.setAdapter(hotWorksAdapter);
         newWorksAdapter.setOnItemClickListener(new WorksAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                String title = StringUtil.isBlank(newWorksDatas.get(position).name)?newWorksDatas.get(position).title:newWorksDatas.get(position).name;
-                LyricsdisplayActivity.toLyricsdisplayActivity(context,newWorksDatas.get(position).itemid, 0, title);
+                String title = StringUtil.isBlank(newLyricsDatas.get(position).name)?newLyricsDatas.get(position).title:newLyricsDatas.get(position).name;
+                LyricsdisplayActivity.toLyricsdisplayActivity(context,newLyricsDatas.get(position).itemid, 0, title);
             }
         });
+        hotWorksAdapter.setOnItemClickListener(new WorksAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                String title = StringUtil.isBlank(hotLyricsDatas.get(position).name)?hotLyricsDatas.get(position).title:hotLyricsDatas.get(position).name;
+                LyricsdisplayActivity.toLyricsdisplayActivity(context,hotLyricsDatas.get(position).itemid, 0, title);
+            }
+        });
+        songPresenter.init();
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                songPresenter.getWorkList(1);
+            }
+        });
+    }
+    @Override
+    public void showNewSong(List<WorksData> newWorksDatas) {
+        if(newLyricsDatas==null){
+            newLyricsDatas = new ArrayList<>();
+        }else{
+            if(newLyricsDatas.size()>0)newLyricsDatas.clear();
+        }
+        for (WorksData worksData : newWorksDatas) {
+            worksData.status = 2;
+            newLyricsDatas.add(worksData);
+        }
+        newWorksAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void showHotSong(List<WorksData> hotWorksDatas) {
+        if(hotLyricsDatas==null){
+            hotLyricsDatas = new ArrayList<>();
+        }else{
+            if(hotLyricsDatas.size()>0)hotLyricsDatas.clear();
+        }
         for (WorksData worksData : hotWorksDatas) {
             worksData.status = 2;
+            hotLyricsDatas.add(worksData);
         }
-        if (hotWorksDatas.size() > 0) {
-            hotWorksAdapter = new WorksAdapter(context, hotWorksDatas, column,"");
-            recyclerViewHot.setAdapter(hotWorksAdapter);
-        } else {
-            tvHotsong.setVisibility(View.GONE);
-        }
-        hotWorksAdapter.setOnItemClickListener(new WorksAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                String title = StringUtil.isBlank(hotWorksDatas.get(position).name)?hotWorksDatas.get(position).title:hotWorksDatas.get(position).name;
-                LyricsdisplayActivity.toLyricsdisplayActivity(context,hotWorksDatas.get(position).itemid, 0, title);
-            }
-        });
+        hotWorksAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -106,6 +126,8 @@ public class LyricsFragment extends BaseFragment implements ISongView {
 
     @Override
     public void loadingFinish() {
+        if(swipeRefreshLayout!=null)
+            swipeRefreshLayout.setRefreshing(false);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

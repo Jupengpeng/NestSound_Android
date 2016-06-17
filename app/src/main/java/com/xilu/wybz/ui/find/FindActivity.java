@@ -38,6 +38,12 @@ public class FindActivity extends BasePlayMenuActivity implements ViewPager.OnPa
     ViewPager container;
     public boolean isFirst;
     public FindAdapter pagerAdapter;
+
+    @Override
+    public boolean canBack() {
+        return false;
+    }
+
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_home_find;
@@ -49,6 +55,7 @@ public class FindActivity extends BasePlayMenuActivity implements ViewPager.OnPa
     public void initView() {
         if(isFirst)return;
             else isFirst = true;
+        setTitle("");
         pagerAdapter = new FindAdapter(getSupportFragmentManager());
         container.setAdapter(pagerAdapter);
         container.setOffscreenPageLimit(4);

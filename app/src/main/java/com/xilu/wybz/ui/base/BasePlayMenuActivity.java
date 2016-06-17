@@ -91,7 +91,7 @@ public abstract class BasePlayMenuActivity extends ToolbarActivity {
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         if (PlayMediaInstance.getInstance().status == 3) {
             startAnimal();
