@@ -159,7 +159,7 @@ public class MainTabActivity extends BaseActivity {
                         RelativeLayout parent = (RelativeLayout)findViewById(R.id.window);
                         mMoreWindow.init(this,parent, onClickListener);
                     }
-                    mMoreWindow.showto();
+                    mMoreWindow.showByAnimation();
                 }
                 return;
             case R.id.rl_main_msg:

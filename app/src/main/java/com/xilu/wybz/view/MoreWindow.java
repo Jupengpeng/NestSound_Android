@@ -41,6 +41,9 @@ public class MoreWindow extends PopupWindow {
 
     private boolean isShow = false;
 
+    ObjectAnimator toCloseAnim;
+    ObjectAnimator toAddAnim;
+
     /**
      * MoreWindow.
      */
@@ -84,6 +87,8 @@ public class MoreWindow extends PopupWindow {
         TextView tv_zuoqu = (TextView) layout.findViewById(R.id.tv_zuoqu);
         TextView tv_record = (TextView) layout.findViewById(R.id.tv_record);
 
+        onCreateActionAnim();
+
         tv_zuoci.setOnClickListener(onClickListener);
         tv_zuoqu.setOnClickListener(onClickListener);
         tv_record.setOnClickListener(onClickListener);
@@ -110,8 +115,6 @@ public class MoreWindow extends PopupWindow {
         view.buildDrawingCache(true);
 
         mBitmap = view.getDrawingCache();
-
-
 
         float scaleFactor = 8;
         float radius = 30;
@@ -174,7 +177,7 @@ public class MoreWindow extends PopupWindow {
 //    }
 
 
-    public void showto(){
+    public void showByAnimation(){
 
 //        layer.setImageDrawable(new BitmapDrawable(mContext.getResources(), blur()));
         layer.setBackground(new BitmapDrawable(mContext.getResources(), blur()));
@@ -184,18 +187,30 @@ public class MoreWindow extends PopupWindow {
     }
 
 
-
-    public void showByAnimation(){
-
+    public void onCreateActionAnim() {
+        toCloseAnim = ObjectAnimator.ofFloat(close, "rotation", 0, 45);
+        toAddAnim = ObjectAnimator.ofFloat(close, "rotation", 45, 0);
     }
-    public void closeByAnimation(){
-
+    public void moveToClose(){
+        toCloseAnim.setDuration(300);
+        toCloseAnim.setRepeatCount(0);
+        toCloseAnim.setRepeatMode(ObjectAnimator.REVERSE);
+        toCloseAnim.start();
     }
+    public void moveToAdd(){
+        toAddAnim.setDuration(300);
+        toAddAnim.setRepeatCount(0);
+        toAddAnim.setRepeatMode(ObjectAnimator.REVERSE);
+        toAddAnim.start();
+    }
+
 
 
     private void showAnimation() {
 
         layer.startAnimation(AnimationUtils.loadAnimation(mContext, R.anim.fade_in));
+
+        moveToClose();
 
         for (int i = 0; i < layout.getChildCount(); i++) {
             final View child = layout.getChildAt(i);
@@ -227,6 +242,8 @@ public class MoreWindow extends PopupWindow {
     private void closeAnimation() {
 
         layer.startAnimation(AnimationUtils.loadAnimation(mContext, R.anim.fade_out));
+
+        moveToAdd();
 
         for (int i = 0; i < layout.getChildCount(); i++) {
             final View child = layout.getChildAt(i);
