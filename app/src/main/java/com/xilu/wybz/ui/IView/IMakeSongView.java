@@ -8,6 +8,7 @@ import com.xilu.wybz.bean.TruningMusicBean;
 public interface IMakeSongView extends IBaseView {
 
     void setLoadProgress(int progress);
+    void setLoadFailed();
 
     void uploadSuccess(String message);
 

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -18,7 +17,6 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
-import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.view.pull.BaseListAdapter;
 import com.xilu.wybz.view.pull.BaseViewHolder;
@@ -137,6 +135,9 @@ public abstract class BaseListFragment<T> extends BaseFragment implements PullRe
     }
 
     public void addItem(T t) {
+        if (mDataList == null){
+            mDataList = new ArrayList<>();
+        }
         mDataList.add(0, t);
         recycler.setSelection(0);
         adapter.notifyItemInserted(0);

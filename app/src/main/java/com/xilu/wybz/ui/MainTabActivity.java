@@ -30,8 +30,10 @@ import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.utils.VersionUtil;
 import com.xilu.wybz.view.IndexViewPager;
 import com.xilu.wybz.view.MoreWindow;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.Bind;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
@@ -77,6 +79,7 @@ public class MainTabActivity extends BaseActivity {
         checkedTextViewList.add(tvMsg);
         checkedTextViewList.add(tvMine);
         initPagerViewer();
+
     }
     //打开推送
     public void openPush() {
