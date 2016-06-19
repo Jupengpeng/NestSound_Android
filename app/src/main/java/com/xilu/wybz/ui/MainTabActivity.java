@@ -107,10 +107,16 @@ public class MainTabActivity extends BaseActivity {
         viewpager.setCurrentItem(0);
         viewpager.setOffscreenPageLimit(4);
         if(manager.getActivity("MAIN")!=null)
-        ((MainActivity) manager.getActivity("MAIN")).onResume();
         viewpager.setOnPageChangeListener(new MyOnPageChangeListener());
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MainActivity mainActivity = ((MainActivity) manager.getActivity("MAIN"));
+        if(mainActivity!=null)
+            mainActivity.onResume();
+    }
 
     @Override
     protected void onNewIntent(Intent intent) {

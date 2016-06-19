@@ -202,7 +202,6 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
         }
         removeItem(deletePos);
     }
-
     @Override
     public void deleteFail() {
 
@@ -225,17 +224,32 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
         WorksData worksData = mDataList.get(pos);
         userPresenter.unfav(worksData.itemid, worksData.uid, worksData.status);
     }
-
-    public void updateData(WorksData worksData) {
+    //移除某个item
+    public void removeByItemid(int itemid){
         int index = -1;
         for (int i = 0; i < mDataList.size(); i++) {
-            if (worksData.itemid == mDataList.get(i).itemid && worksData.status == mDataList.get(i).status) {
+            if (itemid == mDataList.get(i).itemid) {
                 index = i;
                 break;
             }
         }
         if (index > -1) {
-            updateItem(index, worksData);
+            removeItem(index);
+        }
+    }
+    //更新某个item
+    public void updateData(WorksData worksData) {
+        if(mDataList.size()>0) {
+            int index = -1;
+            for (int i = 0; i < mDataList.size(); i++) {
+                if (worksData.itemid == mDataList.get(i).itemid && worksData.status == mDataList.get(i).status) {
+                    index = i;
+                    break;
+                }
+            }
+            if (index > -1) {
+                updateItem(index, worksData);
+            }
         }
     }
 

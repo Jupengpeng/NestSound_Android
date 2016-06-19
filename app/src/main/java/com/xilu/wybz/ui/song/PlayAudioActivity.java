@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -57,6 +58,8 @@ import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.utils.ToastUtils;
 import com.xilu.wybz.view.dialog.ActionMoreDialog;
 import com.xilu.wybz.view.dialog.ShareDialog;
+import com.xilu.wybz.view.materialdialogs.DialogAction;
+import com.xilu.wybz.view.materialdialogs.MaterialDialog;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -110,7 +113,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     List<View> viewList;//把需要滑动的页卡添加到这个li
     ListView listview_lyrics;
     ScrollView sv_content;
-    String authorid;
+    int authorid;
     String author;
     String headurl;
     String name;
@@ -130,7 +133,9 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     PlayPresenter playPresenter;
     List<ActionBean> actionBeanList;
     String[] actionTitles = new String[]{"个人主页", "举报"};
+    String[] actionTitles2 = new String[]{"删除"};
     String[] actionTypes = new String[]{"homepage", "jubao"};
+    String[] actionTypes2 = new String[]{"del"};
     PlayLyricsAdapter playLyricsAdapter;
     List<String> lyricsList;
 
@@ -172,13 +177,6 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
 
     public void initView() {
         ExitApplication.getInstance().addActivity(this);
-        actionBeanList = new ArrayList<>();
-        for (int i = 0; i < actionTitles.length; i++) {
-            ActionBean actionBean = new ActionBean();
-            actionBean.setTitle(actionTitles[i]);
-            actionBean.setType(actionTypes[i]);
-            actionBeanList.add(actionBean);
-        }
         toolbar.setTitleTextColor(Color.WHITE);
         worksData = new WorksData();
         LayoutInflater lf = getLayoutInflater().from(this);
@@ -252,16 +250,16 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
             id = bundle.getInt("id");
             from = bundle.getString("from", "");
             gedanid = bundle.getString("gedanid", "");
-            authorid = bundle.getString("authorid");
             isCurrentMusic = (id == PrefsUtil.getInt("playId", context)) && from.equals(PrefsUtil.getString("playFrom", context));
         }
+        actionBeanList = new ArrayList<>();
         viewPager.setAdapter(new PlayPagerAdapter(viewList));
         if (serviceIntent == null) {
             serviceIntent = new Intent(this, PlayService.class);
             bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
         }
         if (isCurrentMusic && PlayMediaInstance.getInstance().status != 1) {//正在播放的是本首
-            worksData = PrefsUtil.getMusicData(context,id);
+            worksData = PrefsUtil.getMusicData(context, id);
             adapterData();
             playSeekBar.setMax(PlayMediaInstance.getInstance().getDuration());
             playSeekBar.setProgress(PlayMediaInstance.getInstance().getCurrentPosition());
@@ -295,7 +293,23 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
             name = worksData.getTitle();
             setTitle(name);
             headurl = worksData.getHeadurl();
-            authorid = worksData.getUid() + "";
+            authorid = worksData.getUid();
+            if (authorid == PrefsUtil.getUserId(context)) {
+                for (int i = 0; i < actionTitles2.length; i++) {
+                    ActionBean actionBean = new ActionBean();
+                    actionBean.setTitle(actionTitles2[i]);
+                    actionBean.setType(actionTypes2[i]);
+                    actionBeanList.add(actionBean);
+                }
+            } else {
+                for (int i = 0; i < actionTitles.length; i++) {
+                    ActionBean actionBean = new ActionBean();
+                    actionBean.setTitle(actionTitles[i]);
+                    actionBean.setType(actionTypes[i]);
+                    actionBeanList.add(actionBean);
+                }
+            }
+
             hotid = worksData.getHotid();
             tvZan.setChecked(worksData.getIsZan() == 1);
             tvFav.setChecked(worksData.getIscollect() == 1);
@@ -430,11 +444,13 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
                 toCommentActivity();
                 break;
             case R.id.rl_more:
-                if (actionMoreDialog == null) {
-                    actionMoreDialog = new ActionMoreDialog(this, this, actionBeanList);
-                }
-                if (!actionMoreDialog.isShowing()) {
-                    actionMoreDialog.showDialog();
+                if (actionBeanList != null && actionBeanList.size() > 0) {
+                    if (actionMoreDialog == null) {
+                        actionMoreDialog = new ActionMoreDialog(this, this, actionBeanList);
+                    }
+                    if (!actionMoreDialog.isShowing()) {
+                        actionMoreDialog.showDialog();
+                    }
                 }
                 break;
             case R.id.iv_pre:
@@ -453,10 +469,10 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
                 break;
             case R.id.iv_hot:
                 if (worksData.hotid > 0)
-                    if(PrefsUtil.getUserId(context)>0) {
+                    if (PrefsUtil.getUserId(context) > 0) {
                         toHotActivity();
-                    }else{
-                        ToastUtils.logingTip(context,"登录后才能录歌，确认要登录吗？");
+                    } else {
+                        ToastUtils.logingTip(context, "登录后才能录歌，确认要登录吗？");
                     }
                 else
                     showMsg("该伴奏不存在！");
@@ -540,8 +556,25 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
 
     @Override
     public void setPic(Bitmap bitmap) {
-        if(blurImageView!=null)
+        if (blurImageView != null)
             blurImageView.setImageBitmap(bitmap);
+    }
+
+    @Override
+    public void deleteSuccess() {
+        cancelPd();
+        //关闭音乐
+        PlayMediaInstance.getInstance().release();
+        //通知上个页面移除
+        EventBus.getDefault().post(new Event.RemoveMySongEvent(worksData.itemid));
+        //清除本地数据
+        PrefsUtil.clearMusicData(context, worksData.itemid);
+        finish();
+    }
+
+    @Override
+    public void deleteFail() {
+        showMsg("删除失败！");
     }
 
 
@@ -553,23 +586,25 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
         }
 
     }
-    public void updateCommentNum(){
+
+    public void updateCommentNum() {
         if (worksData.commentnum > 0) {
             tvCommentNum.setText(NumberUtil.format(worksData.commentnum));
             ivReply.setImageResource(R.drawable.ic_play_comment);
-        }else{
+        } else {
             tvCommentNum.setText("");
             ivReply.setImageResource(R.drawable.ic_music_reply_full);
         }
-        PrefsUtil.saveMusicData(context,worksData);
+        PrefsUtil.saveMusicData(context, worksData);
     }
+
     //更新缓存进度
     public void onEventMainThread(Event.UpdataSecondProgressEvent event) {
-        if(event.getPercent()>0){
+//        if (event.getPercent() > 0) {
 //            playSeekBar.setSecondaryProgress(event.getPercent());
 //            if(event.getPercent()==100){
 //            }
-        }
+//        }
     }
 
     public void onEventMainThread(Event.PPStatusEvent event) {
@@ -632,11 +667,11 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     protected void onDestroy() {
         super.onDestroy();
         closeTimer();
-        if(!PlayMediaInstance.getInstance().isPlaying()){
+        if (!PlayMediaInstance.getInstance().isPlaying()) {
             PlayMediaInstance.getInstance().release();
         }
-        if(playPresenter!=null)
-        playPresenter.cancleRequest();
+        if (playPresenter != null)
+            playPresenter.cancleRequest();
         PrefsUtil.saveMusicData(context, worksData);
         unbindService(serviceConnection);
         EventBus.getDefault().unregister(this);
@@ -645,13 +680,39 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         actionMoreDialog.dismiss();
-        switch (position) {
-            case 0://个人主页
-                toUserInfo();
-                break;
-            case 1:
-                toJubao();
-                break;
+        if (actionBeanList.size() > 1) {
+            switch (position) {
+                case 0://个人主页
+                    toUserInfo();
+                    break;
+                case 1:
+                    toJubao();
+                    break;
+            }
+        } else if (actionBeanList.size() == 1) {
+            showDeleteDialog();
         }
+    }
+
+    public void showDeleteDialog() {
+        new MaterialDialog.Builder(context)
+                .title(getString(R.string.dialog_title))
+                .content("确认删除该作品吗?")
+                .positiveText("删除")
+                .positiveColor(getResources().getColor(R.color.red))
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        showPd("正在删除中...");
+                        playPresenter.delete(worksData.itemid);
+                    }
+                }).negativeText("取消")
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+
+                    }
+                })
+                .show();
     }
 }

@@ -26,4 +26,8 @@ public interface IPlayView extends IBaseView {
 
     void setPic(Bitmap bitmap);
 
+    void deleteSuccess();
+
+    void deleteFail();
+
 }

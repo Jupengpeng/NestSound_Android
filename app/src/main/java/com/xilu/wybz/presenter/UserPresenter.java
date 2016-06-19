@@ -70,7 +70,7 @@ public class UserPresenter extends BasePresenter<IUserView> {
             }
         });
     }
-//    删除作品
+    //删除作品
     public void delete(int id, int type) {
         params = new HashMap<>();
         params.put("id",id+"");
