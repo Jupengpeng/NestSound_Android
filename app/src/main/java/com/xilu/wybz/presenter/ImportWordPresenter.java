@@ -48,12 +48,4 @@ public class ImportWordPresenter extends BasePresenter<IImportWordView> {
             }
         });
     }
-
-
-
-    public void cancel(){
-
-        httpUtils.cancelHttpByTag(MyHttpClient.getUserLyricsListUrl());
-
-    }
 }

@@ -140,7 +140,7 @@ public class MoreWorkActivity extends BaseListActivity<WorksData> implements IFi
     protected void onDestroy() {
         super.onDestroy();
         if(findMoreWorkPresenter!=null){
-            findMoreWorkPresenter.cancleRequest();
+            findMoreWorkPresenter.cancelUrl();
         }
     }
 }

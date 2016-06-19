@@ -151,4 +151,11 @@ public class MusicTalkMoreActivity extends BaseListActivity<MusicTalk> implement
             PlayAudioActivity.toPlayAudioActivity(context, worksData.itemid, "", MyCommon.MUSICTALK_MORE);
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(musicTalkMorePresenter!=null)
+            musicTalkMorePresenter.cancelUrl();
+    }
 }

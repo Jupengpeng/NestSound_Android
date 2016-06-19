@@ -446,6 +446,9 @@ public class ModifyInspireRecordActivity extends ToolbarActivity implements IIns
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        if(inspireRecordPresenter!=null){
+            inspireRecordPresenter.cancelUrl();
+        }
     }
 
     Handler mHandler = new Handler() {

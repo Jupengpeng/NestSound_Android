@@ -318,4 +318,10 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
             return holder;
         }
     }
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if(userPresenter!=null)
+            userPresenter.cancelUrl();
+    }
 }

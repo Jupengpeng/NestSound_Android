@@ -157,4 +157,10 @@ public class SearchLyricsFragment extends BaseListFragment<WorksData> implements
             LyricsdisplayActivity.toLyricsdisplayActivity(context,mDataList.get(position).getItemid(),0,mDataList.get(position).name);
         }
     }
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if(searchPresenter!=null)
+            searchPresenter.cancelUrl();
+    }
 }

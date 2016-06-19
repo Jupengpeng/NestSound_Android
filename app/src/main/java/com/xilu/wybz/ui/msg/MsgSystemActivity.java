@@ -162,4 +162,11 @@ public class MsgSystemActivity extends BaseListActivity<SystemBean> implements I
     void toWebView(SystemBean systemBean) {
         BrowserActivity.toBrowserActivity(context, systemBean.url);
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(systemPresenter!=null)
+            systemPresenter.cancelUrl();
+    }
 }

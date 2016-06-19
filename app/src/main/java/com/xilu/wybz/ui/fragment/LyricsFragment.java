@@ -167,4 +167,10 @@ public class LyricsFragment extends BaseFragment implements ISongView {
                 break;
         }
     }
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if(songPresenter!=null)
+            songPresenter.cancelUrl();
+    }
 }

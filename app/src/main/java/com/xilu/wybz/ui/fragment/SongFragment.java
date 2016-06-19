@@ -172,4 +172,10 @@ public class SongFragment extends BaseFragment implements ISongView {
             PlayAudioActivity.toPlayAudioActivity(context, worksData.getItemid(), "", COME);
         }
     }
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if(songPresenter!=null)
+            songPresenter.cancelUrl();
+    }
 }

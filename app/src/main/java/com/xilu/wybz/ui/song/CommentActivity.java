@@ -331,6 +331,6 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
     protected void onDestroy() {
         super.onDestroy();
         if(commentPresenter!=null)
-        commentPresenter.cancleRequest();
+        commentPresenter.cancelUrl();
     }
 }

@@ -375,6 +375,9 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        if(inspireRecordPresenter!=null){
+            inspireRecordPresenter.cancelUrl();
+        }
     }
 
     Handler mHandler = new Handler() {

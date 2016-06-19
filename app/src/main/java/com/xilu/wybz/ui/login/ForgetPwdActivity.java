@@ -196,4 +196,11 @@ public class ForgetPwdActivity extends ToolbarActivity implements IForgetPwdView
         tv_ok.setEnabled(true);
         showMsg("密码修改失败");
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(forgetPwdPresenter!=null)
+        forgetPwdPresenter.cancelUrl();
+    }
 }

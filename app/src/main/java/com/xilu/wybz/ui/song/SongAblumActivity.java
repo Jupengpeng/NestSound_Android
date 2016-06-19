@@ -210,4 +210,11 @@ public class SongAblumActivity extends ToolbarActivity implements IRecSongView {
     public void showErrorView() {
 
     }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(recSongPresenter!=null){
+            recSongPresenter.cancelUrl();
+        }
+    }
 }

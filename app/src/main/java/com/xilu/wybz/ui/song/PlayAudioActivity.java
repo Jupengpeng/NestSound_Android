@@ -671,7 +671,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
             PlayMediaInstance.getInstance().release();
         }
         if (playPresenter != null)
-            playPresenter.cancleRequest();
+            playPresenter.cancelUrl();
         PrefsUtil.saveMusicData(context, worksData);
         unbindService(serviceConnection);
         EventBus.getDefault().unregister(this);

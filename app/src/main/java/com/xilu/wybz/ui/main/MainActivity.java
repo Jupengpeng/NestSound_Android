@@ -448,6 +448,8 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if(presenter!=null)
+            presenter.cancelUrl();
     }
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {

@@ -112,4 +112,11 @@ public class SettingFeedActivity extends ToolbarActivity implements IFeedbackVie
     public void postFail() {
 
     }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(feedbackPresenter!=null){
+            feedbackPresenter.cancelUrl();
+        }
+    }
 }

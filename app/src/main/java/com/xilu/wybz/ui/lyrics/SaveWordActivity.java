@@ -270,4 +270,11 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView {
             }
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(saveWordPresenter!=null)
+            saveWordPresenter.cancelUrl();
+    }
 }

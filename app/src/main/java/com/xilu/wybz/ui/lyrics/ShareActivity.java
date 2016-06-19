@@ -29,10 +29,6 @@ import butterknife.OnClick;
  * Created by hujunwei on 16/5/26.
  */
 public class ShareActivity extends ToolbarActivity {
-    @Bind(R.id.status_bar_view)
-    View statusBarView;
-    @Bind(R.id.ll_main)
-    View ll_main;
     WorksData worksData;
     UmengShareUtil shareUtil;
     private Bitmap overlay = null;
@@ -49,12 +45,6 @@ public class ShareActivity extends ToolbarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (!isChenjin) { //没有沉浸的时候 导航栏不需要上边距
-            statusBarView.setVisibility(View.GONE);
-        } else {
-            statusBarView.setVisibility(View.VISIBLE);
-            statusBarView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, DensityUtil.getStatusBarHeight(context)));
-        }
         mToolbar.setNavigationIcon(R.drawable.ic_share_back);
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
