@@ -24,10 +24,19 @@ import okhttp3.MediaType;
  * Created by June on 16/4/28.
  */
 public class HttpUtils {
-    Map<String, String> headers = new HashMap<>();
-    Context context;
+    private Map<String, String> headers = new HashMap<>();
+    private Context context;
+    private String httpTag;
+
     public HttpUtils(Context context) {
         this.context = context;
+        headers.put("APP-Key", "APP-Secret222");
+        headers.put("machine", PhoneInfoUtil.getMachine(context));
+    }
+
+    public HttpUtils(Context context, String viewTag) {
+        this.context = context;
+        this.httpTag = viewTag;
         headers.put("APP-Key", "APP-Secret222");
         headers.put("machine", PhoneInfoUtil.getMachine(context));
     }
@@ -47,7 +56,7 @@ public class HttpUtils {
         Log.d("url","encode:"+content);
         OkHttpUtils.post()
                 .url(MyHttpClient.BASE_URL + url)
-                .tag(url)
+                .tag(httpTag)
                 .addParams("data", content)
                 .headers(headers)
                 .build()
@@ -61,7 +70,7 @@ public class HttpUtils {
     public void postUrl(String url, Map<String, String> params, Callback stringCallback) {
         OkHttpUtils.post()
                 .url(MyHttpClient.BASE_URL + url)
-                .tag(url)
+                .tag(httpTag)
                 .params(params)
                 .headers(headers)
                 .build()
@@ -71,7 +80,7 @@ public class HttpUtils {
     public void postString(String url, String content, Callback stringCallback) {
         OkHttpUtils
                 .postString()
-                .tag(url)
+                .tag(httpTag)
                 .headers(headers)
                 .url(MyHttpClient.BASE_URL + url)
                 .mediaType(MediaType.parse("application/json; charset=utf-8"))
@@ -84,7 +93,7 @@ public class HttpUtils {
     public void putString(String url, String content, Callback stringCallback) {
         OkHttpUtils
                 .put()
-                .tag(url)
+                .tag(httpTag)
                 .headers(headers)
                 .url(MyHttpClient.BASE_URL + url)
                 .requestBody(content)
@@ -107,7 +116,7 @@ public class HttpUtils {
         OkHttpUtils
                 .get()
                 .headers(headers)
-                .tag(url)
+                .tag(httpTag)
                 .url(MyHttpClient.BASE_URL + url)
                 .addParams("data", content)
                 .build()
@@ -118,7 +127,7 @@ public class HttpUtils {
         OkHttpUtils
                 .get()
                 .headers(headers)
-                .tag(url)
+                .tag(httpTag)
                 .url(url)
                 .build()
                 .execute(stringCallback);
@@ -129,7 +138,7 @@ public class HttpUtils {
             OkHttpUtils
                     .get()
                     .url(url)
-                    .tag(url)
+                    .tag(httpTag)
                     .headers(headers)
                     .build()
                     .execute(bitmapCallback);
@@ -142,7 +151,7 @@ public class HttpUtils {
             OkHttpUtils
                     .get()
                     .url(url)
-                    .tag(url)
+                    .tag(httpTag)
                     .headers(headers)
                     .build()
                     .execute(fileCallBack);
@@ -159,7 +168,7 @@ public class HttpUtils {
         OkHttpUtils
                 .post()
                 .url(url)
-                .tag(url)
+                .tag(httpTag)
                 .addFile("file",file.getName(),file)
                 .headers(headers)
                 .build()
