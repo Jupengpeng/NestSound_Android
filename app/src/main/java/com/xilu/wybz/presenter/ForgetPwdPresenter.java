@@ -7,7 +7,6 @@ import com.xilu.wybz.http.callback.MyStringCallback;
 import com.xilu.wybz.ui.IView.IForgetPwdView;
 
 import java.util.HashMap;
-import java.util.Map;
 
 import okhttp3.Call;
 
@@ -39,7 +38,7 @@ public class ForgetPwdPresenter extends BasePresenter<IForgetPwdView> {
     }
 
     public void modifyPwd(String phone, String password, String code) {
-        Map<String, String> params = new HashMap<>();
+        params = new HashMap<>();
         params.put("phone", phone);
         params.put("code", code);
         params.put("password", password);

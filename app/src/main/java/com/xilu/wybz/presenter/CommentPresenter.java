@@ -3,24 +3,16 @@ package com.xilu.wybz.presenter;
 import android.content.Context;
 
 import com.xilu.wybz.bean.CommentBean;
-import com.xilu.wybz.bean.JsonResponse;
-import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.common.MyHttpClient;
-import com.xilu.wybz.http.callback.AppJsonCalback;
 import com.xilu.wybz.http.callback.MyStringCallback;
 import com.xilu.wybz.ui.IView.ICommentView;
-import com.xilu.wybz.ui.IView.ILoginView;
 import com.xilu.wybz.utils.ParseUtils;
 import com.xilu.wybz.utils.PrefsUtil;
-import com.xilu.wybz.utils.StringUtil;
-import com.xilu.wybz.utils.ToastUtils;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import okhttp3.Call;
-import okhttp3.Request;
 
 /**
  * Created by June on 16/5/4.
