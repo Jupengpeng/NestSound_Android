@@ -1,6 +1,5 @@
 package com.xilu.wybz.ui.base;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -9,14 +8,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.umeng.common.message.Log;
 import com.umeng.message.PushAgent;
 import com.xilu.wybz.R;
 import com.xilu.wybz.common.ZnImageLoader;
@@ -24,24 +20,19 @@ import com.xilu.wybz.ui.MainTabActivity;
 import com.xilu.wybz.ui.SplashActivity;
 import com.xilu.wybz.ui.WelActivity;
 import com.xilu.wybz.ui.find.FindActivity;
-import com.xilu.wybz.ui.login.ForgetPwdActivity;
 import com.xilu.wybz.ui.login.LoginActivity;
 import com.xilu.wybz.ui.login.PasswordActivity;
 import com.xilu.wybz.ui.login.RegisterActivity;
 import com.xilu.wybz.ui.main.MainActivity;
-import com.xilu.wybz.ui.main.SongablumMoreActivity;
 import com.xilu.wybz.ui.mine.MineActivity;
 import com.xilu.wybz.ui.mine.UserInfoActivity;
 import com.xilu.wybz.ui.msg.MsgActivity;
 import com.xilu.wybz.ui.song.PlayAudioActivity;
 import com.xilu.wybz.ui.song.SongAblumActivity;
 import com.xilu.wybz.utils.NetWorkUtil;
-import com.xilu.wybz.utils.PhoneInfoUtil;
-import com.xilu.wybz.utils.StatusBarUtil;
 import com.xilu.wybz.utils.ToastUtils;
 import com.xilu.wybz.view.AnimImageView;
 import com.xilu.wybz.view.SystemBarHelper;
-import com.xilu.wybz.view.SystemBarTintManager;
 import com.xilu.wybz.view.materialdialogs.MaterialDialog;
 
 import java.util.ArrayList;
@@ -186,6 +177,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
 
     }
 }

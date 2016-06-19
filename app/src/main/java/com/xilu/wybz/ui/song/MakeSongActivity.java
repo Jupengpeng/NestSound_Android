@@ -162,7 +162,7 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
             @Override
             public void onRecordStart() {
                 int duration = RecordInstance.getInstance().getMediaPlayer().getDuration();
-                helper.setTotalSize(duration / 1000);
+                helper.setTotalSize((duration +990)/ 1000);
             }
 
             @Override
@@ -172,7 +172,7 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
 
             @Override
             public void onRecordStop() {
-
+                showRecordPause();
             }
 
             @Override
@@ -187,13 +187,13 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
 
             @Override
             public void onRecordError() {
-
+                showRecordPause();
             }
 
             @Override
             public void onRecordComplete() {
                 status = 3;
-                showRecordStart();
+                showRecordPause();
             }
         });
 
