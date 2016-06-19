@@ -786,7 +786,6 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         EventBus.getDefault().unregister(this);
         //关闭及清理录音
         RecordInstance.getInstance().destroy();
@@ -805,6 +804,11 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
             loadDialog.cancel();
             loadDialog = null;
         }
+        if (makeSongPresenter != null){
+            makeSongPresenter.cancelUrl();
+            makeSongPresenter= null;
+        }
+        super.onDestroy();
     }
 
 }

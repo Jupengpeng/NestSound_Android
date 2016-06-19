@@ -388,6 +388,9 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView ,
         EventBus.getDefault().unregister(this);
         MediaInstance.getInstance().stopMediaPlay();
         MediaInstance.getInstance().destroy();
+        if (saveSongPresenter != null){
+            saveSongPresenter.cancelUrl();
+        }
     }
 
 

@@ -112,7 +112,7 @@ public class WaveSurfaceHelper {
 
     public void adaptationScreen(){
 
-        int density = (int)(1.0*viewRect.right/360+0.5);
+        float density = (float) (1.0*viewRect.right/360);
 
         configure.adapter(density);
 
@@ -592,6 +592,7 @@ public class WaveSurfaceHelper {
         public int color6 = Color.parseColor("#32d6d6d6");
 
         public float scaleRate = 0.68f;
+        public float density = 2.0f;
 
         //ruler
         public int offy = 40;
@@ -607,21 +608,33 @@ public class WaveSurfaceHelper {
         public int waveSpace = 4;
 
 
-        public void adapter(int density){
+        public void adapter(float density){
 
-            offy = offy/2*density;
-            h1 = h1/2*density;
-            h2 = h2/2*density;
+            if (density >= 1.7 && density <= 2.3){
+               return;
+            }
+            if (this.density != 2){
+                return;
+            }
+            this.density = density;
 
-            s = s/2*density;
-            textSize = textSize/2*density;
+            offy = (int)computeValue(offy,density);
+            h1 = (int)computeValue(h1,density);
+            h2 = (int)computeValue(h2,density);
 
-            wave = wave/2*density;
-            waveSpace = waveSpace/2*density;
+            s = (int)computeValue(s,density);
+            textSize = (int)computeValue(textSize,density);
 
-            scaleRate = scaleRate/2*density;
+            wave = (int)computeValue(wave,density);
+            waveSpace = (int)computeValue(waveSpace,density);
+            scaleRate = (int)computeValue((int)scaleRate,density);
 
         }
+
+        private float computeValue(int value, float rate){
+            return value*rate/2;
+        }
+
 
     }
 

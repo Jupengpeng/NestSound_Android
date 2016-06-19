@@ -273,4 +273,12 @@ public class ModifyUserInfoActivity extends ToolbarActivity implements IModifyUs
             }
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (modifyUserInfoPresenter != null){
+            modifyUserInfoPresenter.cancelUrl();
+        }
+    }
 }

@@ -663,19 +663,6 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
         adapterData();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        closeTimer();
-        if (!PlayMediaInstance.getInstance().isPlaying()) {
-            PlayMediaInstance.getInstance().release();
-        }
-        if (playPresenter != null)
-            playPresenter.cancleRequest();
-        PrefsUtil.saveMusicData(context, worksData);
-        unbindService(serviceConnection);
-        EventBus.getDefault().unregister(this);
-    }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -715,4 +702,26 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
                 })
                 .show();
     }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        closeTimer();
+        if (!PlayMediaInstance.getInstance().isPlaying()) {
+            PlayMediaInstance.getInstance().release();
+        }
+        if (playPresenter != null)
+            playPresenter.cancleRequest();
+        PrefsUtil.saveMusicData(context, worksData);
+        unbindService(serviceConnection);
+        EventBus.getDefault().unregister(this);
+
+        if (playPresenter != null){
+            playPresenter.cancelUrl();
+        }
+    }
+
+
+
 }
