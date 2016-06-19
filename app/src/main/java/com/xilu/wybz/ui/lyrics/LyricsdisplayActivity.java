@@ -313,6 +313,8 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        if(lyricsPresenter!=null)
+            lyricsPresenter.cancelUrl();
     }
 
     @Override

@@ -153,4 +153,10 @@ public class MsgFavActivity extends BaseListActivity<CollectionBean> implements 
 
         }
     }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(collectionPresenter!=null)
+            collectionPresenter.cancelUrl();
+    }
 }

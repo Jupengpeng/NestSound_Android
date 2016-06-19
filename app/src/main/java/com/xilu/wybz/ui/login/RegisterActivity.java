@@ -211,4 +211,12 @@ public class RegisterActivity extends ToolbarActivity implements IRegisterView,T
             mregReg.setBackgroundResource(R.drawable.corner_login2);
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(registerPresenter!=null) {
+            registerPresenter.cancelUrl();
+        }
+    }
 }

@@ -19,6 +19,7 @@ import com.xilu.wybz.ui.find.FindActivity;
 import com.xilu.wybz.ui.login.LoginActivity;
 import com.xilu.wybz.ui.login.PasswordActivity;
 import com.xilu.wybz.ui.login.RegisterActivity;
+import com.xilu.wybz.ui.lyrics.ShareActivity;
 import com.xilu.wybz.ui.main.MainActivity;
 import com.xilu.wybz.ui.mine.MineActivity;
 import com.xilu.wybz.ui.mine.UserInfoActivity;
@@ -40,8 +41,8 @@ public abstract class ToolbarActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         mAppBar = (RelativeLayout) findViewById(R.id.app_bar_layout);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (isHomeActivity || this instanceof LoginActivity||this instanceof RegisterActivity||this instanceof PasswordActivity || this instanceof UserInfoActivity || this instanceof PlayAudioActivity|| this instanceof SongAblumActivity) {
-              SystemBarHelper.setHeightAndPadding(this, mAppBar);
+        if (isHomeActivity || this instanceof LoginActivity || this instanceof ShareActivity || this instanceof RegisterActivity || this instanceof PasswordActivity || this instanceof UserInfoActivity || this instanceof PlayAudioActivity || this instanceof SongAblumActivity) {
+            SystemBarHelper.setHeightAndPadding(this, mAppBar);
         }
         View view = findViewById(R.id.view);
         if (mToolbar == null || mAppBar == null) {

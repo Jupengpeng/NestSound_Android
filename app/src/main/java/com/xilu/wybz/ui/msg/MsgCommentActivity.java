@@ -219,4 +219,11 @@ public class MsgCommentActivity extends BaseListActivity<MsgCommentBean> impleme
         }
         commentPresenter.sendComment(inforCommentBean.workid, 2, inforCommentBean.type,inforCommentBean.target_uid,content);
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(commentPresenter!=null)
+            commentPresenter.cancelUrl();
+    }
 }

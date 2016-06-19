@@ -154,4 +154,11 @@ public class MsgZambiaActivity extends BaseListActivity<ZambiaBean> implements I
 
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(zanPresenter!=null)
+            zanPresenter.cancelUrl();
+    }
 }

@@ -98,10 +98,4 @@ public class CommentPresenter extends BasePresenter<ICommentView>{
             }
         });
     }
-
-    public void cancleRequest(){
-        httpUtils.cancelHttpByTag(MyHttpClient.getDelCommentUrl());
-        httpUtils.cancelHttpByTag(MyHttpClient.getSaveCommentUrl());
-        httpUtils.cancelHttpByTag(MyHttpClient.getCommentListUrl());
-    }
 }

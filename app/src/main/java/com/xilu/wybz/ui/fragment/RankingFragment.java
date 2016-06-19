@@ -184,5 +184,8 @@ public class RankingFragment extends BaseFragment implements IRankingView {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+        if(rankingPresenter!=null){
+            rankingPresenter.cancelUrl();
+        }
     }
 }

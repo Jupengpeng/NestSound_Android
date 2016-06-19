@@ -1,6 +1,8 @@
 package com.xilu.wybz.ui.song;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -10,18 +12,24 @@ import android.widget.AdapterView;
 import android.widget.CheckedTextView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
 import com.xilu.wybz.adapter.HotListAdapter;
 import com.xilu.wybz.bean.TemplateBean;
+import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.FileDir;
+import com.xilu.wybz.common.MyCommon;
+import com.xilu.wybz.common.MyThreadPool;
 import com.xilu.wybz.common.PlayBanZouInstance;
+import com.xilu.wybz.common.PlayMediaInstance;
 import com.xilu.wybz.common.interfaces.IMediaPlayerListener;
 import com.xilu.wybz.common.interfaces.ITemplateMusicListener;
 import com.xilu.wybz.presenter.HotPresenter;
 import com.xilu.wybz.ui.IView.IHotView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
+import com.xilu.wybz.utils.FileUtils;
 import com.xilu.wybz.utils.MD5Util;
 
 import java.io.File;
@@ -29,6 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by hujunwei on 16/5/31.
@@ -472,12 +481,11 @@ public class NewMakeHotActivity extends ToolbarActivity implements IHotView, Vie
     }
     @Override
     protected void onDestroy() {
+        super.onDestroy();
         //关闭播放
         stopPlayBz();
-
-        if (hotPresenter != null){
+        if(hotPresenter!=null){
             hotPresenter.cancelUrl();
         }
-        super.onDestroy();
     }
 }

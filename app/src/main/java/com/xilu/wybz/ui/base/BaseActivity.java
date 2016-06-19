@@ -23,6 +23,7 @@ import com.xilu.wybz.ui.find.FindActivity;
 import com.xilu.wybz.ui.login.LoginActivity;
 import com.xilu.wybz.ui.login.PasswordActivity;
 import com.xilu.wybz.ui.login.RegisterActivity;
+import com.xilu.wybz.ui.lyrics.ShareActivity;
 import com.xilu.wybz.ui.main.MainActivity;
 import com.xilu.wybz.ui.mine.MineActivity;
 import com.xilu.wybz.ui.mine.UserInfoActivity;
@@ -77,8 +78,10 @@ public abstract class BaseActivity extends AppCompatActivity {
                     SystemBarHelper.setStatusBarDarkMode(this);
                 }
             }
-            if (this instanceof WelActivity || this instanceof PlayAudioActivity || this instanceof SongAblumActivity
-                    || this instanceof SplashActivity || this instanceof UserInfoActivity || this instanceof MainTabActivity) {
+            if (this instanceof WelActivity || this instanceof PlayAudioActivity
+                    || this instanceof SongAblumActivity
+                    || this instanceof ShareActivity || this instanceof SplashActivity ||
+                    this instanceof UserInfoActivity || this instanceof MainTabActivity) {
                 SystemBarHelper.immersiveStatusBar(this);
                 SystemBarHelper.tintStatusBar(this, Color.argb(0, 0xFF, 0xD7, 0x05));
             } else if (this instanceof LoginActivity || this instanceof RegisterActivity || this instanceof PasswordActivity) {

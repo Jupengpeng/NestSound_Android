@@ -168,4 +168,11 @@ public class SearchSongFragment extends BaseListFragment<WorksData> implements I
             PlayAudioActivity.toPlayAudioActivity(context, worksData.getItemid(), "", MyCommon.SEARCH);
         }
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if(searchPresenter!=null)
+        searchPresenter.cancelUrl();
+    }
 }

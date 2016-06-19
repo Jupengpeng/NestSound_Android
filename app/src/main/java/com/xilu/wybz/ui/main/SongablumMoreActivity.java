@@ -113,4 +113,10 @@ public class SongablumMoreActivity extends BaseListActivity<SongAlbum> implement
         return new SongablumViewHolder(view, context, mDataList);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(songablumMorePresenter!=null)
+            songablumMorePresenter.cancelUrl();
+    }
 }

@@ -151,4 +151,10 @@ public class SearchUserFragment extends BaseListFragment<FansBean> implements IS
             }
         }
     }
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if(searchPresenter!=null)
+            searchPresenter.cancelUrl();
+    }
 }

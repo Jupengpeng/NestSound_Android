@@ -215,4 +215,11 @@ public class FollowAndFansActivity extends BaseListActivity<FansBean> implements
 
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(mFollowPresenter!=null)
+            mFollowPresenter.cancelUrl();
+    }
 }

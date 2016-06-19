@@ -193,4 +193,11 @@ public class PasswordActivity extends ToolbarActivity implements IPasswordView, 
             mpassLogin.setBackgroundResource(R.drawable.corner_login2);
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(passwordPresenter!=null)
+        passwordPresenter.cancelUrl();
+    }
 }

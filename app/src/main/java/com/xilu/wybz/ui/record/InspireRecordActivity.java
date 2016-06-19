@@ -375,7 +375,7 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
-        if (inspireRecordPresenter != null){
+        if(inspireRecordPresenter!=null){
             inspireRecordPresenter.cancelUrl();
         }
     }
@@ -474,5 +474,4 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
         cancelPd();
         showMsg("发布失败！");
     }
-
 }
