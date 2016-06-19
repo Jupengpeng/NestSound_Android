@@ -203,6 +203,16 @@ public class Event {
 
     }
 
+    public static class RemoveMySongEvent {
+        int itemid;
+        public RemoveMySongEvent(int itemid){
+            this.itemid = itemid;
+        }
+        public int getItemid(){
+            return itemid;
+        }
+    }
+
     public static class UpdateFollowNumEvent {
         /*
         * type 0加 1减

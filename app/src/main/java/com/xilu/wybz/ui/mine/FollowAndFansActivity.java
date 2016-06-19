@@ -56,7 +56,6 @@ public class FollowAndFansActivity extends BaseListActivity<FansBean> implements
         intent.putExtra(KeySet.KEY_UID, uid);
         context.startActivity(intent);
     }
-
     @Override
     public boolean hasPadding() {
         return false;

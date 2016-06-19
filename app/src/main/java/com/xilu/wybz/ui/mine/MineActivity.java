@@ -280,6 +280,10 @@ public class MineActivity extends ToolbarActivity {
         else if (event.getChange() == 2)
             (pagerAdapter.getFragment(type)).updateData(worksData);
     }
+    public void onEventMainThread(Event.RemoveMySongEvent event) {
+        int itemid = event.getItemid();
+        (pagerAdapter.getFragment(1)).removeByItemid(itemid);
+    }
 
     @Override
     protected void onDestroy() {

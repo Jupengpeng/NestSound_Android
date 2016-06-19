@@ -87,10 +87,34 @@ public class PlayPresenter extends BasePresenter<IPlayView> {
             }
         });
     }
+    //删除作品
+    public void delete(int id) {
+        params = new HashMap<>();
+        params.put("id",id+"");
+        params.put("type","1");//歌曲
+        httpUtils.post(MyHttpClient.getDeleteWorksUrl(), params, new MyStringCallback() {
+            @Override
+            public void onResponse(String response) {
+                super.onResponse(response);
+                DataBean dataBean = ParseUtils.getDataBean(context,response);
+                if(dataBean!=null&&dataBean.code==200){
+                    iView.deleteSuccess();
+                }else{
+                    iView.deleteFail();
+                }
+            }
+            @Override
+            public void onError(Call call, Exception e) {
+                super.onError(call, e);
+                iView.deleteFail();
+            }
+        });
+    }
     public void cancleRequest(){
         if(StringUtil.isNotBlank(imageUrl))
         httpUtils.cancelHttpByTag(imageUrl);
         httpUtils.cancelHttpByTag(MyHttpClient.getUpvoteUrl());
         httpUtils.cancelHttpByTag(MyHttpClient.getUpvoteUrl());
+        httpUtils.cancelHttpByTag(MyHttpClient.getDeleteWorksUrl());
     }
 }

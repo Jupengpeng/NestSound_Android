@@ -12,6 +12,7 @@ buildscript {
 
 def releaseTime() {
     return new Date().format("yyyyMMdd", TimeZone.getTimeZone("UTC"))
+//    return "20160617"
 }
 
 task testChannel << {
