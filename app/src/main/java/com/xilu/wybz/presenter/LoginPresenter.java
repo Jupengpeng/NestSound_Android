@@ -10,6 +10,7 @@ import com.xilu.wybz.http.callback.AppJsonCalback;
 import com.xilu.wybz.ui.IView.ILoginView;
 
 import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.List;
 
 import okhttp3.Request;
@@ -24,6 +25,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
     }
 
     public void login(String mobliePhone, String password) {
+        params = new HashMap<>();
         params.put("mobile", mobliePhone);
         params.put("password", password);
         httpUtils.post(MyHttpClient.getLoginUrl(), params, new AppJsonCalback(context) {

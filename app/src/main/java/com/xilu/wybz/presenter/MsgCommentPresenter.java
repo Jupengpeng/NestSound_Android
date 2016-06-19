@@ -2,11 +2,8 @@ package com.xilu.wybz.presenter;
 
 import android.content.Context;
 
-import com.xilu.wybz.bean.CommentBean;
-import com.xilu.wybz.bean.JsonResponse;
 import com.xilu.wybz.bean.MsgCommentBean;
 import com.xilu.wybz.common.MyHttpClient;
-import com.xilu.wybz.http.callback.AppJsonCalback;
 import com.xilu.wybz.http.callback.MyStringCallback;
 import com.xilu.wybz.ui.IView.ICommentView;
 import com.xilu.wybz.utils.ParseUtils;
@@ -14,7 +11,7 @@ import com.xilu.wybz.utils.PrefsUtil;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 import okhttp3.Call;
 
 /**
@@ -61,7 +58,7 @@ public class MsgCommentPresenter extends BasePresenter<ICommentView> {
     * comment_type 1=默认，发帖，2=跟帖，回复
      */
     public void sendComment(int itemid,int comment_type,int type,int target_uid, String comment){
-        Map<String,String> params = new HashMap<>();
+        params = new HashMap<>();
         params.put("uid", PrefsUtil.getUserId(context)+"");
         params.put("itemid", itemid+"");
         params.put("comment_type", comment_type+"");

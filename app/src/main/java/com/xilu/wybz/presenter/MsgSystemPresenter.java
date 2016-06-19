@@ -2,23 +2,15 @@ package com.xilu.wybz.presenter;
 
 import android.content.Context;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.xilu.wybz.bean.CollectionBean;
 import com.xilu.wybz.bean.SystemBean;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.callback.MyStringCallback;
-import com.xilu.wybz.ui.IView.ICollectionView;
 import com.xilu.wybz.ui.IView.ISystemMsgView;
 import com.xilu.wybz.utils.ParseUtils;
 import com.xilu.wybz.utils.PrefsUtil;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import okhttp3.Call;
 
@@ -32,7 +24,7 @@ public class MsgSystemPresenter extends BasePresenter<ISystemMsgView> {
     }
 
     public void loadData(int page) {
-        Map<String,String> params = new HashMap<>();
+        params = new HashMap<>();
         params.put("uid", PrefsUtil.getUserId(context)+"");;
         params.put("page", page + "");
         httpUtils.get(MyHttpClient.getMsgSystemList(), params, new MyStringCallback() {

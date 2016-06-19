@@ -14,7 +14,6 @@ import com.xilu.wybz.utils.PrefsUtil;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Request;
@@ -90,7 +89,7 @@ public class LyricsPresenter extends BasePresenter<ILyricsView> {
         });
     }
     public void zan(int id, int target_uid) {
-        Map<String, String> params = new HashMap<>();
+        params = new HashMap<>();
         params.put("target_uid", target_uid+"");//作者id
         params.put("user_id", PrefsUtil.getUserId(context)+"");
         params.put("work_id", id+"");
