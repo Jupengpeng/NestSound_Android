@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center"
-    android:minHeight="32dp"
+    android:background="@color/main_theme_color"
+    android:minHeight="34dp"
     android:orientation="vertical" >
 
     <TextView
@@ -12,7 +13,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="8dp"
-        android:textColor="@color/black"
+        android:textColor="@color/main_text_color"
         android:textIsSelectable="false"
         android:textSize="14sp"/>
 

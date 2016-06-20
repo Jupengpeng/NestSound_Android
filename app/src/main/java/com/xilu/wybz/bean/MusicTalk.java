@@ -8,5 +8,7 @@ public class MusicTalk {
     public int itemid;
     public String pic;
     public String name;
-    public String html;
+    public String detail;
+    public String url;
+    public int type;
 }

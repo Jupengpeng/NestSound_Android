@@ -14,8 +14,8 @@ public class ToastDialog extends Dialog {
     public ToastDialog(Context context, String text) {
         super(context, R.style.ToastDialog);
         View rootView = LayoutInflater.from(context).inflate(
-                R.layout.ll_toast, null);
-        TextView tv_msg = (TextView) rootView.findViewById(R.id.tv_msg);
+                R.layout.app_msg, null);
+        TextView tv_msg = (TextView) rootView.findViewById(android.R.id.message);
         tv_msg.setText(text);
         setCanceledOnTouchOutside(true);
         getWindow().setGravity(Gravity.BOTTOM);
