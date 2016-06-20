@@ -11,10 +11,8 @@ import com.xilu.wybz.R;
 
 
 public class ToastDialog extends Dialog {
-    Context context;
     public ToastDialog(Context context, String text) {
         super(context, R.style.ToastDialog);
-        this.context = context;
         View rootView = LayoutInflater.from(context).inflate(
                 R.layout.ll_toast, null);
         TextView tv_msg = (TextView) rootView.findViewById(R.id.tv_msg);

@@ -32,6 +32,7 @@ import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.utils.DateTimeUtil;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.FileUtils;
+import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.utils.UploadFileUtil;
@@ -119,9 +120,13 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
         uploadMorePicUtil.uploadPics(pics, new UploadMorePicUtil.UploadPicResult() {
             @Override
             public void onSuccess(String images) {
+                worksData.pics = images;
                 if (!TextUtils.isEmpty(images)) {
-                    worksData.pics = images;
-                    inspireRecordPresenter.publishData(worksData);
+                    if (StringUtil.isNotBlank(recordPath)&&new File(recordPath).exists()) {
+                        uploadRecord();
+                    }else{
+                        inspireRecordPresenter.publishData(worksData);
+                    }
                 }
             }
 
@@ -143,6 +148,7 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
             public void onSuccess(String filrUrl) {
                 if (!TextUtils.isEmpty(filrUrl)) {
                     worksData.audio = filrUrl;
+                    PrefsUtil.putString(recordPath,filrUrl,context);
                     inspireRecordPresenter.publishData(worksData);
                 }
             }
@@ -403,6 +409,7 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
     public void onMusicStart() {
         startPlayTimer();
         playState = 1;
+        allTime = NewPlayInstance.getInstance().getDuration()+999;
         ivRecordStatus.setImageResource(R.drawable.ic_record_pause);
     }
 

@@ -35,6 +35,7 @@ import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.utils.DateTimeUtil;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.FileUtils;
+import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.utils.UploadFileUtil;
@@ -364,7 +365,12 @@ public class ModifyInspireRecordActivity extends ToolbarActivity implements IIns
                                     NewPlayInstance.getInstance().creatMediaPlayer(recordPath);
                                 } else if (StringUtil.isNotBlank(worksData.audio)) {
                                     NewPlayInstance.getInstance().setIMediaPlayerListener(ModifyInspireRecordActivity.this);
-                                    NewPlayInstance.getInstance().creatMediaPlayer(MyHttpClient.QINIU_AUDIO_URL + worksData.audio);
+                                    String localRecord = PrefsUtil.getString(worksData.audio,context);
+                                    if(StringUtil.isNotBlank(localRecord) && new File(localRecord).exists()){
+                                        NewPlayInstance.getInstance().creatMediaPlayer(localRecord);
+                                    }else{
+                                        NewPlayInstance.getInstance().creatMediaPlayer(worksData.audio.startsWith("http")?worksData.audio:MyHttpClient.QINIU_AUDIO_URL+worksData.audio);
+                                    }
                                 }
                                 break;
                             case 1://暂停
@@ -449,6 +455,7 @@ public class ModifyInspireRecordActivity extends ToolbarActivity implements IIns
         if(inspireRecordPresenter!=null){
             inspireRecordPresenter.cancelUrl();
         }
+        NewPlayInstance.getInstance().release();
     }
 
     Handler mHandler = new Handler() {
@@ -474,6 +481,7 @@ public class ModifyInspireRecordActivity extends ToolbarActivity implements IIns
     public void onMusicStart() {
         startPlayTimer();
         playState = 1;
+        allTime = NewPlayInstance.getInstance().getDuration()+999;
         ivRecordStatus.setImageResource(R.drawable.ic_record_pause);
     }
 
@@ -545,4 +553,5 @@ public class ModifyInspireRecordActivity extends ToolbarActivity implements IIns
         cancelPd();
         showMsg("修改失败！");
     }
+
 }

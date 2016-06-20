@@ -47,6 +47,7 @@ public class MsgSystemActivity extends BaseListActivity<SystemBean> implements I
     @Override
     public void initView() {
         setTitle("系统消息");
+        hideRight();
         tvNoData.setText(nodata);
     }
 

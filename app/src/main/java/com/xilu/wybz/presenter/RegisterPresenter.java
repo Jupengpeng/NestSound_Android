@@ -40,7 +40,9 @@ public class RegisterPresenter extends BasePresenter<IRegisterView>{
             public void onResponse(String response) {
                 super.onResponse(response);
                 UserBean userBean = ParseUtils.getUserBean(context, response);
-                iView.registerSuccess(userBean);
+                if(userBean!=null&&userBean.userid>0){
+                    iView.registerSuccess(userBean);
+                }
             }
 
             @Override

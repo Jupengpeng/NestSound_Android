@@ -41,7 +41,7 @@ public abstract class ToolbarActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         mAppBar = (RelativeLayout) findViewById(R.id.app_bar_layout);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (isHomeActivity || this instanceof LoginActivity || this instanceof ShareActivity || this instanceof RegisterActivity || this instanceof PasswordActivity || this instanceof UserInfoActivity || this instanceof PlayAudioActivity || this instanceof SongAblumActivity) {
+        if (isHomeActivity || this instanceof ShareActivity || this instanceof UserInfoActivity || this instanceof PlayAudioActivity || this instanceof SongAblumActivity) {
             SystemBarHelper.setHeightAndPadding(this, mAppBar);
         }
         View view = findViewById(R.id.view);

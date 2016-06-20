@@ -256,7 +256,7 @@ public class MineActivity extends ToolbarActivity {
                 }else{
                     userBean.gznum-=1;
                 }
-                userFollownum.setText(NumberUtil.format(userBean.gznum));
+                userFollownum.setText("关注:  "+NumberUtil.format(userBean.gznum));
                 break;
             case 1:
                 if(type==0){
@@ -264,7 +264,7 @@ public class MineActivity extends ToolbarActivity {
                 }else{
                     userBean.fansnum-=1;
                 }
-                userFansnum.setText(NumberUtil.format(userBean.fansnum));
+                userFansnum.setText("粉丝:  "+NumberUtil.format(userBean.fansnum));
                 break;
         }
         PrefsUtil.saveUserInfo(context,userBean);

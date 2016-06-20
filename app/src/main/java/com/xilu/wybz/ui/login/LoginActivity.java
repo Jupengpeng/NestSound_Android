@@ -54,6 +54,7 @@ public class LoginActivity extends ToolbarActivity implements ILoginView,TextWat
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
         loginPresenter = new LoginPresenter(this,this);
         loginPresenter.init();
     }
@@ -125,7 +126,6 @@ public class LoginActivity extends ToolbarActivity implements ILoginView,TextWat
     @Override
     public void loginSuccess(UserBean ub) {
         EventBus.getDefault().post(new Event.LoginSuccessEvent(ub));
-        finish();
     }
 
     @Override
@@ -138,10 +138,13 @@ public class LoginActivity extends ToolbarActivity implements ILoginView,TextWat
         cancelPd();
         mloginLogin.setEnabled(true);
     }
-
+    public void onEventMainThread(Event.LoginSuccessEvent event){
+        finish();
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
         loginPresenter.cancelUrl();
     }
 }

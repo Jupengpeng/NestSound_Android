@@ -1,11 +1,14 @@
 package com.xilu.wybz.ui.fragment;
 
 import android.os.Handler;
+import android.support.v7.widget.RecyclerView;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
@@ -15,7 +18,9 @@ import com.xilu.wybz.ui.BrowserActivity;
 import com.xilu.wybz.ui.IView.IActView;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.ImageLoadUtil;
+import com.xilu.wybz.view.SpacesItemDecoration;
 import com.xilu.wybz.view.pull.BaseViewHolder;
+import com.xilu.wybz.view.pull.DividerItemDecoration;
 import com.xilu.wybz.view.pull.PullRecycler;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,12 +41,12 @@ public class ActFragment extends BaseListFragment<ActBean> implements IActView {
     }
     @Override
     public void initView() {
-        recycler.enablePullToRefresh(false);
         time = System.currentTimeMillis();
         findPresenter.getActList(page++);
     }
     @Override
     public void showActList(List<ActBean> actBeanList) {
+        if(mDataList==null)mDataList = new ArrayList<>();
         if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
             mDataList.clear();
         }
@@ -105,13 +110,18 @@ public class ActFragment extends BaseListFragment<ActBean> implements IActView {
         SimpleDraweeView mDraweeView;
         @Bind(R.id.tv_status)
         TextView tvStatus;
+        @Bind(R.id.fl_main)
+        RelativeLayout fl_main;
         public SampleViewHolder(View itemView) {
             super(itemView);
             int itemWidth = DensityUtil.getScreenW(context) - DensityUtil.dip2px(context, 20);
             int itemHeight = itemWidth * 135 / 330 ;
-            int statusHeight = itemHeight*56/135;
-            mDraweeView.setLayoutParams(new FrameLayout.LayoutParams(itemWidth, itemHeight));
-            tvStatus.setLayoutParams(new FrameLayout.LayoutParams(itemWidth, statusHeight));
+            int statusHeight = itemHeight*56/270;
+            mDraweeView.setLayoutParams(new RelativeLayout.LayoutParams(itemWidth, itemHeight));
+            fl_main.setLayoutParams(new LinearLayout.LayoutParams(itemWidth, itemHeight));
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(itemWidth, statusHeight);
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+            tvStatus.setLayoutParams(layoutParams);
         }
 
         @Override
@@ -140,6 +150,9 @@ public class ActFragment extends BaseListFragment<ActBean> implements IActView {
                 showMsg("活动尚未开始！");
             }
         }
+    }
+    protected RecyclerView.ItemDecoration getItemDecoration() {
+        return new SpacesItemDecoration(dip10);
     }
     @Override
     public void onDestroyView() {

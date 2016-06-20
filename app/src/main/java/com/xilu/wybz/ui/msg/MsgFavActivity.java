@@ -48,6 +48,7 @@ public class MsgFavActivity extends BaseListActivity<CollectionBean> implements 
     @Override
     public void initView() {
         setTitle("收藏");
+        hideRight();
         tvNoData.setText(nodata);
         ivNoData.setImageResource(nodatares);
     }
