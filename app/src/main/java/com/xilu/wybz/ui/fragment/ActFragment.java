@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.ActBean;
+import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.ActPresenter;
 import com.xilu.wybz.ui.BrowserActivity;
 import com.xilu.wybz.ui.IView.IActView;
@@ -32,6 +33,7 @@ public class ActFragment extends BaseListFragment<ActBean> implements IActView {
     @Bind(R.id.ll_loading)
     LinearLayout ll_loading;
     long time;
+    int itemWidth,itemHeight;
     private ActPresenter findPresenter;
     @Override
     protected void initPresenter() {
@@ -114,8 +116,8 @@ public class ActFragment extends BaseListFragment<ActBean> implements IActView {
         RelativeLayout fl_main;
         public SampleViewHolder(View itemView) {
             super(itemView);
-            int itemWidth = DensityUtil.getScreenW(context) - DensityUtil.dip2px(context, 20);
-            int itemHeight = itemWidth * 135 / 330 ;
+            itemWidth = DensityUtil.getScreenW(context) - DensityUtil.dip2px(context, 20);
+            itemHeight = itemWidth * 135 / 330 ;
             int statusHeight = itemHeight*56/270;
             mDraweeView.setLayoutParams(new RelativeLayout.LayoutParams(itemWidth, itemHeight));
             fl_main.setLayoutParams(new LinearLayout.LayoutParams(itemWidth, itemHeight));
@@ -136,7 +138,7 @@ public class ActFragment extends BaseListFragment<ActBean> implements IActView {
                 tvStatus.setText("活动尚未开始！");
             }
             String url = actBean.pic;
-            ImageLoadUtil.loadImage(url, mDraweeView);
+            ImageLoadUtil.loadImage(MyCommon.getImageUrl(url,itemWidth,itemHeight), mDraweeView);
         }
 
         @Override

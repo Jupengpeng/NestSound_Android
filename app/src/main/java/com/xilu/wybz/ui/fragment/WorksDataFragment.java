@@ -166,13 +166,16 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
                     }
                     mDataList.add(worksData);
                 }
+                llNoData.setVisibility(View.GONE);
                 recycler.enableLoadMore(true);
                 adapter.notifyDataSetChanged();
                 recycler.onRefreshCompleted();
             }
         },600);
     }
-
+    public void updateList(){
+        recycler.onRefresh();
+    }
     @Override
     public void loadFail() {
         recycler.onRefreshCompleted();
