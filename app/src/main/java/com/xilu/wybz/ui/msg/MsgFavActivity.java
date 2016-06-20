@@ -5,10 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.CollectionBean;
-import com.xilu.wybz.bean.MsgCommentBean;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.MsgCollectionPresenter;
 import com.xilu.wybz.ui.IView.ICollectionView;
@@ -16,12 +16,13 @@ import com.xilu.wybz.ui.base.BaseListActivity;
 import com.xilu.wybz.ui.lyrics.LyricsdisplayActivity;
 import com.xilu.wybz.ui.song.PlayAudioActivity;
 import com.xilu.wybz.utils.DateTimeUtil;
-import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.PullRecycler;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.Bind;
 import butterknife.OnClick;
 
@@ -155,8 +156,9 @@ public class MsgFavActivity extends BaseListActivity<CollectionBean> implements 
     }
     @Override
     protected void onDestroy() {
-        super.onDestroy();
-        if(collectionPresenter!=null)
+        if(collectionPresenter!=null) {
             collectionPresenter.cancelUrl();
+        }
+        super.onDestroy();
     }
 }
