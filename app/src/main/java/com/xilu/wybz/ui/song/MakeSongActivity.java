@@ -157,7 +157,7 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
 //        etWord.setEnabled(false);
 
         registerHeadSetReceiver();
-
+        RecordInstance.getInstance().deleteCacheFile();
         RecordInstance.getInstance().setOnRecordStatuListener(new RecordInstance.OnRecordStatuListener() {
             @Override
             public void onRecordStart() {
@@ -302,6 +302,10 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
         switch (view.getId()) {
 
             case R.id.iv_play:
+                if (status == 0){
+                    showMsg("还未开始录音");
+                    return;
+                }
                 if (status == 1) {
                     showMsg("请先停止录音");
                     return;
