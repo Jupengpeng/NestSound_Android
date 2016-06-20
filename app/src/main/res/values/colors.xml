@@ -9,7 +9,9 @@
     <color name="follow_blue">#3e8eff</color>
     <color name="grey1">#ececec</color>
     <color name="grey2">#cdcdcd</color>
-
+    <color name="alert">#CC0000</color>
+    <color name="confirm">#EEffd705</color>
+    <color name="info">#669900</color>
     <color name="md_btn_selected">#33969696</color>
     <color name="md_btn_selected_dark">#40CBCBCB</color>
     <color name="md_divider_black">#10000000</color>

@@ -545,7 +545,7 @@ public class ModifyInspireRecordActivity extends ToolbarActivity implements IIns
             public void run() {
                 finish();
             }
-        }, 1000);
+        }, 600);
     }
 
     @Override

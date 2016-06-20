@@ -29,6 +29,7 @@ import com.xilu.wybz.ui.IView.ICommentView;
 import com.xilu.wybz.ui.base.BaseListActivity;
 import com.xilu.wybz.utils.DateTimeUtil;
 import com.xilu.wybz.utils.KeyBoardUtil;
+import com.xilu.wybz.utils.NetWorkUtil;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringStyleUtil;
 import com.xilu.wybz.utils.SystemUtils;
@@ -37,6 +38,7 @@ import com.xilu.wybz.view.CircleImageView;
 import com.xilu.wybz.view.dialog.ActionMoreDialog;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.PullRecycler;
+import com.xilu.wybz.view.toast.ToastManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -235,8 +237,11 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
 
     @Override
     public void commentFail() {
-        showMsg("评论失败！");
-
+        if(NetWorkUtil.isNetworkAvailable(context)){
+            showLocationMsg("评论失败！",llMain);
+        }else{
+            showLocationMsg("网络无法连接！",llMain);
+        }
     }
 
     @Override
@@ -252,7 +257,11 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
 
     @Override
     public void delFail() {
-        showMsg("删除失败！");
+        if(NetWorkUtil.isNetworkAvailable(context)){
+            showLocationMsg("删除失败！",llMain);
+        }else{
+            showLocationMsg("网络无法连接！",llMain);
+        }
         if (actionMoreDialog != null)
             actionMoreDialog.dismiss();
     }

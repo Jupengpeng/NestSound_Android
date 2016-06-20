@@ -43,12 +43,6 @@
                 android:clickable="true"
                 android:src="@drawable/point" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:clickable="true"
-                android:src="@drawable/point" />
         </LinearLayout>
     </FrameLayout>
 </RelativeLayout>

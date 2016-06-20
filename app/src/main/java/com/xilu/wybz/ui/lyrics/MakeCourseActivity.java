@@ -23,7 +23,7 @@ public class MakeCourseActivity extends ToolbarActivity implements View.OnClickL
     //定义ViewPager适配器
     ViewPagerAdapter vpAdapter;
     //引导图片资源
-    final int[] pics = {R.drawable.makeword_1, R.drawable.makeword_2, R.drawable.makeword_3, R.drawable.makeword_4};
+    final int[] pics = {R.drawable.makeword_1, R.drawable.makeword_2, R.drawable.makeword_3};
     //底部小点的图片
     ImageView[] points;
     //记录当前选中位置

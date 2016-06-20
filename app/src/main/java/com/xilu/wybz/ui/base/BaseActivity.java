@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -35,6 +36,7 @@ import com.xilu.wybz.utils.ToastUtils;
 import com.xilu.wybz.view.AnimImageView;
 import com.xilu.wybz.view.SystemBarHelper;
 import com.xilu.wybz.view.materialdialogs.MaterialDialog;
+import com.xilu.wybz.view.toast.ToastManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -93,7 +95,12 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void showMsg(String msg) {
         ToastUtils.toast(context, msg);
     }
-
+    protected void showTopMsg(String msg) {
+        ToastManager.toastTop(this, msg);
+    }
+    protected void showLocationMsg(String msg, ViewGroup viewGroup) {
+        ToastManager.toastLocation(this, msg, viewGroup);
+    }
     protected void showNoNetMsg() {
         ToastUtils.toast(context, "网络无法连接");
     }
