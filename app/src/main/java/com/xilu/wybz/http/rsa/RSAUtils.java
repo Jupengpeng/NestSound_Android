@@ -1,9 +1,11 @@
 package com.xilu.wybz.http.rsa;
 
-import android.support.v4.content.res.TypedArrayUtils;
 import android.util.Log;
+
 import com.xilu.wybz.utils.Base64Utils;
+
 import org.apache.commons.lang3.ArrayUtils;
+
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -13,6 +15,7 @@ import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
+
 import javax.crypto.Cipher;
 /**
  * @author June 2016/4/28
@@ -21,8 +24,13 @@ public final class RSAUtils {
     public final static String CHARSET = "UTF-8";
     public final static String RSA_PUCLIC_KEY = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDEIGwePp63orI08aZ+vWKgUJJcN7HDrgVpX9pja2465tzrbdWLif26RhiIn2lVz6QuEWhJwlM7cTMYYH1bacy4Z7e1eOIH6hlp3/TKiZMhjNJbyafuQjBkvs4sQVOaW/G4iKu5W+SFcYdCOiTo6vZe6KD9IbBXaL1P3BkaMHq2kQIDAQAB";
 
+    public final static String RSA_KEY = "";
+
+    private final static int ENCRYPT_MAX = 117;
+    private final static int DECRYPT_MAX = 128;
     /**
      * 随机生成RSA密钥对(默认密钥长度为1024)
+     *
      *
      * @return
      */
@@ -55,6 +63,8 @@ public final class RSAUtils {
      * @param dataStr 需加密数据的byte数据
      * @return 加密后的byte型数据
      */
+
+
     public static String encryptByPublicKey(String dataStr) {
         try {
             byte[] data = dataStr.getBytes(CHARSET);
@@ -63,18 +73,39 @@ public final class RSAUtils {
             // 编码前设定编码方式及密钥
             cipher.init(Cipher.ENCRYPT_MODE, publicKey);
             // 传入编码数据并返回编码结果
-            byte[] dataRturn = null;
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < data.length; i += 100) {
-                byte[] doFinal = cipher.doFinal(ArrayUtils.subarray(data, i, i + 100));
-                sb.append(new String(doFinal));
-                dataRturn = ArrayUtils.addAll(dataRturn, doFinal);
+            byte[] encode = null;
+            for (int i = 0; i < data.length; i += ENCRYPT_MAX) {
+                byte[] doFinal = cipher.doFinal(ArrayUtils.subarray(data, i, i + ENCRYPT_MAX));
+                encode = ArrayUtils.addAll(encode, doFinal);
             }
-            return encodeConvert(dataRturn);
+            return encodeConvert(encode);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e("Exception", e.toString());
             return "";
+        }
+    }
+
+
+    public static byte[] encrypt(String text) {
+        try {
+            byte[] data = text.getBytes(CHARSET);
+            PublicKey publicKey = loadPublicKey(RSA_PUCLIC_KEY);
+            Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+            // 编码前设定编码方式及密钥
+            cipher.init(Cipher.ENCRYPT_MODE, publicKey);
+            // 传入编码数据并返回编码结果
+            byte[] encode = null;
+
+            for (int i = 0; i < data.length; i += ENCRYPT_MAX) {
+                byte[] doFinal = cipher.doFinal(ArrayUtils.subarray(data, i, i + ENCRYPT_MAX));
+                encode = ArrayUtils.addAll(encode, doFinal);
+            }
+            return encode;
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e("Exception", e.toString());
+            return null;
         }
     }
 
@@ -90,12 +121,45 @@ public final class RSAUtils {
             PublicKey publicKey = loadPublicKey(RSA_PUCLIC_KEY);
             Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
             cipher.init(Cipher.DECRYPT_MODE, publicKey);
-            StringBuilder sb = new StringBuilder();
+            byte[] decode = null;
+            for (int i = 0; i < data.length; i += DECRYPT_MAX) {
+                byte[] doFinal = cipher.doFinal(ArrayUtils.subarray(data, i, i + DECRYPT_MAX));
+                decode = ArrayUtils.addAll(decode,doFinal);
+            }
+            return new String(decode);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public static String decryptByPrivateKey(String dataStr) {
+        try {
+            byte[] data = decodeConvert(dataStr);
+            PrivateKey publicKey = loadPrivateKey(RSA_KEY);
+            Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+            cipher.init(Cipher.DECRYPT_MODE, publicKey);
+            byte[] decode = null;
             for (int i = 0; i < data.length; i += 128) {
                 byte[] doFinal = cipher.doFinal(ArrayUtils.subarray(data, i, i + 128));
-                sb.append(new String(doFinal));
+                decode = ArrayUtils.addAll(decode,doFinal);
             }
-            return sb.toString();
+            return new String(decode);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public static String decrypt(byte[] encode) {
+        try {
+            PrivateKey publicKey = loadPrivateKey(RSA_KEY);
+            Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+            cipher.init(Cipher.DECRYPT_MODE, publicKey);
+            byte[] decode = null;
+            for (int i = 0; i < encode.length; i += 128) {
+                byte[] doFinal = cipher.doFinal(ArrayUtils.subarray(encode, i, i + 128));
+                decode = ArrayUtils.addAll(decode,doFinal);
+            }
+            return new String(decode);
         } catch (Exception e) {
             return null;
         }
@@ -111,7 +175,7 @@ public final class RSAUtils {
     public static PublicKey loadPublicKey(String publicKeyStr) throws Exception {
         try {
             byte[] buffer = Base64Utils.decode(publicKeyStr);
-            KeyFactory keyFactory = KeyFactory.getInstance("RSA", "BC");
+            KeyFactory keyFactory = KeyFactory.getInstance("RSA");
             X509EncodedKeySpec keySpec = new X509EncodedKeySpec(buffer);
             return keyFactory.generatePublic(keySpec);
         } catch (NoSuchAlgorithmException e) {
@@ -136,7 +200,7 @@ public final class RSAUtils {
             byte[] buffer = Base64Utils.decode(privateKeyStr);
 //             X509EncodedKeySpec keySpec = new X509EncodedKeySpec(buffer);
             PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(buffer);
-            KeyFactory keyFactory = KeyFactory.getInstance("RSA", "BC");
+            KeyFactory keyFactory = KeyFactory.getInstance("RSA");
             return keyFactory.generatePrivate(keySpec);
         } catch (NoSuchAlgorithmException e) {
             throw new Exception("无此算法");

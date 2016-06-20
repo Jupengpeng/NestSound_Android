@@ -11,6 +11,7 @@ import com.xilu.wybz.http.callback.FileCallBack;
 import com.xilu.wybz.http.rsa.RSAUtils;
 import com.xilu.wybz.utils.PhoneInfoUtil;
 import com.xilu.wybz.utils.PrefsUtil;
+import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.utils.ToastUtils;
 
 import java.io.File;
@@ -31,6 +32,8 @@ public class HttpUtils {
     public HttpUtils(Context context) {
         this.context = context;
         headers.put("APP-Key", "APP-Secret222");
+        headers.put("Content-Type", "application/json");
+        headers.put("charset", "UTF-8");
         headers.put("machine", PhoneInfoUtil.getMachine(context));
     }
 
@@ -38,6 +41,8 @@ public class HttpUtils {
         this.context = context;
         this.httpTag = viewTag;
         headers.put("APP-Key", "APP-Secret222");
+        headers.put("Content-Type", "application/json");
+        headers.put("charset", "UTF-8");
         headers.put("machine", PhoneInfoUtil.getMachine(context));
     }
 
@@ -71,6 +76,7 @@ public class HttpUtils {
 
     //普通post提交
     public void postUrl(String url, Map<String, String> params, Callback stringCallback) {
+
         OkHttpUtils.post()
                 .url(MyHttpClient.BASE_URL + url)
                 .tag(httpTag)
@@ -184,6 +190,14 @@ public class HttpUtils {
         OkHttpUtils.getInstance().cancelTag(url);
     }
 
+    /**
+     * 编码为utf-8.
+     * @param text
+     * @return
+     */
+    protected String stringEncode(String text){
+        return StringUtil.toUtf8(text);
+    }
 
 
 
