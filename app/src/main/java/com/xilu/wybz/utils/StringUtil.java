@@ -126,6 +126,16 @@ public class StringUtil {
                 .replaceAll("&quot;", "\"");
     }
 
+    public static String toUtf8(String str) {
+        try {
+            return new String(str.getBytes("utf-8"), "utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return str;
+    }
+
+
     /**
      * 将字符串用UTF-8编码，发生异常时，抛出异常
      *
@@ -140,11 +150,10 @@ public class StringUtil {
      * @return
      * @throws
      */
-/*
+
     public static String utf8UrlEncode(String str) {
-		return urlEncode(str, CharsetCst.UTF_8);
+		return urlEncode(str, "utf-8");
 	}
-*/
 
     /**
      * 将字符串用指定的编码进行编码，发生异常时，抛出异常
