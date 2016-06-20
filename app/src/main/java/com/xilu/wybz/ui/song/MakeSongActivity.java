@@ -660,10 +660,13 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
                     showMsg("请先停止录音");
                     return true;
                 }
+                if (status == 0){
+                    showMsg("还未开始录音");
+                    return true;
+                }
                 if (StringUtil.isBlank(etTitle.getText().toString())) {
                     showMsg("请填写标题");
                     return true;
-
                 }
                 if (worksData == null) {
                     worksData = new WorksData();
@@ -689,7 +692,7 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
                     showMsg("保存录音文件失败");
                     return true;
                 }
-//
+
                 showPd("正在合成歌曲中");
                 makeSongPresenter.uploadmp3File(FileUtils.getLocalRecordPath(MyCommon.TYPE_MAKE + templateBean.id));
 
@@ -783,6 +786,10 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 
     @Override
     protected void onDestroy() {

@@ -41,6 +41,7 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:clipToPadding="false"
+            android:layerType="software"
             android:scrollbarThumbVertical="@drawable/transparent"
             android:scrollbars="vertical">
 

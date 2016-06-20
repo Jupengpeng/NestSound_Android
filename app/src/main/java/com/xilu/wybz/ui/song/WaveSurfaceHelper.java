@@ -73,29 +73,32 @@ public class WaveSurfaceHelper {
         surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
-                Log.d("surface","surfaceCreated");
+                prepare = true;
+                Log.e("surface","surfaceCreated");
+                calculateViewRect(viewRect = new Rect());
+                adaptationScreen();
+                initPaint();
+                onDrawKernel();
+
             }
 
             @Override
             public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
                 prepare = true;
 
-                Log.d("surface","surfaceChanged");
+                Log.e("surface","surfaceChanged");
                 calculateViewRect(viewRect = new Rect());
-                Log.d("surface",viewRect+":"+viewRect.right);
-
-
                 adaptationScreen();
+                Log.e("surface",viewRect+":"+viewRect.right);
                 initPaint();
-
-                onDrawWave();
+                onDrawWaveByThread();
 
             }
 
             @Override
             public void surfaceDestroyed(SurfaceHolder holder) {
                 prepare = false;
-                Log.d("surface","surfaceDestroyed");
+                Log.e("surface","surfaceDestroyed");
                 isrun = false;
             }
         });
@@ -153,21 +156,26 @@ public class WaveSurfaceHelper {
             public void run() {
                 android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_URGENT_AUDIO);
                 isrun = true;
+                int i=0;
                 while (isrun){
 
-//                    startList();
-                    long start = System.currentTimeMillis();
-                    onDrawWave();
-                    long stop = System.currentTimeMillis();
-                    Log.d("surface","onDraw time:"+(stop -start));
                     try {
 
-                        runThead.sleep(40l);
+                        runThead.sleep(10l);
                     } catch (Exception e){
                         e.printStackTrace();
                     }
 
-                    isrun = false;
+                    long start = System.currentTimeMillis();
+                    onDrawWave();
+                    long stop = System.currentTimeMillis();
+                    Log.e("surface","onDraw time:"+(stop -start));
+
+                    if (i>20){
+
+                        isrun = false;
+                    }
+                    i++;
 
                 }
             }
@@ -417,19 +425,22 @@ public class WaveSurfaceHelper {
 
 
     protected int computeWaveHeight(int height ){
+        int h;
         if (height < 0){
-            height = -height;
+            h = -height;
+        }else {
+            h = height;
         }
 
-        height= (int)Math.sqrt(1.0*height);
+        h= (int)Math.sqrt(1.0*h);
 
-        height= (int)(height*configure.scaleRate);
+        h= (int)(h*configure.scaleRate);
 
-        if (height > configure.waveMAX){
-            height = configure.waveMAX;
+        if (h > configure.waveMAX){
+            h = configure.waveMAX;
         }
-
-        return height;
+        Log.d("d","h:"+height+" h2:"+h);
+        return h;
     }
 
     protected boolean checkRect(Rect r){
@@ -625,9 +636,10 @@ public class WaveSurfaceHelper {
             s = (int)computeValue(s,density);
             textSize = (int)computeValue(textSize,density);
 
+            waveMAX = (int)computeValue(waveMAX,density);
             wave = (int)computeValue(wave,density);
             waveSpace = (int)computeValue(waveSpace,density);
-            scaleRate = (int)computeValue((int)scaleRate,density);
+            scaleRate = scaleRate*density/2;
 
         }
 
