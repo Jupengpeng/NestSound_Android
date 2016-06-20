@@ -44,6 +44,7 @@ public class ImportWordActivity extends BaseListActivity<WorksData> implements I
     @Override
     public void initView() {
         setTitle("我的歌词");
+        hideRight();
         tvNoData.setText(nodata);
         ivNoData.setImageResource(nodatares);
     }

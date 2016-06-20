@@ -51,6 +51,7 @@ public class MsgCommentActivity extends BaseListActivity<MsgCommentBean> impleme
     @Override
     public void initView() {
         setTitle("评论");
+        hideRight();
         tvNoData.setText(nodata);
         ivNoData.setImageResource(nodatares);
     }

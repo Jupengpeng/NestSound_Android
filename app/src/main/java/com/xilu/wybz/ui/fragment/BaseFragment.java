@@ -80,7 +80,7 @@ public abstract class BaseFragment extends Fragment {
         ButterKnife.unbind(this);
     }
     protected void showMsg(String msg){
-        ToastUtils.toast(context,msg);
+        ToastUtils.toast(getActivity(),msg);
     }
     @Override
     public void onDestroy() {

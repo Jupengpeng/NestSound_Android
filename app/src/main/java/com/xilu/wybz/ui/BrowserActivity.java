@@ -25,6 +25,9 @@ import com.xilu.wybz.R;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.utils.PhoneDeviceUtil;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.Bind;
 
 /**
@@ -42,7 +45,7 @@ public class BrowserActivity extends ToolbarActivity {
     private ValueCallback<Uri> mUploadMessage;
     private ValueCallback<Uri[]> mUploadCallbackAboveL;
     private String url = "";
-
+    private List<String> titles;
     public static void toBrowserActivity(Context context, String url) {
         Intent intent = new Intent(context, BrowserActivity.class);
         intent.putExtra("url", url);
@@ -64,6 +67,7 @@ public class BrowserActivity extends ToolbarActivity {
     }
 
     public void initViews() {
+        titles = new ArrayList<>();
         setTitle("网页加载中...");
         initWebView();
     }
@@ -144,6 +148,7 @@ public class BrowserActivity extends ToolbarActivity {
 
         @Override
         public void onReceivedTitle(WebView view, String title) {
+            titles.add(title);
             if (!TextUtils.isEmpty(title)) {
                 setTitle(title);
             }
@@ -230,6 +235,10 @@ public class BrowserActivity extends ToolbarActivity {
         //判断是否可以返回操作
         if (mWebView.canGoBack() && event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
             mWebView.goBack();
+            if(titles.size()>1) {
+                titles.remove(titles.size() - 1);
+                setTitle(titles.get(titles.size() - 1));
+            }
             return true;
         }
         return super.onKeyDown(keyCode, event);

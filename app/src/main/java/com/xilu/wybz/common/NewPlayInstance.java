@@ -15,7 +15,8 @@ public class NewPlayInstance {
     MediaPlayer mediaPlayer;
     IPlayerListener iml;
     static NewPlayInstance mInstance;
-
+    int status = 1;
+    int duration = 0;
     public static NewPlayInstance getInstance() {
         if (mInstance == null) {
             mInstance = new NewPlayInstance();
@@ -26,6 +27,7 @@ public class NewPlayInstance {
     public void startMediaPlay() {
         if (mediaPlayer != null) {
             mediaPlayer.start();
+            status = 3;
         }
         if(iml!=null){
             iml.onMusicPlay();
@@ -34,6 +36,7 @@ public class NewPlayInstance {
 
     public void stopMediaPlay() {
         if (mediaPlayer != null) {
+            status = 1;
             mediaPlayer.stop();
             mediaPlayer.reset();
             mediaPlayer = null;
@@ -46,12 +49,15 @@ public class NewPlayInstance {
     public void pauseMediaPlay() {
         if (mediaPlayer != null) {
             mediaPlayer.pause();
+            status = 2;
         }
         if(iml!=null){
             iml.onMusicPause();
         }
     }
-
+    public long getDuration(){
+        return duration;
+    }
     public void creatMediaPlayer(String file) {
         if (mediaPlayer == null) {
             mediaPlayer = new MediaPlayer();
@@ -60,6 +66,8 @@ public class NewPlayInstance {
                 @Override
                 public void onPrepared(MediaPlayer mp) {
                     mp.start();
+                    duration = mediaPlayer.getDuration();
+                    status = 3;
                     if (iml != null) {
                         iml.onMusicStart();
                     }
@@ -70,6 +78,7 @@ public class NewPlayInstance {
                 public void onCompletion(MediaPlayer mp) {
                     mp.reset();
                     mp.release();
+                    status = 1;
                     mediaPlayer = null;
                     if (iml != null) {
                         iml.onMusicOver();
@@ -79,7 +88,7 @@ public class NewPlayInstance {
             mediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
                 @Override
                 public boolean onError(MediaPlayer mp, int what, int extra) {
-
+                    status = 1;
                     mp.reset();
                     mp.release();
                     mediaPlayer = null;
@@ -97,7 +106,14 @@ public class NewPlayInstance {
             }
         }
     }
-
+    public void release(){
+        if (mediaPlayer != null) {
+            if(status>1)
+                mediaPlayer.stop();
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+    }
     public interface IPlayerListener{
         void onMusicStart();
         void onMusicPause();

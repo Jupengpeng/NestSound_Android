@@ -9,7 +9,7 @@
     <include layout="@layout/view_login_toolbar" />
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:overScrollMode="never"
         >
         <LinearLayout

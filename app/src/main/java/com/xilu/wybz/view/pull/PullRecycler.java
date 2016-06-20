@@ -6,6 +6,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+
 import com.xilu.wybz.R;
 import com.xilu.wybz.view.pull.layoutmanager.ILayoutManager;
 
@@ -15,6 +17,7 @@ import com.xilu.wybz.view.pull.layoutmanager.ILayoutManager;
 public class PullRecycler extends FrameLayout implements SwipeRefreshLayout.OnRefreshListener {
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
+    private LinearLayout llNoData;
     public static final int ACTION_PULL_TO_REFRESH = 1;
     public static final int ACTION_LOAD_MORE_REFRESH = 2;
     public static final int ACTION_IDLE = 0;
@@ -49,6 +52,7 @@ public class PullRecycler extends FrameLayout implements SwipeRefreshLayout.OnRe
         LayoutInflater.from(getContext()).inflate(R.layout.widget_pull_to_refresh, this, true);
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
         mSwipeRefreshLayout.setOnRefreshListener(this);
+        mRecyclerView = (RecyclerView) findViewById(R.id.id_stickynavlayout_innerscrollview);
         mRecyclerView = (RecyclerView) findViewById(R.id.id_stickynavlayout_innerscrollview);
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override

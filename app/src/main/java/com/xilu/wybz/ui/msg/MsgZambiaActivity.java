@@ -50,6 +50,7 @@ public class MsgZambiaActivity extends BaseListActivity<ZambiaBean> implements I
     @Override
     public void initView() {
         setTitle("点赞");
+        hideRight();
         tvNoData.setText(nodata);
         ivNoData.setImageResource(nodatares);
     }
