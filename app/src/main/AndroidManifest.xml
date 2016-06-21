@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.xilu.wybz">
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -21,20 +22,18 @@
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
     <!-- 获取logcat日志 -->
-    <uses-sdk android:minSdkVersion="4"
-        tools:overrideLibrary="com.umeng.socialize.evernote,com.umeng.socialize.pinterest"
-        />
+    <uses-sdk
+        android:minSdkVersion="4"
+        tools:overrideLibrary="com.umeng.socialize.evernote,com.umeng.socialize.pinterest" />
     <application
+        android:name=".ui.MyApplication"
         android:allowBackup="true"
+        android:hardwareAccelerated="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:name=".ui.MyApplication"
         android:largeHeap="true"
-        android:hardwareAccelerated="true"
-        android:theme="@style/AppTheme" >
-        <activity
-            android:name=".ui.SplashActivity"
-            >
+        android:theme="@style/AppTheme">
+        <activity android:name=".ui.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -50,7 +49,7 @@
 
         <activity android:name=".ui.find.FindActivity" />
         <activity android:name=".ui.find.MoreWorkActivity" />
-        <activity android:name=".ui.find.SearchWorksActivity"/>
+        <activity android:name=".ui.find.SearchWorksActivity" />
 
         <activity android:name=".ui.msg.MsgActivity" />
         <activity android:name=".ui.msg.MsgZambiaActivity" />
@@ -66,33 +65,58 @@
         <activity android:name=".ui.setting.SettingFeedActivity" />
         <activity android:name=".ui.setting.ModifyUserInfoActivity" />
 
-        <activity android:name=".ui.login.RegisterActivity" android:theme="@style/LoginTheme" android:windowSoftInputMode="adjustResize|stateHidden" />
-        <activity android:name=".ui.login.ForgetPwdActivity" android:windowSoftInputMode="stateHidden|adjustResize" />
-        <activity android:name=".ui.login.PasswordActivity" android:theme="@style/LoginTheme" android:windowSoftInputMode="adjustResize|stateHidden" />
-        <activity android:name=".ui.login.ModifyPwdActivity" android:windowSoftInputMode="stateHidden|adjustResize" />
-        <activity android:name=".ui.login.LoginActivity" android:theme="@style/LoginTheme" android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".ui.login.RegisterActivity"
+            android:theme="@style/LoginTheme"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".ui.login.ForgetPwdActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name=".ui.login.PasswordActivity"
+            android:theme="@style/LoginTheme"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".ui.login.ModifyPwdActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name=".ui.login.LoginActivity"
+            android:theme="@style/LoginTheme"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
 
-        <activity android:name=".ui.song.MakeHotActivity"  />
-        <activity android:name=".ui.song.NewMakeHotActivity"  />
-        <activity android:name=".ui.song.MakeSongActivity" android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity android:name=".ui.song.ComposeSongActivity"  />
-        <activity android:name=".ui.song.SaveSongActivity" android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity android:name=".ui.song.SearchHotActivity"  />
-        <activity android:name=".ui.song.CommentActivity"  />
-        <activity android:name=".ui.song.SongAblumActivity" android:theme="@style/LoginTheme" />
-        <activity android:name=".ui.song.PlayAudioActivity" android:theme="@style/LoginTheme" />
+        <activity android:name=".ui.song.MakeHotActivity" />
+        <activity android:name=".ui.song.NewMakeHotActivity" />
+        <activity
+            android:name=".ui.song.MakeSongActivity"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity android:name=".ui.song.ComposeSongActivity" />
+        <activity
+            android:name=".ui.song.SaveSongActivity"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity android:name=".ui.song.SearchHotActivity" />
+        <activity android:name=".ui.song.CommentActivity" />
+        <activity
+            android:name=".ui.song.SongAblumActivity"
+            android:theme="@style/PlayTheme" />
+        <activity
+            android:name=".ui.song.PlayAudioActivity"
+            android:theme="@style/PlayTheme" />
 
 
         <activity android:name=".ui.record.InspireRecordActivity" />
-        <activity android:name=".ui.record.SelectPicActivity"  />
-        <activity android:name=".ui.record.ModifyInspireRecordActivity"  />
+        <activity android:name=".ui.record.SelectPicActivity" />
+        <activity android:name=".ui.record.ModifyInspireRecordActivity" />
 
         <activity android:name=".ui.lyrics.LyricsdisplayActivity" />
-        <activity android:name=".ui.lyrics.MakeWordActivity" android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name=".ui.lyrics.MakeWordActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity android:name=".ui.lyrics.ShareActivity" />
         <activity android:name=".ui.lyrics.ImportWordActivity" />
         <activity android:name=".ui.lyrics.MakeCourseActivity" />
-        <activity android:name=".ui.lyrics.SaveWordActivity" android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name=".ui.lyrics.SaveWordActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
 
         <service android:name=".service.PlayService" />
 
@@ -105,14 +129,13 @@
         <activity
             android:name="com.sina.weibo.sdk.component.WeiboSdkBrowser"
             android:configChanges="keyboardHidden|orientation"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="false" >
-        </activity>
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"></activity>
         <!-- QQ -->
         <activity
             android:name="com.tencent.tauth.AuthActivity"
             android:launchMode="singleTask"
-            android:noHistory="true" >
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -126,24 +149,22 @@
             android:name="com.tencent.connect.common.AssistActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
         <service
             android:name=".service.MyPushIntentService"
             android:process=":push" />
 
         <meta-data
             android:name="UMENG_CHANNEL"
-            android:value="${UMENG_CHANNEL_VALUE}" >
-        </meta-data>
+            android:value="${UMENG_CHANNEL_VALUE}"></meta-data>
 
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="56a8610ce0f55afc29001dca" >
-        </meta-data>
+            android:value="56a8610ce0f55afc29001dca"></meta-data>
 
         <meta-data
             android:name="UMENG_MESSAGE_SECRET"
-            android:value="f1168f7bdf262938f02024ea1b1acc92" >
-        </meta-data>
+            android:value="f1168f7bdf262938f02024ea1b1acc92"></meta-data>
     </application>
 
 </manifest>
