@@ -8,7 +8,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -18,7 +17,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.xilu.wybz.R;
 import com.xilu.wybz.adapter.ImageAdapter;
 import com.xilu.wybz.adapter.MusicTalkAdapter;
@@ -29,14 +27,11 @@ import com.xilu.wybz.bean.MainBean;
 import com.xilu.wybz.bean.MusicTalk;
 import com.xilu.wybz.bean.SongAlbum;
 import com.xilu.wybz.bean.WorksData;
-import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.MainPresenter;
 import com.xilu.wybz.ui.BrowserActivity;
 import com.xilu.wybz.ui.IView.IHomeView;
-import com.xilu.wybz.ui.MainTabActivity;
 import com.xilu.wybz.ui.MyApplication;
-import com.xilu.wybz.ui.base.BaseActivity;
 import com.xilu.wybz.ui.base.BasePlayMenuActivity;
 import com.xilu.wybz.ui.lyrics.LyricsdisplayActivity;
 import com.xilu.wybz.ui.song.PlayAudioActivity;
@@ -47,14 +42,11 @@ import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.view.GridSpacingItemDecoration;
 import com.xilu.wybz.view.SpacesItemDecoration;
 
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
-import de.greenrobot.event.EventBus;
 
 public class MainActivity extends BasePlayMenuActivity implements IHomeView {
     @Bind(R.id.recycler_view_recommend)
@@ -230,7 +222,7 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
             public void onItemClick(View view, int position) {
                 if (musicTalkList.size() > 0) {
                     MusicTalk musicTalk = musicTalkList.get(position);
-                    if(musicTalk.type==1) {
+                    if (musicTalk.type == 1) {
                         String playFrom = PrefsUtil.getString("playFrom", context);
                         if (!playFrom.equals(MyCommon.MUSICTALK) || MyApplication.ids.size() == 0) {
                             if (MyApplication.ids.size() > 0)
@@ -241,9 +233,9 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
                         }
 
                         PlayAudioActivity.toPlayAudioActivity(context, musicTalk.itemid, "", MyCommon.MUSICTALK);
-                    }else{
-                        if(StringUtil.isNotBlank(musicTalk.url)){
-                            BrowserActivity.toBrowserActivity(context,musicTalk.url);
+                    } else {
+                        if (StringUtil.isNotBlank(musicTalk.url)) {
+                            BrowserActivity.toBrowserActivity(context, musicTalk.url);
                         }
                     }
                 }
@@ -265,15 +257,15 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
         if (mainBean != null) {
             PrefsUtil.putString("homedata", new Gson().toJson(mainBean), context);
             //banner
-            if (bannerList.size() > 0) bannerList.clear();
-            bannerList.addAll(mainBean.bannerList);
+            if (bannerList != null && bannerList.size() > 0) bannerList.clear();
+            bannerList.addAll(mainBean.getBannerList());
             if (bannerList.size() > 0)
                 setViewPager();
             //推荐作品
             if (recommendWorkList.size() > 0) {
                 recommendWorkList.clear();
             }
-            recommendWorkList.addAll(mainBean.mTuijianList);
+            recommendWorkList.addAll(mainBean.getmTuijianList());
             if (recommendWorkList.size() > 0) {
                 tvRecommendwork.setVisibility(View.VISIBLE);
                 worksAdapter.notifyDataSetChanged();
@@ -282,7 +274,7 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
             if (songAlbumList.size() > 0) {
                 songAlbumList.clear();
             }
-            songAlbumList.addAll(mainBean.recommendsonglist);
+            songAlbumList.addAll(mainBean.getRecommendsonglist());
             if (songAlbumList.size() > 0) {
                 tvSongablum.setVisibility(View.VISIBLE);
                 tvSongablumMore.setVisibility(View.VISIBLE);
@@ -290,14 +282,14 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
             }
             //最新作品
             if (newWorkList.size() > 0) newWorkList.clear();
-            newWorkList.addAll(mainBean.newList);
+            newWorkList.addAll(mainBean.getNewList());
             if (newWorkList.size() > 0) {
                 tvNewwork.setVisibility(View.VISIBLE);
             }
             newworksAdapter.notifyDataSetChanged();
             //乐说
             if (musicTalkList.size() > 0) musicTalkList.clear();
-            musicTalkList.addAll(mainBean.yueshuoList);
+            musicTalkList.addAll(mainBean.getYueshuoList());
             if (musicTalkList.size() > 0) {
                 tvMusictalk.setVisibility(View.VISIBLE);
                 tvMusictalkMore.setVisibility(View.VISIBLE);
@@ -456,9 +448,10 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(presenter!=null)
+        if (presenter != null)
             presenter.cancelUrl();
     }
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         return false;

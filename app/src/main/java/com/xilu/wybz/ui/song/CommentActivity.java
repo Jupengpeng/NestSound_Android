@@ -8,6 +8,7 @@ import android.text.Editable;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +39,6 @@ import com.xilu.wybz.view.CircleImageView;
 import com.xilu.wybz.view.dialog.ActionMoreDialog;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.PullRecycler;
-import com.xilu.wybz.view.toast.ToastManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -292,8 +292,10 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
             loadImage(bean.headerurl, ivHead);
             tvName.setText(bean.nickname);
             tvDate.setText(DateTimeUtil.timestamp2DateTime(bean.createdate));
-            SpannableString s = StringStyleUtil.getWorkCommentStyleStr(bean);
+            SpannableString s = StringStyleUtil.getWorkCommentStyleStr(context,bean);
             tvContent.setText(s);
+            tvContent.setMovementMethod(LinkMovementMethod.getInstance());
+//            itemView.setOnClickListener(null);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
