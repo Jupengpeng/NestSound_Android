@@ -139,8 +139,8 @@ public final class RSAUtils {
             Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
             cipher.init(Cipher.DECRYPT_MODE, publicKey);
             byte[] decode = null;
-            for (int i = 0; i < data.length; i += 128) {
-                byte[] doFinal = cipher.doFinal(ArrayUtils.subarray(data, i, i + 128));
+            for (int i = 0; i < data.length; i += ENCRYPT_MAX) {
+                byte[] doFinal = cipher.doFinal(ArrayUtils.subarray(data, i, i + ENCRYPT_MAX));
                 decode = ArrayUtils.addAll(decode,doFinal);
             }
             return new String(decode);
@@ -155,8 +155,8 @@ public final class RSAUtils {
             Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
             cipher.init(Cipher.DECRYPT_MODE, publicKey);
             byte[] decode = null;
-            for (int i = 0; i < encode.length; i += 128) {
-                byte[] doFinal = cipher.doFinal(ArrayUtils.subarray(encode, i, i + 128));
+            for (int i = 0; i < encode.length; i += ENCRYPT_MAX) {
+                byte[] doFinal = cipher.doFinal(ArrayUtils.subarray(encode, i, i + ENCRYPT_MAX));
                 decode = ArrayUtils.addAll(decode,doFinal);
             }
             return new String(decode);

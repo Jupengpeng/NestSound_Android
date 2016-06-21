@@ -142,7 +142,6 @@ public class MP3Recorder {
         }
 
         initAudioRecorder();
-
         mAudioRecord.startRecording();
 
         new Thread() {
@@ -162,11 +161,8 @@ public class MP3Recorder {
                     }
                     index = 0;
                     synchronized (dataBuffer) {
-
                         dataBuffer.add(calculateRealVolume(cachePCMBuffer, readSize));
                     }
-
-
                     synchronized (dataBuffer) {
                         if (dataBuffer.size() == 0) {
                             continue;
@@ -178,7 +174,6 @@ public class MP3Recorder {
                     if (mOnWaveChangeListener != null) {
                         mOnWaveChangeListener.onChange(buf);
                     }
-
                 }
                 flush();
             }
