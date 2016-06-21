@@ -159,7 +159,7 @@ public class PlayService extends Service {
         Map<String, String> params = new HashMap<>();
         params = new HashMap<>();
         params.put("uid", userId + "");
-        int openmodel = PrefsUtil.getInt("playmodell", PlayService.this);
+        int openmodel = PrefsUtil.getInt("playmodel", PlayService.this);
         params.put("openmodel", (openmodel == 0 ? 1 : openmodel) + "");
         params.put("id", itemid+"");
         params.put("gedanid", gedanid);

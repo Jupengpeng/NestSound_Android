@@ -96,19 +96,11 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("post","onCreate:"+System.currentTimeMillis());
         EventBus.getDefault().register(this);
         lyricsPresenter = new LyricsPresenter(this, this);
         lyricsPresenter.init();
         initData();
     }
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        Log.d("post","onPostCreate:"+System.currentTimeMillis());
-    }
-
 
     public void initView() {
         title = getResources().getString(R.string.app_name);
@@ -242,9 +234,10 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
     @Override
     public void zanSuccess() {
         worksData.isZan = 1 - worksData.isZan;
+        if(worksData.isZan==1)showMsg("点赞成功");
         ivZan.startAnimation(AnimationUtils.loadAnimation(context, R.anim.dianzan_anim));
         ivZan.setImageResource(worksData.isZan == 0 ? R.drawable.ic_lyrics_zan1 : R.drawable.ic_lyrics_zan2);
-        showMsg("点赞成功");
+
     }
 
     @Override
@@ -261,7 +254,6 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
     public void favStart() {
 
     }
-
     @Override
     public void favSuccess() {
         worksData.iscollect = 1 - worksData.iscollect;

@@ -2,7 +2,10 @@ package com.xilu.wybz.utils;
 
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
+import android.view.View;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.xilu.wybz.bean.CommentBean;
@@ -62,5 +65,12 @@ public class StringStyleUtil {
             return content;
         }
         return lyrics;
+    }
+
+    class userNameSpan extends ClickableSpan{
+        @Override
+        public void onClick(View widget) {
+
+        }
     }
 }

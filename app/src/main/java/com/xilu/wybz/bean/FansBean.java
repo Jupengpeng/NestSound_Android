@@ -7,6 +7,7 @@ public class FansBean {
     public int id;
     public int fansid;
     public int uid;
+    public int userid;
     public String fansign;
     public String fansname;
     public String nickname;

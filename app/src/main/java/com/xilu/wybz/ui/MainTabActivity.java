@@ -185,6 +185,19 @@ public class MainTabActivity extends BaseActivity {
         if(oldIndex!=currentIndex) {
             checkedTextViewList.get(oldIndex).setChecked(false);
             checkedTextViewList.get(currentIndex).setChecked(true);
+            if(currentIndex==0) {
+                MainActivity mainActivity = ((MainActivity) manager.getActivity("MAIN"));
+                if (mainActivity != null)
+                    mainActivity.onResume();//刷新MainActivity播放状态
+            }else if(currentIndex==1){
+                FindActivity findActivity = ((FindActivity) manager.getActivity("FIND"));
+                if (findActivity != null)
+                    findActivity.onResume();
+            }else if(currentIndex==2){
+                MsgActivity msgActivity = ((MsgActivity) manager.getActivity("MSG"));
+                if (msgActivity != null)
+                    msgActivity.onResume();
+            }
             viewpager.setCurrentItem(currentIndex, false);
             oldIndex = currentIndex;
         }

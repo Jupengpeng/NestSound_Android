@@ -85,7 +85,11 @@ public class MsgCommentActivity extends BaseListActivity<MsgCommentBean> impleme
             mDataList.clear();
         }
         recycler.enableLoadMore(true);
-        mDataList.addAll(commentBeans);
+        for(MsgCommentBean commentBean:commentBeans){
+            if(commentBean.uid!=PrefsUtil.getUserId(context))
+                mDataList.add(commentBean);
+        }
+
         adapter.notifyDataSetChanged();
         recycler.onRefreshCompleted();
     }
@@ -160,10 +164,10 @@ public class MsgCommentActivity extends BaseListActivity<MsgCommentBean> impleme
         void toWorks(){
             MsgCommentBean msgCommentBean = (MsgCommentBean)itemView.getTag();
             if(msgCommentBean.type==1){
-                if(msgCommentBean.itemid>0)
-                PlayAudioActivity.toPlayAudioActivity(context, msgCommentBean.workid, "", MyCommon.MSG_COMMENT);
+                if(msgCommentBean.workid>0)
+                    PlayAudioActivity.toPlayAudioActivity(context, msgCommentBean.workid, "", MyCommon.MSG_COMMENT);
             }else{
-                if(msgCommentBean.itemid>0)
+                if(msgCommentBean.workid>0)
                     LyricsdisplayActivity.toLyricsdisplayActivity(context, msgCommentBean.workid, 0, msgCommentBean.title);
             }
         }

@@ -218,7 +218,9 @@ public class FollowAndFansActivity extends BaseListActivity<FansBean> implements
 
         @Override
         public void onItemClick(View view, int position) {
-
+            if(PrefsUtil.getUserId(context)!=mDataList.get(position).fansid){
+                UserInfoActivity.ToUserInfoActivity(context,mDataList.get(position).fansid,mDataList.get(position).fansname);
+            }
         }
     }
 
