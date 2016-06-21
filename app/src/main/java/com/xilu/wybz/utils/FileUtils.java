@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.os.Environment;
 import android.util.Log;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.xilu.wybz.common.FileDir;
 
 import java.io.BufferedOutputStream;
@@ -19,7 +20,7 @@ import java.net.URL;
 import java.text.DecimalFormat;
 
 /**
- * Created by Zning on 2015/8/26.
+ * Created by June on 2015/8/26.
  */
 public class FileUtils {
 
@@ -31,7 +32,6 @@ public class FileUtils {
     public static final String LOCAL_RECORD = "/local/record";
     //采用频率
     //44100是目前的标准，但是某些设备仍然支持22050，16000，11025
-    public final static int AUDIO_SAMPLE_RATE = 44100;  //44.1KHz,普遍使用的频率
     public static final int SIZETYPE_B = 1;// 获取文件大小单位为B的double值
     public static final int SIZETYPE_KB = 2;// 获取文件大小单位为KB的double值
     public static final int SIZETYPE_MB = 3;// 获取文件大小单位为MB的double值
@@ -166,6 +166,7 @@ public class FileUtils {
         FileUtils.delFile(new File(FileDir.apkDir));
         FileUtils.delFile(new File(FileDir.picDir));
         FileUtils.delFile(new File(FileDir.mp3Dir));
+        Fresco.getImagePipeline().clearDiskCaches();
     }
 
     public static String getSDPath() {

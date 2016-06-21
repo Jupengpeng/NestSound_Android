@@ -112,7 +112,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
-                        android:src="@drawable/ic_play_comment" />
+                        android:src="@drawable/ic_music_reply_full" />
 
                     <TextView
                         android:id="@+id/tv_comment_num"

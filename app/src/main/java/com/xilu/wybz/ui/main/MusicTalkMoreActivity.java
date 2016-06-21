@@ -14,6 +14,7 @@ import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.MusicTalkMorePresenter;
 import com.xilu.wybz.presenter.SongablumMorePresenter;
+import com.xilu.wybz.ui.BrowserActivity;
 import com.xilu.wybz.ui.IView.IMusicTalkMoreView;
 import com.xilu.wybz.ui.IView.ISongablumMoreView;
 import com.xilu.wybz.ui.MyApplication;
@@ -21,6 +22,7 @@ import com.xilu.wybz.ui.base.BaseListActivity;
 import com.xilu.wybz.ui.song.PlayAudioActivity;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.PrefsUtil;
+import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.view.GridSpacingItemDecoration;
 import com.xilu.wybz.view.SpacesItemDecoration;
 import com.xilu.wybz.view.pull.BaseViewHolder;
@@ -139,16 +141,23 @@ public class MusicTalkMoreActivity extends BaseListActivity<MusicTalk> implement
     }
     public void toPlayPos(int position){
         if (mDataList.size() > 0) {
-            String playFrom = PrefsUtil.getString("playFrom",context);
-            if(!playFrom.equals(MyCommon.MUSICTALK_MORE)|| MyApplication.ids.size()==0){
-                if (MyApplication.ids.size() > 0)
-                    MyApplication.ids.clear();
-                for (MusicTalk worksData : mDataList) {
-                    MyApplication.ids.add(worksData.itemid);
+            MusicTalk musicTalk = mDataList.get(position);
+            if(musicTalk.type==1) {
+                String playFrom = PrefsUtil.getString("playFrom", context);
+                if (!playFrom.equals(MyCommon.MUSICTALK) || MyApplication.ids.size() == 0) {
+                    if (MyApplication.ids.size() > 0)
+                        MyApplication.ids.clear();
+                    for (MusicTalk worksData : mDataList) {
+                        MyApplication.ids.add(worksData.itemid);
+                    }
+                }
+
+                PlayAudioActivity.toPlayAudioActivity(context, musicTalk.itemid, "", MyCommon.MUSICTALK);
+            }else{
+                if(StringUtil.isNotBlank(musicTalk.url)){
+                    BrowserActivity.toBrowserActivity(context,musicTalk.url);
                 }
             }
-            MusicTalk worksData = mDataList.get(position);
-            PlayAudioActivity.toPlayAudioActivity(context, worksData.itemid, "", MyCommon.MUSICTALK_MORE);
         }
     }
 

@@ -17,7 +17,6 @@ import com.xilu.wybz.view.pull.layoutmanager.ILayoutManager;
 public class PullRecycler extends FrameLayout implements SwipeRefreshLayout.OnRefreshListener {
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
-    private LinearLayout llNoData;
     public static final int ACTION_PULL_TO_REFRESH = 1;
     public static final int ACTION_LOAD_MORE_REFRESH = 2;
     public static final int ACTION_IDLE = 0;

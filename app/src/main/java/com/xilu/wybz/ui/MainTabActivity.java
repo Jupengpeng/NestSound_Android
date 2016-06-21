@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.CheckedTextView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.umeng.analytics.MobclickAgent;
@@ -30,6 +31,7 @@ import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.utils.VersionUtil;
 import com.xilu.wybz.view.IndexViewPager;
 import com.xilu.wybz.view.MoreWindow;
+import com.xilu.wybz.view.toast.ToastManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +54,8 @@ public class MainTabActivity extends BaseActivity {
     CheckedTextView tvMsg;
     @Bind(R.id.tv_mine)
     CheckedTextView tvMine;
+    @Bind(R.id.ll_bottom)
+    LinearLayout llBottom;
     List<CheckedTextView> checkedTextViewList;
     ArrayList<View> list;
     MoreWindow mMoreWindow;

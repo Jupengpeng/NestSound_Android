@@ -8,13 +8,17 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 
+import com.facebook.cache.disk.DiskCacheConfig;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.umeng.message.PushAgent;
 import com.xilu.wybz.R;
+import com.xilu.wybz.common.FileDir;
 import com.xilu.wybz.common.ZnImageLoader;
 import com.xilu.wybz.ui.MainTabActivity;
 import com.xilu.wybz.ui.SplashActivity;
@@ -28,6 +32,7 @@ import com.xilu.wybz.ui.main.MainActivity;
 import com.xilu.wybz.ui.mine.MineActivity;
 import com.xilu.wybz.ui.mine.UserInfoActivity;
 import com.xilu.wybz.ui.msg.MsgActivity;
+import com.xilu.wybz.ui.song.MakeSongActivity;
 import com.xilu.wybz.ui.song.PlayAudioActivity;
 import com.xilu.wybz.ui.song.SongAblumActivity;
 import com.xilu.wybz.utils.NetWorkUtil;
@@ -35,7 +40,9 @@ import com.xilu.wybz.utils.ToastUtils;
 import com.xilu.wybz.view.AnimImageView;
 import com.xilu.wybz.view.SystemBarHelper;
 import com.xilu.wybz.view.materialdialogs.MaterialDialog;
+import com.xilu.wybz.view.toast.ToastManager;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,6 +67,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         context = this;
         adaptTheme(true);
+        if(this instanceof MakeSongActivity){
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        }
         setContentView(getLayoutRes());
         ButterKnife.bind(this);
         isChenjin = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
@@ -93,7 +103,12 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void showMsg(String msg) {
         ToastUtils.toast(context, msg);
     }
-
+    protected void showTopMsg(String msg) {
+        ToastManager.toastTop(this, msg);
+    }
+    protected void showLocationMsg(String msg, ViewGroup viewGroup) {
+        ToastManager.toastLocation(this, msg, viewGroup);
+    }
     protected void showNoNetMsg() {
         ToastUtils.toast(context, "网络无法连接");
     }

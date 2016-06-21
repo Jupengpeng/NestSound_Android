@@ -274,7 +274,7 @@ public class MineActivity extends ToolbarActivity {
         WorksData worksData = event.getWorksData();
         int type = event.getType();
         if (event.getChange() == 0)
-            (pagerAdapter.getFragment(type)).addItem(worksData);
+            (pagerAdapter.getFragment(type)).updateList();
         else if (event.getChange() == 1)
             (pagerAdapter.getFragment(type)).removeData(worksData);
         else if (event.getChange() == 2)

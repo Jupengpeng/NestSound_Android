@@ -43,6 +43,7 @@ import com.xilu.wybz.ui.song.PlayAudioActivity;
 import com.xilu.wybz.ui.song.SongAblumActivity;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.PrefsUtil;
+import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.view.GridSpacingItemDecoration;
 import com.xilu.wybz.view.SpacesItemDecoration;
 
@@ -228,16 +229,23 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
             @Override
             public void onItemClick(View view, int position) {
                 if (musicTalkList.size() > 0) {
-                    String playFrom = PrefsUtil.getString("playFrom", context);
-                    if (!playFrom.equals(MyCommon.MUSICTALK) || MyApplication.ids.size() == 0) {
-                        if (MyApplication.ids.size() > 0)
-                            MyApplication.ids.clear();
-                        for (MusicTalk worksData : musicTalkList) {
-                            MyApplication.ids.add(worksData.itemid);
+                    MusicTalk musicTalk = musicTalkList.get(position);
+                    if(musicTalk.type==1) {
+                        String playFrom = PrefsUtil.getString("playFrom", context);
+                        if (!playFrom.equals(MyCommon.MUSICTALK) || MyApplication.ids.size() == 0) {
+                            if (MyApplication.ids.size() > 0)
+                                MyApplication.ids.clear();
+                            for (MusicTalk worksData : musicTalkList) {
+                                MyApplication.ids.add(worksData.itemid);
+                            }
+                        }
+
+                        PlayAudioActivity.toPlayAudioActivity(context, musicTalk.itemid, "", MyCommon.MUSICTALK);
+                    }else{
+                        if(StringUtil.isNotBlank(musicTalk.url)){
+                            BrowserActivity.toBrowserActivity(context,musicTalk.url);
                         }
                     }
-                    MusicTalk worksData = musicTalkList.get(position);
-                    PlayAudioActivity.toPlayAudioActivity(context, worksData.itemid, "", MyCommon.MUSICTALK);
                 }
             }
         });
