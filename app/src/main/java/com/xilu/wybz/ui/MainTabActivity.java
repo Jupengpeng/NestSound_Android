@@ -54,8 +54,6 @@ public class MainTabActivity extends BaseActivity {
     CheckedTextView tvMsg;
     @Bind(R.id.tv_mine)
     CheckedTextView tvMine;
-    @Bind(R.id.ll_bottom)
-    LinearLayout llBottom;
     List<CheckedTextView> checkedTextViewList;
     ArrayList<View> list;
     MoreWindow mMoreWindow;

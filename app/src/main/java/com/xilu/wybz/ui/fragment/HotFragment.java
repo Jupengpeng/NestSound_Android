@@ -254,6 +254,12 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
                     toPlayMusic(position, pbPlay, ivPlay);
                 }
             });
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onItemClick(v,position);
+                }
+            });
         }
 
         @Override

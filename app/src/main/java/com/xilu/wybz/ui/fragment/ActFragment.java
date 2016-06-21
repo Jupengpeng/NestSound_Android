@@ -149,6 +149,12 @@ public class ActFragment extends BaseListFragment<ActBean> implements IActView {
             }
             String url = actBean.pic;
             ImageLoadUtil.loadImage(MyCommon.getImageUrl(url, itemWidth, itemHeight), mDraweeView);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onItemClick(v,position);
+                }
+            });
         }
 
         @Override

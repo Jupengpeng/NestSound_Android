@@ -294,6 +294,12 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
             tvDate.setText(DateTimeUtil.timestamp2DateTime(bean.createdate));
             SpannableString s = StringStyleUtil.getWorkCommentStyleStr(bean);
             tvContent.setText(s);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onItemClick(v,position);
+                }
+            });
         }
 
         @Override

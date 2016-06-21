@@ -208,6 +208,12 @@ public class FollowAndFansActivity extends BaseListActivity<FansBean> implements
                     mFollowPresenter.follow(fansBean.fansid);
                 }
             });
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onItemClick(v,position);
+                }
+            });
         }
 
         @Override

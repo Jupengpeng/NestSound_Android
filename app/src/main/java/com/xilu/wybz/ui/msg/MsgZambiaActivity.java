@@ -149,6 +149,12 @@ public class MsgZambiaActivity extends BaseListActivity<ZambiaBean> implements I
             loadImage(zanbiaBean.pic, ivCover);
             String headUrl = zanbiaBean.headerurl;
             loadImage(headUrl, ivHead);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onItemClick(v,position);
+                }
+            });
         }
         @Override
         public void onItemClick(View view, int position) {

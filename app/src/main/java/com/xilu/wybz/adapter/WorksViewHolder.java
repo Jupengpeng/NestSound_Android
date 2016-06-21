@@ -76,6 +76,19 @@ public class WorksViewHolder extends com.xilu.wybz.view.pull.BaseViewHolder {
         tvLookNum.setText(NumberUtil.format(worksData.looknum));
         tvZanNum.setText(NumberUtil.format(worksData.zannum));
         tvFovNum.setText(NumberUtil.format(worksData.fovnum));
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onItemClick(v,position);
+            }
+        });
+        itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                onItemLongClick(v,position);
+                return false;
+            }
+        });
     }
 
     public void onItemLongClick(View view, int position) {

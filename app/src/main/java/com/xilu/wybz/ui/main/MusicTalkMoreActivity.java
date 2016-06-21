@@ -132,6 +132,12 @@ public class MusicTalkMoreActivity extends BaseListActivity<MusicTalk> implement
         public void onBindViewHolder(int position) {
             String pic = mDataList.get(position).pic;
             loadImage(pic, mDraweeView);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onItemClick(v,position);
+                }
+            });
         }
 
         @Override

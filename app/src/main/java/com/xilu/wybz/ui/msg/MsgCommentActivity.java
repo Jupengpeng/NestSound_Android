@@ -192,6 +192,12 @@ public class MsgCommentActivity extends BaseListActivity<MsgCommentBean> impleme
                 loadImage("res:///"+R.drawable.ic_nodata_pic,ivCover);
                 tvAuthor.setText("抱歉，此作品已被删除！");
             }
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onItemClick(v,position);
+                }
+            });
         }
 
         @Override

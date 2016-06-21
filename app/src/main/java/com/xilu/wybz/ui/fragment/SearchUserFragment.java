@@ -142,6 +142,12 @@ public class SearchUserFragment extends BaseListFragment<FansBean> implements IS
                 loadImage(url, ivHead);
             }
             if(StringUtil.isNotBlank(fansBean.nickname))tvName.setText(fansBean.nickname);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onItemClick(v,position);
+                }
+            });
         }
 
         @Override

@@ -149,6 +149,12 @@ public class MsgFavActivity extends BaseListActivity<CollectionBean> implements 
             loadImage(collectionBean.pic, ivCover);
             String headUrl = collectionBean.headerurl;
             loadImage(headUrl, ivHead);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onItemClick(v,position);
+                }
+            });
         }
         @Override
         public void onItemClick(View view, int position) {

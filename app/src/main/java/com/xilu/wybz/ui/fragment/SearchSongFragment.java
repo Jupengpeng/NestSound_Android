@@ -147,6 +147,12 @@ public class SearchSongFragment extends BaseListFragment<WorksData> implements I
             tvLookNum.setText(NumberUtil.format(worksData.looknum));
             tvZanNum.setText(NumberUtil.format(worksData.zannum));
             tvFovNum.setText(NumberUtil.format(worksData.fovnum));
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onItemClick(v,position);
+                }
+            });
         }
 
         @Override

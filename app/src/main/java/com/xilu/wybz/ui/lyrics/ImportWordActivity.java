@@ -139,6 +139,12 @@ public class ImportWordActivity extends BaseListActivity<WorksData> implements I
             tvAuthor.setText(worksData.author);
             String pic = worksData.getPic();
             loadImage(pic, ivCover);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onItemClick(v,position);
+                }
+            });
         }
 
         @Override

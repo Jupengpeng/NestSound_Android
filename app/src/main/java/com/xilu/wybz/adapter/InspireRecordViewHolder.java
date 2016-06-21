@@ -126,6 +126,19 @@ public class InspireRecordViewHolder extends com.xilu.wybz.view.pull.BaseViewHol
             ivFrequency.setImageResource(R.drawable.user_frequency_yellow);
             ivCover.setImageResource(R.drawable.transparent);
         }
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onItemClick(v,position);
+            }
+        });
+        itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                onItemLongClick(v,position);
+                return false;
+            }
+        });
     }
     public void onItemLongClick(View view, int position) {
         if(onDeleteListener==null)return;

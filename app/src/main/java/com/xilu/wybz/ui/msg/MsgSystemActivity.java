@@ -151,6 +151,12 @@ public class MsgSystemActivity extends BaseListActivity<SystemBean> implements I
             }
             tvUserName.setText("音巢音乐");
             tvTime.setText(DateTimeUtil.timestamp2DateTime(systemBean.createdate));
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onItemClick(v,position);
+                }
+            });
         }
 
         @Override
