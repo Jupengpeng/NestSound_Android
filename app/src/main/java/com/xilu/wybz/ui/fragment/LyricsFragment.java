@@ -87,7 +87,7 @@ public class LyricsFragment extends BaseFragment implements ISongView {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                songPresenter.getWorkList(1);
+                songPresenter.getWorkList(2);
             }
         });
     }
