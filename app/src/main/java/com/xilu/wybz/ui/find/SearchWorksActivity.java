@@ -23,7 +23,6 @@ import com.xilu.wybz.ui.fragment.SearchLyricsFragment;
 import com.xilu.wybz.ui.fragment.SearchSongFragment;
 import com.xilu.wybz.ui.fragment.SearchUserFragment;
 import com.xilu.wybz.utils.KeyBoardUtil;
-import com.xilu.wybz.view.KeyboardListenLayout;
 
 import butterknife.Bind;
 import butterknife.OnClick;

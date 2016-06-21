@@ -1,7 +1,10 @@
 package com.xilu.wybz.utils;
 
+import android.content.Context;
+import android.graphics.Color;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextPaint;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
@@ -11,6 +14,8 @@ import com.google.gson.reflect.TypeToken;
 import com.xilu.wybz.bean.CommentBean;
 import com.xilu.wybz.bean.MsgCommentBean;
 import com.xilu.wybz.bean.WorksData;
+import com.xilu.wybz.ui.mine.UserInfoActivity;
+
 import java.util.List;
 
 public class StringStyleUtil {
@@ -31,11 +36,12 @@ public class StringStyleUtil {
         SpannableString spannableString = new SpannableString(comment);
 
         spannableString.setSpan(new ForegroundColorSpan(0xff539ac2),2,2+nickName.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+
         return spannableString;
     }
 
 
-    public static SpannableString getWorkCommentStyleStr(CommentBean commentBean) {
+    public static SpannableString getWorkCommentStyleStr(Context context, CommentBean commentBean) {
         String nickName = commentBean.target_nickname;
         if (StringUtil.isBlank(nickName)){
             return new SpannableString(commentBean.getComment());
@@ -43,7 +49,9 @@ public class StringStyleUtil {
         String comment ="回复" + nickName+"："+commentBean.getComment();
         SpannableString spannableString = new SpannableString(comment);
 
-        spannableString.setSpan(new ForegroundColorSpan(0xff539ac2),2,2+nickName.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+//        spannableString.setSpan(new ForegroundColorSpan(0xff539ac2),2,2+nickName.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+
+        spannableString.setSpan(new UserNameClickableSpan(context,commentBean),2,2+nickName.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         return spannableString;
     }
 
@@ -67,10 +75,27 @@ public class StringStyleUtil {
         return lyrics;
     }
 
-    class userNameSpan extends ClickableSpan{
+
+    public static class UserNameClickableSpan extends ClickableSpan{
+        public Context context;
+        CommentBean comment;
+        public UserNameClickableSpan(Context context,CommentBean comment) {
+            this.context = context;
+            this.comment = comment;
+        }
+
+        @Override
+        public void updateDrawState(TextPaint ds) {
+            super.updateDrawState(ds);
+            ds.setColor(Color.parseColor("#ff539ac2"));
+            ds.setUnderlineText(false);
+            ds.setAntiAlias(true);
+        }
+
         @Override
         public void onClick(View widget) {
-
+            UserInfoActivity.ToUserInfoActivity(context,comment.target_uid,comment.target_nickname);
         }
+
     }
 }
