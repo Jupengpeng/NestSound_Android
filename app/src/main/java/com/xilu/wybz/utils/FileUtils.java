@@ -20,7 +20,7 @@ import java.net.URL;
 import java.text.DecimalFormat;
 
 /**
- * Created by Zning on 2015/8/26.
+ * Created by June on 2015/8/26.
  */
 public class FileUtils {
 

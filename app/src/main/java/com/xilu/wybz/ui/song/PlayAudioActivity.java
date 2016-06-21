@@ -409,7 +409,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
                     if (shareDialog == null) {
                         String shareTitle = worksData.title;
                         String shareAuthor = worksData.author;
-                        String shareLink = worksData.shareurl;
+                        String shareLink = worksData.shareurl+"?id="+worksData.itemid;
                         String sharePic = worksData.pic;
                         String playurl = worksData.playurl;
                         String shareContent = "我在音巢APP淘到一首好听的歌，快来看看有没有你喜欢的原创style 《" + shareTitle + "》 ▷" + shareLink + " (@音巢音乐)";

@@ -137,7 +137,7 @@
                             android:layout_height="match_parent"
                             android:paddingLeft="10dp"
                             android:paddingRight="10dp"
-                            android:src="@drawable/ic_lyrics_reply" />
+                            android:src="@drawable/ic_lyrics_reply_full" />
 
                         <TextView
                             android:id="@+id/tv_comment_num"
