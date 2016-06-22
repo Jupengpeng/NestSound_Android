@@ -320,6 +320,8 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
                 Log.e("lyrics", lyrics);
                 String[] lyricss = lyrics.split("\\n");
                 lyricsList = Arrays.asList(lyricss);
+            }else{
+                lyricsList = new ArrayList<>();
             }
             updateCommentNum();
             playLyricsAdapter = new PlayLyricsAdapter(context, lyricsList);
@@ -346,7 +348,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
         File file = new File(FileDir.blurPic);
         if (!file.exists()) file.mkdirs();
 
-        String path = FileDir.blurPic + MD5Util.getMD5String(worksData.pic) + ".png";
+        String path = FileDir.blurPic + MD5Util.getMD5String(worksData.pic);
         if (new File(path).exists()) {//加载本地
             blurImageView.setImageBitmap(BitmapUtils.getSDCardImg(path));
         } else {//下载并保存到本地
@@ -467,7 +469,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
                 break;
             case R.id.iv_mode:
                 int mode = PrefsUtil.getInt("playmodel", context);
-                ivMode.setImageResource(mode == MyCommon.PLAY_MODEL_ORDER ? R.drawable.ic_play_order : R.drawable.ic_play_loop);
+                ivMode.setImageResource(mode == MyCommon.PLAY_MODEL_ORDER ? R.drawable.ic_play_loop : R.drawable.ic_play_order);
                 PrefsUtil.putInt("playmodel", mode == MyCommon.PLAY_MODEL_ORDER ? MyCommon.PLAY_MODEL_LOOP : MyCommon.PLAY_MODEL_ORDER, context);
                 break;
             case R.id.iv_hot:
@@ -616,6 +618,8 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
                 ivPlay.setEnabled(true);
                 playSeekBar.setMax(musicBinder.getDuration());
                 ivPlay.setImageResource(R.drawable.ic_play_pause);
+                if(musicBinder!=null)
+                tvAlltime.setText(FormatHelper.formatDuration(musicBinder.getDuration()/1000));
                 startTimer();
                 break;
             case MyCommon.PP_STOP://停止

@@ -95,6 +95,8 @@ public abstract class BasePlayMenuActivity extends ToolbarActivity {
         super.onResume();
         if (PlayMediaInstance.getInstance().status == 3) {
             startAnimal();
+        }else{
+            stopAnimal();
         }
     }
 

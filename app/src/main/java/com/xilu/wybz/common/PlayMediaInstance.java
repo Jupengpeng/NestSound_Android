@@ -123,6 +123,7 @@ public class PlayMediaInstance {
 
     public void release(){
         if (mediaPlayer != null) {
+            status = 1;
             if(status>1)
                 mediaPlayer.stop();
             mediaPlayer.release();

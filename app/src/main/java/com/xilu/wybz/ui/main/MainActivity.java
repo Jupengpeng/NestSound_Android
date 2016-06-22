@@ -37,6 +37,7 @@ import com.xilu.wybz.ui.lyrics.LyricsdisplayActivity;
 import com.xilu.wybz.ui.song.PlayAudioActivity;
 import com.xilu.wybz.ui.song.SongAblumActivity;
 import com.xilu.wybz.utils.DensityUtil;
+import com.xilu.wybz.utils.FormatHelper;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.view.GridSpacingItemDecoration;
@@ -444,7 +445,6 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
                 break;
         }
     }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
