@@ -298,7 +298,7 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
             new File(filePath).mkdirs();
         }
         String fileName = MD5Util.getMD5String(tb.mp3);
-        playPath = filePath+fileName+".mp3";
+        playPath = filePath+fileName;
         if (new File(playPath).exists()) {
             PlayBanZouInstance.getInstance().setData(playPath, tb.id);
         } else {

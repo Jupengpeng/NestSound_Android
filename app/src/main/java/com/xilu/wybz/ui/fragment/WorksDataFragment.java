@@ -180,7 +180,6 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
         }, 600);
     }
 
-    public void updateList() {
     public void updateList(){
         if (recycler == null){
             return;

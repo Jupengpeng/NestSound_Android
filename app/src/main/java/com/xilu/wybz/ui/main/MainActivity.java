@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -50,6 +51,8 @@ import butterknife.Bind;
 import butterknife.OnClick;
 
 public class MainActivity extends BasePlayMenuActivity implements IHomeView {
+    @Bind(R.id.swipeRefreshLayout)
+    SwipeRefreshLayout swipeRefreshLayout;
     @Bind(R.id.recycler_view_recommend)
     RecyclerView recyclerViewRecommend;
     @Bind(R.id.recycler_view_songalbum)
@@ -243,12 +246,17 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
         recyclerViewMusictalk.setAdapter(musicTalkAdapter);
         //加载本地数据
         String homedata = PrefsUtil.getString("homedata", context);
-        ;
         if (!TextUtils.isEmpty(homedata)) {
             MainBean mainBean = new Gson().fromJson(homedata, MainBean.class);
             showMainData(mainBean);
         }
         presenter.getHomeData();
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                presenter.getHomeData();
+            }
+        });
     }
 
     @Override
@@ -398,7 +406,7 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
 
     @Override
     public void loadDataFinish() {
-
+        if(swipeRefreshLayout!=null)swipeRefreshLayout.setRefreshing(false);
     }
 
     Handler mHandler = new Handler() {
