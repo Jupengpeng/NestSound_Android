@@ -261,7 +261,7 @@ public class ModifyInspireRecordActivity extends ToolbarActivity implements IIns
             List<String> picss = Arrays.asList(pics);
             for (String str : picss) {
                 PhotoBean photoBean = new PhotoBean();
-                photoBean.path = (str.startsWith("http") ? "" : MyHttpClient.QINIU_URL) + str;
+                photoBean.path = str.startsWith(MyHttpClient.QINIU_URL) ? str.replace(MyHttpClient.QINIU_URL,"") : str;
                 list.add(photoBean);
             }
             if (list.size() < 9) {
@@ -551,7 +551,6 @@ public class ModifyInspireRecordActivity extends ToolbarActivity implements IIns
     @Override
     public void pubFail() {
         cancelPd();
-        showMsg("修改失败！");
     }
 
 }

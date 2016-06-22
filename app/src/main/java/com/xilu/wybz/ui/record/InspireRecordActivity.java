@@ -481,4 +481,5 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
         cancelPd();
         showMsg("发布失败！");
     }
+
 }

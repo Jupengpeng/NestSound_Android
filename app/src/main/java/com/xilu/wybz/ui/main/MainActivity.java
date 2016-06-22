@@ -170,7 +170,7 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
                                 MyApplication.ids.clear();
                             for (WorksData workData : recommendWorkList) {
                                 if (workData.status == 1) {
-                                    MyApplication.ids.add(worksData.getItemid());
+                                    MyApplication.ids.add(workData.getItemid());
                                 }
                             }
                         }
@@ -205,7 +205,7 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
                                 MyApplication.ids.clear();
                             for (WorksData workData : newWorkList) {
                                 if (workData.status == 1) {
-                                    MyApplication.ids.add(worksData.getItemid());
+                                    MyApplication.ids.add(workData.getItemid());
                                 }
                             }
                         }
@@ -228,8 +228,8 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
                         if (!playFrom.equals(MyCommon.MUSICTALK) || MyApplication.ids.size() == 0) {
                             if (MyApplication.ids.size() > 0)
                                 MyApplication.ids.clear();
-                            for (MusicTalk worksData : musicTalkList) {
-                                MyApplication.ids.add(worksData.itemid);
+                            for (MusicTalk workData : musicTalkList) {
+                                MyApplication.ids.add(workData.itemid);
                             }
                         }
 
@@ -258,7 +258,7 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
         if (mainBean != null) {
             PrefsUtil.putString("homedata", new Gson().toJson(mainBean), context);
             //banner
-            if (bannerList != null && bannerList.size() > 0) bannerList.clear();
+            if (bannerList.size() > 0) bannerList.clear();
             bannerList.addAll(mainBean.getBannerList());
             if (bannerList.size() > 0)
                 setViewPager();

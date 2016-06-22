@@ -52,6 +52,7 @@ public class PlayService extends Service {
     String gedanid;
     TelephonyManager tmgr;
     HttpUtils httpUtils;
+
     @Override
     public IBinder onBind(Intent intent) {
         return mBinder;
@@ -89,16 +90,13 @@ public class PlayService extends Service {
             @Override
             public void onOver() {
                 EventBus.getDefault().post(new Event.PPStatusEvent(MyCommon.PP_OVER));
-                switch (MyCommon.getFromMusicType(from)) {
-                    case 1://列表只有一首 无线循环
-                        PlayMediaInstance.getInstance().stopMediaPlay();
-                        PlayMediaInstance.getInstance().startMediaPlay(currMdb.getPlayurl());
-                        break;
-                    case 2:
-                        if (PrefsUtil.getInt("playmodel", PlayService.this) == MyCommon.PLAY_MODEL_LOOP) {
-                            PlayMediaInstance.getInstance().stopMediaPlay();
-                            PlayMediaInstance.getInstance().startMediaPlay(currMdb.getPlayurl());
-                        } else {
+                if (PrefsUtil.getInt("playmodel", PlayService.this) == MyCommon.PLAY_MODEL_LOOP||MyCommon.getFromMusicType(from)==1) {
+                    //单曲循环或者列表只有一首歌
+                    PlayMediaInstance.getInstance().stopMediaPlay();
+                    PlayMediaInstance.getInstance().startMediaPlay(currMdb.getPlayurl());
+                } else {
+                    switch (MyCommon.getFromMusicType(from)) {
+                        case 2:
                             //下一首 从本地的ids里面取
                             position++;
                             if (position == MyApplication.ids.size()) {
@@ -106,16 +104,11 @@ public class PlayService extends Service {
                             }
                             if (MyApplication.ids.size() > 0)
                                 loadData(MyApplication.ids.get(position));
-                        }
-                        break;
-                    case 3:
-                        if (PrefsUtil.getInt("playmodel", PlayService.this) == MyCommon.PLAY_MODEL_LOOP) {
-                            PlayMediaInstance.getInstance().stopMediaPlay();
-                            PlayMediaInstance.getInstance().startMediaPlay(currMdb.getPlayurl());
-                        } else {
-                            initNextData();
-                        }
-                        break;
+                            break;
+//                        case 3:
+//                            initNextData();
+//                            break;
+                    }
                 }
             }
 
@@ -138,21 +131,21 @@ public class PlayService extends Service {
         loadData(musicId);
     }
 
-    public void initPreData() {
-        if (currMdb == null || currMdb.getPrev() == 0) {
-            EventBus.getDefault().post(new Event.PPStatusEvent(MyCommon.PP_NO_PRE));
-            return;
-        }
-        loadData(currMdb.getPrev());
-    }
-
-    public void initNextData() {
-        if (currMdb == null || currMdb.getNext() == 0) {
-            EventBus.getDefault().post(new Event.PPStatusEvent(MyCommon.PP_NO_NEXT));
-            return;
-        }
-        loadData(currMdb.getNext());
-    }
+//    public void initPreData() {
+//        if (currMdb == null || currMdb.getPrev() == 0) {
+//            EventBus.getDefault().post(new Event.PPStatusEvent(MyCommon.PP_NO_PRE));
+//            return;
+//        }
+//        loadData(currMdb.getPrev());
+//    }
+//
+//    public void initNextData() {
+//        if (currMdb == null || currMdb.getNext() == 0) {
+//            EventBus.getDefault().post(new Event.PPStatusEvent(MyCommon.PP_NO_NEXT));
+//            return;
+//        }
+//        loadData(currMdb.getNext());
+//    }
 
     public void loadData(int itemid) {
         PlayMediaInstance.getInstance().stopMediaPlay();
@@ -161,16 +154,17 @@ public class PlayService extends Service {
         params.put("uid", userId + "");
         int openmodel = PrefsUtil.getInt("playmodel", PlayService.this);
         params.put("openmodel", (openmodel == 0 ? 1 : openmodel) + "");
-        params.put("id", itemid+"");
+        params.put("id", itemid + "");
         params.put("gedanid", gedanid);
         params.put("com", from);
-        if(MyApplication.ids.size()>1){
-            for(int i = 0;i<MyApplication.ids.size();i++){
-                if(MyApplication.ids.get(i)==itemid){
+        if (MyApplication.ids.size() > 1) {
+            for (int i = 0; i < MyApplication.ids.size(); i++) {
+                if (MyApplication.ids.get(i) == itemid) {
                     position = i;//遍历当前播放音乐的位置 用来切歌
+                    break;
                 }
             }
-        }else{//默认
+        } else {//默认
             position = 0;
         }
         httpUtils.get(MyHttpClient.getMusicWorkUrl(), params, new MyStringCallback() {
@@ -178,12 +172,13 @@ public class PlayService extends Service {
             public void onError(Call call, Exception e) {
                 EventBus.getDefault().post(new Event.PPStatusEvent(MyCommon.PP_NO_DATA));
             }
+
             @Override
             public void onResponse(String response) {
-                currMdb = ParseUtils.getWorkData(PlayService.this,response);
-                if (currMdb!=null&&currMdb.itemid>0) {
+                currMdb = ParseUtils.getWorkData(PlayService.this, response);
+                if (currMdb != null && currMdb.itemid > 0) {
                     PrefsUtil.putInt("playId", currMdb.itemid, PlayService.this);
-                    PrefsUtil.saveMusicData(PlayService.this,currMdb);
+                    PrefsUtil.saveMusicData(PlayService.this, currMdb);
                     PlayMediaInstance.getInstance().startMediaPlay(currMdb.getPlayurl());
                     EventBus.getDefault().post(new Event.MusicDataEvent());
                     downLoadMp3(currMdb.playurl);
@@ -195,7 +190,7 @@ public class PlayService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         try {
-            id = intent.getIntExtra("id",0);
+            id = intent.getIntExtra("id", 0);
             from = intent.getStringExtra("from");
             gedanid = intent.getStringExtra("gedanid");
             position = intent.getIntExtra("position", -1);
@@ -207,7 +202,7 @@ public class PlayService extends Service {
         } catch (Error error) {
             error.printStackTrace();
         }
-        if (id>0) {
+        if (id > 0) {
             userId = PrefsUtil.getUserId(this);
             initData(id);
         }
@@ -258,7 +253,7 @@ public class PlayService extends Service {
         }
 
         public void toPreMusic() {
-            EventBus.getDefault().post(new Event.PPStatusEvent(8));
+            EventBus.getDefault().post(new Event.PPStatusEvent(MyCommon.PP_OVER));
             switch (MyCommon.getFromMusicType(from)) {
                 case 1://列表只有一首 无线循环
                     PlayMediaInstance.getInstance().stopMediaPlay();
@@ -271,9 +266,9 @@ public class PlayService extends Service {
                     }
                     loadData(MyApplication.ids.get(position));
                     break;
-                case 3:
-                    initPreData();
-                    break;
+//                case 3:
+//                    initPreData();
+//                    break;
             }
         }
 
@@ -291,9 +286,9 @@ public class PlayService extends Service {
                     }
                     loadData(MyApplication.ids.get(position));
                     break;
-                case 3:
-                    initNextData();
-                    break;
+//                case 3:
+//                    initNextData();
+//                    break;
             }
         }
 
@@ -353,14 +348,15 @@ public class PlayService extends Service {
             }
         }
     };
-    public void downLoadMp3(String url){
-        String fileName = MD5Util.getMD5String(url);
-        String filePath = FileDir.songMp3Dir+fileName+".mp3";
-        File file = new File(filePath);
-        if(file.exists())return;
-        if(!new File(FileDir.songMp3Dir).exists())new File(FileDir.songMp3Dir).mkdirs();
 
-        httpUtils.getFile(url, new FileCallBack(FileDir.songMp3Dir,fileName) {
+    public void downLoadMp3(String url) {
+        String fileName = MD5Util.getMD5String(url);
+        String filePath = FileDir.songMp3Dir + fileName + ".mp3";
+        File file = new File(filePath);
+        if (file.exists()) return;
+        if (!new File(FileDir.songMp3Dir).exists()) new File(FileDir.songMp3Dir).mkdirs();
+
+        httpUtils.getFile(url, new FileCallBack(FileDir.songMp3Dir, fileName) {
             @Override
             public void inProgress(float progress, long total) {
 
@@ -373,7 +369,7 @@ public class PlayService extends Service {
 
             @Override
             public void onResponse(File response) {
-                FileUtils.renameFile(FileDir.songMp3Dir+fileName,filePath);
+                FileUtils.renameFile(FileDir.songMp3Dir + fileName, filePath);
             }
         });
     }
