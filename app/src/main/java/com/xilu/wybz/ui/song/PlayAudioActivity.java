@@ -387,7 +387,10 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
         @Override
         public void handleMessage(Message msg) {
             if (msg.what == 1) {
-                if (worksData != null) {
+                if (tvTime == null || playSeekBar == null){
+                    return;
+                }
+                if (worksData != null ) {
                     tvTime.setText(FormatHelper.formatDuration(musicBinder.getCurrentPosition() / 1000));//播放的时间变化
                     playSeekBar.setProgress(musicBinder.getCurrentPosition());//进度条对时间
                 }
@@ -706,7 +709,6 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         closeTimer();
         if (!PlayMediaInstance.getInstance().isPlaying()) {
             PlayMediaInstance.getInstance().release();
@@ -720,6 +722,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
         if (playPresenter != null){
             playPresenter.cancelUrl();
         }
+        super.onDestroy();
     }
 
 

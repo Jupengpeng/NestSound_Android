@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import java.lang.reflect.Type;
 
 import okhttp3.Call;
+import okhttp3.Request;
 import okhttp3.Response;
 
 /**
@@ -69,12 +70,12 @@ public class JsonCallback extends Callback<JsonResponse>{
 
     @Override
     public void onError(Call call, Exception e) {
-
+        Log.d("url","onError");
     }
 
     @Override
     public void onResponse(JsonResponse response) {
-
+        Log.d("url","onResponse");
     }
 
     public Type getDataType(){
@@ -82,5 +83,18 @@ public class JsonCallback extends Callback<JsonResponse>{
     }
 
 
+    @Override
+    public void inProgress(float progress) {
+        Log.d("url","inProgress:"+progress);
+    }
 
+    @Override
+    public void onBefore(Request request) {
+        Log.d("url","onBefore");
+    }
+
+    @Override
+    public void onAfter() {
+        Log.d("url","onAfter");
+    }
 }

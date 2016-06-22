@@ -193,6 +193,9 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
 
     @Override
     public void loadFail() {
+        if (recycler != null){
+
+        }
         recycler.onRefreshCompleted();
     }
 

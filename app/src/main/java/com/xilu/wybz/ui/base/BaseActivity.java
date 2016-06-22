@@ -12,13 +12,11 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
-import com.facebook.cache.disk.DiskCacheConfig;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.umeng.message.PushAgent;
 import com.xilu.wybz.R;
-import com.xilu.wybz.common.FileDir;
 import com.xilu.wybz.common.ZnImageLoader;
 import com.xilu.wybz.ui.MainTabActivity;
 import com.xilu.wybz.ui.SplashActivity;
@@ -42,7 +40,6 @@ import com.xilu.wybz.view.SystemBarHelper;
 import com.xilu.wybz.view.materialdialogs.MaterialDialog;
 import com.xilu.wybz.view.toast.ToastManager;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,6 +52,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected abstract int getLayoutRes();
 
     protected boolean isChenjin;
+    protected boolean isDestroy = false;
     protected Context context;
     boolean isHomeActivity;
     protected AnimImageView animImageView;
@@ -66,6 +64,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = this;
+        isDestroy = false;
         adaptTheme(true);
         if(this instanceof MakeSongActivity){
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -195,7 +194,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-
+        isDestroy = true;
     }
 }
