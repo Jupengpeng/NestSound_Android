@@ -10,6 +10,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.MyCommon;
+import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.ui.fragment.WorksDataFragment;
 import com.xilu.wybz.ui.lyrics.LyricsdisplayActivity;
@@ -23,6 +24,7 @@ import com.xilu.wybz.view.materialdialogs.MaterialDialog;
 import com.xilu.wybz.view.pull.*;
 
 import java.util.List;
+import java.util.Random;
 
 import butterknife.Bind;
 
@@ -69,6 +71,9 @@ public class WorksViewHolder extends com.xilu.wybz.view.pull.BaseViewHolder {
     @Override
     public void onBindViewHolder(int position) {
         WorksData worksData = mDataList.get(position);
+        if(StringUtil.isBlank(worksData.pic)&&worksData.status==2){
+            worksData.pic = MyHttpClient.QINIU_URL+MyCommon.getLyricsPic().get((int)(Math.random()*10));
+        }
         String url = MyCommon.getImageUrl(worksData.getPic(), itemWidth, itemWidth);
         ImageLoadUtil.loadImage(url, ivCover);
         tvName.setText(worksData.title);

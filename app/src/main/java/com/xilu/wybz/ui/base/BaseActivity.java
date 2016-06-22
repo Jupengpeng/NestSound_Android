@@ -16,6 +16,7 @@ import com.facebook.cache.disk.DiskCacheConfig;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.PushAgent;
 import com.xilu.wybz.R;
 import com.xilu.wybz.common.FileDir;
@@ -184,17 +185,12 @@ public abstract class BaseActivity extends AppCompatActivity {
                 .canceledOnTouchOutside(false)
                 .show();
     }
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
     }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 }

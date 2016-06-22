@@ -124,6 +124,7 @@ dependencies {
     compile rootProject.ext.dependencies["swipemenulistview"]
     compile rootProject.ext.dependencies["multidex"]
     compile rootProject.ext.dependencies["materialdatetimepicker"]
+    compile rootProject.ext.dependencies["analytics"]
 
 
     testCompile 'junit:junit:4.12'
