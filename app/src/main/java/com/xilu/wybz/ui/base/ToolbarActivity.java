@@ -1,37 +1,27 @@
 package com.xilu.wybz.ui.base;
 
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.umeng.common.message.Log;
 import com.xilu.wybz.R;
-import com.xilu.wybz.ui.MainTabActivity;
 import com.xilu.wybz.ui.find.FindActivity;
-import com.xilu.wybz.ui.login.LoginActivity;
-import com.xilu.wybz.ui.login.PasswordActivity;
-import com.xilu.wybz.ui.login.RegisterActivity;
 import com.xilu.wybz.ui.lyrics.ShareActivity;
 import com.xilu.wybz.ui.main.MainActivity;
-import com.xilu.wybz.ui.mine.MineActivity;
 import com.xilu.wybz.ui.mine.UserInfoActivity;
 import com.xilu.wybz.ui.msg.MsgActivity;
 import com.xilu.wybz.ui.song.PlayAudioActivity;
 import com.xilu.wybz.ui.song.SongAblumActivity;
-import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.view.SystemBarHelper;
 
 import butterknife.ButterKnife;
 
 public abstract class ToolbarActivity extends BaseActivity {
+
     protected RelativeLayout mAppBar;
     protected Toolbar mToolbar;
     protected boolean mIsHidden = false;

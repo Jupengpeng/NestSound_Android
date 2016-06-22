@@ -84,7 +84,6 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
     private boolean useheadset = true;
 
     private String templateFileName;
-    private String cacheFileName;
 
     private WaveSurfaceHelper helper;
 
@@ -202,12 +201,9 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
     public void upData() {
         if(!new File(FileDir.hotDir).exists())new File(FileDir.hotDir).mkdirs();
         templateFileName = FileDir.hotDir+ MD5Util.getMD5String(templateBean.mp3);
-        cacheFileName = templateFileName + ".temp";
         //if templateFileName not exists
         if (!FileUtils.fileExists(templateFileName)) {
-
             if (loadDialog == null) {
-
                 loadDialog = new MaterialDialog.Builder(this)
                         .title(R.string.progress_dialog)
                         .content(R.string.please_wait_init)
@@ -215,12 +211,9 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
                         .progress(false, 100, true)
                         .canceledOnTouchOutside(false).build();
             }
-
             loadDialog.show();
-
-            makeSongPresenter.loadFile(templateBean.mp3, cacheFileName);
+            makeSongPresenter.loadFile(templateBean.mp3, templateFileName);
         }
-
     }
 
 
@@ -622,7 +615,7 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
     public void startRecord() {
 
         if (!FileUtils.fileExists(templateFileName)) {
-            ToastUtils.toast(this, "请先下载伴奏");
+            ToastUtils.toast(this, "等待初始化");
             upData();
             return;
         }

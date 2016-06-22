@@ -10,13 +10,14 @@ import static com.xilu.wybz.view.toast.AppMsg.LENGTH_SHORT;
  * Created by hujunwei on 16/6/20.
  */
 public class ToastManager {
+
+
     /*
     *  location 0:up 1:bottom 2:指定位置
     *  viewGroup 指定位置
-     */
+    */
     public static void toastMsg(Activity activity, String msg, int location, ViewGroup viewGroup) {
         final AppMsg.Style style = new AppMsg.Style(LENGTH_SHORT, R.color.confirm);
-        ;
         AppMsg appMsg = AppMsg.makeText(activity, msg, style);
         if (viewGroup != null) {
             appMsg.setParent(viewGroup);

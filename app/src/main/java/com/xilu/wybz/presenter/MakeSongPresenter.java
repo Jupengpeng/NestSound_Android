@@ -28,17 +28,19 @@ public class MakeSongPresenter extends BasePresenter<IMakeSongView> {
     }
 
     File file;
+    File cacheFile;
     String filename;
     public void loadFile(String url, String fileName){
 
         this.file = new File(fileName);
+        this.cacheFile = new File(fileName+".temp");
         this.filename = fileName;
         Log.d("url", "url:"+url);
         if (!url.startsWith("http")){
             return;
         }
 
-        httpUtils.getFile(url, new FileCallBack(file.getParent(),file.getName()) {
+        httpUtils.getFile(url, new FileCallBack(cacheFile.getParent(),cacheFile.getName()) {
             @Override
             public void inProgress(float progress, long total) {
 
@@ -48,7 +50,7 @@ public class MakeSongPresenter extends BasePresenter<IMakeSongView> {
                 if (progress == 1.0f){
                     Log.d("url","loadFile ok..");
                     try{
-                        file.renameTo(new File(filename+".mp3"));
+                        cacheFile.renameTo(new File(filename));
 
                     }catch (Exception e){
                         e.printStackTrace();
@@ -58,7 +60,7 @@ public class MakeSongPresenter extends BasePresenter<IMakeSongView> {
 
             @Override
             public void onError(Call call, Exception e) {
-                ToastUtils.toast(context,"下载伴奏失败");
+                ToastUtils.toast(context,"初始化失败");
                 iView.setLoadFailed();
             }
 
@@ -163,10 +165,5 @@ public class MakeSongPresenter extends BasePresenter<IMakeSongView> {
         });
 
     }
-
-
-
-
-
 
 }
