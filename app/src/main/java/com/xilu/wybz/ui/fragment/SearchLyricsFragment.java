@@ -14,12 +14,15 @@ import com.xilu.wybz.bean.FansBean;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.MyCommon;
+import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.presenter.SearchPresenter;
 import com.xilu.wybz.ui.IView.ISearchView;
 import com.xilu.wybz.ui.lyrics.LyricsdisplayActivity;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.ImageLoadUtil;
 import com.xilu.wybz.utils.NumberUtil;
+import com.xilu.wybz.utils.PrefsUtil;
+import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.view.SpacesItemDecoration;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.PullRecycler;
@@ -147,7 +150,10 @@ public class SearchLyricsFragment extends BaseListFragment<WorksData> implements
         @Override
         public void onBindViewHolder(int position) {
             WorksData worksData = mDataList.get(position);
-            String url = MyCommon.getImageUrl(worksData.getPic(), itemWidth, itemWidth);
+            if(StringUtil.isBlank(worksData.pic)){
+                worksData.pic = MyHttpClient.QINIU_URL+MyCommon.getLyricsPic().get((int)(Math.random()*10));
+            }
+            String url = MyCommon.getImageUrl(worksData.pic, itemWidth, itemWidth);
             ImageLoadUtil.loadImage(url, ivCover);
             tvName.setText(worksData.title);
             tvAuthor.setText(worksData.author);

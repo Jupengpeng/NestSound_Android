@@ -95,7 +95,7 @@
                 android:layout_height="wrap_content"
                 android:text="清理缓存"
                 android:textColor="@color/main_text_color"
-                android:textSize="@dimen/yc_15" />
+                android:textSize="15sp" />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -177,7 +177,7 @@
                 android:layout_weight="1"
                 android:text="用户反馈"
                 android:textColor="@color/main_text_color"
-                android:textSize="@dimen/yc_15" />
+                android:textSize="15sp" />
 
             <ImageView
                 android:layout_width="wrap_content"

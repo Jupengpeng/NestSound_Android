@@ -15,8 +15,11 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
 import com.xilu.wybz.adapter.HotListAdapter;
 import com.xilu.wybz.bean.TemplateBean;
+import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.FileDir;
+import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.common.PlayBanZouInstance;
+import com.xilu.wybz.common.PlayMediaInstance;
 import com.xilu.wybz.common.interfaces.IMediaPlayerListener;
 import com.xilu.wybz.common.interfaces.ITemplateMusicListener;
 import com.xilu.wybz.presenter.HotPresenter;
@@ -29,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by hujunwei on 16/5/31.
@@ -286,7 +290,7 @@ public class NewMakeHotActivity extends ToolbarActivity implements IHotView, Vie
             new File(filePath).mkdirs();
         }
         String fileName = MD5Util.getMD5String(tb.mp3);
-        playPath = filePath+fileName+".mp3";
+        playPath = filePath+fileName;
         if (new File(playPath).exists()) {
             PlayBanZouInstance.getInstance().setData(playPath, tb.id);
         } else {
@@ -295,6 +299,9 @@ public class NewMakeHotActivity extends ToolbarActivity implements IHotView, Vie
         PlayBanZouInstance.getInstance().setIMediaPlayerListener(new IMediaPlayerListener() {
             @Override
             public void onStart() {
+                if(PlayMediaInstance.getInstance().status==3){
+                    EventBus.getDefault().post(new Event.PPStatusEvent(MyCommon.PP_PAUSE));
+                }
                 if(currentType==TYPE_TAB_1) {
                     if (newAdapter != null) {
                         newAdapter.updatePlayStatus();

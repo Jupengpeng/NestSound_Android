@@ -151,7 +151,7 @@ public class MusicTalkMoreActivity extends BaseListActivity<MusicTalk> implement
     public void toPlayPos(int position){
         if (mDataList.size() > 0) {
             MusicTalk musicTalk = mDataList.get(position);
-            if(musicTalk.type==1) {
+            if(StringUtil.isBlank(musicTalk.url)&&musicTalk.itemid>0) {
                 String playFrom = PrefsUtil.getString("playFrom", context);
                 if (!playFrom.equals(MyCommon.MUSICTALK) || MyApplication.ids.size() == 0) {
                     if (MyApplication.ids.size() > 0)
@@ -160,12 +160,9 @@ public class MusicTalkMoreActivity extends BaseListActivity<MusicTalk> implement
                         MyApplication.ids.add(worksData.itemid);
                     }
                 }
-
                 PlayAudioActivity.toPlayAudioActivity(context, musicTalk.itemid, "", MyCommon.MUSICTALK);
-            }else{
-                if(StringUtil.isNotBlank(musicTalk.url)){
-                    BrowserActivity.toBrowserActivity(context,musicTalk.url);
-                }
+            }else if(StringUtil.isNotBlank(musicTalk.url)){
+                BrowserActivity.toBrowserActivity(context,musicTalk.url);
             }
         }
     }

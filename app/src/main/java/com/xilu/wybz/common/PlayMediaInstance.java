@@ -87,7 +87,7 @@ public class PlayMediaInstance {
             mediaPlayer.reset();
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             if(StringUtil.isNotBlank(url)){
-                String fileName = MD5Util.getMD5String(url)+".mp3";
+                String fileName = MD5Util.getMD5String(url);
                 String filePath = FileDir.songMp3Dir+fileName;
                 File file = new File(filePath);
                 if(file.exists())url = filePath;

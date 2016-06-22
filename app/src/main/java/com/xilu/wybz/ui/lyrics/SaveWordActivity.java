@@ -184,6 +184,9 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView {
                     saveWordPresenter.saveLyrics(worksData);
                 }
                 break;
+            case android.R.id.home:
+                finish();
+                break;
         }
         return true;
     }
@@ -228,8 +231,7 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView {
     }
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK
-                && event.getRepeatCount() == 0) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
             closeActivity();
             return true;
         }

@@ -28,6 +28,8 @@ public class NumberUtilTest {
         assertEquals(t2,"1.2万");
         assertEquals(t3,"231.2万");
 
+        System.out.print((int)(Math.random()*10));
+
     }
 
 

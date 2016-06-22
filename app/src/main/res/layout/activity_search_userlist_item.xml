@@ -25,7 +25,7 @@
         android:padding="6dp"
         android:singleLine="true"
         android:textColor="@color/main_text_color2"
-        android:textSize="15sp"
+        android:textSize="13sp"
         android:text="name"
         />
 </LinearLayout>

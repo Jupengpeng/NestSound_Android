@@ -5,10 +5,15 @@
     android:orientation="vertical"
     >
     <include layout="@layout/view_toolbar_play" />
-    <ScrollView
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        >
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:background="@color/main_bg"
         android:orientation="vertical"
         android:overScrollMode="never">
@@ -131,5 +136,5 @@
                     android:layout_height="wrap_content" />
             </LinearLayout>
         </LinearLayout>
-    </ScrollView>
+    </ScrollView></android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.PushAgent;
 import com.xilu.wybz.R;
 import com.xilu.wybz.common.ZnImageLoader;
@@ -185,12 +186,15 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
     }
-
     @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
     protected void onDestroy() {
         super.onDestroy();
         isDestroy = true;
