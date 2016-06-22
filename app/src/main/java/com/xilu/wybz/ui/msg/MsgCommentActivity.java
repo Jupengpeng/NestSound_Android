@@ -5,15 +5,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
-import com.xilu.wybz.bean.Banner;
 import com.xilu.wybz.bean.CommentBean;
 import com.xilu.wybz.bean.MsgCommentBean;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.MsgCommentPresenter;
 import com.xilu.wybz.ui.IView.ICommentView;
-import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.ui.base.BaseListActivity;
 import com.xilu.wybz.ui.lyrics.LyricsdisplayActivity;
 import com.xilu.wybz.ui.song.PlayAudioActivity;
@@ -24,8 +23,10 @@ import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.view.dialog.CommentDialog;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.PullRecycler;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.Bind;
 import butterknife.OnClick;
 
@@ -96,17 +97,26 @@ public class MsgCommentActivity extends BaseListActivity<MsgCommentBean> impleme
 
     @Override
     public void loadFail() {
+        if (recycler == null){
+            return;
+        }
         recycler.onRefreshCompleted();
     }
 
     @Override
     public void loadNoMore() {
+        if (recycler == null){
+            return;
+        }
         recycler.onRefreshCompleted();
         recycler.enableLoadMore(false);
     }
 
     @Override
     public void loadNoData() {
+        if (recycler == null){
+            return;
+        }
         llNoData.setVisibility(View.VISIBLE);
         recycler.onRefreshCompleted();
         recycler.enableLoadMore(false);

@@ -3,28 +3,18 @@ package com.xilu.wybz.ui.login;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.umeng.analytics.MobclickAgent;
-import com.umeng.message.PushAgent;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.presenter.LoginPresenter;
 import com.xilu.wybz.ui.IView.ILoginView;
-import com.xilu.wybz.ui.base.BaseActivity;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.utils.MD5Util;
-import com.xilu.wybz.utils.ParseUtils;
-import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtil;
-
-import org.json.JSONObject;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -117,9 +107,13 @@ public class LoginActivity extends ToolbarActivity implements ILoginView,TextWat
             mloginLogin.setBackgroundResource(R.drawable.corner_login2);
         }
 
-    }    @Override
+    }
+    @Override
     public void loginStart() {
         showPd("正在登陆中...");
+        if (isDestroy){
+            return;
+        }
         mloginLogin.setEnabled(false);
     }
 
@@ -136,6 +130,9 @@ public class LoginActivity extends ToolbarActivity implements ILoginView,TextWat
     @Override
     public void loginFinish() {
         cancelPd();
+        if (isDestroy){
+            return;
+        }
         mloginLogin.setEnabled(true);
     }
     public void onEventMainThread(Event.LoginSuccessEvent event){

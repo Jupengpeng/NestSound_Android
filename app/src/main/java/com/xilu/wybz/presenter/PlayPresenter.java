@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 
 import com.commit451.nativestackblur.NativeStackBlur;
+import com.umeng.socialize.utils.Log;
 import com.xilu.wybz.bean.DataBean;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.callback.BitmapCallback;
@@ -16,7 +17,7 @@ import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtil;
 
 import java.util.HashMap;
-import java.util.Map;
+
 import okhttp3.Call;
 
 /**
@@ -81,6 +82,10 @@ public class PlayPresenter extends BasePresenter<IPlayView> {
 
             @Override
             public void onResponse(Bitmap response) {
+                if(response==null){
+                    Log.d("paly","onResponse");
+                    return;
+                }
                 Bitmap bmp = NativeStackBlur.process(BitmapUtils.zoomBitmap(response, 200), 30);
                 FileUtils.saveBmp(path, bmp);
                 iView.setPic(bmp);

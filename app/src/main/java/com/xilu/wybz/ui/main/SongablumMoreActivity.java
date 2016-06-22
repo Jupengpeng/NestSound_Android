@@ -4,17 +4,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
 import com.xilu.wybz.adapter.SongablumViewHolder;
 import com.xilu.wybz.bean.SongAlbum;
 import com.xilu.wybz.presenter.SongablumMorePresenter;
 import com.xilu.wybz.ui.IView.ISongablumMoreView;
 import com.xilu.wybz.ui.base.BaseListActivity;
-import com.xilu.wybz.ui.song.SongAblumActivity;
-import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.view.GridSpacingItemDecoration;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.PullRecycler;
@@ -23,8 +19,6 @@ import com.xilu.wybz.view.pull.layoutmanager.MyGridLayoutManager;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import butterknife.Bind;
 
 /**
  * Created by hujunwei on 16/5/20.
@@ -90,18 +84,27 @@ public class SongablumMoreActivity extends BaseListActivity<SongAlbum> implement
 
     @Override
     public void loadFail() {
+        if (recycler == null){
+            return;
+        }
         recycler.onRefreshCompleted();
     }
 
 
     @Override
     public void loadNoMore() {
+        if (recycler == null){
+            return;
+        }
         recycler.onRefreshCompleted();
         recycler.enableLoadMore(false);
     }
 
     @Override
     public void loadNoData() {
+        if (recycler == null){
+            return;
+        }
         llNoData.setVisibility(View.VISIBLE);
         recycler.onRefreshCompleted();
         recycler.enableLoadMore(false);

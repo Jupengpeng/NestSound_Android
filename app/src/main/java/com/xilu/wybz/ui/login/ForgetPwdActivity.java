@@ -162,6 +162,9 @@ public class ForgetPwdActivity extends ToolbarActivity implements IForgetPwdView
 
     @Override
     public void getSmsCodeSuccess(String result) {
+        if (isDestroy){
+            return;
+        }
         if (ParseUtils.checkCode(result)) {
             showMsg("验证码发送成功");
             timeCount = new MyCountTimer(tv_getsmscode);
@@ -175,6 +178,9 @@ public class ForgetPwdActivity extends ToolbarActivity implements IForgetPwdView
 
     @Override
     public void getSmsCodeFail() {
+        if (isDestroy){
+            return;
+        }
         tv_getsmscode.setClickable(true);
         showMsg("验证码发送失败");
     }
@@ -182,6 +188,9 @@ public class ForgetPwdActivity extends ToolbarActivity implements IForgetPwdView
 
     @Override
     public void modifyPwdSuccess(String result) {
+        if (isDestroy){
+            return;
+        }
         tv_ok.setEnabled(true);
         if (ParseUtils.checkCode(result)) {
             showMsg("密码修改成功");
@@ -193,6 +202,9 @@ public class ForgetPwdActivity extends ToolbarActivity implements IForgetPwdView
 
     @Override
     public void modifyPwdFail() {
+        if (isDestroy){
+            return;
+        }
         tv_ok.setEnabled(true);
         showMsg("密码修改失败");
     }

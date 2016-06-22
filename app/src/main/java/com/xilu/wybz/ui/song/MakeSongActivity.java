@@ -275,6 +275,9 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
 
     public void showWorks() {
 
+        if (etTitle == null){
+            return;
+        }
         etTitle.setText(worksData.title);
         etWord.setText(worksData.lyrics);
 

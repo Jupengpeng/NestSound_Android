@@ -88,12 +88,18 @@ public class SearchUserFragment extends BaseListFragment<FansBean> implements IS
 
     @Override
     public void loadFail() {
+        if (recycler == null){
+            return;
+        }
         recycler.onRefreshCompleted();
     }
 
 
     @Override
     public void loadNoMore() {
+        if (recycler == null){
+            return;
+        }
         recycler.onRefreshCompleted();
         recycler.enableLoadMore(false);
     }
@@ -102,6 +108,9 @@ public class SearchUserFragment extends BaseListFragment<FansBean> implements IS
     public void loadNoData() {
         if(mDataList.size()==0){
             EventBus.getDefault().post(new Event.ShowSearchTabEvent(false));
+        }
+        if (recycler == null){
+            return;
         }
         llNoData.setVisibility(View.VISIBLE);
         recycler.onRefreshCompleted();

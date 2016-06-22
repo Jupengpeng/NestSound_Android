@@ -20,7 +20,6 @@ import com.xilu.wybz.presenter.FollowPresenter;
 import com.xilu.wybz.ui.IView.IFollowAndFansView;
 import com.xilu.wybz.ui.base.BaseListActivity;
 import com.xilu.wybz.utils.PrefsUtil;
-import com.xilu.wybz.view.CircleImageView;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.PullRecycler;
 
@@ -28,8 +27,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 
 /**
@@ -126,6 +123,9 @@ public class FollowAndFansActivity extends BaseListActivity<FansBean> implements
 
     @Override
     public void loadFail() {
+        if (recycler == null){
+            return;
+        }
         recycler.onRefreshCompleted();
     }
 
@@ -146,12 +146,18 @@ public class FollowAndFansActivity extends BaseListActivity<FansBean> implements
 
     @Override
     public void loadNoMore() {
+        if (recycler == null){
+            return;
+        }
         recycler.onRefreshCompleted();
         recycler.enableLoadMore(false);
     }
 
     @Override
     public void loadNoData() {
+        if (recycler == null){
+            return;
+        }
         llNoData.setVisibility(View.VISIBLE);
         recycler.onRefreshCompleted();
         recycler.enableLoadMore(false);

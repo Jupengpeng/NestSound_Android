@@ -9,26 +9,20 @@ import android.widget.FrameLayout;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.MusicTalk;
-import com.xilu.wybz.bean.SongAlbum;
-import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.MusicTalkMorePresenter;
-import com.xilu.wybz.presenter.SongablumMorePresenter;
 import com.xilu.wybz.ui.BrowserActivity;
 import com.xilu.wybz.ui.IView.IMusicTalkMoreView;
-import com.xilu.wybz.ui.IView.ISongablumMoreView;
 import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.ui.base.BaseListActivity;
 import com.xilu.wybz.ui.song.PlayAudioActivity;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtil;
-import com.xilu.wybz.view.GridSpacingItemDecoration;
 import com.xilu.wybz.view.SpacesItemDecoration;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.PullRecycler;
 import com.xilu.wybz.view.pull.layoutmanager.ILayoutManager;
-import com.xilu.wybz.view.pull.layoutmanager.MyGridLayoutManager;
 import com.xilu.wybz.view.pull.layoutmanager.MyLinearLayoutManager;
 
 import java.util.ArrayList;
@@ -94,18 +88,27 @@ public class MusicTalkMoreActivity extends BaseListActivity<MusicTalk> implement
 
     @Override
     public void loadFail() {
+        if (recycler == null){
+            return;
+        }
         recycler.onRefreshCompleted();
     }
 
 
     @Override
     public void loadNoMore() {
+        if (recycler == null){
+            return;
+        }
         recycler.onRefreshCompleted();
         recycler.enableLoadMore(false);
     }
 
     @Override
     public void loadNoData() {
+        if (recycler == null){
+            return;
+        }
         llNoData.setVisibility(View.VISIBLE);
         recycler.onRefreshCompleted();
         recycler.enableLoadMore(false);

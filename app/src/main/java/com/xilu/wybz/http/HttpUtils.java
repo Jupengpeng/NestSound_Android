@@ -32,7 +32,7 @@ public class HttpUtils {
     public HttpUtils(Context context) {
         this.context = context;
         headers.put("APP-Key", "APP-Secret222");
-        headers.put("Content-Type", "application/json");
+//        headers.put("Content-Type", "application/json");
         headers.put("charset", "UTF-8");
         headers.put("machine", PhoneInfoUtil.getMachine(context));
     }
@@ -41,7 +41,7 @@ public class HttpUtils {
         this.context = context;
         this.httpTag = viewTag;
         headers.put("APP-Key", "APP-Secret222");
-        headers.put("Content-Type", "application/json");
+//        headers.put("Content-Type", "application/json");
         headers.put("charset", "UTF-8");
         headers.put("machine", PhoneInfoUtil.getMachine(context));
     }
@@ -71,7 +71,6 @@ public class HttpUtils {
                 .execute(stringCallback);
 
     }
-
 
 
     //普通post提交

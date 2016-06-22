@@ -222,7 +222,6 @@ public class ModifyUserInfoActivity extends ToolbarActivity implements IModifyUs
     }
     // 保存裁剪后的图片
     public void saveBitmap(Bitmap bitmap) {
-        // TODO Auto-generated method stub
         File file = new File(FileDir.picDir);
         if (!file.exists())
             file.mkdirs();

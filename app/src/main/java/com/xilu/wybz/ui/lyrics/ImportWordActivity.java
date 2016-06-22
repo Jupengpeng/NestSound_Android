@@ -80,10 +80,12 @@ public class ImportWordActivity extends BaseListActivity<WorksData> implements I
                 if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
                     mDataList.clear();
                 }
+                if (isDestroy){
+                    return;
+                }
                 recycler.enableLoadMore(true);
                 mDataList.addAll(worksDataList);
                 adapter.notifyDataSetChanged();
-
                 recycler.onRefreshCompleted();
             }
         },600);

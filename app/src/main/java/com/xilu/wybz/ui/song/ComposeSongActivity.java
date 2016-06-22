@@ -81,6 +81,7 @@ public class ComposeSongActivity extends ToolbarActivity {
     public void initView(){
 
         initSeekBar();
+
         showWorks();
 
         waveDatas = RecordInstance.getInstance().waveDatas;

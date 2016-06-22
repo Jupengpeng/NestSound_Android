@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.umeng.socialize.UMShareAPI;
-import com.umeng.socialize.utils.Log;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.ActionBean;
 import com.xilu.wybz.bean.ShareBean;
@@ -228,11 +227,17 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
 
     @Override
     public void zanStart() {
+        if (isDestroy){
+            return;
+        }
         ivZan.setEnabled(false);
     }
 
     @Override
     public void zanSuccess() {
+        if (isDestroy){
+            return;
+        }
         worksData.isZan = 1 - worksData.isZan;
         if(worksData.isZan==1)showMsg("点赞成功");
         ivZan.startAnimation(AnimationUtils.loadAnimation(context, R.anim.dianzan_anim));
@@ -247,6 +252,9 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
 
     @Override
     public void zanFinish() {
+        if (isDestroy){
+            return;
+        }
         ivZan.setClickable(true);
     }
 
@@ -256,6 +264,9 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
     }
     @Override
     public void favSuccess() {
+        if (isDestroy){
+            return;
+        }
         worksData.iscollect = 1 - worksData.iscollect;
         if (worksData.iscollect == 1) showMsg("收藏成功！");
         EventBus.getDefault().post(new Event.UpdataWorksList(worksData, 3, 1-worksData.iscollect));

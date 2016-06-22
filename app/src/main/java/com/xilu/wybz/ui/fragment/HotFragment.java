@@ -27,11 +27,9 @@ import com.xilu.wybz.ui.IView.IHotView;
 import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.ui.song.MakeSongActivity;
 import com.xilu.wybz.utils.DensityUtil;
-import com.xilu.wybz.utils.FileUtils;
 import com.xilu.wybz.utils.MD5Util;
 import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.view.pull.BaseViewHolder;
-import com.xilu.wybz.view.pull.PullRecycler;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -120,6 +118,9 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
                 if(mDataList.size()==0){
                     EventBus.getDefault().post(new Event.HideKeyboardEvent());
                 }
+                if (recycler == null){
+                    return;
+                }
                 llNoData.setVisibility(View.GONE);
                 recycler.enableLoadMore(true);
                 mDataList.addAll(templateBeens);
@@ -131,17 +132,26 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
 
     @Override
     public void loadFail() {
+        if (recycler == null){
+            return;
+        }
         recycler.onRefreshCompleted();
     }
 
     @Override
     public void loadNoMore() {
+        if (recycler == null){
+            return;
+        }
         recycler.onRefreshCompleted();
         recycler.enableLoadMore(false);
     }
 
     @Override
     public void loadNoData() {
+        if (recycler == null){
+            return;
+        }
         llNoData.setVisibility(View.VISIBLE);
         recycler.onRefreshCompleted();
         recycler.enableLoadMore(false);

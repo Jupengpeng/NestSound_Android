@@ -2,11 +2,9 @@ package com.xilu.wybz.ui.fragment;
 
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -22,7 +20,6 @@ import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.ImageLoadUtil;
 import com.xilu.wybz.view.SpacesItemDecoration;
 import com.xilu.wybz.view.pull.BaseViewHolder;
-import com.xilu.wybz.view.pull.DividerItemDecoration;
 import com.xilu.wybz.view.pull.PullRecycler;
 
 import java.util.ArrayList;
@@ -50,14 +47,18 @@ public class ActFragment extends BaseListFragment<ActBean> implements IActView {
     @Override
     public void initView() {
         time = System.currentTimeMillis();
-        findPresenter.getActList(page++);
-    }
+    findPresenter.getActList(page++);
+}
 
     @Override
     public void showActList(List<ActBean> actBeanList) {
         if (mDataList == null) mDataList = new ArrayList<>();
         if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
             mDataList.clear();
+        }
+
+        if (recycler == null){
+            return;
         }
         recycler.enableLoadMore(true);
         mDataList.addAll(actBeanList);
@@ -72,6 +73,9 @@ public class ActFragment extends BaseListFragment<ActBean> implements IActView {
 
     @Override
     public void showNoData() {
+        if (recycler == null){
+            return;
+        }
         llNoData.setVisibility(View.VISIBLE);
         recycler.onRefreshCompleted();
         recycler.enableLoadMore(false);
@@ -79,6 +83,9 @@ public class ActFragment extends BaseListFragment<ActBean> implements IActView {
 
     @Override
     public void showNoMore() {
+        if (recycler == null){
+            return;
+        }
         recycler.onRefreshCompleted();
         recycler.enableLoadMore(false);
     }
@@ -95,6 +102,9 @@ public class ActFragment extends BaseListFragment<ActBean> implements IActView {
 
     @Override
     public void showErrorView() {
+        if (recycler == null){
+            return;
+        }
         recycler.onRefreshCompleted();
     }
 
