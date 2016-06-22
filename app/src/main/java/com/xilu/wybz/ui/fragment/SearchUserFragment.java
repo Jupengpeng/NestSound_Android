@@ -18,6 +18,7 @@ import com.xilu.wybz.presenter.SearchPresenter;
 import com.xilu.wybz.ui.IView.ISearchView;
 import com.xilu.wybz.ui.mine.UserInfoActivity;
 import com.xilu.wybz.utils.DensityUtil;
+import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.view.GridSpacingItemDecoration;
 import com.xilu.wybz.view.pull.BaseViewHolder;
@@ -35,7 +36,7 @@ import de.greenrobot.event.EventBus;
  */
 public class SearchUserFragment extends BaseListFragment<FansBean> implements ISearchView {
     SearchPresenter searchPresenter;
-    int column = 4;
+    int column = 3;
 
     @Override
     protected void initPresenter() {
@@ -152,7 +153,7 @@ public class SearchUserFragment extends BaseListFragment<FansBean> implements IS
 
         @Override
         public void onItemClick(View view, int position) {
-            if (mDataList.get(position).uid>0) {
+            if (mDataList.get(position).uid>0&&mDataList.get(position).uid!= PrefsUtil.getUserId(context)) {
                 UserInfoActivity.ToUserInfoActivity(context,mDataList.get(position).uid,mDataList.get(position).fansname);
             }
         }
