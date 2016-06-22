@@ -52,16 +52,19 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
     private String[] COMESs = new String[]{"usersong", "userlyrics", "userfav"};
     private boolean isFirst;
     private boolean isFirstTab;
+
     @Override
     protected void initPresenter() {
         userPresenter = new UserPresenter(context, this);
         userPresenter.init();
     }
-    public void loadData(){
-        if(isFirst)return;
+
+    public void loadData() {
+        if (isFirst) return;
         else isFirst = true;
         recycler.setRefreshing();
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -79,7 +82,7 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
             type = getArguments().getInt(TYPE);
             userId = getArguments().getInt(UID);
             isMe = (userId == PrefsUtil.getUserId(context));
-            if(type==0)isFirstTab = true;
+            if (type == 0) isFirstTab = true;
             if (!isMe) {
                 COME = COMESs[type];
                 type = type + 1;
@@ -118,13 +121,13 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
 
     @Override
     public void initView() {
-        recycler.enablePullToRefresh(false);
+//        recycler.enablePullToRefresh(false);
     }
 
     @Override
     protected void setUpData() {
         super.setUpData();
-        if(isFirstTab)recycler.setRefreshing();
+        if (isFirstTab) recycler.setRefreshing();
     }
 
     @Override
@@ -171,11 +174,13 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
                 adapter.notifyDataSetChanged();
                 recycler.onRefreshCompleted();
             }
-        },600);
+        }, 600);
     }
-    public void updateList(){
+
+    public void updateList() {
         recycler.onRefresh();
     }
+
     @Override
     public void loadFail() {
         recycler.onRefreshCompleted();
@@ -185,6 +190,24 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
     public void loadNoMore() {
         recycler.onRefreshCompleted();
         recycler.enableLoadMore(false);
+    }
+
+    public void updateNum(WorksData worksData, int type, int num) {
+        int index = -1;
+        for (int i = 0; i < mDataList.size(); i++) {
+            if (worksData.itemid == mDataList.get(i).itemid) {
+                index = i;
+                break;
+            }
+        }
+        if (index > -1) {
+            if(type==2) {
+                mDataList.get(index).setZannum(mDataList.get(index).getZannum()+num);
+            }else if(type==1){
+                mDataList.get(index).setFovnum(mDataList.get(index).getFovnum()+num);
+            }
+            updateItem(index);
+        }
     }
 
     @Override
@@ -205,6 +228,7 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
         }
         removeItem(deletePos);
     }
+
     @Override
     public void deleteFail() {
 
@@ -227,8 +251,9 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
         WorksData worksData = mDataList.get(pos);
         userPresenter.unfav(worksData.itemid, worksData.uid, worksData.status);
     }
+
     //移除某个item
-    public void removeByItemid(int itemid){
+    public void removeByItemid(int itemid) {
         int index = -1;
         for (int i = 0; i < mDataList.size(); i++) {
             if (itemid == mDataList.get(i).itemid) {
@@ -240,9 +265,10 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
             removeItem(index);
         }
     }
+
     //更新某个item
     public void updateData(WorksData worksData) {
-        if(mDataList.size()>0) {
+        if (mDataList.size() > 0) {
             int index = -1;
             for (int i = 0; i < mDataList.size(); i++) {
                 if (worksData.itemid == mDataList.get(i).itemid && worksData.status == mDataList.get(i).status) {
@@ -321,10 +347,11 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
             return holder;
         }
     }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if(userPresenter!=null)
+        if (userPresenter != null)
             userPresenter.cancelUrl();
     }
 }

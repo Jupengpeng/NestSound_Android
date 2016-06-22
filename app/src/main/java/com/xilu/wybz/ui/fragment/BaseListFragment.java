@@ -133,7 +133,9 @@ public abstract class BaseListFragment<T> extends BaseFragment implements PullRe
         mDataList.set(position, worksData);
         adapter.notifyItemChanged(position);
     }
-
+    public void updateItem(int position) {
+        adapter.notifyItemChanged(position);
+    }
     public void addItem(T t) {
         if (mDataList == null){
             mDataList = new ArrayList<>();

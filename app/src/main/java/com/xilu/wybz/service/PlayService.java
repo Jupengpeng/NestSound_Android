@@ -350,8 +350,8 @@ public class PlayService extends Service {
     };
 
     public void downLoadMp3(String url) {
-        String fileName = MD5Util.getMD5String(url);
-        String filePath = FileDir.songMp3Dir + fileName + ".mp3";
+        String fileName = MD5Util.getMD5String(url)+".temp";
+        String filePath = FileDir.songMp3Dir + fileName;
         File file = new File(filePath);
         if (file.exists()) return;
         if (!new File(FileDir.songMp3Dir).exists()) new File(FileDir.songMp3Dir).mkdirs();

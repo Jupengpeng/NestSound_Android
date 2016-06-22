@@ -294,6 +294,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
             setTitle(name);
             headurl = worksData.getHeadurl();
             authorid = worksData.getUid();
+            actionBeanList.clear();
             if (authorid == PrefsUtil.getUserId(context)) {
                 for (int i = 0; i < actionTitles2.length; i++) {
                     ActionBean actionBean = new ActionBean();
@@ -309,7 +310,6 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
                     actionBeanList.add(actionBean);
                 }
             }
-
             hotid = worksData.getHotid();
             tvZan.setChecked(worksData.getIsZan() == 1);
             tvFav.setChecked(worksData.getIscollect() == 1);
@@ -519,6 +519,8 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
 
     @Override
     public void collectionMusicSuccess() {
+        EventBus.getDefault().post(new Event.UpdataWorkData(worksData,1,worksData.iscollect==0?1:-1));
+        if(rlFav==null)return;
         rlFav.setEnabled(true);
         worksData.iscollect = 1 - worksData.iscollect;
         if (worksData.iscollect == 1) showMsg("收藏成功！");
@@ -542,9 +544,13 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
 
     @Override
     public void zambiaMusicSuccess() {
+        EventBus.getDefault().post(new Event.UpdataWorkData(worksData,2,worksData.isZan==0?1:-1));
+        if(rlZan==null)return;
         rlZan.setEnabled(true);
         worksData.isZan = 1 - worksData.isZan;
-        if (worksData.isZan == 1) showMsg("点赞成功！");
+        if (worksData.isZan == 1) {
+            showMsg("点赞成功！");
+        }
         tvZan.setChecked(worksData.isZan == 1);
         tvZan.startAnimation(AnimationUtils.loadAnimation(context, R.anim.dianzan_anim));
         worksData.setIsZan(worksData.isZan);

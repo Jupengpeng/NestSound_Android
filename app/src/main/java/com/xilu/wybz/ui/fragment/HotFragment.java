@@ -19,6 +19,7 @@ import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.FileDir;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.common.PlayBanZouInstance;
+import com.xilu.wybz.common.PlayMediaInstance;
 import com.xilu.wybz.common.interfaces.IMediaPlayerListener;
 import com.xilu.wybz.common.interfaces.ITemplateMusicListener;
 import com.xilu.wybz.presenter.HotPresenter;
@@ -296,6 +297,9 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
         PlayBanZouInstance.getInstance().setIMediaPlayerListener(new IMediaPlayerListener() {
             @Override
             public void onStart() {
+                if(PlayMediaInstance.getInstance().status==3){
+                    EventBus.getDefault().post(new Event.PPStatusEvent(MyCommon.PP_PAUSE));
+                }
                 if (sampleViewHolder != null) {
                     sampleViewHolder.updatePlayStatus();
                 }

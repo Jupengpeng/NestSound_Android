@@ -58,8 +58,6 @@ public class MakeSongPresenter extends BasePresenter<IMakeSongView> {
 
             @Override
             public void onError(Call call, Exception e) {
-                if(context!=null)
-                ToastUtils.toast(context,"下载伴奏失败");
                 iView.setLoadFailed();
             }
 
@@ -77,7 +75,6 @@ public class MakeSongPresenter extends BasePresenter<IMakeSongView> {
     public void uploadmp3File( String fileName){
 
         httpUtils.uploadFile(MyHttpClient.getuploadmp3Url(),fileName, new AppJsonCalback(context){
-
 
             @Override
             public void inProgress(float progress) {

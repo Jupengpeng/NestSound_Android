@@ -185,11 +185,14 @@ public abstract class BaseActivity extends AppCompatActivity {
                 .canceledOnTouchOutside(false)
                 .show();
     }
-    public void onResume() {
+
+    @Override
+    protected void onResume() {
         super.onResume();
         MobclickAgent.onResume(this);
     }
-    public void onPause() {
+    @Override
+    protected void onPause() {
         super.onPause();
         MobclickAgent.onPause(this);
     }

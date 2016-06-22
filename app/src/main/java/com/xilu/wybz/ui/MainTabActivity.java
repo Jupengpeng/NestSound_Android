@@ -111,7 +111,6 @@ public class MainTabActivity extends BaseActivity {
         if(manager.getActivity("MAIN")!=null)
         viewpager.setOnPageChangeListener(new MyOnPageChangeListener());
     }
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -119,7 +118,6 @@ public class MainTabActivity extends BaseActivity {
         if(mainActivity!=null)
             mainActivity.onResume();
     }
-
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
