@@ -3,6 +3,7 @@ package com.xilu.wybz.ui.song;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -121,7 +122,7 @@ public class SongAblumActivity extends ToolbarActivity implements IRecSongView {
         ivCover.setLayoutParams(new LinearLayout.LayoutParams(coverPicWith,coverPicWith));
         baseScrollHeight = DensityUtil.dip2px(context, 25) + coverPicWith;
         rlTop.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, statusbarHeight + DensityUtil.dip2px(context, 48 + 25) + coverPicWith));
-        mToolbar.setTitleTextColor(0xFFFFFFFF);
+        mToolbar.setTitleTextColor(Color.WHITE);
         setTitle("歌单");
         musicBeans = new ArrayList<>();
         loadPic();

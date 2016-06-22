@@ -58,6 +58,9 @@
     <style name="LoginTheme" parent="@style/BaseTheme_Login">
         <item name="android:windowIsTranslucent">false</item>
     </style>
+    <style name="PlayTheme" parent="@style/BaseTheme_Login">
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
     <!-- ToolBar -->
     <style name="ToolBarStyle" parent="Theme.AppCompat.Light">
         <item name="android:actionBarSize">@dimen/actionbar_size</item>

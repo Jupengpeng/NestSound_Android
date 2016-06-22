@@ -175,6 +175,7 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                if(recycler==null)return;
                 if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
                     mDataList.clear();
                 }
@@ -193,17 +194,20 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
 
     @Override
     public void loadFail() {
+        if(recycler==null)return;
         recycler.onRefreshCompleted();
     }
 
     @Override
     public void loadNoMore() {
+        if(recycler==null)return;
         recycler.onRefreshCompleted();
         recycler.enableLoadMore(false);
     }
 
     @Override
     public void loadNoData() {
+        if(recycler==null)return;
         llNoData.setVisibility(View.VISIBLE);
         recycler.onRefreshCompleted();
         recycler.enableLoadMore(false);
@@ -246,8 +250,9 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
 
     @Override
     public void delSuccess(int pos) {
-        removeItem(pos);
         EventBus.getDefault().post(new Event.UpdataCommentNumEvent(type, -1));
+        if(llNoData==null)return;
+        removeItem(pos);
         if (mDataList.size() == 0) {
             llNoData.setVisibility(View.VISIBLE);
         }

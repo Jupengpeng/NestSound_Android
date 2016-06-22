@@ -118,6 +118,10 @@ public class UserInfoActivity extends ToolbarActivity {
         } else {
             finish();
         }
+        UserBean userData = PrefsUtil.getUserInfo(context,userId);
+        if(userData!=null){
+            setUserData(userData);
+        }
         container.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, DensityUtil.getScreenH(context)-DensityUtil.dip2px(context,102+40)));
         ivSetting.setImageResource(R.drawable.ic_user_follow);
         EventBus.getDefault().register(this);
@@ -130,6 +134,9 @@ public class UserInfoActivity extends ToolbarActivity {
         pagerAdapter = new MineAdapter(context, getSupportFragmentManager(), userId, userName);
         container.setAdapter(pagerAdapter);
         container.setOffscreenPageLimit(tabs.size());
+        mToolbar.setAlpha(1);
+        mToolbar.setBackgroundColor(Color.TRANSPARENT);
+        mToolbar.setTitleTextColor(Color.TRANSPARENT);
         stickynavLayout.setOnStickStateChangeListener(new StickyNavLayout.onStickStateChangeListener() {
             @Override
             public void isStick(boolean isStick) {
@@ -143,7 +150,8 @@ public class UserInfoActivity extends ToolbarActivity {
             }
             @Override
             public void scrollPercent(float percent) {
-                mToolbar.setAlpha(percent);
+                mToolbar.setBackgroundColor(Color.argb((int) (percent*255),0xFF,0xD7,0x05));
+                mToolbar.setTitleTextColor(Color.argb((int) (percent*255),0x18,0x18,0x18));
                 SystemBarHelper.tintStatusBar(UserInfoActivity.this, Color.argb((int) (percent*255),0xFF,0xD7,0x05));
             }
         });
@@ -185,19 +193,22 @@ public class UserInfoActivity extends ToolbarActivity {
     public void setUserInfo(UserBean userBean) {
         if (isFirst) return;
         isFirst = true;
+        PrefsUtil.saveUserInfo(context,userId,userBean);
+        setUserData(userBean);
+    }
+    public void setUserData(UserBean userBean){
         if(StringUtil.isNotBlank(userBean.headurl)&&!userBean.headurl.equals("http://pic.yinchao.cn/uploadfiles/2015/09/14/201509141121211442200881.png")) {
             int headWidth = DensityUtil.dip2px(context,92);
             loadImage(MyCommon.getImageUrl(userBean.headurl,headWidth,headWidth), ivHead);
         }
         if (StringUtil.isNotBlank(userBean.nickname)) userTvName.setText(userBean.nickname);
         if (StringUtil.isNotBlank(userBean.signature)) userTvInfo.setText(userBean.signature);
-        if (StringUtil.isNotBlank(userBean.nickname)) setTitle(userBean.nickname);
+        if (StringUtil.isNotBlank(userBean.nickname)) mToolbar.setTitle(userBean.nickname);
         userFansnum.setText("粉丝:  " + NumberUtil.format(userBean.fansnum));
         userFollownum.setText("关注:  " + NumberUtil.format(userBean.gznum));
         ivSetting.setImageResource(followIcon[userBean.isFocus]);
         isFocus = userBean.isFocus;
     }
-
     @OnClick({R.id.user_fansnum, R.id.user_follownum, R.id.ll_mysong, R.id.ll_mylyrics, R.id.ll_myfav, R.id.rl_setting})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -264,7 +275,7 @@ public class UserInfoActivity extends ToolbarActivity {
         }
     }
 
-    //在灵感记录的列表 发送过来的
+    //在我的歌曲的列表 发送过来的
     public void onEventMainThread(Event.UpdataUserBean event) {
         if (event.getType() == 2) {
             setUserInfo(event.getUserBean());

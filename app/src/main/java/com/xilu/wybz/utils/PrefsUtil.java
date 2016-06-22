@@ -17,6 +17,7 @@ import java.util.List;
 public class PrefsUtil {
 
     public static final String SETTING = "setting";
+    public static final String USERINFO = "userinfo";
     static SharedPreferences preferences;
 
     public static SharedPreferences getSpf(Context context, String name) {
@@ -136,6 +137,23 @@ public class PrefsUtil {
     }
     public static void clearData(Context context){
         preferences = context.getSharedPreferences(SETTING, Context.MODE_PRIVATE);
+        preferences.edit().clear().commit();
+    }
+
+    public static void saveUserInfo(Context context, int uid, UserBean ub) {
+        preferences = context.getSharedPreferences(USERINFO, Context.MODE_PRIVATE);
+        preferences.edit().putString("uid_"+uid, new Gson().toJson(ub)).commit();
+    }
+    public static UserBean getUserInfo(Context context, int uid) {
+        preferences = context.getSharedPreferences(USERINFO, Context.MODE_PRIVATE);
+        String userData = preferences.getString("uid_"+uid,"");
+        if(StringUtil.isNotBlank(userData)){
+            return new Gson().fromJson(userData,UserBean.class);
+        }
+        return null;
+    }
+    public static void clearUserData(Context context) {
+        preferences = context.getSharedPreferences(USERINFO, Context.MODE_PRIVATE);
         preferences.edit().clear().commit();
     }
 }

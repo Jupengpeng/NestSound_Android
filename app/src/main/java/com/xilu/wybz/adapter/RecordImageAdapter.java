@@ -13,6 +13,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.PhotoBean;
 import com.xilu.wybz.common.MyCommon;
+import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.ImageLoadUtil;
 
@@ -60,6 +61,7 @@ public class RecordImageAdapter extends RecyclerView.Adapter<RecordImageAdapter.
             if(new File(imgPath).exists()) {
                 ImageLoadUtil.loadImage("file:///" + imgPath, holder.ivCover);
             }else{
+                if(!imgPath.startsWith("http"))imgPath = MyHttpClient.QINIU_URL+imgPath;
                 ImageLoadUtil.loadImage(MyCommon.getImageUrl(imgPath,itemWidth,itemHeight), holder.ivCover);
             }
             holder.ivDel.setVisibility(View.VISIBLE);

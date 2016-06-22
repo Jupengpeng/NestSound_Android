@@ -53,7 +53,6 @@ import butterknife.ButterKnife;
  */
 public abstract class BaseActivity extends AppCompatActivity {
     protected abstract int getLayoutRes();
-
     protected boolean isChenjin;
     protected Context context;
     boolean isHomeActivity;

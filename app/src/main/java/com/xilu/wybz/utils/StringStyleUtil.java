@@ -94,7 +94,9 @@ public class StringStyleUtil {
 
         @Override
         public void onClick(View widget) {
-            UserInfoActivity.ToUserInfoActivity(context,comment.target_uid,comment.target_nickname);
+            if(PrefsUtil.getUserId(context)!=comment.target_uid) {
+                UserInfoActivity.ToUserInfoActivity(context, comment.target_uid, comment.target_nickname);
+            }
         }
 
     }
