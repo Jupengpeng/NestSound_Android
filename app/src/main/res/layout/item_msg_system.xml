@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:text="音淘"
                 android:textColor="@color/main_text_color"
-                android:textSize="@dimen/yc_15" />
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/tv_time"
@@ -51,7 +51,7 @@
                 android:gravity="right"
                 android:text="time"
                 android:textColor="@color/main_text_color2"
-                android:textSize="@dimen/yc_12" />
+                android:textSize="12sp" />
 
         </LinearLayout>
 

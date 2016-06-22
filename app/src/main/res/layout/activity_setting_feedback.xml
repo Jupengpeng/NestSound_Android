@@ -83,7 +83,7 @@
                     android:digits="@string/et_digits_contact"
                     android:textColor="@color/main_text_color"
                     android:textColorHint="@color/et_hint"
-                    android:textSize="@dimen/yc_15" />
+                    android:textSize="15sp" />
             </LinearLayout>
 
             <include layout="@layout/view_spit_line" />

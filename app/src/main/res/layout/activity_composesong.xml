@@ -28,7 +28,7 @@
             android:singleLine="true"
             android:textColor="#181818"
             android:textColorHint="@color/main_text_color2"
-            android:textSize="@dimen/yc_15" />
+            android:textSize="15sp" />
 
         <TextView
             android:layout_width="match_parent"
@@ -52,7 +52,7 @@
                 android:elegantTextHeight="true"
                 android:gravity="center_horizontal|top"
                 android:textColor="@color/main_text_color"
-                android:textSize="@dimen/yc_15" />
+                android:textSize="15sp" />
         </ScrollView>
     </LinearLayout>
 

@@ -22,7 +22,7 @@
             android:layout_weight="1"
             android:text="清理缓存"
             android:textColor="@color/main_text_color"
-            android:textSize="@dimen/yc_15" />
+            android:textSize="15sp" />
 
         <com.xilu.wybz.view.CircleImageView
             android:id="@+id/iv_head"

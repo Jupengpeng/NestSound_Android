@@ -25,7 +25,7 @@
             android:paddingRight="10dp"
             android:text="最新"
             android:textColor="@color/txt_check"
-            android:textSize="@dimen/yc_15" />
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/line"
@@ -35,7 +35,7 @@
             android:gravity="center"
             android:text="|"
             android:textColor="@color/main_text_color"
-            android:textSize="@dimen/yc_15" />
+            android:textSize="15sp" />
 
         <CheckedTextView
             android:id="@+id/tv_hot"
@@ -48,7 +48,7 @@
             android:paddingRight="10dp"
             android:text="最热"
             android:textColor="@color/txt_check"
-            android:textSize="@dimen/yc_15" />
+            android:textSize="15sp" />
     </RelativeLayout>
     <include layout="@layout/view_spit_line" />
 </LinearLayout>

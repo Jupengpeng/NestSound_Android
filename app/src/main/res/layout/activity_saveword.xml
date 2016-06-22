@@ -41,7 +41,7 @@
                     android:hint="快来写一下你为什么创作这首歌吧"
                     android:maxLength="140"
                     android:textColor="@color/main_text_color"
-                    android:textSize="@dimen/yc_15" />
+                    android:textSize="15sp" />
             </ScrollView>
 
             <LinearLayout
@@ -71,7 +71,7 @@
                     android:layout_weight="1"
                     android:text="添加封面"
                     android:textColor="@color/main_text_color"
-                    android:textSize="@dimen/yc_15" />
+                    android:textSize="15sp" />
 
 
             </LinearLayout>
@@ -92,7 +92,7 @@
                     android:paddingTop="10dp"
                     android:text="是否公开"
                     android:textColor="@color/main_text_color"
-                    android:textSize="@dimen/yc_15" />
+                    android:textSize="15sp" />
 
                 <CheckBox
                     android:id="@+id/cb_isopen"
