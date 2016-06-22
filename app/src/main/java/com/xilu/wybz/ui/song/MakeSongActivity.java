@@ -201,16 +201,16 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
 
     public void upData() {
         if(!new File(FileDir.hotDir).exists())new File(FileDir.hotDir).mkdirs();
-        String cacheFileName = FileDir.hotDir+ MD5Util.getMD5String(templateBean.mp3);
-        templateFileName = cacheFileName + ".mp3";
+        templateFileName = FileDir.hotDir+ MD5Util.getMD5String(templateBean.mp3);
+        cacheFileName = templateFileName + ".temp";
         //if templateFileName not exists
         if (!FileUtils.fileExists(templateFileName)) {
 
             if (loadDialog == null) {
 
                 loadDialog = new MaterialDialog.Builder(this)
-                        .title("伴奏下载")
-                        .content(R.string.please_wait_down)
+                        .title(R.string.progress_dialog)
+                        .content(R.string.please_wait_init)
                         .contentGravity(GravityEnum.CENTER)
                         .progress(false, 100, true)
                         .canceledOnTouchOutside(false).build();
@@ -229,7 +229,7 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
         if (loadDialog != null) {
             if (progress == 100) {
                 loadDialog.cancel();
-                showMsg("下载完成");
+                showMsg(getString(R.string.init_ok));
             } else {
                 loadDialog.setProgress(progress);
             }
