@@ -2,7 +2,6 @@ package com.xilu.wybz.ui.fragment;
 
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,19 +11,15 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.FansBean;
-import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.SearchPresenter;
 import com.xilu.wybz.ui.IView.ISearchView;
-import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.ui.lyrics.LyricsdisplayActivity;
-import com.xilu.wybz.ui.song.PlayAudioActivity;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.ImageLoadUtil;
 import com.xilu.wybz.utils.NumberUtil;
-import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.view.SpacesItemDecoration;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.PullRecycler;
@@ -91,12 +86,18 @@ public class SearchLyricsFragment extends BaseListFragment<WorksData> implements
 
     @Override
     public void loadFail() {
+        if (recycler == null){
+            return;
+        }
         recycler.onRefreshCompleted();
     }
 
 
     @Override
     public void loadNoMore() {
+        if (recycler ==  null){
+            return;
+        }
         recycler.onRefreshCompleted();
         recycler.enableLoadMore(false);
     }
@@ -105,6 +106,9 @@ public class SearchLyricsFragment extends BaseListFragment<WorksData> implements
     public void loadNoData() {
         if(mDataList.size()==0){
             EventBus.getDefault().post(new Event.ShowSearchTabEvent(false));
+        }
+        if (recycler == null){
+            return;
         }
         llNoData.setVisibility(View.VISIBLE);
         recycler.onRefreshCompleted();

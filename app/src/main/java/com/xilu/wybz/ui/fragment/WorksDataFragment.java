@@ -23,7 +23,6 @@ import com.xilu.wybz.view.SpacesItemDecoration;
 import com.xilu.wybz.view.materialdialogs.DialogAction;
 import com.xilu.wybz.view.materialdialogs.MaterialDialog;
 import com.xilu.wybz.view.pull.BaseViewHolder;
-import com.xilu.wybz.view.pull.DividerItemDecoration;
 import com.xilu.wybz.view.pull.PullRecycler;
 import com.xilu.wybz.view.pull.layoutmanager.ILayoutManager;
 import com.xilu.wybz.view.pull.layoutmanager.MyLinearLayoutManager;
@@ -124,6 +123,9 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
     @Override
     protected void setUpData() {
         super.setUpData();
+        if (recycler == null){
+            return;
+        }
         if(isFirstTab)recycler.setRefreshing();
     }
 
@@ -174,15 +176,24 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
         },600);
     }
     public void updateList(){
+        if (recycler == null){
+            return;
+        }
         recycler.onRefresh();
     }
     @Override
     public void loadFail() {
+        if (recycler == null){
+            return;
+        }
         recycler.onRefreshCompleted();
     }
 
     @Override
     public void loadNoMore() {
+        if (recycler == null){
+            return;
+        }
         recycler.onRefreshCompleted();
         recycler.enableLoadMore(false);
     }
@@ -212,6 +223,9 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
 
     @Override
     public void loadNoData() {
+        if (recycler == null){
+            return;
+        }
         llNoData.setVisibility(View.VISIBLE);
         recycler.onRefreshCompleted();
         recycler.enableLoadMore(false);

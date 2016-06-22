@@ -7,24 +7,17 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.DataBean;
-import com.xilu.wybz.bean.MsgBean;
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.presenter.PasswordPresenter;
 import com.xilu.wybz.ui.IView.IPasswordView;
-import com.xilu.wybz.ui.base.BaseActivity;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.utils.MD5Util;
 import com.xilu.wybz.utils.MyCountTimer;
 import com.xilu.wybz.utils.ParseUtils;
-import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtil;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -117,8 +110,11 @@ public class PasswordActivity extends ToolbarActivity implements IPasswordView, 
 
     @Override
     public void SmsCodeFail() {
-        mpassPhonebut.setEnabled(true);
         showNetErrorMsg();
+        if (isDestroy){
+            return;
+        }
+        mpassPhonebut.setEnabled(true);
     }
 
     @Override

@@ -7,26 +7,19 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.DataBean;
-import com.xilu.wybz.bean.MsgBean;
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.RegisterPresenter;
-import com.xilu.wybz.ui.IView.IRegisterView;
-import com.xilu.wybz.ui.base.BaseActivity;
 import com.xilu.wybz.ui.BrowserActivity;
+import com.xilu.wybz.ui.IView.IRegisterView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.utils.MD5Util;
 import com.xilu.wybz.utils.MyCountTimer;
 import com.xilu.wybz.utils.ParseUtils;
-import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtil;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -84,11 +77,17 @@ public class RegisterActivity extends ToolbarActivity implements IRegisterView,T
 
     @Override
     public void registerFinish() {
+        if (isDestroy){
+            return;
+        }
         mregReg.setEnabled(true);
     }
 
     @Override
     public void SmsCodeStart() {
+        if (isDestroy){
+            return;
+        }
         mregPhonebut.setEnabled(false);
     }
 
@@ -99,6 +98,9 @@ public class RegisterActivity extends ToolbarActivity implements IRegisterView,T
             if (mb.code==200) {
                 MyCountTimer timeCount = new MyCountTimer(mregPhonebut);
                 timeCount.start();
+                if (isDestroy){
+                    return;
+                }
                 mregPhonepass.setFocusable(true);
                 mregPhonepass.setFocusableInTouchMode(true);
                 mregPhonepass.requestFocus();
