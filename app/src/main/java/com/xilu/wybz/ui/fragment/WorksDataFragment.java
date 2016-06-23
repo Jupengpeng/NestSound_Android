@@ -139,6 +139,11 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
 //        if (isFirstTab) recycler.setRefreshing();
 //    }
 
+    public void reSet(){
+        userId = PrefsUtil.getUserId(context);
+        isMe = (userId == PrefsUtil.getUserId(context));
+    }
+
     @Override
     public void onRefresh(int action) {
         this.action = action;
@@ -152,10 +157,11 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
     }
     public void onEvent(Event.LoginOutEvent event){
         isFirst = false;
-        if(mDataList!=null&&mDataList.size()==0){
-            mDataList.clear();
+        if(mDataList !=null&& mDataList.size()!=0){
             page=1;
+            mDataList.clear();
             adapter.notifyDataSetChanged();
+            recycler.requestLayout();
         }
     }
     public void onEvent(Event.LoginSuccessEvent event){
