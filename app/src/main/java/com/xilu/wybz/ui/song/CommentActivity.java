@@ -152,6 +152,9 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
     @Override
     protected void setUpData() {
         super.setUpData();
+        if (isDestroy){
+            return;
+        }
         recycler.setRefreshing();
     }
 
@@ -177,6 +180,9 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
             public void run() {
                 if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
                     mDataList.clear();
+                }
+                if (isDestroy){
+                    return;
                 }
                 recycler.enableLoadMore(true);
                 mDataList.addAll(commentBeans);

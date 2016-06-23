@@ -94,6 +94,10 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     CheckedTextView tvFav;
     @Bind(R.id.tv_comment_num)
     TextView tvCommentNum;
+    @Bind(R.id.tv_fav_num)
+    TextView tvFavNum;
+    @Bind(R.id.tv_zan_num)
+    TextView tvZanNum;
     @Bind(R.id.tv_time)
     TextView tvTime;
     @Bind(R.id.playSeekBar)
@@ -324,6 +328,8 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
             } else {
                 lyricsList = new ArrayList<>();
             }
+            updateFavNum();
+            updateZanNum();
             updateCommentNum();
             playLyricsAdapter = new PlayLyricsAdapter(context, lyricsList);
             tvHotName.setText(worksData.getHotTitle());
@@ -532,12 +538,14 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
         EventBus.getDefault().post(new Event.UpdataWorksList(worksData, 3, 1 - worksData.iscollect));
         tvFav.setChecked(worksData.iscollect == 1);
         tvFav.startAnimation(AnimationUtils.loadAnimation(context, R.anim.dianzan_anim));
-        worksData.setIscollect(worksData.iscollect);
-        worksData.setFovnum(worksData.iscollect == 1 ? worksData.getFovnum() + 1 : worksData.getFovnum() - 1);
+        updateFavNum();
     }
 
     @Override
     public void collectionMusicFail() {
+        if (rlFav == null){
+            return;
+        }
         rlFav.setEnabled(true);
     }
 
@@ -556,12 +564,14 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
         EventBus.getDefault().post(new Event.UpdateWorkNum(worksData, 2));
         tvZan.setChecked(worksData.isZan == 1);
         tvZan.startAnimation(AnimationUtils.loadAnimation(context, R.anim.dianzan_anim));
-        worksData.setIsZan(worksData.isZan);
-        worksData.setZannum(worksData.isZan == 1 ? worksData.getZannum() + 1 : worksData.getZannum() - 1);
+        updateZanNum();
     }
 
     @Override
     public void zambiaMusicFail() {
+        if (rlZan == null){
+            return;
+        }
         rlZan.setEnabled(true);
     }
 
@@ -599,15 +609,24 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     }
 
     public void updateCommentNum() {
-        if (worksData.commentnum > 0) {
-            tvCommentNum.setText(NumberUtil.format(worksData.commentnum));
-            ivReply.setImageResource(R.drawable.ic_play_comment);
-        } else {
-            tvCommentNum.setText("");
-            ivReply.setImageResource(R.drawable.ic_music_reply_full);
-        }
+        tvCommentNum.setText(NumberUtil.format(worksData.commentnum));
         PrefsUtil.saveMusicData(context, worksData);
     }
+
+    public void updateFavNum() {
+        tvFavNum.setText(NumberUtil.format(worksData.fovnum));
+        PrefsUtil.saveMusicData(context, worksData);
+    }
+
+    public void updateZanNum() {
+        tvZanNum.setText(NumberUtil.format(worksData.zannum));
+
+        PrefsUtil.saveMusicData(context, worksData);
+    }
+
+
+
+
 
     //更新缓存进度
     public void onEventMainThread(Event.UpdataSecondProgressEvent event) {
