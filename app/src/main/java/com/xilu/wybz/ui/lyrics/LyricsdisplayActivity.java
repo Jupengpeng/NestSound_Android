@@ -67,6 +67,10 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
     ImageView ivZan;
     @Bind(R.id.iv_fav)
     ImageView ivFav;
+    @Bind(R.id.tv_favnum)
+    TextView tvFavNum;
+    @Bind(R.id.tv_zannum)
+    TextView tvZanNum;
     String title;
     int id;
     int pos;
@@ -149,7 +153,7 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
                 toCommentActivity();
                 break;
             case R.id.rl_head:
-                if (worksData.uid > 0 && worksData.uid!=PrefsUtil.getUserId(context)) {
+                if (worksData.uid > 0 && worksData.uid != PrefsUtil.getUserId(context)) {
                     UserInfoActivity.ToUserInfoActivity(context, worksData.uid, worksData.author);
                 }
                 break;
@@ -185,17 +189,35 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
         //根据不同的模板id来显示歌词
         if (!TextUtils.isEmpty(str))
             ly_content.setText(StringStyleUtil.getLyrics(worksData));
-        updateCommentNum();
     }
-    public void updateCommentNum(){
-        if (worksData.commentnum > 0) {
-            tvCommentNum.setText(NumberUtil.format(worksData.commentnum));
-            ivComment.setImageResource(R.drawable.ic_lyrics_reply);
+    public void updateZanFavNum(){
+        if(worksData.zannum>0){
+            tvZanNum.setVisibility(View.VISIBLE);
+            tvZanNum.setText(NumberUtil.format(worksData.zannum));
         }else{
+            tvZanNum.setVisibility(View.GONE);
+        }
+        if(worksData.fovnum>0){
+            tvFavNum.setVisibility(View.VISIBLE);
+            tvFavNum.setText(NumberUtil.format(worksData.fovnum));
+        }else{
+            tvFavNum.setVisibility(View.GONE);
+        }
+    }
+    public void updateCommentNum() {
+        if (worksData.commentnum > 0) {
+            if(worksData.commentnum<1000) {
+                tvCommentNum.setText(NumberUtil.format(worksData.commentnum));
+            }else{
+                tvCommentNum.setText("999+");
+            }
+            ivComment.setImageResource(R.drawable.ic_lyrics_reply);
+        } else {
             tvCommentNum.setText("");
             ivComment.setImageResource(R.drawable.ic_lyrics_reply_full);
         }
     }
+
     @Override
     public void showProgressBar() {
         showLoading(ll_loading);
@@ -208,6 +230,9 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
 
     @Override
     public void showErrorView() {
+        if (isDestroy) {
+            return;
+        }
         if (!NetWorkUtil.isNetworkAvailable(context)) {
             ll_nonet.setVisibility(View.VISIBLE);
         }
@@ -215,19 +240,24 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
 
     @Override
     public void loadLyrics(WorksData worksData) {
+        if (isDestroy) {
+            return;
+        }
         this.worksData = worksData;
-        worksData.type=worksData.status;//type表示是否公开
-        worksData.status=2;//status=2歌词
+        worksData.type = worksData.status;//type表示是否公开
+        worksData.status = 2;//status=2歌词
         ivZan.setImageResource(worksData.getIsZan() == 0 ? R.drawable.ic_lyrics_zan1 : R.drawable.ic_lyrics_zan2);
         loadTitleContent();
         tvAuthor.setText(worksData.getAuthor());
         tvTime.setText(DateTimeUtil.timestamp2DateTime(worksData.getCreateTime()));
-        loadImage(worksData.headurl.replace(MyCommon.defult_head,""), ivHead);
+        loadImage(worksData.headurl.replace(MyCommon.defult_head, ""), ivHead);
+        updateCommentNum();
+        updateZanFavNum();
     }
 
     @Override
     public void zanStart() {
-        if (isDestroy){
+        if (isDestroy) {
             return;
         }
         ivZan.setEnabled(false);
@@ -235,11 +265,14 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
 
     @Override
     public void zanSuccess() {
-        if (isDestroy){
+        if (isDestroy) {
             return;
         }
         worksData.isZan = 1 - worksData.isZan;
-        if(worksData.isZan==1)showMsg("点赞成功");
+        if (worksData.isZan == 1) showMsg("点赞成功");
+        worksData.zannum = worksData.zannum + (worksData.isZan == 1 ? 1 : -1);
+        updateZanFavNum();
+        EventBus.getDefault().post(new Event.UpdateWorkNum(worksData, 2));
         ivZan.startAnimation(AnimationUtils.loadAnimation(context, R.anim.dianzan_anim));
         ivZan.setImageResource(worksData.isZan == 0 ? R.drawable.ic_lyrics_zan1 : R.drawable.ic_lyrics_zan2);
 
@@ -247,12 +280,12 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
 
     @Override
     public void zanFail() {
-        showMsg("点赞失败");
+
     }
 
     @Override
     public void zanFinish() {
-        if (isDestroy){
+        if (isDestroy) {
             return;
         }
         ivZan.setClickable(true);
@@ -262,21 +295,24 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
     public void favStart() {
 
     }
+
     @Override
     public void favSuccess() {
-        if (isDestroy){
+        if (isDestroy) {
             return;
         }
         worksData.iscollect = 1 - worksData.iscollect;
         if (worksData.iscollect == 1) showMsg("收藏成功！");
-        EventBus.getDefault().post(new Event.UpdataWorksList(worksData, 3, 1-worksData.iscollect));
+        worksData.fovnum = worksData.fovnum + (worksData.iscollect == 1 ? 1 : -1);
+        updateZanFavNum();
+        EventBus.getDefault().post(new Event.UpdateWorkNum(worksData, 1));
+        EventBus.getDefault().post(new Event.UpdataWorksList(worksData, 3, 1 - worksData.iscollect));
         ivFav.startAnimation(AnimationUtils.loadAnimation(context, R.anim.dianzan_anim));
         ivFav.setImageResource(worksData.iscollect == 0 ? R.drawable.ic_lyrics_fav1 : R.drawable.ic_lyrics_fav2);
     }
 
     @Override
     public void favFail() {
-        showMsg("收藏失败");
     }
 
     @Override
@@ -316,7 +352,7 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
-        if(lyricsPresenter!=null)
+        if (lyricsPresenter != null)
             lyricsPresenter.cancelUrl();
     }
 
@@ -329,7 +365,7 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
                 if (shareDialog == null) {
                     String shareTitle = worksData.title;
                     String shareAuthor = worksData.author;
-                    String shareLink = worksData.shareurl+"?id="+worksData.itemid;
+                    String shareLink = worksData.shareurl + "?id=" + worksData.itemid;
                     String sharePic = worksData.pic;
                     String shareBody = PrefsUtil.getUserId(context) == worksData.uid ? "我用音巢app创作了一首歌词，快来看看吧!" : "我在音巢app上发现一首好歌词，太棒了~";
                     String shareContent = shareBody + " 《" + shareTitle + "》 ▷" + shareLink + " (@音巢音乐)";

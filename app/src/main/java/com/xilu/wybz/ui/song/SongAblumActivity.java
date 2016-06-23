@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -64,6 +65,10 @@ public class SongAblumActivity extends ToolbarActivity implements IRecSongView {
     ImageView ivTopBg;
     @Bind(R.id.iv_toolbar_bg)
     ImageView ivToolbarBg;
+    @Bind(R.id.ll_detail)
+    LinearLayout ll_detail;
+    @Bind(R.id.toolbar_bg_cover)
+    View topbarBgCover;
     @Bind(R.id.myScrollView)
     YcScrollView myScrollView;
     SongListAdapter songListAdapter;
@@ -71,6 +76,7 @@ public class SongAblumActivity extends ToolbarActivity implements IRecSongView {
     SongAlbumPresenter recSongPresenter;
     private SongAlbum songAlbum;
     private int baseScrollHeight;
+    int coverPicWith;
     public static void toSongAblumActivity(Context from, SongAlbum songAlbum) {
         Intent intent = new Intent(from, SongAblumActivity.class);
         intent.putExtra(YinChaoConfig.RECOMMENTSONG, songAlbum);
@@ -92,7 +98,6 @@ public class SongAblumActivity extends ToolbarActivity implements IRecSongView {
     @Override
     public void initView() {
         getIntentData();
-        initMusicView();
         myScrollView.setOnScrollListener(new YcScrollView.OnScrollListener() {
             @Override
             public void onScroll(int scrollY) {
@@ -100,17 +105,16 @@ public class SongAblumActivity extends ToolbarActivity implements IRecSongView {
                     scrollY = baseScrollHeight;
                 }
                 ivToolbarBg.setAlpha((float)(scrollY/(baseScrollHeight*1.0)));
+                topbarBgCover.setAlpha((float)(scrollY/(baseScrollHeight*1.0)));
             }
         });
     }
 
     public void getIntentData() {
         songAlbum = (SongAlbum) getIntent().getSerializableExtra(YinChaoConfig.RECOMMENTSONG);
-        if(StringUtil.isNotBlank(songAlbum.getName()))
-        tvTitle.setText("『" + songAlbum.name + "』");
-        if(StringUtil.isNotBlank(songAlbum.getDetail()))
-        tvDesc.setText(songAlbum.getDetail());
+        updateHeaderView();
         recSongPresenter.getMusicList(songAlbum.getId(),1);
+        initMusicView();
     }
 
     public void initMusicView() {
@@ -118,8 +122,9 @@ public class SongAblumActivity extends ToolbarActivity implements IRecSongView {
         if(isChenjin) {
             statusbarHeight = DensityUtil.getStatusBarHeight(context);
         }
-        int coverPicWith = DensityUtil.getScreenW(context)/3;
+        coverPicWith = DensityUtil.getScreenW(context)/3;
         ivCover.setLayoutParams(new LinearLayout.LayoutParams(coverPicWith,coverPicWith));
+        ll_detail.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,coverPicWith));
         baseScrollHeight = DensityUtil.dip2px(context, 25) + coverPicWith;
         rlTop.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, statusbarHeight + DensityUtil.dip2px(context, 48 + 25) + coverPicWith));
         mToolbar.setTitleTextColor(Color.WHITE);
@@ -142,7 +147,7 @@ public class SongAblumActivity extends ToolbarActivity implements IRecSongView {
         recyclerViewSong.setAdapter(songListAdapter);
     }
     private void loadPic(){
-        String url = songAlbum.getPic();
+        String url = MyCommon.getImageUrl(songAlbum.getPic(),coverPicWith,coverPicWith);
         loadImage(url,ivCover);
         File file = new File(FileDir.blurPic);
         if(!file.exists())file.mkdirs();
@@ -159,7 +164,7 @@ public class SongAblumActivity extends ToolbarActivity implements IRecSongView {
                 }
                 @Override
                 public void onResponse(Bitmap response) {
-                    Bitmap bmp = NativeStackBlur.process(BitmapUtils.zoomBitmap(response, 100), 60);
+                    Bitmap bmp = NativeStackBlur.process(BitmapUtils.zoomBitmap(response, 100), 80);
                     FileUtils.saveBmp(path,bmp);
                     ivToolbarBg.setImageBitmap(bmp);
                     ivTopBg.setImageBitmap(bmp);
@@ -196,10 +201,18 @@ public class SongAblumActivity extends ToolbarActivity implements IRecSongView {
             return;
         }
         musicBeans.addAll(gleeDetailBean.workList);
-        tvCount.setText("(共"+gleeDetailBean.workCount+"首）");
+        tvCount.setText("(共"+gleeDetailBean.workCount+"首)");
+        if(gleeDetailBean.recommedSong!=null)
+        songAlbum = gleeDetailBean.recommedSong;
+        updateHeaderView();
         songListAdapter.notifyDataSetChanged();
     }
-
+    public void updateHeaderView(){
+        if(StringUtil.isNotBlank(songAlbum.name))
+            tvTitle.setText(songAlbum.name);
+        if(StringUtil.isNotBlank(songAlbum.detail))
+            tvDesc.setText(songAlbum.detail);
+    }
     @Override
     public void showProgressBar() {
 
