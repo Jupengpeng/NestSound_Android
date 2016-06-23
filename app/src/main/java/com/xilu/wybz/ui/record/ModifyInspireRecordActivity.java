@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.czt.mp3recorder.MP3Recorder;
 import com.xilu.wybz.R;
@@ -537,15 +538,10 @@ public class ModifyInspireRecordActivity extends ToolbarActivity implements IIns
     @Override
     public void pubSuccess() {
         cancelPd();
-        showMsg("修改成功！");
+        Toast.makeText(context,"修改成功！",Toast.LENGTH_SHORT).show();
         worksData.createdate = System.currentTimeMillis();
         EventBus.getDefault().post(new Event.UpdataWorksList(worksData, 0, 2));
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                finish();
-            }
-        }, 600);
+        finish();
     }
 
     @Override

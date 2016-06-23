@@ -1,12 +1,14 @@
 package com.xilu.wybz.ui.setting;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.xilu.wybz.R;
 import com.xilu.wybz.presenter.FeedbackPresenter;
@@ -106,7 +108,7 @@ public class SettingFeedActivity extends ToolbarActivity implements IFeedbackVie
     @Override
     public void postSuccess() {
         if(isDestroy)return;
-        ToastUtils.toast(context,"提交成功!");
+        Toast.makeText(context,"你的反馈已收到，感谢使用！",Toast.LENGTH_SHORT).show();
         finish();
     }
 

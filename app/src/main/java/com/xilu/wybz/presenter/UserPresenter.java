@@ -30,6 +30,7 @@ public class UserPresenter extends BasePresenter<IUserView> {
     * type null/0/1=歌曲，2=歌词，3=收藏,4=灵感记录
      */
     public void loadData(int userId, int type, int page) {
+        if(userId<=0)return;
         int userType = (userId == PrefsUtil.getUserId(context)) ? 1 : 2;
         params = new HashMap<>();
         params.put("uid", PrefsUtil.getUserId(context) + "");//自己的id

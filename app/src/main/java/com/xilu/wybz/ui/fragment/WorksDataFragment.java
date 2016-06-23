@@ -127,18 +127,17 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
 
     @Override
     public void initView() {
-//        recycler.enablePullToRefresh(false);
+        recycler.enablePullToRefresh(false);
     }
 
-    @Override
-    protected void setUpData() {
-        super.setUpData();
-        if (isFirstTab) recycler.setRefreshing();
-        if (recycler == null){
-            return;
-        }
-        if(isFirstTab)recycler.setRefreshing();
-    }
+//    @Override
+//    protected void setUpData() {
+//        super.setUpData();
+//        if (recycler == null){
+//            return;
+//        }
+//        if (isFirstTab) recycler.setRefreshing();
+//    }
 
     @Override
     public void onRefresh(int action) {
@@ -151,7 +150,19 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
         }
         userPresenter.loadData(userId, type, page++);
     }
-
+    public void onEvent(Event.LoginOutEvent event){
+        isFirst = false;
+        if(mDataList!=null&&mDataList.size()==0){
+            mDataList.clear();
+            page=1;
+            adapter.notifyDataSetChanged();
+        }
+    }
+    public void onEvent(Event.LoginSuccessEvent event){
+        if(isFirstTab){
+            loadData();
+        }
+    }
     @Override
     public void setUserInfo(UserBean userBean) {
         EventBus.getDefault().post(new Event.UpdataUserBean(userBean, PrefsUtil.getUserId(context) == userId ? 1 : 2));

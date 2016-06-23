@@ -20,12 +20,4 @@
         fresco:roundedCornerRadius="4dp"
         fresco:viewAspectRatio="2.87" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="清唱"
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        android:textStyle="bold" />
 </RelativeLayout>

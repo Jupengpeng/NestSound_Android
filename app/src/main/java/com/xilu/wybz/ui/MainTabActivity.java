@@ -108,7 +108,6 @@ public class MainTabActivity extends BaseActivity {
         viewpager.setAdapter(adapter);
         viewpager.setCurrentItem(0);
         viewpager.setOffscreenPageLimit(4);
-        if(manager.getActivity("MAIN")!=null)
         viewpager.setOnPageChangeListener(new MyOnPageChangeListener());
     }
     @Override
@@ -232,11 +231,7 @@ public class MainTabActivity extends BaseActivity {
             currentIndex = 0;
             changeTab();
         }
-        try {
-            ((MineActivity) manager.getActivity("MINE")).clearData();
-        }catch (Exception e){}
     }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();

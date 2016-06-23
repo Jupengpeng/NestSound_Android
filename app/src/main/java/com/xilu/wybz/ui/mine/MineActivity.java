@@ -90,10 +90,13 @@ public class MineActivity extends ToolbarActivity {
         pagerAdapter = new MineAdapter(context, getSupportFragmentManager(), PrefsUtil.getUserId(context), PrefsUtil.getUserInfo(context).name);
         container.setAdapter(pagerAdapter);
         container.setOffscreenPageLimit(tabs.size());
+        WorksDataFragment worksDataFragment = pagerAdapter.getFragment(0);
+        if (worksDataFragment != null)
+            worksDataFragment.loadData();
         stickynavLayout.setOnStickStateChangeListener(new StickyNavLayout.onStickStateChangeListener() {
             @Override
             public void isStick(boolean isStick) {
-                if(!isStick) {
+                if (!isStick) {
                     for (int i = 0; i < 4; i++) {
                         if (i != container.getCurrentItem()) {
                             pagerAdapter.getFragment(i).moveToFirst();
@@ -104,7 +107,7 @@ public class MineActivity extends ToolbarActivity {
             @Override
             public void scrollPercent(float percent) {
                 mToolbar.setAlpha(percent);
-                SystemBarHelper.tintStatusBar(MineActivity.this, Color.argb((int) (percent*255),0xFF,0xD7,0x05));
+                SystemBarHelper.tintStatusBar(MineActivity.this, Color.argb((int) (percent * 255), 0xFF, 0xD7, 0x05));
             }
         });
         container.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -120,12 +123,10 @@ public class MineActivity extends ToolbarActivity {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        if(position>0){
-                            WorksDataFragment worksDataFragment = pagerAdapter.getFragment(position);
-                            worksDataFragment.loadData();
-                        }
+                        WorksDataFragment worksDataFragment = pagerAdapter.getFragment(position);
+                        worksDataFragment.loadData();
                     }
-                },120);
+                }, 120);
             }
 
             @Override
@@ -135,11 +136,14 @@ public class MineActivity extends ToolbarActivity {
         });
     }
 
-    public void clearData(){
-        if (isFirst){
-            onCreate(null);
-            isFirst = false;
-        }
+    public void onEventMainThread(Event.LoginOutEvent event) {
+        userTvName.setText("");
+        userTvInfo.setText("");
+        loadImage("res://"+R.drawable.ic_default_head_252,ivHead);
+    }
+
+    public void onEventMainThread(Event.LoginSuccessEvent event) {
+        container.setCurrentItem(0);
     }
 
     private void changeTabColor() {
@@ -168,19 +172,21 @@ public class MineActivity extends ToolbarActivity {
     }
 
     public void setLocalUserInfo(UserBean userBean) {
-        if(StringUtil.isNotBlank(userBean.headurl)&&!userBean.headurl.equals(MyCommon.defult_head)) {
-            int headWidth = DensityUtil.dip2px(context,92);
-            loadImage(MyCommon.getImageUrl(userBean.headurl,headWidth,headWidth), ivHead);
+        if (StringUtil.isNotBlank(userBean.headurl) && !userBean.headurl.equals(MyCommon.defult_head)) {
+            int headWidth = DensityUtil.dip2px(context, 92);
+            loadImage(MyCommon.getImageUrl(userBean.headurl, headWidth, headWidth), ivHead);
         }
         updateUserFansNum(userBean);
         if (StringUtil.isNotBlank(userBean.name)) userTvName.setText(userBean.name);
         if (StringUtil.isNotBlank(userBean.descr)) userTvInfo.setText(userBean.descr);
         if (StringUtil.isNotBlank(userBean.name)) setTitle(userBean.name);
     }
-    public void updateUserFansNum(UserBean userBean){
+
+    public void updateUserFansNum(UserBean userBean) {
         userFansnum.setText("粉丝:  " + NumberUtil.format(userBean.fansnum));
         userFollownum.setText("关注:  " + NumberUtil.format(userBean.gznum));
     }
+
     @OnClick({R.id.user_fansnum, R.id.user_follownum, R.id.ll_myrecord, R.id.ll_mysong, R.id.ll_mylyrics, R.id.ll_myfav, R.id.rl_setting})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -244,31 +250,33 @@ public class MineActivity extends ToolbarActivity {
             setUserInfo(event.getUserBean());
         }
     }
+
     //修改粉丝数量
     public void onEventMainThread(Event.UpdateFollowNumEvent event) {
         int from = event.getFrom();
         int type = event.getType();
         UserBean userBean = PrefsUtil.getUserInfo(context);
-        switch (from){
+        switch (from) {
             case 0:
-                if(type==0){
-                    userBean.gznum+=1;
-                }else{
-                    userBean.gznum-=1;
+                if (type == 0) {
+                    userBean.gznum += 1;
+                } else {
+                    userBean.gznum -= 1;
                 }
-                userFollownum.setText("关注:  "+NumberUtil.format(userBean.gznum));
+                userFollownum.setText("关注:  " + NumberUtil.format(userBean.gznum));
                 break;
             case 1:
-                if(type==0){
-                    userBean.fansnum+=1;
-                }else{
-                    userBean.fansnum-=1;
+                if (type == 0) {
+                    userBean.fansnum += 1;
+                } else {
+                    userBean.fansnum -= 1;
                 }
-                userFansnum.setText("粉丝:  "+NumberUtil.format(userBean.fansnum));
+                userFansnum.setText("粉丝:  " + NumberUtil.format(userBean.fansnum));
                 break;
         }
-        PrefsUtil.saveUserInfo(context,userBean);
+        PrefsUtil.saveUserInfo(context, userBean);
     }
+
     //更新点赞数
 //    public void onEventMainThread(Event.UpdateWorkNum event){
 //        (pagerAdapter.getFragment(1)).updateNum(event.getWorksData(),event.getType());
@@ -284,6 +292,7 @@ public class MineActivity extends ToolbarActivity {
         else if (event.getChange() == 2)
             (pagerAdapter.getFragment(type)).updateData(worksData);
     }
+
     public void onEventMainThread(Event.RemoveMySongEvent event) {
         int itemid = event.getItemid();
         (pagerAdapter.getFragment(1)).removeByItemid(itemid);
@@ -294,6 +303,7 @@ public class MineActivity extends ToolbarActivity {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
     }
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         return false;
