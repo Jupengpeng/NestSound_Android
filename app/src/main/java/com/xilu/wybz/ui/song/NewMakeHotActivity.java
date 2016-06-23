@@ -299,8 +299,9 @@ public class NewMakeHotActivity extends ToolbarActivity implements IHotView, Vie
         PlayBanZouInstance.getInstance().setIMediaPlayerListener(new IMediaPlayerListener() {
             @Override
             public void onStart() {
-                if(PlayMediaInstance.getInstance().status==3){
-                    EventBus.getDefault().post(new Event.PPStatusEvent(MyCommon.PP_PAUSE));
+                if (PlayMediaInstance.getInstance().status == 3) {
+                    PlayMediaInstance.getInstance().pauseMediaPlay();
+                    EventBus.getDefault().post(new Event.PPStatusEvent(4));
                 }
                 if(currentType==TYPE_TAB_1) {
                     if (newAdapter != null) {
