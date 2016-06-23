@@ -162,6 +162,7 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                if(isDestroy)return;
                 if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
                     mDataList.clear();
                 }
@@ -196,25 +197,19 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
 
     @Override
     public void loadFail() {
-        if (recycler == null){
-            return;
-        }
+        if(isDestroy)return;
         recycler.onRefreshCompleted();
     }
 
     @Override
     public void loadNoMore() {
-        if (recycler == null){
-            return;
-        }
+        if(isDestroy)return;
         recycler.onRefreshCompleted();
         recycler.enableLoadMore(false);
     }
 
     public void updateNum(WorksData worksData, int type) {
-        if(mDataList==null||mDataList.size()==0){
-            return;
-        }
+        if(isDestroy)return;
         int index = -1;
         for (int i = 0; i < mDataList.size(); i++) {
             if (worksData.itemid == mDataList.get(i).itemid&&worksData.status==mDataList.get(i).status) {
@@ -236,6 +231,7 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
     }
     @Override
     public void deleteSuccess() {
+        if(isDestroy)return;
         //更新本地当前播放音乐的缓存
         if (type == 3) {//删除了收藏 判断是否删除的是当前播放的这首歌
             WorksData worksData = PrefsUtil.getMusicData(context, mDataList.get(deletePos).itemid);
@@ -260,9 +256,7 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
 
     @Override
     public void loadNoData() {
-        if (recycler == null){
-            return;
-        }
+        if(isDestroy)return;
         llNoData.setVisibility(View.VISIBLE);
         recycler.onRefreshCompleted();
         recycler.enableLoadMore(false);

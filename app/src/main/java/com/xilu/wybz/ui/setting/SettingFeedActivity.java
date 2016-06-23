@@ -84,9 +84,9 @@ public class SettingFeedActivity extends ToolbarActivity implements IFeedbackVie
         switch (item.getItemId()) {
             case R.id.menu_send:
                 toPass();
-                break;
+                return true;
         }
-        return true;
+        return super.onOptionsItemSelected(item);
     }
 
     private void toPass() {
@@ -105,7 +105,9 @@ public class SettingFeedActivity extends ToolbarActivity implements IFeedbackVie
 
     @Override
     public void postSuccess() {
+        if(isDestroy)return;
         ToastUtils.toast(context,"提交成功!");
+        finish();
     }
 
     @Override

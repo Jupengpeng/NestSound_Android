@@ -23,10 +23,12 @@ public abstract class BaseFragment extends Fragment {
     protected ArrayList<Integer> resourceIdList;
     protected AnimImageView animImageView;
     protected ImageView ivLoading;
+    protected boolean isDestroy;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(getLayoutResId(), container, false);
         context = getActivity();
+        isDestroy = false;
         ButterKnife.bind(this, view);
         initPresenter();
         return view;
@@ -77,6 +79,7 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        isDestroy = true;
         ButterKnife.unbind(this);
     }
     protected void showMsg(String msg){

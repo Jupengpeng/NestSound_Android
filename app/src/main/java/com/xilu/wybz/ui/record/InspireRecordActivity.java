@@ -179,7 +179,7 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
                         }
                     }
                 }
-                break;
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }

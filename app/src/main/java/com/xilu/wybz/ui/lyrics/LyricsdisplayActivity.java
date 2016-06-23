@@ -195,13 +195,13 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
             tvZanNum.setVisibility(View.VISIBLE);
             tvZanNum.setText(NumberUtil.format(worksData.zannum));
         }else{
-            tvZanNum.setVisibility(View.GONE);
+            tvZanNum.setVisibility(View.INVISIBLE);
         }
         if(worksData.fovnum>0){
             tvFavNum.setVisibility(View.VISIBLE);
             tvFavNum.setText(NumberUtil.format(worksData.fovnum));
         }else{
-            tvFavNum.setVisibility(View.GONE);
+            tvFavNum.setVisibility(View.INVISIBLE);
         }
     }
     public void updateCommentNum() {
@@ -249,7 +249,7 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
         ivZan.setImageResource(worksData.getIsZan() == 0 ? R.drawable.ic_lyrics_zan1 : R.drawable.ic_lyrics_zan2);
         loadTitleContent();
         tvAuthor.setText(worksData.getAuthor());
-        tvTime.setText(DateTimeUtil.timestamp2DateTime(worksData.getCreateTime()));
+        tvTime.setText(DateTimeUtil.timestamp2Date(worksData.getCreatedate()));
         loadImage(worksData.headurl.replace(MyCommon.defult_head, ""), ivHead);
         updateCommentNum();
         updateZanFavNum();
@@ -273,7 +273,7 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
         worksData.zannum = worksData.zannum + (worksData.isZan == 1 ? 1 : -1);
         updateZanFavNum();
         EventBus.getDefault().post(new Event.UpdateWorkNum(worksData, 2));
-        ivZan.startAnimation(AnimationUtils.loadAnimation(context, R.anim.dianzan_anim));
+//        ivZan.startAnimation(AnimationUtils.loadAnimation(context, R.anim.dianzan_anim));
         ivZan.setImageResource(worksData.isZan == 0 ? R.drawable.ic_lyrics_zan1 : R.drawable.ic_lyrics_zan2);
 
     }
@@ -307,7 +307,7 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
         updateZanFavNum();
         EventBus.getDefault().post(new Event.UpdateWorkNum(worksData, 1));
         EventBus.getDefault().post(new Event.UpdataWorksList(worksData, 3, 1 - worksData.iscollect));
-        ivFav.startAnimation(AnimationUtils.loadAnimation(context, R.anim.dianzan_anim));
+//        ivFav.startAnimation(AnimationUtils.loadAnimation(context, R.anim.dianzan_anim));
         ivFav.setImageResource(worksData.iscollect == 0 ? R.drawable.ic_lyrics_fav1 : R.drawable.ic_lyrics_fav2);
     }
 

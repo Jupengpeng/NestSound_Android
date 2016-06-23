@@ -71,6 +71,7 @@ public class SearchLyricsFragment extends BaseListFragment<WorksData> implements
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                if(isDestroy)return;
                 if(mDataList.size()==0){
                     EventBus.getDefault().post(new Event.ShowSearchTabEvent(true));
                 }
@@ -89,29 +90,23 @@ public class SearchLyricsFragment extends BaseListFragment<WorksData> implements
 
     @Override
     public void loadFail() {
-        if (recycler == null){
-            return;
-        }
+        if(isDestroy)return;
         recycler.onRefreshCompleted();
     }
 
 
     @Override
     public void loadNoMore() {
-        if (recycler ==  null){
-            return;
-        }
+        if(isDestroy)return;
         recycler.onRefreshCompleted();
         recycler.enableLoadMore(false);
     }
 
     @Override
     public void loadNoData() {
+        if(isDestroy)return;
         if(mDataList.size()==0){
             EventBus.getDefault().post(new Event.ShowSearchTabEvent(false));
-        }
-        if (recycler == null){
-            return;
         }
         llNoData.setVisibility(View.VISIBLE);
         recycler.onRefreshCompleted();

@@ -87,6 +87,7 @@ public class SongFragment extends BaseFragment implements ISongView {
     }
     @Override
     public void showNewSong(List<WorksData> newWorksDatas) {
+        if(isDestroy)return;
         if(newSongDatas==null){
             newSongDatas = new ArrayList<>();
         }else{
@@ -101,6 +102,7 @@ public class SongFragment extends BaseFragment implements ISongView {
 
     @Override
     public void showHotSong(List<WorksData> hotWorksDatas) {
+        if(isDestroy)return;
         if(hotSongDatas==null){
             hotSongDatas = new ArrayList<>();
         }else{
@@ -119,6 +121,7 @@ public class SongFragment extends BaseFragment implements ISongView {
 
     @Override
     public void loadingFinish() {
+        if(isDestroy)return;
         if(swipeRefreshLayout!=null)
             swipeRefreshLayout.setRefreshing(false);
         new Handler().postDelayed(new Runnable() {
