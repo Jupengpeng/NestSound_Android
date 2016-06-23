@@ -62,7 +62,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="48dp"
                 android:layout_marginLeft="55dp"
                 android:layout_marginRight="45dp"
                 android:layout_marginTop="5dp">
@@ -72,16 +72,13 @@
                     android:layout_width="45dp"
                     android:layout_height="match_parent">
 
-                    <ImageView
+                    <CheckedTextView
                         android:id="@+id/tv_fav"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:layout_centerHorizontal="true"
-                        android:padding="6dp"
-                        android:scaleType="center"
-                        android:src="@drawable/ic_play_fav"
-                        />
+                        android:background="@drawable/ic_play_fav" />
                     <TextView
                         android:id="@+id/tv_fav_num"
                         android:layout_width="wrap_content"
@@ -90,7 +87,7 @@
                         android:layout_alignParentBottom="true"
                         android:layout_centerHorizontal="true"
                         android:textColor="@color/main_text_color4"
-                        android:textSize="10sp"
+                        android:textSize="12sp"
                         tools:text="1203"
                         />
                 </RelativeLayout>
@@ -106,16 +103,13 @@
                     android:layout_width="45dp"
                     android:layout_height="match_parent">
 
-                    <ImageView
+                    <CheckedTextView
                         android:id="@+id/tv_zan"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:layout_centerHorizontal="true"
-                        android:padding="6dp"
-                        android:scaleType="center"
-                        android:src="@drawable/ic_play_zan"
-                        />
+                        android:background="@drawable/ic_play_zan" />
 
                     <TextView
                         android:id="@+id/tv_zan_num"
@@ -125,7 +119,7 @@
                         android:layout_alignParentBottom="true"
                         android:layout_centerHorizontal="true"
                         android:textColor="@color/main_text_color4"
-                        android:textSize="10sp"
+                        android:textSize="12sp"
                         tools:text="1203"
                         />
                 </RelativeLayout>
@@ -141,16 +135,14 @@
                 <RelativeLayout
                     android:id="@+id/rl_reply"
                     android:layout_width="45dp"
+                    android:layout_marginTop="5dp"
                     android:layout_height="match_parent">
 
                     <ImageView
                         android:id="@+id/iv_reply"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
                         android:layout_centerHorizontal="true"
-                        android:padding="6dp"
-                        android:scaleType="center"
                         android:src="@drawable/ic_play_comment" />
 
                     <TextView
@@ -161,7 +153,7 @@
                         android:layout_alignParentBottom="true"
                         android:layout_centerHorizontal="true"
                         android:textColor="@color/main_text_color4"
-                        android:textSize="10sp"
+                        android:textSize="12sp"
                         tools:text="1203"
                         />
 
@@ -176,7 +168,6 @@
 
                 <RelativeLayout
                     android:id="@+id/rl_more"
-                    android:layout_marginTop="12dp"
                     android:layout_width="45dp"
                     android:layout_height="match_parent">
 
