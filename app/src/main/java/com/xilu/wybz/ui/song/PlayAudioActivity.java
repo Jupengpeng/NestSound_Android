@@ -538,13 +538,14 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
         EventBus.getDefault().post(new Event.UpdataWorksList(worksData, 3, 1 - worksData.iscollect));
         tvFav.setChecked(worksData.iscollect == 1);
         tvFav.startAnimation(AnimationUtils.loadAnimation(context, R.anim.dianzan_anim));
-        worksData.setIscollect(worksData.iscollect);
-        worksData.setFovnum(worksData.iscollect == 1 ? worksData.getFovnum() + 1 : worksData.getFovnum() - 1);
         updateFavNum();
     }
 
     @Override
     public void collectionMusicFail() {
+        if (rlFav == null){
+            return;
+        }
         rlFav.setEnabled(true);
     }
 
@@ -563,13 +564,14 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
         EventBus.getDefault().post(new Event.UpdateWorkNum(worksData, 2));
         tvZan.setChecked(worksData.isZan == 1);
         tvZan.startAnimation(AnimationUtils.loadAnimation(context, R.anim.dianzan_anim));
-        worksData.setIsZan(worksData.isZan);
-        worksData.setZannum(worksData.isZan == 1 ? worksData.getZannum() + 1 : worksData.getZannum() - 1);
         updateZanNum();
     }
 
     @Override
     public void zambiaMusicFail() {
+        if (rlZan == null){
+            return;
+        }
         rlZan.setEnabled(true);
     }
 
