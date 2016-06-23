@@ -195,13 +195,13 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
             tvZanNum.setVisibility(View.VISIBLE);
             tvZanNum.setText(NumberUtil.format(worksData.zannum));
         }else{
-            tvZanNum.setVisibility(View.GONE);
+            tvZanNum.setVisibility(View.INVISIBLE);
         }
         if(worksData.fovnum>0){
             tvFavNum.setVisibility(View.VISIBLE);
             tvFavNum.setText(NumberUtil.format(worksData.fovnum));
         }else{
-            tvFavNum.setVisibility(View.GONE);
+            tvFavNum.setVisibility(View.INVISIBLE);
         }
     }
     public void updateCommentNum() {
@@ -249,7 +249,7 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
         ivZan.setImageResource(worksData.getIsZan() == 0 ? R.drawable.ic_lyrics_zan1 : R.drawable.ic_lyrics_zan2);
         loadTitleContent();
         tvAuthor.setText(worksData.getAuthor());
-        tvTime.setText(DateTimeUtil.timestamp2Date(worksData.getCreateTime()));
+        tvTime.setText(DateTimeUtil.timestamp2Date(worksData.getCreatedate()));
         loadImage(worksData.headurl.replace(MyCommon.defult_head, ""), ivHead);
         updateCommentNum();
         updateZanFavNum();

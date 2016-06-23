@@ -148,7 +148,7 @@ public class MakeHotActivity extends ToolbarActivity {
                 //关闭播放
                 stopPlayBz();
                 startActivity(SearchHotActivity.class);
-                break;
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }

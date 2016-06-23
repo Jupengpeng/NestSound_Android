@@ -115,6 +115,7 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                if(isDestroy)return;
                 if(mDataList.size()==0){
                     EventBus.getDefault().post(new Event.HideKeyboardEvent());
                 }
@@ -132,26 +133,20 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
 
     @Override
     public void loadFail() {
-        if (recycler == null){
-            return;
-        }
+        if(isDestroy)return;
         recycler.onRefreshCompleted();
     }
 
     @Override
     public void loadNoMore() {
-        if (recycler == null){
-            return;
-        }
+        if(isDestroy)return;
         recycler.onRefreshCompleted();
         recycler.enableLoadMore(false);
     }
 
     @Override
     public void loadNoData() {
-        if (recycler == null){
-            return;
-        }
+        if(isDestroy)return;
         llNoData.setVisibility(View.VISIBLE);
         recycler.onRefreshCompleted();
         recycler.enableLoadMore(false);

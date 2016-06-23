@@ -126,7 +126,7 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView {
                     worksData.setLyrics(lyrics);
                     SaveWordActivity.toSaveWordActivity(context, worksData);
                 }
-                break;
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }

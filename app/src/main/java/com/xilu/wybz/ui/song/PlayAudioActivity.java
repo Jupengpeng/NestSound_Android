@@ -431,7 +431,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
                         shareDialog.showDialog();
                     }
                 }
-                break;
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }

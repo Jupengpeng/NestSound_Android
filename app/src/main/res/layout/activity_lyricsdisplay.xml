@@ -104,7 +104,7 @@
                     <RelativeLayout
                         android:id="@+id/rl_fav"
                         android:layout_width="wrap_content"
-                        android:minWidth="40dp"
+                        android:layout_marginRight="20dp"
                         android:layout_height="match_parent">
 
                         <ImageView
@@ -118,11 +118,10 @@
                             android:id="@+id/tv_favnum"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="15dp"
-                            android:layout_marginLeft="3dp"
+                            android:layout_marginLeft="5dp"
                             android:layout_toRightOf="@+id/iv_fav"
                             android:layout_centerVertical="true"
-                            android:text=""
+                            android:text="10"
                             android:textColor="@color/main_text_color"
                             android:textSize="15sp" />
                     </RelativeLayout>
@@ -131,14 +130,13 @@
                         android:id="@+id/rl_zan"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
+                        android:layout_marginRight="15dp"
                         android:minWidth="40dp">
 
                         <ImageView
                             android:id="@+id/iv_zan"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:paddingLeft="6dp"
-                            android:paddingRight="6dp"
                             android:layout_centerVertical="true"
                             android:src="@drawable/ic_lyrics_zan1" />
 
@@ -146,11 +144,10 @@
                             android:id="@+id/tv_zannum"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="15dp"
                             android:layout_centerVertical="true"
                             android:layout_toRightOf="@+id/iv_zan"
-                            android:layout_marginLeft="3dp"
-                            android:text=""
+                            android:layout_marginLeft="5dp"
+                            android:text="10"
                             android:textColor="@color/main_text_color"
                             android:textSize="15sp" />
                     </RelativeLayout>
@@ -158,13 +155,12 @@
                     <RelativeLayout
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:minWidth="40dp"
+                        android:minWidth="36dp"
                         >
                         <ImageView
                             android:id="@+id/iv_comment"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:paddingRight="10dp"
                             android:src="@drawable/ic_lyrics_reply_full" />
 
                         <TextView

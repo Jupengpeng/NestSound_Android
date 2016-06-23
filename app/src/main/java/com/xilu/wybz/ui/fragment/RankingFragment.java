@@ -133,6 +133,7 @@ public class RankingFragment extends BaseFragment implements IRankingView {
 
     @Override
     public void showRankingSong(List<WorksData> songWorksDatas) {
+        if(isDestroy)return;
         if(songDatas==null)songDatas = new ArrayList<>();
         if(songDatas.size()>0)songDatas.clear();
         songDatas.addAll(songWorksDatas);
@@ -141,6 +142,7 @@ public class RankingFragment extends BaseFragment implements IRankingView {
 
     @Override
     public void showRankingLyrics(List<WorksData> lyricsWorksDatas) {
+        if(isDestroy)return;
         if(lyricsDatas==null)lyricsDatas = new ArrayList<>();
         if(lyricsDatas.size()>0)lyricsDatas.clear();
         lyricsDatas.addAll(lyricsWorksDatas);
@@ -154,11 +156,13 @@ public class RankingFragment extends BaseFragment implements IRankingView {
 
     @Override
     public void showNoData(int type) {
+        if(isDestroy)return;
         if (type == 1) tvSongRanking.setVisibility(View.GONE);
         if (type == 2) tvLyricsRanking.setVisibility(View.GONE);
     }
     @Override
     public void loadFinish() {
+        if(isDestroy)return;
         count++;
         if (count == 2) {
             if(swipeRefreshLayout!=null)

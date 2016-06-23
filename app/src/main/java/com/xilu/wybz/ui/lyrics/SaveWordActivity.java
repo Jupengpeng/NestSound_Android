@@ -183,12 +183,9 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView {
                 } else {
                     saveWordPresenter.saveLyrics(worksData);
                 }
-                break;
-            case android.R.id.home:
-                finish();
-                break;
+                return true;
         }
-        return true;
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

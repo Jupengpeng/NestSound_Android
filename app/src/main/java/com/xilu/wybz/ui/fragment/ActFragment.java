@@ -47,18 +47,15 @@ public class ActFragment extends BaseListFragment<ActBean> implements IActView {
     @Override
     public void initView() {
         time = System.currentTimeMillis();
-    findPresenter.getActList(page++);
-}
+        findPresenter.getActList(page++);
+    }
 
     @Override
     public void showActList(List<ActBean> actBeanList) {
+        if(isDestroy)return;
         if (mDataList == null) mDataList = new ArrayList<>();
         if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
             mDataList.clear();
-        }
-
-        if (recycler == null){
-            return;
         }
         recycler.enableLoadMore(true);
         mDataList.addAll(actBeanList);
@@ -73,9 +70,7 @@ public class ActFragment extends BaseListFragment<ActBean> implements IActView {
 
     @Override
     public void showNoData() {
-        if (recycler == null){
-            return;
-        }
+        if(isDestroy)return;
         llNoData.setVisibility(View.VISIBLE);
         recycler.onRefreshCompleted();
         recycler.enableLoadMore(false);
@@ -83,9 +78,7 @@ public class ActFragment extends BaseListFragment<ActBean> implements IActView {
 
     @Override
     public void showNoMore() {
-        if (recycler == null){
-            return;
-        }
+        if(isDestroy)return;
         recycler.onRefreshCompleted();
         recycler.enableLoadMore(false);
     }
@@ -95,6 +88,7 @@ public class ActFragment extends BaseListFragment<ActBean> implements IActView {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                if(isDestroy)return;
                 disMissLoading(ll_loading);
             }
         }, 1000 - (System.currentTimeMillis() - time));
@@ -102,9 +96,7 @@ public class ActFragment extends BaseListFragment<ActBean> implements IActView {
 
     @Override
     public void showErrorView() {
-        if (recycler == null){
-            return;
-        }
+        if(isDestroy)return;
         recycler.onRefreshCompleted();
     }
 
