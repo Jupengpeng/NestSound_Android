@@ -283,8 +283,8 @@ public class WaveSurfaceHelper {
             start = -(x/(2*s));
             x += 2*s*start;
         } else {
-            start = -(x/(2*s));
-            x += 2*s*(start-1);
+            start = -(x/(2*s)+1);
+            x += 2*s*(start);
         }
 
         x -= screenOff;
