@@ -270,9 +270,9 @@ public class MineActivity extends ToolbarActivity {
         PrefsUtil.saveUserInfo(context,userBean);
     }
     //更新点赞数
-    public void onEventMainThread(Event.UpdataWorkData event){
-        (pagerAdapter.getFragment(1)).updateNum(event.getWorksData(),event.getType(),event.getNum());
-    }
+//    public void onEventMainThread(Event.UpdateWorkNum event){
+//        (pagerAdapter.getFragment(1)).updateNum(event.getWorksData(),event.getType());
+//    }
     //灵感记录 歌曲  歌词 发布成功 更新列表数据
     public void onEventMainThread(Event.UpdataWorksList event) {
         WorksData worksData = event.getWorksData();

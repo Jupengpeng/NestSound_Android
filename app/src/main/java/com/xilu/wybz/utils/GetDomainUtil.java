@@ -45,13 +45,13 @@ public class GetDomainUtil {
                 super.onResponse(response);
                 try {
                     String api_domain = new JSONObject(response).getString("api_domain");
-                    String page_start_pic = new JSONObject(response).getString("page_start_pic");
+//                    String page_start_pic = new JSONObject(response).getString("page_start_pic");
                     if(StringUtil.isNotBlank(api_domain)) {
                         PrefsUtil.putString("domain", api_domain, mContext);
                         MyHttpClient.ROOT_URL = api_domain;
                     }
-                    PrefsUtil.putString("applogo", page_start_pic, mContext);
-                    downLoadLogo(page_start_pic);
+//                    PrefsUtil.putString("applogo", page_start_pic, mContext);
+//                    downLoadLogo(page_start_pic);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

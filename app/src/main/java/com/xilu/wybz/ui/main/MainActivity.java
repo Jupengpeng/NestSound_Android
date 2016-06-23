@@ -11,12 +11,12 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.google.gson.Gson;
 import com.xilu.wybz.R;
 import com.xilu.wybz.adapter.ImageAdapter;
@@ -43,6 +43,7 @@ import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.view.GridSpacingItemDecoration;
 import com.xilu.wybz.view.SpacesItemDecoration;
+import com.xilu.wybz.view.SwipeRefreshLayoutCompat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +53,7 @@ import butterknife.OnClick;
 
 public class MainActivity extends BasePlayMenuActivity implements IHomeView {
     @Bind(R.id.swipeRefreshLayout)
-    SwipeRefreshLayout swipeRefreshLayout;
+    SwipeRefreshLayoutCompat swipeRefreshLayout;
     @Bind(R.id.recycler_view_recommend)
     RecyclerView recyclerViewRecommend;
     @Bind(R.id.recycler_view_songalbum)
@@ -226,7 +227,7 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
             public void onItemClick(View view, int position) {
                 if (musicTalkList.size() > 0) {
                     MusicTalk musicTalk = musicTalkList.get(position);
-                    if (StringUtil.isBlank(musicTalk.url)&&musicTalk.itemid>0) {
+                    if (StringUtil.isBlank(musicTalk.url) && musicTalk.itemid > 0) {
                         String playFrom = PrefsUtil.getString("playFrom", context);
                         if (!playFrom.equals(MyCommon.MUSICTALK) || MyApplication.ids.size() == 0) {
                             if (MyApplication.ids.size() > 0)
@@ -237,7 +238,7 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
                         }
 
                         PlayAudioActivity.toPlayAudioActivity(context, musicTalk.itemid, "", MyCommon.MUSICTALK);
-                    } else if(StringUtil.isNotBlank(musicTalk.url)){
+                    } else if (StringUtil.isNotBlank(musicTalk.url)) {
                         BrowserActivity.toBrowserActivity(context, musicTalk.url);
                     }
                 }
@@ -406,7 +407,7 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
 
     @Override
     public void loadDataFinish() {
-        if(swipeRefreshLayout!=null)swipeRefreshLayout.setRefreshing(false);
+        if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(false);
     }
 
     Handler mHandler = new Handler() {
@@ -451,6 +452,7 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
                 break;
         }
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();

@@ -13,6 +13,7 @@
         android:layout_weight="1"
         android:background="@color/main_bg"
         android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -65,15 +66,14 @@
                         fresco:fadeDuration="300"
                         fresco:failureImage="@drawable/ic_default_head_252"
                         fresco:failureImageScaleType="centerCrop"
-                        fresco:roundAsCircle="true"
                         fresco:placeholderImage="@drawable/ic_default_pic"
-                         />
+                        fresco:roundAsCircle="true" />
                 </RelativeLayout>
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="@dimen/yc_12"
+                    android:layout_marginLeft="12dp"
                     android:layout_weight="1"
                     android:gravity="center_vertical"
                     android:orientation="vertical">
@@ -103,39 +103,67 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginRight="@dimen/yc_6"
+                    android:layout_marginRight="6dp"
                     android:gravity="center_vertical">
+
                     <RelativeLayout
                         android:id="@+id/rl_fav"
-                        android:layout_width="46dp"
-                        android:layout_height="48dp">
-                    <ImageView
-                        android:id="@+id/iv_fav"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:src="@drawable/ic_lyrics_fav1" />
+                        android:minWidth="40dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical">
+
+                        <ImageView
+                            android:id="@+id/iv_fav"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_lyrics_fav1" />
+
+                        <TextView
+                            android:id="@+id/tv_favnum"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="15dp"
+                            android:layout_marginLeft="3dp"
+                            android:layout_toRightOf="@+id/iv_fav"
+                            android:text=""
+                            android:textColor="@color/main_text_color"
+                            android:textSize="16sp" />
                     </RelativeLayout>
+
                     <RelativeLayout
                         android:id="@+id/rl_zan"
-                        android:layout_width="46dp"
-                        android:layout_height="52dp">
-                    <ImageView
-                        android:id="@+id/iv_zan"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:src="@drawable/ic_lyrics_zan1" />
+                        android:layout_height="match_parent"
+                        android:minWidth="40dp"
+                        android:gravity="center_vertical">
+
+                        <ImageView
+                            android:id="@+id/iv_zan"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_lyrics_zan1" />
+
+                        <TextView
+                            android:id="@+id/tv_zannum"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="15dp"
+                            android:layout_toRightOf="@+id/iv_zan"
+                            android:layout_marginLeft="3dp"
+                            android:text=""
+                            android:textColor="@color/main_text_color"
+                            android:textSize="16sp" />
                     </RelativeLayout>
+
                     <RelativeLayout
-                        android:layout_width="46dp"
-                        android:layout_height="52dp">
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent">
 
                         <ImageView
                             android:id="@+id/iv_comment"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:paddingLeft="10dp"
                             android:paddingRight="10dp"
                             android:src="@drawable/ic_lyrics_reply_full" />
 
@@ -143,7 +171,7 @@
                             android:id="@+id/tv_comment_num"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="26dp"
+                            android:layout_marginLeft="15dp"
                             android:layout_marginTop="8dp"
                             android:text=""
                             android:textColor="@color/main_text_color"
@@ -154,7 +182,9 @@
             </LinearLayout>
 
         </LinearLayout>
+
         <include layout="@layout/ll_loading" />
+
         <include layout="@layout/ll_nonet" />
 
     </RelativeLayout>

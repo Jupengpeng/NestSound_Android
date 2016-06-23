@@ -173,7 +173,7 @@ public class ActFragment extends BaseListFragment<ActBean> implements IActView {
             if (status == 1) {
                 BrowserActivity.toBrowserActivity(context, mDataList.get(position).url);
             } else if (status == 2) {
-                showMsg("活动已结束！");
+                BrowserActivity.toBrowserActivity(context, mDataList.get(position).url);
             } else if (status == 3) {
                 showMsg("活动尚未开始！");
             }

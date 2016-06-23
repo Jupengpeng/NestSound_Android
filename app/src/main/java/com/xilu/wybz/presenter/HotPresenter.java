@@ -54,7 +54,7 @@ public class HotPresenter extends BasePresenter<IHotView> {
         });
     }
     public void downHot(String fileDir,String fileName,String url){
-        httpUtils.getFile(url, new FileCallBack(fileDir,fileName) {
+        httpUtils.getFile(url, new FileCallBack(fileDir,fileName+".temp") {
             @Override
             public void inProgress(float progress, long total) {
 
@@ -66,7 +66,7 @@ public class HotPresenter extends BasePresenter<IHotView> {
             @Override
             public void onResponse(File file) {
                 try {
-                    FileUtils.renameFile(fileDir+fileName,fileDir+fileName+".mp3");
+                    FileUtils.renameFile(fileDir+fileName+".temp",fileDir+fileName);
                 }catch (Exception e){
                 }
                 iView.downloadSuccess();

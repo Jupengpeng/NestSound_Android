@@ -292,6 +292,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
             if (!TextUtils.isEmpty(pic)) {
                 loadPic(pic);
             }
+            worksData.status = 1;
             String lyrics = worksData.getLyrics();
             author = worksData.getAuthor();
             name = worksData.getTitle();
@@ -324,7 +325,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
                 Log.e("lyrics", lyrics);
                 String[] lyricss = lyrics.split("\\n");
                 lyricsList = Arrays.asList(lyricss);
-            }else{
+            } else {
                 lyricsList = new ArrayList<>();
             }
             updateFavNum();
@@ -395,10 +396,10 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
         @Override
         public void handleMessage(Message msg) {
             if (msg.what == 1) {
-                if (tvTime == null || playSeekBar == null){
+                if (tvTime == null || playSeekBar == null) {
                     return;
                 }
-                if (worksData != null ) {
+                if (worksData != null) {
                     tvTime.setText(FormatHelper.formatDuration(musicBinder.getCurrentPosition() / 1000));//播放的时间变化
                     playSeekBar.setProgress(musicBinder.getCurrentPosition());//进度条对时间
                 }
@@ -420,7 +421,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
                     if (shareDialog == null) {
                         String shareTitle = worksData.title;
                         String shareAuthor = worksData.author;
-                        String shareLink = worksData.shareurl+"?id="+worksData.itemid;
+                        String shareLink = worksData.shareurl + "?id=" + worksData.itemid;
                         String sharePic = worksData.pic;
                         String playurl = worksData.playurl;
                         String shareContent = "我在音巢APP淘到一首好听的歌，快来看看有没有你喜欢的原创style 《" + shareTitle + "》 ▷" + shareLink + " (@音巢音乐)";
@@ -528,11 +529,12 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
 
     @Override
     public void collectionMusicSuccess() {
-        EventBus.getDefault().post(new Event.UpdataWorkData(worksData,1,worksData.iscollect==0?1:-1));
-        if(rlFav==null)return;
+        if (rlFav == null) return;
         rlFav.setEnabled(true);
         worksData.iscollect = 1 - worksData.iscollect;
         if (worksData.iscollect == 1) showMsg("收藏成功！");
+        worksData.fovnum = worksData.fovnum+(worksData.iscollect==1?1:-1);
+        EventBus.getDefault().post(new Event.UpdateWorkNum(worksData, 1));
         EventBus.getDefault().post(new Event.UpdataWorksList(worksData, 3, 1 - worksData.iscollect));
         tvFav.setChecked(worksData.iscollect == 1);
         tvFav.startAnimation(AnimationUtils.loadAnimation(context, R.anim.dianzan_anim));
@@ -551,16 +553,14 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
         rlZan.setEnabled(false);
         playPresenter.setZambiaState(id, worksData.uid);
     }
-
     @Override
     public void zambiaMusicSuccess() {
-        EventBus.getDefault().post(new Event.UpdataWorkData(worksData,2,worksData.isZan==0?1:-1));
-        if(rlZan==null)return;
+        if (rlZan == null) return;
         rlZan.setEnabled(true);
         worksData.isZan = 1 - worksData.isZan;
-        if (worksData.isZan == 1) {
-            showMsg("点赞成功！");
-        }
+        if (worksData.isZan == 1) showMsg("点赞成功！");
+        worksData.zannum = worksData.zannum+(worksData.isZan==1?1:-1);
+        EventBus.getDefault().post(new Event.UpdateWorkNum(worksData, 2));
         tvZan.setChecked(worksData.isZan == 1);
         tvZan.startAnimation(AnimationUtils.loadAnimation(context, R.anim.dianzan_anim));
         worksData.setIsZan(worksData.isZan);
@@ -641,8 +641,8 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
                 ivPlay.setEnabled(true);
                 playSeekBar.setMax(musicBinder.getDuration());
                 ivPlay.setImageResource(R.drawable.ic_play_pause);
-                if(musicBinder!=null)
-                tvAlltime.setText(FormatHelper.formatDuration(musicBinder.getDuration()/1000));
+                if (musicBinder != null)
+                    tvAlltime.setText(FormatHelper.formatDuration(musicBinder.getDuration() / 1000));
                 startTimer();
                 break;
             case MyCommon.PP_STOP://停止
@@ -746,12 +746,11 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
         unbindService(serviceConnection);
         EventBus.getDefault().unregister(this);
 
-        if (playPresenter != null){
+        if (playPresenter != null) {
             playPresenter.cancelUrl();
         }
         super.onDestroy();
     }
-
 
 
 }

@@ -307,8 +307,9 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
         PlayBanZouInstance.getInstance().setIMediaPlayerListener(new IMediaPlayerListener() {
             @Override
             public void onStart() {
-                if(PlayMediaInstance.getInstance().status==3){
-                    EventBus.getDefault().post(new Event.PPStatusEvent(MyCommon.PP_PAUSE));
+                if (PlayMediaInstance.getInstance().status == 3) {
+                    PlayMediaInstance.getInstance().pauseMediaPlay();
+                    EventBus.getDefault().post(new Event.PPStatusEvent(4));
                 }
                 if (sampleViewHolder != null) {
                     sampleViewHolder.updatePlayStatus();

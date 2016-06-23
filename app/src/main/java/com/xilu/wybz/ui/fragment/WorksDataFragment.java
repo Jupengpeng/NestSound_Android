@@ -65,8 +65,15 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -204,24 +211,29 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
         recycler.enableLoadMore(false);
     }
 
-    public void updateNum(WorksData worksData, int type, int num) {
+    public void updateNum(WorksData worksData, int type) {
+        if(mDataList==null||mDataList.size()==0){
+            return;
+        }
         int index = -1;
         for (int i = 0; i < mDataList.size(); i++) {
-            if (worksData.itemid == mDataList.get(i).itemid) {
+            if (worksData.itemid == mDataList.get(i).itemid&&worksData.status==mDataList.get(i).status) {
                 index = i;
                 break;
             }
         }
         if (index > -1) {
             if(type==2) {
-                mDataList.get(index).setZannum(mDataList.get(index).getZannum()+num);
+                mDataList.get(index).setZannum(worksData.zannum);
             }else if(type==1){
-                mDataList.get(index).setFovnum(mDataList.get(index).getFovnum()+num);
+                mDataList.get(index).setFovnum(worksData.fovnum);
             }
             updateItem(index);
         }
     }
-
+    public void onEvent(Event.UpdateWorkNum event){
+        updateNum(event.getWorksData(),event.getType());
+    }
     @Override
     public void deleteSuccess() {
         //更新本地当前播放音乐的缓存

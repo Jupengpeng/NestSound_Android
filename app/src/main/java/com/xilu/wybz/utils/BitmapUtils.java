@@ -88,7 +88,7 @@ public class BitmapUtils {
      */
     public static Bitmap getSDCardImg(String imagePath) {
         BitmapFactory.Options opt = new BitmapFactory.Options();
-        opt.inPreferredConfig = Bitmap.Config.RGB_565;
+        opt.inPreferredConfig = Bitmap.Config.ARGB_8888;
         opt.inPurgeable = true;
         opt.inInputShareable = true;
         //获取资源图片

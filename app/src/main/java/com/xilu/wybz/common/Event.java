@@ -59,18 +59,12 @@ public class Event {
             return worksData;
         }
     }
-    public static class UpdataWorkData {
+    public static class UpdateWorkNum {
         WorksData worksData;
         int type;//1 喜欢 2 赞
-        int num;//1 加 -1减
 
-        public int getNum() {
-            return num;
-        }
-
-        public UpdataWorkData(WorksData worksData, int type, int num) {
+        public UpdateWorkNum(WorksData worksData, int type) {
             this.type = type;
-            this.num = num;
             this.worksData = worksData;
         }
 
