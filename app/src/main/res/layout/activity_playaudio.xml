@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rl_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -61,7 +62,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
+                android:layout_height="50dp"
                 android:layout_marginLeft="55dp"
                 android:layout_marginRight="45dp"
                 android:layout_marginTop="5dp">
@@ -69,77 +70,121 @@
                 <RelativeLayout
                     android:id="@+id/rl_fav"
                     android:layout_width="45dp"
-                    android:layout_height="45dp">
+                    android:layout_height="match_parent">
 
-                    <CheckedTextView
+                    <ImageView
                         android:id="@+id/tv_fav"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:background="@drawable/ic_play_fav" />
+                        android:layout_marginTop="5dp"
+                        android:layout_centerHorizontal="true"
+                        android:padding="6dp"
+                        android:scaleType="center"
+                        android:src="@drawable/ic_play_fav"
+                        />
+                    <TextView
+                        android:id="@+id/tv_fav_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:textColor="@color/main_text_color4"
+                        android:textSize="10sp"
+                        tools:text="1203"
+                        />
                 </RelativeLayout>
-
-                <View
+                <Space
                     android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_weight="1" />
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    />
+
 
                 <RelativeLayout
                     android:id="@+id/rl_zan"
                     android:layout_width="45dp"
-                    android:layout_height="45dp">
+                    android:layout_height="match_parent">
 
-                    <CheckedTextView
+                    <ImageView
                         android:id="@+id/tv_zan"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:background="@drawable/ic_play_zan" />
+                        android:layout_marginTop="5dp"
+                        android:layout_centerHorizontal="true"
+                        android:padding="6dp"
+                        android:scaleType="center"
+                        android:src="@drawable/ic_play_zan"
+                        />
+
+                    <TextView
+                        android:id="@+id/tv_zan_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:textColor="@color/main_text_color4"
+                        android:textSize="10sp"
+                        tools:text="1203"
+                        />
                 </RelativeLayout>
 
-                <View
+
+
+                <Space
                     android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_weight="1" />
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    />
 
                 <RelativeLayout
                     android:id="@+id/rl_reply"
                     android:layout_width="45dp"
-                    android:layout_height="45dp">
+                    android:layout_height="match_parent">
 
                     <ImageView
                         android:id="@+id/iv_reply"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:src="@drawable/ic_music_reply_full" />
+                        android:layout_marginTop="5dp"
+                        android:layout_centerHorizontal="true"
+                        android:padding="6dp"
+                        android:scaleType="center"
+                        android:src="@drawable/ic_play_comment" />
 
                     <TextView
                         android:id="@+id/tv_comment_num"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="28dp"
-                        android:layout_marginTop="7dp"
-                        android:text=""
-                        android:textColor="#bcffffff"
-                        android:textSize="9sp" />
+                        android:layout_gravity="center_vertical"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:textColor="@color/main_text_color4"
+                        android:textSize="10sp"
+                        tools:text="1203"
+                        />
+
                 </RelativeLayout>
 
-                <View
+                <Space
                     android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_weight="1" />
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    />
+
 
                 <RelativeLayout
                     android:id="@+id/rl_more"
+                    android:layout_marginTop="12dp"
                     android:layout_width="45dp"
-                    android:layout_height="45dp">
+                    android:layout_height="match_parent">
 
                     <ImageView
                         android:id="@+id/iv_more"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
+                        android:layout_centerHorizontal="true"
                         android:src="@drawable/ic_play_more" />
                 </RelativeLayout>
             </LinearLayout>
@@ -149,7 +194,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/yc_15"
                 android:layout_marginRight="@dimen/yc_15"
-                android:layout_marginTop="@dimen/yc_5"
+                android:layout_marginTop="@dimen/yc_10"
                 android:gravity="center_vertical">
 
                 <TextView
@@ -187,7 +232,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="15dp"
                 android:gravity="center_vertical">
 
                 <ImageView

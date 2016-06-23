@@ -240,8 +240,6 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
     public void uploadSuccess(String musicurl) {
         worksData.musicurl = musicurl;
         makeSongPresenter.tuningMusic("" + worksData.uid, worksData);
-
-        cancelPd();
     }
 
     @Override
