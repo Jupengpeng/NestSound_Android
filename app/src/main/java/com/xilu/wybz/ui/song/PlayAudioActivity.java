@@ -667,6 +667,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
             case MyCommon.PP_ERROR://出错
                 closeTimer();
                 ivPlay.setImageResource(R.drawable.ic_play_play);
+                showMsg("播放出错！");
                 break;
             case MyCommon.PP_NO_DATA://获取数据失败
                 closeTimer();

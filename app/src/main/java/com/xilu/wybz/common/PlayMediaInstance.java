@@ -58,7 +58,7 @@ public class PlayMediaInstance {
             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
-                    if (iml != null) {
+                    if (iml != null&&status>1) {
                         iml.onOver();
                     }
                 }
@@ -74,7 +74,6 @@ public class PlayMediaInstance {
                 @Override
                 public boolean onError(MediaPlayer mp, int what, int extra) {
                     status = 1;
-                    Log.e("onError", "onError");
                     mp.reset();
                     if (iml != null) {
                         iml.onError();

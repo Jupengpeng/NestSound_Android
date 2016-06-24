@@ -119,7 +119,7 @@ public class RegisterActivity extends ToolbarActivity implements IRegisterView,T
 
     @Override
     public void SmsCodeFinish() {
-
+        mregPhonebut.setEnabled(true);
     }
 
     @Override

@@ -168,10 +168,8 @@ public class UserInfoActivity extends ToolbarActivity {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        if(position>0){
-                            WorksDataFragment worksDataFragment = pagerAdapter.getFragment(position);
-                            worksDataFragment.loadData();
-                        }
+                        WorksDataFragment worksDataFragment = pagerAdapter.getFragment(position);
+                        worksDataFragment.loadData();
                     }
                 },120);
             }

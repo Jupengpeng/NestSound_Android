@@ -4,6 +4,7 @@ package com.xilu.wybz.ui.msg;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -131,17 +132,8 @@ public class MsgFavActivity extends BaseListActivity<CollectionBean> implements 
         TextView tvMusicName;
         @Bind(R.id.tv_content)
         TextView tvContent;
-        @OnClick(R.id.ll_works)
-        void toWorks(){
-            CollectionBean collectionBean = (CollectionBean)itemView.getTag();
-            if(collectionBean.type==1){
-                if(collectionBean.workid>0)
-                    PlayAudioActivity.toPlayAudioActivity(context, collectionBean.workid, "", MyCommon.MSG_COMMENT);
-            }else{
-                if(collectionBean.workid>0)
-                    LyricsdisplayActivity.toLyricsdisplayActivity(context, collectionBean.workid, 0, collectionBean.title);
-            }
-        }
+        @Bind(R.id.ll_works)
+        LinearLayout llWorks;
         public SampleViewHolder(View itemView) {
             super(itemView);
         }
@@ -164,6 +156,19 @@ public class MsgFavActivity extends BaseListActivity<CollectionBean> implements 
                     onItemClick(v,position);
                 }
             });
+            llWorks.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(collectionBean.type==1){
+                        if(collectionBean.workid>0)
+                            PlayAudioActivity.toPlayAudioActivity(context, collectionBean.workid, "", MyCommon.MSG_COMMENT);
+                    }else{
+                        if(collectionBean.workid>0)
+                            LyricsdisplayActivity.toLyricsdisplayActivity(context, collectionBean.workid, 0, collectionBean.title);
+                    }
+                }
+            });
+
         }
         @Override
         public void onItemClick(View view, int position) {

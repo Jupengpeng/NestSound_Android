@@ -38,6 +38,7 @@ import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.utils.ToastUtils;
 import com.xilu.wybz.view.WaveSurfaceView;
+import com.xilu.wybz.view.dialog.MakeSongTipDialog;
 import com.xilu.wybz.view.materialdialogs.DialogAction;
 import com.xilu.wybz.view.materialdialogs.GravityEnum;
 import com.xilu.wybz.view.materialdialogs.MaterialDialog;
@@ -99,7 +100,7 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
     protected MaterialDialog loadDialog;
     protected MaterialDialog backDialog;
     protected MaterialDialog reStartDialog;
-
+    private MakeSongTipDialog makeSongTipDialog;
     public static void ToMakeSongActivity(Context context, TemplateBean templateBean) {
         Intent intent = new Intent(context, MakeSongActivity.class);
         intent.putExtra("templateBean", templateBean);
@@ -115,6 +116,11 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initData();
+        if(!PrefsUtil.getBoolean("isMakeSongTip",context)){
+            makeSongTipDialog = new MakeSongTipDialog(context);
+            makeSongTipDialog.showDialog();
+            PrefsUtil.putBoolean("isMakeSongTip",true,context);
+        }
         makeSongPresenter = new MakeSongPresenter(context, this);
         makeSongPresenter.init();
 
@@ -203,15 +209,17 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
         templateFileName = FileDir.hotDir+ MD5Util.getMD5String(templateBean.mp3);
         //if templateFileName not exists
         if (!FileUtils.fileExists(templateFileName)) {
-            if (loadDialog == null) {
-                loadDialog = new MaterialDialog.Builder(this)
-                        .title(R.string.progress_dialog)
-                        .content(R.string.please_wait_init)
-                        .contentGravity(GravityEnum.CENTER)
-                        .progress(false, 100, true)
-                        .canceledOnTouchOutside(false).build();
+            if(makeSongTipDialog==null) {
+                if (loadDialog == null) {
+                    loadDialog = new MaterialDialog.Builder(this)
+                            .title(R.string.progress_dialog)
+                            .content(R.string.please_wait_init)
+                            .contentGravity(GravityEnum.CENTER)
+                            .progress(false, 100, true)
+                            .canceledOnTouchOutside(false).build();
+                }
+                loadDialog.show();
             }
-            loadDialog.show();
             makeSongPresenter.loadFile(templateBean.mp3, templateFileName);
         }
     }

@@ -87,14 +87,12 @@ public class MsgCommentActivity extends BaseListActivity<MsgCommentBean> impleme
         }
         recycler.enableLoadMore(true);
         for(MsgCommentBean commentBean:commentBeans){
-            if(commentBean.uid!=PrefsUtil.getUserId(context))
+//            if(commentBean.uid!=PrefsUtil.getUserId(context))
                 mDataList.add(commentBean);
         }
-
         adapter.notifyDataSetChanged();
         recycler.onRefreshCompleted();
     }
-
     @Override
     public void loadFail() {
         if (recycler == null){

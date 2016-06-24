@@ -90,9 +90,6 @@ public class MineActivity extends ToolbarActivity {
         pagerAdapter = new MineAdapter(context, getSupportFragmentManager(), PrefsUtil.getUserId(context), PrefsUtil.getUserInfo(context).name);
         container.setAdapter(pagerAdapter);
         container.setOffscreenPageLimit(tabs.size());
-        WorksDataFragment worksDataFragment = pagerAdapter.getFragment(0);
-        if (worksDataFragment != null)
-            worksDataFragment.loadData();
         stickynavLayout.setOnStickStateChangeListener(new StickyNavLayout.onStickStateChangeListener() {
             @Override
             public void isStick(boolean isStick) {
@@ -141,20 +138,21 @@ public class MineActivity extends ToolbarActivity {
         firstLoadUserInfo = false;
         userTvName.setText("");
         userTvInfo.setText("");
-        loadImage("res://" + R.drawable.ic_default_head_252, ivHead);
+        loadImage("res://yinchao/" + R.drawable.ic_default_head_252, ivHead);
     }
 
     public void onEventMainThread(Event.LoginSuccessEvent event) {
+        firstLoadUserInfo = false;
         container.setCurrentItem(0);
         WorksDataFragment worksDataFragment;
         worksDataFragment = pagerAdapter.getFragment(0);
         worksDataFragment.reSet();
         worksDataFragment.loadData();
+        worksDataFragment = pagerAdapter.getFragment(1);
+        worksDataFragment.reSet();
         worksDataFragment = pagerAdapter.getFragment(2);
         worksDataFragment.reSet();
         worksDataFragment = pagerAdapter.getFragment(3);
-        worksDataFragment.reSet();
-        worksDataFragment = pagerAdapter.getFragment(1);
         worksDataFragment.reSet();
     }
 
@@ -178,7 +176,7 @@ public class MineActivity extends ToolbarActivity {
             if (StringUtil.isNotBlank(userBean.headurl)) localUserBean.headurl = userBean.headurl;
             PrefsUtil.saveUserInfo(context, localUserBean);
             //更新本地我的信息
-            setLocalUserInfo(userBean);
+            setLocalUserInfo(localUserBean);
             firstLoadUserInfo = true;
         }
     }
