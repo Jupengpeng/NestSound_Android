@@ -241,6 +241,7 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
     public void setLoadFailed() {
         if (loadDialog != null) {
             loadDialog.cancel();
+            showMsg("初始化失败");
         }
     }
 

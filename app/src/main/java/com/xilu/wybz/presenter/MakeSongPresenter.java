@@ -60,7 +60,6 @@ public class MakeSongPresenter extends BasePresenter<IMakeSongView> {
 
             @Override
             public void onError(Call call, Exception e) {
-                ToastUtils.toast(context,"初始化失败");
                 iView.setLoadFailed();
             }
 
