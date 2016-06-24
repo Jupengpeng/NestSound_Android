@@ -27,12 +27,12 @@ import com.xilu.wybz.utils.KickBackAnimator;
 import java.util.List;
 
 
-public class HomeDialog extends Dialog{
+public class MakeSongTipDialog extends Dialog{
     Context mContext;
     View.OnClickListener ipl;
     private Handler mHandler = new Handler();
     RelativeLayout layout;
-    public HomeDialog(Context context, View.OnClickListener ipl) {
+    public MakeSongTipDialog(Context context, View.OnClickListener ipl) {
         super(context, R.style.ToastDialog);
         mContext = context;
         this.ipl = ipl;

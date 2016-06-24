@@ -104,6 +104,7 @@ public class MineActivity extends ToolbarActivity {
                     }
                 }
             }
+
             @Override
             public void scrollPercent(float percent) {
                 mToolbar.setAlpha(percent);
@@ -137,13 +138,24 @@ public class MineActivity extends ToolbarActivity {
     }
 
     public void onEventMainThread(Event.LoginOutEvent event) {
+        firstLoadUserInfo = false;
         userTvName.setText("");
         userTvInfo.setText("");
-        loadImage("res://"+R.drawable.ic_default_head_252,ivHead);
+        loadImage("res://" + R.drawable.ic_default_head_252, ivHead);
     }
 
     public void onEventMainThread(Event.LoginSuccessEvent event) {
         container.setCurrentItem(0);
+        WorksDataFragment worksDataFragment;
+        worksDataFragment = pagerAdapter.getFragment(0);
+        worksDataFragment.reSet();
+        worksDataFragment.loadData();
+        worksDataFragment = pagerAdapter.getFragment(2);
+        worksDataFragment.reSet();
+        worksDataFragment = pagerAdapter.getFragment(3);
+        worksDataFragment.reSet();
+        worksDataFragment = pagerAdapter.getFragment(1);
+        worksDataFragment.reSet();
     }
 
     private void changeTabColor() {
