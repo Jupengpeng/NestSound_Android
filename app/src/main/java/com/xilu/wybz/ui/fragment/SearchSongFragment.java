@@ -55,9 +55,7 @@ public class SearchSongFragment extends BaseListFragment<WorksData> implements I
 
     @Override
     public void onRefresh(int action) {
-        if (mDataList == null) {
-            mDataList = new ArrayList<>();
-        }
+        super.onRefresh(action);
         searchPresenter.searchWorkData(keyWord, 1, page++);
     }
 

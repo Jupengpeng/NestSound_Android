@@ -160,13 +160,7 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
 
     @Override
     public void onRefresh(int action) {
-        this.action = action;
-        if (mDataList == null) {
-            mDataList = new ArrayList<>();
-        }
-        if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
-            page = 1;
-        }
+        super.onRefresh(action);
         if (worksData != null) {
             type = TextUtils.isEmpty(worksData.getPlayurl()) ? 2 : 1;
             commentPresenter.getCommentList(worksData.getItemid(), type, page++);

@@ -149,13 +149,7 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
 
     @Override
     public void onRefresh(int action) {
-        this.action = action;
-        if (mDataList == null) {
-            mDataList = new ArrayList<>();
-        }
-        if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
-            page = 1;
-        }
+        super.onRefresh(action);
         userPresenter.loadData(userId, type, page++);
     }
     public void onEvent(Event.LoginOutEvent event){

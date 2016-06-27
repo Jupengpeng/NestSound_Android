@@ -78,13 +78,6 @@ public class MoreWorkActivity extends BaseListActivity<WorksData> implements IFi
 
     @Override
     public void onRefresh(int action) {
-        this.action = action;
-        if (mDataList == null) {
-            mDataList = new ArrayList<>();
-        }
-        if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
-            page = 1;
-        }
         findMoreWorkPresenter.findMoreWork(workType, orderType, page++);
     }
 

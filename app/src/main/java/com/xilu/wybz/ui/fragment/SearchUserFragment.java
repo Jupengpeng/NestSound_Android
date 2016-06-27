@@ -58,9 +58,7 @@ public class SearchUserFragment extends BaseListFragment<FansBean> implements IS
 
     @Override
     public void onRefresh(int action) {
-        if (mDataList == null) {
-            mDataList = new ArrayList<>();
-        }
+        super.onRefresh(action);
         searchPresenter.searchUserData(keyWord, 3, page++);
     }
 

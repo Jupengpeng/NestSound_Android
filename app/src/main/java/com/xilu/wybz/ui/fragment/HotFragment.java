@@ -103,10 +103,6 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
 
     @Override
     public void onRefresh(int action) {
-        this.action = action;
-        if (mDataList == null) {
-            mDataList = new ArrayList<>();
-        }
         hotPresenter.loadHotData(keyWord, type + 1, page++);
     }
 
