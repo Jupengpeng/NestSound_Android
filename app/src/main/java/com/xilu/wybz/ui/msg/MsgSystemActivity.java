@@ -177,6 +177,6 @@ public class MsgSystemActivity extends BaseListActivity<SystemBean> implements I
     protected void onDestroy() {
         super.onDestroy();
         if(systemPresenter!=null)
-            systemPresenter.cancelUrl();
+            systemPresenter.cancelRequest();
     }
 }

@@ -157,6 +157,6 @@ public class ImportWordActivity extends BaseListActivity<WorksData> implements I
     public void onDestroy() {
         super.onDestroy();
         if(importWordPresenter!=null)
-        importWordPresenter.cancelUrl();
+        importWordPresenter.cancelRequest();
     }
 }

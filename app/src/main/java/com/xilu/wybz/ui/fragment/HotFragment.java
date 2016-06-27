@@ -337,6 +337,6 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
     public void onDestroyView() {
         super.onDestroyView();
         if(hotPresenter!=null)
-            hotPresenter.cancelUrl();
+            hotPresenter.cancelRequest();
     }
 }

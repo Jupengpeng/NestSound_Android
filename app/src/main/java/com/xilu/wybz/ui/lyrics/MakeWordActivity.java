@@ -239,6 +239,6 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
         if(makeWordPresenter!=null)
-            makeWordPresenter.cancelUrl();
+            makeWordPresenter.cancelRequest();
     }
 }

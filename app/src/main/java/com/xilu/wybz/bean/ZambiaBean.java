@@ -14,7 +14,7 @@ public class ZambiaBean implements Serializable {
 
     public int id;
     public int target_uid; //发布作品的用户id
-    public int workid;//收藏的作品id
+    public int itemid;//收藏的作品id
     public int user_id;//收藏者的ID
     public String author;//作者名称
     public String title;//作品标题

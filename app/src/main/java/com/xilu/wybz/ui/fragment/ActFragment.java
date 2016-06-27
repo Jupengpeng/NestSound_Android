@@ -178,6 +178,6 @@ public class ActFragment extends BaseListFragment<ActBean> implements IActView {
     public void onDestroyView() {
         super.onDestroyView();
         if (findPresenter != null)
-            findPresenter.cancelUrl();
+            findPresenter.cancelRequest();
     }
 }

@@ -1,6 +1,7 @@
 package com.xilu.wybz.ui.lyrics;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -142,19 +143,18 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView {
 
     //上传封面图片
     public void uploadCoverPic() {
-        showPd("正在保存中，请稍候...");
         UploadFileUtil uploadPicUtil = new UploadFileUtil(context);
         uploadPicUtil.uploadFile(worksData.pic, MyCommon.fixxs[1], new UploadFileUtil.UploadResult() {
             @Override
             public void onSuccess(String imageUrl) {
                 worksData.setPic(imageUrl);
-                saveWordPresenter.saveLyrics(worksData);
+                if(materialDialog!=null&&materialDialog.isShowing()) {
+                    saveWordPresenter.saveLyrics(worksData);
+                }
             }
-
             @Override
             public void onFail() {
-                Log.e("onFail", "onFail");
-                showMsg("上传封面失败！");
+                showMsg("封面上传失败！");
             }
         });
     }
@@ -179,9 +179,19 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView {
                     return true;
                 }
                 if (new File(worksData.pic).exists()) {
+                    showPd("正在保存中，请稍候...");
                     uploadCoverPic();
                 } else {
+                    showPd("正在修改中，请稍候...");
                     saveWordPresenter.saveLyrics(worksData);
+                }
+                if(materialDialog!=null){
+                    materialDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                        @Override
+                        public void onCancel(DialogInterface dialog) {
+                            saveWordPresenter.cancelRequest();
+                        }
+                    });
                 }
                 return true;
         }
@@ -274,6 +284,6 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView {
     protected void onDestroy() {
         super.onDestroy();
         if(saveWordPresenter!=null)
-            saveWordPresenter.cancelUrl();
+            saveWordPresenter.cancelRequest();
     }
 }

@@ -164,6 +164,6 @@ public class MusicTalkMoreActivity extends BaseListActivity<MusicTalk> implement
     protected void onDestroy() {
         super.onDestroy();
         if(musicTalkMorePresenter!=null)
-            musicTalkMorePresenter.cancelUrl();
+            musicTalkMorePresenter.cancelRequest();
     }
 }

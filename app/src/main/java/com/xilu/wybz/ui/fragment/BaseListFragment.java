@@ -55,7 +55,6 @@ public abstract class BaseListFragment<T> extends BaseFragment implements PullRe
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(getLayoutResId(), container, false);
-        ButterKnife.bind(this, view);
         initPresenter();
         setUpData();
         return view;
@@ -190,11 +189,6 @@ public abstract class BaseListFragment<T> extends BaseFragment implements PullRe
 
     protected abstract BaseViewHolder getViewHolder(ViewGroup parent, int viewType);
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
-    }
     public void loadData(String name) {
         if (TextUtils.isEmpty(keyWord)) {
             keyWord = name;

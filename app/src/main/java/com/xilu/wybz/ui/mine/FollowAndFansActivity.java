@@ -218,8 +218,10 @@ public class FollowAndFansActivity extends BaseListActivity<FansBean> implements
 
         @Override
         public void onItemClick(View view, int position) {
-            if(PrefsUtil.getUserId(context)!=mDataList.get(position).fansid){
-                UserInfoActivity.ToUserInfoActivity(context,mDataList.get(position).fansid,mDataList.get(position).fansname);
+            int authorid = fromType==0?mDataList.get(position).userid:mDataList.get(position).fansid;
+            boolean isMe = PrefsUtil.getUserId(context)!= authorid;
+            if(isMe){
+                UserInfoActivity.ToUserInfoActivity(context,authorid,mDataList.get(position).fansname);
             }
         }
     }
@@ -228,6 +230,6 @@ public class FollowAndFansActivity extends BaseListActivity<FansBean> implements
     protected void onDestroy() {
         super.onDestroy();
         if(mFollowPresenter!=null)
-            mFollowPresenter.cancelUrl();
+            mFollowPresenter.cancelRequest();
     }
 }

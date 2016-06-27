@@ -382,7 +382,7 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
         super.onDestroy();
         EventBus.getDefault().unregister(this);
         if(inspireRecordPresenter!=null){
-            inspireRecordPresenter.cancelUrl();
+            inspireRecordPresenter.cancelRequest();
         }
     }
 

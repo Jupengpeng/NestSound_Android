@@ -19,6 +19,7 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.commit451.nativestackblur.NativeStackBlur;
 import com.xilu.wybz.R;
 import com.xilu.wybz.utils.FastBlur;
 import com.xilu.wybz.utils.KickBackAnimator;
@@ -117,7 +118,7 @@ public class MoreWindow{
         mBitmap = view.getDrawingCache();
 
         float scaleFactor = 8;
-        float radius = 30;
+        int radius = 30;
         int width = mBitmap.getWidth();
         int height = mBitmap.getHeight();
 
@@ -130,7 +131,7 @@ public class MoreWindow{
 
         mBitmap.recycle();
 
-        overlay = FastBlur.doBlur(overlay, (int) radius, true);
+        overlay = NativeStackBlur.process(overlay,radius);
 
         return overlay;
     }

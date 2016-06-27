@@ -142,6 +142,6 @@ public class LoginActivity extends ToolbarActivity implements ILoginView,TextWat
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
-        loginPresenter.cancelUrl();
+        loginPresenter.cancelRequest();
     }
 }

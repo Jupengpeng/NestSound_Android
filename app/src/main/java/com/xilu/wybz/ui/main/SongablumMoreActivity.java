@@ -114,6 +114,6 @@ public class SongablumMoreActivity extends BaseListActivity<SongAlbum> implement
     protected void onDestroy() {
         super.onDestroy();
         if(songablumMorePresenter!=null)
-            songablumMorePresenter.cancelUrl();
+            songablumMorePresenter.cancelRequest();
     }
 }

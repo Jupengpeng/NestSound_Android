@@ -154,11 +154,11 @@ public class MsgFavActivity extends BaseListActivity<CollectionBean> implements 
                 @Override
                 public void onClick(View v) {
                     if(collectionBean.type==1){
-                        if(collectionBean.workid>0)
-                            PlayAudioActivity.toPlayAudioActivity(context, collectionBean.workid, "", MyCommon.MSG_COMMENT);
+                        if(collectionBean.itemid>0)
+                            PlayAudioActivity.toPlayAudioActivity(context, collectionBean.itemid, "", MyCommon.MSG_COMMENT);
                     }else{
-                        if(collectionBean.workid>0)
-                            LyricsdisplayActivity.toLyricsdisplayActivity(context, collectionBean.workid, 0, collectionBean.title);
+                        if(collectionBean.itemid>0)
+                            LyricsdisplayActivity.toLyricsdisplayActivity(context, collectionBean.itemid, 0, collectionBean.title);
                     }
                 }
             });
@@ -172,7 +172,7 @@ public class MsgFavActivity extends BaseListActivity<CollectionBean> implements 
     @Override
     protected void onDestroy() {
         if(collectionPresenter!=null) {
-            collectionPresenter.cancelUrl();
+            collectionPresenter.cancelRequest();
         }
         super.onDestroy();
     }

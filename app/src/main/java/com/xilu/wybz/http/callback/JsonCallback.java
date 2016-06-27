@@ -2,11 +2,9 @@ package com.xilu.wybz.http.callback;
 
 import android.text.TextUtils;
 import android.util.Log;
-
 import com.google.gson.Gson;
 import com.xilu.wybz.bean.JsonResponse;
 import com.xilu.wybz.http.rsa.RSAUtils;
-
 import org.json.JSONObject;
 
 import java.lang.reflect.Type;

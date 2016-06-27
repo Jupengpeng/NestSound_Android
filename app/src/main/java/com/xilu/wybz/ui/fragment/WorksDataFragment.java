@@ -387,6 +387,6 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
     public void onDestroyView() {
         super.onDestroyView();
         if (userPresenter != null)
-            userPresenter.cancelUrl();
+            userPresenter.cancelRequest();
     }
 }

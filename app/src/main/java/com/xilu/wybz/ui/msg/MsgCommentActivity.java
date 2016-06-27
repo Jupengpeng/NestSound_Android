@@ -166,11 +166,11 @@ public class MsgCommentActivity extends BaseListActivity<MsgCommentBean> impleme
         void toWorks(){
             MsgCommentBean msgCommentBean = (MsgCommentBean)itemView.getTag();
             if(msgCommentBean.type==1){
-                if(msgCommentBean.workid>0)
-                    PlayAudioActivity.toPlayAudioActivity(context, msgCommentBean.workid, "", MyCommon.MSG_COMMENT);
+                if(msgCommentBean.itemid>0)
+                    PlayAudioActivity.toPlayAudioActivity(context, msgCommentBean.itemid, "", MyCommon.MSG_COMMENT);
             }else{
-                if(msgCommentBean.workid>0)
-                    LyricsdisplayActivity.toLyricsdisplayActivity(context, msgCommentBean.workid, 0, msgCommentBean.title);
+                if(msgCommentBean.itemid>0)
+                    LyricsdisplayActivity.toLyricsdisplayActivity(context, msgCommentBean.itemid, 0, msgCommentBean.title);
             }
         }
         public SampleViewHolder(View itemView) {
@@ -230,13 +230,13 @@ public class MsgCommentActivity extends BaseListActivity<MsgCommentBean> impleme
             showMsg("评论不能为空！");
             return;
         }
-        commentPresenter.sendComment(inforCommentBean.workid, 2, inforCommentBean.type,inforCommentBean.target_uid,content);
+        commentPresenter.sendComment(inforCommentBean.itemid, 2, inforCommentBean.type,inforCommentBean.target_uid,content);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         if(commentPresenter!=null)
-            commentPresenter.cancelUrl();
+            commentPresenter.cancelRequest();
     }
 }

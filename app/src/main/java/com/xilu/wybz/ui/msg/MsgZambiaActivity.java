@@ -129,11 +129,11 @@ public class MsgZambiaActivity extends BaseListActivity<ZambiaBean> implements I
         void toWorks() {
             ZambiaBean zambiaBean = (ZambiaBean) itemView.getTag();
             if (zambiaBean.type == 1) {
-                if (zambiaBean.workid > 0)
-                    PlayAudioActivity.toPlayAudioActivity(context, zambiaBean.workid, "", MyCommon.MSG_COMMENT);
+                if (zambiaBean.itemid > 0)
+                    PlayAudioActivity.toPlayAudioActivity(context, zambiaBean.itemid, "", MyCommon.MSG_COMMENT);
             } else {
-                if (zambiaBean.workid > 0)
-                    LyricsdisplayActivity.toLyricsdisplayActivity(context, zambiaBean.workid, 0, zambiaBean.title);
+                if (zambiaBean.itemid > 0)
+                    LyricsdisplayActivity.toLyricsdisplayActivity(context, zambiaBean.itemid, 0, zambiaBean.title);
             }
         }
 
@@ -169,6 +169,6 @@ public class MsgZambiaActivity extends BaseListActivity<ZambiaBean> implements I
     protected void onDestroy() {
         super.onDestroy();
         if(zanPresenter!=null)
-            zanPresenter.cancelUrl();
+            zanPresenter.cancelRequest();
     }
 }

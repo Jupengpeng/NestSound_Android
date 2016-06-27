@@ -23,10 +23,9 @@ public class PasswordPresenter extends BasePresenter<IPasswordView>{
     }
     public void modifyPwd(String phone,String code,String password,String repassword){
         params = new HashMap<>();
-        params.put("phone",phone);
+        params.put("mobile",phone);
         params.put("code",code);
         params.put("password",password);
-        params.put("repassword",repassword);
         httpUtils.post(MyHttpClient.getPasswordUrl(), params, new MyStringCallback(){
             @Override
             public void onBefore(Request request) {

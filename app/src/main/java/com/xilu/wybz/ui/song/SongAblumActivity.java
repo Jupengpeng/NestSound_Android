@@ -231,7 +231,7 @@ public class SongAblumActivity extends ToolbarActivity implements IRecSongView {
     @Override
     protected void onDestroy() {
         if (recSongPresenter != null){
-            recSongPresenter.cancelUrl();
+            recSongPresenter.cancelRequest();
         }
         super.onDestroy();
     }

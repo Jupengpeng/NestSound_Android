@@ -166,6 +166,6 @@ public class SearchLyricsFragment extends BaseListFragment<WorksData> implements
     public void onDestroyView() {
         super.onDestroyView();
         if(searchPresenter!=null)
-            searchPresenter.cancelUrl();
+            searchPresenter.cancelRequest();
     }
 }
