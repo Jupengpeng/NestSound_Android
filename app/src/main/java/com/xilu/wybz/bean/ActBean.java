@@ -8,8 +8,8 @@ public class ActBean {
     public String pic;
     public String name;
     public String url;
-    public String begindate;
-    public String enddate;
+    public int begindate;
+    public int enddate;
     public int status;
 
 
