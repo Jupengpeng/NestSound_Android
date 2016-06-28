@@ -1,5 +1,7 @@
 package com.xilu.wybz.ui.record;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,6 +45,7 @@ import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.utils.UploadFileUtil;
 import com.xilu.wybz.utils.UploadMorePicUtil;
 import com.xilu.wybz.view.GridSpacingItemDecoration;
+import com.xilu.wybz.view.RoundProgressBar;
 import com.xilu.wybz.view.kpswitch.util.KPSwitchConflictUtil;
 import com.xilu.wybz.view.kpswitch.util.KeyboardUtil;
 import com.xilu.wybz.view.kpswitch.widget.KPSwitchPanelLinearLayout;
@@ -79,6 +83,10 @@ public class ModifyInspireRecordActivity extends ToolbarActivity implements IIns
     TextView tvRecordStatus;
     @Bind(R.id.iv_record_status)
     ImageView ivRecordStatus;
+    @Bind(R.id.rl_loading)
+    RelativeLayout rlLoading;
+    @Bind(R.id.iv_play_progressbar)
+    RoundProgressBar ivPlayProgressbar;
     @Bind(R.id.iv_del_record)
     ImageView ivDelRecord;
     private RecordImageAdapter adapter;
@@ -179,6 +187,7 @@ public class ModifyInspireRecordActivity extends ToolbarActivity implements IIns
                 if (!TextUtils.isEmpty(filrUrl)) {
                     worksData.audio = filrUrl;
                     inspireRecordPresenter.updateData(worksData);
+                    PrefsUtil.putString(MyHttpClient.QINIU_AUDIO_URL+filrUrl,recordPath,context);
                 }
             }
 
@@ -208,6 +217,12 @@ public class ModifyInspireRecordActivity extends ToolbarActivity implements IIns
                             uploadRecord();
                         }
                     }
+                }
+                return true;
+            case android.R.id.home:
+                if(recordStatus==1){
+                    showMsg("请先暂停录音后再继续返回");
+                    return false;
                 }
                 return true;
         }
@@ -306,12 +321,12 @@ public class ModifyInspireRecordActivity extends ToolbarActivity implements IIns
                     new File(recordPath).delete();
                 }
                 worksData.audio = "";
-                if (playState > 0) {
-                    NewPlayInstance.getInstance().stopMediaPlay();
-                }
+                stopPlayTimer();
+                NewPlayInstance.getInstance().release();
                 tvRecordStatus.setText("点击录音");
                 tvTime.setText("");
                 recordPath = "";
+                ivPlayProgressbar.setVisibility(View.GONE);
                 ivDelRecord.setVisibility(View.GONE);
                 ivRecordStatus.setImageResource(R.drawable.ic_record_luyin_unstart);
                 playState = 0;
@@ -373,6 +388,8 @@ public class ModifyInspireRecordActivity extends ToolbarActivity implements IIns
                                         NewPlayInstance.getInstance().creatMediaPlayer(worksData.audio.startsWith("http")?worksData.audio:MyHttpClient.QINIU_AUDIO_URL+worksData.audio);
                                     }
                                 }
+                                ivRecordStatus.setVisibility(View.INVISIBLE);
+                                rlLoading.setVisibility(View.VISIBLE);
                                 break;
                             case 1://暂停
                                 NewPlayInstance.getInstance().pauseMediaPlay();
@@ -414,7 +431,7 @@ public class ModifyInspireRecordActivity extends ToolbarActivity implements IIns
                 public void run() {
                     mHandler.sendEmptyMessage(1);
                 }
-            }, 0, 1000);
+            }, 0, 200);
         }
     }
 
@@ -452,11 +469,32 @@ public class ModifyInspireRecordActivity extends ToolbarActivity implements IIns
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if(mHandler!=null) {
+            mHandler.removeCallbacksAndMessages(null);
+        }
+        stopPlayTimer();
+        //没有发布就退出 默认不保存本地的音频文件
+        if(StringUtil.isBlank(worksData.audio)){
+            if(StringUtil.isNotBlank(recordPath)&&new File(recordPath).exists()){
+                new File(recordPath).delete();
+            }
+        }
         EventBus.getDefault().unregister(this);
         if(inspireRecordPresenter!=null){
             inspireRecordPresenter.cancelRequest();
         }
         NewPlayInstance.getInstance().release();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            if(recordStatus==1){
+                showMsg("请先暂停录音后再继续返回");
+                return true;
+            }
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     Handler mHandler = new Handler() {
@@ -465,13 +503,16 @@ public class ModifyInspireRecordActivity extends ToolbarActivity implements IIns
             switch (msg.what) {
                 case 0:
                     //recordPb.setProgress(preProgress + (int) ((System.currentTimeMillis() - startRecordTime) * 1.0 / allTime * 100));
+                    if(isDestroy)return;
                     recordIndex++;
                     tvTime.setText(SystemUtils.getTimeFormat(recordIndex * 1000));
                     allTime = recordIndex * 1000;
                     break;
                 case 1:
+                    if(isDestroy)return;
                     playIndex++;
-                    tvTime.setText(SystemUtils.getTimeFormat(playIndex * 1000) + "/" + SystemUtils.getTimeFormat(allTime));
+                    ivPlayProgressbar.setProgress(playIndex * 200);
+                    tvTime.setText(SystemUtils.getTimeFormat(playIndex * 200) + "/" + SystemUtils.getTimeFormat(allTime));
                     break;
             }
         }
@@ -482,7 +523,11 @@ public class ModifyInspireRecordActivity extends ToolbarActivity implements IIns
     public void onMusicStart() {
         startPlayTimer();
         playState = 1;
+        ivPlayProgressbar.setVisibility(View.VISIBLE);
+        ivRecordStatus.setVisibility(View.VISIBLE);
+        rlLoading.setVisibility(View.INVISIBLE);
         allTime = NewPlayInstance.getInstance().getDuration()+999;
+        ivPlayProgressbar.setMax(allTime);
         ivRecordStatus.setImageResource(R.drawable.ic_record_pause);
     }
 
@@ -503,12 +548,13 @@ public class ModifyInspireRecordActivity extends ToolbarActivity implements IIns
     @Override
     public void onMusicError() {
         playState = 0;
+        ivPlayProgressbar.setVisibility(View.GONE);
         ivRecordStatus.setImageResource(R.drawable.ic_record_play);
     }
 
     @Override
     public void onMusicStop() {
-
+        ivPlayProgressbar.setVisibility(View.GONE);
     }
 
     @Override
@@ -516,6 +562,7 @@ public class ModifyInspireRecordActivity extends ToolbarActivity implements IIns
         stopPlayTimer();
         playState = 0;
         playIndex = 0;
+        ivPlayProgressbar.setVisibility(View.GONE);
         tvTime.setText(SystemUtils.getTimeFormat(allTime));
         ivRecordStatus.setImageResource(R.drawable.ic_record_play);
     }

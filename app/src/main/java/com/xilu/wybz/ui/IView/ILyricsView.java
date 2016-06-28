@@ -18,5 +18,6 @@ public interface ILyricsView extends IBaseView {
     void favSuccess();
     void favFail();
     void favFinish();
+    void loadPicSuccess(String pic);
 
 }

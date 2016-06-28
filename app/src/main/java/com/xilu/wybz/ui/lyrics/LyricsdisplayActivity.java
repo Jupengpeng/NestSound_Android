@@ -2,6 +2,8 @@ package com.xilu.wybz.ui.lyrics;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -20,6 +22,7 @@ import com.xilu.wybz.bean.ActionBean;
 import com.xilu.wybz.bean.ShareBean;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.Event;
+import com.xilu.wybz.common.FileDir;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.LyricsPresenter;
 import com.xilu.wybz.ui.IView.ILyricsView;
@@ -27,15 +30,19 @@ import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.ui.mine.UserInfoActivity;
 import com.xilu.wybz.ui.setting.SettingFeedActivity;
 import com.xilu.wybz.ui.song.CommentActivity;
+import com.xilu.wybz.utils.BitmapUtils;
 import com.xilu.wybz.utils.DateTimeUtil;
+import com.xilu.wybz.utils.MD5Util;
 import com.xilu.wybz.utils.NetWorkUtil;
 import com.xilu.wybz.utils.NumberUtil;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringStyleUtil;
+import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.view.dialog.ActionMoreDialog;
 import com.xilu.wybz.view.dialog.ShareDialog;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -250,7 +257,20 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
         loadTitleContent();
         tvAuthor.setText(worksData.getAuthor());
         tvTime.setText(DateTimeUtil.timestamp2Date(worksData.getCreatedate()));
-        loadImage(worksData.headurl.replace(MyCommon.defult_head, ""), ivHead);
+        String headUrl = worksData.headurl.replace(MyCommon.defult_head, "");
+        if(StringUtil.isBlank(headUrl)){
+            mToolbar.setLogo(R.drawable.ic_default_head_252);
+        }else{
+//            String fileName = MD5Util.getMD5String(MyCommon.getImageUrl(headUrl,100,100));
+//            if(new File(FileDir.headPic + fileName).exists()){
+//                loadPicSuccess(FileDir.headPic + fileName);
+//            }else{
+//                lyricsPresenter.loadHead(headUrl);
+//            }
+            loadImage(headUrl, ivHead);
+        }
+//        mToolbar.setTitle(worksData.getTitle());
+//        mToolbar.setSubtitle(worksData.getAuthor());
         updateCommentNum();
         updateZanFavNum();
     }
@@ -318,6 +338,12 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
     @Override
     public void favFinish() {
 
+    }
+
+    @Override
+    public void loadPicSuccess(String pic) {
+        BitmapDrawable bitmapDrawable = new BitmapDrawable(BitmapUtils.getSDCardImg(pic));
+        mToolbar.setLogo(bitmapDrawable);
     }
 
     @Override

@@ -5,14 +5,21 @@ import android.content.Context;
 import com.google.gson.Gson;
 import com.xilu.wybz.bean.DataBean;
 import com.xilu.wybz.bean.WorksData;
+import com.xilu.wybz.common.FileDir;
+import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.common.MyHttpClient;
+import com.xilu.wybz.http.callback.FileCallBack;
 import com.xilu.wybz.http.callback.MyStringCallback;
 import com.xilu.wybz.ui.IView.ILyricsView;
+import com.xilu.wybz.utils.FileUtils;
+import com.xilu.wybz.utils.MD5Util;
 import com.xilu.wybz.utils.ParseUtils;
 import com.xilu.wybz.utils.PrefsUtil;
+import com.xilu.wybz.utils.StringUtil;
 
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.HashMap;
 
 import okhttp3.Call;
@@ -109,6 +116,26 @@ public class LyricsPresenter extends BasePresenter<ILyricsView> {
             public void onError(Call call, Exception e) {
                 super.onError(call, e);
                 iView.zanFail();
+            }
+        });
+    }
+    public void loadHead(String headUrl){
+        if(StringUtil.isBlank(headUrl))return;
+        if(!new File(FileDir.headPic).exists())new File(FileDir.headPic).mkdirs();
+        String fileName = MD5Util.getMD5String(headUrl);
+        httpUtils.getFile(MyCommon.getImageUrl(headUrl, 100, 100), new FileCallBack(FileDir.headPic,fileName+".cache") {
+            @Override
+            public void inProgress(float progress, long total) {
+
+            }
+            @Override
+            public void onError(Call call, Exception e) {
+
+            }
+            @Override
+            public void onResponse(File response) {
+                FileUtils.renameFile(FileDir.headPic+fileName+".cache",FileDir.headPic+fileName);
+                iView.loadPicSuccess(FileDir.headPic+fileName);
             }
         });
     }

@@ -1,5 +1,6 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/Panel">
 
     <include layout="@layout/view_spit_line" />
@@ -50,7 +51,38 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:src="@drawable/ic_record_luyin_unstart" />
-
+            <com.xilu.wybz.view.RoundProgressBar
+                android:id="@+id/iv_play_progressbar"
+                android:layout_width="210px"
+                android:layout_height="210px"
+                app:roundColor="@color/tran"
+                app:roundProgressColor="@color/main_theme_color"
+                app:roundWidth="2dp"
+                android:visibility="gone"
+                android:background="@color/tran"
+                android:layout_centerInParent="true"
+                />
+            <RelativeLayout
+                android:id="@+id/rl_loading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:visibility="gone"
+                >
+            <ProgressBar
+                android:id="@+id/pb_record_loading"
+                android:layout_width="215px"
+                android:layout_height="215px"
+                android:layout_centerInParent="true"
+                android:indeterminateDrawable="@drawable/ic_progressbar_loading" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:paddingLeft="6dp"
+                android:src="@drawable/ic_pause_loading"
+                />
+            </RelativeLayout>
             <ImageView
                 android:id="@+id/iv_del_record"
                 android:layout_width="wrap_content"

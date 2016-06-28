@@ -20,5 +20,6 @@ public class FileDir {
     public static String logoDir = picDir+"logo/";
     public static String coverPic = picDir+"cover/";
     public static String blurPic = picDir+"blur/";
+    public static String headPic = picDir+"head/";
     public static String inspirePicDir = picDir+"inspire/";
 }
