@@ -317,7 +317,7 @@ public class ParseUtils {
     }
     //用户
     public static UserBean getUserBean(Context context, String response) {
-        UserBean dataBean = new UserBean();
+        UserBean dataBean = null;
         try {
             JSONObject jsonObject = new JSONObject(response);
             int code = jsonObject.getInt("code");

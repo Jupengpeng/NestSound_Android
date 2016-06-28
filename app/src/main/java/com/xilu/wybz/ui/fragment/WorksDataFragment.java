@@ -78,7 +78,7 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
 
     @Override
     public boolean hasPadding() {
-        return true;
+        return false;
     }
 
     @Override
@@ -121,9 +121,9 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
         return tabFragment;
     }
 
-    protected RecyclerView.ItemDecoration getItemDecoration() {
-        return new SpacesItemDecoration(dip10);
-    }
+//    protected RecyclerView.ItemDecoration getItemDecoration() {
+//        return new SpacesItemDecoration(dip10);
+//    }
 
     @Override
     public void initView() {

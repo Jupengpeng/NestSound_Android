@@ -55,6 +55,7 @@ public abstract class BaseListFragment<T> extends BaseFragment implements PullRe
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(getLayoutResId(), container, false);
+        ButterKnife.bind(this, view);
         initPresenter();
         setUpData();
         return view;
@@ -205,11 +206,6 @@ public abstract class BaseListFragment<T> extends BaseFragment implements PullRe
             keyWord = "";
             page = 1;
         }
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
     }
 
     protected void loadImage(String url, SimpleDraweeView mDraweeView) {

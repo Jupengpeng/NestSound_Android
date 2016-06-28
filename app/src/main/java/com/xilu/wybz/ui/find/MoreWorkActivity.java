@@ -31,7 +31,7 @@ public class MoreWorkActivity extends BaseListActivity<WorksData> implements IFi
     int workType;
     String COME;
     FindMoreWorkPresenter findMoreWorkPresenter;
-
+    public boolean hasPadding() {return false;}
     public static void toMoreSongActivity(Context context, int orderType, int workType) {
         Intent intent = new Intent(context, MoreWorkActivity.class);
         intent.putExtra("orderType", orderType);
@@ -87,6 +87,7 @@ public class MoreWorkActivity extends BaseListActivity<WorksData> implements IFi
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                if(isDestroy)return;
                 if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
                     mDataList.clear();
                 }
@@ -103,25 +104,28 @@ public class MoreWorkActivity extends BaseListActivity<WorksData> implements IFi
 
     @Override
     public void loadFail() {
+        if(isDestroy)return;
         recycler.onRefreshCompleted();
     }
 
     @Override
     public void loadNoMore() {
+        if(isDestroy)return;
         recycler.onRefreshCompleted();
         recycler.enableLoadMore(false);
     }
 
     @Override
     public void loadNoData() {
+        if(isDestroy)return;
         llNoData.setVisibility(View.VISIBLE);
         recycler.onRefreshCompleted();
         recycler.enableLoadMore(false);
     }
 
-    protected RecyclerView.ItemDecoration getItemDecoration() {
-        return new SpacesItemDecoration(dip10);
-    }
+//    protected RecyclerView.ItemDecoration getItemDecoration() {
+//        return new SpacesItemDecoration(dip10);
+//    }
 
     @Override
     protected BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {

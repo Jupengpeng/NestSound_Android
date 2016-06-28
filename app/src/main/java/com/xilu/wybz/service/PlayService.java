@@ -9,6 +9,7 @@ import android.os.IBinder;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -38,6 +39,7 @@ import java.util.Map;
 
 import de.greenrobot.event.EventBus;
 import okhttp3.Call;
+import okhttp3.Request;
 
 /**
  * Created by June on 2015/9/14.
@@ -111,7 +113,6 @@ public class PlayService extends Service {
                     }
                 }
             }
-
             @Override
             public void onError() {
                 EventBus.getDefault().post(new Event.PPStatusEvent(MyCommon.PP_ERROR));
@@ -146,7 +147,7 @@ public class PlayService extends Service {
 //        }
 //        loadData(currMdb.getNext());
 //    }
-
+    long time;
     public void loadData(int itemid) {
         PlayMediaInstance.getInstance().stopMediaPlay();
         Map<String, String> params = new HashMap<>();
@@ -167,12 +168,23 @@ public class PlayService extends Service {
         } else {//默认
             position = 0;
         }
+
         httpUtils.get(MyHttpClient.getMusicWorkUrl(), params, new MyStringCallback() {
             @Override
             public void onError(Call call, Exception e) {
                 EventBus.getDefault().post(new Event.PPStatusEvent(MyCommon.PP_NO_DATA));
             }
 
+            @Override
+            public void onBefore(Request request) {
+                super.onBefore(request);
+                time = System.currentTimeMillis();
+            }
+            @Override
+            public void onAfter() {
+                super.onAfter();
+                Log.e("times",(System.currentTimeMillis()-time)+"");
+            }
             @Override
             public void onResponse(String response) {
                 currMdb = ParseUtils.getWorkData(PlayService.this, response);

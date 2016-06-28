@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.xilu.wybz.bean.DataBean;
 import com.xilu.wybz.bean.WorksData;
+import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.HttpUtils;
 import com.xilu.wybz.http.callback.MyStringCallback;
@@ -33,8 +34,8 @@ public class InspireRecordPresenter extends BasePresenter<IInspireRecordView>{
         params = new HashMap<>();
         params.put("uid", PrefsUtil.getUserId(context)+"");
         params.put("spirecontent",worksData.spirecontent);
-        params.put("pics",worksData.pics);
-        params.put("audio",worksData.audio);
+        params.put("pics",worksData.pics.replace(MyHttpClient.QINIU_URL,""));
+        params.put("audio",worksData.audio.replace(MyHttpClient.QINIU_AUDIO_URL,""));
         httpUtils.post(MyHttpClient.getSaveInspireUrl(),params,new MyStringCallback(){
             @Override
             public void onResponse(String response) {

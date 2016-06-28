@@ -37,7 +37,8 @@ public class PasswordPresenter extends BasePresenter<IPasswordView>{
             public void onResponse(String response) {
                 super.onResponse(response);
                 UserBean userBean = ParseUtils.getUserBean(context, response);
-                iView.modifyPwdSuccess(userBean);
+                if(userBean!=null&&userBean.userid>0)
+                    iView.modifyPwdSuccess(userBean);
             }
 
             @Override

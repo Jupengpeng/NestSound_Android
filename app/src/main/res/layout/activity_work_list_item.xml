@@ -2,88 +2,92 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="66dp"
-    android:background="@drawable/corner_fcfcfc">
-
-
-    <com.facebook.drawee.view.SimpleDraweeView
-        android:id="@+id/iv_cover"
-        android:layout_width="66dp"
-        android:layout_height="66dp"
-        fresco:actualImageScaleType="centerCrop"
-        fresco:fadeDuration="300"
-        fresco:failureImage="@drawable/ic_default_pic"
-        fresco:failureImageScaleType="centerCrop"
-        fresco:placeholderImage="@drawable/ic_default_pic"
-        fresco:roundBottomRight="false"
-        fresco:roundTopRight="false"
-        fresco:roundedCornerRadius="3dp" />
-
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    >
     <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="10dp"
-        android:layout_weight="1"
-        android:gravity="center_vertical"
-        android:orientation="vertical">
+        android:layout_width="match_parent"
+        android:padding="10dp"
+        android:layout_height="86dp">
 
-        <TextView
-            android:id="@+id/tv_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:text="title"
-            android:textColor="@color/main_text_color"
-            android:textSize="15sp" />
-
-        <TextView
-            android:id="@+id/tv_author"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            android:singleLine="true"
-            android:text="author"
-            android:textColor="@color/main_text_color2"
-            android:textSize="12sp" />
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/iv_cover"
+            android:layout_width="66dp"
+            android:layout_height="66dp"
+            fresco:actualImageScaleType="centerCrop"
+            fresco:fadeDuration="300"
+            fresco:failureImage="@drawable/ic_default_pic"
+            fresco:failureImageScaleType="centerCrop"
+            fresco:placeholderImage="@drawable/ic_default_pic"/>
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="30dp"
-            android:layout_marginTop="5dp">
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tv_look_num"
-                android:layout_width="0dp"
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:drawableLeft="@drawable/ic_ranking_look"
-                android:drawablePadding="3dp"
-                android:text=""
-                android:textColor="@color/main_text_color3"
-                android:textSize="12sp" />
+                android:singleLine="true"
+                android:text="title"
+                android:textColor="@color/main_text_color"
+                android:textSize="15sp" />
 
             <TextView
-                android:id="@+id/tv_fov_num"
-                android:layout_width="0dp"
+                android:id="@+id/tv_author"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:drawableLeft="@drawable/ic_ranking_fov"
-                android:drawablePadding="3dp"
-                android:text=""
-                android:textColor="@color/main_text_color3"
+                android:layout_marginTop="3dp"
+                android:singleLine="true"
+                android:text="author"
+                android:textColor="@color/main_text_color2"
                 android:textSize="12sp" />
 
-            <TextView
-                android:id="@+id/tv_zan_num"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:drawableLeft="@drawable/ic_ranking_zan"
-                android:drawablePadding="3dp"
-                android:text=""
-                android:textColor="@color/main_text_color3"
-                android:textSize="12sp" />
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="5dp">
+
+                <TextView
+                    android:id="@+id/tv_look_num"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableLeft="@drawable/ic_ranking_look"
+                    android:drawablePadding="3dp"
+                    android:text=""
+                    android:textColor="@color/main_text_color3"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tv_fov_num"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableLeft="@drawable/ic_ranking_fov"
+                    android:drawablePadding="3dp"
+                    android:text=""
+                    android:textColor="@color/main_text_color3"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tv_zan_num"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableLeft="@drawable/ic_ranking_zan"
+                    android:drawablePadding="3dp"
+                    android:text=""
+                    android:textColor="@color/main_text_color3"
+                    android:textSize="12sp" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
+
+    <include layout="@layout/view_spit_line" />
 </LinearLayout>

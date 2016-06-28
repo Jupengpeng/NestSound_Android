@@ -83,14 +83,11 @@ public class RankingFragment extends BaseFragment implements IRankingView {
     public void initView() {
         songDatas = new ArrayList<>();
         lyricsDatas = new ArrayList<>();
-        int space10 = DensityUtil.dip2px(context, 10);
 
         recyclerViewSong.setLayoutManager(new LinearLayoutManager(context));
-        recyclerViewSong.addItemDecoration(new SpacesItemDecoration(space10));
         recyclerViewSong.setNestedScrollingEnabled(false);
 
         recyclerViewLyrics.setLayoutManager(new LinearLayoutManager(context));
-        recyclerViewLyrics.addItemDecoration(new SpacesItemDecoration(space10));
         recyclerViewLyrics.setNestedScrollingEnabled(false);
 
         rankingSongAdapter = new RankingAdapter(context, songDatas);

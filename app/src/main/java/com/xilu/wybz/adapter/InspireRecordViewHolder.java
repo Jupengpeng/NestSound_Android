@@ -2,6 +2,7 @@ package com.xilu.wybz.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -63,8 +64,12 @@ public class InspireRecordViewHolder extends com.xilu.wybz.view.pull.BaseViewHol
         mContext = context;
         itemWidth = DensityUtil.getScreenW(context) - DensityUtil.dip2px(context, 20);
         itemHeight = itemWidth / 3;
-        ivCover.setLayoutParams(new FrameLayout.LayoutParams(itemWidth, itemHeight));
-        flMain.setLayoutParams(new ViewGroup.LayoutParams(itemWidth, itemHeight));
+        ivCover.setLayoutParams(new FrameLayout.LayoutParams(itemWidth, itemHeight+DensityUtil.dip2px(context, 20)));
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(itemWidth, itemHeight+DensityUtil.dip2px(context, 20));
+        params.gravity = Gravity.CENTER_HORIZONTAL;
+        flMain.setLayoutParams(params);
+//        int dip10 = DensityUtil.dip2px(context,10);
+//        flMain.setPadding(dip10,dip10,dip10,dip10);
         ivFrequency.setPadding(0, 0, 0, itemHeight / 6);
         if(onDeleteListener== null)return;
         itemView.setOnLongClickListener(new View.OnLongClickListener() {
