@@ -205,7 +205,12 @@ public class FollowAndFansActivity extends BaseListActivity<FansBean> implements
                     currentPos = position;
                     ivFollow = ivFollowState;
                     tvFollow = tvFollowState;
-                    mFollowPresenter.follow(fansBean.fansid);
+                    if (type==KeySet.TYPE_FANS_ACT){
+
+                        mFollowPresenter.follow(fansBean.fansid);
+                    } else {
+                        mFollowPresenter.follow(fansBean.userid);
+                    }
                 }
             });
             itemView.setOnClickListener(new View.OnClickListener() {

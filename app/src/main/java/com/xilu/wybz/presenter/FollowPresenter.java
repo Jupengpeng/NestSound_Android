@@ -2,14 +2,18 @@ package com.xilu.wybz.presenter;
 
 import android.content.Context;
 
+import com.google.gson.reflect.TypeToken;
 import com.xilu.wybz.bean.DataBean;
 import com.xilu.wybz.bean.FansBean;
+import com.xilu.wybz.bean.JsonResponse;
 import com.xilu.wybz.common.MyHttpClient;
+import com.xilu.wybz.http.callback.AppJsonCalback;
 import com.xilu.wybz.http.callback.MyStringCallback;
 import com.xilu.wybz.ui.IView.IFollowAndFansView;
 import com.xilu.wybz.utils.ParseUtils;
 import com.xilu.wybz.utils.PrefsUtil;
 
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
 
@@ -32,15 +36,16 @@ public class FollowPresenter extends BasePresenter<IFollowAndFansView> {
             params.put("uid", PrefsUtil.getUserId(context) + "");
         params.put("type", type + "");
         params.put("page", page + "");
-        httpUtils.get(isMe ? MyHttpClient.getFansList() : MyHttpClient.getOtherFansList(), params, new MyStringCallback() {
+
+        httpUtils.get(isMe ? MyHttpClient.getFansList() : MyHttpClient.getOtherFansList(), params, new AppJsonCalback(context) {
             @Override
             public void onError(Call call, Exception e) {
                 iView.loadFail();
             }
 
             @Override
-            public void onResponse(String response) {
-                List<FansBean> mList = ParseUtils.getFansData(context, response);
+            public void onResult(JsonResponse<? extends Object> response) {
+                List<FansBean> mList = response.getData();
                 if (mList != null) {
                     if (mList.size() == 0) {
                         if (page == 1) {
@@ -52,6 +57,16 @@ public class FollowPresenter extends BasePresenter<IFollowAndFansView> {
                         iView.showFansData(mList);
                     }
                 }
+            }
+
+            @Override
+            public void onResultError(JsonResponse<? extends Object> response) {
+                super.onResultError(response);
+            }
+
+            @Override
+            public Type getDataType() {
+                return new TypeToken<List<FansBean>>(){}.getType();
             }
 
         });

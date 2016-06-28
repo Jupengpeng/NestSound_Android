@@ -100,6 +100,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     protected void showMsg(String msg) {
+        if (isDestroy){
+            return;
+        }
         ToastUtils.toast(context, msg);
     }
     protected void showTopMsg(String msg) {
