@@ -80,9 +80,9 @@ public class AppJsonCalback extends JsonCallback {
     public void onError(Call call, Exception e) {
         super.onError(call, e);
         if (!NetWorkUtil.isNetworkAvailable(getContext())){
-            ToastUtils.toast(context!=null ? context:getContext(),"网络连接失败");
+            ToastUtils.toast(getContext(),"网络连接失败");
         } else {
-            ToastUtils.toast(context!=null ? context:getContext(),"服务器错误");
+            ToastUtils.toast(getContext(),"服务器错误");
         }
     }
 
@@ -91,7 +91,8 @@ public class AppJsonCalback extends JsonCallback {
      * @return
      */
     public Context getContext(){
-        return context==null?MyApplication.context:context;
+//        return context==null?MyApplication.context:context;
+        return MyApplication.context;
     }
 
 }

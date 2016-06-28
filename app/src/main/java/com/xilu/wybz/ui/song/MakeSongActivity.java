@@ -254,7 +254,7 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
     @Override
     public void uploadFailed(String message) {
         cancelPd();
-        showMsg("uploadFailed");
+        showMsg("上传失败");
     }
 
     @Override
@@ -284,7 +284,9 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
     }
 
     public void onEventMainThread(Event.ImportWordEvent event) {
-        this.worksData = event.getWorksData();
+        this.worksData = new WorksData();
+        this.worksData.title = event.getWorksData().title;
+        this.worksData.lyrics = event.getWorksData().lyrics;
         showWorks();
     }
 

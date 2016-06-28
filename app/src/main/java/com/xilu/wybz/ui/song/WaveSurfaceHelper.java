@@ -43,6 +43,7 @@ public class WaveSurfaceHelper {
     //private
     int backgroundColor;
 
+    Paint p0 = new Paint();
     Paint p1 = new Paint();
     Paint p2 = new Paint();
 
@@ -129,6 +130,11 @@ public class WaveSurfaceHelper {
         backgroundColor = configure.backgroundColor;
 
         //绘制ruler
+        p0.setColor(configure.color0);
+        p0.setTextSize(configure.offy/2);
+        p0.setAntiAlias(true);
+
+
         p1.setColor(configure.color1);
         p1.setTextSize(configure.offy/2);
         p1.setAntiAlias(true);
@@ -320,7 +326,7 @@ public class WaveSurfaceHelper {
 
         //画横向中线
         r = new Rect(0, v.centerY()+offy/2, v.right, v.centerY()+offy/2+1);
-        canvas.drawRect(r,p1);
+        canvas.drawRect(r,p0);
 
         //画标示竖线
         r = new Rect(v.centerX(), offy, v.centerX()+1, v.bottom);
@@ -595,7 +601,8 @@ public class WaveSurfaceHelper {
         //global
         public int backgroundColor = Color.parseColor("#ffffffff");
 
-        public int color1 = Color.parseColor("#ff686868");
+        public int color0 = Color.parseColor("#ffe5e5e5");
+        public int color1 = Color.parseColor("#ffc1c1c1");
         public int color2 = Color.parseColor("#ffff0000");
         public int color3 = Color.parseColor("#ffffd705");
         public int color4 = Color.parseColor("#32ffd705");
