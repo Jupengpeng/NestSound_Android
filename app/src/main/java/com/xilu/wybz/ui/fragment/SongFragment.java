@@ -179,6 +179,6 @@ public class SongFragment extends BaseFragment implements ISongView {
     public void onDestroyView() {
         super.onDestroyView();
         if(songPresenter!=null)
-            songPresenter.cancelUrl();
+            songPresenter.cancelRequest();
     }
 }

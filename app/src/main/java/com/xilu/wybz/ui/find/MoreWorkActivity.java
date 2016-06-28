@@ -78,13 +78,7 @@ public class MoreWorkActivity extends BaseListActivity<WorksData> implements IFi
 
     @Override
     public void onRefresh(int action) {
-        this.action = action;
-        if (mDataList == null) {
-            mDataList = new ArrayList<>();
-        }
-        if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
-            page = 1;
-        }
+        super.onRefresh(action);
         findMoreWorkPresenter.findMoreWork(workType, orderType, page++);
     }
 
@@ -140,7 +134,7 @@ public class MoreWorkActivity extends BaseListActivity<WorksData> implements IFi
     protected void onDestroy() {
         super.onDestroy();
         if(findMoreWorkPresenter!=null){
-            findMoreWorkPresenter.cancelUrl();
+            findMoreWorkPresenter.cancelRequest();
         }
     }
 }

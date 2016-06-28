@@ -8,7 +8,6 @@ import java.io.Serializable;
  * 这是消息 评论
  */
 public class MsgCommentBean implements Serializable {
-    public int workid;//作品ID
     public int id;//评论ID
     public int itemid;//作品ID
     public int uid;//发评论者的ID
@@ -31,13 +30,6 @@ public class MsgCommentBean implements Serializable {
         this.target_uid = target_uid;
     }
 
-    public int getWorkid() {
-        return workid;
-    }
-
-    public void setWorkid(int workid) {
-        this.workid = workid;
-    }
 
     public int getId() {
         return id;

@@ -57,13 +57,7 @@ public class MusicTalkMoreActivity extends BaseListActivity<MusicTalk> implement
 
     @Override
     public void onRefresh(int action) {
-        this.action = action;
-        if (mDataList == null) {
-            mDataList = new ArrayList<>();
-        }
-        if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
-            page = 1;
-        }
+        super.onRefresh(action);
         musicTalkMorePresenter.loadData(page++);
     }
     protected ILayoutManager getLayoutManager() {
@@ -170,6 +164,6 @@ public class MusicTalkMoreActivity extends BaseListActivity<MusicTalk> implement
     protected void onDestroy() {
         super.onDestroy();
         if(musicTalkMorePresenter!=null)
-            musicTalkMorePresenter.cancelUrl();
+            musicTalkMorePresenter.cancelRequest();
     }
 }

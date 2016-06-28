@@ -57,13 +57,7 @@ public class SearchLyricsFragment extends BaseListFragment<WorksData> implements
     }
     @Override
     public void onRefresh(int action) {
-        this.action = action;
-        if (mDataList == null) {
-            mDataList = new ArrayList<>();
-        }
-        if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
-            page = 1;
-        }
+        super.onRefresh(action);
         searchPresenter.searchWorkData(keyWord, 2, page++);
     }
     @Override
@@ -172,6 +166,6 @@ public class SearchLyricsFragment extends BaseListFragment<WorksData> implements
     public void onDestroyView() {
         super.onDestroyView();
         if(searchPresenter!=null)
-            searchPresenter.cancelUrl();
+            searchPresenter.cancelRequest();
     }
 }

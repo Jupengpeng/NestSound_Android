@@ -127,6 +127,7 @@ public class PasswordActivity extends ToolbarActivity implements IPasswordView, 
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.mpass_phonebut:
+                getSmsCode();
                 break;
             case R.id.mpass_login:
                 toLogin();
@@ -194,6 +195,6 @@ public class PasswordActivity extends ToolbarActivity implements IPasswordView, 
     protected void onDestroy() {
         super.onDestroy();
         if(passwordPresenter!=null)
-        passwordPresenter.cancelUrl();
+        passwordPresenter.cancelRequest();
     }
 }

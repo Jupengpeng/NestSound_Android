@@ -59,13 +59,7 @@ public class MsgSystemActivity extends BaseListActivity<SystemBean> implements I
 
     @Override
     public void onRefresh(int action) {
-        this.action = action;
-        if (mDataList == null) {
-            mDataList = new ArrayList<>();
-        }
-        if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
-            page = 1;
-        }
+        super.onRefresh(action);
         systemPresenter.loadData(page++);
     }
 
@@ -183,6 +177,6 @@ public class MsgSystemActivity extends BaseListActivity<SystemBean> implements I
     protected void onDestroy() {
         super.onDestroy();
         if(systemPresenter!=null)
-            systemPresenter.cancelUrl();
+            systemPresenter.cancelRequest();
     }
 }

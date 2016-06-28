@@ -218,7 +218,7 @@ public class RegisterActivity extends ToolbarActivity implements IRegisterView,T
     protected void onDestroy() {
         super.onDestroy();
         if(registerPresenter!=null) {
-            registerPresenter.cancelUrl();
+            registerPresenter.cancelRequest();
         }
     }
 }

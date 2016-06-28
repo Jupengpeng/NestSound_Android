@@ -213,6 +213,6 @@ public class ForgetPwdActivity extends ToolbarActivity implements IForgetPwdView
     protected void onDestroy() {
         super.onDestroy();
         if(forgetPwdPresenter!=null)
-        forgetPwdPresenter.cancelUrl();
+        forgetPwdPresenter.cancelRequest();
     }
 }

@@ -71,6 +71,6 @@ public class ImageUploader {
                             }
                         }
                     }
-                }, null);
+        }, null);
     }
 }

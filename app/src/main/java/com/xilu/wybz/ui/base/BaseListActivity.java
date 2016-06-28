@@ -66,6 +66,17 @@ public abstract class BaseListActivity<T> extends BasePlayMenuActivity implement
             }
         });
     }
+
+    @Override
+    public void onRefresh(int action) {
+        this.action = action;
+        if (mDataList == null) {
+            mDataList = new ArrayList<>();
+        }
+        if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
+            page = 1;
+        }
+    }
     public boolean hasPadding() {return true;}
     protected void setUpAdapter() {
         adapter = new ListAdapter();

@@ -277,7 +277,7 @@ public class ModifyUserInfoActivity extends ToolbarActivity implements IModifyUs
     protected void onDestroy() {
         super.onDestroy();
         if (modifyUserInfoPresenter != null){
-            modifyUserInfoPresenter.cancelUrl();
+            modifyUserInfoPresenter.cancelRequest();
         }
     }
 }

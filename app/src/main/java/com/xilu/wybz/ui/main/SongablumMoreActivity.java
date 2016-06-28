@@ -53,13 +53,7 @@ public class SongablumMoreActivity extends BaseListActivity<SongAlbum> implement
 
     @Override
     public void onRefresh(int action) {
-        this.action = action;
-        if (mDataList == null) {
-            mDataList = new ArrayList<>();
-        }
-        if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
-            page = 1;
-        }
+        super.onRefresh(action);
         songablumMorePresenter.loadData(page++);
     }
 
@@ -120,6 +114,6 @@ public class SongablumMoreActivity extends BaseListActivity<SongAlbum> implement
     protected void onDestroy() {
         super.onDestroy();
         if(songablumMorePresenter!=null)
-            songablumMorePresenter.cancelUrl();
+            songablumMorePresenter.cancelRequest();
     }
 }

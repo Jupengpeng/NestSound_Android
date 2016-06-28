@@ -55,7 +55,6 @@ public abstract class BaseListFragment<T> extends BaseFragment implements PullRe
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(getLayoutResId(), container, false);
-        ButterKnife.bind(this, view);
         initPresenter();
         setUpData();
         return view;
@@ -98,6 +97,17 @@ public abstract class BaseListFragment<T> extends BaseFragment implements PullRe
                 recycler.setRefreshing();
             }
         });
+    }
+
+    @Override
+    public void onRefresh(int action) {
+        this.action = action;
+        if (mDataList == null) {
+            mDataList = new ArrayList<>();
+        }
+        if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
+            page = 1;
+        }
     }
 
     protected void setUpAdapter() {
@@ -179,11 +189,6 @@ public abstract class BaseListFragment<T> extends BaseFragment implements PullRe
 
     protected abstract BaseViewHolder getViewHolder(ViewGroup parent, int viewType);
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
-    }
     public void loadData(String name) {
         if (TextUtils.isEmpty(keyWord)) {
             keyWord = name;

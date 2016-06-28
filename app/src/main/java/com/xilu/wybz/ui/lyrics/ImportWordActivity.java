@@ -61,13 +61,7 @@ public class ImportWordActivity extends BaseListActivity<WorksData> implements I
 
     @Override
     public void onRefresh(int action) {
-        this.action = action;
-        if (mDataList == null) {
-            mDataList = new ArrayList<>();
-        }
-        if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
-            page = 1;
-        }
+        super.onRefresh(action);
         importWordPresenter.loadData(page++);
     }
 
@@ -163,6 +157,6 @@ public class ImportWordActivity extends BaseListActivity<WorksData> implements I
     public void onDestroy() {
         super.onDestroy();
         if(importWordPresenter!=null)
-        importWordPresenter.cancelUrl();
+        importWordPresenter.cancelRequest();
     }
 }

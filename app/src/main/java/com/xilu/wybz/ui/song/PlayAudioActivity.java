@@ -750,7 +750,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
         EventBus.getDefault().unregister(this);
 
         if (playPresenter != null) {
-            playPresenter.cancelUrl();
+            playPresenter.cancelRequest();
         }
         super.onDestroy();
     }

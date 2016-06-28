@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.ActBean;
@@ -16,15 +15,14 @@ import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.ActPresenter;
 import com.xilu.wybz.ui.BrowserActivity;
 import com.xilu.wybz.ui.IView.IActView;
+import com.xilu.wybz.utils.DateTimeUtil;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.ImageLoadUtil;
 import com.xilu.wybz.view.SpacesItemDecoration;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.PullRecycler;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.Bind;
 
 /**
@@ -143,7 +141,7 @@ public class ActFragment extends BaseListFragment<ActBean> implements IActView {
             ActBean actBean = mDataList.get(position);
             int status = mDataList.get(position).status;
             if (status == 1) {
-                tvStatus.setText("正在进行中  " + actBean.begindate + "~" + actBean.enddate);
+                tvStatus.setText("正在进行中  " + DateTimeUtil.timestamp2Date(actBean.begindate) + "~" + DateTimeUtil.timestamp2Date(actBean.enddate));
             } else if (status == 2) {
                 tvStatus.setText("活动已结束！");
             } else if (status == 3) {
@@ -180,6 +178,6 @@ public class ActFragment extends BaseListFragment<ActBean> implements IActView {
     public void onDestroyView() {
         super.onDestroyView();
         if (findPresenter != null)
-            findPresenter.cancelUrl();
+            findPresenter.cancelRequest();
     }
 }

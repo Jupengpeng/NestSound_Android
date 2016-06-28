@@ -1,6 +1,7 @@
 package com.xilu.wybz.ui.song;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -188,19 +189,18 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView ,
 
     //上传封面图片
     public void uploadCoverPic() {
-        showPd("正在保存中，请稍候...");
         UploadFileUtil uploadPicUtil = new UploadFileUtil(context);
         uploadPicUtil.uploadFile(worksData.pic, MyCommon.fixxs[2], new UploadFileUtil.UploadResult() {
             @Override
             public void onSuccess(String imageUrl) {
                 worksData.setPic(imageUrl);
-                saveSongPresenter.saveSong(worksData);
+                if(materialDialog!=null&&materialDialog.isShowing())
+                    saveSongPresenter.saveSong(worksData);
             }
 
             @Override
             public void onFail() {
-                Log.e("onFail", "onFail");
-                showMsg("上传封面失败！");
+                showMsg("封面上传失败！");
             }
         });
     }
@@ -319,7 +319,15 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView ,
 
 
             worksData.is_issue = cbIsopen.isChecked() ? 1:0;
-
+            showPd("正在保存中，请稍候...");
+            if(materialDialog!=null){
+                materialDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        saveSongPresenter.cancelRequest();
+                    }
+                });
+            }
             if(new File(worksData.pic).exists()){
                 uploadCoverPic();
             }else{
@@ -389,7 +397,7 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView ,
         MediaInstance.getInstance().stopMediaPlay();
         MediaInstance.getInstance().destroy();
         if (saveSongPresenter != null){
-            saveSongPresenter.cancelUrl();
+            saveSongPresenter.cancelRequest();
         }
     }
 

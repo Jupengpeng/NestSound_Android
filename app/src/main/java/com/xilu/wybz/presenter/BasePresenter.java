@@ -35,14 +35,7 @@ public abstract class BasePresenter<T extends IBaseView> {
         iView.initView();
     }
 
-
-    public void showMessage(String message) {
-        if (!TextUtils.isEmpty(message)) {
-            ToastUtils.toast(context, message);
-        }
-    }
-
-    public void cancelUrl() {
+    public void cancelRequest() {
         httpUtils.cancelHttpByTag(httpTag);
     }
 

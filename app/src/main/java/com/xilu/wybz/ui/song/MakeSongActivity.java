@@ -821,7 +821,7 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
             loadDialog = null;
         }
         if (makeSongPresenter != null){
-            makeSongPresenter.cancelUrl();
+            makeSongPresenter.cancelRequest();
             makeSongPresenter= null;
         }
         super.onDestroy();

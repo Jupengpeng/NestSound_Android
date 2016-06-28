@@ -490,7 +490,7 @@ public class NewMakeHotActivity extends ToolbarActivity implements IHotView, Vie
         //关闭播放
         stopPlayBz();
         if(hotPresenter!=null){
-            hotPresenter.cancelUrl();
+            hotPresenter.cancelRequest();
         }
     }
 }
