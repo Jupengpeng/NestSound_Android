@@ -343,6 +343,8 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
                     mHandler.sendEmptyMessage(1);
                 }
             }, 0, 1000);
+
+
         }
     }
 
@@ -388,21 +390,21 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
 
     Handler mHandler = new Handler() {
         @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case 0:
-                    //recordPb.setProgress(preProgress + (int) ((System.currentTimeMillis() - startRecordTime) * 1.0 / allTime * 100));
-                    recordIndex++;
-                    tvTime.setText(SystemUtils.getTimeFormat(recordIndex * 1000));
-                    allTime = recordIndex * 1000;
-                    break;
-                case 1:
-                    playIndex++;
-                    tvTime.setText(SystemUtils.getTimeFormat(playIndex * 1000) + "/" + SystemUtils.getTimeFormat(allTime));
-                    break;
-            }
+    public void handleMessage(Message msg) {
+        switch (msg.what) {
+            case 0:
+                //recordPb.setProgress(preProgress + (int) ((System.currentTimeMillis() - startRecordTime) * 1.0 / allTime * 100));
+                recordIndex++;
+                tvTime.setText(SystemUtils.getTimeFormat(recordIndex * 1000));
+                allTime = recordIndex * 1000;
+                break;
+            case 1:
+                playIndex++;
+                tvTime.setText(SystemUtils.getTimeFormat(playIndex * 1000) + "/" + SystemUtils.getTimeFormat(allTime));
+                break;
         }
-    };
+    }
+};
 
 
     @Override

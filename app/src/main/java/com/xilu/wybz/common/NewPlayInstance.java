@@ -2,9 +2,6 @@ package com.xilu.wybz.common;
 
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.util.Log;
-
-import com.xilu.wybz.ui.MyApplication;
 
 import java.io.IOException;
 

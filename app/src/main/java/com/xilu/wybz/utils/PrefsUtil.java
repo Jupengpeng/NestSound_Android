@@ -3,21 +3,18 @@ package com.xilu.wybz.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
+
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.tencent.connect.UserInfo;
-import com.xilu.wybz.bean.MusicBean;
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.KeySet;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class PrefsUtil {
 
+    public static final String DOMAIN = "domain";
     public static final String SETTING = "setting";
     public static final String USERINFO = "userinfo";
+
     static SharedPreferences preferences;
 
     public static SharedPreferences getSpf(Context context, String name) {

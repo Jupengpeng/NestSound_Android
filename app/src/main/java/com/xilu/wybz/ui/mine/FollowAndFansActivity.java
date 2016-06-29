@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +24,6 @@ import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.PullRecycler;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -104,6 +104,9 @@ public class FollowAndFansActivity extends BaseListActivity<FansBean> implements
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                if (isDestroy){
+                    return;
+                }
                 if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
                     mDataList.clear();
                 }
@@ -134,6 +137,8 @@ public class FollowAndFansActivity extends BaseListActivity<FansBean> implements
         if (status == 0) status = 1;
         else status = 0;
         EventBus.getDefault().post(new Event.UpdateFollowNumEvent(status, fromType));
+
+        Log.d("fans","status:"+status);
         mDataList.get(currentPos).status = status;
         followAndFansViewHolder.notifyItemByPos(currentPos);
     }
