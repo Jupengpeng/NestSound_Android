@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.CheckBox;
@@ -316,7 +315,6 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView ,
                 showMsg("请先选择歌曲的封面！");
                 return true;
             }
-
 
             worksData.is_issue = cbIsopen.isChecked() ? 1:0;
             showPd("正在保存中，请稍候...");

@@ -3,11 +3,8 @@ package com.xilu.wybz.presenter;
 import android.content.Context;
 
 import com.xilu.wybz.bean.DataBean;
-import com.xilu.wybz.bean.JsonResponse;
 import com.xilu.wybz.bean.MineBean;
 import com.xilu.wybz.common.MyHttpClient;
-import com.xilu.wybz.http.callback.AppJsonCalback;
-import com.xilu.wybz.http.callback.AppStringCallback;
 import com.xilu.wybz.http.callback.MyStringCallback;
 import com.xilu.wybz.ui.IView.IUserView;
 import com.xilu.wybz.utils.ParseUtils;
@@ -62,8 +59,9 @@ public class UserPresenter extends BasePresenter<IUserView> {
                             iView.showWorksData(mineBean.list);
                         }
                     }
-                }else{
-                    iView.loadFail();
+                } else {
+                    iView.setUserInfo(null);
+                    iView.loadNoData();
                 }
             }
 

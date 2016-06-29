@@ -7,13 +7,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.media.MediaPlayer;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.multidex.MultiDex;
 import android.widget.Toast;
 
-import com.facebook.cache.disk.DiskCacheConfig;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -23,7 +21,6 @@ import com.qiniu.android.storage.UploadManager;
 import com.sina.weibo.sdk.utils.LogUtil;
 import com.umeng.message.PushAgent;
 import com.umeng.socialize.PlatformConfig;
-import com.xilu.wybz.common.FileDir;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.service.MainService;
@@ -31,7 +28,6 @@ import com.xilu.wybz.utils.PhoneInfoUtil;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtil;
 
-import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -83,6 +79,7 @@ public class MyApplication extends Application implements ServiceConnection {
         String url = PrefsUtil.getString("domain", this);
         if (StringUtil.isNotBlank(url)) {
             MyHttpClient.ROOT_URL = url;
+            MyHttpClient.BASE_URL = MyHttpClient.ROOT_URL+MyHttpClient.BASE_PATH;
         }
         userid = PrefsUtil.getUserId(context);
         isLogin = userid > 0;

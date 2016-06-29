@@ -1,28 +1,31 @@
 package com.xilu.wybz.ui;
 
 import android.content.Intent;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.KeyEvent;
+import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.xilu.wybz.BuildConfig;
 import com.xilu.wybz.R;
-import com.xilu.wybz.common.FileDir;
 import com.xilu.wybz.ui.base.BaseActivity;
-import com.xilu.wybz.utils.BitmapUtils;
+import com.xilu.wybz.ui.manager.ConsoleActivity;
 import com.xilu.wybz.utils.GetDomainUtil;
-import com.xilu.wybz.utils.MD5Util;
 import com.xilu.wybz.utils.PrefsUtil;
-import com.xilu.wybz.utils.StringUtil;
-
-import java.io.File;
 
 import butterknife.Bind;
 
 
 public class WelActivity extends BaseActivity {
+    public static final int CODE = 1;
+
     @Bind(R.id.rl_main)
     RelativeLayout rlMain;
+
+    private boolean isConsole = false;
+    private Handler handler;
+    private Runnable runnable;
 
     @Override
     protected int getLayoutRes() {
@@ -50,21 +53,64 @@ public class WelActivity extends BaseActivity {
         if(PrefsUtil.getUserId(context)>0){
             getDomainUtil.getCheck();
         }
+
+        if (BuildConfig.DEBUG){
+
+            rlMain.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(WelActivity.this, ConsoleActivity.class);
+                    startActivityForResult(intent,CODE);
+                    isConsole = true;
+                    if (handler != null){
+                        handler.removeCallbacks(runnable);
+                    }
+                }
+            });
+        }
         toHome();
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == CODE && resultCode == RESULT_OK){
+        isConsole = false;
+        toHome();
+    }
+}
+
     // 跳转到首页
     public void toHome() {
-        new Handler().postDelayed(new Runnable() {
+        handler = new Handler();
+        runnable = new Runnable() {
             public void run() {
                 toMainAct();
             }
-        }, 1000);
+        };
+
+        handler.postDelayed(runnable, 1000);
     }
+
+
     private void toMainAct(){
+        if (isConsole){
+            return;
+        }
         Intent intent = new Intent(WelActivity.this, MainTabActivity.class);
         startActivity(intent);
         finish();
     }
+
+    @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        return super.onKeyDown(keyCode, event);
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();

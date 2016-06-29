@@ -23,12 +23,10 @@ import com.xilu.wybz.http.HttpUtils;
 import com.xilu.wybz.http.callback.MyStringCallback;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.ui.fragment.WorksDataFragment;
-import com.xilu.wybz.ui.setting.SettingActivity;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.NumberUtil;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtil;
-import com.xilu.wybz.view.IndexViewPager;
 import com.xilu.wybz.view.StickyNavLayout;
 import com.xilu.wybz.view.SystemBarHelper;
 
@@ -259,7 +257,15 @@ public class UserInfoActivity extends ToolbarActivity {
                 @Override
                 public void onResponse(String response) {
                     super.onResponse(response);
-                    isFocus = 1 - isFocus;
+//                    isFocus = 1 - isFocus;
+                    /***/
+                    if (isFocus !=0){
+                        isFocus = 0;
+                    } else {
+                        isFocus = 1;
+                    }
+
+
                     EventBus.getDefault().post(new Event.UpdateFollowNumEvent(1-isFocus, 0));
                     showMsg(isFocus==0?"取消关注成功！":"关注成功！");
                     ivSetting.setImageResource(followIcon[isFocus]);

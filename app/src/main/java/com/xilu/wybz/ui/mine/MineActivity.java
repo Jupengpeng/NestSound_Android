@@ -3,6 +3,7 @@ package com.xilu.wybz.ui.mine;
 import android.graphics.Color;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -178,6 +179,18 @@ public class MineActivity extends ToolbarActivity {
             //更新本地我的信息
             setLocalUserInfo(localUserBean);
             firstLoadUserInfo = true;
+        } else {
+            //更新本地数据
+            UserBean localUserBean = PrefsUtil.getUserInfo(context);
+            localUserBean.fansnum = userBean.fansnum;
+            localUserBean.gznum = userBean.gznum;
+            if (userBean.userid > 0) localUserBean.userid = userBean.userid;
+            if (StringUtil.isNotBlank(userBean.nickname)) localUserBean.name = userBean.nickname;
+            if (StringUtil.isNotBlank(userBean.signature)) localUserBean.descr = userBean.signature;
+            if (StringUtil.isNotBlank(userBean.headurl)) localUserBean.headurl = userBean.headurl;
+            PrefsUtil.saveUserInfo(context, localUserBean);
+            //更新本地我的信息
+            setLocalUserInfo(localUserBean);
         }
     }
 
@@ -266,24 +279,28 @@ public class MineActivity extends ToolbarActivity {
         int from = event.getFrom();
         int type = event.getType();
         UserBean userBean = PrefsUtil.getUserInfo(context);
-        switch (from) {
-            case 0:
+
+        Log.d("fans","type:"+type+" from:"+from);
+//        switch (from) {
+//            case 0:
                 if (type == 0) {
                     userBean.gznum += 1;
                 } else {
                     userBean.gznum -= 1;
+                    if (userBean.gznum<0) userBean.gznum = 0;
                 }
                 userFollownum.setText("关注:  " + NumberUtil.format(userBean.gznum));
-                break;
-            case 1:
-                if (type == 0) {
-                    userBean.fansnum += 1;
-                } else {
-                    userBean.fansnum -= 1;
-                }
-                userFansnum.setText("粉丝:  " + NumberUtil.format(userBean.fansnum));
-                break;
-        }
+//                break;
+//            case 1:
+//                if (type == 0) {
+//                    userBean.fansnum += 1;
+//                } else {
+//                    userBean.fansnum -= 1;
+//                    if (userBean.fansnum<0) userBean.fansnum = 0;
+//                }
+//                userFansnum.setText("粉丝:  " + NumberUtil.format(userBean.fansnum));
+//                break;
+//        }
         PrefsUtil.saveUserInfo(context, userBean);
     }
 
