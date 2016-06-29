@@ -125,6 +125,7 @@ public class PrefsUtil {
         putInt("playId",0,context);
         putString("playGedanId","",context);
         putString("playFrom","",context);
+        PrefsUtil.putInt("playPos", -1, context);
     }
     //
     public static WorksData getMusicData(Context context,int id){

@@ -88,7 +88,7 @@
         <activity android:name=".ui.song.NewMakeHotActivity" android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.song.MakeSongActivity"
-            android:windowSoftInputMode="stateHidden|adjustPan" />
+            android:windowSoftInputMode="stateHidden|adjustPan" android:screenOrientation="portrait" />
         <activity android:name=".ui.song.ComposeSongActivity" android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.song.SaveSongActivity"
@@ -119,6 +119,7 @@
             android:windowSoftInputMode="stateHidden|adjustResize" android:screenOrientation="portrait" />
 
         <service android:name=".service.PlayService" android:screenOrientation="portrait"/>
+        <service android:name=".service.MainService" android:screenOrientation="portrait"/>
 
         <activity
             android:name=".ui.wxapi.WXEntryActivity"

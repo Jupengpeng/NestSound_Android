@@ -67,7 +67,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import butterknife.Bind;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;

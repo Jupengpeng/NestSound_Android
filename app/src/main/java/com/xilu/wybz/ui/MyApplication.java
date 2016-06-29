@@ -1,11 +1,17 @@
 package com.xilu.wybz.ui;
 
 import android.app.Application;
+import android.app.Service;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.media.MediaPlayer;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.IBinder;
 import android.support.multidex.MultiDex;
+import android.widget.Toast;
 
 import com.facebook.cache.disk.DiskCacheConfig;
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -14,11 +20,13 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.qiniu.android.storage.UploadManager;
+import com.sina.weibo.sdk.utils.LogUtil;
 import com.umeng.message.PushAgent;
 import com.umeng.socialize.PlatformConfig;
 import com.xilu.wybz.common.FileDir;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.common.MyHttpClient;
+import com.xilu.wybz.service.MainService;
 import com.xilu.wybz.utils.PhoneInfoUtil;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtil;
@@ -35,29 +43,32 @@ import java.util.Map;
 /**
  * Created by June on 2016/3/1.
  */
-public class MyApplication extends Application {
-
+public class MyApplication extends Application implements ServiceConnection {
+    public MainService mMainService;
     public static Context context;
     public static String musicId = "";
     public static String from;
     public static String id;
     public static List<Integer> ids;
-    public static Map<Integer,Integer> posMap;
+    public static Map<Integer, Integer> posMap;
     public static boolean isPlay;
     public static UploadManager uploadManager;
     public int userid;
     public boolean isLogin;
     public static MyApplication instance;
+
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
         MultiDex.install(this);
     }
-    public static MyApplication getInstance(){
-        if(instance==null){
+
+    public static MyApplication getInstance() {
+        if (instance == null) {
             instance = new MyApplication();
         }
         return instance;
     }
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -65,16 +76,16 @@ public class MyApplication extends Application {
         ids = new ArrayList<>();
         posMap = new HashMap<>();
         //检查版本
-        if(PrefsUtil.getInt("versionCode",context)==0){
+        if (PrefsUtil.getInt("versionCode", context) == 0) {
             PrefsUtil.clearData(context);
-            PrefsUtil.putInt("versionCode", PhoneInfoUtil.getVersionCode(context),context);
         }
-        String url= PrefsUtil.getString("domain", this);
-        if(StringUtil.isNotBlank(url)){
+        PrefsUtil.putInt("versionCode", PhoneInfoUtil.getVersionCode(context), context);
+        String url = PrefsUtil.getString("domain", this);
+        if (StringUtil.isNotBlank(url)) {
             MyHttpClient.ROOT_URL = url;
         }
         userid = PrefsUtil.getUserId(context);
-        isLogin = userid>0;
+        isLogin = userid > 0;
         Fresco.initialize(this);
         //Umeng分享
         PlatformConfig.setWeixin(MyCommon.WECHAT_APP_ID, MyCommon.WECHAT_APP_SECRET);//微信
@@ -85,7 +96,10 @@ public class MyApplication extends Application {
         Fresco.initialize(this);
         initImageLoader(getApplicationContext());
         PushAgent.getInstance(context).setDebugMode(false);
+        startMainService();
+        bindMainService();
     }
+
     public static void initImageLoader(Context context) {
         ImageLoaderConfiguration.Builder config = new ImageLoaderConfiguration.Builder(context);
         config.threadPriority(Thread.NORM_PRIORITY - 2);
@@ -96,6 +110,7 @@ public class MyApplication extends Application {
         config.writeDebugLogs(); // Remove for release app
         ImageLoader.getInstance().init(config.build());
     }
+
     public static MediaPlayer getMediaPlayer() {
         MediaPlayer mediaplayer = new MediaPlayer();
         if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.KITKAT) {
@@ -125,8 +140,39 @@ public class MyApplication extends Application {
         }
         return mediaplayer;
     }
+
+    public void startMainService() {
+        Intent it = new Intent(this, MainService.class);
+        startService(it);
+    }
+
+    public void stopMainService() {
+        Intent it = new Intent(this, MainService.class);
+        stopService(it);
+    }
+
+    private void bindMainService() {
+        Intent it = new Intent(this, MainService.class);
+        this.bindService(it, this, Service.BIND_AUTO_CREATE);
+    }
+
+    private void unbindMainService() {
+        this.unbindService(this);
+    }
+
     @Override
-    public void onTerminate() {
-        super.onTerminate();
+    public void onServiceConnected(ComponentName name, IBinder service) {
+        if (service instanceof MainService.ServiceBinder) {
+            MainService.ServiceBinder binder = (MainService.ServiceBinder) service;
+            mMainService = binder.getService();
+        }
+    }
+
+    @Override
+    public void onServiceDisconnected(ComponentName name) {
+    }
+
+    public MainService getMainService() {
+        return mMainService;
     }
 }

@@ -92,7 +92,7 @@ public class RecordInstance {
 
     public void stopMediaPlay() {
         if (mediaPlayer != null) {
-            if (isStart){
+            if (isStart) {
                 mediaPlayer.stop();
             }
             isStart = false;
@@ -133,7 +133,7 @@ public class RecordInstance {
                     }
                     try {
                         mp3Recorder.stop();
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
@@ -214,11 +214,11 @@ public class RecordInstance {
     }
 
     public boolean toRestart() {
-        try{
+        try {
             toStop();
             deleteCacheFile();
             toStart();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
@@ -240,7 +240,7 @@ public class RecordInstance {
         return FileUtils.copyFile(localCacheFile, fileName);
     }
 
-    public void saveWaveDatas(){
+    public void saveWaveDatas() {
 
         waveDatas = mp3Recorder.buf;
     }
@@ -251,14 +251,13 @@ public class RecordInstance {
 
     public void destroy() {
         if (mediaPlayer != null) {
-            if (isStart){
+            if (isStart) {
                 mediaPlayer.stop();
             }
             mediaPlayer.release();
         }
 
-        if (mp3Recorder != null) {
-            mp3Recorder.stop();
+        if (mp3Recorder != null ) {
             mp3Recorder.flush();
         }
         mInstance = null;

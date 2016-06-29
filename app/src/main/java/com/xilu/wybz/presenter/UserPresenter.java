@@ -62,6 +62,8 @@ public class UserPresenter extends BasePresenter<IUserView> {
                             iView.showWorksData(mineBean.list);
                         }
                     }
+                }else{
+                    iView.loadFail();
                 }
             }
 

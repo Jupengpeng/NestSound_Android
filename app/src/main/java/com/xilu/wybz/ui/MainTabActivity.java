@@ -254,6 +254,13 @@ public class MainTabActivity extends BaseActivity {
                     return false;
                 }
             }
+            if(MyApplication.ids.size()>0){
+                String ids = "";
+                for(int i=0;i<MyApplication.ids.size();i++){
+                    ids+=MyApplication.ids.get(i)+(i<MyApplication.ids.size()-1?",":"");
+                }
+                PrefsUtil.putString(PrefsUtil.getString("playFrom",context),ids,context);
+            }
             finish();
         }
         return super.onKeyDown(keyCode, event);

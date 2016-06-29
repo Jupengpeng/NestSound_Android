@@ -258,19 +258,6 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
         tvAuthor.setText(worksData.getAuthor());
         tvTime.setText(DateTimeUtil.timestamp2Date(worksData.getCreatedate()));
         String headUrl = worksData.headurl.replace(MyCommon.defult_head, "");
-        if(StringUtil.isBlank(headUrl)){
-            mToolbar.setLogo(R.drawable.ic_default_head_252);
-        }else{
-//            String fileName = MD5Util.getMD5String(MyCommon.getImageUrl(headUrl,100,100));
-//            if(new File(FileDir.headPic + fileName).exists()){
-//                loadPicSuccess(FileDir.headPic + fileName);
-//            }else{
-//                lyricsPresenter.loadHead(headUrl);
-//            }
-            loadImage(headUrl, ivHead);
-        }
-//        mToolbar.setTitle(worksData.getTitle());
-//        mToolbar.setSubtitle(worksData.getAuthor());
         updateCommentNum();
         updateZanFavNum();
     }
