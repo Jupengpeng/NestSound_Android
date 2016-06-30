@@ -2,7 +2,6 @@ package com.xilu.wybz.common;
 
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.xilu.wybz.common.interfaces.IMediaPlayerListener;
@@ -95,7 +94,7 @@ public class PlayMediaInstance {
             mediaPlayer.prepareAsync();
         } catch (Exception e) {
             status = 1;
-            e.printStackTrace();
+//            e.printStackTrace();
         }
     }
 

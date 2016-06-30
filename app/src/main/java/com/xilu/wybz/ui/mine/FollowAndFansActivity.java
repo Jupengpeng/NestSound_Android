@@ -35,16 +35,16 @@ import de.greenrobot.event.EventBus;
 public class FollowAndFansActivity extends BaseListActivity<FansBean> implements IFollowAndFansView {
 
     private FollowPresenter mFollowPresenter;
-    private FollowAndFansViewHolder followAndFansViewHolder;
-    private int type;
-    private int uid;
-    private int fromType;
-    private int currentPos;//当前关注的pos
-    private TextView tvFollow;
-    private ImageView ivFollow;
-    private int ivfollowStates[] = new int[]{R.drawable.ic_user_follow, R.drawable.ic_user_followed, R.drawable.ic_user_each_follow};
-    private int followColors[] = new int[]{R.color.main_text_color, R.color.main_text_color3, R.color.follow_blue};
-    private String tvfollowStates[] = new String[]{"关注", "已关注", "互相关注"};
+        private FollowAndFansViewHolder followAndFansViewHolder;
+        private int type;
+        private int uid;
+        private int fromType;
+        private int currentPos;//当前关注的pos
+        private TextView tvFollow;
+        private ImageView ivFollow;
+        private int ivfollowStates[] = new int[]{R.drawable.ic_user_follow, R.drawable.ic_user_followed, R.drawable.ic_user_each_follow};
+        private int followColors[] = new int[]{R.color.main_text_color, R.color.main_text_color3, R.color.follow_blue};
+        private String tvfollowStates[] = new String[]{"关注", "已关注", "互相关注"};
 
     public static void toFollowAndFansActivity(Context context, int type, int uid) {
         Intent intent = new Intent();

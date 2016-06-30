@@ -2,6 +2,7 @@ package com.xilu.wybz.common;
 
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.util.Log;
 
 import com.czt.mp3recorder.MP3Recorder;
 import com.xilu.wybz.utils.FileUtils;
@@ -74,7 +75,7 @@ public class RecordInstance {
             } catch (IOException e) {
                 isStart = false;
                 stopMediaPlay();
-                e.printStackTrace();
+//                e.printStackTrace();
             }
         }
         return false;
@@ -92,7 +93,7 @@ public class RecordInstance {
 
     public void stopMediaPlay() {
         if (mediaPlayer != null) {
-            if (isStart) {
+            if (isStart){
                 mediaPlayer.stop();
             }
             isStart = false;
@@ -133,8 +134,8 @@ public class RecordInstance {
                     }
                     try {
                         mp3Recorder.stop();
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    }catch (Exception e){
+//                        e.printStackTrace();
                     }
                 }
             });
@@ -158,7 +159,8 @@ public class RecordInstance {
         try {
             mp3Recorder.start();
         } catch (Exception e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            Log.i("error",e.getStackTrace().toString());
             return false;
         }
         isStart = true;
@@ -180,7 +182,8 @@ public class RecordInstance {
         try {
             mp3Recorder.prepare();
         } catch (Exception e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            Log.i("error",e.getStackTrace().toString());
         }
         return startMediaPlay(playUrl);
     }
@@ -214,12 +217,12 @@ public class RecordInstance {
     }
 
     public boolean toRestart() {
-        try {
+        try{
             toStop();
             deleteCacheFile();
             toStart();
-        } catch (Exception e) {
-            e.printStackTrace();
+        }catch (Exception e){
+//            e.printStackTrace();
             return false;
         }
         if (listener != null) {
@@ -240,7 +243,7 @@ public class RecordInstance {
         return FileUtils.copyFile(localCacheFile, fileName);
     }
 
-    public void saveWaveDatas() {
+    public void saveWaveDatas(){
 
         waveDatas = mp3Recorder.buf;
     }
@@ -251,13 +254,14 @@ public class RecordInstance {
 
     public void destroy() {
         if (mediaPlayer != null) {
-            if (isStart) {
+            if (isStart){
                 mediaPlayer.stop();
             }
             mediaPlayer.release();
         }
 
-        if (mp3Recorder != null ) {
+        if (mp3Recorder != null) {
+//            mp3Recorder.stop();
             mp3Recorder.flush();
         }
         mInstance = null;

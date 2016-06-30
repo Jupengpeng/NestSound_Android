@@ -10,7 +10,6 @@ import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.callback.AppJsonCalback;
 import com.xilu.wybz.http.callback.FileCallBack;
 import com.xilu.wybz.ui.IView.IMakeSongView;
-import com.xilu.wybz.utils.ToastUtils;
 
 import java.io.File;
 import java.lang.reflect.Type;
@@ -39,7 +38,7 @@ public class MakeSongPresenter extends BasePresenter<IMakeSongView> {
         if (!url.startsWith("http")){
             return;
         }
-
+        cancelRequest();
         httpUtils.getFile(url, new FileCallBack(cacheFile.getParent(),cacheFile.getName()) {
             @Override
             public void inProgress(float progress, long total) {

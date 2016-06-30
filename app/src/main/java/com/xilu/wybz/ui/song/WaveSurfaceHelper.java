@@ -223,6 +223,9 @@ public class WaveSurfaceHelper {
         synchronized (surfaceHolder) {
 
             canvas = surfaceHolder.lockCanvas();
+            if (canvas == null){
+                return;
+            }
             canvas.drawColor(backgroundColor);
             drawWave(canvas);
             drawsRuler(canvas);

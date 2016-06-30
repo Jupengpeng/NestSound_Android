@@ -18,18 +18,18 @@ public class MyStringCallback extends StringCallback {
     @Override
     public String parseNetworkResponse(Response response) throws IOException {
         String content = response.body().string();
+        Log.i("url",content);
         try {
             JSONObject jsonObject = new JSONObject(content);
             String data = jsonObject.getString("data");
             if (!TextUtils.isEmpty(data)) {
                 String newData = RSAUtils.decryptByPublicKey(new String(RSAUtils.decodeConvert(data), "UTF-8"));
                 jsonObject.put("data", newData);
-                Log.e("data",newData);
+                Log.i("url",newData);
                 return jsonObject.toString();
             }
         } catch (JSONException e) {
-            Log.e("JSONException", e.toString());
-            e.printStackTrace();
+            Log.i("url JSONException", e.toString());
         }
         return content;
     }
@@ -45,7 +45,7 @@ public class MyStringCallback extends StringCallback {
 
     @Override
     public void onError(Call call, Exception e) {
-        e.printStackTrace();
+//        e.printStackTrace();
     }
 
     @Override
