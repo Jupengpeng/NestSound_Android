@@ -9,10 +9,13 @@ import com.xilu.wybz.R;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.common.PlayMediaInstance;
+import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.ui.song.PlayAudioActivity;
 import com.xilu.wybz.utils.PrefsUtil;
+import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.view.AnimImageView;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import de.greenrobot.event.EventBus;
 
@@ -73,10 +76,20 @@ public abstract class BasePlayMenuActivity extends ToolbarActivity {
 
     public void onPlayMenuClick() {
         int playId = PrefsUtil.getInt("playId", context);
+        String playFrom = PrefsUtil.getString("playFrom", context);
+        String idData = PrefsUtil.getString(playFrom,context);
+        if(StringUtil.isNotBlank(idData)){
+            String ids[] = idData.split(",");
+            for(int i=0;i<ids.length;i++){
+                MyApplication.ids.add(Integer.valueOf(ids[i]));
+            }
+        }else{
+            MyApplication.ids.add(playId);
+        }
         if (playId>0) {
             PlayAudioActivity.toPlayAudioActivity(context, PrefsUtil.getInt("playId", context),
                     PrefsUtil.getString("playGedanId", context),
-                    PrefsUtil.getString("playFrom", context));
+                    playFrom);
         }
     }
     protected void hideRight(){

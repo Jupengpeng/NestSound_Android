@@ -98,17 +98,13 @@ public class SettingFeedActivity extends ToolbarActivity implements IFeedbackVie
             showMsg("内容不能为空");
             return;
         }
-//        if (us == null || us.trim().equals("")) {
-//            showMsg("手机号或email不能为空");
-//            return;
-//        }
         feedbackPresenter.postData(us, content, type);
     }
 
     @Override
     public void postSuccess() {
         if(isDestroy)return;
-        Toast.makeText(context,"你的反馈已收到，感谢使用！",Toast.LENGTH_SHORT).show();
+        showMsg("你的反馈已收到，感谢使用！");
         finish();
     }
 

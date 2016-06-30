@@ -585,7 +585,7 @@ public class ModifyInspireRecordActivity extends ToolbarActivity implements IIns
     @Override
     public void pubSuccess() {
         cancelPd();
-        Toast.makeText(context,"修改成功！",Toast.LENGTH_SHORT).show();
+        showMsg("修改成功！");
         worksData.createdate = System.currentTimeMillis();
         EventBus.getDefault().post(new Event.UpdataWorksList(worksData, 0, 2));
         finish();

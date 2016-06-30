@@ -67,7 +67,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import butterknife.Bind;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
@@ -322,7 +321,6 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
             tvAlltime.setText(FormatHelper.formatDuration(times));
             toolbar.setSubtitle(author);
             if (!TextUtils.isEmpty(lyrics)) {
-                Log.e("lyrics", lyrics);
                 String[] lyricss = lyrics.split("\\n");
                 lyricsList = Arrays.asList(lyricss);
             } else {

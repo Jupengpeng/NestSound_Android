@@ -137,13 +137,14 @@ public class BrowserActivity extends ToolbarActivity {
         // 监听网页加载进度
         public void onProgressChanged(WebView view, int newProgress) {
             // 设置进度条进度
-            mProgressBar.setProgress(newProgress);
-            if (newProgress == 100) {
-                mProgressBar.setVisibility(View.GONE);
-            } else {
-                mProgressBar.setVisibility(View.VISIBLE);
+            if(mProgressBar!=null) {
+                mProgressBar.setProgress(newProgress);
+                if (newProgress == 100) {
+                    mProgressBar.setVisibility(View.GONE);
+                } else {
+                    mProgressBar.setVisibility(View.VISIBLE);
+                }
             }
-            Log.d("load", "" + newProgress);
         }
 
         @Override

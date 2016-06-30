@@ -56,6 +56,7 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView {
     SimpleDraweeView iv_cover;
     WorksData worksData;
     String coverPath;
+    boolean isAbleOnClick = true;
     SaveWordPresenter saveWordPresenter;
 
     public static void toSaveWordActivity(Context context, WorksData worksData) {
@@ -143,10 +144,12 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView {
 
     //上传封面图片
     public void uploadCoverPic() {
+        isAbleOnClick = false;
         UploadFileUtil uploadPicUtil = new UploadFileUtil(context);
         uploadPicUtil.uploadFile(worksData.pic, MyCommon.fixxs[1], new UploadFileUtil.UploadResult() {
             @Override
             public void onSuccess(String imageUrl) {
+                isAbleOnClick = true;
                 worksData.setPic(imageUrl);
                 if(materialDialog!=null&&materialDialog.isShowing()) {
                     saveWordPresenter.saveLyrics(worksData);
@@ -154,6 +157,8 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView {
             }
             @Override
             public void onFail() {
+                isAbleOnClick = true;
+                cancelPd();
                 showMsg("封面上传失败！");
             }
         });
@@ -180,6 +185,7 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView {
                 }
                 if (new File(worksData.pic).exists()) {
                     showPd("正在保存中，请稍候...");
+                    if(isAbleOnClick)
                     uploadCoverPic();
                 } else {
                     showPd("正在修改中，请稍候...");

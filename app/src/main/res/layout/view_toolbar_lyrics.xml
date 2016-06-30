@@ -2,7 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/app_bar_layout"
     android:layout_width="match_parent"
-    android:layout_height="?actionBarSize"
+    android:layout_height="@dimen/actionbar_size"
     android:gravity="center_vertical"
     app:elevation="0.6dp">
 
@@ -11,9 +11,9 @@
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:background="@color/white"
-        android:minHeight="?actionBarSize"
+        android:minHeight="@dimen/actionbar_size"
         android:theme="@style/ToolBarStyle"
-        app:maxButtonHeight="48dp"
+        app:maxButtonHeight="@dimen/actionbar_size"
         app:paddingEnd="0dp"
         app:paddingStart="0dp"
         app:layout_scrollFlags="scroll|enterAlways"

@@ -27,6 +27,7 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.WorksVie
     private List<WorksData> mList;
     private Context context;
     private int itemWidth;
+
     public RankingAdapter(Context context, List<WorksData> worksDataList) {
         this.context = context;
         this.mList = worksDataList;
@@ -59,7 +60,7 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.WorksVie
         holder.tvLookNum.setText(NumberUtil.format(worksData.looknum));
         holder.tvZanNum.setText(NumberUtil.format(worksData.zannum));
         holder.tvFovNum.setText(NumberUtil.format(worksData.fovnum));
-        holder.tvRank.setText((position<9?"0":"")+(position+1));
+        holder.tvRank.setText((position < 9 ? "0" : "") + (position + 1));
         if (mOnItemClickListener != null) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -70,6 +71,7 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.WorksVie
             });
         }
     }
+
     @Override
     public int getItemCount() {
         return mList.size();
@@ -90,10 +92,18 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.WorksVie
         TextView tvName;
         @Bind(R.id.tv_author)
         TextView tvAuthor;
+        @Bind(R.id.ll_split_line)
+        LinearLayout llSplitLine;
+        @Bind(R.id.ll_body)
+        LinearLayout llBody;
+
         public WorksViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
             ivCover.setLayoutParams(new LinearLayout.LayoutParams(itemWidth, itemWidth));
+            llSplitLine.setVisibility(View.GONE);
+            llBody.setPadding(DensityUtil.dip2px(context, 10), DensityUtil.dip2px(context, 5),
+                    DensityUtil.dip2px(context, 10), DensityUtil.dip2px(context, 5));
         }
     }
 }

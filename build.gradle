@@ -23,7 +23,6 @@ allprojects {
     }
 }
 
-
 class TimingsListener implements TaskExecutionListener, BuildListener {
     private Clock clock
     private timings = []

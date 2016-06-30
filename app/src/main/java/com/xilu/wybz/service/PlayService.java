@@ -1,8 +1,10 @@
 package com.xilu.wybz.service;
 
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.os.Binder;
 import android.os.IBinder;
@@ -13,6 +15,7 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.sina.weibo.sdk.utils.LogUtil;
 import com.xilu.wybz.bean.MusicDetailBean;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.Event;
@@ -44,7 +47,7 @@ import okhttp3.Request;
 /**
  * Created by June on 2015/9/14.
  */
-public class PlayService extends Service {
+public class PlayService extends Service implements AudioManager.OnAudioFocusChangeListener {
     WorksData currMdb;
     MusicBinder mBinder = new MusicBinder();
     int userId;
@@ -54,7 +57,9 @@ public class PlayService extends Service {
     String gedanid;
     TelephonyManager tmgr;
     HttpUtils httpUtils;
-
+    AudioManager mAudioManager;
+    int status;//焦点是否拿到
+    String TAG = "loadmusic";
     @Override
     public IBinder onBind(Intent intent) {
         return mBinder;
@@ -63,36 +68,96 @@ public class PlayService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        httpUtils = new HttpUtils(this);
+        httpUtils = new HttpUtils(this,TAG);
+        mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        requestAudioFocus();
         initPlayListener();
         initCallListener();
+    }
+
+    //以下是进行申请焦点的两个方法，
+    private int requestAudioFocus() {
+        return mAudioManager.requestAudioFocus(this, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
+    }
+
+    private int releaseAudioFocus() {
+        return mAudioManager.abandonAudioFocus(this);
+    }
+
+    @Override
+    public void onAudioFocusChange(int focusChange) {
+        switch (focusChange) {
+            case AudioManager.AUDIOFOCUS_LOSS://播放长音频
+                PlayMediaInstance.getInstance().pauseMediaPlay();
+                Log.e("onAudioFocusChange", "AUDIOFOCUS_LOSS:" + focusChange);
+                break;
+            case AudioManager.AUDIOFOCUS_GAIN://你已经得到了音频焦点
+                recoverVolume();
+                PlayMediaInstance.getInstance().resumeMediaPlay();
+                Log.e("onAudioFocusChange", "AUDIOFOCUS_GAIN:" + focusChange);
+                break;
+            case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT://播放短音频
+                PlayMediaInstance.getInstance().pauseMediaPlay();
+                Log.e("onAudioFocusChange", "AUDIOFOCUS_LOSS_TRANSIENT:" + focusChange);
+                break;
+            case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK://暂时失去AudioFocus,但是可以继续播放,不过要降低音量
+                lowerVolume();
+                Log.e("onAudioFocusChange", "AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:" + focusChange);
+                break;
+            default:
+                Log.e("onAudioFocusChange", "default:" + focusChange);
+                break;
+        }
+    }
+
+    public void recoverVolume() {
+        int curVolume = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, curVolume,
+                AudioManager.FLAG_PLAY_SOUND);
+    }
+
+    public void lowerVolume() {
+        int curVolume = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, curVolume / 10,
+                AudioManager.FLAG_PLAY_SOUND);
+
     }
 
     public void initPlayListener() {
         PlayMediaInstance.getInstance().setIMediaPlayerListener(new IMediaPlayerListener() {
             @Override
             public void onStart() {
+                status = requestAudioFocus();
+                startPlayback();
                 EventBus.getDefault().post(new Event.PPStatusEvent(MyCommon.PP_START));
             }
 
             @Override
             public void onStop() {
+                stopPlayback();
+                releaseAudioFocus();
             }
 
             @Override
             public void onPlay() {
+                status = requestAudioFocus();
+                startPlayback();
                 EventBus.getDefault().post(new Event.PPStatusEvent(MyCommon.PP_PLAY));
             }
 
             @Override
             public void onPause() {
+                releaseAudioFocus();
+                stopPlayback();
                 EventBus.getDefault().post(new Event.PPStatusEvent(MyCommon.PP_PAUSE));
             }
 
             @Override
             public void onOver() {
+                releaseAudioFocus();
+                startPlayback();
                 EventBus.getDefault().post(new Event.PPStatusEvent(MyCommon.PP_OVER));
-                if (PrefsUtil.getInt("playmodel", PlayService.this) == MyCommon.PLAY_MODEL_LOOP||MyCommon.getFromMusicType(from)==1) {
+                if (PrefsUtil.getInt("playmodel", PlayService.this) == MyCommon.PLAY_MODEL_LOOP || MyCommon.getFromMusicType(from) == 1) {
                     //单曲循环或者列表只有一首歌
                     PlayMediaInstance.getInstance().stopMediaPlay();
                     PlayMediaInstance.getInstance().startMediaPlay(currMdb.getPlayurl());
@@ -107,19 +172,17 @@ public class PlayService extends Service {
                             if (MyApplication.ids.size() > 0)
                                 loadData(MyApplication.ids.get(position));
                             break;
-//                        case 3:
-//                            initNextData();
-//                            break;
                     }
                 }
             }
             @Override
             public void onError() {
+                releaseAudioFocus();
+                stopPlayback();
                 EventBus.getDefault().post(new Event.PPStatusEvent(MyCommon.PP_ERROR));
             }
         });
     }
-
     public void initCallListener() {
         tmgr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
         tmgr.listen(mPhoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
@@ -132,26 +195,9 @@ public class PlayService extends Service {
         loadData(musicId);
     }
 
-//    public void initPreData() {
-//        if (currMdb == null || currMdb.getPrev() == 0) {
-//            EventBus.getDefault().post(new Event.PPStatusEvent(MyCommon.PP_NO_PRE));
-//            return;
-//        }
-//        loadData(currMdb.getPrev());
-//    }
-//
-//    public void initNextData() {
-//        if (currMdb == null || currMdb.getNext() == 0) {
-//            EventBus.getDefault().post(new Event.PPStatusEvent(MyCommon.PP_NO_NEXT));
-//            return;
-//        }
-//        loadData(currMdb.getNext());
-//    }
-    long time;
     public void loadData(int itemid) {
         PlayMediaInstance.getInstance().stopMediaPlay();
         Map<String, String> params = new HashMap<>();
-        params = new HashMap<>();
         params.put("uid", userId + "");
         int openmodel = PrefsUtil.getInt("playmodel", PlayService.this);
         params.put("openmodel", (openmodel == 0 ? 1 : openmodel) + "");
@@ -168,7 +214,7 @@ public class PlayService extends Service {
         } else {//默认
             position = 0;
         }
-
+        httpUtils.cancelHttpByTag(TAG);
         httpUtils.get(MyHttpClient.getMusicWorkUrl(), params, new MyStringCallback() {
             @Override
             public void onError(Call call, Exception e) {
@@ -178,13 +224,13 @@ public class PlayService extends Service {
             @Override
             public void onBefore(Request request) {
                 super.onBefore(request);
-                time = System.currentTimeMillis();
             }
+
             @Override
             public void onAfter() {
                 super.onAfter();
-                Log.e("times",(System.currentTimeMillis()-time)+"");
             }
+
             @Override
             public void onResponse(String response) {
                 currMdb = ParseUtils.getWorkData(PlayService.this, response);
@@ -211,14 +257,12 @@ public class PlayService extends Service {
             PrefsUtil.putString("playGedanId", gedanid, this);
         } catch (Exception e) {
             e.printStackTrace();
-        } catch (Error error) {
-            error.printStackTrace();
         }
         if (id > 0) {
             userId = PrefsUtil.getUserId(this);
             initData(id);
         }
-        return super.onStartCommand(intent, flags, startId);
+        return START_NOT_STICKY;
     }
 
     public class MusicBinder extends Binder {
@@ -278,9 +322,6 @@ public class PlayService extends Service {
                     }
                     loadData(MyApplication.ids.get(position));
                     break;
-//                case 3:
-//                    initPreData();
-//                    break;
             }
         }
 
@@ -298,12 +339,8 @@ public class PlayService extends Service {
                     }
                     loadData(MyApplication.ids.get(position));
                     break;
-//                case 3:
-//                    initNextData();
-//                    break;
             }
         }
-
         public void stopMusic() {
             PlayMediaInstance.getInstance().stopMediaPlay();
         }
@@ -312,9 +349,6 @@ public class PlayService extends Service {
     @Override
     public void onDestroy() {
         tmgr.listen(mPhoneStateListener, 0);
-        PrefsUtil.putString("playId", "", this);
-        PrefsUtil.putString("playFrom", "", this);
-        PrefsUtil.putInt("playPos", -1, this);
         super.onDestroy();
     }
 
@@ -362,7 +396,7 @@ public class PlayService extends Service {
     };
 
     public void downLoadMp3(String url) {
-        String fileName = MD5Util.getMD5String(url)+".temp";
+        String fileName = MD5Util.getMD5String(url) + ".temp";
         String filePath = FileDir.songMp3Dir + fileName;
         File file = new File(filePath);
         if (file.exists()) return;
@@ -384,5 +418,29 @@ public class PlayService extends Service {
                 FileUtils.renameFile(FileDir.songMp3Dir + fileName, filePath);
             }
         });
+    }
+
+    private BroadcastReceiver mNoisyAudioStreamReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (AudioManager.ACTION_AUDIO_BECOMING_NOISY.equals(intent.getAction())) {
+                if (PlayMediaInstance.getInstance().status == 3) {
+                    PlayMediaInstance.getInstance().pauseMediaPlay();
+                }
+            }
+        }
+    };
+
+    private IntentFilter intentFilter = new IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY);
+
+    private void startPlayback() {
+        registerReceiver(mNoisyAudioStreamReceiver, intentFilter);
+    }
+
+    private void stopPlayback() {
+        try {
+            unregisterReceiver(mNoisyAudioStreamReceiver);
+        } catch (Exception e) {
+        }
     }
 }

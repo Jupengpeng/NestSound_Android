@@ -303,7 +303,6 @@ public class AppMsg {
         TextView tv = (TextView) view.findViewById(android.R.id.message);
         if(textSize > 0) tv.setTextSize(textSize);
         tv.setText(text);
-
         result.mView = view;
         result.mDuration = style.duration;
         result.mFloating = floating;
