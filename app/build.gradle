@@ -119,6 +119,7 @@ dependencies {
     compile rootProject.ext.dependencies["nativestackblur"]
     compile rootProject.ext.dependencies["materialprogressbar"]
     compile rootProject.ext.dependencies["eventbus"]
+    compile rootProject.ext.dependencies["compressor"]
     compile rootProject.ext.dependencies["cardview"]
     compile rootProject.ext.dependencies["swipemenulistview"]
     compile rootProject.ext.dependencies["multidex"]

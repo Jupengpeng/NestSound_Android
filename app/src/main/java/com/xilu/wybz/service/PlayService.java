@@ -320,7 +320,12 @@ public class PlayService extends Service implements AudioManager.OnAudioFocusCha
                     if (position == -1) {
                         position = MyApplication.ids.size() - 1;
                     }
-                    loadData(MyApplication.ids.get(position));
+                    if(position<0||position>=MyApplication.ids.size()){
+                        PlayMediaInstance.getInstance().stopMediaPlay();
+                        PlayMediaInstance.getInstance().startMediaPlay(currMdb.getPlayurl());
+                    }else{
+                        loadData(MyApplication.ids.get(position));
+                    }
                     break;
             }
         }
@@ -337,7 +342,12 @@ public class PlayService extends Service implements AudioManager.OnAudioFocusCha
                     if (position == MyApplication.ids.size()) {
                         position = 0;
                     }
-                    loadData(MyApplication.ids.get(position));
+                    if(position<0||position>=MyApplication.ids.size()){
+                        PlayMediaInstance.getInstance().stopMediaPlay();
+                        PlayMediaInstance.getInstance().startMediaPlay(currMdb.getPlayurl());
+                    }else{
+                        loadData(MyApplication.ids.get(position));
+                    }
                     break;
             }
         }
