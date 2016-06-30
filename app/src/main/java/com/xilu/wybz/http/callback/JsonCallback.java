@@ -60,7 +60,7 @@ public class JsonCallback extends Callback<JsonResponse>{
             jsonResponse.setCode(999);
             jsonResponse.setMessage("json decode error.");
             jsonResponse.setData(decode);
-            e.printStackTrace();
+//            e.printStackTrace();
 
         }
         return jsonResponse;

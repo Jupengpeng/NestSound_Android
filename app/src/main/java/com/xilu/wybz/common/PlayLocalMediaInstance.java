@@ -46,7 +46,7 @@ public class PlayLocalMediaInstance {
                 mediaPlayer2.prepare();
             } catch (Exception e) {
                 MyApplication.isPlay = false;
-                e.printStackTrace();
+//                e.printStackTrace();
             }
 
         }
@@ -63,7 +63,7 @@ public class PlayLocalMediaInstance {
                 mediaPlayer.prepare();
             } catch (Exception e) {
                 MyApplication.isPlay = false;
-                e.printStackTrace();
+//                e.printStackTrace();
             }
 
         }
@@ -200,7 +200,7 @@ public class PlayLocalMediaInstance {
             try {
                 mediaPlayer.setDataSource(file);
             } catch (IOException e) {
-                e.printStackTrace();
+//                e.printStackTrace();
             }
         }
     }
@@ -222,7 +222,7 @@ public class PlayLocalMediaInstance {
             try {
                 mediaPlayer2.setDataSource(file);
             } catch (IOException e) {
-                e.printStackTrace();
+//                e.printStackTrace();
             }
         }
     }

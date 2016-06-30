@@ -61,7 +61,7 @@ public class DoubleMediaInstance {
                 mediaPlayer2.prepare();
             } catch (IOException e) {
                 MyApplication.isPlay = false;
-                e.printStackTrace();
+//                e.printStackTrace();
             }
         }
     }
@@ -190,7 +190,7 @@ public class DoubleMediaInstance {
                 mediaPlayer1.setDataSource(file);
                 Log.i("hehe", "mediaPlayer>>prepare");
             } catch (IOException e) {
-                e.printStackTrace();
+//                e.printStackTrace();
             }
         }
     }
@@ -256,7 +256,7 @@ public class DoubleMediaInstance {
                 mediaPlayer2.setDataSource(file);
                 Log.i("hehe", "mediaPlayer>>prepare");
             } catch (IOException e) {
-                e.printStackTrace();
+//                e.printStackTrace();
             }
         }
     }
@@ -362,7 +362,7 @@ public class DoubleMediaInstance {
             mediaPlayer2.reset();
             mediaPlayer2.release();
         }catch (Exception e){
-            e.printStackTrace();
+//            e.printStackTrace();
         }
         mInstance = null;
     }

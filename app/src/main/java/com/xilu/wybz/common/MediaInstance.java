@@ -45,7 +45,7 @@ public class MediaInstance {
                 asynchronization = false;
             } catch (IOException e) {
                 isPlay = false;
-                e.printStackTrace();
+//                e.printStackTrace();
             }
         }
     }
@@ -72,7 +72,7 @@ public class MediaInstance {
                         mediaPlayer.prepareAsync();
                         asynchronization = true;
                     } catch (Exception e) {
-                        e.printStackTrace();
+//                        e.printStackTrace();
                     }
                 }
             }
@@ -191,7 +191,7 @@ public class MediaInstance {
             try {
                 mediaPlayer.setDataSource(file);
             } catch (IOException e) {
-                e.printStackTrace();
+//                e.printStackTrace();
             }
         }
     }
@@ -260,7 +260,7 @@ public class MediaInstance {
             mediaPlayer.reset();
             mediaPlayer.release();
         } catch (Exception e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         }
         mInstance = null;
     }

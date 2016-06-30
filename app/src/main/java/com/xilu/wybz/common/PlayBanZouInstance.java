@@ -6,7 +6,6 @@ import android.text.TextUtils;
 
 import com.xilu.wybz.common.interfaces.IMediaPlayerListener;
 import com.xilu.wybz.ui.MyApplication;
-import com.xilu.wybz.utils.FileUtils;
 
 import java.io.File;
 
@@ -77,7 +76,7 @@ public class PlayBanZouInstance {
             mediaPlayer.prepareAsync();
         } catch (Exception e) {
             status = 1;
-            e.printStackTrace();
+//            e.printStackTrace();
         }
     }
 

@@ -162,7 +162,7 @@ public class OkHttpUtils {
                     try {
                         sendFailResultCallback(call, new RuntimeException(response.body().string()), finalCallback);
                     } catch (IOException e) {
-                        e.printStackTrace();
+//                        e.printStackTrace();
                     }
                     return;
                 }

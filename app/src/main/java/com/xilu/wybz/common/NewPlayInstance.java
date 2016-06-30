@@ -99,7 +99,7 @@ public class NewPlayInstance {
                 mediaPlayer.setDataSource(file);
                 mediaPlayer.prepareAsync();
             } catch (IOException e) {
-                e.printStackTrace();
+//                e.printStackTrace();
             }
         }
     }

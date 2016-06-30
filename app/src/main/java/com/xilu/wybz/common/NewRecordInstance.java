@@ -78,7 +78,7 @@ public class NewRecordInstance {
                 isStart = false;
                 stopMediaPlay();
                 mp3Recorder.stop();
-                e.printStackTrace();
+//                e.printStackTrace();
             }
         }
 
@@ -149,7 +149,7 @@ public class NewRecordInstance {
             try {
                 mediaPlayer.setDataSource(file);
             } catch (IOException e) {
-                e.printStackTrace();
+//                e.printStackTrace();
             }
         }
     }

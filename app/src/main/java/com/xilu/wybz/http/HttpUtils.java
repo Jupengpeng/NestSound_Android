@@ -155,6 +155,7 @@ public class HttpUtils {
 
     //下载网络问文件 返回file文件
     public void getFile(String url, FileCallBack fileCallBack) {
+
         if(checkUrl(url)) {
             OkHttpUtils
                     .get()
@@ -162,6 +163,8 @@ public class HttpUtils {
                     .tag(httpTag)
                     .headers(headers)
                     .build()
+                    .readTimeOut(30000)
+                    .writeTimeOut(30000)
                     .execute(fileCallBack);
         }
     }
@@ -180,6 +183,8 @@ public class HttpUtils {
                 .addFile("file",file.getName(),file)
                 .headers(headers)
                 .build()
+                .readTimeOut(30000)
+                .writeTimeOut(30000)
                 .execute(callback);
     }
 

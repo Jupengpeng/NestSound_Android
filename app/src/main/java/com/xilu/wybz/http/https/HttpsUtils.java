@@ -77,13 +77,13 @@ public class HttpsUtils {
 
             return trustManagers;
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         } catch (CertificateException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         } catch (KeyStoreException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         return null;
 
@@ -100,17 +100,17 @@ public class HttpsUtils {
             return keyManagerFactory.getKeyManagers();
 
         } catch (KeyStoreException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         } catch (UnrecoverableKeyException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         } catch (CertificateException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         return null;
     }

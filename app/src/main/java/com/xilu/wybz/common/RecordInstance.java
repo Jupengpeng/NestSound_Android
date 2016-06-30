@@ -2,6 +2,7 @@ package com.xilu.wybz.common;
 
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.util.Log;
 
 import com.czt.mp3recorder.MP3Recorder;
 import com.xilu.wybz.utils.FileUtils;
@@ -74,7 +75,7 @@ public class RecordInstance {
             } catch (IOException e) {
                 isStart = false;
                 stopMediaPlay();
-                e.printStackTrace();
+//                e.printStackTrace();
             }
         }
         return false;
@@ -134,7 +135,7 @@ public class RecordInstance {
                     try {
                         mp3Recorder.stop();
                     }catch (Exception e){
-                        e.printStackTrace();
+//                        e.printStackTrace();
                     }
                 }
             });
@@ -158,7 +159,8 @@ public class RecordInstance {
         try {
             mp3Recorder.start();
         } catch (Exception e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            Log.i("error",e.getStackTrace().toString());
             return false;
         }
         isStart = true;
@@ -180,7 +182,8 @@ public class RecordInstance {
         try {
             mp3Recorder.prepare();
         } catch (Exception e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            Log.i("error",e.getStackTrace().toString());
         }
         return startMediaPlay(playUrl);
     }
@@ -219,7 +222,7 @@ public class RecordInstance {
             deleteCacheFile();
             toStart();
         }catch (Exception e){
-            e.printStackTrace();
+//            e.printStackTrace();
             return false;
         }
         if (listener != null) {
