@@ -3,7 +3,6 @@ package com.xilu.wybz.http.callback;
 import android.content.Context;
 
 import com.xilu.wybz.bean.JsonResponse;
-import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.utils.NetWorkUtil;
 import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.utils.ToastUtils;

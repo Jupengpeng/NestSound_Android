@@ -261,7 +261,7 @@ public class RecordInstance {
         }
 
         if (mp3Recorder != null) {
-            mp3Recorder.stop();
+//            mp3Recorder.stop();
             mp3Recorder.flush();
         }
         mInstance = null;
