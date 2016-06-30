@@ -59,11 +59,13 @@ public class RegisterActivity extends ToolbarActivity implements IRegisterView,T
 
     @Override
     public void registerStart() {
+        if(isDestroy)return;
         mregReg.setEnabled(false);
     }
 
     @Override
     public void registerSuccess(UserBean ub) {
+        if(isDestroy)return;
         if (ub != null) {
             showMsg("注册成功");
             EventBus.getDefault().post(new Event.LoginSuccessEvent(ub));
@@ -93,6 +95,7 @@ public class RegisterActivity extends ToolbarActivity implements IRegisterView,T
 
     @Override
     public void SmsCodeSuccess(String result) {
+        if(isDestroy)return;
         DataBean mb = ParseUtils.getDataBean(context,result);
         if (mb != null) {
             if (mb.code==200) {
@@ -114,11 +117,11 @@ public class RegisterActivity extends ToolbarActivity implements IRegisterView,T
     @Override
     public void SmsCodeFail() {
         showNetErrorMsg();
-        mregPhonebut.setEnabled(true);
     }
 
     @Override
     public void SmsCodeFinish() {
+        if(isDestroy)return;
         mregPhonebut.setEnabled(true);
     }
 

@@ -2,6 +2,7 @@ package com.xilu.wybz.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,6 +63,7 @@ public class RecordImageAdapter extends RecyclerView.Adapter<RecordImageAdapter.
                 ImageLoadUtil.loadImage("file:///" + imgPath, holder.ivCover);
             }else{
                 if(!imgPath.startsWith("http"))imgPath = MyHttpClient.QINIU_URL+imgPath;
+                Log.e("june imgurl",MyCommon.getImageUrl(imgPath,itemWidth,itemHeight));
                 ImageLoadUtil.loadImage(MyCommon.getImageUrl(imgPath,itemWidth,itemHeight), holder.ivCover);
             }
             holder.ivDel.setVisibility(View.VISIBLE);

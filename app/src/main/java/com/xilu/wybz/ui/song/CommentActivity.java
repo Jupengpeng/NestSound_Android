@@ -250,9 +250,9 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
     @Override
     public void commentFail() {
         if(NetWorkUtil.isNetworkAvailable(context)){
-            showLocationMsg("评论失败！",llMain);
+            showMsg("评论失败！");
         }else{
-            showLocationMsg("网络无法连接！",llMain);
+            showMsg("网络无法连接！");
         }
     }
 
@@ -273,9 +273,9 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
     @Override
     public void delFail() {
         if(NetWorkUtil.isNetworkAvailable(context)){
-            showLocationMsg("删除失败！",llMain);
+            showMsg("删除失败！");
         }else{
-            showLocationMsg("网络无法连接！",llMain);
+            showMsg("网络无法连接！");
         }
         if (actionMoreDialog != null)
             actionMoreDialog.dismiss();

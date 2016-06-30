@@ -103,21 +103,26 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (isDestroy){
             return;
         }
-        ToastUtils.toast(context, msg);
+        ToastUtils.toast(this, msg);
     }
-    protected void showTopMsg(String msg) {
-        ToastManager.toastTop(this, msg);
-    }
-    protected void showLocationMsg(String msg, ViewGroup viewGroup) {
-        ToastManager.toastLocation(this, msg, viewGroup);
-    }
+//    protected void showLocationMsg(String msg, ViewGroup viewGroup) {
+//        ToastManager.toastLocation(this, msg, viewGroup);
+//    }
     protected void showNoNetMsg() {
-        ToastUtils.toast(context, "网络无法连接");
+        if (isDestroy){
+            return;
+        }
+        ToastUtils.toast(this, "网络无法连接");
     }
 
     protected void showNetErrorMsg() {
-        if (!NetWorkUtil.isNetworkAvailable(context)) {
-            showNoNetMsg();
+        if (isDestroy){
+            return;
+        }
+        if (NetWorkUtil.isNetworkAvailable(context)) {
+            ToastUtils.toast(this,"服务器出小差了！");
+        }else{
+            ToastUtils.toast(this,"网络无法连接！");
         }
     }
 

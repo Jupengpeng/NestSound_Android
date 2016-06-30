@@ -59,7 +59,7 @@ public class PlayService extends Service implements AudioManager.OnAudioFocusCha
     HttpUtils httpUtils;
     AudioManager mAudioManager;
     int status;//焦点是否拿到
-
+    String TAG = "loadmusic";
     @Override
     public IBinder onBind(Intent intent) {
         return mBinder;
@@ -68,7 +68,7 @@ public class PlayService extends Service implements AudioManager.OnAudioFocusCha
     @Override
     public void onCreate() {
         super.onCreate();
-        httpUtils = new HttpUtils(this);
+        httpUtils = new HttpUtils(this,TAG);
         mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         requestAudioFocus();
         initPlayListener();
@@ -214,6 +214,7 @@ public class PlayService extends Service implements AudioManager.OnAudioFocusCha
         } else {//默认
             position = 0;
         }
+        httpUtils.cancelHttpByTag(TAG);
         httpUtils.get(MyHttpClient.getMusicWorkUrl(), params, new MyStringCallback() {
             @Override
             public void onError(Call call, Exception e) {

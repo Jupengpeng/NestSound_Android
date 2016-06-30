@@ -321,7 +321,6 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
             tvAlltime.setText(FormatHelper.formatDuration(times));
             toolbar.setSubtitle(author);
             if (!TextUtils.isEmpty(lyrics)) {
-                Log.e("lyrics", lyrics);
                 String[] lyricss = lyrics.split("\\n");
                 lyricsList = Arrays.asList(lyricss);
             } else {

@@ -56,15 +56,18 @@ public class AppJsonCalback extends JsonCallback {
      */
     public void onResultError(JsonResponse<? extends Object> response){
         if (response.getCode() == 999){
-            ToastUtils.toastLong(getContext(),"数据解码失败");
+            if(context!=null)
+            ToastUtils.toastLong(context,"数据解码失败");
             return;
         }
         if(response.getCode()==53001){
-            ToastUtils.toastLong(getContext(),"登录状态失效，请重新进行登录！");
+            if(context!=null)
+            ToastUtils.toastLong(context,"登录状态失效，请重新进行登录！");
             return;
         }
         if (StringUtil.isNotBlank(response.getMessage())){
-            ToastUtils.toastLong(getContext(),response.getMessage());
+            if(context!=null)
+            ToastUtils.toastLong(context,response.getMessage());
         }
 
 
@@ -79,20 +82,12 @@ public class AppJsonCalback extends JsonCallback {
     @Override
     public void onError(Call call, Exception e) {
         super.onError(call, e);
-        if (!NetWorkUtil.isNetworkAvailable(getContext())){
-            ToastUtils.toast(getContext(),"网络连接失败");
+        if (!NetWorkUtil.isNetworkAvailable(context)){
+            if(context!=null)
+            ToastUtils.toast(context,"网络连接失败");
         } else {
-            ToastUtils.toast(getContext(),"服务器错误");
+            if(context!=null)
+            ToastUtils.toast(context,"服务器错误");
         }
     }
-
-    /**
-     * 获取Context.
-     * @return
-     */
-    public Context getContext(){
-//        return context==null?MyApplication.context:context;
-        return MyApplication.context;
-    }
-
 }
