@@ -17,6 +17,6 @@
         android:paddingRight="18dp"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
-        tools:text="12121" />
+        tools:text="tost message" />
 
 </LinearLayout>

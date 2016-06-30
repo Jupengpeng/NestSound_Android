@@ -35,16 +35,16 @@ import de.greenrobot.event.EventBus;
 public class FollowAndFansActivity extends BaseListActivity<FansBean> implements IFollowAndFansView {
 
     private FollowPresenter mFollowPresenter;
-        private FollowAndFansViewHolder followAndFansViewHolder;
-        private int type;
-        private int uid;
-        private int fromType;
-        private int currentPos;//当前关注的pos
-        private TextView tvFollow;
-        private ImageView ivFollow;
-        private int ivfollowStates[] = new int[]{R.drawable.ic_user_follow, R.drawable.ic_user_followed, R.drawable.ic_user_each_follow};
-        private int followColors[] = new int[]{R.color.main_text_color, R.color.main_text_color3, R.color.follow_blue};
-        private String tvfollowStates[] = new String[]{"关注", "已关注", "互相关注"};
+    private FollowAndFansViewHolder followAndFansViewHolder;
+    private int type;
+    private int uid;
+    private int fromType;
+    private int currentPos;//当前关注的pos
+    private TextView tvFollow;
+    private ImageView ivFollow;
+    private int ivfollowStates[] = new int[]{R.drawable.ic_user_follow, R.drawable.ic_user_followed, R.drawable.ic_user_each_follow};
+    private int followColors[] = new int[]{R.color.main_text_color, R.color.main_text_color3, R.color.follow_blue};
+    private String tvfollowStates[] = new String[]{"关注", "已关注", "互相关注"};
 
     public static void toFollowAndFansActivity(Context context, int type, int uid) {
         Intent intent = new Intent();
@@ -53,6 +53,7 @@ public class FollowAndFansActivity extends BaseListActivity<FansBean> implements
         intent.putExtra(KeySet.KEY_UID, uid);
         context.startActivity(intent);
     }
+
     @Override
     public boolean hasPadding() {
         return false;
@@ -104,7 +105,7 @@ public class FollowAndFansActivity extends BaseListActivity<FansBean> implements
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (isDestroy){
+                if (isDestroy) {
                     return;
                 }
                 if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
@@ -115,12 +116,12 @@ public class FollowAndFansActivity extends BaseListActivity<FansBean> implements
                 adapter.notifyDataSetChanged();
                 recycler.onRefreshCompleted();
             }
-        },600);
+        }, 600);
     }
 
     @Override
     public void loadFail() {
-        if (recycler == null){
+        if (recycler == null) {
             return;
         }
         recycler.onRefreshCompleted();
@@ -138,14 +139,14 @@ public class FollowAndFansActivity extends BaseListActivity<FansBean> implements
         else status = 0;
         EventBus.getDefault().post(new Event.UpdateFollowNumEvent(status, fromType));
 
-        Log.d("fans","status:"+status);
+        Log.d("fans", "status:" + status);
         mDataList.get(currentPos).status = status;
         followAndFansViewHolder.notifyItemByPos(currentPos);
     }
 
     @Override
     public void loadNoMore() {
-        if (recycler == null){
+        if (recycler == null) {
             return;
         }
         recycler.onRefreshCompleted();
@@ -154,7 +155,7 @@ public class FollowAndFansActivity extends BaseListActivity<FansBean> implements
 
     @Override
     public void loadNoData() {
-        if (recycler == null){
+        if (recycler == null) {
             return;
         }
         llNoData.setVisibility(View.VISIBLE);
@@ -210,7 +211,7 @@ public class FollowAndFansActivity extends BaseListActivity<FansBean> implements
                     currentPos = position;
                     ivFollow = ivFollowState;
                     tvFollow = tvFollowState;
-                    if (type==KeySet.TYPE_FANS_ACT){
+                    if (type == KeySet.TYPE_FANS_ACT) {
 
                         mFollowPresenter.follow(fansBean.fansid);
                     } else {
@@ -221,17 +222,17 @@ public class FollowAndFansActivity extends BaseListActivity<FansBean> implements
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onItemClick(v,position);
+                    onItemClick(v, position);
                 }
             });
         }
 
         @Override
         public void onItemClick(View view, int position) {
-            int authorid = fromType==0?mDataList.get(position).userid:mDataList.get(position).fansid;
-            boolean isMe = PrefsUtil.getUserId(context)!= authorid;
-            if(isMe){
-                UserInfoActivity.ToUserInfoActivity(context,authorid,mDataList.get(position).fansname);
+            int authorid = fromType == 0 ? mDataList.get(position).userid : mDataList.get(position).fansid;
+            boolean isMe = PrefsUtil.getUserId(context) != authorid;
+            if (isMe) {
+                UserInfoActivity.ToUserInfoActivity(context, authorid, mDataList.get(position).fansname);
             }
         }
     }
@@ -239,7 +240,7 @@ public class FollowAndFansActivity extends BaseListActivity<FansBean> implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(mFollowPresenter!=null)
+        if (mFollowPresenter != null)
             mFollowPresenter.cancelRequest();
     }
 }
