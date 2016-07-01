@@ -279,13 +279,17 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
 
     public void deleteWorksData(int pos) {
         deletePos = pos;
-        userPresenter.delete(mDataList.get(pos).getItemid(), workType);
+        if(pos>=0&&pos<mDataList.size()) {
+            userPresenter.delete(mDataList.get(pos).getItemid(), workType);
+        }
     }
 
     public void unfavWorksData(int pos) {
         deletePos = pos;
-        WorksData worksData = mDataList.get(pos);
-        userPresenter.unfav(worksData.itemid, worksData.uid, worksData.status);
+        if(pos>=0&&pos<mDataList.size()) {
+            WorksData worksData = mDataList.get(pos);
+            userPresenter.unfav(worksData.itemid, worksData.uid, worksData.status);
+        }
     }
 
     //移除某个item

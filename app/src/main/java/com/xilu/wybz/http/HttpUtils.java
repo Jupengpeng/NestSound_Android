@@ -45,10 +45,6 @@ public class HttpUtils {
         headers.put("charset", "UTF-8");
         headers.put("machine", PhoneInfoUtil.getMachine(context));
     }
-
-
-
-
     //普通post提交
     public void post(String url, Map<String, String> params, Callback stringCallback) {
         if(params==null){
