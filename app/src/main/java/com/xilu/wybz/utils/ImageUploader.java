@@ -64,11 +64,7 @@ public class ImageUploader {
                         if (response == null) {
                             onUploadListener.onFailure();
                         } else {
-                            try {
-                                onUploadListener.onSuccess(response.toString());
-                            } catch (Exception ex) {
-                                onUploadListener.onFailure();
-                            }
+                            onUploadListener.onSuccess(response.toString());
                         }
                     }
         }, null);

@@ -1,14 +1,21 @@
 package com.xilu.wybz.utils;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.os.Environment;
 import android.text.TextUtils;
+import android.util.Log;
 
+import com.xilu.wybz.common.FileDir;
 import com.xilu.wybz.common.MyCommon;
 
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import id.zelory.compressor.Compressor;
 
 /**
  * Created by hujunwei on 16/4/7.
@@ -29,29 +36,24 @@ public class UploadMorePicUtil {
         num = 0;
         images = "";
         for (int i = 0; i < pics.size(); i++) {
-            int c = i;
-            imageUrls.add("");
             String imgPath = pics.get(i);
-//            double size = FileUtils.getFileOrFilesSize(imgPath, 2);
-//            if(!new File(FileDir.inspirePicDir).exists()) {
-//                new File(FileDir.inspirePicDir).mkdirs();
-//            }
-//            String newPath = FileDir.inspirePicDir + UUID.randomUUID() + ".jpg";
-//            if (size > 300) {
-//                NativeUtil.CompressionPic(imgPath, newPath, new NativeUtil.CompressPicInterface() {
-//                    @Override
-//                    public void onCompressResult(int errorCode, String path) {
-//                        if (errorCode == 0) { //压缩成功 上传新图
-//                            upLoadPic(path, c, uploadPicsInterface);
-//                        } else { //压缩失败 上传原
-//                            upLoadPic(imgPath, c, uploadPicsInterface);
-//                        }
-//                    }
-//                });
-//            } else { //图片本身就小 无需压缩
-                //直接上传图片到七牛
-                upLoadPic(imgPath, imageUrls.size() - 1, uploadPicsInterface);
-//            }
+            if(StringUtil.isNotBlank(imgPath)&&new File(imgPath).exists()) {
+                imageUrls.add("");
+                if(!new File(FileDir.inspirePicDir).exists()){
+                    new File(FileDir.inspirePicDir).mkdirs();
+                }
+                File compressedImageFile = new Compressor.Builder(context)
+//                        .setMaxWidth(640)
+//                        .setMaxHeight(480)
+//                        .setQuality(80)
+                        .setCompressFormat(Bitmap.CompressFormat.JPEG)
+                        .setDestinationDirectoryPath(FileDir.inspirePicDir)
+                        .build()
+                        .compressToFile(new File(imgPath));
+                Log.e("imgPath", imgPath);
+                Log.e("compressedImageFile", compressedImageFile.getPath());
+                upLoadPic(compressedImageFile!=null&&compressedImageFile.exists() ? compressedImageFile.getPath() : imgPath, imageUrls.size() - 1, uploadPicsInterface);
+            }
         }
     }
 
@@ -73,7 +75,6 @@ public class UploadMorePicUtil {
                     loadOver(uploadPicsInterface);
                 }
             }
-
             @Override
             public void onFailure() {
                 uploadPicsInterface.onFail();

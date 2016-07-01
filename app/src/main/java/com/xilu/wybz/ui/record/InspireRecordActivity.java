@@ -450,7 +450,7 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
     }
 
     private void ToSelectPicActivity() {
-        Intent intent = new Intent(this, SelectPicActivity.class);
+        Intent intent = new Intent(this, NewSelectPicActivity.class);
         ArrayList<String> pics = new ArrayList<>();
         if (list.size() > 0) {
             for (PhotoBean photoBean : list) {

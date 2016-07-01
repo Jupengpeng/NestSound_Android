@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="16dp"
                 android:textColor="@color/main_text_color"
-                android:text="name"
+                android:text="@string/app_name"
                 />
             <TextView
                 android:id="@+id/tv_sign"
@@ -59,7 +59,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="13dp"
                 android:textColor="@color/main_text_color2"
-                android:text="sign"
+                android:text="人人都是作曲家"
                 />
 
         </LinearLayout>

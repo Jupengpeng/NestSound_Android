@@ -86,7 +86,6 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
             super(view);
             ButterKnife.bind(this, view);
             rlCover.setLayoutParams(new FrameLayout.LayoutParams(itemWidth, itemWidth));
-            ivCover.setLayoutParams(new RelativeLayout.LayoutParams(itemWidth, itemWidth));
         }
     }
 }

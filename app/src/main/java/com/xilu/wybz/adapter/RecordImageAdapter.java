@@ -27,16 +27,17 @@ import butterknife.ButterKnife;
 public class RecordImageAdapter extends RecyclerView.Adapter<RecordImageAdapter.RecordImageViewHolder> {
     private List<PhotoBean> mList;
     private Context context;
-    private int itemWidth, itemHeight;
+    private int itemWidth;
+
     public RecordImageAdapter(Context context, List<PhotoBean> imagePaths, int column) {
         this.context = context;
         this.mList = imagePaths;
-        itemWidth = (DensityUtil.getScreenW(context)-DensityUtil.dip2px(context,(column+1)*10))/column;
-        itemHeight = itemWidth;
+        itemWidth = (DensityUtil.getScreenW(context) - DensityUtil.dip2px(context, (column + 1) * 10)) / column;
     }
 
     public interface OnItemClickListener {
         void onItemClick(View view, int position);
+
         void onDelClick(View view, int position);
     }
 
@@ -54,17 +55,16 @@ public class RecordImageAdapter extends RecyclerView.Adapter<RecordImageAdapter.
 
     @Override
     public void onBindViewHolder(RecordImageViewHolder holder, int position) {
-        if(mList.get(position).isAddPic){
-            ImageLoadUtil.loadImage("res://yinchao/"+R.drawable.ic_record_add_pic, holder.ivCover);
+        if (mList.get(position).isAddPic) {
+            ImageLoadUtil.loadImage(context, R.drawable.ic_record_add_pic, holder.ivCover,itemWidth,itemWidth);
             holder.ivDel.setVisibility(View.GONE);
-        }else{
+        } else {
             String imgPath = mList.get(position).path;
-            if(new File(imgPath).exists()) {
-                ImageLoadUtil.loadImage("file:///" + imgPath, holder.ivCover);
-            }else{
-                if(!imgPath.startsWith("http"))imgPath = MyHttpClient.QINIU_URL+imgPath;
-                Log.e("june imgurl",MyCommon.getImageUrl(imgPath,itemWidth,itemHeight));
-                ImageLoadUtil.loadImage(MyCommon.getImageUrl(imgPath,itemWidth,itemHeight), holder.ivCover);
+            if (new File(imgPath).exists()) {
+                ImageLoadUtil.loadImage(context, new File(imgPath), holder.ivCover,itemWidth,itemWidth);
+            } else {
+                if (!imgPath.startsWith("http")) imgPath = MyHttpClient.QINIU_URL + imgPath;
+                ImageLoadUtil.loadImage(context, MyCommon.getImageUrl(imgPath, itemWidth, itemWidth), holder.ivCover,itemWidth,itemWidth);
             }
             holder.ivDel.setVisibility(View.VISIBLE);
         }
@@ -80,22 +80,24 @@ public class RecordImageAdapter extends RecyclerView.Adapter<RecordImageAdapter.
         holder.ivDel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mOnItemClickListener.onDelClick(v,position);
+                mOnItemClickListener.onDelClick(v, position);
             }
         });
     }
-    public void removeItem(int position){
+
+    public void removeItem(int position) {
         mList.remove(position);
-        if(mList.size()==8&&!mList.get(mList.size()-1).isAddPic){
+        if (mList.size() == 8 && !mList.get(mList.size() - 1).isAddPic) {
             PhotoBean photoBean = new PhotoBean();
             photoBean.isAddPic = true;
             mList.add(photoBean);
         }
         notifyItemRemoved(position);
-        if(position != mList.size()){
+        if (position != mList.size()) {
             notifyItemRangeChanged(position, mList.size() - position);
         }
     }
+
     @Override
     public int getItemCount() {
         return mList.size();
@@ -103,16 +105,16 @@ public class RecordImageAdapter extends RecyclerView.Adapter<RecordImageAdapter.
 
     class RecordImageViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.iv_cover)
-        SimpleDraweeView ivCover;
+        ImageView ivCover;
         @Bind(R.id.rl_cover)
         RelativeLayout rlCover;
         @Bind(R.id.iv_del)
         ImageView ivDel;
+
         public RecordImageViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
-            ivCover.setLayoutParams(new RelativeLayout.LayoutParams(itemWidth, itemHeight));
-            rlCover.setLayoutParams(new FrameLayout.LayoutParams(itemWidth, itemHeight));
+            rlCover.setLayoutParams(new FrameLayout.LayoutParams(itemWidth, itemWidth));
         }
     }
 }

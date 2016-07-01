@@ -144,6 +144,7 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
 
     public void reSet(){
         userId = PrefsUtil.getUserId(context);
+        author = PrefsUtil.getUserInfo(context).name;
         isMe = (userId == PrefsUtil.getUserId(context));
     }
 

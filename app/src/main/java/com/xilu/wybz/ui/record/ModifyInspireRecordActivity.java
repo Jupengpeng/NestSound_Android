@@ -222,9 +222,8 @@ public class ModifyInspireRecordActivity extends ToolbarActivity implements IIns
             case android.R.id.home:
                 if(recordStatus==1){
                     showMsg("请先暂停录音后再继续返回");
-                    return false;
+                    return true;
                 }
-                return true;
         }
         return super.onOptionsItemSelected(item);
     }

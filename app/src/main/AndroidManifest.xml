@@ -107,6 +107,7 @@
 
 
         <activity android:name=".ui.record.InspireRecordActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.record.NewSelectPicActivity" android:screenOrientation="portrait" />
         <activity android:name=".ui.record.SelectPicActivity" android:screenOrientation="portrait" />
         <activity android:name=".ui.record.ModifyInspireRecordActivity" android:screenOrientation="portrait"/>
 
