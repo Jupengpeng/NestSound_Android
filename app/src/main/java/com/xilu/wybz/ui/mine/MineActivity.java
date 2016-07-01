@@ -19,13 +19,13 @@ import com.xilu.wybz.common.KeySet;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.ui.fragment.WorksDataFragment;
-import com.xilu.wybz.ui.setting.SettingActivity;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.NumberUtil;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.view.StickyNavLayout;
 import com.xilu.wybz.view.SystemBarHelper;
+import com.xilu.wybz.view.dialog.LoadingDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -256,7 +256,11 @@ public class MineActivity extends ToolbarActivity {
                 changeTabColor();
                 break;
             case R.id.rl_setting:
-                startActivity(SettingActivity.class);
+
+//                startActivity(SettingActivity.class);
+                LoadingDialog d = new LoadingDialog(this);
+                d.show();
+
                 break;
         }
     }
@@ -280,27 +284,15 @@ public class MineActivity extends ToolbarActivity {
         int type = event.getType();
         UserBean userBean = PrefsUtil.getUserInfo(context);
 
-        Log.d("fans","type:"+type+" from:"+from);
-//        switch (from) {
-//            case 0:
-                if (type == 0) {
-                    userBean.gznum += 1;
-                } else {
-                    userBean.gznum -= 1;
-                    if (userBean.gznum<0) userBean.gznum = 0;
-                }
-                userFollownum.setText("关注:  " + NumberUtil.format(userBean.gznum));
-//                break;
-//            case 1:
-//                if (type == 0) {
-//                    userBean.fansnum += 1;
-//                } else {
-//                    userBean.fansnum -= 1;
-//                    if (userBean.fansnum<0) userBean.fansnum = 0;
-//                }
-//                userFansnum.setText("粉丝:  " + NumberUtil.format(userBean.fansnum));
-//                break;
-//        }
+        Log.d("fans", "type:" + type + " from:" + from);
+        if (type == 0) {
+            userBean.gznum -= 1;
+            if (userBean.gznum < 0) userBean.gznum = 0;
+        } else {
+            userBean.gznum += 1;
+
+        }
+        userFollownum.setText("关注:  " + NumberUtil.format(userBean.gznum));
         PrefsUtil.saveUserInfo(context, userBean);
     }
 

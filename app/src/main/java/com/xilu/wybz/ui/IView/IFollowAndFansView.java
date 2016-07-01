@@ -1,6 +1,5 @@
 package com.xilu.wybz.ui.IView;
 
-import com.xilu.wybz.bean.CollectionBean;
 import com.xilu.wybz.bean.FansBean;
 
 import java.util.List;
@@ -12,10 +11,6 @@ public interface IFollowAndFansView extends IBaseView {
     void showFansData(List<FansBean> fansBeanList);
 
     void loadFail();
-
-    void followFail();
-
-    void followSuccess();
 
     void loadNoMore();
 

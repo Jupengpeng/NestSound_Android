@@ -235,9 +235,9 @@ public class Event {
 
     public static class UpdateFollowNumEvent {
         /*
-        * type 0加 1减
-        *  from 0 关注 1粉丝
-         */
+        * type 关注后的状态
+        *  from 0 关注 1粉丝 【修改关注数或粉丝数】
+        */
         int type;
         int from;
 
