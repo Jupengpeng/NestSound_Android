@@ -55,17 +55,14 @@ public class AppJsonCalback extends JsonCallback {
      */
     public void onResultError(JsonResponse<? extends Object> response){
         if (response.getCode() == 999){
-            if(context!=null)
             ToastUtils.toastLong(context,"数据解码失败");
             return;
         }
         if(response.getCode()==53001){
-            if(context!=null)
             ToastUtils.toastLong(context,"登录状态失效，请重新进行登录！");
             return;
         }
         if (StringUtil.isNotBlank(response.getMessage())){
-            if(context!=null)
             ToastUtils.toastLong(context,response.getMessage());
         }
 
@@ -82,11 +79,10 @@ public class AppJsonCalback extends JsonCallback {
     public void onError(Call call, Exception e) {
         super.onError(call, e);
         if (!NetWorkUtil.isNetworkAvailable(context)){
-            if(context!=null)
             ToastUtils.toast(context,"网络连接失败");
         } else {
-            if(context!=null)
             ToastUtils.toast(context,"服务器错误");
         }
     }
+
 }

@@ -18,7 +18,9 @@ import com.xilu.wybz.bean.FansBean;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.KeySet;
 import com.xilu.wybz.presenter.FollowPresenter;
+import com.xilu.wybz.presenter.OnlyFollowPresenter;
 import com.xilu.wybz.ui.IView.IFollowAndFansView;
+import com.xilu.wybz.ui.IView.IOnlyFollowView;
 import com.xilu.wybz.ui.base.BaseListActivity;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.view.pull.BaseViewHolder;
@@ -32,9 +34,10 @@ import de.greenrobot.event.EventBus;
 /**
  * Created by Administrator on 2016/5/24.
  */
-public class FollowAndFansActivity extends BaseListActivity<FansBean> implements IFollowAndFansView {
+public class FollowAndFansActivity extends BaseListActivity<FansBean> implements IFollowAndFansView ,IOnlyFollowView{
 
     private FollowPresenter mFollowPresenter;
+    private OnlyFollowPresenter mOnlyFollowPresenter;
     private FollowAndFansViewHolder followAndFansViewHolder;
     private int type;
     private int uid;
@@ -61,6 +64,7 @@ public class FollowAndFansActivity extends BaseListActivity<FansBean> implements
 
     @Override
     protected void initPresenter() {
+        mOnlyFollowPresenter = new OnlyFollowPresenter(context, this);
         mFollowPresenter = new FollowPresenter(context, this);
         mFollowPresenter.init();
     }
@@ -127,22 +131,6 @@ public class FollowAndFansActivity extends BaseListActivity<FansBean> implements
         recycler.onRefreshCompleted();
     }
 
-    @Override
-    public void followFail() {
-
-    }
-
-    @Override
-    public void followSuccess() {
-        int status = mDataList.get(currentPos).status;
-        if (status == 0) status = 1;
-        else status = 0;
-        EventBus.getDefault().post(new Event.UpdateFollowNumEvent(status, fromType));
-
-        Log.d("fans", "status:" + status);
-        mDataList.get(currentPos).status = status;
-        followAndFansViewHolder.notifyItemByPos(currentPos);
-    }
 
     @Override
     public void loadNoMore() {
@@ -161,6 +149,27 @@ public class FollowAndFansActivity extends BaseListActivity<FansBean> implements
         llNoData.setVisibility(View.VISIBLE);
         recycler.onRefreshCompleted();
         recycler.enableLoadMore(false);
+    }
+
+    @Override
+    public void followSuccess(String message) {
+        cancelLoading();
+        int status = OnlyFollowPresenter.paraseStatuByString(message);
+        EventBus.getDefault().post(new Event.UpdateFollowNumEvent(status, 0));
+
+        Log.d("fans", "status:" + status);
+        mDataList.get(currentPos).status = status;
+        followAndFansViewHolder.notifyItemByPos(currentPos);
+    }
+
+    @Override
+    public void followFailed(String message) {
+        cancelLoading();
+    }
+
+    public void followUser(int userId){
+        showLoading();
+        mOnlyFollowPresenter.follow(userId);
     }
 
     @Override
@@ -197,8 +206,8 @@ public class FollowAndFansActivity extends BaseListActivity<FansBean> implements
         }
 
         @Override
-        public void onBindViewHolder(int position) {
-            FansBean fansBean = mDataList.get(position);
+        public void onBindViewHolder(final int position) {
+            final FansBean fansBean = mDataList.get(position);
             loadImage(fansBean.headurl, ivHead);
             userName.setText(fansBean.fansname);
             userSign.setText(fansBean.fansign);
@@ -209,13 +218,13 @@ public class FollowAndFansActivity extends BaseListActivity<FansBean> implements
                 @Override
                 public void onClick(View v) {
                     currentPos = position;
+                    Log.d("url","p:"+position+fansBean.fansname);
                     ivFollow = ivFollowState;
                     tvFollow = tvFollowState;
                     if (type == KeySet.TYPE_FANS_ACT) {
-
-                        mFollowPresenter.follow(fansBean.fansid);
+                        followUser(fansBean.fansid);
                     } else {
-                        mFollowPresenter.follow(fansBean.userid);
+                        followUser(fansBean.userid);
                     }
                 }
             });
@@ -238,7 +247,14 @@ public class FollowAndFansActivity extends BaseListActivity<FansBean> implements
     }
 
     @Override
+    public void onLoadingCancel() {
+        cancelLoading();
+        mOnlyFollowPresenter.cancel();
+    }
+
+    @Override
     protected void onDestroy() {
+        EventBus.getDefault().unregister(this);
         super.onDestroy();
         if (mFollowPresenter != null)
             mFollowPresenter.cancelRequest();

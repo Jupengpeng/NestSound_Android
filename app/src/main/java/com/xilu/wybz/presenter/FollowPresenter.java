@@ -3,14 +3,11 @@ package com.xilu.wybz.presenter;
 import android.content.Context;
 
 import com.google.gson.reflect.TypeToken;
-import com.xilu.wybz.bean.DataBean;
 import com.xilu.wybz.bean.FansBean;
 import com.xilu.wybz.bean.JsonResponse;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.callback.AppJsonCalback;
-import com.xilu.wybz.http.callback.MyStringCallback;
 import com.xilu.wybz.ui.IView.IFollowAndFansView;
-import com.xilu.wybz.utils.ParseUtils;
 import com.xilu.wybz.utils.PrefsUtil;
 
 import java.lang.reflect.Type;
@@ -72,24 +69,24 @@ public class FollowPresenter extends BasePresenter<IFollowAndFansView> {
         });
     }
 
-    public void follow(int userId) {
-        params = new HashMap<>();
-        params.put("userid", userId + "");
-        params.put("fansid", PrefsUtil.getUserId(context) + "");
-        httpUtils.post(MyHttpClient.getFanFocusList(), params, new MyStringCallback() {
-            @Override
-            public void onResponse(String response) {
-                super.onResponse(response);
-                DataBean dataBean = ParseUtils.getDataBean(context, response);
-                if (dataBean != null && dataBean.code == 200) {
-                    iView.followSuccess();
-                }
-            }
-
-            @Override
-            public void onError(Call call, Exception e) {
-                iView.followFail();
-            }
-        });
-    }
+//    public void follow(int userId) {
+//        params = new HashMap<>();
+//        params.put("userid", userId + "");
+//        params.put("fansid", PrefsUtil.getUserId(context) + "");
+//        httpUtils.post(MyHttpClient.getFanFocusList(), params, new MyStringCallback() {
+//            @Override
+//            public void onResponse(String response) {
+//                super.onResponse(response);
+//                DataBean dataBean = ParseUtils.getDataBean(context, response);
+//                if (dataBean != null && dataBean.code == 200) {
+//                    iView.followSuccess();
+//                }
+//            }
+//
+//            @Override
+//            public void onError(Call call, Exception e) {
+//                iView.followFail();
+//            }
+//        });
+//    }
 }

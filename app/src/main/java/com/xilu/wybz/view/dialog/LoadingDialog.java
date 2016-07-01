@@ -18,7 +18,7 @@ public class LoadingDialog extends Dialog {
 
 
     protected Context context;
-    protected OnCancelListener onCancelListener;
+    protected OnKeyCancelListener onKeyCancelListener;
 
 
     private ProgressBar bar;
@@ -46,8 +46,8 @@ public class LoadingDialog extends Dialog {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK){
-            if (onCancelListener != null){
-                onCancelListener.onCancel();
+            if (onKeyCancelListener != null){
+                onKeyCancelListener.onCancel();
                 return true;
             }
             Log.d("yinchao","loading dialog onKeyDown envent.");
@@ -55,13 +55,13 @@ public class LoadingDialog extends Dialog {
         return super.onKeyDown(keyCode, event);
     }
 
-    public void setOnCancelListener(OnCancelListener listener){
+    public void setOnKeyCancelListener(OnKeyCancelListener listener){
 
-        this.onCancelListener = listener;
+        this.onKeyCancelListener = listener;
     }
 
 
-    interface OnCancelListener{
+    public interface OnKeyCancelListener {
         void onCancel();
     }
 }

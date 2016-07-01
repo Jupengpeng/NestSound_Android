@@ -284,27 +284,15 @@ public class MineActivity extends ToolbarActivity {
         int type = event.getType();
         UserBean userBean = PrefsUtil.getUserInfo(context);
 
-        Log.d("fans","type:"+type+" from:"+from);
-//        switch (from) {
-//            case 0:
-                if (type == 0) {
-                    userBean.gznum += 1;
-                } else {
-                    userBean.gznum -= 1;
-                    if (userBean.gznum<0) userBean.gznum = 0;
-                }
-                userFollownum.setText("关注:  " + NumberUtil.format(userBean.gznum));
-//                break;
-//            case 1:
-//                if (type == 0) {
-//                    userBean.fansnum += 1;
-//                } else {
-//                    userBean.fansnum -= 1;
-//                    if (userBean.fansnum<0) userBean.fansnum = 0;
-//                }
-//                userFansnum.setText("粉丝:  " + NumberUtil.format(userBean.fansnum));
-//                break;
-//        }
+        Log.d("fans", "type:" + type + " from:" + from);
+        if (type == 0) {
+            userBean.gznum -= 1;
+            if (userBean.gznum < 0) userBean.gznum = 0;
+        } else {
+            userBean.gznum += 1;
+
+        }
+        userFollownum.setText("关注:  " + NumberUtil.format(userBean.gznum));
         PrefsUtil.saveUserInfo(context, userBean);
     }
 

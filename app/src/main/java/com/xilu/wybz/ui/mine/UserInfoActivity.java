@@ -1,6 +1,7 @@
 package com.xilu.wybz.ui.mine;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -18,9 +19,8 @@ import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.KeySet;
 import com.xilu.wybz.common.MyCommon;
-import com.xilu.wybz.common.MyHttpClient;
-import com.xilu.wybz.http.HttpUtils;
-import com.xilu.wybz.http.callback.MyStringCallback;
+import com.xilu.wybz.presenter.OnlyFollowPresenter;
+import com.xilu.wybz.ui.IView.IOnlyFollowView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.ui.fragment.WorksDataFragment;
 import com.xilu.wybz.utils.DensityUtil;
@@ -29,21 +29,19 @@ import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.view.StickyNavLayout;
 import com.xilu.wybz.view.SystemBarHelper;
+import com.xilu.wybz.view.dialog.LoadingDialog;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
-import okhttp3.Call;
 
 /**
  * Created by hujunwei on 16/6/2.
  */
-public class UserInfoActivity extends ToolbarActivity {
+public class UserInfoActivity extends ToolbarActivity implements IOnlyFollowView{
     @Bind(R.id.iv_head)
     SimpleDraweeView ivHead;
     @Bind(R.id.user_tv_name)
@@ -76,6 +74,9 @@ public class UserInfoActivity extends ToolbarActivity {
     private int isFocus = -1;
     private int[] followIcon = new int[]{R.drawable.ic_user_follow, R.drawable.ic_user_followed, R.drawable.ic_user_each_follow};
     MineAdapter pagerAdapter;
+
+
+    OnlyFollowPresenter presenter;
     public static void ToUserInfoActivity(Context context, int userId, String userName) {
         Intent intent = new Intent(context, UserInfoActivity.class);
         intent.putExtra("userId", userId);
@@ -91,6 +92,8 @@ public class UserInfoActivity extends ToolbarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        presenter = new OnlyFollowPresenter(context,this);
+
         initData();
     }
 
@@ -247,36 +250,45 @@ public class UserInfoActivity extends ToolbarActivity {
         }
     }
 
+    LoadingDialog loading;
+
     private void FollowUser() {
         if (isFocus > -1) {
-            HttpUtils httpUtils = new HttpUtils(context);
-            Map<String, String> params = new HashMap<>();
-            params.put("userid", userId + "");
-            params.put("fansid", PrefsUtil.getUserId(context) + "");
-            httpUtils.post(MyHttpClient.getFanFocusList(), params, new MyStringCallback() {
+            if (loading == null){
+                loading = new LoadingDialog(this);
+            }
+            loading.show();
+            loading.setOnCancelListener(new DialogInterface.OnCancelListener() {
                 @Override
-                public void onResponse(String response) {
-                    super.onResponse(response);
-//                    isFocus = 1 - isFocus;
-                    /***/
-                    if (isFocus !=0){
-                        isFocus = 0;
-                    } else {
-                        isFocus = 1;
-                    }
-
-
-                    EventBus.getDefault().post(new Event.UpdateFollowNumEvent(1-isFocus, 0));
-                    showMsg(isFocus==0?"取消关注成功！":"关注成功！");
-                    ivSetting.setImageResource(followIcon[isFocus]);
-                }
-
-                @Override
-                public void onError(Call call, Exception e) {
-                    super.onError(call, e);
+                public void onCancel(DialogInterface dialog) {
+                    if (presenter != null)
+                    presenter.cancel();
                 }
             });
+
+            presenter.follow(userId);
         }
+    }
+
+
+    @Override
+    public void followSuccess(String message) {
+        if (loading != null) loading.cancel();
+        isFocus = OnlyFollowPresenter.paraseStatuByString(message);
+        if (isFocus>=0&&isFocus<=2){
+            ivSetting.setImageResource(followIcon[isFocus]);
+        }
+        EventBus.getDefault().post(new Event.UpdateFollowNumEvent(isFocus,0));
+    }
+
+    @Override
+    public void followFailed(String message) {
+        if (loading != null) loading.cancel();
+    }
+
+    @Override
+    public void initView() {
+
     }
 
     //在我的歌曲的列表 发送过来的
@@ -288,6 +300,7 @@ public class UserInfoActivity extends ToolbarActivity {
 
     @Override
     protected void onDestroy() {
+        if (loading != null) loading.cancel();
         super.onDestroy();
         EventBus.getDefault().unregister(this);
     }
