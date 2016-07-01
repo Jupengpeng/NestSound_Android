@@ -75,7 +75,6 @@ public class UploadMorePicUtil {
                     loadOver(uploadPicsInterface);
                 }
             }
-
             @Override
             public void onFailure() {
                 uploadPicsInterface.onFail();

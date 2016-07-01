@@ -28,7 +28,7 @@ public abstract class BasePlayMenuActivity extends ToolbarActivity {
     private AnimImageView animImageView;
     private List<Integer> resourceIdList;
     protected LinearLayout ll_search;
-
+    protected boolean visible =true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +36,7 @@ public abstract class BasePlayMenuActivity extends ToolbarActivity {
         rl_right = (RelativeLayout) findViewById(R.id.rl_right);
         ll_search = (LinearLayout) findViewById(R.id.ll_search);
         ivPlay = (ImageView) findViewById(R.id.iv_right);
+        visible = true;
         resourceIdList = new ArrayList<>();
         resourceIdList.add(R.drawable.ic_menu_play_3);
         resourceIdList.add(R.drawable.ic_menu_play_4);
@@ -93,6 +94,7 @@ public abstract class BasePlayMenuActivity extends ToolbarActivity {
         }
     }
     protected void hideRight(){
+        visible = false;
         rl_right.setVisibility(View.GONE);
     }
     @Override
@@ -106,10 +108,12 @@ public abstract class BasePlayMenuActivity extends ToolbarActivity {
     @Override
     public void onResume() {
         super.onResume();
-        if (PlayMediaInstance.getInstance().status == 3) {
-            startAnimal();
-        }else{
-            stopAnimal();
+        if(visible) {
+            if (PlayMediaInstance.getInstance().status == 3) {
+                startAnimal();
+            } else {
+                stopAnimal();
+            }
         }
     }
 
@@ -120,15 +124,17 @@ public abstract class BasePlayMenuActivity extends ToolbarActivity {
     }
 
     public void onEventMainThread(Event.PPStatusEvent event) {
-        switch (event.getStatus()) {
-            case MyCommon.PP_START://开始
-            case MyCommon.PP_PLAY://播放
-                startAnimal();
-                break;
-            case MyCommon.PP_STOP://停止
-            case MyCommon.PP_PAUSE://暂停
-                stopAnimal();
-                break;
+        if(visible) {
+            switch (event.getStatus()) {
+                case MyCommon.PP_START://开始
+                case MyCommon.PP_PLAY://播放
+                    startAnimal();
+                    break;
+                case MyCommon.PP_STOP://停止
+                case MyCommon.PP_PAUSE://暂停
+                    stopAnimal();
+                    break;
+            }
         }
     }
 }

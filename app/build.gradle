@@ -115,6 +115,7 @@ dependencies {
     compile rootProject.ext.dependencies["butterknife"]
     compile rootProject.ext.dependencies["fresco"]
     compile rootProject.ext.dependencies["glide"]
+    compile rootProject.ext.dependencies["picasso"]
     compile rootProject.ext.dependencies["okhttp"]
     compile rootProject.ext.dependencies["nativestackblur"]
     compile rootProject.ext.dependencies["materialprogressbar"]

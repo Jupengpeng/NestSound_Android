@@ -27,13 +27,12 @@ import butterknife.ButterKnife;
 public class RecordImageAdapter extends RecyclerView.Adapter<RecordImageAdapter.RecordImageViewHolder> {
     private List<PhotoBean> mList;
     private Context context;
-    private int itemWidth, itemHeight;
+    private int itemWidth;
 
     public RecordImageAdapter(Context context, List<PhotoBean> imagePaths, int column) {
         this.context = context;
         this.mList = imagePaths;
         itemWidth = (DensityUtil.getScreenW(context) - DensityUtil.dip2px(context, (column + 1) * 10)) / column;
-        itemHeight = itemWidth;
     }
 
     public interface OnItemClickListener {
@@ -57,16 +56,15 @@ public class RecordImageAdapter extends RecyclerView.Adapter<RecordImageAdapter.
     @Override
     public void onBindViewHolder(RecordImageViewHolder holder, int position) {
         if (mList.get(position).isAddPic) {
-            ImageLoadUtil.loadImage(context, R.drawable.ic_record_add_pic, holder.ivCover);
+            ImageLoadUtil.loadImage(context, R.drawable.ic_record_add_pic, holder.ivCover,itemWidth,itemWidth);
             holder.ivDel.setVisibility(View.GONE);
         } else {
             String imgPath = mList.get(position).path;
             if (new File(imgPath).exists()) {
-                ImageLoadUtil.loadImage(context, "file:///" + imgPath, holder.ivCover);
+                ImageLoadUtil.loadImage(context, new File(imgPath), holder.ivCover,itemWidth,itemWidth);
             } else {
                 if (!imgPath.startsWith("http")) imgPath = MyHttpClient.QINIU_URL + imgPath;
-                Log.e("june imgurl", MyCommon.getImageUrl(imgPath, itemWidth, itemHeight));
-                ImageLoadUtil.loadImage(context, MyCommon.getImageUrl(imgPath, itemWidth, itemHeight), holder.ivCover);
+                ImageLoadUtil.loadImage(context, MyCommon.getImageUrl(imgPath, itemWidth, itemWidth), holder.ivCover,itemWidth,itemWidth);
             }
             holder.ivDel.setVisibility(View.VISIBLE);
         }
@@ -116,8 +114,7 @@ public class RecordImageAdapter extends RecyclerView.Adapter<RecordImageAdapter.
         public RecordImageViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
-            ivCover.setLayoutParams(new RelativeLayout.LayoutParams(itemWidth, itemHeight));
-            rlCover.setLayoutParams(new FrameLayout.LayoutParams(itemWidth, itemHeight));
+            rlCover.setLayoutParams(new FrameLayout.LayoutParams(itemWidth, itemWidth));
         }
     }
 }
