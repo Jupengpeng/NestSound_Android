@@ -27,6 +27,8 @@ public class DownloadMusicPresenter extends BasePresenter<IDownloadMusicView> {
     @Override
     public void init() {
 //        super.init();
+
+
     }
 
     public void downloadFile(String url, String fileName){

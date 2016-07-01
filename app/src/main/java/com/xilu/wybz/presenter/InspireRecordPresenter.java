@@ -1,7 +1,6 @@
 package com.xilu.wybz.presenter;
 
 import android.content.Context;
-import android.text.TextUtils;
 
 import com.xilu.wybz.bean.DataBean;
 import com.xilu.wybz.bean.WorksData;
@@ -10,6 +9,7 @@ import com.xilu.wybz.http.callback.MyStringCallback;
 import com.xilu.wybz.ui.IView.IInspireRecordView;
 import com.xilu.wybz.utils.ParseUtils;
 import com.xilu.wybz.utils.PrefsUtil;
+import com.xilu.wybz.utils.StringUtil;
 
 import java.util.HashMap;
 
