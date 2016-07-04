@@ -50,6 +50,7 @@ public class SettingActivity extends ToolbarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mToolbar.setBackgroundResource(R.color.main_theme_color);
         initView();
     }
     public void onEventMainThread(Event.UpdateUserInfo event){

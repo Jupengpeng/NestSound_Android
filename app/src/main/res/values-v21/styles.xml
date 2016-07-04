@@ -7,6 +7,14 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
+    <style name="MianTheme" parent="BaseTheme">
+        <item name="android:colorControlNormal">@color/main_theme_color</item>
+        <item name="android:windowBackground">@color/main_theme_color</item>
+        <item name="colorPrimary">@color/main_theme_color</item>
+        <item name="colorPrimaryDark">@color/main_theme_color</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
     <style name="LoginTheme" parent="@style/BaseTheme_Login">
         <item name="android:colorControlNormal">@color/main_theme_color</item>
         <item name="android:windowIsTranslucent">true</item>
