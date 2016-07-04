@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.xilu.wybz.R;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.utils.AppInfoUtil;
+import com.xilu.wybz.view.SystemBarHelper;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -36,7 +37,7 @@ public class AboutMessageActivity extends ToolbarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+//        SystemBarHelper.tintStatusBar(this, getResources().getColor(R.color.main_theme_color));
         mToolbar.setBackgroundResource(R.color.main_theme_color);
 
         setTitle("关于");

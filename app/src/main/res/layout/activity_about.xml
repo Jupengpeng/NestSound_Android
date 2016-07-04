@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/main_bg"
+    android:background="@color/main_theme_color"
     android:orientation="vertical">
 
     <include layout="@layout/view_toolbar" />
@@ -10,8 +10,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:layout_marginBottom="40dp"
+        android:paddingBottom="40dp"
+        android:paddingTop="40dp"
+        android:background="@color/main_bg"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -103,15 +104,17 @@
         <include layout="@layout/view_spit_line" />
     </LinearLayout>
 
-    <Space
+    <View
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:background="@color/main_bg"
         android:layout_weight="1" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
+        android:paddingBottom="20dp"
+        android:background="@color/main_bg"
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
