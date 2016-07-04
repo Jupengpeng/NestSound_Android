@@ -83,9 +83,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             if (!(this instanceof PlayAudioActivity || this instanceof LoginActivity
                     || this instanceof RegisterActivity || this instanceof PasswordActivity
                     || this instanceof SongAblumActivity)) {
-                if (SystemBarHelper.isMIUI6Later() || SystemBarHelper.isFlyme4Later() || Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     SystemBarHelper.setStatusBarDarkMode(this);
-                }
             }
             if (this instanceof WelActivity || this instanceof PlayAudioActivity
                     || this instanceof SongAblumActivity

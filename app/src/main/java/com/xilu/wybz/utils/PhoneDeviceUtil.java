@@ -30,27 +30,4 @@ public class PhoneDeviceUtil {
     public static String getMachine(Context context) {
         return "android|301|android" + Build.VERSION.RELEASE + "|" + getPhoneModel().toUpperCase() + "|" + getPhoneImei(context) + "|" + DensityUtil.getScreenW(context) + "|" + DensityUtil.getScreenH(context) + "";
     }
-
-    public static String getVersionName(Context context) {
-        return getPackageInfo(context).versionName;
-    }
-
-    public static int getVersionCode(Context context) {
-        return getPackageInfo(context).versionCode;
-    }
-
-    static PackageInfo getPackageInfo(Context context) {
-        PackageInfo pi = null;
-        try {
-            PackageManager pm = context.getPackageManager();
-            pi = pm.getPackageInfo(context.getPackageName(),
-                    PackageManager.GET_CONFIGURATIONS);
-
-            return pi;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return pi;
-    }
-
 }
