@@ -132,35 +132,34 @@
             />
         </LinearLayout>
 
-        <include layout="@layout/view_spit_line" />
+        <!--<include layout="@layout/view_spit_line" />-->
 
         <LinearLayout
-            android:id="@+id/ll_score"
-            android:layout_width="match_parent"
-            android:layout_height="46dp"
-            android:gravity="center_vertical"
-            android:background="?selectableItemBackground"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp">
+        android:id="@+id/ll_score"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:gravity="center_vertical"
+        android:background="?selectableItemBackground"
+        android:visibility="gone"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp">
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="去评分"
-                android:textColor="@color/main_text_color"
-                android:textSize="15sp" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="去评分"
+            android:textColor="@color/main_text_color"
+            android:textSize="15sp" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_setting_arrow" />
-            />
-        </LinearLayout>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_setting_arrow" />
+        />
+    </LinearLayout>
 
         <include layout="@layout/view_spit_line" />
-
-
 
         <LinearLayout
             android:id="@+id/ll_feedback"
@@ -175,7 +174,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="用户反馈"
+                android:text="关于"
                 android:textColor="@color/main_text_color"
                 android:textSize="15sp" />
 
@@ -187,9 +186,13 @@
         </LinearLayout>
 
         <include layout="@layout/view_spit_line" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="15dp"
+            android:background="@color/main_bg"
+            />
         <LinearLayout
             android:id="@+id/ll_loginout"
-            android:layout_marginTop="15dp"
             android:layout_width="match_parent"
             android:layout_height="46dp"
             android:orientation="vertical"

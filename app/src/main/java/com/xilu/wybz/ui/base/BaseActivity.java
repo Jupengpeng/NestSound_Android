@@ -8,7 +8,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
@@ -31,6 +30,7 @@ import com.xilu.wybz.ui.main.MainActivity;
 import com.xilu.wybz.ui.mine.MineActivity;
 import com.xilu.wybz.ui.mine.UserInfoActivity;
 import com.xilu.wybz.ui.msg.MsgActivity;
+import com.xilu.wybz.ui.setting.AboutMessageActivity;
 import com.xilu.wybz.ui.song.MakeSongActivity;
 import com.xilu.wybz.ui.song.PlayAudioActivity;
 import com.xilu.wybz.ui.song.SongAblumActivity;
@@ -39,7 +39,6 @@ import com.xilu.wybz.utils.ToastUtils;
 import com.xilu.wybz.view.AnimImageView;
 import com.xilu.wybz.view.SystemBarHelper;
 import com.xilu.wybz.view.materialdialogs.MaterialDialog;
-import com.xilu.wybz.view.toast.ToastManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,6 +88,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             }
             if (this instanceof WelActivity || this instanceof PlayAudioActivity
                     || this instanceof SongAblumActivity
+                    || this instanceof AboutMessageActivity
                     || this instanceof ShareActivity || this instanceof SplashActivity ||
                     this instanceof UserInfoActivity || this instanceof MainTabActivity) {
                 SystemBarHelper.immersiveStatusBar(this);

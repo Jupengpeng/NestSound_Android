@@ -1,11 +1,6 @@
 package com.xilu.wybz.utils;
 
-import android.app.Service;
 import android.content.Context;
-import android.content.Intent;
-import android.os.IBinder;
-import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.common.FileDir;
@@ -14,10 +9,6 @@ import com.xilu.wybz.http.HttpUtils;
 import com.xilu.wybz.http.callback.FileCallBack;
 import com.xilu.wybz.http.callback.MyStringCallback;
 import com.xilu.wybz.http.callback.StringCallback;
-import com.xilu.wybz.utils.MD5Util;
-import com.xilu.wybz.utils.PrefsUtil;
-import com.xilu.wybz.utils.StringUtil;
-import com.xilu.wybz.view.materialdialogs.MaterialDialog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -95,8 +86,8 @@ public class GetDomainUtil {
                     JSONObject jsonObject = new JSONObject(response);
                     int code = jsonObject.getInt("code");
                     if(code==200){
-                        UserBean userBean1 = ParseUtils.getUserBean(mContext,response);
-                        PrefsUtil.saveUserInfo(mContext, userBean1);
+//                        UserBean userBean1 = ParseUtils.getUserBean(mContext,response);
+//                        PrefsUtil.saveUserInfo(mContext, userBean1);
                     }else{
                         //清除本地用户信息
                         PrefsUtil.saveUserInfo(mContext, new UserBean());

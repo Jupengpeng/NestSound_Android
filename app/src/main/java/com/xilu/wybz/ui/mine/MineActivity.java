@@ -19,13 +19,13 @@ import com.xilu.wybz.common.KeySet;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.ui.fragment.WorksDataFragment;
+import com.xilu.wybz.ui.setting.SettingActivity;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.NumberUtil;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.view.StickyNavLayout;
 import com.xilu.wybz.view.SystemBarHelper;
-import com.xilu.wybz.view.dialog.LoadingDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -257,9 +257,7 @@ public class MineActivity extends ToolbarActivity {
                 break;
             case R.id.rl_setting:
 
-//                startActivity(SettingActivity.class);
-                LoadingDialog d = new LoadingDialog(this);
-                d.show();
+                startActivity(SettingActivity.class);
 
                 break;
         }
