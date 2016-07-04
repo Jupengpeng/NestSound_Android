@@ -13,13 +13,13 @@ import okhttp3.Call;
 /**
  * Created by Administrator on 2016/6/6.
  */
-public class ccccPresenter extends BasePresenter<IDownloadMusicView> {
+public class DownloadMusicPresenter extends BasePresenter<IDownloadMusicView> {
 
 
     protected File file;
     protected String filename;
 
-    public ccccPresenter(Context context, IDownloadMusicView iView) {
+    public DownloadMusicPresenter(Context context, IDownloadMusicView iView) {
         super(context, iView);
     }
 
