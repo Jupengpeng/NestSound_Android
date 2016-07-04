@@ -1,7 +1,10 @@
 package com.xilu.wybz.ui.fragment;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +31,7 @@ import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.ui.song.MakeSongActivity;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.MD5Util;
+import com.xilu.wybz.utils.PermissionUtils;
 import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 
@@ -293,7 +297,9 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
         if (new File(playPath).exists()) {
             PlayBanZouInstance.getInstance().setData(playPath, tb.id);
         } else {
-            hotPresenter.downHot(filePath, fileName, tb.mp3);
+            if(PermissionUtils.checkSdcardPermission(getActivity())) {
+                hotPresenter.downHot(filePath, fileName, tb.mp3);
+            }
         }
         PlayBanZouInstance.getInstance().setIMediaPlayerListener(new IMediaPlayerListener() {
             @Override

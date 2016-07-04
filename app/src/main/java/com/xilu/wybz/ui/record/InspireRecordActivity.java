@@ -32,6 +32,7 @@ import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.utils.DateTimeUtil;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.FileUtils;
+import com.xilu.wybz.utils.PermissionUtils;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.utils.SystemUtils;
@@ -258,6 +259,12 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
                 ToSelectPicActivity();
                 break;
             case R.id.iv_record_status:
+                if(!PermissionUtils.checkSdcardPermission(this)){
+                    return;
+                }
+                if(!PermissionUtils.checkRecordAudioPermission(this)){
+                    return;
+                }
                 switch (recordStatus) {
                     case 0://开始录音
                         if (!FileUtils.isSdcardExit()) {

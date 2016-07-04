@@ -1,5 +1,7 @@
 package com.xilu.wybz.ui.song;
 
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -26,6 +28,7 @@ import com.xilu.wybz.presenter.HotPresenter;
 import com.xilu.wybz.ui.IView.IHotView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.utils.MD5Util;
+import com.xilu.wybz.utils.PermissionUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -294,7 +297,9 @@ public class NewMakeHotActivity extends ToolbarActivity implements IHotView, Vie
         if (new File(playPath).exists()) {
             PlayBanZouInstance.getInstance().setData(playPath, tb.id);
         } else {
-            hotPresenter.downHot(filePath, fileName, tb.mp3);
+            if(PermissionUtils.checkSdcardPermission(this)) {
+                hotPresenter.downHot(filePath, fileName, tb.mp3);
+            }
         }
         PlayBanZouInstance.getInstance().setIMediaPlayerListener(new IMediaPlayerListener() {
             @Override
@@ -491,6 +496,20 @@ public class NewMakeHotActivity extends ToolbarActivity implements IHotView, Vie
         stopPlayBz();
         if(hotPresenter!=null){
             hotPresenter.cancelRequest();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case PermissionUtils.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                    showMsg("SD卡读写权限授权成功！");
+                }
+                return;
+            }
         }
     }
 }

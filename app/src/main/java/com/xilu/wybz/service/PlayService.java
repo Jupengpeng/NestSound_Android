@@ -1,13 +1,16 @@
 package com.xilu.wybz.service;
 
+import android.Manifest;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.os.Binder;
 import android.os.IBinder;
+import android.support.v4.content.ContextCompat;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
@@ -406,28 +409,32 @@ public class PlayService extends Service implements AudioManager.OnAudioFocusCha
     };
 
     public void downLoadMp3(String url) {
-        String fileName = MD5Util.getMD5String(url) + ".temp";
-        String filePath = FileDir.songMp3Dir + fileName;
-        File file = new File(filePath);
-        if (file.exists()) return;
-        if (!new File(FileDir.songMp3Dir).exists()) new File(FileDir.songMp3Dir).mkdirs();
+        if(ContextCompat.checkSelfPermission(PlayService.this,
+                Manifest.permission.READ_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED) {
+            String fileName = MD5Util.getMD5String(url) + ".temp";
+            String filePath = FileDir.songMp3Dir + fileName;
+            File file = new File(filePath);
+            if (file.exists()) return;
+            if (!new File(FileDir.songMp3Dir).exists()) new File(FileDir.songMp3Dir).mkdirs();
 
-        httpUtils.getFile(url, new FileCallBack(FileDir.songMp3Dir, fileName) {
-            @Override
-            public void inProgress(float progress, long total) {
+            httpUtils.getFile(url, new FileCallBack(FileDir.songMp3Dir, fileName) {
+                @Override
+                public void inProgress(float progress, long total) {
 
-            }
+                }
 
-            @Override
-            public void onError(Call call, Exception e) {
+                @Override
+                public void onError(Call call, Exception e) {
 
-            }
+                }
 
-            @Override
-            public void onResponse(File response) {
-                FileUtils.renameFile(FileDir.songMp3Dir + fileName, filePath);
-            }
-        });
+                @Override
+                public void onResponse(File response) {
+                    FileUtils.renameFile(FileDir.songMp3Dir + fileName, filePath);
+                }
+            });
+        }
     }
 
     private BroadcastReceiver mNoisyAudioStreamReceiver = new BroadcastReceiver() {

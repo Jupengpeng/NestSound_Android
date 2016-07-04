@@ -1,10 +1,13 @@
 package com.xilu.wybz.utils;
 
+import android.Manifest;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import com.xilu.wybz.bean.UserBean;
@@ -63,24 +66,31 @@ public class GetDomainUtil {
         });
     }
     public void downLoadLogo(String url){
-        if (!new File(FileDir.logoDir).exists())
-            new File(FileDir.logoDir).mkdirs();
-        String fileName = MD5Util.getMD5String(url) + ".png";
-        String filePath = FileDir.logoDir + fileName;
-        if (!new File(filePath).exists()) {
-            httpUtils.getFile(url, new FileCallBack(FileDir.logoDir, fileName) {
-                @Override
-                public void inProgress(float progress, long total) {
+        if(ContextCompat.checkSelfPermission(mContext,
+                Manifest.permission.READ_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED) {
+            if (!new File(FileDir.logoDir).exists())
+                new File(FileDir.logoDir).mkdirs();
+            String fileName = MD5Util.getMD5String(url) + ".png";
+            String filePath = FileDir.logoDir + fileName;
+            if (!new File(filePath).exists()) {
+                httpUtils.getFile(url, new FileCallBack(FileDir.logoDir, fileName) {
+                    @Override
+                    public void inProgress(float progress, long total) {
 
-                }
-                @Override
-                public void onError(Call call, Exception e) {
+                    }
 
-                }
-                @Override
-                public void onResponse(File response) {
-                }
-            });
+                    @Override
+                    public void onError(Call call, Exception e) {
+
+                    }
+
+                    @Override
+                    public void onResponse(File response) {
+
+                    }
+                });
+            }
         }
     }
     public void getCheck(){

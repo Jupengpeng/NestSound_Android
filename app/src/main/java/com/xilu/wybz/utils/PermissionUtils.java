@@ -1,0 +1,88 @@
+package com.xilu.wybz.utils;
+
+import android.Manifest;
+import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+
+import com.xilu.wybz.R;
+import com.xilu.wybz.ui.login.LoginActivity;
+import com.xilu.wybz.view.materialdialogs.DialogAction;
+import com.xilu.wybz.view.materialdialogs.MaterialDialog;
+
+/**
+ * Created by hujunwei on 16/7/4.
+ */
+public class PermissionUtils {
+    public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 2;
+    public static final int MY_PERMISSIONS_REQUEST_RECORD_AUDIO = 3;
+
+    public static boolean checkSdcardPermission(Activity activity) {
+        if (ContextCompat.checkSelfPermission(activity,
+                Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(activity,
+                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                showDialog(activity,MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+            } else {
+                ActivityCompat.requestPermissions(activity,
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+            }
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public static boolean checkRecordAudioPermission(Activity activity) {
+        if (ContextCompat.checkSelfPermission(activity,
+                Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(activity,
+                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                showDialog(activity,MY_PERMISSIONS_REQUEST_RECORD_AUDIO);
+            } else {
+                ActivityCompat.requestPermissions(activity,
+                        new String[]{Manifest.permission.RECORD_AUDIO},
+                        MY_PERMISSIONS_REQUEST_RECORD_AUDIO);
+            }
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public static void showDialog(Activity activity, int permissionType) {
+        new MaterialDialog.Builder(activity)
+                .title(activity.getResources().getString(R.string.progress_dialog))
+                .content("你的录音权限没有打开，请开启以后再继续操作!")
+                .positiveText("打开")
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        switch (permissionType) {
+                            case MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE:
+                                ActivityCompat.requestPermissions(activity,
+                                        new String[]{Manifest.permission.RECORD_AUDIO},
+                                        MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+                                break;
+                            case MY_PERMISSIONS_REQUEST_RECORD_AUDIO:
+                                ActivityCompat.requestPermissions(activity,
+                                        new String[]{Manifest.permission.RECORD_AUDIO},
+                                        MY_PERMISSIONS_REQUEST_RECORD_AUDIO);
+                                break;
+                        }
+                    }
+                }).negativeText("取消")
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+
+                    }
+                }).show();
+    }
+}

@@ -33,6 +33,7 @@ import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.ui.lyrics.ImportWordActivity;
 import com.xilu.wybz.utils.FileUtils;
 import com.xilu.wybz.utils.MD5Util;
+import com.xilu.wybz.utils.PermissionUtils;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.utils.SystemUtils;
@@ -220,7 +221,9 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
                 }
                 loadDialog.show();
             }
-            makeSongPresenter.loadFile(templateBean.mp3, templateFileName);
+            if(PermissionUtils.checkSdcardPermission(this)) {
+                makeSongPresenter.loadFile(templateBean.mp3, templateFileName);
+            }
         }
     }
 
@@ -378,6 +381,12 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
 
                 break;
             case R.id.iv_record:
+                if(!PermissionUtils.checkSdcardPermission(this)){
+                    return;
+                }
+                if(!PermissionUtils.checkRecordAudioPermission(this)){
+                    return;
+                }
                 if (isPlay) {
                     showMsg("请先停止播放");
                     return;

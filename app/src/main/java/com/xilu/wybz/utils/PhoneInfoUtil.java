@@ -1,5 +1,6 @@
 package com.xilu.wybz.utils;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -7,6 +8,8 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.os.Build;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.telephony.TelephonyManager;
 import android.view.Window;
 
@@ -23,6 +26,7 @@ public class PhoneInfoUtil {
     public static final String KEY_MIUI_VERSION_CODE = "ro.miui.ui.version.code";
     public static final String KEY_MIUI_VERSION_NAME = "ro.miui.ui.version.name";
     public static final String KEY_MIUI_INTERNAL_STORAGE = "ro.miui.internal.storage";
+    public static final int MY_PERMISSIONS_REQUEST_READ_PHONE_STATE = 1;
 
     public static boolean isLollipop() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
@@ -56,12 +60,15 @@ public class PhoneInfoUtil {
     }
 
     public static String getPhoneImei(Context activity) {
+        if (ContextCompat.checkSelfPermission(activity, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+            return "";
+        }
         return ((TelephonyManager) activity.getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
     }
 
     //提交到HTTP HEAD
     public static String getMachine(Context context) {
-        return "android|301|"+ Build.VERSION.RELEASE + "|" + getPhoneModel().toUpperCase() + "|" + getPhoneImei(context) + "|" + DensityUtil.getScreenW(context) + "|" + DensityUtil.getScreenH(context);
+        return "android";
     }
 
     public static boolean isFlyme() {
@@ -128,15 +135,18 @@ public class PhoneInfoUtil {
             e.printStackTrace();
         }
     }
+
     // 以下是获得版本信息的工具方法
     //版本名
     public static String getVersionName(Context context) {
         return getPackageInfo(context).versionName;
     }
+
     //版本号
     public static int getVersionCode(Context context) {
         return getPackageInfo(context).versionCode;
     }
+
     private static PackageInfo getPackageInfo(Context context) {
         PackageInfo pi = null;
         try {
