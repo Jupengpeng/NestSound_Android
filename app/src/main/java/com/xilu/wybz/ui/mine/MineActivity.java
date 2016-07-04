@@ -300,14 +300,14 @@ public class MineActivity extends ToolbarActivity {
 //    }
     //灵感记录 歌曲  歌词 发布成功 更新列表数据
     public void onEventMainThread(Event.UpdataWorksList event) {
-        WorksData worksData = event.getWorksData();
+
         int type = event.getType();
         if (event.getChange() == 0)
             (pagerAdapter.getFragment(type)).updateList();
         else if (event.getChange() == 1)
-            (pagerAdapter.getFragment(type)).removeData(worksData);
+            (pagerAdapter.getFragment(type)).removeData(event.getWorksData());
         else if (event.getChange() == 2)
-            (pagerAdapter.getFragment(type)).updateData(worksData);
+            (pagerAdapter.getFragment(type)).updateData(event.getWorksData());
     }
 
     public void onEventMainThread(Event.RemoveMySongEvent event) {

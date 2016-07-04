@@ -20,6 +20,7 @@ import com.xilu.wybz.view.materialdialogs.MaterialDialog;
 
 public class ToastUtils {
     public static void toast(Context context, String msg, int type) {
+        if(context==null)return;
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.view_toast, null);
         TextView tvMsg = (TextView) view.findViewById(R.id.tv_msg);

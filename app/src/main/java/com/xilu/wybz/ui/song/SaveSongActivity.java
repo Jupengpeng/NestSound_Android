@@ -71,7 +71,6 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView ,
     private String cacheFileName;
 
     SaveSongPresenter saveSongPresenter;
-    DownloadMusicPresenter downloadMusicPresenter;
 
     @Override
     protected int getLayoutRes() {
@@ -89,7 +88,6 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView ,
         super.onCreate(savedInstanceState);
         initData();
         EventBus.getDefault().register(this);
-        downloadMusicPresenter = new DownloadMusicPresenter(context,this);
 
         saveSongPresenter = new SaveSongPresenter(context, this);
         saveSongPresenter.init();

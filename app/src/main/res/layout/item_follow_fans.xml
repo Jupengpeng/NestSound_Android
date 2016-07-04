@@ -20,7 +20,7 @@
         fresco:failureImageScaleType="centerCrop"
         fresco:roundAsCircle="true"
         fresco:roundingBorderWidth="0.6dp"
-        fresco:roundingBorderColor="@color/main_text_color3"
+        fresco:roundingBorderColor="@color/split_line"
         fresco:placeholderImage="@drawable/ic_default_pic"
         />
     <LinearLayout

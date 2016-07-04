@@ -26,7 +26,7 @@
             fresco:failureImageScaleType="centerCrop"
             fresco:placeholderImage="@drawable/ic_default_head_252"
             fresco:placeholderImageScaleType="centerCrop"
-            fresco:roundingBorderColor="@color/main_text_color3"
+            fresco:roundingBorderColor="@color/split_line"
             fresco:roundingBorderPadding="@dimen/spit_line_height"
             fresco:roundAsCircle="true" />
 

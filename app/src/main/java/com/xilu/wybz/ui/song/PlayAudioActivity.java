@@ -681,11 +681,11 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+//    }
 
     public void onEventMainThread(Event.MusicDataEvent event) {
         worksData = musicBinder.getWorksData();

@@ -54,9 +54,4 @@ public class FindMoreWorkPresenter extends BasePresenter<IFindMoreWorkView> {
             }
         });
     }
-
-    public void cancleRequest() {
-        if (StringUtil.isNotBlank(url))
-            httpUtils.cancelHttpByTag(url);
-    }
 }

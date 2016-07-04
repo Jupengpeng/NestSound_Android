@@ -1,8 +1,12 @@
 package com.xilu.wybz.ui;
 
+import android.Manifest;
 import android.app.LocalActivityManager;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -63,6 +67,7 @@ public class MainTabActivity extends BaseActivity {
     Intent intent;
     MyPagerAdapter adapter;
     LocalActivityManager manager = null;
+    private int MY_PERMISSIONS_REQUEST_READ_PHONE_STATE = 1;
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_maintab;
@@ -81,7 +86,12 @@ public class MainTabActivity extends BaseActivity {
         checkedTextViewList.add(tvMsg);
         checkedTextViewList.add(tvMine);
         initPagerViewer();
-
+//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.) {
+//            return;
+//        }
+//        ActivityCompat.requestPermissions(this,
+//                new String[]{Manifest.permission.READ_PHONE_STATE},
+//                MY_PERMISSIONS_REQUEST_READ_PHONE_STATE);
     }
     //打开推送
     public void openPush() {
