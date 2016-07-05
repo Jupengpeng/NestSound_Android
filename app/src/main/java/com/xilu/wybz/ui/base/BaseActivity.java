@@ -84,8 +84,8 @@ public abstract class BaseActivity extends AppCompatActivity {
                     SystemBarHelper.setStatusBarDarkMode(this);
             }
             if (this instanceof WelActivity || this instanceof PlayAudioActivity
-                    || this instanceof SongAblumActivity
-                    || this instanceof ShareActivity || this instanceof SplashActivity ||
+                    || this instanceof SongAblumActivity || this instanceof ShareActivity
+                    || this instanceof SplashActivity ||
                     this instanceof UserInfoActivity || this instanceof MainTabActivity) {
                 SystemBarHelper.immersiveStatusBar(this);
                 SystemBarHelper.tintStatusBar(this, Color.argb(0, 0xFF, 0xD7, 0x05));
