@@ -58,14 +58,6 @@
       <sourceFolder url="file://$MODULE_DIR$/src/yinchao/jni" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/yinchao/rs" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/yinchao/shaders" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidTestYinchao/res" type="java-test-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidTestYinchao/resources" type="java-test-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidTestYinchao/assets" type="java-test-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidTestYinchao/aidl" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidTestYinchao/java" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidTestYinchao/jni" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidTestYinchao/rs" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidTestYinchao/shaders" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/testYinchao/res" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/testYinchao/resources" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/testYinchao/assets" type="java-test-resource" />
@@ -74,6 +66,14 @@
       <sourceFolder url="file://$MODULE_DIR$/src/testYinchao/jni" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/testYinchao/rs" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/testYinchao/shaders" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidTestYinchao/res" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidTestYinchao/resources" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidTestYinchao/assets" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidTestYinchao/aidl" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidTestYinchao/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidTestYinchao/jni" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidTestYinchao/rs" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidTestYinchao/shaders" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/release/res" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/release/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/release/assets" type="java-resource" />

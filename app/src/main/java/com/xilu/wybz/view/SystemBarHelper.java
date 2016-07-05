@@ -114,7 +114,6 @@ public class SystemBarHelper {
     public static void tintStatusBarForDrawer(Activity activity, DrawerLayout drawerLayout, @ColorInt int statusBarColor) {
         tintStatusBarForDrawer(activity, drawerLayout, statusBarColor, DEFAULT_ALPHA);
     }
-
     /**
      * Android4.4以上的状态栏着色(针对于DrawerLayout)
      * 注:
