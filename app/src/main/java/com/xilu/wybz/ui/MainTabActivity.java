@@ -113,6 +113,7 @@ public class MainTabActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        if(manager!=null)
         manager.dispatchResume();
     }
     @Override
@@ -237,8 +238,16 @@ public class MainTabActivity extends BaseActivity {
         if(mMoreWindow!=null){
             mMoreWindow.destroy();
         }
+        if(manager!=null)
         manager.dispatchDestroy(true);
         EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(manager!=null)
+        manager.dispatchStop();
     }
 
     @Override
