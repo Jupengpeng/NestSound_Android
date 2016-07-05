@@ -26,12 +26,15 @@ import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.view.StickyNavLayout;
 import com.xilu.wybz.view.SystemBarHelper;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
-import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by hujunwei on 16/6/2.
@@ -134,14 +137,14 @@ public class MineActivity extends ToolbarActivity {
         });
     }
 
-    public void onEventMainThread(Event.LoginOutEvent event) {
+    @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.LoginOutEvent event) {
         firstLoadUserInfo = false;
         userTvName.setText("");
         userTvInfo.setText("");
         loadImage("res://yinchao/" + R.drawable.ic_default_head_252, ivHead);
     }
 
-    public void onEventMainThread(Event.LoginSuccessEvent event) {
+    @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.LoginSuccessEvent event) {
         firstLoadUserInfo = false;
         container.setCurrentItem(0);
         WorksDataFragment worksDataFragment;
@@ -263,20 +266,20 @@ public class MineActivity extends ToolbarActivity {
     }
 
     //在修改个人资料页面发送过来的
-    public void onEventMainThread(Event.UpdateUserInfo event) {
+    @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.UpdateUserInfo event) {
         UserBean userBean = PrefsUtil.getUserInfo(context);
         setLocalUserInfo(userBean);
     }
 
     //在灵感记录的列表 发送过来的
-    public void onEventMainThread(Event.UpdataUserBean event) {
+    @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.UpdataUserBean event) {
         if (event.getType() == 1) {
             setUserInfo(event.getUserBean());
         }
     }
 
     //修改粉丝数量
-    public void onEventMainThread(Event.UpdateFollowNumEvent event) {
+    @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.UpdateFollowNumEvent event) {
         int from = event.getFrom();
         int type = event.getType();
         UserBean userBean = PrefsUtil.getUserInfo(context);
@@ -294,11 +297,11 @@ public class MineActivity extends ToolbarActivity {
     }
 
     //更新点赞数
-//    public void onEventMainThread(Event.UpdateWorkNum event){
+//    @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.UpdateWorkNum event){
 //        (pagerAdapter.getFragment(1)).updateNum(event.getWorksData(),event.getType());
 //    }
     //灵感记录 歌曲  歌词 发布成功 更新列表数据
-    public void onEventMainThread(Event.UpdataWorksList event) {
+    @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.UpdataWorksList event) {
 
         int type = event.getType();
         if (event.getChange() == 0)
@@ -309,7 +312,7 @@ public class MineActivity extends ToolbarActivity {
             (pagerAdapter.getFragment(type)).updateData(event.getWorksData());
     }
 
-    public void onEventMainThread(Event.RemoveMySongEvent event) {
+    @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.RemoveMySongEvent event) {
         int itemid = event.getItemid();
         (pagerAdapter.getFragment(1)).removeByItemid(itemid);
     }

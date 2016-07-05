@@ -32,6 +32,8 @@ import com.xilu.wybz.view.IndexViewPager;
 import com.xilu.wybz.view.MoreWindow;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -216,14 +218,14 @@ public class MainTabActivity extends BaseActivity {
             }
         }
     };
-    public void onEventMainThread(Event.LoginSuccessEvent event){
+    @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.LoginSuccessEvent event){
         showMsg("登陆成功！");
         UserBean ub = event.getUserBean();
         PrefsUtil.saveUserInfo(context, ub);
         MobclickAgent.onProfileSignIn(ub.userid+"");
         PushAgent.getInstance(context).setAlias(ub.userid+"", "yinchao");
     }
-    public void onEventMainThread(Event.LoginOutEvent event){
+    @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.LoginOutEvent event){
         if(viewpager.getCurrentItem()>1){
             viewpager.setCurrentItem(0);
             currentIndex = 0;

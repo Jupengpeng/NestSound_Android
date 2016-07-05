@@ -22,8 +22,8 @@ import com.xilu.wybz.R;
 import com.xilu.wybz.adapter.RecordImageAdapter;
 import com.xilu.wybz.bean.PhotoBean;
 import com.xilu.wybz.bean.WorksData;
-import com.xilu.wybz.common.FileDir;
 import com.xilu.wybz.common.Event;
+import com.xilu.wybz.common.FileDir;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.common.NewPlayInstance;
 import com.xilu.wybz.presenter.InspireRecordPresenter;
@@ -43,6 +43,10 @@ import com.xilu.wybz.view.kpswitch.util.KPSwitchConflictUtil;
 import com.xilu.wybz.view.kpswitch.util.KeyboardUtil;
 import com.xilu.wybz.view.kpswitch.widget.KPSwitchPanelLinearLayout;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -52,7 +56,6 @@ import java.util.TimerTask;
 
 import butterknife.Bind;
 import butterknife.OnClick;
-import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by June on 16/5/11.
@@ -362,7 +365,7 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
         }
     }
 
-    public void onEventMainThread(Event.SelectPicEvent event) {
+    @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.SelectPicEvent event) {
         list.clear();
         List<PhotoBean> pics = event.getPics();
         list.addAll(pics);

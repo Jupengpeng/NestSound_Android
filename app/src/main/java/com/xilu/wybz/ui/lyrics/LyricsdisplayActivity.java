@@ -2,27 +2,23 @@ package com.xilu.wybz.ui.lyrics;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.umeng.socialize.UMShareAPI;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.ActionBean;
 import com.xilu.wybz.bean.ShareBean;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.Event;
-import com.xilu.wybz.common.FileDir;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.LyricsPresenter;
 import com.xilu.wybz.ui.IView.ILyricsView;
@@ -32,23 +28,23 @@ import com.xilu.wybz.ui.setting.SettingFeedActivity;
 import com.xilu.wybz.ui.song.CommentActivity;
 import com.xilu.wybz.utils.BitmapUtils;
 import com.xilu.wybz.utils.DateTimeUtil;
-import com.xilu.wybz.utils.MD5Util;
 import com.xilu.wybz.utils.NetWorkUtil;
 import com.xilu.wybz.utils.NumberUtil;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringStyleUtil;
-import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.view.dialog.ActionMoreDialog;
 import com.xilu.wybz.view.dialog.ShareDialog;
 
-import java.io.File;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
-import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by Administrator on 2016/3/10 0010.
@@ -173,7 +169,7 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
     }
 
     //修改歌词以后 更新
-    public void onEventMainThread(Event.SaveLyricsSuccessEvent event) {
+    @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.SaveLyricsSuccessEvent event) {
         if (event.getWhich() == 2) {
             worksData = event.getLyricsdisplayBean();
             loadTitleContent();
@@ -181,7 +177,7 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
     }
 
     //更新评论数量
-    public void onEventMainThread(Event.UpdataCommentNumEvent event) {
+    @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.UpdataCommentNumEvent event) {
         if (event.getType() == 2) {
             worksData.commentnum = worksData.getCommentnum() + event.getNum();
             updateCommentNum();

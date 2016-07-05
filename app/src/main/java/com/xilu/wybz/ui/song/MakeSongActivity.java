@@ -44,12 +44,15 @@ import com.xilu.wybz.view.materialdialogs.DialogAction;
 import com.xilu.wybz.view.materialdialogs.GravityEnum;
 import com.xilu.wybz.view.materialdialogs.MaterialDialog;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.io.File;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
-import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by hujunwei on 16/5/19.
@@ -286,14 +289,14 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
 
     }
 
-    public void onEventMainThread(Event.ImportWordEvent event) {
+    @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.ImportWordEvent event) {
         this.worksData = new WorksData();
         this.worksData.title = event.getWorksData().title;
         this.worksData.lyrics = event.getWorksData().lyrics;
         showWorks();
     }
 
-    public void onEventMainThread(Event.SaveSongSeccess event) {
+    @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.SaveSongSeccess event) {
         finish();
     }
 

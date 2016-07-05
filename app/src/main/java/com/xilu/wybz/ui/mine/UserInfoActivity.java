@@ -31,12 +31,15 @@ import com.xilu.wybz.view.StickyNavLayout;
 import com.xilu.wybz.view.SystemBarHelper;
 import com.xilu.wybz.view.dialog.LoadingDialog;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
-import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by hujunwei on 16/6/2.
@@ -292,6 +295,7 @@ public class UserInfoActivity extends ToolbarActivity implements IOnlyFollowView
     }
 
     //在我的歌曲的列表 发送过来的
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(Event.UpdataUserBean event) {
         if (event.getType() == 2) {
             setUserInfo(event.getUserBean());

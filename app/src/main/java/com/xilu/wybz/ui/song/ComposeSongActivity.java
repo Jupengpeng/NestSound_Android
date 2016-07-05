@@ -19,11 +19,14 @@ import com.xilu.wybz.common.RecordInstance;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.view.WaveSurfaceView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
-import org.greenrobot.eventbus.EventBus;
 
 /**
  * 合成调节歌曲页面.
@@ -137,7 +140,7 @@ public class ComposeSongActivity extends ToolbarActivity {
     }
 
 
-    public void onEventMainThread(Event.ImportWordEvent event){
+    @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.ImportWordEvent event){
         this.worksData = event.getWorksData();
         showWorks();
     }

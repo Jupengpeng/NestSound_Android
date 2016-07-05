@@ -2,51 +2,27 @@ package com.xilu.wybz.ui.song;
 
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
-import com.xilu.wybz.bean.TemplateBean;
 import com.xilu.wybz.common.Event;
-import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.common.PlayBanZouInstance;
-import com.xilu.wybz.common.PlayMediaInstance;
-import com.xilu.wybz.common.interfaces.IMediaPlayerListener;
-import com.xilu.wybz.common.interfaces.ITemplateMusicListener;
-import com.xilu.wybz.presenter.HotPresenter;
-import com.xilu.wybz.ui.IView.IHotView;
-import com.xilu.wybz.ui.MyApplication;
-import com.xilu.wybz.ui.base.BaseListActivity;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.ui.fragment.HotFragment;
-import com.xilu.wybz.utils.DensityUtil;
-import com.xilu.wybz.utils.FileUtils;
 import com.xilu.wybz.utils.KeyBoardUtil;
-import com.xilu.wybz.utils.StringUtil;
-import com.xilu.wybz.view.KeyboardListenLayout;
-import com.xilu.wybz.view.pull.BaseViewHolder;
-import com.xilu.wybz.view.pull.PullRecycler;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.Bind;
 import butterknife.OnClick;
-import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by hujunwei on 16/5/19.
@@ -130,7 +106,7 @@ public class SearchHotActivity extends ToolbarActivity {
                 break;
         }
     }
-    public void onEventMainThread(Event.HideKeyboardEvent event) {
+    @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.HideKeyboardEvent event) {
         KeyBoardUtil.closeKeybord(etkeyWord,context);
     }
     @Override

@@ -17,6 +17,8 @@ import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.view.AnimImageView;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -125,7 +127,7 @@ public abstract class BasePlayMenuActivity extends ToolbarActivity {
         EventBus.getDefault().unregister(this);
     }
 
-    public void onEventMainThread(Event.PPStatusEvent event) {
+    @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.PPStatusEvent event) {
         if(visible) {
             switch (event.getStatus()) {
                 case MyCommon.PP_START://开始

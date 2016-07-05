@@ -30,7 +30,6 @@ import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.umeng.socialize.UMShareAPI;
 import com.xilu.wybz.R;
 import com.xilu.wybz.adapter.PlayLyricsAdapter;
 import com.xilu.wybz.adapter.PlayPagerAdapter;
@@ -61,15 +60,19 @@ import com.xilu.wybz.view.dialog.ShareDialog;
 import com.xilu.wybz.view.materialdialogs.DialogAction;
 import com.xilu.wybz.view.materialdialogs.MaterialDialog;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
 import butterknife.Bind;
 import butterknife.OnClick;
-import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by June on 16/5/4.
@@ -598,7 +601,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
 
 
     //更新评论数量
-    public void onEventMainThread(Event.UpdataCommentNumEvent event) {
+    @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.UpdataCommentNumEvent event) {
         if (event.getType() == 1) {
             worksData.commentnum = worksData.getCommentnum() + event.getNum();
             updateCommentNum();
@@ -627,7 +630,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
 
 
     //更新缓存进度
-    public void onEventMainThread(Event.UpdataSecondProgressEvent event) {
+    @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.UpdataSecondProgressEvent event) {
 //        if (event.getPercent() > 0) {
 //            playSeekBar.setSecondaryProgress(event.getPercent());
 //            if(event.getPercent()==100){
@@ -635,7 +638,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
 //        }
     }
 
-    public void onEventMainThread(Event.PPStatusEvent event) {
+    @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.PPStatusEvent event) {
         switch (event.getStatus()) {
             case MyCommon.PP_START://开始
                 ivPlay.setEnabled(true);
@@ -687,7 +690,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
 //        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
 //    }
 
-    public void onEventMainThread(Event.MusicDataEvent event) {
+    @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.MusicDataEvent event) {
         worksData = musicBinder.getWorksData();
         worksData.type = 1;
         worksData.status = 1;

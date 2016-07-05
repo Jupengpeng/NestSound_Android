@@ -16,9 +16,12 @@ import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.utils.MD5Util;
 import com.xilu.wybz.utils.StringUtil;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import butterknife.Bind;
 import butterknife.OnClick;
-import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by June on 2016/5/4.
@@ -135,7 +138,7 @@ public class LoginActivity extends ToolbarActivity implements ILoginView,TextWat
         }
         mloginLogin.setEnabled(true);
     }
-    public void onEventMainThread(Event.LoginSuccessEvent event){
+    @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.LoginSuccessEvent event){
         finish();
     }
     @Override

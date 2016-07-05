@@ -1,4 +1,5 @@
 package com.xilu.wybz.ui.lyrics;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,36 +7,32 @@ import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 
 import com.google.gson.Gson;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.KeySet;
-import com.xilu.wybz.dao.DBManager;
 import com.xilu.wybz.presenter.MakeWordPresenter;
 import com.xilu.wybz.ui.IView.IMakeWordView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
-import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.view.dialog.LyricsDialog;
 import com.xilu.wybz.view.materialdialogs.DialogAction;
 import com.xilu.wybz.view.materialdialogs.MaterialDialog;
 
-import org.w3c.dom.Text;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.Bind;
 import butterknife.OnClick;
-import org.greenrobot.eventbus.EventBus;
 /**
  * Created by June on 16/5/13.
  */
@@ -161,7 +158,7 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView {
                 break;
         }
     }
-    public void onEventMainThread(Event.ImportWordEvent event) {
+    @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.ImportWordEvent event) {
         String title = etTitle.getText().toString().trim();
         String content = etWord.getText().toString().trim();
         if(!TextUtils.isEmpty(title)||!TextUtils.isEmpty(content)){
@@ -185,11 +182,11 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView {
             importData(event.getWorksData());
         }
     }
-    public void onEventMainThread(Event.UpdateLyricsData event) {
+    @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.UpdateLyricsData event) {
         worksData = event.getWorksData();
     }
 
-    public void onEventMainThread(Event.SaveLyricsSuccessEvent event) {
+    @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.SaveLyricsSuccessEvent event) {
         if (event.getWhich() == 1) {
             finish();
         }

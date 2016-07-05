@@ -26,6 +26,8 @@ import com.xilu.wybz.view.pull.layoutmanager.ILayoutManager;
 import com.xilu.wybz.view.pull.layoutmanager.MyLinearLayoutManager;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -151,6 +153,8 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
         super.onRefresh(action);
         userPresenter.loadData(userId, type, page++);
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(Event.LoginOutEvent event){
         isFirst = false;
         if(mDataList !=null&& mDataList.size()!=0){
@@ -239,9 +243,13 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
             updateItem(index);
         }
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(Event.UpdateWorkNum event){
         updateNum(event.getWorksData(),event.getType());
     }
+
+
     @Override
     public void deleteSuccess() {
         if(isDestroy)return;

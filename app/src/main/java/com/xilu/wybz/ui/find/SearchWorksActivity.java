@@ -25,6 +25,8 @@ import com.xilu.wybz.ui.fragment.SearchUserFragment;
 import com.xilu.wybz.utils.KeyBoardUtil;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -157,7 +159,7 @@ public class SearchWorksActivity extends ToolbarActivity {
         });
     }
 
-    public void onEventMainThread(Event.ShowSearchTabEvent event) {
+    @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.ShowSearchTabEvent event) {
         if(!isShowTab) {
             rlTab.setVisibility(View.VISIBLE);
             isShowTab = true;

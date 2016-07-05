@@ -1,7 +1,5 @@
 package com.xilu.wybz.ui.record;
 
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,10 +15,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.czt.mp3recorder.MP3Recorder;
 import com.xilu.wybz.R;
@@ -50,6 +46,10 @@ import com.xilu.wybz.view.kpswitch.util.KPSwitchConflictUtil;
 import com.xilu.wybz.view.kpswitch.util.KeyboardUtil;
 import com.xilu.wybz.view.kpswitch.widget.KPSwitchPanelLinearLayout;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -60,7 +60,6 @@ import java.util.TimerTask;
 
 import butterknife.Bind;
 import butterknife.OnClick;
-import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by June on 16/5/11.
@@ -441,7 +440,7 @@ public class ModifyInspireRecordActivity extends ToolbarActivity implements IIns
         }
     }
 
-    public void onEventMainThread(Event.SelectPicEvent event) {
+    @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.SelectPicEvent event) {
         list.clear();
         List<PhotoBean> pics = event.getPics();
         list.addAll(pics);

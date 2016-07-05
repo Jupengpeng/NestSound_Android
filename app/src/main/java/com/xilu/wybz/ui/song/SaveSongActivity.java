@@ -38,11 +38,14 @@ import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.utils.UploadFileUtil;
 import com.xilu.wybz.view.materialdialogs.MaterialDialog;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.io.File;
 
 import butterknife.Bind;
 import butterknife.OnClick;
-import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by Administrator on 2016/6/1.
@@ -179,7 +182,7 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView ,
     }
 
 
-    public void onEventMainThread(Event.SaveSongSeccess event) {
+    @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.SaveSongSeccess event) {
     }
 
 

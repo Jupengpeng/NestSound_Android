@@ -28,6 +28,9 @@ import com.xilu.wybz.ui.login.LoginActivity;
 import com.xilu.wybz.utils.PhoneDeviceUtil;
 import com.xilu.wybz.utils.PrefsUtil;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -230,7 +233,7 @@ public class BrowserActivity extends ToolbarActivity {
         }
     }
 
-    public void onEventMainThread(Event.LoginSuccessEvent event){
+    @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.LoginSuccessEvent event){
         int id = PrefsUtil.getUserId(context);
         synCookies(context,url,"imei="+ PhoneDeviceUtil.getPhoneImei(context)+",ycua=APP_ANDROID,userId="+id);
         Log.e("cookies","LoginSuccessEvent:"+getCookies(context,url));

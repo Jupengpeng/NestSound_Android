@@ -25,9 +25,12 @@ import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.view.materialdialogs.DialogAction;
 import com.xilu.wybz.view.materialdialogs.MaterialDialog;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import butterknife.Bind;
 import butterknife.OnClick;
-import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by June on 16/5/13.
@@ -53,7 +56,7 @@ public class SettingActivity extends ToolbarActivity {
         mToolbar.setBackgroundResource(R.color.main_theme_color);
         initView();
     }
-    public void onEventMainThread(Event.UpdateUserInfo event){
+    @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.UpdateUserInfo event){
         loadUserInfo();
     }
     private void initView() {
