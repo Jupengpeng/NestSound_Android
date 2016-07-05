@@ -1,7 +1,5 @@
 package com.xilu.wybz.ui.setting;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -22,14 +20,10 @@ import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.HttpUtils;
 import com.xilu.wybz.http.callback.MyStringCallback;
 import com.xilu.wybz.ui.base.ToolbarActivity;
-import com.xilu.wybz.ui.login.LoginActivity;
 import com.xilu.wybz.utils.FileUtils;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.view.materialdialogs.DialogAction;
 import com.xilu.wybz.view.materialdialogs.MaterialDialog;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -56,6 +50,7 @@ public class SettingActivity extends ToolbarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mToolbar.setBackgroundResource(R.color.main_theme_color);
         initView();
     }
     public void onEventMainThread(Event.UpdateUserInfo event){
@@ -92,12 +87,13 @@ public class SettingActivity extends ToolbarActivity {
                 DelCache();
                 break;
             case R.id.ll_score:
-                Uri uri = Uri.parse("market://details?id=com.xilu.wybz");
-                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                startActivity(intent);
+//                Uri uri = Uri.parse("market://details?id=com.xilu.wybz");
+//                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+//                startActivity(intent);
                 break;
             case R.id.ll_feedback:
-                startActivity(SettingFeedActivity.class);
+//                startActivity(SettingFeedActivity.class);
+                startActivity(AboutMessageActivity.class);
                 break;
             case R.id.ll_loginout:
                 loginOut();

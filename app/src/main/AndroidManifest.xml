@@ -61,9 +61,10 @@
         <activity android:name=".ui.mine.MineActivity" android:screenOrientation="portrait"/>
         <activity android:name=".ui.mine.UserInfoActivity" android:screenOrientation="portrait"/>
 
-        <activity android:name=".ui.setting.SettingActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.setting.SettingActivity" android:screenOrientation="portrait" android:theme="@style/MianTheme"/>
         <activity android:name=".ui.setting.SettingFeedActivity" android:screenOrientation="portrait"/>
         <activity android:name=".ui.setting.ModifyUserInfoActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.setting.AboutMessageActivity" android:screenOrientation="portrait" android:theme="@style/MianTheme"/>
 
 
         <activity android:name=".ui.manager.ConsoleActivity" android:screenOrientation="portrait"/>

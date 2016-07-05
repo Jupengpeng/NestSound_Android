@@ -27,7 +27,6 @@ import com.xilu.wybz.common.MediaInstance;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.common.interfaces.IMediaPlayerListener;
-import com.xilu.wybz.presenter.DownloadMusicPresenter;
 import com.xilu.wybz.presenter.SaveSongPresenter;
 import com.xilu.wybz.ui.IView.IDownloadMusicView;
 import com.xilu.wybz.ui.IView.ISaveSongView;

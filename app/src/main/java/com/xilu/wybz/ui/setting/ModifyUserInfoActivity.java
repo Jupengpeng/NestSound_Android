@@ -51,7 +51,7 @@ public class ModifyUserInfoActivity extends ToolbarActivity implements IModifyUs
     int type;//0 修改昵称 1 修改签名
     String content;
     String titles[] = new String[]{"修改昵称", "修改签名", "修改性别", "修改生日"};
-    String genders[] = new String[]{"男", "女"};
+    String genders[] = new String[]{"未知","女", "男"};
     int maxLengths[] = new int[]{16, 30};
     String headPath;
 

@@ -22,8 +22,11 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
 import com.xilu.wybz.R;
+import com.xilu.wybz.common.Event;
 import com.xilu.wybz.ui.base.ToolbarActivity;
+import com.xilu.wybz.ui.login.LoginActivity;
 import com.xilu.wybz.utils.PhoneDeviceUtil;
+import com.xilu.wybz.utils.PrefsUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,7 +93,15 @@ public class BrowserActivity extends ToolbarActivity {
         mWebView.setWebViewClient(new WebViewClient() {
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 // 重写此方法表明点击网页里面的链接还是在当前的webview里跳转，不跳到浏览器那边
-                synCookies(context,url, "@@"+ PhoneDeviceUtil.getPhoneImei(context)+"@@");
+                String LOGIN = "yinchao://yinchao.cn/login";
+                if (url.startsWith(LOGIN)){
+                    startActivity(LoginActivity.class);
+                    return true;
+                }
+
+                int id = PrefsUtil.getUserId(context);
+                synCookies(context,url,"imei="+ PhoneDeviceUtil.getPhoneImei(context)+",ycua=APP_ANDROID,userId="+id);
+
                 Log.e("cookies",getCookies(context,url));
                 view.loadUrl(url);
                 return true;
@@ -219,6 +230,12 @@ public class BrowserActivity extends ToolbarActivity {
         }
     }
 
+    public void onEventMainThread(Event.LoginSuccessEvent event){
+        int id = PrefsUtil.getUserId(context);
+        synCookies(context,url,"imei="+ PhoneDeviceUtil.getPhoneImei(context)+",ycua=APP_ANDROID,userId="+id);
+        Log.e("cookies","LoginSuccessEvent:"+getCookies(context,url));
+    }
+
 
     // 内部类
     public void initData() {
@@ -226,7 +243,8 @@ public class BrowserActivity extends ToolbarActivity {
         if (bundle != null) {
             url = bundle.getString("url");
         }
-        synCookies(context,url,"@@"+ PhoneDeviceUtil.getPhoneImei(context)+"@@");
+        int id = PrefsUtil.getUserId(context);
+        synCookies(context,url,"imei="+ PhoneDeviceUtil.getPhoneImei(context)+",ycua=APP_ANDROID,userId="+id);
         Log.e("cookies",getCookies(context,url));
         mWebView.loadUrl(url);
     }
