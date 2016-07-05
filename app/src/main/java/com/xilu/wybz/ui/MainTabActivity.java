@@ -67,7 +67,6 @@ public class MainTabActivity extends BaseActivity {
     Intent intent;
     MyPagerAdapter adapter;
     LocalActivityManager manager = null;
-    private int MY_PERMISSIONS_REQUEST_READ_PHONE_STATE = 1;
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_maintab;
@@ -86,12 +85,6 @@ public class MainTabActivity extends BaseActivity {
         checkedTextViewList.add(tvMsg);
         checkedTextViewList.add(tvMine);
         initPagerViewer();
-//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.) {
-//            return;
-//        }
-//        ActivityCompat.requestPermissions(this,
-//                new String[]{Manifest.permission.READ_PHONE_STATE},
-//                MY_PERMISSIONS_REQUEST_READ_PHONE_STATE);
     }
     //打开推送
     public void openPush() {

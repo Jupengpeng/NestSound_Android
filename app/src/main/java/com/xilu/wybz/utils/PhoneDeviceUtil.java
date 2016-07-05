@@ -1,5 +1,6 @@
 package com.xilu.wybz.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -18,10 +19,9 @@ public class PhoneDeviceUtil {
 
     public static String getPhoneImei(Context activity) {
         String imei = "";
-        try {
+        if(PermissionUtils.checkReadPhoneStatePermission(activity)){
             imei = ((TelephonyManager) activity.getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
-        } catch (Exception e){
-            e.printStackTrace();
+        } else{
             imei = "unkonw";
         }
         return imei;

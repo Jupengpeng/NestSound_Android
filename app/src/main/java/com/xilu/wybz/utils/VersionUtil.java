@@ -5,6 +5,9 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
+import android.util.Log;
+
+import com.google.gson.Gson;
 import com.sina.weibo.sdk.utils.LogUtil;
 import com.umeng.update.UmengUpdateAgent;
 import com.umeng.update.UmengUpdateListener;
@@ -65,6 +68,8 @@ public class VersionUtil {
         UmengUpdateAgent.setUpdateListener(new UmengUpdateListener() {
             @Override
             public void onUpdateReturned(int i, final UpdateResponse updateResponse) {
+                Log.e("UpdateResponse",new Gson().toJson(updateResponse)+"_UpdateStatus:"+i);
+
                 if (i == UpdateStatus.Yes) {
                     //如果版本已经被忽略，不弹框
                     if (UmengUpdateAgent.isIgnore(mContext, updateResponse)) {
@@ -74,7 +79,6 @@ public class VersionUtil {
                         public void run() {
                             try {
                                 int apkSize = (int) (FileUtils.getFileSize(updateResponse.path) / 1024.0);
-                                Message msg = new Message();
                                 mUpdateResponse = updateResponse;
                                 mSize = apkSize;
                                 if (mSize > 0) {

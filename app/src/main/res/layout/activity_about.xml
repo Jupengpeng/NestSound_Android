@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/yc_12"
             android:text="音巢音乐"
-            android:textSize="12sp"
+            android:textSize="15sp"
             android:textColor="@color/main_text_color" />
         <TextView
             android:id="@+id/tv_version"
@@ -123,7 +123,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="杭州音淘网络科技有限公司 版权所有"
-            android:textColor="@color/main_text_color"
+            android:textColor="@color/main_text_color3"
             android:textSize="10sp" />
 
         <TextView
@@ -131,7 +131,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/yc_5"
             android:text="Copyright © 2015-2016 Yintao.All Right Reserved."
-            android:textColor="@color/main_text_color"
+            android:textColor="@color/main_text_color3"
             android:textSize="10sp" />
     </LinearLayout>
 
