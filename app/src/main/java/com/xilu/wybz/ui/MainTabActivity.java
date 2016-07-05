@@ -1,18 +1,13 @@
 package com.xilu.wybz.ui;
 
-import android.Manifest;
 import android.app.LocalActivityManager;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.CheckedTextView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.umeng.analytics.MobclickAgent;
@@ -35,14 +30,14 @@ import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.utils.VersionUtil;
 import com.xilu.wybz.view.IndexViewPager;
 import com.xilu.wybz.view.MoreWindow;
-import com.xilu.wybz.view.toast.ToastManager;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
-import de.greenrobot.event.EventBus;
 
 /**
  * Created by June on 16/4/28.

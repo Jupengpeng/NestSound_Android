@@ -29,7 +29,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import butterknife.Bind;
 import butterknife.OnClick;
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by June on 16/5/13.

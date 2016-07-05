@@ -36,7 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by hujunwei on 16/6/30.

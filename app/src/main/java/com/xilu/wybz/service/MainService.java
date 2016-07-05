@@ -19,13 +19,13 @@ import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.common.PlayMediaInstance;
 import com.xilu.wybz.presenter.LoadMusicDetailPresenter;
 import com.xilu.wybz.ui.IView.IMusicDetailView;
-import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.utils.PrefsUtil;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
 import java.util.List;
 
-import de.greenrobot.event.EventBus;
 
 /**
  * Created by hujunwei on 16/6/29.

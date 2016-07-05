@@ -10,9 +10,10 @@ import com.xilu.wybz.utils.FileUtils;
 import com.xilu.wybz.utils.MD5Util;
 import com.xilu.wybz.utils.StringUtil;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.File;
 
-import de.greenrobot.event.EventBus;
 
 /**
  * Created by Zning on 2015/9/16.

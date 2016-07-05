@@ -69,7 +69,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import butterknife.Bind;
 import butterknife.OnClick;
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by June on 16/5/4.

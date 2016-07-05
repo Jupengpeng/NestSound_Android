@@ -13,13 +13,8 @@ import android.os.IBinder;
 import android.support.v4.content.ContextCompat;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
-import android.text.TextUtils;
 import android.util.Log;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.sina.weibo.sdk.utils.LogUtil;
-import com.xilu.wybz.bean.MusicDetailBean;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.FileDir;
@@ -36,14 +31,12 @@ import com.xilu.wybz.utils.MD5Util;
 import com.xilu.wybz.utils.ParseUtils;
 import com.xilu.wybz.utils.PrefsUtil;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import de.greenrobot.event.EventBus;
 import okhttp3.Call;
 import okhttp3.Request;
 

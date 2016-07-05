@@ -42,7 +42,7 @@ import java.io.File;
 
 import butterknife.Bind;
 import butterknife.OnClick;
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by Administrator on 2016/6/1.

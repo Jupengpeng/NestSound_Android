@@ -49,7 +49,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by hujunwei on 16/5/19.
@@ -70,10 +70,10 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
     ImageView ivPlay;
     @Bind(R.id.iv_restart)
     ImageView ivRestart;
-    @Bind(R.id.iv_import)
-    ImageView ivImport;
-    @Bind(R.id.iv_edit)
-    ImageView ivEdit;
+//    @Bind(R.id.iv_import)
+//    ImageView ivImport;
+//    @Bind(R.id.iv_edit)
+//    ImageView ivEdit;
 
 
     private TemplateBean templateBean;
@@ -305,7 +305,8 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
         if (templateBean == null) isQc = true;
     }
 
-    @OnClick({R.id.iv_play, R.id.iv_record, R.id.iv_restart, R.id.iv_import, R.id.iv_edit})
+//    @OnClick({R.id.iv_play, R.id.iv_record, R.id.iv_restart, R.id.iv_import, R.id.iv_edit})
+    @OnClick({R.id.iv_play, R.id.iv_record, R.id.iv_restart})
     public void onClick(View view) {
         switch (view.getId()) {
 
@@ -404,26 +405,26 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
                     startRecord();
                 }
                 break;
-
-            case R.id.iv_import:
-                if (status == 1) {
-                    showMsg("请先停止录音");
-                    return;
-                }
-                startActivity(ImportWordActivity.class);
-                break;
-
-            case R.id.iv_edit:
-                if (etTitle.isEnabled()) {
-                    etTitle.setEnabled(false);
-                    etWord.setEnabled(false);
-                    showMsg("关闭歌词编辑");
-                } else {
-                    etTitle.setEnabled(true);
-                    etWord.setEnabled(true);
-                    showMsg("开启歌词编辑");
-                }
-                break;
+//
+//            case R.id.iv_import:
+//                if (status == 1) {
+//                    showMsg("请先停止录音");
+//                    return;
+//                }
+//                startActivity(ImportWordActivity.class);
+//                break;
+//
+//            case R.id.iv_edit:
+//                if (etTitle.isEnabled()) {
+//                    etTitle.setEnabled(false);
+//                    etWord.setEnabled(false);
+//                    showMsg("关闭歌词编辑");
+//                } else {
+//                    etTitle.setEnabled(true);
+//                    etWord.setEnabled(true);
+//                    showMsg("开启歌词编辑");
+//                }
+//                break;
         }
     }
 
@@ -672,6 +673,14 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
 
         switch (item.getItemId()) {
 
+            case R.id.menu_import:
+                if (status == 1) {
+                    showMsg("请先停止录音");
+                    return true;
+                }
+                startActivity(ImportWordActivity.class);
+                break;
+
             case R.id.menu_next:
 
                 if (status == 1) {
@@ -747,7 +756,7 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
             return;
         }
         if (status == 1) {
-            RecordInstance.getInstance().toPause();
+            stopRecord();
         }
         if (backDialog == null) {
 

@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by June on 16/5/13.

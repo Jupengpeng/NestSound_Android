@@ -18,7 +18,7 @@ import com.xilu.wybz.utils.StringUtil;
 
 import butterknife.Bind;
 import butterknife.OnClick;
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by June on 2016/5/4.

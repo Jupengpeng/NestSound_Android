@@ -29,7 +29,7 @@ import com.xilu.wybz.view.pull.PullRecycler;
 import java.util.List;
 
 import butterknife.Bind;
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by Administrator on 2016/5/24.

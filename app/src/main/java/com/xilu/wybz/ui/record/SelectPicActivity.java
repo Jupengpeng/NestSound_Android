@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by hujunwei on 16/5/19.

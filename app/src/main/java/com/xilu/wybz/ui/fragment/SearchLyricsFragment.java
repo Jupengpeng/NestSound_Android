@@ -21,17 +21,15 @@ import com.xilu.wybz.ui.lyrics.LyricsdisplayActivity;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.ImageLoadUtil;
 import com.xilu.wybz.utils.NumberUtil;
-import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.view.SpacesItemDecoration;
 import com.xilu.wybz.view.pull.BaseViewHolder;
-import com.xilu.wybz.view.pull.PullRecycler;
 
-import java.util.ArrayList;
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.List;
 
 import butterknife.Bind;
-import de.greenrobot.event.EventBus;
 
 /**
  * Created by hujunwei on 16/5/22.

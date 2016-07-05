@@ -24,9 +24,10 @@ import com.xilu.wybz.ui.fragment.SearchSongFragment;
 import com.xilu.wybz.ui.fragment.SearchUserFragment;
 import com.xilu.wybz.utils.KeyBoardUtil;
 
+import org.greenrobot.eventbus.EventBus;
+
 import butterknife.Bind;
 import butterknife.OnClick;
-import de.greenrobot.event.EventBus;
 
 /**
  * Created by hujunwei on 16/5/22.

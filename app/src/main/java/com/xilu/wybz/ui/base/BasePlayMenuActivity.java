@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+
 import com.xilu.wybz.R;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.MyCommon;
@@ -14,10 +15,11 @@ import com.xilu.wybz.ui.song.PlayAudioActivity;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.view.AnimImageView;
+
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import de.greenrobot.event.EventBus;
 
 /**
  * Created by June on 16/5/4.

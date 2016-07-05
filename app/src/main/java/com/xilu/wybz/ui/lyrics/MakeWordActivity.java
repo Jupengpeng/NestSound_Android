@@ -35,7 +35,7 @@ import org.w3c.dom.Text;
 
 import butterknife.Bind;
 import butterknife.OnClick;
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
 /**
  * Created by June on 16/5/13.
  */
