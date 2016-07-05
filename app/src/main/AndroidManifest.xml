@@ -40,7 +40,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.MainTabActivity" android:screenOrientation="portrait" />
-        <activity android:name=".ui.BrowserActivity" android:screenOrientation="portrait" />
+        <activity android:name=".ui.BrowserActivity" android:screenOrientation="portrait" android:theme="@style/MianTheme"/>
         <activity android:name=".ui.WelActivity" android:screenOrientation="portrait" />
 
         <activity android:name=".ui.main.MainActivity" android:screenOrientation="portrait" />
@@ -62,8 +62,8 @@
         <activity android:name=".ui.mine.UserInfoActivity" android:screenOrientation="portrait"/>
 
         <activity android:name=".ui.setting.SettingActivity" android:screenOrientation="portrait" android:theme="@style/MianTheme"/>
-        <activity android:name=".ui.setting.SettingFeedActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".ui.setting.ModifyUserInfoActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.setting.SettingFeedActivity" android:screenOrientation="portrait" android:theme="@style/MianTheme"/>
+        <activity android:name=".ui.setting.ModifyUserInfoActivity" android:screenOrientation="portrait" android:theme="@style/MianTheme"/>
         <activity android:name=".ui.setting.AboutMessageActivity" android:screenOrientation="portrait" android:theme="@style/MianTheme"/>
 
 
