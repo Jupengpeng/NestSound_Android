@@ -113,9 +113,7 @@ public class MainTabActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        MainActivity mainActivity = ((MainActivity) manager.getActivity("MAIN"));
-        if(mainActivity!=null)
-            mainActivity.onResume();
+        manager.dispatchResume();
     }
     @Override
     protected void onNewIntent(Intent intent) {
@@ -218,7 +216,8 @@ public class MainTabActivity extends BaseActivity {
             }
         }
     };
-    @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.LoginSuccessEvent event){
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(Event.LoginSuccessEvent event){
         showMsg("登陆成功！");
         UserBean ub = event.getUserBean();
         PrefsUtil.saveUserInfo(context, ub);
@@ -238,6 +237,7 @@ public class MainTabActivity extends BaseActivity {
         if(mMoreWindow!=null){
             mMoreWindow.destroy();
         }
+        manager.dispatchDestroy(true);
         EventBus.getDefault().unregister(this);
     }
 

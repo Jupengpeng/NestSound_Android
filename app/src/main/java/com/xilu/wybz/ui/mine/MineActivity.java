@@ -295,14 +295,13 @@ public class MineActivity extends ToolbarActivity {
         userFollownum.setText("关注:  " + NumberUtil.format(userBean.gznum));
         PrefsUtil.saveUserInfo(context, userBean);
     }
-
     //更新点赞数
 //    @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.UpdateWorkNum event){
 //        (pagerAdapter.getFragment(1)).updateNum(event.getWorksData(),event.getType());
 //    }
     //灵感记录 歌曲  歌词 发布成功 更新列表数据
-    @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.UpdataWorksList event) {
-
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(Event.UpdataWorksList event) {
         int type = event.getType();
         if (event.getChange() == 0)
             (pagerAdapter.getFragment(type)).updateList();
@@ -311,7 +310,6 @@ public class MineActivity extends ToolbarActivity {
         else if (event.getChange() == 2)
             (pagerAdapter.getFragment(type)).updateData(event.getWorksData());
     }
-
     @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.RemoveMySongEvent event) {
         int itemid = event.getItemid();
         (pagerAdapter.getFragment(1)).removeByItemid(itemid);
