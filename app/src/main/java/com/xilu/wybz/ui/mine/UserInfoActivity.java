@@ -273,7 +273,7 @@ public class UserInfoActivity extends ToolbarActivity implements IOnlyFollowView
 
     @Override
     public void followSuccess(String message) {
-        if (loading != null) loading.cancel();
+//        if (loading != null) loading.cancel();
         isFocus = OnlyFollowPresenter.paraseStatuByString(message);
         if (isFocus>=0&&isFocus<=2){
             ivSetting.setImageResource(followIcon[isFocus]);
@@ -283,7 +283,7 @@ public class UserInfoActivity extends ToolbarActivity implements IOnlyFollowView
 
     @Override
     public void followFailed(String message) {
-        if (loading != null) loading.cancel();
+//        if (loading != null) loading.cancel();
     }
 
     @Override
