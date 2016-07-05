@@ -401,11 +401,13 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
         switch (msg.what) {
             case 0:
                 //recordPb.setProgress(preProgress + (int) ((System.currentTimeMillis() - startRecordTime) * 1.0 / allTime * 100));
+                if(isDestroy)return;
                 recordIndex++;
                 tvTime.setText(SystemUtils.getTimeFormat(recordIndex * 1000));
                 allTime = recordIndex * 1000;
                 break;
             case 1:
+                if(isDestroy)return;
                 playIndex++;
                 tvTime.setText(SystemUtils.getTimeFormat(playIndex * 1000) + "/" + SystemUtils.getTimeFormat(allTime));
                 break;

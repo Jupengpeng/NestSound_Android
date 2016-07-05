@@ -21,6 +21,7 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 
 import com.xilu.wybz.R;
+import com.xilu.wybz.utils.PhoneDeviceUtil;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -113,7 +114,6 @@ public class SystemBarHelper {
     public static void tintStatusBarForDrawer(Activity activity, DrawerLayout drawerLayout, @ColorInt int statusBarColor) {
         tintStatusBarForDrawer(activity, drawerLayout, statusBarColor, DEFAULT_ALPHA);
     }
-
     /**
      * Android4.4以上的状态栏着色(针对于DrawerLayout)
      * 注:
@@ -377,9 +377,11 @@ public class SystemBarHelper {
 
     /** 判断是否Flyme4以上 */
     public static boolean isFlyme4Later() {
-        return Build.FINGERPRINT.contains("Flyme_OS_4")
-                || Build.VERSION.INCREMENTAL.contains("Flyme_OS_4")
-                || Pattern.compile("Flyme OS [4|5]", Pattern.CASE_INSENSITIVE).matcher(Build.DISPLAY).find();
+//        Log.e("Build.FINGERPRINT",Build.FINGERPRINT);
+//        return Build.FINGERPRINT.contains("Flyme_OS_4")
+//                || Build.VERSION.INCREMENTAL.contains("Flyme_OS_4")
+//                || Pattern.compile("Flyme OS [4|5]", Pattern.CASE_INSENSITIVE).matcher(Build.DISPLAY).find();
+        return Build.MANUFACTURER.equalsIgnoreCase("MEIZU");
     }
 
     /** 判断是否为MIUI6以上 */
