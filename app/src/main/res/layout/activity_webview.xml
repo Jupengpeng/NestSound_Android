@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/main_bg"
     android:orientation="vertical" >
-    <include layout="@layout/view_toolbar" />
+    <include layout="@layout/view_toolbar_theme" />
 
 
     <!--android:progressDrawable="@android:drawable/progress_horizontal"-->
