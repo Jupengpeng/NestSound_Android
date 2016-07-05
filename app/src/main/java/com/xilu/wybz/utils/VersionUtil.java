@@ -5,9 +5,6 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
-import android.util.Log;
-
-import com.google.gson.Gson;
 import com.sina.weibo.sdk.utils.LogUtil;
 import com.umeng.update.UmengUpdateAgent;
 import com.umeng.update.UmengUpdateListener;
@@ -31,11 +28,10 @@ public class VersionUtil {
     final int UPDATE_INFO = 4;
     int mSize;
     UpdateResponse mUpdateResponse;
-    final String TAG = "VersionUtil";
     String apkFilePath;
     Activity mContext;
-    MaterialDialog materialDialog1;
-    MaterialDialog materialDialog;
+    MaterialDialog newversionDialog;
+    MaterialDialog downloadDialog;
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -46,8 +42,8 @@ public class VersionUtil {
                     installApk();
                     break;
                 case DOWN_ERROR:
-                    if (materialDialog != null)
-                        materialDialog.dismiss();
+                    if (downloadDialog != null)
+                        downloadDialog.dismiss();
                     ToastUtils.toast(mContext, "下载出错");
                     break;
                 case UPDATE_INFO:
@@ -68,10 +64,9 @@ public class VersionUtil {
         UmengUpdateAgent.setUpdateListener(new UmengUpdateListener() {
             @Override
             public void onUpdateReturned(int i, final UpdateResponse updateResponse) {
-                Log.e("UpdateResponse",new Gson().toJson(updateResponse)+"_UpdateStatus:"+i);
-
+//                Log.e("UpdateResponse",new Gson().toJson(updateResponse)+"_UpdateStatus:"+i);
                 if (i == UpdateStatus.Yes) {
-                    //如果版本已经被忽略，不弹框
+                    //如果版本已经被忽略，不弹框（此时应该在设置里面的更新版本做提醒 防止用户忽略后无法主动去更新）
                     if (UmengUpdateAgent.isIgnore(mContext, updateResponse)) {
                         return;
                     }
@@ -98,7 +93,7 @@ public class VersionUtil {
         if(!new File(FileDir.apkDir).exists())new File(FileDir.apkDir).mkdirs();
         apkFilePath = FileDir.apkDir + mUpdateResponse.version + ".apk";
         String content = mUpdateResponse.updateLog;
-        materialDialog1 = new MaterialDialog.Builder(mContext)
+        newversionDialog = new MaterialDialog.Builder(mContext)
                 .title("发现新版本" + mUpdateResponse.version)
                 .content(content)
                 .positiveText("安装")
@@ -114,7 +109,7 @@ public class VersionUtil {
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        materialDialog1.dismiss();
+                        newversionDialog.dismiss();
                         File file = new File(apkFilePath);
                         String md5 = mUpdateResponse.new_md5;
                         if (file.exists() && MD5Util.getFileMD5String(file).equals(md5)) {
@@ -129,17 +124,17 @@ public class VersionUtil {
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                     }
                 }).build();
-        materialDialog1.show();
+        newversionDialog.show();
     }
     public void updateNewDialog() {
         try {
-            materialDialog = new MaterialDialog.Builder(mContext)
+            downloadDialog = new MaterialDialog.Builder(mContext)
                     .title(R.string.progress_dialog)
                     .content(R.string.please_wait_down)
                     .contentGravity(GravityEnum.CENTER)
                     .progress(false, mSize, true)
                     .canceledOnTouchOutside(false).build();
-            materialDialog.show();
+            downloadDialog.show();
         } catch (Exception e) {
             LogUtil.d("error", e.toString());
         }
@@ -169,11 +164,11 @@ public class VersionUtil {
                         total += len;
                         // 获取当前下载量
                         if (total / 1024 <= mSize) {
-                            if (materialDialog != null)
-                                materialDialog.setProgress(total / 1024);
+                            if (downloadDialog != null)
+                                downloadDialog.setProgress(total / 1024);
                         }else{
-                            if (materialDialog != null)
-                                materialDialog.dismiss();
+                            if (downloadDialog != null)
+                                downloadDialog.dismiss();
                         }
                     }
                     fos.close();

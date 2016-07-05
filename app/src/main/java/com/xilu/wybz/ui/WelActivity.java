@@ -55,7 +55,6 @@ public class WelActivity extends BaseActivity {
         if(PrefsUtil.getUserId(context)>0){
             getDomainUtil.getCheck();
         }
-
         if (BuildConfig.DEBUG){
 
             rlMain.setOnClickListener(new View.OnClickListener() {
