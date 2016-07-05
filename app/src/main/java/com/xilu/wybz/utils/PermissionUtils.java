@@ -2,6 +2,7 @@ package com.xilu.wybz.utils;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
@@ -17,8 +18,19 @@ import com.xilu.wybz.view.materialdialogs.MaterialDialog;
  * Created by hujunwei on 16/7/4.
  */
 public class PermissionUtils {
+    public static final int MY_PERMISSIONS_REQUEST_READ_PHONE_STATE = 1;
     public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 2;
     public static final int MY_PERMISSIONS_REQUEST_RECORD_AUDIO = 3;
+    //读取手机imei
+    public static boolean checkReadPhoneStatePermission(Context activity) {
+        if (ContextCompat.checkSelfPermission(activity,
+                Manifest.permission.READ_PHONE_STATE)
+                == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     public static boolean checkSdcardPermission(Activity activity) {
         if (ContextCompat.checkSelfPermission(activity,

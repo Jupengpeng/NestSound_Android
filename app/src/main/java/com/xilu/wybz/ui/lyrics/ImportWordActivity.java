@@ -42,6 +42,11 @@ public class ImportWordActivity extends BaseListActivity<WorksData> implements I
     }
 
     @Override
+    public boolean hasPadding() {
+        return false;
+    }
+
+    @Override
     public void initView() {
         setTitle("我的歌词");
         hideRight();
@@ -53,10 +58,6 @@ public class ImportWordActivity extends BaseListActivity<WorksData> implements I
     protected void setUpData() {
         super.setUpData();
         recycler.setRefreshing();
-    }
-
-    protected RecyclerView.ItemDecoration getItemDecoration() {
-        return new SpacesItemDecoration(dip10);
     }
 
     @Override

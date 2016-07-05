@@ -18,14 +18,8 @@ import butterknife.OnClick;
  */
 public class AboutMessageActivity extends ToolbarActivity {
 
-    @Bind(R.id.tv_name)
-    TextView tvName;
     @Bind(R.id.tv_version)
     TextView tvVersion;
-    @Bind(R.id.ll_to_comment)
-    LinearLayout llToComment;
-    @Bind(R.id.ll_feedback)
-    LinearLayout llFeedback;
 
     @Override
     protected int getLayoutRes() {
@@ -37,9 +31,9 @@ public class AboutMessageActivity extends ToolbarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setTitle("关于");
+        setTitle("关于我们");
         String versionName = AppInfoUtil.getVersionName(this);
-        int versionCode = AppInfoUtil.getVersionCode(this);
+//        int versionCode = AppInfoUtil.getVersionCode(this);
         tvVersion.setText("版本:"+versionName);
     }
 

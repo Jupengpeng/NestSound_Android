@@ -3,32 +3,31 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="66dp"
-    android:background="@drawable/corner_fcfcfc"
+    android:layout_height="70dp"
     android:gravity="center_vertical"
     android:orientation="horizontal"
     >
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/iv_cover"
-        android:layout_width="66dp"
-        android:layout_height="66dp"
+        android:layout_width="50dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        fresco:placeholderImageScaleType="centerCrop"
         fresco:actualImageScaleType="centerCrop"
         fresco:fadeDuration="300"
         fresco:failureImage="@drawable/ic_default_pic"
         fresco:failureImageScaleType="centerCrop"
-        fresco:placeholderImage="@drawable/ic_default_pic"
-        fresco:roundBottomRight="false"
-        fresco:roundTopRight="false"
-        fresco:roundedCornerRadius="3dp" />
+        fresco:placeholderImage="@drawable/ic_default_pic" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_toRightOf="@+id/iv_cover"
-        android:layout_weight="1"
         android:gravity="center_vertical"
         android:orientation="vertical">
 
@@ -51,4 +50,12 @@
             android:textColor="@color/main_text_color2"
             android:textSize="14sp" />
     </LinearLayout>
+    <View
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/spit_line_height"
+        android:background="@color/split_line"
+        android:layout_alignParentBottom="true"
+        />
 </RelativeLayout>

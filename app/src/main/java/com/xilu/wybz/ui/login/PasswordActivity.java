@@ -114,14 +114,12 @@ public class PasswordActivity extends ToolbarActivity implements IPasswordView, 
         if (isDestroy){
             return;
         }
-        mpassPhonebut.setEnabled(true);
     }
 
     @Override
     public void SmsCodeFinish() {
-
+        mpassPhonebut.setEnabled(true);
     }
-
 
     @OnClick({R.id.mpass_phonebut, R.id.mpass_login})
     public void onClick(View view) {
