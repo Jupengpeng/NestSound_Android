@@ -120,7 +120,6 @@ public class MainTabActivity extends BaseActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-
         Log.d("d","onNewIntent");
     }
 
@@ -218,14 +217,18 @@ public class MainTabActivity extends BaseActivity {
             }
         }
     };
-    @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.LoginSuccessEvent event){
+    @Subscribe(threadMode = ThreadMode.MAIN)
+
+    public void onEventMainThread(Event.LoginSuccessEvent event){
         showMsg("登陆成功！");
         UserBean ub = event.getUserBean();
         PrefsUtil.saveUserInfo(context, ub);
         MobclickAgent.onProfileSignIn(ub.userid+"");
         PushAgent.getInstance(context).setAlias(ub.userid+"", "yinchao");
     }
-    @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.LoginOutEvent event){
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(Event.LoginOutEvent event){
         if(viewpager.getCurrentItem()>1){
             viewpager.setCurrentItem(0);
             currentIndex = 0;

@@ -1,6 +1,7 @@
 package com.xilu.wybz.ui.base;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -177,7 +178,14 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected void cancelPd() {
         if (materialDialog != null && materialDialog.isShowing())
-            materialDialog.dismiss();
+            materialDialog.cancel();
+    }
+
+
+    DialogInterface.OnCancelListener listener;
+
+    public void setOnCancelListener(DialogInterface.OnCancelListener listener){
+        this.listener = listener;
     }
 
     protected void showIndeterminateProgressDialog(String msg) {
@@ -186,6 +194,14 @@ public abstract class BaseActivity extends AppCompatActivity {
                 .progress(true, 0)
                 .progressIndeterminateStyle(false)
                 .canceledOnTouchOutside(false)
+                .cancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+                        if (listener != null){
+                            listener.onCancel(dialog);
+                        }
+                    }
+                })
                 .show();
     }
 

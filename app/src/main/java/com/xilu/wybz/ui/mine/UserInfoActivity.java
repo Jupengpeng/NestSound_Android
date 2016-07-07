@@ -29,7 +29,6 @@ import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.view.StickyNavLayout;
 import com.xilu.wybz.view.SystemBarHelper;
-import com.xilu.wybz.view.dialog.LoadingDialog;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -253,15 +252,12 @@ public class UserInfoActivity extends ToolbarActivity implements IOnlyFollowView
         }
     }
 
-    LoadingDialog loading;
 
     private void FollowUser() {
         if (isFocus > -1) {
-            if (loading == null){
-                loading = new LoadingDialog(this);
-            }
-            loading.show();
-            loading.setOnCancelListener(new DialogInterface.OnCancelListener() {
+
+            showPd("正在请求网络，请稍候");
+            setOnCancelListener(new DialogInterface.OnCancelListener() {
                 @Override
                 public void onCancel(DialogInterface dialog) {
                     if (presenter != null)
@@ -276,7 +272,7 @@ public class UserInfoActivity extends ToolbarActivity implements IOnlyFollowView
 
     @Override
     public void followSuccess(String message) {
-//        if (loading != null) loading.cancel();
+        cancelPd();
         isFocus = OnlyFollowPresenter.paraseStatuByString(message);
         if (isFocus>=0&&isFocus<=2){
             ivSetting.setImageResource(followIcon[isFocus]);
@@ -286,7 +282,7 @@ public class UserInfoActivity extends ToolbarActivity implements IOnlyFollowView
 
     @Override
     public void followFailed(String message) {
-//        if (loading != null) loading.cancel();
+        cancelPd();
     }
 
     @Override
@@ -304,7 +300,7 @@ public class UserInfoActivity extends ToolbarActivity implements IOnlyFollowView
 
     @Override
     protected void onDestroy() {
-        if (loading != null) loading.cancel();
+        cancelPd();
         super.onDestroy();
         EventBus.getDefault().unregister(this);
     }
