@@ -52,19 +52,18 @@ public class RecordImageAdapter extends RecyclerView.Adapter<RecordImageAdapter.
         RecordImageViewHolder holder = new RecordImageViewHolder(LayoutInflater.from(context).inflate(R.layout.activity_delpic_list_item, parent, false));
         return holder;
     }
-
     @Override
     public void onBindViewHolder(RecordImageViewHolder holder, int position) {
         if (mList.get(position).isAddPic) {
-            ImageLoadUtil.loadImage(context, R.drawable.ic_record_add_pic, holder.ivCover,itemWidth,itemWidth);
+            ImageLoadUtil.loadImage("res:///"+R.drawable.ic_record_add_pic, holder.ivCover,itemWidth,itemWidth);
             holder.ivDel.setVisibility(View.GONE);
         } else {
             String imgPath = mList.get(position).path;
             if (new File(imgPath).exists()) {
-                ImageLoadUtil.loadImage(context, new File(imgPath), holder.ivCover,itemWidth,itemWidth);
+                ImageLoadUtil.loadImage("file:///"+imgPath, holder.ivCover,itemWidth,itemWidth);
             } else {
                 if (!imgPath.startsWith("http")) imgPath = MyHttpClient.QINIU_URL + imgPath;
-                ImageLoadUtil.loadImage(context, MyCommon.getImageUrl(imgPath, itemWidth, itemWidth), holder.ivCover,itemWidth,itemWidth);
+                ImageLoadUtil.loadImage(MyCommon.getImageUrl(imgPath, itemWidth, itemWidth), holder.ivCover,itemWidth,itemWidth);
             }
             holder.ivDel.setVisibility(View.VISIBLE);
         }
@@ -105,7 +104,7 @@ public class RecordImageAdapter extends RecyclerView.Adapter<RecordImageAdapter.
 
     class RecordImageViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.iv_cover)
-        ImageView ivCover;
+        SimpleDraweeView ivCover;
         @Bind(R.id.rl_cover)
         RelativeLayout rlCover;
         @Bind(R.id.iv_del)

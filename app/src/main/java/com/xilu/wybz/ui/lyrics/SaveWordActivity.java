@@ -26,6 +26,7 @@ import com.xilu.wybz.common.FileDir;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.KeySet;
 import com.xilu.wybz.common.MyCommon;
+import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.presenter.SaveWordPresenter;
 import com.xilu.wybz.ui.IView.ISaveWordView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
@@ -150,7 +151,7 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView {
             @Override
             public void onSuccess(String imageUrl) {
                 isAbleOnClick = true;
-                worksData.setPic(imageUrl);
+                worksData.setPic(imageUrl.startsWith("http")?"":MyHttpClient.QINIU_URL+imageUrl);
                 if(materialDialog!=null&&materialDialog.isShowing()) {
                     saveWordPresenter.saveLyrics(worksData);
                 }

@@ -20,7 +20,7 @@
             android:layout_marginBottom="@dimen/yc_4"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_default_head_252"
-            app:border_color="#a58c23"
+            app:border_color="@color/main_text_color3"
             app:border_width="0.6dp"
             />
 
@@ -32,7 +32,7 @@
             android:layout_alignTop="@+id/iv_head"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="2dp"
-            android:text="优乐了小美"
+            tools:text="优乐了小美"
             android:textSize="16sp"
             android:textColor="@color/main_title_color"
             />
@@ -45,7 +45,7 @@
             android:layout_alignBottom="@+id/iv_head"
             android:layout_marginBottom="2dp"
             android:layout_marginLeft="10dp"
-            android:text="2016-09-23"
+            tools:text="2016-09-23"
             android:textSize="12sp"
             android:textColor="@color/main_text_color2"
             />
@@ -62,7 +62,7 @@
         android:layout_marginLeft="67dp"
         android:layout_marginRight="@dimen/yc_15"
         android:layout_marginBottom="8dp"
-        android:text="回复小美：快点走开啦."
+        tools:text="回复小美：快点走开啦."
         android:textSize="14sp"
         android:textColor="@color/main_title_color"
         />

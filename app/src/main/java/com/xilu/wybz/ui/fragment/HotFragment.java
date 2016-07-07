@@ -35,6 +35,7 @@ import com.xilu.wybz.view.pull.BaseViewHolder;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -113,6 +114,8 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
             @Override
             public void run() {
                 if(isDestroy)return;
+                if(mDataList==null)
+                mDataList = new ArrayList<>();
                 if(mDataList.size()==0){
                     EventBus.getDefault().post(new Event.HideKeyboardEvent());
                 }
@@ -180,7 +183,6 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
         private void toPlayMusic(int pos, ProgressBar pb, ImageView ivPlay) {
             TemplateBean templateBean = mDataList.get(pos);
             if (templateBean.playStatus > 1) {
-
                 if (templateBean.playStatus == 3) {
                     iml.onPauseMusic();
                     templateBean.playStatus = 2;
@@ -191,17 +193,20 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
                     ivPlay.setImageResource(R.drawable.ic_bz_pause);
                 }
             } else {
-                if (oldPos > -1 && oldPos != pos) {//如果播放新的歌曲 把上一次播放的状态更新下
+                if (oldPos > -1 && oldPos != pos) {
+                    //如果播放新的歌曲 把上一次播放的状态更新下
                     mDataList.get(oldPos).playStatus = 0;
                     oldPbPlay.setVisibility(View.GONE);
                     oldIvPlay.setVisibility(View.VISIBLE);
                     oldIvPlay.setImageResource(R.drawable.ic_bz_play);
                 }
+                pb.setVisibility(View.VISIBLE);
+                ivPlay.setVisibility(View.GONE);
                 iml.onPlayMusic(templateBean);
                 templateBean.playStatus = 1;
                 oldPos = pos;
                 oldIvPlay = ivPlay;
-                oldPbPlay = pbPlay;
+                oldPbPlay = pb;
             }
         }
 
