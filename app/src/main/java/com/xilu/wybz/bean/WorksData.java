@@ -57,7 +57,7 @@ public class WorksData implements Serializable {
     public String recordurl;
     public String musicurl;
     public String diyids;
-    public int is_issue;//0不发布,1发布
+    public int is_issue = 1;//0不公开,1公开
 
     public int getType() {
         return type;

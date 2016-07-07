@@ -113,13 +113,13 @@ public class MainTabActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        MainActivity mainActivity = ((MainActivity) manager.getActivity("MAIN"));
-        if(mainActivity!=null)
-            mainActivity.onResume();
+        if(manager!=null)
+        manager.dispatchResume();
     }
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+
         Log.d("d","onNewIntent");
     }
 
@@ -218,7 +218,6 @@ public class MainTabActivity extends BaseActivity {
         }
     };
     @Subscribe(threadMode = ThreadMode.MAIN)
-
     public void onEventMainThread(Event.LoginSuccessEvent event){
         showMsg("登陆成功！");
         UserBean ub = event.getUserBean();
@@ -226,9 +225,7 @@ public class MainTabActivity extends BaseActivity {
         MobclickAgent.onProfileSignIn(ub.userid+"");
         PushAgent.getInstance(context).setAlias(ub.userid+"", "yinchao");
     }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(Event.LoginOutEvent event){
+    @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.LoginOutEvent event){
         if(viewpager.getCurrentItem()>1){
             viewpager.setCurrentItem(0);
             currentIndex = 0;
@@ -241,7 +238,16 @@ public class MainTabActivity extends BaseActivity {
         if(mMoreWindow!=null){
             mMoreWindow.destroy();
         }
+        if(manager!=null)
+        manager.dispatchDestroy(true);
         EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(manager!=null)
+        manager.dispatchStop();
     }
 
     @Override

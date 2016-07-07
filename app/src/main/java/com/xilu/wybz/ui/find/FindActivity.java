@@ -115,5 +115,4 @@ public class FindActivity extends BasePlayMenuActivity implements ViewPager.OnPa
     public void onPageScrollStateChanged(int state) {
 
     }
-
 }

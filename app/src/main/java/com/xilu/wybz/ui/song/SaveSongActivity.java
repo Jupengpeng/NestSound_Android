@@ -305,7 +305,6 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView ,
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_publish) {
-
             //先检查歌词的描述
             if(StringUtil.isBlank(worksData.detail)){
                 showMsg("请先添加歌曲描述！");
@@ -317,7 +316,7 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView ,
             }
 
             worksData.is_issue = cbIsopen.isChecked() ? 1:0;
-            showPd("正在保存中，请稍候...");
+            showPd("正在发布中，请稍候...");
             if(materialDialog!=null){
                 materialDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override

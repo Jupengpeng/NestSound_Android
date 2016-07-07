@@ -184,7 +184,7 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView {
                     return true;
                 }
                 if (new File(worksData.pic).exists()) {
-                    showPd("正在保存中，请稍候...");
+                    showPd("正在发布中，请稍候...");
                     if(isAbleOnClick)
                     uploadCoverPic();
                 } else {
@@ -230,7 +230,7 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView {
     @Override
     public void saveWordFail() {
         cancelPd();
-        showMsg("保存失败");
+        showMsg("发布失败");
     }
 
     @Override
