@@ -119,8 +119,6 @@ public class MainTabActivity extends BaseActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-
-        Log.d("d","onNewIntent");
     }
 
     private View getView(String id, Intent intent) {

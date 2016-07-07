@@ -164,6 +164,7 @@ public class SongAblumActivity extends ToolbarActivity implements IRecSongView {
                 }
                 @Override
                 public void onResponse(Bitmap response) {
+                    if(isDestroy)return;
                     Bitmap bmp = NativeStackBlur.process(BitmapUtils.zoomBitmap(response, 100), 80);
                     FileUtils.saveBmp(path,bmp);
                     ivToolbarBg.setImageBitmap(bmp);

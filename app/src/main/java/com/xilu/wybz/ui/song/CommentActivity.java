@@ -140,12 +140,13 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
 
             @Override
             public void afterTextChanged(Editable s) {
-                tvSend.setEnabled(s.toString().length() > 0);
+                tvSend.setEnabled(s.toString().trim().length() > 0);
             }
         });
     }
 
     private void toSendComment() {
+        showPd("正在评论中...");
         commentPresenter.sendComment(worksData.itemid, commentType, type, targetUid, content);
     }
 
@@ -220,6 +221,7 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
 
     @Override
     public void commentSuccess(int id) {
+        cancelPd();
         EventBus.getDefault().post(new Event.UpdataCommentNumEvent(type, 1));
         if (isDestroy){
             return;
@@ -249,6 +251,7 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
 
     @Override
     public void commentFail() {
+        cancelPd();
         if(NetWorkUtil.isNetworkAvailable(context)){
             showMsg("评论失败！");
         }else{
