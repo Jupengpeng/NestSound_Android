@@ -16,7 +16,7 @@ public class DateFormatUtils {
 
     public static String formatTime(int time){
         if (time == 0){
-            return String.format("00.00");
+            return String.format("00:00");
         }
         if (time <= 0){
             time = -time;
@@ -40,6 +40,28 @@ public class DateFormatUtils {
         second = time%60;
 
         return String.format("%02d:%02d:%02d",hour,minute,second);
+
+    }
+
+    public static String formatVolumeTime(int size){
+        long hour;
+        long minute;
+        long second;
+        long time;
+
+        time = size/20;
+        if (size%20>1){
+            time++;
+        }
+
+        if (time <= 0){
+            return String.format("00:00:00");
+        }
+        hour = time/60/60;
+        minute = (time/60)%60;
+        second = time%60;
+
+        return String.format("%01d:%02d:%02d",hour,minute,second);
 
     }
 

@@ -107,10 +107,14 @@
             android:theme="@style/PlayTheme" android:screenOrientation="portrait" />
 
 
-        <activity android:name=".ui.record.InspireRecordActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.record.InspireRecordActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize"
+            android:screenOrientation="portrait"/>
         <activity android:name=".ui.record.NewSelectPicActivity" android:screenOrientation="portrait" />
         <activity android:name=".ui.record.SelectPicActivity" android:screenOrientation="portrait" />
-        <activity android:name=".ui.record.ModifyInspireRecordActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.record.ModifyInspireRecordActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize"
+            android:screenOrientation="portrait"/>
 
         <activity android:name=".ui.lyrics.LyricsdisplayActivity" android:screenOrientation="portrait"/>
         <activity
