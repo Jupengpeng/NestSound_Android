@@ -32,6 +32,7 @@ import com.xilu.wybz.common.NewPlayInstance;
 import com.xilu.wybz.presenter.InspireRecordPresenter;
 import com.xilu.wybz.ui.IView.IInspireRecordView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
+import com.xilu.wybz.utils.DateFormatUtils;
 import com.xilu.wybz.utils.DateTimeUtil;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.FileUtils;
@@ -42,6 +43,7 @@ import com.xilu.wybz.utils.UploadFileUtil;
 import com.xilu.wybz.utils.UploadMorePicUtil;
 import com.xilu.wybz.view.GridSpacingItemDecoration;
 import com.xilu.wybz.view.RoundProgressBar;
+import com.xilu.wybz.view.SystemBarHelper;
 import com.xilu.wybz.view.kpswitch.util.KPSwitchConflictUtil;
 import com.xilu.wybz.view.kpswitch.util.KeyboardUtil;
 import com.xilu.wybz.view.kpswitch.widget.KPSwitchPanelLinearLayout;
@@ -88,6 +90,12 @@ public class ModifyInspireRecordActivity extends ToolbarActivity implements IIns
     RoundProgressBar ivPlayProgressbar;
     @Bind(R.id.iv_del_record)
     ImageView ivDelRecord;
+
+    @Bind(R.id.rl_volume_view)
+    TextView rlVolumeView;
+    @Bind(R.id.rl_volume_root)
+    RelativeLayout rlVolumeRoot;
+
     private RecordImageAdapter adapter;
     private List<PhotoBean> list;
     private int recordStatus;//录音状态 0未开始 1进行中 2结束
@@ -101,6 +109,8 @@ public class ModifyInspireRecordActivity extends ToolbarActivity implements IIns
     int column = 3;
     int itemSpace;
     InspireRecordPresenter inspireRecordPresenter;
+
+    List<Short> volumeData;
 
     public static void toModifyInspireRecordActivity(Context mContext, WorksData worksData) {
         Intent intent = new Intent(mContext, ModifyInspireRecordActivity.class);
@@ -116,6 +126,11 @@ public class ModifyInspireRecordActivity extends ToolbarActivity implements IIns
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SystemBarHelper.immersiveStatusBar(this);
+        SystemBarHelper.setStatusBarDarkMode(this);
+        SystemBarHelper.setHeightAndPadding(this, mAppBar);
+
         EventBus.getDefault().register(this);
         inspireRecordPresenter = new InspireRecordPresenter(context, this);
         inspireRecordPresenter.init();
@@ -341,24 +356,37 @@ public class ModifyInspireRecordActivity extends ToolbarActivity implements IIns
                     case 0://开始录音
                         if (!FileUtils.isSdcardExit()) {
                             showMsg("没有SD卡，无法存储录音数据");
+                            return;
                         }
                         if (!new File(FileDir.inspireMp3Dir).exists()) {
                             new File(FileDir.inspireMp3Dir).mkdirs();
                         }
+
+                        rlVolumeView.setText("0:00:00");
+                        rlVolumeRoot.setVisibility(View.VISIBLE);
+
                         recordPath = FileDir.inspireMp3Dir + System.currentTimeMillis() + ".mp3";
                         mp3Recorder = new MP3Recorder(new File(recordPath));
+                        mp3Recorder.setOnWaveChangeListener(new MP3Recorder.OnWaveChangeListener() {
+                            @Override
+                            public void onChange(List<Short> data) {
+                                volumeData = data;
+                                if (data.size()%5 == 4){
+                                    mHandler.sendEmptyMessage(3);
+                                }
+                            }
+                        });
                         try {
                             mp3Recorder.start();
                             ivRecordStatus.setImageResource(R.drawable.ic_record_luyin_start);
                             recordStatus = 1;
                             tvRecordStatus.setText("正在录音");
-//                            startRecordTimer();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
                         break;
                     case 1://录音中
-//                        stopRecordTimer();
+                        rlVolumeRoot.setVisibility(View.GONE);
                         recordStatus = 2;
                         tvRecordStatus.setText("录音完成");
                         ivAddVoice.setImageResource(R.drawable.ic_record_luyin_ed);
@@ -402,24 +430,41 @@ public class ModifyInspireRecordActivity extends ToolbarActivity implements IIns
         }
     }
 
-//    void startRecordTimer() {
-//        if (recordTimer == null) {
-//            recordTimer = new Timer();
-//            recordTimer.schedule(new TimerTask() {
-//                @Override
-//                public void run() {
-//                    mHandler.sendEmptyMessage(0);
-//                }
-//            }, 0, 1000);
-//        }
-//    }
-//
-//    void stopRecordTimer() {
-//        if (recordTimer != null) {
-//            recordTimer.cancel();
-//            recordTimer = null;
-//        }
-//    }
+
+    int [] resource = {R.drawable.ic_record_volume0
+            ,R.drawable.ic_record_volume1
+            ,R.drawable.ic_record_volume2
+            ,R.drawable.ic_record_volume3
+            ,R.drawable.ic_record_volume4};
+
+    private void showVolume(List<Short> data) {
+        if (data == null || data.size() == 0) {
+            return;
+        }
+
+        short volume = data.get(data.size()-1);
+        String time = DateFormatUtils.formatVolumeTime(data.size());
+
+        allTime = data.size()*50;
+
+        rlVolumeView.setText(time);
+
+        int index = 0;
+        if (volume>300){
+            index = 1;
+        }
+        if (volume>700){
+            index = 2;
+        }
+        if (volume>1500){
+            index = 3;
+        }
+        if (volume>3000){
+            index = 4;
+        }
+        rlVolumeView.setBackgroundResource(resource[index]);
+    }
+
 
     void startPlayTimer() {
         if (playTimer == null) {
@@ -500,17 +545,19 @@ public class ModifyInspireRecordActivity extends ToolbarActivity implements IIns
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 0:
-                    //recordPb.setProgress(preProgress + (int) ((System.currentTimeMillis() - startRecordTime) * 1.0 / allTime * 100));
-                    if(isDestroy)return;
-                    recordIndex++;
-                    tvTime.setText(SystemUtils.getTimeFormat(recordIndex * 1000));
-                    allTime = recordIndex * 1000;
+//                    if(isDestroy)return;
+//                    recordIndex++;
+//                    tvTime.setText(SystemUtils.getTimeFormat(recordIndex * 1000));
+//                    allTime = recordIndex * 1000;
                     break;
                 case 1:
                     if(isDestroy)return;
                     playIndex++;
                     ivPlayProgressbar.setProgress(playIndex * 200);
                     tvTime.setText(SystemUtils.getTimeFormat(playIndex * 200) + "/" + SystemUtils.getTimeFormat(allTime));
+                    break;
+                case 3:
+                    showVolume(volumeData);
                     break;
             }
         }
@@ -545,6 +592,7 @@ public class ModifyInspireRecordActivity extends ToolbarActivity implements IIns
 
     @Override
     public void onMusicError() {
+        stopPlayTimer();
         playState = 0;
         ivPlayProgressbar.setVisibility(View.GONE);
         ivRecordStatus.setImageResource(R.drawable.ic_record_play);
@@ -552,6 +600,7 @@ public class ModifyInspireRecordActivity extends ToolbarActivity implements IIns
 
     @Override
     public void onMusicStop() {
+        stopPlayTimer();
         ivPlayProgressbar.setVisibility(View.GONE);
     }
 

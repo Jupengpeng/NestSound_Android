@@ -284,16 +284,18 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
                 }
                 switch (recordStatus) {
                     case 0://开始录音
-                        rlVolumeView.setText("0:00:00");
-                        rlVolumeRoot.setVisibility(View.VISIBLE);
-
                         if (!FileUtils.isSdcardExit()) {
                             showMsg("没有SD卡，无法存储录音数据");
+                            return;
                         }
 
                         if (!new File(FileDir.inspireMp3Dir).exists()) {
                             new File(FileDir.inspireMp3Dir).mkdirs();
                         }
+
+                        rlVolumeView.setText("0:00:00");
+                        rlVolumeRoot.setVisibility(View.VISIBLE);
+
                         recordPath = FileDir.inspireMp3Dir + System.currentTimeMillis() + ".mp3";
                         mp3Recorder = new MP3Recorder(new File(recordPath));
                         mp3Recorder.setOnWaveChangeListener(new MP3Recorder.OnWaveChangeListener() {
@@ -352,7 +354,11 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
         }
     }
 
-    int [] resource = {R.drawable.ic_record_volume0,R.drawable.ic_record_volume1,R.drawable.ic_record_volume2,R.drawable.ic_record_volume3,R.drawable.ic_record_volume4};
+    int [] resource = {R.drawable.ic_record_volume0
+            ,R.drawable.ic_record_volume1
+            ,R.drawable.ic_record_volume2
+            ,R.drawable.ic_record_volume3
+            ,R.drawable.ic_record_volume4};
 
     private void showVolume(List<Short> data) {
         if (data == null || data.size() == 0) {
@@ -465,6 +471,7 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
         playState = 1;
         allTime = NewPlayInstance.getInstance().getDuration() + 999;
         ivRecordStatus.setImageResource(R.drawable.ic_record_pause);
+
     }
 
     @Override
