@@ -137,14 +137,16 @@ public class MineActivity extends ToolbarActivity {
         });
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.LoginOutEvent event) {
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(Event.LoginOutEvent event) {
         firstLoadUserInfo = false;
         userTvName.setText("");
         userTvInfo.setText("");
         loadImage("res://yinchao/" + R.drawable.ic_default_head_252, ivHead);
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.LoginSuccessEvent event) {
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(Event.LoginSuccessEvent event) {
         firstLoadUserInfo = false;
         container.setCurrentItem(0);
         WorksDataFragment worksDataFragment;

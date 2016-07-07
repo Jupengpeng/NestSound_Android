@@ -1,6 +1,7 @@
 package com.xilu.wybz.ui.mine;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -26,10 +27,11 @@ import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.PullRecycler;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.List;
 
 import butterknife.Bind;
-import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by Administrator on 2016/5/24.
@@ -153,7 +155,7 @@ public class FollowAndFansActivity extends BaseListActivity<FansBean> implements
 
     @Override
     public void followSuccess(String message) {
-        cancelLoading();
+        cancelPd();
         int status = OnlyFollowPresenter.paraseStatuByString(message);
         EventBus.getDefault().post(new Event.UpdateFollowNumEvent(status, 0));
 
@@ -164,11 +166,19 @@ public class FollowAndFansActivity extends BaseListActivity<FansBean> implements
 
     @Override
     public void followFailed(String message) {
-        cancelLoading();
+        cancelPd();
     }
 
     public void followUser(int userId){
-        showLoading();
+        setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                if (mOnlyFollowPresenter != null){
+                    mOnlyFollowPresenter.cancel();
+                }
+            }
+        });
+        showPd("正在请求网络，请稍候");
         mOnlyFollowPresenter.follow(userId);
     }
 
@@ -246,11 +256,6 @@ public class FollowAndFansActivity extends BaseListActivity<FansBean> implements
         }
     }
 
-    @Override
-    public void onLoadingCancel() {
-        cancelLoading();
-        mOnlyFollowPresenter.cancel();
-    }
 
     @Override
     protected void onDestroy() {

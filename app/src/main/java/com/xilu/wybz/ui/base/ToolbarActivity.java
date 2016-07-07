@@ -17,7 +17,6 @@ import com.xilu.wybz.ui.msg.MsgActivity;
 import com.xilu.wybz.ui.song.PlayAudioActivity;
 import com.xilu.wybz.ui.song.SongAblumActivity;
 import com.xilu.wybz.view.SystemBarHelper;
-import com.xilu.wybz.view.dialog.LoadingDialog;
 
 import butterknife.ButterKnife;
 
@@ -87,42 +86,42 @@ public abstract class ToolbarActivity extends BaseActivity {
     }
 
 
-    protected LoadingDialog loading;
-
-    public void showLoading(){
-        if (loading == null){
-            loading = new LoadingDialog(this);
-            loading.setOnKeyCancelListener(new LoadingDialog.OnKeyCancelListener() {
-                @Override
-                public void onCancel() {
-                    onLoadingCancel();
-                }
-            });
-        }
-        if (!loading.isShowing()){
-            loading.show();
-        }
-    }
-    public void cancelLoading(){
-        if (loading == null){
-            return;
-        }
-        if (loading.isShowing()){
-            loading.cancel();
-        }
-    }
-
-    public void onLoadingCancel(){
-
-    }
+//    protected LoadingDialog loading;
+//
+//    public void showLoading(){
+//        if (loading == null){
+//            loading = new LoadingDialog(this);
+//            loading.setOnKeyCancelListener(new LoadingDialog.OnKeyCancelListener() {
+//                @Override
+//                public void onCancel() {
+//                    onLoadingCancel();
+//                }
+//            });
+//        }
+//        if (!loading.isShowing()){
+//            loading.show();
+//        }
+//    }
+//    public void cancelLoading(){
+//        if (loading == null){
+//            return;
+//        }
+//        if (loading.isShowing()){
+//            loading.cancel();
+//        }
+//    }
+//
+//    public void onLoadingCancel(){
+//
+//    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (loading!=null && loading.isShowing())  {
-            loading.cancel();
-        }
-        loading = null;
+//        if (loading!=null && loading.isShowing())  {
+//            loading.cancel();
+//        }
+//        loading = null;
         ButterKnife.unbind(this);
     }
 }
