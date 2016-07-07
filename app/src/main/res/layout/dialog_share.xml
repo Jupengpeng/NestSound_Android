@@ -189,7 +189,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="5dip"
-                android:text="复制连接"
+                android:text="复制链接"
                 android:textColor="@color/main_text_color2"
                 android:textSize="13sp" />
         </LinearLayout>

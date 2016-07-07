@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -26,6 +27,7 @@ import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.FileDir;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.common.NewPlayInstance;
+import com.xilu.wybz.common.RecordInstance;
 import com.xilu.wybz.presenter.InspireRecordPresenter;
 import com.xilu.wybz.ui.IView.IInspireRecordView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
@@ -40,10 +42,13 @@ import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.utils.UploadFileUtil;
 import com.xilu.wybz.utils.UploadMorePicUtil;
 import com.xilu.wybz.view.GridSpacingItemDecoration;
+import com.xilu.wybz.view.RoundProgressBar;
 import com.xilu.wybz.view.SystemBarHelper;
 import com.xilu.wybz.view.kpswitch.util.KPSwitchConflictUtil;
 import com.xilu.wybz.view.kpswitch.util.KeyboardUtil;
 import com.xilu.wybz.view.kpswitch.widget.KPSwitchPanelLinearLayout;
+import com.xilu.wybz.view.materialdialogs.DialogAction;
+import com.xilu.wybz.view.materialdialogs.MaterialDialog;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -74,6 +79,8 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
     ImageView ivAddVoice;
     @Bind(R.id.panel_root)
     KPSwitchPanelLinearLayout mPanelRoot;
+    @Bind(R.id.iv_play_progressbar)
+    RoundProgressBar ivPlayProgressbar;
     @Bind(R.id.tv_time)
     TextView tvTime;
     @Bind(R.id.tv_record_status)
@@ -89,15 +96,16 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
     private RecordImageAdapter adapter;
     private List<PhotoBean> list;
     private int recordStatus;//录音状态 0未开始 1进行中 2结束
-    private Timer recordTimer, playTimer;
+    private Timer playTimer;
     private long allTime;
-    private int recordIndex, playIndex;
+    private int playIndex;
     private int playState; //1播放 2暂停
     private String recordPath;//录音文件保存路径
     private MP3Recorder mp3Recorder;
     private WorksData worksData;
     int column = 3;
     int itemSpace;
+    protected MaterialDialog backDialog;
     InspireRecordPresenter inspireRecordPresenter;
 
 
@@ -198,6 +206,9 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
                     }
                 }
                 return true;
+            case android.R.id.home:
+                onKeyBack();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -261,6 +272,7 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
                 if (playState > 0) {
                     NewPlayInstance.getInstance().stopMediaPlay();
                 }
+                ivPlayProgressbar.setVisibility(View.GONE);
                 tvRecordStatus.setText("点击录音");
                 tvTime.setText("");
                 recordPath = "";
@@ -268,7 +280,6 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
                 ivRecordStatus.setImageResource(R.drawable.ic_record_luyin_unstart);
                 playState = 0;
                 recordStatus = 0;
-                recordIndex = 0;
                 playIndex = 0;
                 ivAddVoice.setImageResource(R.drawable.ic_record_luyin);
                 break;
@@ -434,12 +445,51 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
     }
 
     @Override
+    public void onBackPressed() {
+        onKeyBack();
+    }
+    public void onKeyBack(){
+        if(recordStatus==0&&StringUtil.isBlank(recordPath)
+                &&StringUtil.isBlank(etContent.getText().toString().trim())
+                &&list.size()==0){
+            finish();
+        }else {
+            if (backDialog == null) {
+                backDialog = new MaterialDialog.Builder(this)
+                        .title("请确认操作")
+                        .content("是否放弃当前灵感记录？")
+                        .negativeText("取消")
+                        .positiveText("确认放弃")
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                finish();
+                            }
+                        })
+                        .canceledOnTouchOutside(true).build();
+            }
+            backDialog.show();
+        }
+    }
+    @Override
     protected void onDestroy() {
-        super.onDestroy();
+        if(mHandler!=null) {
+            mHandler.removeCallbacksAndMessages(null);
+        }
+        stopPlayTimer();
+        //没有发布就退出 默认不保存本地的音频文件
+        if(StringUtil.isBlank(worksData.audio)){
+            if(StringUtil.isNotBlank(recordPath)&&new File(recordPath).exists()){
+                new File(recordPath).delete();
+            }
+        }
         EventBus.getDefault().unregister(this);
-        if (inspireRecordPresenter != null) {
+        if(inspireRecordPresenter!=null){
             inspireRecordPresenter.cancelRequest();
         }
+        NewPlayInstance.getInstance().release();
+        RecordInstance.getInstance().destroy();
+        super.onDestroy();
     }
 
     Handler mHandler = new Handler() {
@@ -455,6 +505,7 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
                 case 1:
                     if (isDestroy) return;
                     playIndex++;
+                    ivPlayProgressbar.setProgress(playIndex * 200);
                     tvTime.setText(SystemUtils.getTimeFormat(playIndex * 1000) + "/" + SystemUtils.getTimeFormat(allTime));
                     break;
                 case 3:
@@ -471,7 +522,8 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
         playState = 1;
         allTime = NewPlayInstance.getInstance().getDuration() + 999;
         ivRecordStatus.setImageResource(R.drawable.ic_record_pause);
-
+        ivPlayProgressbar.setVisibility(View.VISIBLE);
+        ivPlayProgressbar.setMax(allTime);
     }
 
     @Override

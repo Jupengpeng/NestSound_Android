@@ -49,6 +49,7 @@ public class OnlyFollowPresenter extends BasePresenter<IOnlyFollowView>{
 
             @Override
             public void onError(Call call, Exception e) {
+                super.onError(call, e);
                 iView.followFailed("");
             }
         });

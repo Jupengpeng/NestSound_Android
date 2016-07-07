@@ -255,7 +255,6 @@ public class UserInfoActivity extends ToolbarActivity implements IOnlyFollowView
 
     private void FollowUser() {
         if (isFocus > -1) {
-
             showPd("正在请求网络，请稍候");
             setOnCancelListener(new DialogInterface.OnCancelListener() {
                 @Override
@@ -264,7 +263,6 @@ public class UserInfoActivity extends ToolbarActivity implements IOnlyFollowView
                         presenter.cancel();
                 }
             });
-
             presenter.follow(userId);
         }
     }
