@@ -90,7 +90,7 @@
                     android:layout_weight="1"
                     android:paddingBottom="10dp"
                     android:paddingTop="10dp"
-                    android:text="是否公开"
+                    android:text="公开"
                     android:textColor="@color/main_text_color"
                     android:textSize="15sp" />
 
