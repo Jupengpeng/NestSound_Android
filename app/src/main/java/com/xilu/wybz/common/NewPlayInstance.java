@@ -9,8 +9,8 @@ import java.io.IOException;
  * Created by June on 2016/5/4.
  */
 public class NewPlayInstance {
-    MediaPlayer mediaPlayer;
-    IPlayerListener iml;
+    public MediaPlayer mediaPlayer;
+    public IPlayerListener iml;
     static NewPlayInstance mInstance;
     int status = 1;
     int duration = 0;

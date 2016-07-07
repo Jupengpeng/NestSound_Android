@@ -352,13 +352,13 @@ public class ModifyInspireRecordActivity extends ToolbarActivity implements IIns
                             ivRecordStatus.setImageResource(R.drawable.ic_record_luyin_start);
                             recordStatus = 1;
                             tvRecordStatus.setText("正在录音");
-                            startRecordTimer();
+//                            startRecordTimer();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
                         break;
                     case 1://录音中
-                        stopRecordTimer();
+//                        stopRecordTimer();
                         recordStatus = 2;
                         tvRecordStatus.setText("录音完成");
                         ivAddVoice.setImageResource(R.drawable.ic_record_luyin_ed);
@@ -402,24 +402,24 @@ public class ModifyInspireRecordActivity extends ToolbarActivity implements IIns
         }
     }
 
-    void startRecordTimer() {
-        if (recordTimer == null) {
-            recordTimer = new Timer();
-            recordTimer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    mHandler.sendEmptyMessage(0);
-                }
-            }, 0, 1000);
-        }
-    }
-
-    void stopRecordTimer() {
-        if (recordTimer != null) {
-            recordTimer.cancel();
-            recordTimer = null;
-        }
-    }
+//    void startRecordTimer() {
+//        if (recordTimer == null) {
+//            recordTimer = new Timer();
+//            recordTimer.schedule(new TimerTask() {
+//                @Override
+//                public void run() {
+//                    mHandler.sendEmptyMessage(0);
+//                }
+//            }, 0, 1000);
+//        }
+//    }
+//
+//    void stopRecordTimer() {
+//        if (recordTimer != null) {
+//            recordTimer.cancel();
+//            recordTimer = null;
+//        }
+//    }
 
     void startPlayTimer() {
         if (playTimer == null) {

@@ -6,39 +6,66 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/view_toolbar" />
-    <ScrollView
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
-        <LinearLayout
-            android:id="@+id/ll_content"
+        android:layout_weight="1"
+        >
+        <include layout="@layout/view_toolbar" />
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:id="@+id/ll_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/et_content"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/tran"
-                android:gravity="top|left"
-                android:maxLength="1000"
-                android:minLines="5"
+                <EditText
+                    android:id="@+id/et_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/tran"
+                    android:gravity="top|left"
+                    android:maxLength="1000"
+                    android:minLines="5"
+                    android:textColor="@color/main_text_color"
+                    android:textSize="15sp"
+                    android:padding="10dp" />
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_view_pic"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:paddingBottom="20dp"
+                    android:overScrollMode="never"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+            </LinearLayout>
+        </ScrollView>
+        <RelativeLayout
+            android:id="@+id/rl_volume_root"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#69000000"
+            android:visibility="gone"
+            >
+            <TextView
+                android:id="@+id/rl_volume_view"
+                android:layout_width="214dp"
+                android:layout_height="84dp"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:background="@drawable/ic_record_volume1"
+                android:text="0:00:00"
+                android:textSize="14sp"
                 android:textColor="@color/main_text_color"
-                android:textSize="15sp"
-                android:padding="10dp" />
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_view_pic"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:paddingBottom="10dp"
-                android:overScrollMode="never"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 />
-        </LinearLayout>
-    </ScrollView>
+        </RelativeLayout>
+
+    </FrameLayout>
+
     <include layout="@layout/layout_pubrecord_bar" />
 
     <com.xilu.wybz.view.kpswitch.widget.KPSwitchPanelLinearLayout
