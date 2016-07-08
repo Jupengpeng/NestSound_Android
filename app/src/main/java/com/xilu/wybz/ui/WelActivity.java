@@ -35,6 +35,8 @@ public class WelActivity extends BaseActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        handler = new Handler();
+
         GetDomainUtil getDomainUtil = new GetDomainUtil(context);
         String appLogo = PrefsUtil.getString("applogo", context);
 //        String fileName = MD5Util.getMD5String(appLogo) + ".png";
@@ -83,7 +85,7 @@ public class WelActivity extends BaseActivity {
 
     // 跳转到首页
     public void toHome() {
-        handler = new Handler();
+
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -107,7 +109,7 @@ public class WelActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-//        super.onBackPressed();
+        super.onBackPressed();
     }
 
     @Override
@@ -117,6 +119,7 @@ public class WelActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
+        handler.removeCallbacksAndMessages(null);
         ButterKnife.unbind(this);
         super.onDestroy();
     }
