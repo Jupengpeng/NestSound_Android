@@ -3,7 +3,7 @@ package com.xilu.wybz.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.KeyEvent;
+import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -15,6 +15,7 @@ import com.xilu.wybz.utils.GetDomainUtil;
 import com.xilu.wybz.utils.PrefsUtil;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 
 
 public class WelActivity extends BaseActivity {
@@ -35,7 +36,7 @@ public class WelActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         GetDomainUtil getDomainUtil = new GetDomainUtil(context);
-//        String appLogo = PrefsUtil.getString("applogo", context);
+        String appLogo = PrefsUtil.getString("applogo", context);
 //        String fileName = MD5Util.getMD5String(appLogo) + ".png";
 //        String filePath = FileDir.logoDir + fileName;
 //        if (StringUtil.isNotBlank(appLogo)) {
@@ -48,27 +49,29 @@ public class WelActivity extends BaseActivity {
 //        }else{
 //            rlMain.setBackgroundResource(R.drawable.bg_wel);
 //        }
+
+
+
         rlMain.setBackgroundResource(R.drawable.bg_wel);
         getDomainUtil.getNewIp();
         if(PrefsUtil.getUserId(context)>0){
             getDomainUtil.getCheck();
         }
         if (BuildConfig.DEBUG){
-
+            Log.e("welcom_yinchao","BuildConfig.DEBUG");
             rlMain.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Log.e("welcom_yinchao","onClick.DEBUG");
+                    isConsole = true;
                     Intent intent = new Intent(WelActivity.this, ConsoleActivity.class);
                     startActivityForResult(intent,CODE);
-                    isConsole = true;
-                    if (handler != null){
-                        handler.removeCallbacks(runnable);
-                    }
                 }
             });
         }
         toHome();
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -81,22 +84,24 @@ public class WelActivity extends BaseActivity {
     // 跳转到首页
     public void toHome() {
         handler = new Handler();
-        runnable = new Runnable() {
+        handler.postDelayed(new Runnable() {
+            @Override
             public void run() {
                 toMainAct();
             }
-        };
-
-        handler.postDelayed(runnable, 1000);
+        }, 1200);
     }
 
 
     private void toMainAct(){
+        Log.e("welcom_yinchao","toMainAct.DEBUG");
         if (isConsole){
+            Log.e("welcom_yinchao","isConsole.DEBUG");
             return;
         }
         Intent intent = new Intent(WelActivity.this, MainTabActivity.class);
         startActivity(intent);
+        Log.e("welcom_yinchao","startActivity.DEBUG");
         finish();
     }
 
@@ -106,15 +111,13 @@ public class WelActivity extends BaseActivity {
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        return super.onKeyDown(keyCode, event);
+    public void finish() {
+        super.finish();
     }
 
     @Override
     protected void onDestroy() {
-        if (handler != null){
-            handler.removeCallbacks(runnable);
-        }
+        ButterKnife.unbind(this);
         super.onDestroy();
     }
 }
