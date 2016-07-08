@@ -333,8 +333,8 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
             updateZanNum();
             updateCommentNum();
             playLyricsAdapter = new PlayLyricsAdapter(context, lyricsList);
-            tvHotName.setText(worksData.getHotTitle());
-            tvDetail.setText(worksData.getDetail());
+            tvHotName.setText("伴奏："+worksData.getHotTitle());
+            tvDetail.setText("描述："+worksData.getDetail());
             listview_lyrics.setAdapter(playLyricsAdapter);
             listview_lyrics.setOnScrollListener(new AbsListView.OnScrollListener() {
                 @Override

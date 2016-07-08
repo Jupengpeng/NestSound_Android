@@ -37,6 +37,7 @@ public class FollowPresenter extends BasePresenter<IFollowAndFansView> {
         httpUtils.get(isMe ? MyHttpClient.getFansList() : MyHttpClient.getOtherFansList(), params, new AppJsonCalback(context) {
             @Override
             public void onError(Call call, Exception e) {
+                super.onError(call, e);
                 iView.loadFail();
             }
 
@@ -60,7 +61,6 @@ public class FollowPresenter extends BasePresenter<IFollowAndFansView> {
             public void onResultError(JsonResponse<? extends Object> response) {
                 super.onResultError(response);
             }
-
             @Override
             public Type getDataType() {
                 return new TypeToken<List<FansBean>>(){}.getType();

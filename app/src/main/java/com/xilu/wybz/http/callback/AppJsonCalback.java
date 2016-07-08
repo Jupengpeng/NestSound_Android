@@ -66,7 +66,6 @@ public class AppJsonCalback extends JsonCallback {
             ToastUtils.toastLong(context,response.getMessage());
         }
 
-
     }
 
 

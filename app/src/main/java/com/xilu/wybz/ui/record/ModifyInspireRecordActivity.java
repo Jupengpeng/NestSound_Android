@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -29,6 +30,7 @@ import com.xilu.wybz.common.KeySet;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.common.NewPlayInstance;
+import com.xilu.wybz.common.RecordInstance;
 import com.xilu.wybz.presenter.InspireRecordPresenter;
 import com.xilu.wybz.ui.IView.IInspireRecordView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
@@ -47,6 +49,8 @@ import com.xilu.wybz.view.SystemBarHelper;
 import com.xilu.wybz.view.kpswitch.util.KPSwitchConflictUtil;
 import com.xilu.wybz.view.kpswitch.util.KeyboardUtil;
 import com.xilu.wybz.view.kpswitch.widget.KPSwitchPanelLinearLayout;
+import com.xilu.wybz.view.materialdialogs.DialogAction;
+import com.xilu.wybz.view.materialdialogs.MaterialDialog;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -109,7 +113,7 @@ public class ModifyInspireRecordActivity extends ToolbarActivity implements IIns
     int column = 3;
     int itemSpace;
     InspireRecordPresenter inspireRecordPresenter;
-
+    protected MaterialDialog backDialog;
     List<Short> volumeData;
 
     public static void toModifyInspireRecordActivity(Context mContext, WorksData worksData) {
@@ -234,10 +238,8 @@ public class ModifyInspireRecordActivity extends ToolbarActivity implements IIns
                 }
                 return true;
             case android.R.id.home:
-                if(recordStatus==1){
-                    showMsg("请先暂停录音后再继续返回");
-                    return true;
-                }
+                onKeyBack();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -508,10 +510,35 @@ public class ModifyInspireRecordActivity extends ToolbarActivity implements IIns
         }
         return super.dispatchKeyEvent(event);
     }
-
+    @Override
+    public void onBackPressed() {
+        onKeyBack();
+    }
+    public void onKeyBack(){
+        if(recordStatus==0&&StringUtil.isBlank(recordPath)
+                &&StringUtil.isBlank(etContent.getText().toString().trim())
+                &&list.size()==0){
+            finish();
+        }else {
+            if (backDialog == null) {
+                backDialog = new MaterialDialog.Builder(this)
+                        .title("请确认操作")
+                        .content("是否放弃当前灵感记录？")
+                        .negativeText("取消")
+                        .positiveText("确认放弃")
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                finish();
+                            }
+                        })
+                        .canceledOnTouchOutside(true).build();
+            }
+            backDialog.show();
+        }
+    }
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         if(mHandler!=null) {
             mHandler.removeCallbacksAndMessages(null);
         }
@@ -527,6 +554,8 @@ public class ModifyInspireRecordActivity extends ToolbarActivity implements IIns
             inspireRecordPresenter.cancelRequest();
         }
         NewPlayInstance.getInstance().release();
+        RecordInstance.getInstance().destroy();
+        super.onDestroy();
     }
 
     @Override
@@ -568,7 +597,6 @@ public class ModifyInspireRecordActivity extends ToolbarActivity implements IIns
     public void onMusicStart() {
         startPlayTimer();
         playState = 1;
-        ivPlayProgressbar.setVisibility(View.VISIBLE);
         ivRecordStatus.setVisibility(View.VISIBLE);
         rlLoading.setVisibility(View.INVISIBLE);
         allTime = NewPlayInstance.getInstance().getDuration()+999;
