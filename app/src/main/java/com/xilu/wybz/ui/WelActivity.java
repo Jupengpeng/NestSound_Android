@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.xilu.wybz.BuildConfig;
 import com.xilu.wybz.R;
 import com.xilu.wybz.ui.base.BaseActivity;
 import com.xilu.wybz.ui.manager.ConsoleActivity;
@@ -56,18 +58,18 @@ public class WelActivity extends BaseActivity {
         if(PrefsUtil.getUserId(context)>0){
             getDomainUtil.getCheck();
         }
-//        if (BuildConfig.DEBUG){
-//            Log.e("welcom_yinchao","BuildConfig.DEBUG");
-//            rlMain.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Log.e("welcom_yinchao","onClick.DEBUG");
-//                    isConsole = true;
-//                    Intent intent = new Intent(WelActivity.this, ConsoleActivity.class);
-//                    startActivityForResult(intent,CODE);
-//                }
-//            });
-//        }
+        if (BuildConfig.DEBUG){
+            Log.e("welcom_yinchao","BuildConfig.DEBUG");
+            rlMain.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.e("welcom_yinchao","onClick.DEBUG");
+                    isConsole = true;
+                    Intent intent = new Intent(WelActivity.this, ConsoleActivity.class);
+                    startActivityForResult(intent,CODE);
+                }
+            });
+        }
         delayToHome();
     }
 

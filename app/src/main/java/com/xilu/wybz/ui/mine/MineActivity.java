@@ -318,7 +318,7 @@ public class MineActivity extends ToolbarActivity {
     }
 
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         EventBus.getDefault().unregister(this);
         super.onDestroy();
     }

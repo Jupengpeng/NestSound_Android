@@ -259,20 +259,21 @@ public class MainTabActivity extends BaseActivity {
         if (mMoreWindow != null) {
             mMoreWindow.destroy();
         }
-        if (manager != null) {
-//            manager.dispatchDestroy(false);
-            manager.getActivity("MINE").finish();
-        }
         EventBus.getDefault().unregister(this);
         super.onDestroy();
+        if (manager != null) {
+            manager.dispatchDestroy(isFinishing());
+            MineActivity s = (MineActivity)(manager.getActivity("MINE"));
+            s.onDestroy();
+        }
     }
 
     @Override
     protected void onStop() {
-        if (manager != null) {
-//            manager.dispatchStop();
-        }
         super.onStop();
+        if (manager != null) {
+            manager.dispatchStop();
+        }
     }
 
     @Override

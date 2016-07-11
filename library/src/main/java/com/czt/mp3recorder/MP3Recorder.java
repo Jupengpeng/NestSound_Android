@@ -15,7 +15,7 @@ import java.util.List;
 
 public class MP3Recorder {
     //=======================AudioRecord Default Settings=======================
-    private static final int DEFAULT_AUDIO_SOURCE = MediaRecorder.AudioSource.MIC;
+    private static final int DEFAULT_AUDIO_SOURCE = MediaRecorder.AudioSource.DEFAULT;
     /**
      * 以下三项为默认配置参数。Google Android文档明确表明只有以下3个参数是可以在所有设备上保证支持的。
      */
@@ -78,6 +78,11 @@ public class MP3Recorder {
      * Initialize audio recorder
      */
     private void initAudioRecorder() {
+
+
+//        MediaRecorder.AudioSource.MIC
+
+
         bufferSize = AudioRecord.getMinBufferSize(DEFAULT_SAMPLING_RATE,
                 DEFAULT_CHANNEL_CONFIG, DEFAULT_AUDIO_FORMAT.getAudioFormat());
 
