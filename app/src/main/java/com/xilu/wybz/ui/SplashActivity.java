@@ -11,13 +11,13 @@ import android.widget.TextView;
 import com.xilu.wybz.R;
 import com.xilu.wybz.adapter.ViewPagerAdapter;
 import com.xilu.wybz.ui.base.BaseActivity;
-import com.xilu.wybz.ui.main.MainActivity;
 import com.xilu.wybz.utils.FileUtils;
 import com.xilu.wybz.utils.PrefsUtil;
 
 import java.util.ArrayList;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * Created by June on 16/4/15.
@@ -144,7 +144,7 @@ public class SplashActivity extends BaseActivity implements View.OnClickListener
         if (positon < 0 || positon > pics.length - 1 || currentIndex == positon) {
             return;
         }
-        if (positon == pics.length-1) {
+        if (positon == pics.length - 1) {
             ll.setVisibility(View.GONE);
             tv_toHome.setVisibility(View.VISIBLE);
             tv_toHome.startAnimation(AnimationUtils.loadAnimation(context, android.R.anim.fade_in));
@@ -173,5 +173,11 @@ public class SplashActivity extends BaseActivity implements View.OnClickListener
     @Override
     public void onPageScrollStateChanged(int state) {
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        ButterKnife.unbind(this);
+        super.onDestroy();
     }
 }

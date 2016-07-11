@@ -4,7 +4,6 @@ import android.app.LocalActivityManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.CheckedTextView;
@@ -64,10 +63,12 @@ public class MainTabActivity extends BaseActivity {
     Intent intent;
     MyPagerAdapter adapter;
     LocalActivityManager manager = null;
+
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_maintab;
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,16 +84,19 @@ public class MainTabActivity extends BaseActivity {
         checkedTextViewList.add(tvMine);
         initPagerViewer();
     }
+
     //打开推送
     public void openPush() {
         if (PrefsUtil.getBoolean("isPushOpen", context) && !PushAgent.getInstance(context).isEnabled()) {
             PushAgent.getInstance(context).enable();
         }
     }
+
     //检测升级
     public void checkAppVersion() {
         new VersionUtil().checkUpdateInfo(this);
     }
+
     private void initPagerViewer() {
         viewpager.setScanScroll(false);
         list = new ArrayList<>();
@@ -110,12 +114,23 @@ public class MainTabActivity extends BaseActivity {
         viewpager.setOffscreenPageLimit(4);
         viewpager.setOnPageChangeListener(new MyOnPageChangeListener());
     }
+
     @Override
     protected void onResume() {
+        if (manager != null) {
+//            manager.dispatchResume();
+        }
         super.onResume();
-        if(manager!=null)
-        manager.dispatchResume();
     }
+
+    @Override
+    protected void onPause() {
+        if (manager != null) {
+//            manager.dispatchPause(false);
+        }
+        super.onPause();
+    }
+
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
@@ -124,19 +139,22 @@ public class MainTabActivity extends BaseActivity {
     private View getView(String id, Intent intent) {
         return manager.startActivity(id, intent).getDecorView();
     }
+
     public class MyOnPageChangeListener implements ViewPager.OnPageChangeListener {
         @Override
         public void onPageSelected(int arg0) {
-            if(arg0==1){
-                ((FindActivity)manager.getActivity("FIND")).initView();
-            }else if(arg0==3){
-                ((MineActivity)manager.getActivity("MINE")).initData();
+            if (arg0 == 1) {
+                ((FindActivity) manager.getActivity("FIND")).initView();
+            } else if (arg0 == 3) {
+                ((MineActivity) manager.getActivity("MINE")).initData();
             }
         }
+
         @Override
         public void onPageScrollStateChanged(int arg0) {
 
         }
+
         @Override
         public void onPageScrolled(int arg0, float arg1, int arg2) {
 
@@ -153,11 +171,11 @@ public class MainTabActivity extends BaseActivity {
                 currentIndex = 1;
                 break;
             case R.id.rl_main_publish:
-                if(SystemUtils.isLogin(context)){
+                if (SystemUtils.isLogin(context)) {
                     if (null == mMoreWindow) {
                         mMoreWindow = new MoreWindow();
-                        RelativeLayout parent = (RelativeLayout)findViewById(R.id.window);
-                        mMoreWindow.init(this,parent, onClickListener);
+                        RelativeLayout parent = (RelativeLayout) findViewById(R.id.window);
+                        mMoreWindow.init(this, parent, onClickListener);
                     }
                     mMoreWindow.showByAnimation();
                 }
@@ -169,25 +187,26 @@ public class MainTabActivity extends BaseActivity {
                 currentIndex = 3;
                 break;
         }
-        if(PrefsUtil.getUserId(context)==0&&(currentIndex==2||currentIndex==3)){
+        if (PrefsUtil.getUserId(context) == 0 && (currentIndex == 2 || currentIndex == 3)) {
             startActivity(LoginActivity.class);
             return;
         }
         changeTab();
     }
-    public void changeTab(){
-        if(oldIndex!=currentIndex) {
+
+    public void changeTab() {
+        if (oldIndex != currentIndex) {
             checkedTextViewList.get(oldIndex).setChecked(false);
             checkedTextViewList.get(currentIndex).setChecked(true);
-            if(currentIndex==0) {
+            if (currentIndex == 0) {
                 MainActivity mainActivity = ((MainActivity) manager.getActivity("MAIN"));
                 if (mainActivity != null)
                     mainActivity.onResume();//刷新MainActivity播放状态
-            }else if(currentIndex==1){
+            } else if (currentIndex == 1) {
                 FindActivity findActivity = ((FindActivity) manager.getActivity("FIND"));
                 if (findActivity != null)
                     findActivity.onResume();
-            }else if(currentIndex==2){
+            } else if (currentIndex == 2) {
                 MsgActivity msgActivity = ((MsgActivity) manager.getActivity("MSG"));
                 if (msgActivity != null)
                     msgActivity.onResume();
@@ -196,12 +215,13 @@ public class MainTabActivity extends BaseActivity {
             oldIndex = currentIndex;
         }
     }
+
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            switch (v.getId()){
+            switch (v.getId()) {
                 case R.id.tv_zuoci:
-                    MakeWordActivity.toMakeWordActivity(context,PrefsUtil.getLocalLyrics(context));
+                    MakeWordActivity.toMakeWordActivity(context, PrefsUtil.getLocalLyrics(context));
                     mMoreWindow.closeByAnimation();
                     break;
                 case R.id.tv_record:
@@ -215,60 +235,76 @@ public class MainTabActivity extends BaseActivity {
             }
         }
     };
+
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(Event.LoginSuccessEvent event){
+    public void onEventMainThread(Event.LoginSuccessEvent event) {
         showMsg("登陆成功！");
         UserBean ub = event.getUserBean();
         PrefsUtil.saveUserInfo(context, ub);
-        MobclickAgent.onProfileSignIn(ub.userid+"");
-        PushAgent.getInstance(context).setAlias(ub.userid+"", "yinchao");
+        MobclickAgent.onProfileSignIn(ub.userid + "");
+        PushAgent.getInstance(context).setAlias(ub.userid + "", "yinchao");
     }
-    @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.LoginOutEvent event){
-        if(viewpager.getCurrentItem()>1){
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(Event.LoginOutEvent event) {
+        if (viewpager.getCurrentItem() > 1) {
             viewpager.setCurrentItem(0);
             currentIndex = 0;
             changeTab();
         }
     }
+
     @Override
     protected void onDestroy() {
-        super.onDestroy();
-        if(mMoreWindow!=null){
+        if (mMoreWindow != null) {
             mMoreWindow.destroy();
         }
-        if(manager!=null)
-        manager.dispatchDestroy(true);
+        if (manager != null) {
+//            manager.dispatchDestroy(false);
+            manager.getActivity("MINE").finish();
+        }
         EventBus.getDefault().unregister(this);
+        super.onDestroy();
     }
 
     @Override
     protected void onStop() {
+        if (manager != null) {
+//            manager.dispatchStop();
+        }
         super.onStop();
-        if(manager!=null)
-        manager.dispatchStop();
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
     }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(keyCode == KeyEvent.KEYCODE_BACK){
-            if ((System.currentTimeMillis() - exitTime) > 2000) {
-                if(mMoreWindow!=null&&mMoreWindow.isShow){
-                    mMoreWindow.closeByAnimation();
-                    return false;
-                }else {
-                    showMsg("再按一次退出应用");
-                    exitTime = System.currentTimeMillis();
-                    return false;
-                }
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (mMoreWindow != null && mMoreWindow.isShow) {
+                mMoreWindow.closeByAnimation();
+                return true;
             }
-            if(MyApplication.ids.size()>0){
-                String ids = "";
-                for(int i=0;i<MyApplication.ids.size();i++){
-                    ids+=MyApplication.ids.get(i)+(i<MyApplication.ids.size()-1?",":"");
+            if ((System.currentTimeMillis() - exitTime) < 2000) {
+                if (MyApplication.ids.size() > 0) {
+                    String ids = "";
+                    for (int i = 0; i < MyApplication.ids.size(); i++) {
+                        ids += MyApplication.ids.get(i) + (i < MyApplication.ids.size() - 1 ? "," : "");
+                    }
+                    PrefsUtil.putString(PrefsUtil.getString("playFrom", context), ids, context);
                 }
-                PrefsUtil.putString(PrefsUtil.getString("playFrom",context),ids,context);
+                finish();
+                return true;
+
+            } else {
+//                showMsg("再按一次退出应用");
+                exitTime = System.currentTimeMillis();
+                return true;
             }
-            finish();
+
+
         }
         return super.onKeyDown(keyCode, event);
     }

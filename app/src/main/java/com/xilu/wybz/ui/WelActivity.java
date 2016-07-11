@@ -4,10 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.view.View;
 import android.widget.RelativeLayout;
 
-import com.xilu.wybz.BuildConfig;
 import com.xilu.wybz.R;
 import com.xilu.wybz.ui.base.BaseActivity;
 import com.xilu.wybz.ui.manager.ConsoleActivity;
@@ -36,7 +34,6 @@ public class WelActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         handler = new Handler();
-
         GetDomainUtil getDomainUtil = new GetDomainUtil(context);
         String appLogo = PrefsUtil.getString("applogo", context);
 //        String fileName = MD5Util.getMD5String(appLogo) + ".png";
@@ -59,19 +56,19 @@ public class WelActivity extends BaseActivity {
         if(PrefsUtil.getUserId(context)>0){
             getDomainUtil.getCheck();
         }
-        if (BuildConfig.DEBUG){
-            Log.e("welcom_yinchao","BuildConfig.DEBUG");
-            rlMain.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.e("welcom_yinchao","onClick.DEBUG");
-                    isConsole = true;
-                    Intent intent = new Intent(WelActivity.this, ConsoleActivity.class);
-                    startActivityForResult(intent,CODE);
-                }
-            });
-        }
-        toHome();
+//        if (BuildConfig.DEBUG){
+//            Log.e("welcom_yinchao","BuildConfig.DEBUG");
+//            rlMain.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Log.e("welcom_yinchao","onClick.DEBUG");
+//                    isConsole = true;
+//                    Intent intent = new Intent(WelActivity.this, ConsoleActivity.class);
+//                    startActivityForResult(intent,CODE);
+//                }
+//            });
+//        }
+        delayToHome();
     }
 
 
@@ -79,37 +76,39 @@ public class WelActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CODE && resultCode == RESULT_OK){
         isConsole = false;
-        toHome();
+        delayToHome();
     }
 }
 
     // 跳转到首页
-    public void toHome() {
-
+    public void delayToHome() {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                toMainAct();
+                startMainActivity();
             }
-        }, 1200);
+        }, 1000);
+
     }
 
 
-    private void toMainAct(){
-        Log.e("welcom_yinchao","toMainAct.DEBUG");
+    private void startMainActivity(){
+        Log.e("welcom_yinchao","startMainActivity.DEBUG");
         if (isConsole){
             Log.e("welcom_yinchao","isConsole.DEBUG");
             return;
         }
         Intent intent = new Intent(WelActivity.this, MainTabActivity.class);
+//        Intent intent = new Intent(WelActivity.this, ConsoleActivity.class);
         startActivity(intent);
         Log.e("welcom_yinchao","startActivity.DEBUG");
         finish();
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+//        super.onBackPressed();
     }
 
     @Override
