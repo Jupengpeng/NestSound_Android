@@ -9,6 +9,7 @@ import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.callback.AppStringCallback;
 import com.xilu.wybz.ui.IView.ISaveWordView;
 import com.xilu.wybz.utils.PrefsUtil;
+import com.xilu.wybz.utils.StringUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,7 +32,9 @@ public class SaveWordPresenter extends BasePresenter<ISaveWordView> {
             map.put("lyrics", worksData.lyrics);
             map.put("pic", worksData.pic);
             map.put("detail", worksData.detail);
-            map.put("id", worksData.itemid+"");
+            if(worksData.itemid>0) {
+                map.put("id", worksData.itemid + "");
+            }
             map.put("status", worksData.type + "");
         } catch (Exception e) {
             Log.e("Exception", e.toString());

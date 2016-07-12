@@ -25,7 +25,7 @@ import com.xilu.wybz.R;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.ui.login.LoginActivity;
-import com.xilu.wybz.utils.PhoneDeviceUtil;
+import com.xilu.wybz.utils.PhoneInfoUtil;
 import com.xilu.wybz.utils.PrefsUtil;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -103,7 +103,7 @@ public class BrowserActivity extends ToolbarActivity {
                 }
 
                 int id = PrefsUtil.getUserId(context);
-                synCookies(context,url,"imei="+ PhoneDeviceUtil.getPhoneImei(context)+",ycua=APP_ANDROID,userId="+id);
+                synCookies(context,url,"imei="+ PhoneInfoUtil.getPhoneImei(context)+",ycua=APP_ANDROID,userId="+id);
 
                 Log.e("cookies",getCookies(context,url));
                 view.loadUrl(url);
@@ -235,7 +235,7 @@ public class BrowserActivity extends ToolbarActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.LoginSuccessEvent event){
         int id = PrefsUtil.getUserId(context);
-        synCookies(context,url,"imei="+ PhoneDeviceUtil.getPhoneImei(context)+",ycua=APP_ANDROID,userId="+id);
+        synCookies(context,url,"imei="+ PhoneInfoUtil.getPhoneImei(context)+",ycua=APP_ANDROID,userId="+id);
         Log.e("cookies","LoginSuccessEvent:"+getCookies(context,url));
     }
 
@@ -247,7 +247,7 @@ public class BrowserActivity extends ToolbarActivity {
             url = bundle.getString("url");
         }
         int id = PrefsUtil.getUserId(context);
-        synCookies(context,url,"imei="+ PhoneDeviceUtil.getPhoneImei(context)+",ycua=APP_ANDROID,userId="+id);
+        synCookies(context,url,"imei="+ PhoneInfoUtil.getPhoneImei(context)+",ycua=APP_ANDROID,userId="+id);
         Log.e("cookies",getCookies(context,url));
         mWebView.loadUrl(url);
     }
