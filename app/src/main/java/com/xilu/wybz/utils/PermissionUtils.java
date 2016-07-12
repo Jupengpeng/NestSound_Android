@@ -8,6 +8,8 @@ import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.telephony.TelephonyManager;
+import android.util.Log;
 
 import com.xilu.wybz.R;
 import com.xilu.wybz.ui.login.LoginActivity;
@@ -23,11 +25,14 @@ public class PermissionUtils {
     public static final int MY_PERMISSIONS_REQUEST_RECORD_AUDIO = 3;
     //读取手机imei
     public static boolean checkReadPhoneStatePermission(Context activity) {
-        if (ContextCompat.checkSelfPermission(activity,
-                Manifest.permission.READ_PHONE_STATE)
+        PackageManager packageManager = activity.getPackageManager();
+        if (packageManager.checkPermission(Manifest.permission.READ_PHONE_STATE,"com.xilu.wybz")
                 == PackageManager.PERMISSION_GRANTED) {
             return true;
         } else {
+//            ActivityCompat.requestPermissions((Activity)activity,
+//                    new String[]{Manifest.permission.READ_PHONE_STATE},
+//                    MY_PERMISSIONS_REQUEST_READ_PHONE_STATE);
             return false;
         }
     }
@@ -52,7 +57,7 @@ public class PermissionUtils {
 
     public static boolean checkRecordAudioPermission(Activity activity) {
         if (ContextCompat.checkSelfPermission(activity,
-                Manifest.permission.READ_EXTERNAL_STORAGE)
+                Manifest.permission.RECORD_AUDIO)
                 != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(activity,
                     Manifest.permission.READ_EXTERNAL_STORAGE)) {

@@ -7,7 +7,10 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Build;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.telephony.TelephonyManager;
@@ -17,6 +20,8 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.math.BigInteger;
+import java.security.SecureRandom;
 
 /**
  * 手机信息
@@ -26,7 +31,6 @@ public class PhoneInfoUtil {
     public static final String KEY_MIUI_VERSION_CODE = "ro.miui.ui.version.code";
     public static final String KEY_MIUI_VERSION_NAME = "ro.miui.ui.version.name";
     public static final String KEY_MIUI_INTERNAL_STORAGE = "ro.miui.internal.storage";
-    public static final int MY_PERMISSIONS_REQUEST_READ_PHONE_STATE = 1;
 
     public static boolean isLollipop() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
@@ -54,23 +58,69 @@ public class PhoneInfoUtil {
 
         return hasNavigationBar;
     }
+    /**
+     * 获取DeviceID
+     *
+     * @param context
+     * @return
+     */
+    public static String getDeviceID(Context context) {
+        return Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+    }
+    /**
+     * 获取MAC地址
+     * @param context
+     * @return
+     */
+    public static String getMac(Context context) {
+        WifiManager wifi = (WifiManager) context
+                .getSystemService(Context.WIFI_SERVICE);
+        WifiInfo info = wifi.getConnectionInfo();
+        String mac = info.getMacAddress();
+        if (StringUtil.isEmpty(mac)) {
+            mac = "";
+        }
+        return mac;
+    }
 
+    /**
+     * 获取UDID
+     * @param context
+     * @return
+     */
+    public static String getUDID(Context context) {
+        String udid = Settings.Secure.getString(context.getContentResolver(),
+                Settings.Secure.ANDROID_ID);
+        if (StringUtil.isEmpty(udid) || udid.equals("9774d56d682e549c")
+                || udid.length() < 15) {
+            SecureRandom random = new SecureRandom();
+            udid = new BigInteger(64, random).toString(16);
+        }
+
+        if (StringUtil.isEmpty(udid)) {
+            udid = "";
+        }
+
+        return udid;
+    }
+    //提交到HTTP HEAD
     public static String getPhoneModel() {
         return Build.MODEL;
     }
 
     public static String getPhoneImei(Context activity) {
-        if (ContextCompat.checkSelfPermission(activity, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-            return "";
+        String imei = "unkonw";
+        try {
+            imei = ((TelephonyManager) activity.getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
+        }catch (Exception e){
+
         }
-        return ((TelephonyManager) activity.getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
+        return imei;
     }
 
-    //提交到HTTP HEAD
     public static String getMachine(Context context) {
-        return "android";
+        return "android|301|android" + Build.VERSION.RELEASE + "|" + getPhoneModel().toUpperCase() + "|" + getPhoneImei(context) + "|" + DensityUtil.getScreenW(context) + "|" + DensityUtil.getScreenH(context) + "";
     }
-
     public static boolean isFlyme() {
         try {
             final Method method = Build.class.getMethod("hasSmartBar");

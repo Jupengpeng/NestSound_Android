@@ -21,7 +21,6 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 
 import com.xilu.wybz.R;
-import com.xilu.wybz.utils.PhoneDeviceUtil;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
