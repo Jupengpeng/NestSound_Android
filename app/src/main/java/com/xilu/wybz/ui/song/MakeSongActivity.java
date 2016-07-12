@@ -701,7 +701,6 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
                 if (worksData == null) {
                     worksData = new WorksData();
                 }
-
                 worksData.hotid = Integer.valueOf(templateBean.id);
                 worksData.title = etTitle.getText().toString();
                 worksData.lyrics = etWord.getText().toString();
@@ -723,7 +722,7 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
                     return true;
                 }
 
-                showPd("正在合成歌曲中");
+                showPd("歌曲正在美化，请稍候...");
                 makeSongPresenter.uploadmp3File(FileUtils.getLocalRecordPath(MyCommon.TYPE_MAKE + templateBean.id));
 
                 return true;
