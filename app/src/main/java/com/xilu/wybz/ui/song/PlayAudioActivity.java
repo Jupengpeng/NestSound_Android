@@ -479,6 +479,11 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
                 int mode = PrefsUtil.getInt("playmodel", context);
                 ivMode.setImageResource(mode == MyCommon.PLAY_MODEL_ORDER ? R.drawable.ic_play_loop : R.drawable.ic_play_order);
                 PrefsUtil.putInt("playmodel", mode == MyCommon.PLAY_MODEL_ORDER ? MyCommon.PLAY_MODEL_LOOP : MyCommon.PLAY_MODEL_ORDER, context);
+                if (mode == MyCommon.PLAY_MODEL_ORDER){
+                    ToastUtils.toast(context,"单曲循环");
+                } else {
+                    ToastUtils.toast(context,"顺序播放");
+                }
                 break;
             case R.id.iv_hot:
                 if (worksData.hotid > 0)
