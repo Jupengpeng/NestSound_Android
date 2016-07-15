@@ -141,7 +141,7 @@ public class ActFragment extends BaseListFragment<ActBean> implements IActView {
             ActBean actBean = mDataList.get(position);
             int status = mDataList.get(position).status;
             if (status == 1) {
-                tvStatus.setText("正在进行中  " + DateTimeUtil.timestamp2Date(actBean.begindate/1000) + "~" + DateTimeUtil.timestamp2Date(actBean.enddate/1000));
+                tvStatus.setText("正在进行中  " + DateTimeUtil.timestamp2Date(actBean.begindate) + "~" + DateTimeUtil.timestamp2Date(actBean.enddate));
             } else if (status == 2) {
                 tvStatus.setText("活动已结束！");
             } else if (status == 3) {
