@@ -12,7 +12,6 @@
         android:layout_height="@dimen/actionbar_size"
         android:background="@color/white"
         android:minHeight="48dp"
-        android:theme="@style/ToolBarStyle"
         app:maxButtonHeight="48dp"
         app:paddingEnd="0dp"
         app:paddingStart="0dp"

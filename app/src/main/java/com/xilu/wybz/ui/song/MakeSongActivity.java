@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -119,6 +120,7 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         initData();
         if(!PrefsUtil.getBoolean("isMakeSongTip",context)){
             makeSongTipDialog = new MakeSongTipDialog(context);

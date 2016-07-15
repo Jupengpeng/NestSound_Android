@@ -239,4 +239,7 @@
         <item name="android:activityCloseExitAnimation">@anim/exit_right</item>
     </style>
     <style name="ProgressBarStyle" parent="@android:style/Widget.DeviceDefault.ProgressBar.Small" />
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 </resources>

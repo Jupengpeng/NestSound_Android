@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="colorPrimary">#ffffd705</color>
     <color name="main_theme_color">#ffffd705</color>
     <color name="main_theme_color_dark">#ffb79b04</color>
     <color name="black">#ff000000</color>

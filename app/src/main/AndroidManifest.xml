@@ -33,7 +33,7 @@
         android:label="@string/app_name"
         android:largeHeap="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.WelActivity">
+        <activity android:name=".ui.WelActivity" android:theme="@style/AppTheme2" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -41,7 +41,6 @@
         </activity>
         <activity android:name=".ui.MainTabActivity" android:screenOrientation="portrait" />
         <activity android:name=".ui.BrowserActivity" android:screenOrientation="portrait" android:theme="@style/MianTheme"/>
-        <!--<activity android:name=".ui.WelActivity" android:screenOrientation="portrait" />-->
 
         <activity android:name=".ui.main.MainActivity" android:screenOrientation="portrait" />
         <activity android:name=".ui.main.SongablumMoreActivity" android:screenOrientation="portrait" />
@@ -58,6 +57,7 @@
         <activity android:name=".ui.msg.MsgSystemActivity" android:screenOrientation="portrait"/>
 
         <activity android:name=".ui.mine.FollowAndFansActivity" android:screenOrientation="portrait" />
+        <activity android:name=".ui.mine.NewMineActivity" android:screenOrientation="portrait"/>
         <activity android:name=".ui.mine.MineActivity" android:screenOrientation="portrait"/>
         <activity android:name=".ui.mine.UserInfoActivity" android:screenOrientation="portrait"/>
 
