@@ -451,7 +451,6 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
             isPlay = true;
             return;
         }
-        useheadset = true;
 
         if (!useheadset) {
 
