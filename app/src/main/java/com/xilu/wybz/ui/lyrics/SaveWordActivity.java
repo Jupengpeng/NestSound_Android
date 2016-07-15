@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,11 +21,10 @@ import android.widget.EditText;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.WorksData;
-import com.xilu.wybz.common.FileDir;
 import com.xilu.wybz.common.Event;
+import com.xilu.wybz.common.FileDir;
 import com.xilu.wybz.common.KeySet;
 import com.xilu.wybz.common.MyCommon;
-import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.presenter.SaveWordPresenter;
 import com.xilu.wybz.ui.IView.ISaveWordView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
@@ -36,6 +34,7 @@ import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.utils.UploadFileUtil;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -43,7 +42,6 @@ import java.io.File;
 
 import butterknife.Bind;
 import butterknife.OnClick;
-import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by hujunwei on 16/5/13.
@@ -151,7 +149,7 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView {
             @Override
             public void onSuccess(String imageUrl) {
                 isAbleOnClick = true;
-                worksData.setPic(imageUrl.startsWith("http")?"":MyHttpClient.QINIU_URL+imageUrl);
+                worksData.setPic(imageUrl);
                 if(materialDialog!=null&&materialDialog.isShowing()) {
                     saveWordPresenter.saveLyrics(worksData);
                 }
