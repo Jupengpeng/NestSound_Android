@@ -7,7 +7,7 @@
     <dimen name="padding_m">15dp</dimen>
     <dimen name="padding_b">30dp</dimen>
     <dimen name="padding_bb">50dp</dimen>
-
+    <dimen name="fab_margin">16dp</dimen>
     <dimen name="actionbar_size">48dp</dimen>
     <dimen name="title_size_ss">10sp</dimen>
     <dimen name="title_size_s">14sp</dimen>

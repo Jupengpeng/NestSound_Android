@@ -41,7 +41,10 @@ public class SearchLyricsFragment extends BaseListFragment<WorksData> implements
         searchPresenter = new SearchPresenter(context,this);
         searchPresenter.init();
     }
-
+    @Override
+    public boolean hasPadding() {
+        return false;
+    }
     @Override
     protected void setUpData() {
         super.setUpData();
@@ -105,10 +108,6 @@ public class SearchLyricsFragment extends BaseListFragment<WorksData> implements
         recycler.enableLoadMore(false);
     }
 
-
-    protected RecyclerView.ItemDecoration getItemDecoration() {
-        return new SpacesItemDecoration(dip10);
-    }
     @Override
     protected BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
         WorksViewHolder holder = new WorksViewHolder(LayoutInflater.from(context).inflate(R.layout.activity_work_list_item, parent, false));

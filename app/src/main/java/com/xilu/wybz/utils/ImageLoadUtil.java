@@ -59,7 +59,10 @@ public class ImageLoadUtil {
         Picasso.with(context).load(url).placeholder(R.drawable.ic_default_pic).
                 resize(width, height).centerCrop().into(imageView);
     }
-
+    public static void loadHeadImage(Context context, String url, ImageView imageView,int width, int height) {
+        Picasso.with(context).load(url).placeholder(R.drawable.ic_default_head_252).
+                resize(width, height).centerCrop().into(imageView);
+    }
     public static void loadImage(Context context, int res, ImageView imageView,int width, int height) {
         Picasso.with(context).load(res).placeholder(R.drawable.ic_default_pic).
                 resize(width, height).centerCrop().into(imageView);

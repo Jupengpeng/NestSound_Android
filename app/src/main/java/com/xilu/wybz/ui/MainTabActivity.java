@@ -221,6 +221,8 @@ public class MainTabActivity extends BaseActivity {
     public void onEventMainThread(Event.LoginSuccessEvent event){
         showMsg("登陆成功！");
         UserBean ub = event.getUserBean();
+        ub.nickname = ub.name;
+        ub.signature = ub.descr;
         PrefsUtil.saveUserInfo(context, ub);
         MobclickAgent.onProfileSignIn(ub.userid+"");
         PushAgent.getInstance(context).setAlias(ub.userid+"", "yinchao");
@@ -267,8 +269,6 @@ public class MainTabActivity extends BaseActivity {
                 exitTime = System.currentTimeMillis();
                 return true;
             }
-
-
         }
         return super.onKeyDown(keyCode, event);
     }

@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 23
+    compileSdkVersion 22
     buildToolsVersion "23.0.2"
     resourcePrefix "AndroidMP3RecorderLibrary_"	//这个随便填
     defaultConfig {

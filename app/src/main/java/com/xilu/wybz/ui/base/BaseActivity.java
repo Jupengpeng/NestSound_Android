@@ -29,6 +29,7 @@ import com.xilu.wybz.ui.login.RegisterActivity;
 import com.xilu.wybz.ui.lyrics.ShareActivity;
 import com.xilu.wybz.ui.main.MainActivity;
 import com.xilu.wybz.ui.mine.MineActivity;
+import com.xilu.wybz.ui.mine.NewMineActivity;
 import com.xilu.wybz.ui.mine.UserInfoActivity;
 import com.xilu.wybz.ui.msg.MsgActivity;
 import com.xilu.wybz.ui.song.MakeSongActivity;
@@ -65,9 +66,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         context = this;
         isDestroy = false;
         adaptTheme(true);
-        if(this instanceof MakeSongActivity){
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        }
         setContentView(getLayoutRes());
         ButterKnife.bind(this);
         isChenjin = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
@@ -144,9 +142,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         Intent intent = new Intent();
         intent.setClass(context, cls);
         startActivity(intent);
-//        if (cls == LoginActivity.class) {
-//            overridePendingTransition(R.anim.activity_open, 0);
-//        }
     }
 
     protected void showLoading(View ll_loading) {
