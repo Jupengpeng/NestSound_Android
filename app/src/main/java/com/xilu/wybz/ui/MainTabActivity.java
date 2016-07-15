@@ -22,7 +22,6 @@ import com.xilu.wybz.ui.login.LoginActivity;
 import com.xilu.wybz.ui.lyrics.MakeWordActivity;
 import com.xilu.wybz.ui.main.MainActivity;
 import com.xilu.wybz.ui.mine.MineActivity;
-import com.xilu.wybz.ui.mine.NewMineActivity;
 import com.xilu.wybz.ui.msg.MsgActivity;
 import com.xilu.wybz.ui.record.InspireRecordActivity;
 import com.xilu.wybz.ui.song.NewMakeHotActivity;
@@ -133,7 +132,7 @@ public class MainTabActivity extends BaseActivity {
             if(arg0==1){
                 ((FindActivity)manager.getActivity("FIND")).initView();
             }else if(arg0==3){
-                ((NewMineActivity)manager.getActivity("MINE")).initData();
+                ((MineActivity)manager.getActivity("MINE")).initData();
             }
         }
         @Override
@@ -242,7 +241,7 @@ public class MainTabActivity extends BaseActivity {
             mMoreWindow.destroy();
         }
         if(manager!=null) {
-            ((NewMineActivity)manager.getActivity("MINE")).onDestroy();
+            ((MineActivity)manager.getActivity("MINE")).onDestroy();
         }
         EventBus.getDefault().unregister(this);
     }
