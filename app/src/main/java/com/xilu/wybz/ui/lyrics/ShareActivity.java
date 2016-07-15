@@ -3,26 +3,17 @@ package com.xilu.wybz.ui.lyrics;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.LinearLayout;
 
-import com.commit451.nativestackblur.NativeStackBlur;
-import com.umeng.socialize.UMShareAPI;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.ShareBean;
 import com.xilu.wybz.bean.WorksData;
+import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.ui.base.ToolbarActivity;
-import com.xilu.wybz.utils.BitmapUtils;
-import com.xilu.wybz.utils.DensityUtil;
-import com.xilu.wybz.utils.FastBlur;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.UmengShareUtil;
-import butterknife.Bind;
+
 import butterknife.OnClick;
 
 /**
@@ -53,10 +44,11 @@ public class ShareActivity extends ToolbarActivity {
         String shareTitle = worksData.title;
         String shareAuthor = worksData.author;
         String shareLink = worksData.shareurl;
-        String sharePic = worksData.pic;
+        String sharePic = MyHttpClient.QINIU_URL+worksData.pic;
         String shareBody = PrefsUtil.getUserId(context)==worksData.uid ? "我用音巢app创作了一首歌词，快来看看吧!" : "我在音巢app上发现一首好歌词，太棒了~";
         String shareContent = shareBody + " 《" + shareTitle + "》 ▷" + shareLink + " (@音巢音乐)";
-        ShareBean shareBean = new ShareBean(shareTitle, shareAuthor, shareContent, shareLink, sharePic, "");
+        String playUrl = worksData.playurl;
+        ShareBean shareBean = new ShareBean(shareTitle, shareAuthor, shareContent, shareLink, sharePic, playUrl);
         shareUtil = new UmengShareUtil(this,shareBean);
     }
 

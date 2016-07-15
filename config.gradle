@@ -15,7 +15,7 @@ ext {
                     "butterknife"           : "com.jakewharton:butterknife:7.0.1",
                     "glide"                 : "com.github.bumptech.glide:glide:3.7.0",
                     "picasso"               : "com.squareup.picasso:picasso:2.5.2",
-                    "eventbus"              : "org.greenrobot:eventbus:3.0.0",
+                    "eventbus"               : "org.greenrobot:eventbus:3.0.0",
                     "async"                 : "com.loopj.android:android-async-http:1.4.8",
                     "okhttp"                : "com.squareup.okhttp3:okhttp:3.2.0",
                     "nativestackblur"       : "com.commit451:NativeStackBlur:1.0.2",

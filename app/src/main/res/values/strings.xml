@@ -27,7 +27,7 @@
     <string name="dialog_title">操作</string>
     <string name="please_wait">正在处理中，请稍候…</string>
     <string name="please_wait_down">正在下载中，请稍候…</string>
-    <string name="please_wait_init">正在初始化，请稍候…</string>
+    <string name="please_wait_init">戴上耳机，效果更好哦</string>
     <string name="init_ok">初始化完成</string>
 
     <string name="et_digits">0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLIMNOPQRSTUVWXYZ</string>
