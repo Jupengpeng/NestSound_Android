@@ -21,7 +21,7 @@ import com.xilu.wybz.ui.find.FindActivity;
 import com.xilu.wybz.ui.login.LoginActivity;
 import com.xilu.wybz.ui.lyrics.MakeWordActivity;
 import com.xilu.wybz.ui.main.MainActivity;
-import com.xilu.wybz.ui.mine.MineActivity;
+import com.xilu.wybz.ui.mine.NewMineActivity;
 import com.xilu.wybz.ui.msg.MsgActivity;
 import com.xilu.wybz.ui.record.InspireRecordActivity;
 import com.xilu.wybz.ui.song.NewMakeHotActivity;
@@ -102,7 +102,7 @@ public class MainTabActivity extends BaseActivity {
         list.add(getView("FIND", intent));
         intent = new Intent(this, MsgActivity.class);
         list.add(getView("MSG", intent));
-        intent = new Intent(this, MineActivity.class);
+        intent = new Intent(this, NewMineActivity.class);
         list.add(getView("MINE", intent));
         adapter = new MyPagerAdapter(list);
         viewpager.setAdapter(adapter);
@@ -132,7 +132,7 @@ public class MainTabActivity extends BaseActivity {
             if(arg0==1){
                 ((FindActivity)manager.getActivity("FIND")).initView();
             }else if(arg0==3){
-                ((MineActivity)manager.getActivity("MINE")).initData();
+                ((NewMineActivity)manager.getActivity("MINE")).initData();
             }
         }
         @Override
@@ -221,6 +221,8 @@ public class MainTabActivity extends BaseActivity {
     public void onEventMainThread(Event.LoginSuccessEvent event){
         showMsg("登陆成功！");
         UserBean ub = event.getUserBean();
+        ub.nickname = ub.name;
+        ub.signature = ub.descr;
         PrefsUtil.saveUserInfo(context, ub);
         MobclickAgent.onProfileSignIn(ub.userid+"");
         PushAgent.getInstance(context).setAlias(ub.userid+"", "yinchao");
@@ -239,7 +241,7 @@ public class MainTabActivity extends BaseActivity {
             mMoreWindow.destroy();
         }
         if(manager!=null) {
-            ((MineActivity)manager.getActivity("MINE")).onDestroy();
+            ((NewMineActivity)manager.getActivity("MINE")).onDestroy();
         }
         EventBus.getDefault().unregister(this);
     }
@@ -267,8 +269,6 @@ public class MainTabActivity extends BaseActivity {
                 exitTime = System.currentTimeMillis();
                 return true;
             }
-
-
         }
         return super.onKeyDown(keyCode, event);
     }

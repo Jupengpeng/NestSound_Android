@@ -49,6 +49,11 @@ public class SearchSongFragment extends BaseListFragment<WorksData> implements I
     }
 
     @Override
+    public boolean hasPadding() {
+        return false;
+    }
+
+    @Override
     protected void setUpData() {
         super.setUpData();
     }
@@ -104,9 +109,6 @@ public class SearchSongFragment extends BaseListFragment<WorksData> implements I
         llNoData.setVisibility(View.VISIBLE);
         recycler.onRefreshCompleted();
         recycler.enableLoadMore(false);
-    }
-    protected RecyclerView.ItemDecoration getItemDecoration() {
-        return new SpacesItemDecoration(dip10);
     }
     @Override
     protected BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {

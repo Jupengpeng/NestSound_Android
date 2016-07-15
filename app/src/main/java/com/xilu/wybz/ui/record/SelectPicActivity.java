@@ -114,14 +114,18 @@ public class SelectPicActivity extends ToolbarActivity {
         });
     }
     @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if(picList.size()>0){
+            selectPicProvider.setCount(picList.size());
+        }
+    }
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_select_pic, menu);
         MenuItem menuItem = menu.findItem(R.id.menu_select);
         selectPicProvider = (SelectPicProvider)MenuItemCompat.getActionProvider(menuItem);;
         selectPicProvider.onCreateActionView();
-        if(picList.size()>0){
-            selectPicProvider.setCount(picList.size());
-        }
         selectPicProvider.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {

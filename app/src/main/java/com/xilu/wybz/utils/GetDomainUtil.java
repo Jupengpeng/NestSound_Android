@@ -96,8 +96,10 @@ public class GetDomainUtil {
                     JSONObject jsonObject = new JSONObject(response);
                     int code = jsonObject.getInt("code");
                     if(code==200){
-                        UserBean userBean = ParseUtils.getUserBean(mContext,response);
-                        PrefsUtil.saveUserInfo(mContext, userBean);
+                        UserBean userBean1 = ParseUtils.getUserBean(mContext,response);
+                        UserBean userBean2 = PrefsUtil.getUserInfo(mContext);
+                        userBean2.loginToken = userBean1.loginToken;
+                        PrefsUtil.saveUserInfo(mContext, userBean2);
                     }else{
                         //清除本地用户信息
                         PrefsUtil.saveUserInfo(mContext, new UserBean());

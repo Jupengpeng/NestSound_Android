@@ -77,8 +77,8 @@ public class SettingActivity extends ToolbarActivity {
     public void loadUserInfo(){
         UserBean userInfo = PrefsUtil.getUserInfo(context);
         if(!TextUtils.isEmpty(userInfo.headurl))loadImage(userInfo.headurl,ivHead);
-        if(!TextUtils.isEmpty(userInfo.name))tvName.setText(userInfo.name);
-        if(!TextUtils.isEmpty(userInfo.descr))tvSign.setText(userInfo.descr);
+        if(!TextUtils.isEmpty(userInfo.nickname))tvName.setText(userInfo.nickname);
+        if(!TextUtils.isEmpty(userInfo.signature))tvSign.setText(userInfo.signature);
     }
     @OnClick({R.id.iv_modify, R.id.ll_clear_cache, R.id.ll_score, R.id.ll_feedback, R.id.ll_loginout})
     public void onClick(View view) {

@@ -54,6 +54,7 @@ public class MineActivity extends ToolbarActivity {
     StickyNavLayout stickynavLayout;
     @Bind(R.id.id_stickynavlayout_viewpager)
     ViewPager container;
+
     boolean firstLoadUserInfo;
     int currentIndex;
     @Bind(R.id.ll_myrecord)
@@ -67,7 +68,6 @@ public class MineActivity extends ToolbarActivity {
     private MineAdapter pagerAdapter;
     private List<LinearLayout> tabs;
     public boolean isFirst;
-
 
     @Override
     public boolean canBack() {
@@ -189,8 +189,6 @@ public class MineActivity extends ToolbarActivity {
             localUserBean.fansnum = userBean.fansnum;
             localUserBean.gznum = userBean.gznum;
             if (userBean.userid > 0) localUserBean.userid = userBean.userid;
-            if (StringUtil.isNotBlank(userBean.nickname)) localUserBean.name = userBean.nickname;
-            if (StringUtil.isNotBlank(userBean.signature)) localUserBean.descr = userBean.signature;
             if (StringUtil.isNotBlank(userBean.headurl)) localUserBean.headurl = userBean.headurl;
             PrefsUtil.saveUserInfo(context, localUserBean);
             //更新本地我的信息
@@ -204,9 +202,9 @@ public class MineActivity extends ToolbarActivity {
             loadImage(MyCommon.getImageUrl(userBean.headurl, headWidth, headWidth), ivHead);
         }
         updateUserFansNum(userBean);
-        if (StringUtil.isNotBlank(userBean.name)) userTvName.setText(userBean.name);
-        if (StringUtil.isNotBlank(userBean.descr)) userTvInfo.setText(userBean.descr);
-        if (StringUtil.isNotBlank(userBean.name)) setTitle(userBean.name);
+        if (StringUtil.isNotBlank(userBean.nickname)) userTvName.setText(userBean.nickname);
+        if (StringUtil.isNotBlank(userBean.signature)) userTvInfo.setText(userBean.signature);
+        if (StringUtil.isNotBlank(userBean.nickname)) setTitle(userBean.nickname);
     }
 
     public void updateUserFansNum(UserBean userBean) {

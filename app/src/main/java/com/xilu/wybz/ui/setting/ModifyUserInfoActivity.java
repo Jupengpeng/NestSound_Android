@@ -30,7 +30,6 @@ import java.io.FileOutputStream;
 import butterknife.Bind;
 import butterknife.OnClick;
 import org.greenrobot.eventbus.EventBus;
-
 /**
  * Created by June on 16/5/13.
  */
@@ -49,7 +48,6 @@ public class ModifyUserInfoActivity extends ToolbarActivity implements IModifyUs
     UserBean userBean;
     DatePickerDialog datePickerDialog;
     int type;//0 修改昵称 1 修改签名
-    String content;
     String titles[] = new String[]{"修改昵称", "修改签名", "修改性别", "修改生日"};
     String genders[] = new String[]{"未知","女", "男"};
     int maxLengths[] = new int[]{16, 30};
@@ -87,8 +85,8 @@ public class ModifyUserInfoActivity extends ToolbarActivity implements IModifyUs
         initUserInfo();
     }
     public void initUserInfo() {
-        tv_username.setText(userBean.name);
-        tv_usersign.setText(userBean.descr);
+        tv_username.setText(userBean.nickname);
+        tv_usersign.setText(userBean.signature);
         tv_birthday.setText(userBean.birthday);
         tv_gender.setText(genders[userBean.sex]);
         if(StringUtil.isNotBlank(userBean.headurl)){
@@ -178,8 +176,8 @@ public class ModifyUserInfoActivity extends ToolbarActivity implements IModifyUs
 
     //修改昵称和签名
     public void showModifyDialog() {
-        String name = TextUtils.isEmpty(userBean.name) ? "昵称" : userBean.name;
-        String desc = TextUtils.isEmpty(userBean.descr) ? "签名" : userBean.descr;
+        String nickname = TextUtils.isEmpty(userBean.nickname) ? "昵称" : userBean.nickname;
+        String signature = TextUtils.isEmpty(userBean.signature) ? "签名" : userBean.signature;
         new MaterialDialog.Builder(this)
                 .title(titles[type])
                 .inputType(InputType.TYPE_CLASS_TEXT |
@@ -187,13 +185,13 @@ public class ModifyUserInfoActivity extends ToolbarActivity implements IModifyUs
                         InputType.TYPE_TEXT_FLAG_CAP_WORDS)
                 .inputRange(2, maxLengths[type])
                 .positiveText(R.string.submit)
-                .input(type == 0 ? name : desc, "", false, new MaterialDialog.InputCallback() {
+                .input(type == 0 ? nickname : signature, "", false, new MaterialDialog.InputCallback() {
                     @Override
                     public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
                         if (type == 0)
-                            userBean.name = input.toString();
+                            userBean.nickname = input.toString();
                         else if (type == 1)
-                            userBean.descr = input.toString();
+                            userBean.signature = input.toString();
                         UpdateUserInfo();
                     }
                 }).show();
