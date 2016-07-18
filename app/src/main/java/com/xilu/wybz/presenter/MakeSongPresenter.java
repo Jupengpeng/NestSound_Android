@@ -124,7 +124,7 @@ public class MakeSongPresenter extends BasePresenter<IMakeSongView> {
         params.put("useheadset",worksData.useheadset);
         params.put("musicurl",worksData.musicurl);
 
-        httpUtils.post(MyHttpClient.getTuningSongUrl(),params,new AppJsonCalback(context){
+        httpUtils.postLong(MyHttpClient.getTuningSongUrl(),params,new AppJsonCalback(context){
 
             @Override
             public Type getDataType() {

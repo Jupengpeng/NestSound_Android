@@ -53,12 +53,12 @@ public class OkHttpUtils {
                     return true;
                 }
             });
+            okHttpClientBuilder.retryOnConnectionFailure(false);
 
             mOkHttpClient = okHttpClientBuilder.build();
         } else {
             mOkHttpClient = okHttpClient;
         }
-
         init();
     }
 

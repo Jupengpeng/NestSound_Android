@@ -66,6 +66,31 @@ public class HttpUtils {
                 .execute(stringCallback);
 
     }
+    //普通post提交
+    public void postLong(String url, Map<String, String> params, Callback stringCallback) {
+        if(params==null){
+            params = new HashMap<>();
+        }
+        params.put("expiretime",System.currentTimeMillis()+ PhoneInfoUtil.getPhoneImei(context));
+        params.put("token", PrefsUtil.getUserInfo(context).loginToken);
+
+        String paramString = new Gson().toJson(params);
+
+        Log.d("url","url:"+url+"params:"+paramString);
+        String content = RSAUtils.encodeConvert(RSAUtils.encryptByPublicKey(paramString).getBytes());
+        Log.d("url","encode:"+content);
+        OkHttpUtils.post()
+                .url(MyHttpClient.BASE_URL + url)
+                .tag(httpTag)
+                .addParams("data", content)
+                .headers(headers)
+                .build()
+                .connTimeOut(60000)
+                .readTimeOut(60000)
+                .writeTimeOut(60000)
+                .execute(stringCallback);
+
+    }
 
     //普通post提交
     public RequestCall post(String tag, String url, Map<String, String> params, Callback stringCallback) {
