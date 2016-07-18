@@ -45,7 +45,7 @@ public class SaveSongPresenter extends BasePresenter<ISaveSongView> {
         }
         Log.e("url", params.toString());
 
-        httpUtils.post(MyHttpClient.getSaveSongUrl(), params, new AppJsonCalback(context) {
+        httpUtils.postLong(MyHttpClient.getSaveSongUrl(), params, new AppJsonCalback(context) {
 
                     @Override
                     public Type getDataType() {

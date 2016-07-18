@@ -1,6 +1,7 @@
 package com.xilu.wybz.http.callback;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.xilu.wybz.bean.JsonResponse;
 import com.xilu.wybz.utils.NetWorkUtil;
@@ -77,8 +78,13 @@ public class AppJsonCalback extends JsonCallback {
     @Override
     public void onError(Call call, Exception e) {
         super.onError(call, e);
-        if (!NetWorkUtil.isNetworkAvailable(context)){
+        if (e.getMessage().contains("timeout")){
+            Log.i("url",e.getMessage());
             ToastUtils.toast(context,"网络连接失败");
+            return;
+        }
+        if (!NetWorkUtil.isNetworkAvailable(context)){
+            ToastUtils.toast(context,"链接超时");
         } else {
             ToastUtils.toast(context,"服务器错误");
         }
