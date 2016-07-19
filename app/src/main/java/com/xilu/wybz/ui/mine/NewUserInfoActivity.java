@@ -89,7 +89,7 @@ public class NewUserInfoActivity extends BaseActivity implements IOnlyFollowView
     public OnlyFollowPresenter presenter;
     private int isFocus = -1;
     private MenuItem menuFollowItem;
-    private int[] followIcon = new int[]{R.drawable.ic_user_follow, R.drawable.ic_user_followed, R.drawable.ic_user_each_follow};
+    private int[] followIcon = new int[]{R.drawable.ic_toolbar_follow, R.drawable.ic_toolbar_followed, R.drawable.ic_toolbar_each_follow};
     int userId;
     String userName;
     boolean isFirst;

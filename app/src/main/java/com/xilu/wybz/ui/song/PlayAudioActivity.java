@@ -138,10 +138,10 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     ShareDialog shareDialog;
     PlayPresenter playPresenter;
     List<ActionBean> actionBeanList;
-    String[] actionTitles = new String[]{"个人主页", "举报"};
-    String[] actionTitles2 = new String[]{"删除"};
-    String[] actionTypes = new String[]{"homepage", "jubao"};
-    String[] actionTypes2 = new String[]{"del"};
+    String[] actionTitles = new String[]{"分享","个人主页", "举报"};
+    String[] actionTitles2 = new String[]{"分享","删除"};
+    String[] actionTypes = new String[]{"share","homepage", "jubao"};
+    String[] actionTypes2 = new String[]{"share","del"};
     PlayLyricsAdapter playLyricsAdapter;
     List<String> lyricsList;
 
@@ -410,26 +410,22 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_share, menu);
+        getMenuInflater().inflate(R.menu.menu_more, menu);
+        MenuItem menuItem = menu.findItem(R.id.menu_more);
+        menuItem.setIcon(R.drawable.ic_play_more);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_share:
-                if (worksData != null && worksData.itemid > 0) {
-                    if (shareDialog == null) {
-                        String shareTitle = worksData.title;
-                        String shareAuthor = worksData.author;
-                        String shareLink = worksData.shareurl + "?id=" + worksData.itemid;
-                        String sharePic = worksData.pic;
-                        String playurl = worksData.playurl;
-                        String shareContent = "我在音巢APP淘到一首好听的歌，快来看看有没有你喜欢的原创style 《" + shareTitle + "》 ▷" + shareLink + " (@音巢音乐)";
-                        shareDialog = new ShareDialog(PlayAudioActivity.this, new ShareBean(shareTitle, shareAuthor, shareContent, shareLink, sharePic, playurl));
+            case R.id.menu_more:
+                if (actionBeanList != null && actionBeanList.size() > 0) {
+                    if (actionMoreDialog == null) {
+                        actionMoreDialog = new ActionMoreDialog(this, this, actionBeanList);
                     }
-                    if (!shareDialog.isShowing()) {
-                        shareDialog.showDialog();
+                    if (!actionMoreDialog.isShowing()) {
+                        actionMoreDialog.showDialog();
                     }
                 }
                 return true;
@@ -437,7 +433,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
         return super.onOptionsItemSelected(item);
     }
 
-    @OnClick({R.id.iv_mode, R.id.rl_zan, R.id.rl_reply, R.id.rl_more, R.id.iv_pre, R.id.iv_play, R.id.iv_next, R.id.iv_hot, R.id.rl_fav})
+    @OnClick({R.id.iv_mode, R.id.rl_zan, R.id.rl_reply, R.id.rl_shang, R.id.iv_pre, R.id.iv_play, R.id.iv_next, R.id.iv_hot, R.id.rl_fav})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.rl_fav:
@@ -456,15 +452,8 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
             case R.id.rl_reply:
                 toCommentActivity();
                 break;
-            case R.id.rl_more:
-                if (actionBeanList != null && actionBeanList.size() > 0) {
-                    if (actionMoreDialog == null) {
-                        actionMoreDialog = new ActionMoreDialog(this, this, actionBeanList);
-                    }
-                    if (!actionMoreDialog.isShowing()) {
-                        actionMoreDialog.showDialog();
-                    }
-                }
+            case R.id.rl_shang:
+
                 break;
             case R.id.iv_pre:
                 musicBinder.toPreMusic();
@@ -706,16 +695,39 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         actionMoreDialog.dismiss();
-        if (actionBeanList.size() > 1) {
-            switch (position) {
-                case 0://个人主页
-                    toUserInfo();
-                    break;
-                case 1:
-                    toJubao();
-                    break;
-            }
-        } else if (actionBeanList.size() == 1) {
+//        if (actionBeanList.size() > 2) {
+//            switch (position) {
+//                case 0://个人主页
+//                    toUserInfo();
+//                    break;
+//                case 1:
+//                    toJubao();
+//                    break;
+//            }
+//        } else if (actionBeanList.size() == 1) {
+//            showDeleteDialog();
+//        }
+        String type = actionBeanList.get(position).getType();
+        if(type.equals("share")){
+            if (worksData != null && worksData.itemid > 0) {
+                    if (shareDialog == null) {
+                        String shareTitle = worksData.title;
+                        String shareAuthor = worksData.author;
+                        String shareLink = worksData.shareurl + "?id=" + worksData.itemid;
+                        String sharePic = worksData.pic;
+                        String playurl = worksData.playurl;
+                        String shareContent = "我在音巢APP淘到一首好听的歌，快来看看有没有你喜欢的原创style 《" + shareTitle + "》 ▷" + shareLink + " (@音巢音乐)";
+                        shareDialog = new ShareDialog(PlayAudioActivity.this, new ShareBean(shareTitle, shareAuthor, shareContent, shareLink, sharePic, playurl));
+                    }
+                    if (!shareDialog.isShowing()) {
+                        shareDialog.showDialog();
+                    }
+                }
+        }else if(type.equals("homepage")){
+            toUserInfo();
+        }else if(type.equals("jubao")){
+            toJubao();
+        }else if(type.equals("del")){
             showDeleteDialog();
         }
     }
