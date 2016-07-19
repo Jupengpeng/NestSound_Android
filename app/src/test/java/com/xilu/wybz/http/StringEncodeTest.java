@@ -37,15 +37,15 @@ public class StringEncodeTest {
 
 //        String text = "根据口味别估计额外功能为欧冠我见过过偶尔我后宫过和我饿哦个文件欧冠和围殴文件柜过欧文欧冠和我玩微话题偶尔我火攻我刚好伪皇宫过委会偶尔我会更根据口味别估计额外功能为欧冠我见过过偶尔我后宫过和我饿哦个文件欧冠和围殴文件柜过欧文欧冠和我玩微话题偶尔我火攻我刚好伪皇宫过委会偶尔我会更根据口味别估计额外功能为欧冠我见过过偶尔我后宫过和我饿哦个文件欧冠和围殴文件柜过欧文欧冠和我玩微话题偶尔我火攻我刚好伪皇宫过委会偶尔我会更";
 //        String text = "结果高偶尔安海鸥结果高偶尔安海鸥让我难过高如果高欧文还工委结果高偶尔安海鸥让我难过高如果高欧文还工委结果高偶尔安海鸥让我难过高如果高欧文还工委结果高偶尔安海鸥让我难过高如果高欧文还工委结果高偶尔安海鸥让我难过高如果高欧文还工委结果高偶尔安海鸥让我难过高如果高欧文还工委结果高偶尔安海鸥让我难过高如果高欧文还工委结果高偶尔安海鸥让我难过高如果高欧文还工委让我难过高如果高欧文还工委";
-        String text = "{\"expiretime\":\"146640559034799000619879258\",\"token\":\"e638ac72b8983df9b1e88395838d1dce\",\"comment\":\"哦了了了咯哦哦哦哦哦哦\",\"uid\":\"26516\",\"target_uid\":\"0\",\"type\":\"1\",\"itemid\":\"8236\",\"comment_type\":\"1\"}";
+//        String text = "{\"expiretime\":\"146640559034799000619879258\",\"token\":\"e638ac72b8983df9b1e88395838d1dce\",\"comment\":\"哦了了了咯哦哦哦哦哦哦\",\"uid\":\"26516\",\"target_uid\":\"0\",\"type\":\"1\",\"itemid\":\"8236\",\"comment_type\":\"1\"}";
 
-
+        String text = "TEpsYmhBMXkyQ09GL05RRE9rSTFRTXVOVkJLSTVaZHRpSURXVUdCdkdkRm95eWpndng5YnpyQWVQOUpDV0Z4dnB6bkRyaTl3aDFEVzlDRDhiOG11cUVqcW12K2N1ZTNLd1NWQ3JHcU11N1JFdTJVOHJraGZXSWVvcTN1QS9pU1luYm0xUmJJbkZLL25ONGZjTHRsWUJSTHpTUWI2TGNZUWdQalhZazFtcm5NPQ==";
         String s1 = RSAUtils.encryptByPublicKey(text);
         String s2 = RSAUtils.decryptByPrivateKey(s1);
 
 
+        System.out.println("s0 = " + RSAUtils.decryptByPublicKey(new String(RSAUtils.decodeConvert(text), "UTF-8")));
         System.out.println("s1 = " + s1);
-        System.out.println("s0 = " + text);
         System.out.println("s2 = " + s2);
 
         System.out.println("sk = " + RSAUtils.decrypt(RSAUtils.encrypt(text)));

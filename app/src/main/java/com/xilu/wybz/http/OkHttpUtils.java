@@ -37,7 +37,7 @@ import okhttp3.Response;
  */
 public class OkHttpUtils {
 
-    public static final long DEFAULT_MILLISECONDS = 10000;
+    public static final long DEFAULT_MILLISECONDS = 15000;
     private static OkHttpUtils mInstance;
     private OkHttpClient mOkHttpClient;
     private Handler mDelivery;
@@ -53,12 +53,12 @@ public class OkHttpUtils {
                     return true;
                 }
             });
+            okHttpClientBuilder.retryOnConnectionFailure(false);
 
             mOkHttpClient = okHttpClientBuilder.build();
         } else {
             mOkHttpClient = okHttpClient;
         }
-
         init();
     }
 
