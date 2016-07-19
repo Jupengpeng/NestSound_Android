@@ -21,15 +21,7 @@ public class DeviceUtils {
     public static String getDeviceId() {
 
         TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService( Context.TELEPHONY_SERVICE );
-        /*
-         * getDeviceId() function Returns the unique device ID.
-         * for example,the IMEI for GSM and the MEID or ESN for CDMA phones.
-         */
         String imeistring = telephonyManager.getDeviceId();
-        /*
-        * getSubscriberId() function Returns the unique subscriber ID,
-        * for example, the IMSI for a GSM phone.
-        */
         String imsistring = telephonyManager.getSubscriberId();
         return imsistring;
     }
