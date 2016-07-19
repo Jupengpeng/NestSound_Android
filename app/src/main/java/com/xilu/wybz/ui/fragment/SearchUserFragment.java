@@ -16,7 +16,7 @@ import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.SearchPresenter;
 import com.xilu.wybz.ui.IView.ISearchView;
-import com.xilu.wybz.ui.mine.UserInfoActivity;
+import com.xilu.wybz.ui.mine.NewUserInfoActivity;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtil;
@@ -156,7 +156,7 @@ public class SearchUserFragment extends BaseListFragment<FansBean> implements IS
         @Override
         public void onItemClick(View view, int position) {
             if (mDataList.get(position).uid>0&&mDataList.get(position).uid!= PrefsUtil.getUserId(context)) {
-                UserInfoActivity.ToUserInfoActivity(context,mDataList.get(position).uid,mDataList.get(position).fansname);
+                NewUserInfoActivity.ToNewUserInfoActivity(context,mDataList.get(position).uid,mDataList.get(position).fansname);
             }
         }
     }

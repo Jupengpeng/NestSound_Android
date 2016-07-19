@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -23,7 +24,7 @@ import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.LyricsPresenter;
 import com.xilu.wybz.ui.IView.ILyricsView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
-import com.xilu.wybz.ui.mine.UserInfoActivity;
+import com.xilu.wybz.ui.mine.NewUserInfoActivity;
 import com.xilu.wybz.ui.setting.SettingFeedActivity;
 import com.xilu.wybz.ui.song.CommentActivity;
 import com.xilu.wybz.utils.BitmapUtils;
@@ -33,6 +34,7 @@ import com.xilu.wybz.utils.NumberUtil;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringStyleUtil;
 import com.xilu.wybz.utils.SystemUtils;
+import com.xilu.wybz.view.CircleImageView;
 import com.xilu.wybz.view.dialog.ActionMoreDialog;
 import com.xilu.wybz.view.dialog.ShareDialog;
 
@@ -59,7 +61,7 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
     @Bind(R.id.ly_content)
     TextView ly_content;
     @Bind(R.id.iv_head)
-    SimpleDraweeView ivHead;
+    CircleImageView ivHead;
     @Bind(R.id.tv_author)
     TextView tvAuthor;
     @Bind(R.id.tv_time)
@@ -136,7 +138,7 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
         }
     }
 
-    @OnClick({R.id.rl_zan, R.id.rl_fav, R.id.iv_nonet, R.id.rl_head, R.id.iv_comment})
+    @OnClick({R.id.rl_zan, R.id.rl_fav, R.id.iv_nonet, R.id.rl_head, R.id.rl_comment, R.id.tv_author})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.rl_fav:
@@ -152,12 +154,13 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
             case R.id.iv_nonet:
                 loadData();
                 break;
-            case R.id.iv_comment:
+            case R.id.rl_comment:
                 toCommentActivity();
                 break;
+            case R.id.tv_author:
             case R.id.rl_head:
                 if (worksData.uid > 0 && worksData.uid != PrefsUtil.getUserId(context)) {
-                    UserInfoActivity.ToUserInfoActivity(context, worksData.uid, worksData.author);
+                    NewUserInfoActivity.ToNewUserInfoActivity(context, worksData.uid, worksData.author);
                 }
                 break;
         }
@@ -214,10 +217,8 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
             }else{
                 tvCommentNum.setText("999+");
             }
-            ivComment.setImageResource(R.drawable.ic_lyrics_reply);
         } else {
             tvCommentNum.setText("");
-            ivComment.setImageResource(R.drawable.ic_lyrics_reply_full);
         }
     }
 
@@ -250,10 +251,12 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
         worksData.type = worksData.status;//type表示是否公开
         worksData.status = 2;//status=2歌词
         ivZan.setImageResource(worksData.getIsZan() == 0 ? R.drawable.ic_lyrics_zan1 : R.drawable.ic_lyrics_zan2);
+        ivFav.setImageResource(worksData.getIscollect() == 0 ? R.drawable.ic_lyrics_fav1 : R.drawable.ic_lyrics_fav2);
         loadTitleContent();
         tvAuthor.setText(worksData.getAuthor());
         tvTime.setText(DateTimeUtil.timestamp2Date(worksData.getCreatedate()));
         String headUrl = worksData.headurl.replace(MyCommon.defult_head, "");
+        loadHeadImage(headUrl.replace(MyCommon.defult_head,""),ivHead);
         updateCommentNum();
         updateZanFavNum();
     }
@@ -276,7 +279,7 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
         worksData.zannum = worksData.zannum + (worksData.isZan == 1 ? 1 : -1);
         updateZanFavNum();
         EventBus.getDefault().post(new Event.UpdateWorkNum(worksData, 2));
-//        ivZan.startAnimation(AnimationUtils.loadAnimation(context, R.anim.dianzan_anim));
+        ivZan.startAnimation(AnimationUtils.loadAnimation(context, R.anim.dianzan_anim));
         ivZan.setImageResource(worksData.isZan == 0 ? R.drawable.ic_lyrics_zan1 : R.drawable.ic_lyrics_zan2);
 
     }
@@ -310,7 +313,7 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
         updateZanFavNum();
         EventBus.getDefault().post(new Event.UpdateWorkNum(worksData, 1));
         EventBus.getDefault().post(new Event.UpdataWorksList(worksData, 3, 1 - worksData.iscollect));
-//        ivFav.startAnimation(AnimationUtils.loadAnimation(context, R.anim.dianzan_anim));
+        ivFav.startAnimation(AnimationUtils.loadAnimation(context, R.anim.dianzan_anim));
         ivFav.setImageResource(worksData.iscollect == 0 ? R.drawable.ic_lyrics_fav1 : R.drawable.ic_lyrics_fav2);
     }
 

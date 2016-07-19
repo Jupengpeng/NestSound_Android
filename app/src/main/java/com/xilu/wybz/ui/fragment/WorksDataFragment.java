@@ -127,7 +127,7 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
 
     @Override
     public void initView() {
-        recycler.enablePullToRefresh(false);
+//        recycler.enablePullToRefresh(false);
     }
 
     @Override

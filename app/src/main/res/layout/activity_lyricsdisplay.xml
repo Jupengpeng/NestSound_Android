@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -25,7 +26,89 @@
                 android:layout_weight="1"
                 android:overScrollMode="never"
                 android:scrollbars="none">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="51dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="15dp">
 
+                    <RelativeLayout
+                        android:id="@+id/rl_head"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent">
+
+                        <com.xilu.wybz.view.CircleImageView
+                            android:id="@+id/iv_head"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:layout_centerInParent="true"
+                            fresco:border_color="@color/main_text_color3"
+                            fresco:border_width="@dimen/spit_line_height"
+                            android:scaleType="centerCrop"
+                            tools:src="@drawable/ic_default_pic" />
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="12dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_author"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            tools:text="@string/app_name"
+                            android:textColor="@color/lyrics_color"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/tv_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="1dp"
+                            tools:text="2016-08-12"
+                            android:textColor="@color/main_text_color2"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/ll_follow"
+                        android:layout_width="61dp"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/iv_follow_state"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:src="@drawable/ic_user_follow" />
+
+                        <TextView
+                            android:id="@+id/tv_follow_state"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="2dp"
+                            android:text="加关注"
+                            android:textColor="@color/main_theme_color2"
+                            android:textSize="10sp" />
+                    </LinearLayout>
+                </LinearLayout>
+                <include layout="@layout/view_spit_line" />
                 <TextView
                     android:id="@+id/ly_content"
                     android:layout_width="wrap_content"
@@ -40,6 +123,7 @@
                     android:text=""
                     android:textColor="#333"
                     android:textSize="15sp" />
+                </LinearLayout>
             </com.xilu.wybz.view.ReboundScrollView>
 
 
@@ -47,66 +131,47 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="44dp"
                 android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingLeft="15dp">
-
+                android:orientation="horizontal">
                 <RelativeLayout
-                    android:id="@+id/rl_head"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent">
-
-                    <com.facebook.drawee.view.SimpleDraweeView
-                        android:id="@+id/iv_head"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_centerInParent="true"
-                        fresco:actualImageScaleType="centerCrop"
-                        fresco:fadeDuration="300"
-                        fresco:failureImage="@drawable/ic_default_head_252"
-                        fresco:failureImageScaleType="centerCrop"
-                        fresco:placeholderImage="@drawable/ic_default_pic"
-                        fresco:roundAsCircle="true" />
-                </RelativeLayout>
-
-                <LinearLayout
+                    android:id="@+id/rl_comment"
                     android:layout_width="0dp"
+                    android:layout_weight="2.5"
+                    android:paddingLeft="20dp"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="12dp"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:orientation="vertical">
+                    android:background="#f1f1f1"
+                    >
 
-                    <TextView
-                        android:id="@+id/tv_author"
+                    <ImageView
+                        android:id="@+id/iv_comment"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:singleLine="true"
-                        android:text=""
-                        android:textColor="@color/lyrics_color"
-                        android:textSize="12.5dp" />
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_lyrics_reply_full" />
 
                     <TextView
-                        android:id="@+id/tv_time"
+                        android:id="@+id/tv_comment_num"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="1dp"
-                        android:text=""
-                        android:textColor="@color/main_text_color2"
-                        android:textSize="12.5dp" />
-
-
-                </LinearLayout>
-
+                        android:layout_marginLeft="5dp"
+                        android:layout_toRightOf="@+id/iv_comment"
+                        tools:text="122"
+                        android:layout_centerVertical="true"
+                        android:textColor="@color/main_text_color3"
+                        android:textSize="12sp" />
+                </RelativeLayout>
+                    <View
+                        android:layout_width="@dimen/spit_line_height"
+                        android:background="@color/split_line"
+                        android:layout_height="match_parent" />
 
                     <RelativeLayout
                         android:id="@+id/rl_fav"
-                        android:layout_width="wrap_content"
-                        android:layout_marginRight="10dp"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
                         android:layout_height="match_parent"
-                        android:minWidth="50dp"
                         >
 
                         <ImageView
@@ -123,17 +188,17 @@
                             android:layout_marginLeft="5dp"
                             android:layout_toRightOf="@+id/iv_fav"
                             android:layout_centerVertical="true"
-                            android:text="1"
-                            android:textColor="@color/main_text_color"
-                            android:textSize="15sp" />
+                            tools:text="122"
+                            android:textColor="@color/main_text_color3"
+                            android:textSize="12sp" />
                     </RelativeLayout>
 
                     <RelativeLayout
                         android:id="@+id/rl_zan"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginRight="10dp"
-                        android:minWidth="50dp">
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:layout_height="match_parent">
 
                         <ImageView
                             android:id="@+id/iv_zan"
@@ -149,34 +214,35 @@
                             android:layout_centerVertical="true"
                             android:layout_toRightOf="@+id/iv_zan"
                             android:layout_marginLeft="5dp"
-                            android:text="1"
-                            android:textColor="@color/main_text_color"
-                            android:textSize="15sp" />
+                            tools:text="122"
+                            android:textColor="@color/main_text_color3"
+                            android:textSize="12sp" />
                     </RelativeLayout>
+
                 <RelativeLayout
-                    android:id="@+id/rl_comment"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="12dp"
-                    android:minWidth="50dp">
+                    android:id="@+id/rl_shang"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:layout_height="match_parent">
 
                     <ImageView
-                        android:id="@+id/iv_comment"
+                        android:id="@+id/iv_shang"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:src="@drawable/ic_lyrics_reply_full" />
+                        android:src="@drawable/ic_money" />
 
                     <TextView
-                        android:id="@+id/tv_comment_num"
+                        android:id="@+id/tv_shang_num"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_toRightOf="@+id/iv_comment"
+                        android:layout_toRightOf="@+id/iv_shang"
                         android:layout_marginLeft="5dp"
-                        android:text="1"
-                        android:textColor="@color/main_text_color"
-                        android:textSize="15sp" />
+                        tools:text="133"
+                        android:textColor="@color/main_text_color3"
+                        android:textSize="12sp" />
                 </RelativeLayout>
 
                 </LinearLayout>

@@ -3,23 +3,32 @@
     android:id="@+id/pop_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:background="@color/main_bg"
     android:orientation="vertical">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="12dp"
-        android:text="分享至"
+        android:padding="12dp"
+        android:gravity="center"
+        android:text="想要分享给谁"
         android:textColor="@color/main_text_color2"
-        android:textSize="16sp" />
-
+        android:textSize="15sp" />
+    <View
+        android:id="@+id/ll_split_line"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/split_line"
+        android:orientation="horizontal"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal">
+
+        android:paddingTop="15dp">
 
         <LinearLayout
             android:id="@+id/ll_share_weixin"
@@ -132,6 +141,15 @@
                 android:textSize="13sp" />
         </LinearLayout>
 
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="15dp"
+        >
         <LinearLayout
             android:id="@+id/ll_share_qzone"
             android:layout_width="0dp"
@@ -159,17 +177,10 @@
                 android:textColor="@color/main_text_color2"
                 android:textSize="13sp" />
         </LinearLayout>
-    </LinearLayout>
-
-    <include layout="@layout/view_spit_line" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
         <LinearLayout
             android:id="@+id/ll_share_copy"
-            android:layout_width="72dip"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:background="@drawable/selector"
             android:gravity="center_horizontal"
@@ -195,31 +206,26 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/ll_share_sms"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:background="@drawable/selector"
             android:gravity="center_horizontal"
             android:orientation="vertical"
             android:paddingBottom="10dip"
             android:paddingTop="10dip"
-            android:visibility="gone">
+            android:visibility="invisible" />
 
-            <ImageView
-                android:id="@+id/share_sms"
-                android:layout_width="35dp"
-                android:layout_height="35dp" />
-
-            <TextView
-                android:id="@+id/tv_sms"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="5dip"
-                android:text="发送至联系人"
-                android:textColor="@color/main_text_color2"
-                android:textSize="13sp" />
-        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingBottom="10dip"
+            android:paddingTop="10dip"
+            android:visibility="invisible" />
     </LinearLayout>
 
 </LinearLayout>

@@ -46,7 +46,7 @@ import com.xilu.wybz.service.PlayService;
 import com.xilu.wybz.ui.ExitApplication;
 import com.xilu.wybz.ui.IView.IPlayView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
-import com.xilu.wybz.ui.mine.UserInfoActivity;
+import com.xilu.wybz.ui.mine.NewUserInfoActivity;
 import com.xilu.wybz.ui.setting.SettingFeedActivity;
 import com.xilu.wybz.utils.BitmapUtils;
 import com.xilu.wybz.utils.FormatHelper;
@@ -507,7 +507,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     @Override
     public void toUserInfo() {
         if (worksData.uid > 0) {
-            UserInfoActivity.ToUserInfoActivity(context, worksData.uid, worksData.author);
+            NewUserInfoActivity.ToNewUserInfoActivity(context, worksData.uid, worksData.author);
         }
     }
 
