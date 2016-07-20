@@ -13,21 +13,24 @@
         <com.xilu.wybz.view.NoScrollListView
             android:id="@+id/listView"
             android:layout_width="match_parent"
-            android:dividerHeight="@dimen/spit_line_height"
-            android:divider="@color/split_line"
+            android:dividerHeight="1px"
+            android:divider="#bbb"
             android:layout_height="wrap_content"
-            android:listSelector="?selectableItemBackground"
+            android:listSelector="@drawable/selector2"
             android:overScrollMode="never" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="#eee" />
 
-        <include layout="@layout/view_spit_line" />
         <TextView
             android:id="@+id/tv_cancle"
             android:layout_width="match_parent"
-            android:layout_height="47dp"
+            android:layout_height="50dp"
             android:gravity="center"
             android:text="取消"
-            android:background="?selectableItemBackground"
-            android:textColor="@color/main_text_color"
-            android:textSize="17sp" />
+            android:background="@drawable/selector2"
+            android:textColor="#444"
+            android:textSize="20sp" />
     </LinearLayout>
 </ScrollView>

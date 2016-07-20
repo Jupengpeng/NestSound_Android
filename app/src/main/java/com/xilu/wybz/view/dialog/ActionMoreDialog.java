@@ -56,7 +56,7 @@ public class ActionMoreDialog extends Dialog{
     public void showDialog() {
         show();
         WindowManager.LayoutParams params = getWindow().getAttributes();
-        params.dimAmount=0.4f;
+        params.dimAmount=0.15f;
         params.width = DensityUtil.getScreenW(context);
         getWindow().setAttributes(params);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);

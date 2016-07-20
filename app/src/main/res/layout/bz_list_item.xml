@@ -28,7 +28,7 @@
                 fresco:failureImage="@drawable/ic_default_pic"
                 fresco:failureImageScaleType="centerCrop"
                 fresco:placeholderImage="@drawable/ic_default_pic"
-                fresco:placeholderImageScaleType="fitCenter"
+                fresco:placeholderImageScaleType="centerCrop"
                 fresco:roundedCornerRadius="3dp" />
 
             <RelativeLayout

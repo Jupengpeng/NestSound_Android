@@ -241,7 +241,7 @@ public class DialogUtils {
                 new int[]{} // enabled
         };
         int[] colors = new int[]{
-                DialogUtils.adjustAlpha(newPrimaryColor, 0.4f),
+                DialogUtils.adjustAlpha(newPrimaryColor, 0.2f),
                 newPrimaryColor
         };
         return new ColorStateList(states, colors);

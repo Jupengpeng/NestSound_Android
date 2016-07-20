@@ -138,9 +138,9 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     ShareDialog shareDialog;
     PlayPresenter playPresenter;
     List<ActionBean> actionBeanList;
-    String[] actionTitles = new String[]{"分享","个人主页", "举报"};
+    String[] actionTitles = new String[]{"个人主页", "分享", "举报"};
     String[] actionTitles2 = new String[]{"分享","删除"};
-    String[] actionTypes = new String[]{"share","homepage", "jubao"};
+    String[] actionTypes = new String[]{"homepage","share","jubao"};
     String[] actionTypes2 = new String[]{"share","del"};
     PlayLyricsAdapter playLyricsAdapter;
     List<String> lyricsList;

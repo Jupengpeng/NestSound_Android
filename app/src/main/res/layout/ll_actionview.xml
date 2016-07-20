@@ -6,10 +6,9 @@
 <TextView
     android:id="@+id/tv_title"
     android:layout_width="match_parent"
-    android:layout_height="47dp"
+    android:layout_height="54dp"
     android:text="action"
     android:gravity="center"
-    android:textSize="17sp"
-    android:textColor="@color/main_text_color"
-    />
+    android:textSize="18sp"
+    android:textColor="#444" />
 </LinearLayout>

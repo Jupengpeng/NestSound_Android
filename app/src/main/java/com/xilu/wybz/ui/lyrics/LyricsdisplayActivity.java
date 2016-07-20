@@ -22,7 +22,9 @@ import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.LyricsPresenter;
+import com.xilu.wybz.presenter.OnlyFollowPresenter;
 import com.xilu.wybz.ui.IView.ILyricsView;
+import com.xilu.wybz.ui.IView.IOnlyFollowView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.ui.mine.NewUserInfoActivity;
 import com.xilu.wybz.ui.setting.SettingFeedActivity;
@@ -51,9 +53,11 @@ import butterknife.OnClick;
 /**
  * Created by Administrator on 2016/3/10 0010.
  */
-public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsView, AdapterView.OnItemClickListener {
+public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsView,IOnlyFollowView, AdapterView.OnItemClickListener {
     @Bind(R.id.iv_comment)
     ImageView ivComment;
+    @Bind(R.id.ll_follow)
+    LinearLayout llFollow;
     @Bind(R.id.ll_loading)
     LinearLayout ll_loading;
     @Bind(R.id.ll_nonet)
@@ -76,6 +80,10 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
     TextView tvFavNum;
     @Bind(R.id.tv_zannum)
     TextView tvZanNum;
+    @Bind(R.id.iv_follow_state)
+    ImageView ivFollowState;
+    @Bind(R.id.tv_follow_state)
+    TextView tvFollowState;
     String title;
     int id;
     int pos;
@@ -85,9 +93,13 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
     List<ActionBean> actionBeanList;
     ActionMoreDialog actionMoreDialog;
     LyricsPresenter lyricsPresenter;
+    int isFocus;
     String[] actionTitles = new String[]{"分享", "举报", "编辑"};
     String[] actionTypes = new String[]{"share", "jubao", "edit"};
-
+    OnlyFollowPresenter onlyFollowPresenter;
+    private int ivfollowStates[] = new int[]{R.drawable.ic_user_follow, R.drawable.ic_user_followed, R.drawable.ic_user_each_follow};
+    private int followColors[] = new int[]{R.color.main_theme_color, R.color.main_text_color3, R.color.follow_blue};
+    private String tvfollowStates[] = new String[]{"关注", "已关注", "互相关注"};
     public static void toLyricsdisplayActivity(Context context, int id, int from, String title) {
         Intent intent = new Intent(context, LyricsdisplayActivity.class);
         intent.putExtra("id", id);
@@ -107,6 +119,7 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
         EventBus.getDefault().register(this);
         lyricsPresenter = new LyricsPresenter(this, this);
         lyricsPresenter.init();
+        onlyFollowPresenter = new OnlyFollowPresenter(this,this);
         initData();
     }
 
@@ -138,9 +151,12 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
         }
     }
 
-    @OnClick({R.id.rl_zan, R.id.rl_fav, R.id.iv_nonet, R.id.rl_head, R.id.rl_comment, R.id.tv_author})
+    @OnClick({R.id.rl_zan, R.id.rl_fav, R.id.iv_nonet, R.id.rl_head, R.id.rl_comment, R.id.tv_author, R.id.ll_follow})
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.ll_follow:
+
+                break;
             case R.id.rl_fav:
                 if (SystemUtils.isLogin(context)) {
                     lyricsPresenter.setCollectionState(worksData.itemid, worksData.uid);
@@ -249,6 +265,9 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
         }
         this.worksData = worksData;
         worksData.type = worksData.status;//type表示是否公开
+        if(PrefsUtil.getUserId(context)==worksData.uid){
+            llFollow.setVisibility(View.GONE);
+        }
         worksData.status = 2;//status=2歌词
         ivZan.setImageResource(worksData.getIsZan() == 0 ? R.drawable.ic_lyrics_zan1 : R.drawable.ic_lyrics_zan2);
         ivFav.setImageResource(worksData.getIscollect() == 0 ? R.drawable.ic_lyrics_fav1 : R.drawable.ic_lyrics_fav2);
@@ -400,5 +419,22 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
 
     public void toCommentActivity() {
         CommentActivity.ToCommentActivity(context, worksData);
+    }
+
+    @Override
+    public void followSuccess(String message) {
+        cancelPd();
+        isFocus = OnlyFollowPresenter.paraseStatuByString(message);
+        if (isFocus>=0&&isFocus<=2){
+            ivFollowState.setImageResource(ivfollowStates[isFocus]);
+            tvFollowState.setText(tvfollowStates[isFocus]);
+            tvFollowState.setTextColor(getResources().getColor(followColors[isFocus]));
+        }
+        EventBus.getDefault().post(new Event.UpdateFollowNumEvent(isFocus,0));
+    }
+
+    @Override
+    public void followFailed(String message) {
+        cancelPd();
     }
 }

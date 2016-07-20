@@ -74,7 +74,7 @@ public class MakeSongTipDialog extends Dialog{
     public void showDialog() {
         show();
         WindowManager.LayoutParams params = getWindow().getAttributes();
-        params.dimAmount=0.4f;
+        params.dimAmount=0.2f;
         params.width = DensityUtil.getScreenW(mContext);
         getWindow().setAttributes(params);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);

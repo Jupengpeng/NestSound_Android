@@ -87,7 +87,7 @@ public class NewUserInfoActivity extends BaseActivity implements IOnlyFollowView
     private MineAdapter pagerAdapter;
     private List<LinearLayout> tabs;
     public OnlyFollowPresenter presenter;
-    private int isFocus = -1;
+    private int isFocus = 0;
     private MenuItem menuFollowItem;
     private int[] followIcon = new int[]{R.drawable.ic_toolbar_follow, R.drawable.ic_toolbar_followed, R.drawable.ic_toolbar_each_follow};
     int userId;
