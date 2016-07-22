@@ -286,7 +286,7 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
             if (songAlbumList.size() > 0) {
                 tvSongablum.setVisibility(View.VISIBLE);
                 tvSongablumMore.setVisibility(View.VISIBLE);
-                worksAdapter.notifyDataSetChanged();
+                songAlbumAdapter.notifyDataSetChanged();
             }
             //最新作品
             if (newWorkList.size() > 0) newWorkList.clear();

@@ -87,7 +87,7 @@ public class NewUserInfoActivity extends BaseActivity implements IOnlyFollowView
     private MineAdapter pagerAdapter;
     private List<LinearLayout> tabs;
     public OnlyFollowPresenter presenter;
-    private int isFocus = 0;
+    private int isFocus = -1;
     private MenuItem menuFollowItem;
     private int[] followIcon = new int[]{R.drawable.ic_toolbar_follow, R.drawable.ic_toolbar_followed, R.drawable.ic_toolbar_each_follow};
     int userId;
@@ -275,7 +275,7 @@ public class NewUserInfoActivity extends BaseActivity implements IOnlyFollowView
     }
     private void FollowUser() {
         if (isFocus > -1) {
-            showPd("正在请求网络，请稍候");
+            showPd(isFocus==0?"正在关注中，请稍候...":"正在取消关注，请稍候...");
             setOnCancelListener(new DialogInterface.OnCancelListener() {
                 @Override
                 public void onCancel(DialogInterface dialog) {
