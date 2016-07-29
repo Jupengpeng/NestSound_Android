@@ -167,28 +167,18 @@
 
 
                 <RelativeLayout
-                    android:id="@+id/rl_shang"
+                    android:id="@+id/rl_more"
                     android:layout_marginTop="5dp"
                     android:layout_width="45dp"
                     android:layout_height="match_parent">
 
                     <ImageView
-                        android:id="@+id/iv_shang"
+                        android:id="@+id/iv_more"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
-                        android:src="@drawable/ic_play_shang1" />
-                    <TextView
-                        android:id="@+id/tv_shang_num"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_alignParentBottom="true"
-                        android:layout_centerHorizontal="true"
-                        android:textColor="@color/main_text_color4"
-                        android:textSize="12sp"
-                        tools:text="0"
-                        />
+                        android:src="@drawable/ic_play_more" />
+
                 </RelativeLayout>
             </LinearLayout>
 

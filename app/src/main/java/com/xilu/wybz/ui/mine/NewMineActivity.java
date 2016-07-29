@@ -109,11 +109,11 @@ public class NewMineActivity extends BaseActivity {
         });
 
         tabs = new ArrayList<>();
-        llMyrecord.setSelected(true);
-        tabs.add(llMyrecord);
+        llMysong.setSelected(true);
         tabs.add(llMysong);
         tabs.add(llMylyrics);
         tabs.add(llMyfav);
+        tabs.add(llMyrecord);
         pagerAdapter = new MineAdapter(context, getSupportFragmentManager(), PrefsUtil.getUserId(context), PrefsUtil.getUserInfo(context).name);
         mViewpager.setAdapter(pagerAdapter);
         mViewpager.setOffscreenPageLimit(tabs.size());
@@ -275,6 +275,15 @@ public class NewMineActivity extends BaseActivity {
                 FollowAndFansActivity.toFollowAndFansActivity(context, KeySet.TYPE_FANS_ACT, PrefsUtil.getUserId(context));
                 break;
             case R.id.ll_myrecord:
+                if (currentIndex == 3) {
+                    return;
+                } else {
+                    currentIndex = 3;
+                }
+                mViewpager.setCurrentItem(currentIndex);
+                changeTabColor();
+                break;
+            case R.id.ll_mysong:
                 if (currentIndex == 0) {
                     return;
                 } else {
@@ -283,7 +292,7 @@ public class NewMineActivity extends BaseActivity {
                 mViewpager.setCurrentItem(currentIndex);
                 changeTabColor();
                 break;
-            case R.id.ll_mysong:
+            case R.id.ll_mylyrics:
                 if (currentIndex == 1) {
                     return;
                 } else {
@@ -292,20 +301,11 @@ public class NewMineActivity extends BaseActivity {
                 mViewpager.setCurrentItem(currentIndex);
                 changeTabColor();
                 break;
-            case R.id.ll_mylyrics:
+            case R.id.ll_myfav:
                 if (currentIndex == 2) {
                     return;
                 } else {
                     currentIndex = 2;
-                }
-                mViewpager.setCurrentItem(currentIndex);
-                changeTabColor();
-                break;
-            case R.id.ll_myfav:
-                if (currentIndex == 3) {
-                    return;
-                } else {
-                    currentIndex = 3;
                 }
                 mViewpager.setCurrentItem(currentIndex);
                 changeTabColor();

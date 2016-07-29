@@ -26,6 +26,7 @@ import com.xilu.wybz.ui.find.FindActivity;
 import com.xilu.wybz.ui.login.LoginActivity;
 import com.xilu.wybz.ui.login.PasswordActivity;
 import com.xilu.wybz.ui.login.RegisterActivity;
+import com.xilu.wybz.ui.lyrics.LyricsPosterActivity;
 import com.xilu.wybz.ui.lyrics.ShareActivity;
 import com.xilu.wybz.ui.main.MainActivity;
 import com.xilu.wybz.ui.mine.MineActivity;
@@ -82,7 +83,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                     || this instanceof SongAblumActivity)) {
                     SystemBarHelper.setStatusBarDarkMode(this);
             }
-            if (this instanceof WelActivity || this instanceof PlayAudioActivity
+            if (this instanceof WelActivity || this instanceof PlayAudioActivity || this instanceof LyricsPosterActivity
                     || this instanceof SongAblumActivity || this instanceof ShareActivity
                     || this instanceof SplashActivity ||
                     this instanceof NewUserInfoActivity || this instanceof MainTabActivity) {

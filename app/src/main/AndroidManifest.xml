@@ -122,6 +122,7 @@
         <activity android:name=".ui.lyrics.ShareActivity" android:screenOrientation="portrait"/>
         <activity android:name=".ui.lyrics.ImportWordActivity" android:screenOrientation="portrait"/>
         <activity android:name=".ui.lyrics.MakeCourseActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.lyrics.LyricsPosterActivity" android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.lyrics.SaveWordActivity"
             android:windowSoftInputMode="stateHidden|adjustResize" android:screenOrientation="portrait" />

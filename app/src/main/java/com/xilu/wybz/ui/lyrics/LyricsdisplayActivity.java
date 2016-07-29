@@ -413,13 +413,7 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
         if (actionBean.getType().equals("share")) {
             if (worksData != null && worksData.getItemid() > 0) {
                 if (shareDialog == null) {
-                    String shareTitle = worksData.title;
-                    String shareAuthor = worksData.author;
-                    String shareLink = worksData.shareurl + "?id=" + worksData.itemid;
-                    String sharePic = worksData.pic;
-                    String shareBody = PrefsUtil.getUserId(context) == worksData.uid ? "我用音巢app创作了一首歌词，快来看看吧!" : "我在音巢app上发现一首好歌词，太棒了~";
-                    String shareContent = shareBody + " 《" + shareTitle + "》 ▷" + shareLink + " (@音巢音乐)";
-                    shareDialog = new ShareDialog(LyricsdisplayActivity.this, new ShareBean(shareTitle, shareAuthor, shareContent, shareLink, sharePic, ""));
+                    shareDialog = new ShareDialog(LyricsdisplayActivity.this, worksData);
                 }
                 if (!shareDialog.isShowing()) {
                     shareDialog.showDialog();

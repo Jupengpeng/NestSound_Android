@@ -206,6 +206,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_poster"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
@@ -213,8 +214,23 @@
             android:gravity="center_horizontal"
             android:orientation="vertical"
             android:paddingBottom="10dip"
-            android:paddingTop="10dip"
-            android:visibility="invisible" />
+            android:paddingTop="10dip">
+            <ImageView
+                android:id="@+id/share_hb"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/ic_share_hb" />
+
+            <TextView
+                android:id="@+id/tv_hb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dip"
+                android:text="歌词海报"
+                android:textColor="@color/main_text_color2"
+                android:textSize="13sp" />
+            </LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"

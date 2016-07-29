@@ -47,7 +47,7 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
     private String author;
     private boolean isMe;
     private int workType;
-    private String[] COMES = new String[]{"myrecord", "mysong", "mylyrics", "myfav"};
+    private String[] COMES = new String[]{ "mysong", "mylyrics", "myfav","myrecord"};
     private String[] COMESs = new String[]{"usersong", "userlyrics", "userfav"};
     private boolean isFirst;
     private boolean isFirstTab;
@@ -94,12 +94,8 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
                 type = type + 1;
             } else {
                 COME = COMES[type];
-                if (type == 0) {
-                    type = 4;
-                    workType = 3;
-                } else {
-                    workType = type;
-                }
+                workType = type;
+                type = type + 1;
             }
             author = getArguments().getString(AUTHOR);
         }

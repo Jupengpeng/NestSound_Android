@@ -41,9 +41,11 @@ import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.FileDir;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.common.PlayMediaInstance;
+import com.xilu.wybz.presenter.DownPicPresenter;
 import com.xilu.wybz.presenter.PlayPresenter;
 import com.xilu.wybz.service.PlayService;
 import com.xilu.wybz.ui.ExitApplication;
+import com.xilu.wybz.ui.IView.ILoadPicView;
 import com.xilu.wybz.ui.IView.IPlayView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.ui.mine.NewUserInfoActivity;
@@ -77,9 +79,7 @@ import butterknife.OnClick;
 /**
  * Created by June on 16/5/4.
  */
-public class PlayAudioActivity extends ToolbarActivity implements AdapterView.OnItemClickListener, IPlayView {
-    @Bind(R.id.iv_reply)
-    ImageView ivReply;
+public class PlayAudioActivity extends ToolbarActivity implements AdapterView.OnItemClickListener, IPlayView, ILoadPicView {
     @Bind(R.id.blurImageView)
     ImageView blurImageView;
     @Bind(R.id.toolbar)
@@ -137,11 +137,12 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     WorksData worksData;
     ShareDialog shareDialog;
     PlayPresenter playPresenter;
+    DownPicPresenter downPicPresenter;
     List<ActionBean> actionBeanList;
-    String[] actionTitles = new String[]{"个人主页", "分享", "举报"};
-    String[] actionTitles2 = new String[]{"分享","删除"};
-    String[] actionTypes = new String[]{"homepage","share","jubao"};
-    String[] actionTypes2 = new String[]{"share","del"};
+    String[] actionTitles = new String[]{"个人主页", "将作品设为公开", "举报"};
+    String[] actionTitles2 = new String[]{"将作品设为公开","删除"};
+    String[] actionTypes = new String[]{"homepage","status","jubao"};
+    String[] actionTypes2 = new String[]{"status","del"};
     PlayLyricsAdapter playLyricsAdapter;
     List<String> lyricsList;
 
@@ -176,6 +177,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
         ExitApplication.getInstance().exit();
         EventBus.getDefault().register(this);
         playPresenter = new PlayPresenter(this, this);
+        downPicPresenter = new DownPicPresenter(this, this);
         playPresenter.init();
         initEvent();
         initData();
@@ -334,7 +336,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
             updateCommentNum();
             playLyricsAdapter = new PlayLyricsAdapter(context, lyricsList);
             tvHotName.setText("伴奏："+worksData.getHotTitle());
-            tvDetail.setText("描述："+worksData.getDetail());
+            tvDetail.setText("描述："+worksData.getDiyids());
             listview_lyrics.setAdapter(playLyricsAdapter);
             listview_lyrics.setOnScrollListener(new AbsListView.OnScrollListener() {
                 @Override
@@ -361,7 +363,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
             blurImageView.setImageBitmap(BitmapUtils.getSDCardImg(path));
         } else {//下载并保存到本地
             imageUrl = MyCommon.getImageUrl(imageUrl, 200, 200);
-            playPresenter.downLoadPic(imageUrl, path);
+            downPicPresenter.downLoadPic(imageUrl, path);
         }
     }
 
@@ -412,7 +414,8 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_more, menu);
         MenuItem menuItem = menu.findItem(R.id.menu_more);
-        menuItem.setIcon(R.drawable.ic_play_more);
+        menuItem.setTitle("分享");
+        menuItem.setIcon(R.drawable.ic_play_share);
         return true;
     }
 
@@ -420,12 +423,12 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_more:
-                if (actionBeanList != null && actionBeanList.size() > 0) {
-                    if (actionMoreDialog == null) {
-                        actionMoreDialog = new ActionMoreDialog(this, this, actionBeanList);
+                if (worksData != null && worksData.itemid > 0) {
+                    if (shareDialog == null) {
+                        shareDialog = new ShareDialog(PlayAudioActivity.this, worksData);
                     }
-                    if (!actionMoreDialog.isShowing()) {
-                        actionMoreDialog.showDialog();
+                    if (!shareDialog.isShowing()) {
+                        shareDialog.showDialog();
                     }
                 }
                 return true;
@@ -433,7 +436,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
         return super.onOptionsItemSelected(item);
     }
 
-    @OnClick({R.id.iv_mode, R.id.rl_zan, R.id.rl_reply, R.id.rl_shang, R.id.iv_pre, R.id.iv_play, R.id.iv_next, R.id.iv_hot, R.id.rl_fav})
+    @OnClick({R.id.iv_mode, R.id.rl_zan, R.id.rl_reply, R.id.rl_more, R.id.iv_pre, R.id.iv_play, R.id.iv_next, R.id.iv_hot, R.id.rl_fav})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.rl_fav:
@@ -452,8 +455,15 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
             case R.id.rl_reply:
                 toCommentActivity();
                 break;
-            case R.id.rl_shang:
-
+            case R.id.rl_more:
+                if (actionBeanList != null && actionBeanList.size() > 0) {
+                    if (actionMoreDialog == null) {
+                        actionMoreDialog = new ActionMoreDialog(this, this, actionBeanList);
+                    }
+                    if (!actionMoreDialog.isShowing()) {
+                        actionMoreDialog.showDialog();
+                    }
+                }
                 break;
             case R.id.iv_pre:
                 musicBinder.toPreMusic();
@@ -625,11 +635,6 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
 
     //更新缓存进度
     @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.UpdataSecondProgressEvent event) {
-//        if (event.getPercent() > 0) {
-//            playSeekBar.setSecondaryProgress(event.getPercent());
-//            if(event.getPercent()==100){
-//            }
-//        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.PPStatusEvent event) {
@@ -695,34 +700,9 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         actionMoreDialog.dismiss();
-//        if (actionBeanList.size() > 2) {
-//            switch (position) {
-//                case 0://个人主页
-//                    toUserInfo();
-//                    break;
-//                case 1:
-//                    toJubao();
-//                    break;
-//            }
-//        } else if (actionBeanList.size() == 1) {
-//            showDeleteDialog();
-//        }
         String type = actionBeanList.get(position).getType();
-        if(type.equals("share")){
-            if (worksData != null && worksData.itemid > 0) {
-                    if (shareDialog == null) {
-                        String shareTitle = worksData.title;
-                        String shareAuthor = worksData.author;
-                        String shareLink = worksData.shareurl + "?id=" + worksData.itemid;
-                        String sharePic = worksData.pic;
-                        String playurl = worksData.playurl;
-                        String shareContent = "我在音巢APP淘到一首好听的歌，快来看看有没有你喜欢的原创style 《" + shareTitle + "》 ▷" + shareLink + " (@音巢音乐)";
-                        shareDialog = new ShareDialog(PlayAudioActivity.this, new ShareBean(shareTitle, shareAuthor, shareContent, shareLink, sharePic, playurl));
-                    }
-                    if (!shareDialog.isShowing()) {
-                        shareDialog.showDialog();
-                    }
-                }
+        if(type.equals("status")){
+
         }else if(type.equals("homepage")){
             toUserInfo();
         }else if(type.equals("jubao")){

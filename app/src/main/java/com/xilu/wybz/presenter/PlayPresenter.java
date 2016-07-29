@@ -25,7 +25,6 @@ import okhttp3.Call;
  */
 public class PlayPresenter extends BasePresenter<IPlayView> {
 
-    String imageUrl;
     public PlayPresenter(Context context, IPlayView iView) {
         super(context, iView);
     }
@@ -72,26 +71,6 @@ public class PlayPresenter extends BasePresenter<IPlayView> {
             }
         });
     }
-    public void downLoadPic(String imageUrl, String path){
-        this.imageUrl = imageUrl;
-        httpUtils.getImage(imageUrl, new BitmapCallback() {
-            @Override
-            public void onError(Call call, Exception e) {
-
-            }
-
-            @Override
-            public void onResponse(Bitmap response) {
-                if(response==null){
-                    Log.d("paly","onResponse");
-                    return;
-                }
-                Bitmap bmp = NativeStackBlur.process(BitmapUtils.zoomBitmap(response, 200), 30);
-                FileUtils.saveBmp(path, bmp);
-                iView.setPic(bmp);
-            }
-        });
-    }
     //删除作品
     public void delete(int id) {
         params = new HashMap<>();
@@ -116,8 +95,6 @@ public class PlayPresenter extends BasePresenter<IPlayView> {
         });
     }
     public void cancleRequest(){
-        if(StringUtil.isNotBlank(imageUrl))
-        httpUtils.cancelHttpByTag(imageUrl);
         httpUtils.cancelHttpByTag(MyHttpClient.getUpvoteUrl());
         httpUtils.cancelHttpByTag(MyHttpClient.getUpvoteUrl());
         httpUtils.cancelHttpByTag(MyHttpClient.getDeleteWorksUrl());
