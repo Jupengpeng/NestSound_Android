@@ -5,8 +5,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckedTextView;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.LyricsPoster;
+import com.xilu.wybz.utils.StringUtil;
+
 import java.util.List;
 
 /**
@@ -23,9 +28,12 @@ public class LyricsPosterAdapter extends YcBaseAdapter<LyricsPoster>{
             convertView = LayoutInflater.from(context).inflate(R.layout.item_lrc_poster, null);
         }
         LyricsPoster lyricsPoster = mList.get(position);
-        CheckedTextView tvTitle = BaseViewHolder.get(convertView, R.id.tv_title);
+        TextView tvTitle = BaseViewHolder.get(convertView, R.id.tv_title);
+        ImageView ivCheckState = BaseViewHolder.get(convertView, R.id.iv_check_state);
+        if(StringUtil.isNotBlank(lyricsPoster.lyrics))
         tvTitle.setText(lyricsPoster.lyrics);
-        tvTitle.setChecked(lyricsPoster.isChecked);
+        tvTitle.setSelected(lyricsPoster.isChecked);
+        ivCheckState.setVisibility(lyricsPoster.isChecked?View.VISIBLE:View.GONE);
         return convertView;
     }
 }

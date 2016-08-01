@@ -80,7 +80,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (isTranslucentStatusFitSystemWindowTrue) {
             if (!(this instanceof PlayAudioActivity || this instanceof LoginActivity
                     || this instanceof RegisterActivity || this instanceof PasswordActivity
-                    || this instanceof SongAblumActivity)) {
+                    || this instanceof SongAblumActivity) || this instanceof LyricsPosterActivity) {
                     SystemBarHelper.setStatusBarDarkMode(this);
             }
             if (this instanceof WelActivity || this instanceof PlayAudioActivity || this instanceof LyricsPosterActivity

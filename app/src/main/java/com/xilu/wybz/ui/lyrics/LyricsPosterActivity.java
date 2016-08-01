@@ -3,9 +3,15 @@ package com.xilu.wybz.ui.lyrics;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -36,12 +42,8 @@ import butterknife.Bind;
 public class LyricsPosterActivity extends ToolbarActivity implements ILoadPicView{
     @Bind(R.id.blurImageView)
     ImageView blurImageView;
-    @Bind(R.id.toolbar)
-    Toolbar toolbar;
-    @Bind(R.id.app_bar_layout)
-    RelativeLayout appBarLayout;
     @Bind(R.id.listview)
-    ListView listview;
+    ListView listView;
     private WorksData worksData;
     DownPicPresenter downPicPresenter;
     List<LyricsPoster> lyricsPosters;
@@ -60,7 +62,6 @@ public class LyricsPosterActivity extends ToolbarActivity implements ILoadPicVie
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
         initData();
     }
 
@@ -71,10 +72,13 @@ public class LyricsPosterActivity extends ToolbarActivity implements ILoadPicVie
         }else{
             finish();
         }
+        mToolbar.setTitleTextColor(Color.WHITE);
+        setTitle(worksData.title);
         String pic = worksData.getPic();
         if (StringUtil.isNotBlank(pic)) {
             loadPic(pic);
         }
+        lyricsPosters = new ArrayList<>();
         if (StringUtil.isNotBlank(worksData.lyrics)) {
             String[] lyricss = worksData.lyrics.split("\\n");
             for(String lyrics : lyricss){
@@ -84,9 +88,16 @@ public class LyricsPosterActivity extends ToolbarActivity implements ILoadPicVie
                     lyricsPosters.add(lyricsPoster);
                 }
             }
-            adapter = new LyricsPosterAdapter(context,lyricsPosters);
-            listview.setAdapter(adapter);
         }
+        adapter = new LyricsPosterAdapter(this,lyricsPosters);
+        listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                lyricsPosters.get(position).isChecked = !lyricsPosters.get(position).isChecked;
+                adapter.notifyDataSetChanged();
+            }
+        });
         downPicPresenter = new DownPicPresenter(this,this);
     }
 
@@ -112,5 +123,20 @@ public class LyricsPosterActivity extends ToolbarActivity implements ILoadPicVie
     @Override
     public void initView() {
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_next, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.menu_next:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

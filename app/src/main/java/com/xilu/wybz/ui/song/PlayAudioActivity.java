@@ -34,7 +34,6 @@ import com.xilu.wybz.R;
 import com.xilu.wybz.adapter.PlayLyricsAdapter;
 import com.xilu.wybz.adapter.PlayPagerAdapter;
 import com.xilu.wybz.bean.ActionBean;
-import com.xilu.wybz.bean.ShareBean;
 import com.xilu.wybz.bean.TemplateBean;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.Event;
@@ -625,13 +624,8 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
 
     public void updateZanNum() {
         tvZanNum.setText(NumberUtil.format(worksData.zannum));
-
         PrefsUtil.saveMusicData(context, worksData);
     }
-
-
-
-
 
     //更新缓存进度
     @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.UpdataSecondProgressEvent event) {

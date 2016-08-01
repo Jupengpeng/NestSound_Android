@@ -9,11 +9,16 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.os.Binder;
+import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.media.session.MediaButtonReceiver;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.Event;
@@ -25,11 +30,13 @@ import com.xilu.wybz.common.interfaces.IMediaPlayerListener;
 import com.xilu.wybz.http.HttpUtils;
 import com.xilu.wybz.http.callback.FileCallBack;
 import com.xilu.wybz.http.callback.MyStringCallback;
+import com.xilu.wybz.service.helper.HeadSetHelper;
 import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.utils.FileUtils;
 import com.xilu.wybz.utils.MD5Util;
 import com.xilu.wybz.utils.ParseUtils;
 import com.xilu.wybz.utils.PrefsUtil;
+import com.xilu.wybz.utils.ToastUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -56,6 +63,7 @@ public class PlayService extends Service implements AudioManager.OnAudioFocusCha
     AudioManager mAudioManager;
     int status;//焦点是否拿到
     String TAG = "loadmusic";
+    MediaButtonReceiver mediaButtonReceiver;
     @Override
     public IBinder onBind(Intent intent) {
         return mBinder;
@@ -64,13 +72,35 @@ public class PlayService extends Service implements AudioManager.OnAudioFocusCha
     @Override
     public void onCreate() {
         super.onCreate();
-        httpUtils = new HttpUtils(this,TAG);
+        httpUtils = new HttpUtils(this, TAG);
         mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         requestAudioFocus();
         initPlayListener();
         initCallListener();
+        initHeadSetListener();
     }
+    private void initHeadSetListener(){
+        HeadSetHelper.getInstance().setOnHeadSetListener(headSetListener);
+        HeadSetHelper.getInstance().open(this);
+    }
+    HeadSetHelper.OnHeadSetListener headSetListener = new HeadSetHelper.OnHeadSetListener() {
 
+        @Override
+        public void onDoubleClick() {
+            // TODO Auto-generated method stub
+            if(mBinder!=null){
+                mBinder.toNextMusic();
+            }
+        }
+
+        @Override
+        public void onClick() {
+            // TODO Auto-generated method stub
+            if(mBinder!=null){
+                mBinder.toPPMusic();
+            }
+        }
+    };
     //以下是进行申请焦点的两个方法，
     private int requestAudioFocus() {
         return mAudioManager.requestAudioFocus(this, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
@@ -171,6 +201,7 @@ public class PlayService extends Service implements AudioManager.OnAudioFocusCha
                     }
                 }
             }
+
             @Override
             public void onError() {
                 releaseAudioFocus();
@@ -179,6 +210,7 @@ public class PlayService extends Service implements AudioManager.OnAudioFocusCha
             }
         });
     }
+
     public void initCallListener() {
         tmgr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
         tmgr.listen(mPhoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
@@ -316,10 +348,10 @@ public class PlayService extends Service implements AudioManager.OnAudioFocusCha
                     if (position == -1) {
                         position = MyApplication.ids.size() - 1;
                     }
-                    if(position<0||position>=MyApplication.ids.size()){
+                    if (position < 0 || position >= MyApplication.ids.size()) {
                         PlayMediaInstance.getInstance().stopMediaPlay();
                         PlayMediaInstance.getInstance().startMediaPlay(currMdb.getPlayurl());
-                    }else{
+                    } else {
                         loadData(MyApplication.ids.get(position));
                     }
                     break;
@@ -338,15 +370,16 @@ public class PlayService extends Service implements AudioManager.OnAudioFocusCha
                     if (position == MyApplication.ids.size()) {
                         position = 0;
                     }
-                    if(position<0||position>=MyApplication.ids.size()){
+                    if (position < 0 || position >= MyApplication.ids.size()) {
                         PlayMediaInstance.getInstance().stopMediaPlay();
                         PlayMediaInstance.getInstance().startMediaPlay(currMdb.getPlayurl());
-                    }else{
+                    } else {
                         loadData(MyApplication.ids.get(position));
                     }
                     break;
             }
         }
+
         public void stopMusic() {
             PlayMediaInstance.getInstance().stopMediaPlay();
         }
@@ -355,6 +388,7 @@ public class PlayService extends Service implements AudioManager.OnAudioFocusCha
     @Override
     public void onDestroy() {
         tmgr.listen(mPhoneStateListener, 0);
+        HeadSetHelper.getInstance().close(this);
         super.onDestroy();
     }
 
@@ -402,7 +436,7 @@ public class PlayService extends Service implements AudioManager.OnAudioFocusCha
     };
 
     public void downLoadMp3(String url) {
-        if(ContextCompat.checkSelfPermission(PlayService.this,
+        if (ContextCompat.checkSelfPermission(PlayService.this,
                 Manifest.permission.READ_EXTERNAL_STORAGE)
                 == PackageManager.PERMISSION_GRANTED) {
             String fileName = MD5Util.getMD5String(url) + ".temp";
