@@ -15,7 +15,6 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.TemplateBean;
 import com.xilu.wybz.common.PlayBanZouInstance;
-import com.xilu.wybz.common.PlayMediaInstance;
 import com.xilu.wybz.common.interfaces.ITemplateMusicListener;
 import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.utils.DensityUtil;
@@ -26,7 +25,7 @@ import java.util.List;
 /**
  * Created by hujunwei on 16/4/14.
  */
-public class HotListAdapter extends WyBaseAdapter<TemplateBean> {
+public class HotListAdapter extends YcBaseAdapter<TemplateBean> {
     private ITemplateMusicListener iml;
     private ImageView currIv;
     private ProgressBar currProgress;

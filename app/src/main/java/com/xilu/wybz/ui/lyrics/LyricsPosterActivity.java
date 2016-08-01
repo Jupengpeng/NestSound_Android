@@ -9,9 +9,9 @@ import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-
-import com.bumptech.glide.load.Key;
 import com.xilu.wybz.R;
+import com.xilu.wybz.adapter.LyricsPosterAdapter;
+import com.xilu.wybz.bean.LyricsPoster;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.FileDir;
 import com.xilu.wybz.common.KeySet;
@@ -21,11 +21,14 @@ import com.xilu.wybz.ui.IView.ILoadPicView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.utils.BitmapUtils;
 import com.xilu.wybz.utils.MD5Util;
+import com.xilu.wybz.utils.StringUtil;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 
 /**
  * Created by hujunwei on 16/7/29.
@@ -41,6 +44,8 @@ public class LyricsPosterActivity extends ToolbarActivity implements ILoadPicVie
     ListView listview;
     private WorksData worksData;
     DownPicPresenter downPicPresenter;
+    List<LyricsPoster> lyricsPosters;
+    LyricsPosterAdapter adapter;
     public static void toLyricsPosterActivity(Context context, WorksData worksData) {
         Intent intent = new Intent(context, LyricsPosterActivity.class);
         intent.putExtra(KeySet.WORKS_DATA, worksData);
@@ -67,8 +72,20 @@ public class LyricsPosterActivity extends ToolbarActivity implements ILoadPicVie
             finish();
         }
         String pic = worksData.getPic();
-        if (!TextUtils.isEmpty(pic)) {
+        if (StringUtil.isNotBlank(pic)) {
             loadPic(pic);
+        }
+        if (StringUtil.isNotBlank(worksData.lyrics)) {
+            String[] lyricss = worksData.lyrics.split("\\n");
+            for(String lyrics : lyricss){
+                if(StringUtil.isNotBlank(lyrics)){
+                    LyricsPoster lyricsPoster = new LyricsPoster();
+                    lyricsPoster.lyrics = lyrics;
+                    lyricsPosters.add(lyricsPoster);
+                }
+            }
+            adapter = new LyricsPosterAdapter(context,lyricsPosters);
+            listview.setAdapter(adapter);
         }
         downPicPresenter = new DownPicPresenter(this,this);
     }

@@ -11,6 +11,11 @@
         android:scaleType="centerCrop"
         android:src="@drawable/bg_play_default"
         />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000"
+        />
 
     <LinearLayout
         android:layout_width="match_parent"

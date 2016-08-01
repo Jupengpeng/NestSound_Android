@@ -37,7 +37,9 @@ public class LyricsDialog extends Dialog {
     ListView lrcLv;
     StringAdapter strAdapter;
     List<String> titles;
-    List<Lyricat> lyricatList;
+    List<String> lyricsList;
+    List<Lyricat> lyricats;
+
     LyricListAdapter lyricsListAdapter;
     public LyricsDialog(Activity context, EditText focusEt) {
         super(context, R.style.CommentDialog);
@@ -52,20 +54,28 @@ public class LyricsDialog extends Dialog {
     public View getDialogView() {
         View rootView = LayoutInflater.from(mContext).inflate(
                 R.layout.dialog_lyrics, null);
+        lyricsList = new ArrayList<>();
+        lyricats = new ArrayList<>();
+        titles = new ArrayList<>();
+
         lrcLv = (ListView) rootView.findViewById(R.id.lyrics_lv_lrc);
         typeHlv = (HorizontalListView) rootView.findViewById(R.id.lyrics_hlv_type);
         rl_send = (RelativeLayout) rootView.findViewById(R.id.rl_send);
-        lyricatList = new ArrayList<>();
-        strAdapter = new StringAdapter(mContext, R.layout.item_lrc);
+
+        strAdapter = new StringAdapter(mContext, lyricsList);
         lrcLv.setAdapter(strAdapter);
-        titles = new ArrayList<>();
         lyricsListAdapter = new LyricListAdapter(mContext, titles);
         typeHlv.setAdapter(lyricsListAdapter);
+
         typeHlv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Lyricat lyricsListBean = lyricatList.get(position);
-                strAdapter.setData(lyricsListBean.libArr);
+                List<LibArr> libArrs= lyricats.get(position).libArr;
+                for(LibArr libArr : libArrs){
+                    if(lyricsList.size()>0)lyricsList.clear();
+                    lyricsList.add(libArr.lyrics);
+                }
+                strAdapter.notifyDataSetChanged();
                 lyricsListAdapter.setCurrTitle(titles.get(position));
                 lyricsListAdapter.notifyDataSetChanged();
             }
@@ -85,14 +95,18 @@ public class LyricsDialog extends Dialog {
         httpUtils.get(MyHttpClient.getLyricatsUrl(),null,new MyStringCallback(){
             @Override
             public void onResponse(String response) {
-                lyricatList = ParseUtils.getLyricatsData(mContext,response);
-                if(lyricatList.size()>0){
-                    for(Lyricat lyricat:lyricatList){
+                lyricats = ParseUtils.getLyricatsData(mContext,response);
+                if(lyricats.size()>0){
+                    for(Lyricat lyricat:lyricats){
                         titles.add(lyricat.title);
                     }
                     lyricsListAdapter.setCurrTitle(titles.get(0));
                     lyricsListAdapter.notifyDataSetChanged();
-                    strAdapter.setData(lyricatList.get(0).libArr);
+                    List<LibArr> libArrs= lyricats.get(0).libArr;
+                    for(LibArr libArr : libArrs){
+                        lyricsList.add(libArr.lyrics);
+                    }
+                    strAdapter.notifyDataSetChanged();
                 }
             }
         });

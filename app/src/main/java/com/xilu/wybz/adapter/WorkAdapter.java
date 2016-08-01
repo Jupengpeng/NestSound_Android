@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created by hujunwei on 16/6/7.
  */
-public class WorkAdapter extends WyBaseAdapter<WorksData>{
+public class WorkAdapter extends YcBaseAdapter<WorksData> {
     public WorkAdapter(Context context, List<WorksData> list) {
         super(context, list);
     }

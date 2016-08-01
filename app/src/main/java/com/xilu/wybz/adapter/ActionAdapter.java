@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created by June on 16/5/6.
  */
-public class ActionAdapter extends WyBaseAdapter<ActionBean>{
+public class ActionAdapter extends YcBaseAdapter<ActionBean> {
     public ActionAdapter(Context context, List<ActionBean> list) {
         super(context, list);
     }
