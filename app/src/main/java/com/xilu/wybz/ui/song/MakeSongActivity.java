@@ -132,13 +132,7 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
 
         EventBus.getDefault().register(this);
 
-        if (PlayMediaInstance.getInstance().status == 3) {
-            PlayMediaInstance.getInstance().pauseMediaPlay();
-            EventBus.getDefault().post(new Event.PPStatusEvent(4));
-        }
-
         upData();
-
     }
 
     @Override

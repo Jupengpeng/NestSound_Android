@@ -1,7 +1,12 @@
 package com.xilu.wybz.ui.fragment;
 
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,25 +21,19 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.TemplateBean;
 import com.xilu.wybz.common.Event;
-import com.xilu.wybz.common.FileDir;
 import com.xilu.wybz.common.MyCommon;
-import com.xilu.wybz.common.PlayBanZouInstance;
 import com.xilu.wybz.common.PlayMediaInstance;
-import com.xilu.wybz.common.interfaces.IMediaPlayerListener;
-import com.xilu.wybz.common.interfaces.ITemplateMusicListener;
 import com.xilu.wybz.presenter.HotPresenter;
+import com.xilu.wybz.service.PlayService;
 import com.xilu.wybz.ui.IView.IHotView;
 import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.ui.song.MakeSongActivity;
 import com.xilu.wybz.utils.DensityUtil;
-import com.xilu.wybz.utils.MD5Util;
-import com.xilu.wybz.utils.PermissionUtils;
 import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,14 +43,23 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
     public static final String TYPE = "type";
     private int type;
     private HotPresenter hotPresenter;
-    private TemplateBean tb;
     private SampleViewHolder sampleViewHolder;
     private int itemWidth;
     private int itemHeight;
-    private int oldPos = -1;
-    private ImageView oldIvPlay;
-    private ProgressBar oldPbPlay;
-    String playPath;
+    private int playPos = -1;
+    private Intent serviceIntent;
+    PlayService.MusicBinder musicBinder;
+    public ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            musicBinder = (PlayService.MusicBinder) service;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+
+        }
+    };
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -145,6 +153,11 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
     }
 
     @Override
+    public void downloadSuccess() {
+
+    }
+
+    @Override
     public void loadNoData() {
         if(isDestroy)return;
         llNoData.setVisibility(View.VISIBLE);
@@ -152,10 +165,6 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
         recycler.enableLoadMore(false);
     }
 
-    @Override
-    public void downloadSuccess() {
-        PlayBanZouInstance.getInstance().setData(playPath, tb.id);
-    }
 
     @Override
     protected BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
@@ -180,35 +189,6 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
         @Bind(R.id.pb_play)
         ProgressBar pbPlay;
 
-        private void toPlayMusic(int pos, ProgressBar pb, ImageView ivPlay) {
-            TemplateBean templateBean = mDataList.get(pos);
-            if (templateBean.playStatus > 1) {
-                if (templateBean.playStatus == 3) {
-                    iml.onPauseMusic();
-                    templateBean.playStatus = 2;
-                    ivPlay.setImageResource(R.drawable.ic_bz_play);
-                } else {
-                    iml.onResumeMusic();
-                    templateBean.playStatus = 3;
-                    ivPlay.setImageResource(R.drawable.ic_bz_pause);
-                }
-            } else {
-                if (oldPos > -1 && oldPos != pos) {
-                    //如果播放新的歌曲 把上一次播放的状态更新下
-                    mDataList.get(oldPos).playStatus = 0;
-                    oldPbPlay.setVisibility(View.GONE);
-                    oldIvPlay.setVisibility(View.VISIBLE);
-                    oldIvPlay.setImageResource(R.drawable.ic_bz_play);
-                }
-                pb.setVisibility(View.VISIBLE);
-                ivPlay.setVisibility(View.GONE);
-                iml.onPlayMusic(templateBean);
-                templateBean.playStatus = 1;
-                oldPos = pos;
-                oldIvPlay = ivPlay;
-                oldPbPlay = pb;
-            }
-        }
 
         public SampleViewHolder(View itemView) {
             super(itemView);
@@ -217,28 +197,6 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
             rlCover.setLayoutParams(new LinearLayout.LayoutParams(itemWidth, itemHeight));
         }
 
-        ITemplateMusicListener iml = new ITemplateMusicListener() {
-            @Override
-            public void onPlayMusic(TemplateBean templateBean) {
-                tb = templateBean;
-                playTemplateMusic();
-            }
-
-            @Override
-            public void onStopMusic() {
-                PlayBanZouInstance.getInstance().stopMediaPlay();
-            }
-
-            @Override
-            public void onPauseMusic() {
-                PlayBanZouInstance.getInstance().pauseMediaPlay();
-            }
-
-            @Override
-            public void onResumeMusic() {
-                PlayBanZouInstance.getInstance().resumeMediaPlay();
-            }
-        };
 
         @Override
         public void onBindViewHolder(int position) {
@@ -251,7 +209,7 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
                 loadImage(imageUrl, ivCover);
             }
             if (!TextUtils.isEmpty(MyApplication.musicId) && MyApplication.musicId.equals(templateBean.id)) {
-                templateBean.playStatus = PlayBanZouInstance.getInstance().status;
+                templateBean.playStatus = PlayMediaInstance.getInstance().status;
             }
             ivPlay.setImageResource(templateBean.playStatus == 3 ? R.drawable.ic_bz_pause : R.drawable.ic_bz_play);
             ivPlay.setVisibility(templateBean.playStatus == 1 ? View.GONE : View.VISIBLE);
@@ -259,7 +217,7 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
             rlPlay.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    toPlayMusic(position, pbPlay, ivPlay);
+                    musicBinder.toPPMusic();
                 }
             });
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -272,8 +230,8 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
 
         @Override
         public void onItemClick(View view, int position) {
-            if (PlayBanZouInstance.getInstance().status == 3) {
-                PlayBanZouInstance.getInstance().stopMediaPlay();
+            if (PlayMediaInstance.getInstance().status == 3) {
+                PlayMediaInstance.getInstance().stopMediaPlay();
                 adapter.notifyItemChanged(position);
             }
             TemplateBean bean = mDataList.get(position);
@@ -281,66 +239,18 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
         }
 
         public void updatePlayStatus() {
-            mDataList.get(oldPos).playStatus = 3;
-            oldPbPlay.setVisibility(View.GONE);
-            oldIvPlay.setImageResource(R.drawable.ic_bz_pause);
-            oldIvPlay.setVisibility(View.VISIBLE);
+
         }
     }
 
     public void playTemplateMusic() {
-        PlayBanZouInstance.getInstance().stopMediaPlay();
-        String filePath = FileDir.hotDir;
-        if (!new File(filePath).exists()) {
-            new File(filePath).mkdirs();
+        if (serviceIntent == null) {
+            serviceIntent = new Intent(getActivity(), PlayService.class);
+            getActivity().bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
         }
-        String fileName = MD5Util.getMD5String(tb.mp3);
-        playPath = filePath+fileName;
-        if (new File(playPath).exists()) {
-            PlayBanZouInstance.getInstance().setData(playPath, tb.id);
-        } else {
-            if(PermissionUtils.checkSdcardPermission(getActivity())) {
-                hotPresenter.downHot(filePath, fileName, tb.mp3);
-            }
-        }
-        PlayBanZouInstance.getInstance().setIMediaPlayerListener(new IMediaPlayerListener() {
-            @Override
-            public void onStart() {
-                if (PlayMediaInstance.getInstance().status == 3) {
-                    PlayMediaInstance.getInstance().pauseMediaPlay();
-                    EventBus.getDefault().post(new Event.PPStatusEvent(4));
-                }
-                if (sampleViewHolder != null) {
-                    sampleViewHolder.updatePlayStatus();
-                }
-            }
 
-            @Override
-            public void onStop() {
-
-            }
-
-            @Override
-            public void onPlay() {
-
-            }
-
-            @Override
-            public void onPause() {
-
-            }
-
-            @Override
-            public void onOver() {
-
-            }
-
-            @Override
-            public void onError() {
-
-            }
-        });
     }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();

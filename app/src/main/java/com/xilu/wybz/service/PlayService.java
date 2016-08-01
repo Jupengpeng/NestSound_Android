@@ -227,11 +227,7 @@ public class PlayService extends Service implements AudioManager.OnAudioFocusCha
         PlayMediaInstance.getInstance().stopMediaPlay();
         Map<String, String> params = new HashMap<>();
         params.put("uid", userId + "");
-        int openmodel = PrefsUtil.getInt("playmodel", PlayService.this);
-        params.put("openmodel", (openmodel == 0 ? 1 : openmodel) + "");
         params.put("id", itemid + "");
-        params.put("gedanid", gedanid);
-        params.put("com", from);
         if (MyApplication.ids.size() > 1) {
             for (int i = 0; i < MyApplication.ids.size(); i++) {
                 if (MyApplication.ids.get(i) == itemid) {
@@ -279,7 +275,6 @@ public class PlayService extends Service implements AudioManager.OnAudioFocusCha
             id = intent.getIntExtra("id", 0);
             from = intent.getStringExtra("from");
             gedanid = intent.getStringExtra("gedanid");
-            position = intent.getIntExtra("position", -1);
             PrefsUtil.putString("playFrom", from, this);
             PrefsUtil.putInt("playId", id, this);
             PrefsUtil.putString("playGedanId", gedanid, this);

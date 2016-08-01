@@ -48,6 +48,7 @@ public class MyCommon {
     public static final String MYFAV = "myfav";
     public static final String USERSONG = "usersong";
     public static final String USERFAV = "userfav";
+    public static final String MAKEHOT = "makehot";
     //七牛上传文件的空间名
     public static final String[] fixxs = new String[]{"inspire","lyrcover","muscover","music","headport"};
     //用户协议
@@ -77,6 +78,7 @@ public class MyCommon {
         map.put(MSG_ZAN, 1);////消息 点赞
         map.put(MSG_FOV, 1);//消息 收藏
         map.put(MSG_COMMENT, 1);//消息 评论
+        map.put(MAKEHOT, 1);//消息 评论
 
         map.put(BANNER, 2);//banner
         map.put(MUSICTALK_MORE, 2);//乐说更多

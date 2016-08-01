@@ -6,7 +6,7 @@
     <drawable name="default_pressed2">#30000000</drawable>
     <drawable name="default_pressed3">#22ffffff</drawable>
     <drawable name="main_color">#e53059</drawable>
-    <drawable name="lyrics_poster">#ff6a6054</drawable>
+    <drawable name="lyrics_poster">#333333</drawable>
     <drawable name="line">@color/split_line</drawable>
     <drawable name="color_f5">#fff5f5f5</drawable>
     <drawable name="main_bg">@color/main_bg</drawable>

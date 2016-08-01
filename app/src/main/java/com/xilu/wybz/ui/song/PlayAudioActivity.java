@@ -1,5 +1,6 @@
 package com.xilu.wybz.ui.song;
 
+import android.app.Application;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -46,6 +47,7 @@ import com.xilu.wybz.service.PlayService;
 import com.xilu.wybz.ui.ExitApplication;
 import com.xilu.wybz.ui.IView.ILoadPicView;
 import com.xilu.wybz.ui.IView.IPlayView;
+import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.ui.mine.NewUserInfoActivity;
 import com.xilu.wybz.ui.setting.SettingFeedActivity;
@@ -150,17 +152,17 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
         return R.layout.activity_playaudio;
     }
 
-    public ServiceConnection serviceConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            musicBinder = (PlayService.MusicBinder) service;
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-
-        }
-    };
+//    public ServiceConnection serviceConnection = new ServiceConnection() {
+//        @Override
+//        public void onServiceConnected(ComponentName name, IBinder service) {
+//            musicBinder = (PlayService.MusicBinder) service;
+//        }
+//
+//        @Override
+//        public void onServiceDisconnected(ComponentName name) {
+//
+//        }
+//    };
 
     public static void toPlayAudioActivity(Context context, int id, String gedanid, String from) {
         Intent intent = new Intent(context, PlayAudioActivity.class);
@@ -261,10 +263,10 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
         }
         actionBeanList = new ArrayList<>();
         viewPager.setAdapter(new PlayPagerAdapter(viewList));
-        if (serviceIntent == null) {
-            serviceIntent = new Intent(this, PlayService.class);
-            bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
-        }
+//        if (serviceIntent == null) {
+//            serviceIntent = new Intent(this, PlayService.class);
+//            bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
+//        }
         if (isCurrentMusic && PlayMediaInstance.getInstance().status != 1) {//正在播放的是本首
             worksData = PrefsUtil.getMusicData(context, id);
             adapterData();
@@ -279,10 +281,12 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
             }
         } else {//开启服务
             ivPlay.setEnabled(false);
-            serviceIntent.putExtra("id", id);
-            serviceIntent.putExtra("from", from);
-            serviceIntent.putExtra("gedanid", gedanid);
-            startService(serviceIntent);
+//            serviceIntent.putExtra("id", id);
+//            serviceIntent.putExtra("from", from);
+//            serviceIntent.putExtra("gedanid", gedanid);
+//            startService(serviceIntent);
+            if(MyApplication.mMainService!=null)
+                MyApplication.mMainService.loadData(id,from,gedanid);
         }
     }
 
@@ -465,14 +469,18 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
                 }
                 break;
             case R.id.iv_pre:
-                musicBinder.toPreMusic();
+//                musicBinder.toPreMusic();
+//                MyApplication.getInstance().getMainService().toPreMusic();
                 break;
             case R.id.iv_play:
-                musicBinder.toPPMusic();
+//                musicBinder.toPPMusic();
+//                MyApplication.getInstance().getMainService().doPP();
                 break;
             case R.id.iv_next:
-                musicBinder.toNextMusic();
+//                musicBinder.toNextMusic();
+//                MyApplication.getInstance().getMainService().toNextMusic();
                 break;
+
             case R.id.iv_mode:
                 int mode = PrefsUtil.getInt("playmodel", context);
                 ivMode.setImageResource(mode == MyCommon.PLAY_MODEL_ORDER ? R.drawable.ic_play_loop : R.drawable.ic_play_order);
@@ -738,7 +746,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
         if (playPresenter != null)
             playPresenter.cancleRequest();
         PrefsUtil.saveMusicData(context, worksData);
-        unbindService(serviceConnection);
+//        unbindService(serviceConnection);
         EventBus.getDefault().unregister(this);
 
         if (playPresenter != null) {
