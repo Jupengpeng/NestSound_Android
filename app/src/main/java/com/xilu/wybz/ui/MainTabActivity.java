@@ -16,6 +16,7 @@ import com.xilu.wybz.R;
 import com.xilu.wybz.adapter.MyPagerAdapter;
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.common.Event;
+import com.xilu.wybz.service.MainService;
 import com.xilu.wybz.ui.base.BaseActivity;
 import com.xilu.wybz.ui.find.FindActivity;
 import com.xilu.wybz.ui.login.LoginActivity;
@@ -254,10 +255,10 @@ public class MainTabActivity extends BaseActivity {
                 return true;
             }
             if ((System.currentTimeMillis() - exitTime) < 2000) {
-                if (MyApplication.ids.size() > 0) {
+                if (MainService.ids.size() > 0) {
                     String ids = "";
-                    for (int i = 0; i < MyApplication.ids.size(); i++) {
-                        ids += MyApplication.ids.get(i) + (i < MyApplication.ids.size() - 1 ? "," : "");
+                    for (int i = 0; i < MainService.ids.size(); i++) {
+                        ids += MainService.ids.get(i) + (i < MainService.ids.size() - 1 ? "," : "");
                     }
                     PrefsUtil.putString(PrefsUtil.getString("playFrom", context), ids, context);
                 }

@@ -16,6 +16,7 @@ import com.xilu.wybz.adapter.RankingAdapter;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.RankingPresenter;
+import com.xilu.wybz.service.MainService;
 import com.xilu.wybz.ui.IView.IRankingView;
 import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.ui.lyrics.LyricsdisplayActivity;
@@ -116,11 +117,11 @@ public class RankingFragment extends BaseFragment implements IRankingView {
     public void toPlayPos(int position) {
         if (songDatas.size() > 0) {
             String playFrom = PrefsUtil.getString("playFrom", context);
-            if (!playFrom.equals(MyCommon.RANK_SONG) || MyApplication.ids.size() == 0) {
-                if (MyApplication.ids.size() > 0)
-                    MyApplication.ids.clear();
+            if (!playFrom.equals(MyCommon.RANK_SONG) || MainService.ids.size() == 0) {
+                if (MainService.ids.size() > 0)
+                    MainService.ids.clear();
                 for (WorksData worksData : songDatas) {
-                    MyApplication.ids.add(worksData.getItemid());
+                    MainService.ids.add(worksData.getItemid());
                 }
             }
             WorksData worksData = songDatas.get(position);

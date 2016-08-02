@@ -10,6 +10,7 @@ import com.xilu.wybz.R;
 import com.xilu.wybz.bean.MusicTalk;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.MusicTalkMorePresenter;
+import com.xilu.wybz.service.MainService;
 import com.xilu.wybz.ui.BrowserActivity;
 import com.xilu.wybz.ui.IView.IMusicTalkMoreView;
 import com.xilu.wybz.ui.MyApplication;
@@ -146,11 +147,11 @@ public class MusicTalkMoreActivity extends BaseListActivity<MusicTalk> implement
             MusicTalk musicTalk = mDataList.get(position);
             if(StringUtil.isBlank(musicTalk.url)&&musicTalk.itemid>0) {
                 String playFrom = PrefsUtil.getString("playFrom", context);
-                if (!playFrom.equals(MyCommon.MUSICTALK) || MyApplication.ids.size() == 0) {
-                    if (MyApplication.ids.size() > 0)
-                        MyApplication.ids.clear();
+                if (!playFrom.equals(MyCommon.MUSICTALK) || MainService.ids.size() == 0) {
+                    if (MainService.ids.size() > 0)
+                        MainService.ids.clear();
                     for (MusicTalk worksData : mDataList) {
-                        MyApplication.ids.add(worksData.itemid);
+                        MainService.ids.add(worksData.itemid);
                     }
                 }
                 PlayAudioActivity.toPlayAudioActivity(context, musicTalk.itemid, "", MyCommon.MUSICTALK);

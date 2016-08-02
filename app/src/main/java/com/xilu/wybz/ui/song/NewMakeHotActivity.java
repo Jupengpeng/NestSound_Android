@@ -24,6 +24,7 @@ import com.xilu.wybz.common.interfaces.IMediaPlayerListener;
 import com.xilu.wybz.common.interfaces.ITemplateMusicListener;
 import com.xilu.wybz.presenter.HotPresenter;
 import com.xilu.wybz.ui.IView.IHotView;
+import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.utils.MD5Util;
 import com.xilu.wybz.utils.PermissionUtils;
@@ -88,6 +89,7 @@ public class NewMakeHotActivity extends ToolbarActivity implements IHotView, Vie
 
     public void initView() {
         setTitle("伴奏");
+        MyApplication.mMainService.doRelease();
         infater = LayoutInflater.from(this);
         titleView = infater.inflate(R.layout.hot_headview, null);
         ivQc = (SimpleDraweeView) titleView.findViewById(R.id.iv_qc);

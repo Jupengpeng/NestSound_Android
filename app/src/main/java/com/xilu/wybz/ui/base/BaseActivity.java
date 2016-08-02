@@ -78,7 +78,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     //开启透明状态栏目
     protected void adaptTheme(boolean isTranslucentStatusFitSystemWindowTrue) {
         if (isTranslucentStatusFitSystemWindowTrue) {
-            if (!(this instanceof PlayAudioActivity || this instanceof LoginActivity
+            if (!(this instanceof PlayAudioActivity || this instanceof LoginActivity || this instanceof LyricsPosterActivity
                     || this instanceof RegisterActivity || this instanceof PasswordActivity
                     || this instanceof SongAblumActivity)) {
                     SystemBarHelper.setStatusBarDarkMode(this);

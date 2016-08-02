@@ -258,7 +258,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:scaleType="matrix"
-                    android:src="@drawable/ic_play_play" />
+                    android:src="@drawable/ic_play_pause" />
 
                 <RelativeLayout
                     android:layout_width="0dp"

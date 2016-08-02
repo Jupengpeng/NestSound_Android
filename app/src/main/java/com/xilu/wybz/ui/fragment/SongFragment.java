@@ -12,6 +12,7 @@ import com.xilu.wybz.adapter.WorksAdapter;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.SongPresenter;
+import com.xilu.wybz.service.MainService;
 import com.xilu.wybz.ui.IView.ISongView;
 import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.ui.find.MoreWorkActivity;
@@ -164,11 +165,11 @@ public class SongFragment extends BaseFragment implements ISongView {
     public void toPlayPos(List<WorksData> worksDataList,int position,String COME){
         if (worksDataList.size() > 0) {
             String playFrom = PrefsUtil.getString("playFrom",context);
-            if(!playFrom.equals(COME)|| MyApplication.ids.size()==0){
-                if (MyApplication.ids.size() > 0)
-                    MyApplication.ids.clear();
+            if(!playFrom.equals(COME)|| MainService.ids.size()==0){
+                if (MainService.ids.size() > 0)
+                    MainService.ids.clear();
                 for (WorksData worksData : worksDataList) {
-                    MyApplication.ids.add(worksData.getItemid());
+                    MainService.ids.add(worksData.getItemid());
                 }
             }
             WorksData worksData = worksDataList.get(position);

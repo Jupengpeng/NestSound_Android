@@ -24,19 +24,15 @@ import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.common.PlayMediaInstance;
 import com.xilu.wybz.presenter.HotPresenter;
-import com.xilu.wybz.service.PlayService;
 import com.xilu.wybz.ui.IView.IHotView;
 import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.ui.song.MakeSongActivity;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.view.pull.BaseViewHolder;
-
 import org.greenrobot.eventbus.EventBus;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.Bind;
 
 public class HotFragment extends BaseListFragment<TemplateBean> implements IHotView {
@@ -48,18 +44,6 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
     private int itemHeight;
     private int playPos = -1;
     private Intent serviceIntent;
-    PlayService.MusicBinder musicBinder;
-    public ServiceConnection serviceConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            musicBinder = (PlayService.MusicBinder) service;
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-
-        }
-    };
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -217,7 +201,7 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
             rlPlay.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    musicBinder.toPPMusic();
+//                    musicBinder.toPPMusic();
                 }
             });
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -244,10 +228,10 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
     }
 
     public void playTemplateMusic() {
-        if (serviceIntent == null) {
-            serviceIntent = new Intent(getActivity(), PlayService.class);
-            getActivity().bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
-        }
+//        if (serviceIntent == null) {
+//            serviceIntent = new Intent(getActivity(), PlayService.class);
+//            getActivity().bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
+//        }
 
     }
 

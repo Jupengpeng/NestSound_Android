@@ -8,6 +8,7 @@ import com.xilu.wybz.http.callback.BitmapCallback;
 import com.xilu.wybz.ui.IView.ILoadPicView;
 import com.xilu.wybz.utils.BitmapUtils;
 import com.xilu.wybz.utils.FileUtils;
+import com.xilu.wybz.utils.PermissionUtils;
 
 import okhttp3.Call;
 
@@ -31,8 +32,7 @@ public class DownPicPresenter extends BasePresenter<ILoadPicView>{
                     return;
                 }
                 Bitmap bmp = NativeStackBlur.process(BitmapUtils.zoomBitmap(response, 200), 30);
-                FileUtils.saveBmp(path, bmp);
-                iView.setPic(bmp);
+                iView.setPic(path, bmp);
             }
         });
     }

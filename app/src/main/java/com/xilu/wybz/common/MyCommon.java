@@ -12,15 +12,19 @@ public class MyCommon {
     //默认头像
     public static final String defult_head = "http://pic.yinchao.cn/uploadfiles/2015/09/14/201509141121211442200881.png";
     //播放的状态
-    public static final int PP_START = 1;//开始播放
-    public static final int PP_STOP = 2;//停止播放
-    public static final int PP_PLAY = 3;//继续播放
-    public static final int PP_PAUSE = 4;//暂停播放
-    public static final int PP_OVER = 5;//播放完成
-    public static final int PP_ERROR = 6;//播放错误
-    public static final int PP_NO_DATA = 7;//数据加载失败！
-    public static final int PP_NO_PRE = 8;//没有上一首
-    public static final int PP_NO_NEXT = 9;//没有下一首
+    public static final int IDLE = 0;//未开始
+    public static final int INITIALIZED = 1;//初始化
+    public static final int PREPARED = 2;//准备
+    public static final int PREPARING = 3;//准备中
+    public static final int STARTED = 4;//开始播放
+    public static final int PLAYED = 5;//播放
+    public static final int PAUSED = 6;//暂停
+    public static final int STOPPED = 7;//停止
+    public static final int COMPLETED = 8;//完成
+    public static final int SUCCESSED = 9;//获取数据成功
+    public static final int END = -1;//结束
+    public static final int ERROR = -2;//播放出错
+    public static final int FAILED = -3;//获取数据失败
     //播放模式
     public static final int PLAY_MODEL_ORDER = 1;//顺序播放
     public static final int PLAY_MODEL_RANDOM = 2;//随机播放

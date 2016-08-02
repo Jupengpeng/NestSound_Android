@@ -11,6 +11,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.TemplateBean;
 import com.xilu.wybz.common.PlayMediaInstance;
+import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.ui.fragment.HotFragment;
 import butterknife.Bind;
@@ -41,7 +42,7 @@ public class MakeHotActivity extends ToolbarActivity {
 
     private void initViews() {
         setTitle("原唱伴奏");
-        PlayMediaInstance.getInstance().release();
+        MyApplication.mMainService.doRelease();
         loadImage("res:///" + R.drawable.ic_qc_bg, ivQc);
         HotAdapter pagerAdapter = new HotAdapter(getSupportFragmentManager());
         container.setAdapter(pagerAdapter);

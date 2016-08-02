@@ -47,24 +47,20 @@ public class MyApplication extends Application implements ServiceConnection {
     public static String musicId = "";
     public static String from;
     public static String id;
-    public static List<Integer> ids;
     public static Map<Integer, Integer> posMap;
     public static boolean isPlay;
     public static UploadManager uploadManager;
     public int userid;
     public boolean isLogin;
-    public static MyApplication instance;
 
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
         MultiDex.install(this);
     }
-
     @Override
     public void onCreate() {
         super.onCreate();
         context = this;
-        ids = new ArrayList<>();
         posMap = new HashMap<>();
         //检查版本
         if (PrefsUtil.getInt("versionCode", context) == 0) {
@@ -157,11 +153,12 @@ public class MyApplication extends Application implements ServiceConnection {
         if (service instanceof MainService.ServiceBinder) {
             MainService.ServiceBinder binder = (MainService.ServiceBinder) service;
             mMainService = binder.getService();
-            Log.e("mMainService","onServiceConnected"+mMainService);
+            Log.e("mMainService","onServiceConnected");
         }
     }
 
     @Override
     public void onServiceDisconnected(ComponentName name) {
+        Log.e("mMainService","onServiceDisconnected");
     }
 }

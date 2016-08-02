@@ -30,6 +30,7 @@ import com.xilu.wybz.bean.SongAlbum;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.MainPresenter;
+import com.xilu.wybz.service.MainService;
 import com.xilu.wybz.ui.BrowserActivity;
 import com.xilu.wybz.ui.IView.IHomeView;
 import com.xilu.wybz.ui.MyApplication;
@@ -169,12 +170,12 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
                         LyricsdisplayActivity.toLyricsdisplayActivity(context, worksData.itemid, 0, worksData.getTitle());
                     } else {
                         String playFrom = PrefsUtil.getString("playFrom", context);
-                        if (!playFrom.equals(MyCommon.TUIJIAN) || MyApplication.ids.size() == 0) {
-                            if (MyApplication.ids.size() > 0)
-                                MyApplication.ids.clear();
+                        if (!playFrom.equals(MyCommon.TUIJIAN) || MainService.ids.size() == 0) {
+                            if (MainService.ids.size() > 0)
+                                MainService.ids.clear();
                             for (WorksData workData : recommendWorkList) {
                                 if (workData.status == 1) {
-                                    MyApplication.ids.add(workData.getItemid());
+                                    MainService.ids.add(workData.getItemid());
                                 }
                             }
                         }
@@ -204,12 +205,12 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
                         LyricsdisplayActivity.toLyricsdisplayActivity(context, worksData.itemid, 0, worksData.getTitle());
                     } else {
                         String playFrom = PrefsUtil.getString("playFrom", context);
-                        if (!playFrom.equals(MyCommon.ZUIXIN) || MyApplication.ids.size() == 0) {
-                            if (MyApplication.ids.size() > 0)
-                                MyApplication.ids.clear();
+                        if (!playFrom.equals(MyCommon.ZUIXIN) || MainService.ids.size() == 0) {
+                            if (MainService.ids.size() > 0)
+                                MainService.ids.clear();
                             for (WorksData workData : newWorkList) {
                                 if (workData.status == 1) {
-                                    MyApplication.ids.add(workData.getItemid());
+                                    MainService.ids.add(workData.getItemid());
                                 }
                             }
                         }
@@ -229,11 +230,11 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
                     MusicTalk musicTalk = musicTalkList.get(position);
                     if (StringUtil.isBlank(musicTalk.url) && musicTalk.itemid > 0) {
                         String playFrom = PrefsUtil.getString("playFrom", context);
-                        if (!playFrom.equals(MyCommon.MUSICTALK) || MyApplication.ids.size() == 0) {
-                            if (MyApplication.ids.size() > 0)
-                                MyApplication.ids.clear();
+                        if (!playFrom.equals(MyCommon.MUSICTALK) || MainService.ids.size() == 0) {
+                            if (MainService.ids.size() > 0)
+                                MainService.ids.clear();
                             for (MusicTalk workData : musicTalkList) {
-                                MyApplication.ids.add(workData.itemid);
+                                MainService.ids.add(workData.itemid);
                             }
                         }
 
@@ -332,12 +333,12 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
                 int pos = position % bannerList.size();
                 if (bannerList.get(pos).getType() == 0) {
                     String playFrom = PrefsUtil.getString("playFrom", context);
-                    if (!playFrom.equals(MyCommon.BANNER) || MyApplication.ids.size() == 0) {
-                        if (MyApplication.ids.size() > 0)
-                            MyApplication.ids.clear();
+                    if (!playFrom.equals(MyCommon.BANNER) || MainService.ids.size() == 0) {
+                        if (MainService.ids.size() > 0)
+                            MainService.ids.clear();
                         for (Banner bannerListBean : bannerList) {
                             if (bannerListBean.getType() == 0 && bannerListBean.getItemid() > 0)
-                                MyApplication.ids.add(bannerListBean.getItemid());
+                                MainService.ids.add(bannerListBean.getItemid());
                         }
                     }
                     PlayAudioActivity.toPlayAudioActivity(context, bannerList.get(pos).getItemid(), "", MyCommon.BANNER);
