@@ -17,7 +17,7 @@ gen/
 
 .idea/
 
-captures
+/captures
 build/
 
 /*/build/
@@ -35,4 +35,3 @@ proguard/
 
 # Log Files
 *.log
-src/ppzs/

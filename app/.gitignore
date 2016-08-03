@@ -17,12 +17,12 @@ gen/
 
 .idea/
 
-captures
-build/
+/captures
+/build
 
-/*/build/
 
-*.iml
+/app.iml
+
 
 
 
@@ -35,4 +35,3 @@ proguard/
 
 # Log Files
 *.log
-src/ppzs/

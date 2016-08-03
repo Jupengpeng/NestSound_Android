@@ -13,14 +13,10 @@ bin/
 gen/
 
 # Gradle files
-.gradle/
 
-.idea/
 
-captures
+/captures
 build/
-
-/*/build/
 
 *.iml
 
@@ -35,4 +31,3 @@ proguard/
 
 # Log Files
 *.log
-src/ppzs/
