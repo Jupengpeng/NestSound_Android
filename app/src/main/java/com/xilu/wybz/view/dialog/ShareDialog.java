@@ -35,8 +35,10 @@ public class ShareDialog extends Dialog implements View.OnClickListener {
     UmengShareUtil shareUtil;
     WorksData mWorksData;
     int type;// 1分享歌词海报
-    public ShareDialog(Activity context, WorksData worksData) {
+
+    public ShareDialog(Activity context, WorksData worksData, int type) {
         super(context, R.style.CommentDialog);
+        this.type = type;
         if (shareUtil == null) {
             String shareContent = "";
             String playurl = "";
@@ -44,14 +46,14 @@ public class ShareDialog extends Dialog implements View.OnClickListener {
             String shareAuthor = worksData.author;
             String shareLink = worksData.shareurl + "?id=" + worksData.itemid;
             String sharePic = worksData.pic;
-            if(worksData.status==1){
+            if (worksData.status == 1) {
                 playurl = worksData.playurl;
                 shareContent = "我在音巢APP淘到一首好听的歌，快来看看有没有你喜欢的原创style 《" + shareTitle + "》 ▷" + shareLink + " (@音巢音乐)";
-            }else{
+            } else {
                 String shareBody = PrefsUtil.getUserId(context) == worksData.uid ? "我用音巢app创作了一首歌词，快来看看吧!" : "我在音巢app上发现一首好歌词，太棒了~";
                 shareContent = shareBody + " 《" + shareTitle + "》 ▷" + shareLink + " (@音巢音乐)";
             }
-            shareUtil = new UmengShareUtil(context, new ShareBean(shareTitle, shareAuthor, shareContent, shareLink, sharePic, playurl));
+            shareUtil = new UmengShareUtil(context, new ShareBean(shareTitle, shareAuthor, shareContent, shareLink, sharePic, playurl, type));
         }
         mWorksData = worksData;
         this.context = context;
@@ -60,9 +62,7 @@ public class ShareDialog extends Dialog implements View.OnClickListener {
         getWindow().setWindowAnimations(R.style.BottomDialogAnim); //设置窗口弹出动画
         setContentView(getDialogView());
     }
-    public void setType(int type){
-        this.type=type;
-    }
+
     public View getDialogView() {
         View rootView = LayoutInflater.from(context).inflate(
                 R.layout.dialog_share, null);
@@ -82,6 +82,11 @@ public class ShareDialog extends Dialog implements View.OnClickListener {
         ll_qzone.setOnClickListener(this);
         ll_friend.setOnClickListener(this);
         ll_poster.setOnClickListener(this);
+        if (type == 1 || StringUtil.isBlank(mWorksData.lyrics))
+            ll_poster.setVisibility(View.INVISIBLE);
+        if (type == 1) {
+            ll_copylink.setVisibility(View.INVISIBLE);
+        }
         return rootView;
     }
 
@@ -108,7 +113,7 @@ public class ShareDialog extends Dialog implements View.OnClickListener {
                 ToastUtils.toast(context, "复制成功!");
                 break;
             case R.id.ll_poster:
-                LyricsPosterActivity.toLyricsPosterActivity(context,mWorksData);
+                LyricsPosterActivity.toLyricsPosterActivity(context, mWorksData);
                 break;
         }
         dismiss();
