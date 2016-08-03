@@ -34,7 +34,7 @@ public class ShareDialog extends Dialog implements View.OnClickListener {
     LinearLayout ll_copylink;
     UmengShareUtil shareUtil;
     WorksData mWorksData;
-    int type;
+    int type;// 1分享歌词海报
     public ShareDialog(Activity context, WorksData worksData) {
         super(context, R.style.CommentDialog);
         if (shareUtil == null) {

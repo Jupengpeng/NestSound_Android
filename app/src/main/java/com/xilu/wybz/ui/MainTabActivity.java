@@ -26,6 +26,7 @@ import com.xilu.wybz.ui.mine.NewMineActivity;
 import com.xilu.wybz.ui.msg.MsgActivity;
 import com.xilu.wybz.ui.record.InspireRecordActivity;
 import com.xilu.wybz.ui.song.NewMakeHotActivity;
+import com.xilu.wybz.utils.PermissionUtils;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.utils.VersionUtil;
@@ -75,6 +76,9 @@ public class MainTabActivity extends BaseActivity {
         EventBus.getDefault().register(this);
         openPush();
         checkAppVersion();
+        if(PermissionUtils.checkSdcardPermission(this)){
+
+        }
         manager = new LocalActivityManager(this, true);
         manager.dispatchCreate(savedInstanceState);
         checkedTextViewList = new ArrayList<>();

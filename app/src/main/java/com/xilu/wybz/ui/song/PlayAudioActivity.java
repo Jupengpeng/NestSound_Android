@@ -260,7 +260,9 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
             id = bundle.getInt("id");
             from = bundle.getString("from", "");
             gedanid = bundle.getString("gedanid", "");
-            isCurrentMusic = (id == PrefsUtil.getInt("playId", context)) && from.equals(PrefsUtil.getString("playFrom", context));
+            int playId = PrefsUtil.getInt("playId", context);
+            String playFrom = PrefsUtil.getString("playFrom", context);
+            isCurrentMusic = (id == playId) && from.equals(playFrom);
         }
         actionBeanList = new ArrayList<>();
         viewPager.setAdapter(new PlayPagerAdapter(viewList));
@@ -280,6 +282,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
                 }
             }else{
                 //停止或者尚未播放
+                if(worksData!=null)
                 MyApplication.mMainService.playOneMusic(worksData.playurl);
             }
         } else {//开启服务
@@ -679,14 +682,6 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if(MyApplication.mMainService.status==1){
-            playStatus = 1;
-            MyApplication.mMainService.doPP(playStatus);
-        }
-    }
     //    @Override
 //    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 //        super.onActivityResult(requestCode, resultCode, data);
