@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -14,6 +15,7 @@ import com.xilu.wybz.bean.SongAlbum;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.ImageLoadUtil;
+import com.xilu.wybz.utils.PrefsUtil;
 
 import java.util.List;
 
@@ -23,18 +25,24 @@ import butterknife.ButterKnife;
 public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongAlbumViewHolder> {
     private List<WorksData> mDatas;
     private LayoutInflater mInflater;
+    private Context mContext;
+
     public interface OnItemClickListener {
         void onItemClick(View view, int position);
+
         void onItemLongClick(View view, int position);
     }
+
     private OnItemClickListener mOnItemClickListener;
+
     public void setOnItemClickListener(OnItemClickListener mOnItemClickListener) {
         this.mOnItemClickListener = mOnItemClickListener;
     }
+
     public SongListAdapter(Context context, List<WorksData> datas) {
         mInflater = LayoutInflater.from(context);
         mDatas = datas;
-
+        mContext = context;
     }
 
     @Override
@@ -50,8 +58,15 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongAl
         holder.tvAuthor.setTag(worksData);
         holder.tvName.setText(worksData.title);
         holder.tvAuthor.setText(worksData.getAuthor());
-        holder.tvNum.setText(""+(position+1));
-        if(mOnItemClickListener!=null) {
+        holder.tvNum.setText("" + (position + 1));
+        if(worksData.isPlay){
+            holder.tvNum.setVisibility(View.GONE);
+            holder.ivFlag.setVisibility(View.VISIBLE);
+        }else{
+            holder.tvNum.setVisibility(View.VISIBLE);
+            holder.ivFlag.setVisibility(View.GONE);
+        }
+        if (mOnItemClickListener != null) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -91,6 +106,9 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongAl
         TextView tvName;
         @Bind(R.id.tv_author)
         TextView tvAuthor;
+        @Bind(R.id.iv_flag)
+        ImageView ivFlag;
+
         public SongAlbumViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);

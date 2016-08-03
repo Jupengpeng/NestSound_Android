@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -197,12 +198,33 @@ public class SongAblumActivity extends ToolbarActivity implements IRecSongView {
             PlayAudioActivity.toPlayAudioActivity(context, worksData.getItemid(), songAlbum.id, MyCommon.GEDAN);
         }
     }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        for(WorksData worksData:musicBeans){
+            int playId = PrefsUtil.getInt("playId", context);
+            if(playId==worksData.itemid){
+                worksData.isPlay = true;
+            }else{
+                worksData.isPlay = false;
+            }
+        }
+        songListAdapter.notifyDataSetChanged();
+    }
+
     @Override
     public void showSongDetail(GleeDetailBean gleeDetailBean) {
         if (tvCount == null){
             return;
         }
-        musicBeans.addAll(gleeDetailBean.workList);
+        for(WorksData worksData:gleeDetailBean.workList){
+            int playId = PrefsUtil.getInt("playId", context);
+            if(playId==worksData.itemid){
+                worksData.isPlay = true;
+            }
+            musicBeans.add(worksData);
+        }
         tvCount.setText("(共"+gleeDetailBean.workCount+"首)");
         if(gleeDetailBean.recommedSong!=null)
         songAlbum = gleeDetailBean.recommedSong;

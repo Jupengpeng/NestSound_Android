@@ -53,7 +53,7 @@ public class LyricsPosterActivity extends ToolbarActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EventBus.getDefault().post(this);
+        EventBus.getDefault().register(this);
         initData();
     }
 
