@@ -201,21 +201,23 @@ public abstract class BaseActivity extends AppCompatActivity {
                 .show();
     }
 
+    private static String HOME_TAG = "home-activity";
+
     @Override
     protected void onResume() {
         super.onResume();
-        Log.i("activity",this.getClass().getName()+":onResume");
+        Log.i(HOME_TAG,this.getClass().getName()+":onResume");
         MobclickAgent.onResume(this);
     }
     @Override
     protected void onPause() {
         super.onPause();
-        Log.i("activity",this.getClass().getName()+":onPause");
+        Log.i(HOME_TAG,this.getClass().getName()+":onPause");
         MobclickAgent.onPause(this);
     }
     protected void onDestroy() {
         super.onDestroy();
-        Log.i("activity",this.getClass().getName()+":onDestroy");
+        Log.i(HOME_TAG,this.getClass().getName()+":onDestroy");
         isDestroy = true;
     }
 }
