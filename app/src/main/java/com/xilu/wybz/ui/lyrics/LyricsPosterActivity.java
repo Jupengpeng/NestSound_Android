@@ -85,6 +85,13 @@ public class LyricsPosterActivity extends ToolbarActivity{
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.menu_next:
+                String content = "";
+                for(LyricsPoster lyricsPoster:lyricsPosters){
+                    if(lyricsPoster.isChecked){
+                        content+=lyricsPoster.lyrics+"\n";
+                    }
+                }
+                SharePosterActivity.toSharePosterActivity(context,worksData,content);
                 break;
         }
         return super.onOptionsItemSelected(item);

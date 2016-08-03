@@ -58,6 +58,7 @@ import com.xilu.wybz.utils.MD5Util;
 import com.xilu.wybz.utils.NumberUtil;
 import com.xilu.wybz.utils.PermissionUtils;
 import com.xilu.wybz.utils.PrefsUtil;
+import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.utils.ToastUtils;
 import com.xilu.wybz.view.dialog.ActionMoreDialog;
@@ -127,7 +128,6 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     String headurl;
     String name;
     int id;
-    //    PlayService.MusicBinder musicBinder;
     String from;
     String gedanid;
     ActionMoreDialog actionMoreDialog;
@@ -135,7 +135,6 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     boolean isSeek;
     int hotid;//伴奏ID
     Intent intent;
-    Intent serviceIntent;
     Timer timer;
     WorksData worksData;
     ShareDialog shareDialog;
@@ -293,7 +292,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
         viewPager.setCurrentItem(0);
         try {
             String pic = worksData.getPic();
-            if (!TextUtils.isEmpty(pic)) {
+            if (StringUtil.isNotBlank(pic)) {
                 loadPic(pic);
             }
             worksData.status = 1;

@@ -143,10 +143,7 @@ dependencies {
     compile rootProject.ext.dependencies["multidex"]
     compile rootProject.ext.dependencies["materialdatetimepicker"]
     compile rootProject.ext.dependencies["analytics"]
-
-
     testCompile 'junit:junit:4.12'
-    compile 'com.google.android.gms:play-services-appindexing:8.1.0'
 }
 
 

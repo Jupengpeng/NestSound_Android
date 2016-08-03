@@ -11,16 +11,12 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.support.multidex.MultiDex;
 import android.util.Log;
-import android.widget.Toast;
-
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.qiniu.android.storage.UploadManager;
-import com.sina.weibo.sdk.utils.LogUtil;
-import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.PushAgent;
 import com.umeng.socialize.PlatformConfig;
 import com.xilu.wybz.common.MyCommon;
@@ -29,13 +25,10 @@ import com.xilu.wybz.service.MainService;
 import com.xilu.wybz.utils.PhoneInfoUtil;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtil;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**

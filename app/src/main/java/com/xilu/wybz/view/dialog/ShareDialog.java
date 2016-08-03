@@ -33,8 +33,8 @@ public class ShareDialog extends Dialog implements View.OnClickListener {
     LinearLayout ll_qzone;
     LinearLayout ll_copylink;
     UmengShareUtil shareUtil;
-    ShareBean mShareBean;
     WorksData mWorksData;
+    int type;
     public ShareDialog(Activity context, WorksData worksData) {
         super(context, R.style.CommentDialog);
         if (shareUtil == null) {
@@ -59,6 +59,9 @@ public class ShareDialog extends Dialog implements View.OnClickListener {
         getWindow().setGravity(Gravity.BOTTOM);
         getWindow().setWindowAnimations(R.style.BottomDialogAnim); //设置窗口弹出动画
         setContentView(getDialogView());
+    }
+    public void setType(int type){
+        this.type=type;
     }
     public View getDialogView() {
         View rootView = LayoutInflater.from(context).inflate(

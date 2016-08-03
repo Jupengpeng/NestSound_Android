@@ -317,7 +317,7 @@ public class FileUtils {
         try {
             BufferedOutputStream bos = new BufferedOutputStream(
                     new FileOutputStream(savePath));
-            bitmap.compress(Bitmap.CompressFormat.PNG, 80, bos);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, bos);
             bos.flush();
             bos.close();
         } catch (Exception e) {

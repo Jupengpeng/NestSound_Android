@@ -555,7 +555,7 @@ public class MainService extends Service implements IMusicDetailView, AudioManag
                 Log.e("onAudioFocusChange", "AUDIOFOCUS_LOSS:" + focusChange);
                 break;
             case AudioManager.AUDIOFOCUS_GAIN://你已经得到了音频焦点
-                recoverVolume();
+//                recoverVolume();
                 PlayMediaInstance.getInstance().resumeMediaPlay();
                 Log.e("onAudioFocusChange", "AUDIOFOCUS_GAIN:" + focusChange);
                 break;
@@ -564,7 +564,7 @@ public class MainService extends Service implements IMusicDetailView, AudioManag
                 Log.e("onAudioFocusChange", "AUDIOFOCUS_LOSS_TRANSIENT:" + focusChange);
                 break;
             case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK://暂时失去AudioFocus,但是可以继续播放,不过要降低音量
-                lowerVolume();
+//                lowerVolume();
                 Log.e("onAudioFocusChange", "AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:" + focusChange);
                 break;
             default:

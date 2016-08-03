@@ -3,13 +3,6 @@ package com.xilu.wybz.utils;
 import android.content.Context;
 import android.net.Uri;
 import android.widget.ImageView;
-
-import com.bumptech.glide.DrawableRequestBuilder;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.GlideBuilder;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.engine.cache.DiskCache;
-import com.bumptech.glide.load.engine.cache.DiskLruCacheWrapper;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.backends.pipeline.PipelineDraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -18,9 +11,7 @@ import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.squareup.picasso.Picasso;
 import com.xilu.wybz.R;
-
 import java.io.File;
-
 /**
  * Created by June on 16/5/3.
  */
@@ -59,6 +50,7 @@ public class ImageLoadUtil {
         Picasso.with(context).load(url).placeholder(R.drawable.ic_default_pic).
                 resize(width, height).centerCrop().into(imageView);
     }
+
     public static void loadHeadImage(Context context, String url, ImageView imageView,int width, int height) {
         Picasso.with(context).load(url).placeholder(R.drawable.ic_default_head_252).
                 resize(width, height).centerCrop().into(imageView);
