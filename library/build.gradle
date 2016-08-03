@@ -1,12 +1,12 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 22
-    buildToolsVersion "23.0.2"
+    compileSdkVersion 24
+    buildToolsVersion "24.0.0"
     resourcePrefix "AndroidMP3RecorderLibrary_"	//这个随便填
     defaultConfig {
         minSdkVersion 9
-        targetSdkVersion 23
+        targetSdkVersion 24
 //      暂时屏蔽，等AndroidStudio NDK开发完善后再放开
 //        ndk {
 //            moduleName "mp3lame"
@@ -26,5 +26,5 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:23.1.1'
+    compile 'com.android.support:support-v4:24.0.0'
 }
