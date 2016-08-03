@@ -26,11 +26,12 @@ import com.xilu.wybz.ui.find.FindActivity;
 import com.xilu.wybz.ui.login.LoginActivity;
 import com.xilu.wybz.ui.login.PasswordActivity;
 import com.xilu.wybz.ui.login.RegisterActivity;
+import com.xilu.wybz.ui.lyrics.LyricsPosterActivity;
 import com.xilu.wybz.ui.lyrics.ShareActivity;
 import com.xilu.wybz.ui.main.MainActivity;
 import com.xilu.wybz.ui.mine.MineActivity;
 import com.xilu.wybz.ui.mine.NewMineActivity;
-import com.xilu.wybz.ui.mine.UserInfoActivity;
+import com.xilu.wybz.ui.mine.NewUserInfoActivity;
 import com.xilu.wybz.ui.msg.MsgActivity;
 import com.xilu.wybz.ui.song.MakeSongActivity;
 import com.xilu.wybz.ui.song.PlayAudioActivity;
@@ -77,15 +78,15 @@ public abstract class BaseActivity extends AppCompatActivity {
     //开启透明状态栏目
     protected void adaptTheme(boolean isTranslucentStatusFitSystemWindowTrue) {
         if (isTranslucentStatusFitSystemWindowTrue) {
-            if (!(this instanceof PlayAudioActivity || this instanceof LoginActivity
+            if (!(this instanceof PlayAudioActivity || this instanceof LoginActivity || this instanceof LyricsPosterActivity
                     || this instanceof RegisterActivity || this instanceof PasswordActivity
                     || this instanceof SongAblumActivity)) {
                     SystemBarHelper.setStatusBarDarkMode(this);
             }
-            if (this instanceof WelActivity || this instanceof PlayAudioActivity
+            if (this instanceof WelActivity || this instanceof PlayAudioActivity || this instanceof LyricsPosterActivity
                     || this instanceof SongAblumActivity || this instanceof ShareActivity
                     || this instanceof SplashActivity ||
-                    this instanceof UserInfoActivity || this instanceof MainTabActivity) {
+                    this instanceof NewUserInfoActivity || this instanceof MainTabActivity) {
                 SystemBarHelper.immersiveStatusBar(this);
                 SystemBarHelper.tintStatusBar(this, Color.argb(0, 0xFF, 0xD7, 0x05));
             } else if (this instanceof LoginActivity || this instanceof RegisterActivity || this instanceof PasswordActivity) {
@@ -134,7 +135,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void loadImage(String picUrl, ImageView imageView) {
         ZnImageLoader.getInstance().displayImage(picUrl, ZnImageLoader.getInstance().options, imageView);
     }
-
+    protected void loadHeadImage(String picUrl, ImageView imageView) {
+        ZnImageLoader.getInstance().displayImage(picUrl, ZnImageLoader.getInstance().headOptions, imageView);
+    }
     /*
     * 通过Class跳转界面
     **/

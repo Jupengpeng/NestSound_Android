@@ -21,14 +21,14 @@ import java.util.List;
 /**
  * Created by Administrator on 2016/3/8.
  */
-public abstract class WyBaseAdapter<T> extends android.widget.BaseAdapter {
+public abstract class YcBaseAdapter<T> extends android.widget.BaseAdapter {
     protected Context context;
     protected List<T> mList;
     protected int screenWidth;
     protected int type;
     protected String name;
 
-    public WyBaseAdapter(Context context, List<T> list) {
+    public YcBaseAdapter(Context context, List<T> list) {
         if (list == null) {
             list = new ArrayList<>();
         }
@@ -37,7 +37,7 @@ public abstract class WyBaseAdapter<T> extends android.widget.BaseAdapter {
         initData();
     }
 
-    public WyBaseAdapter(Context context, List<T> list, int type) {
+    public YcBaseAdapter(Context context, List<T> list, int type) {
         if (list == null) {
             list = new ArrayList<>();
         }
@@ -47,7 +47,7 @@ public abstract class WyBaseAdapter<T> extends android.widget.BaseAdapter {
         initData();
     }
 
-    public WyBaseAdapter(Context context, List<T> list, String name) {
+    public YcBaseAdapter(Context context, List<T> list, String name) {
         if (list == null) {
             list = new ArrayList<>();
         }

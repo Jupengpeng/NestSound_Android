@@ -24,8 +24,6 @@ public interface IPlayView extends IBaseView {
 
     void zambiaMusicFail();
 
-    void setPic(Bitmap bitmap);
-
     void deleteSuccess();
 
     void deleteFail();

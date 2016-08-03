@@ -43,6 +43,7 @@ public class GetDomainUtil {
                     if(StringUtil.isNotBlank(api_domain)) {
                         PrefsUtil.putString("domain", api_domain, mContext);
                         MyHttpClient.ROOT_URL = api_domain;
+                        MyHttpClient.BASE_URL = MyHttpClient.ROOT_URL+MyHttpClient.BASE_PATH;
                     }
 //                    PrefsUtil.putString("applogo", page_start_pic, mContext);
 //                    downLoadLogo(page_start_pic);

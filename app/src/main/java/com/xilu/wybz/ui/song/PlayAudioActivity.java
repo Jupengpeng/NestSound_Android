@@ -1,5 +1,6 @@
 package com.xilu.wybz.ui.song;
 
+import android.app.Application;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -34,24 +35,28 @@ import com.xilu.wybz.R;
 import com.xilu.wybz.adapter.PlayLyricsAdapter;
 import com.xilu.wybz.adapter.PlayPagerAdapter;
 import com.xilu.wybz.bean.ActionBean;
-import com.xilu.wybz.bean.ShareBean;
 import com.xilu.wybz.bean.TemplateBean;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.FileDir;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.common.PlayMediaInstance;
+import com.xilu.wybz.presenter.DownPicPresenter;
 import com.xilu.wybz.presenter.PlayPresenter;
-import com.xilu.wybz.service.PlayService;
+import com.xilu.wybz.service.MainService;
 import com.xilu.wybz.ui.ExitApplication;
+import com.xilu.wybz.ui.IView.ILoadPicView;
 import com.xilu.wybz.ui.IView.IPlayView;
+import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.ui.base.ToolbarActivity;
-import com.xilu.wybz.ui.mine.UserInfoActivity;
+import com.xilu.wybz.ui.mine.NewUserInfoActivity;
 import com.xilu.wybz.ui.setting.SettingFeedActivity;
 import com.xilu.wybz.utils.BitmapUtils;
+import com.xilu.wybz.utils.FileUtils;
 import com.xilu.wybz.utils.FormatHelper;
 import com.xilu.wybz.utils.MD5Util;
 import com.xilu.wybz.utils.NumberUtil;
+import com.xilu.wybz.utils.PermissionUtils;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.utils.ToastUtils;
@@ -77,9 +82,7 @@ import butterknife.OnClick;
 /**
  * Created by June on 16/5/4.
  */
-public class PlayAudioActivity extends ToolbarActivity implements AdapterView.OnItemClickListener, IPlayView {
-    @Bind(R.id.iv_reply)
-    ImageView ivReply;
+public class PlayAudioActivity extends ToolbarActivity implements AdapterView.OnItemClickListener, IPlayView, ILoadPicView {
     @Bind(R.id.blurImageView)
     ImageView blurImageView;
     @Bind(R.id.toolbar)
@@ -124,7 +127,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     String headurl;
     String name;
     int id;
-    PlayService.MusicBinder musicBinder;
+    //    PlayService.MusicBinder musicBinder;
     String from;
     String gedanid;
     ActionMoreDialog actionMoreDialog;
@@ -137,30 +140,31 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     WorksData worksData;
     ShareDialog shareDialog;
     PlayPresenter playPresenter;
+    DownPicPresenter downPicPresenter;
     List<ActionBean> actionBeanList;
-    String[] actionTitles = new String[]{"个人主页", "举报"};
-    String[] actionTitles2 = new String[]{"删除"};
-    String[] actionTypes = new String[]{"homepage", "jubao"};
-    String[] actionTypes2 = new String[]{"del"};
+    String[] actionTitles = new String[]{"个人主页", "将作品设为公开", "举报"};
+    String[] actionTitles2 = new String[]{"将作品设为公开", "删除"};
+    String[] actionTypes = new String[]{"homepage", "status", "jubao"};
+    String[] actionTypes2 = new String[]{"status", "del"};
     PlayLyricsAdapter playLyricsAdapter;
     List<String> lyricsList;
-
+    int playStatus = 1;//1播放 0暂停
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_playaudio;
     }
 
-    public ServiceConnection serviceConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            musicBinder = (PlayService.MusicBinder) service;
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-
-        }
-    };
+//    public ServiceConnection serviceConnection = new ServiceConnection() {
+//        @Override
+//        public void onServiceConnected(ComponentName name, IBinder service) {
+//            musicBinder = (PlayService.MusicBinder) service;
+//        }
+//
+//        @Override
+//        public void onServiceDisconnected(ComponentName name) {
+//
+//        }
+//    };
 
     public static void toPlayAudioActivity(Context context, int id, String gedanid, String from) {
         Intent intent = new Intent(context, PlayAudioActivity.class);
@@ -176,6 +180,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
         ExitApplication.getInstance().exit();
         EventBus.getDefault().register(this);
         playPresenter = new PlayPresenter(this, this);
+        downPicPresenter = new DownPicPresenter(this, this);
         playPresenter.init();
         initEvent();
         initData();
@@ -208,13 +213,13 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
             public void onStopTrackingTouch(SeekBar seekBar) {
                 if (isSeek) {
                     isSeek = false;
-                    musicBinder.setCurrentPosition(progress);
+                    MyApplication.mMainService.setCurrentPosition(progress);
                 }
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                isSeek = musicBinder.getIsPlaying();
+                isSeek = MyApplication.mMainService.isPlaying();
             }
 
             @Override
@@ -260,35 +265,32 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
         }
         actionBeanList = new ArrayList<>();
         viewPager.setAdapter(new PlayPagerAdapter(viewList));
-        if (serviceIntent == null) {
-            serviceIntent = new Intent(this, PlayService.class);
-            bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
-        }
-        if (isCurrentMusic && PlayMediaInstance.getInstance().status != 1) {//正在播放的是本首
+        if (isCurrentMusic) {//正在播放的是本首
             worksData = PrefsUtil.getMusicData(context, id);
             adapterData();
-            playSeekBar.setMax(PlayMediaInstance.getInstance().getDuration());
-            playSeekBar.setProgress(PlayMediaInstance.getInstance().getCurrentPosition());
-            tvTime.setText(FormatHelper.formatDuration(PlayMediaInstance.getInstance().getCurrentPosition() / 1000));
-            if (PlayMediaInstance.getInstance().status == 2) {
-                ivPlay.setImageResource(R.drawable.ic_play_play);
-            } else {
-                ivPlay.setImageResource(R.drawable.ic_play_pause);
-                startTimer();
+            if (MainService.status!=1) {
+                //播放或者是暂停状态 恢复位置
+                playSeekBar.setMax(MyApplication.mMainService.getDuration());
+                playSeekBar.setProgress(MyApplication.mMainService.getCurrentPosition());
+                tvTime.setText(FormatHelper.formatDuration(MyApplication.mMainService.getCurrentPosition() / 1000));
+                if (MainService.status==2) {
+                    ivPlay.setImageResource(R.drawable.ic_play_play);
+                } else if (MainService.status==3) {
+                    ivPlay.setImageResource(R.drawable.ic_play_pause);
+                    startTimer();
+                }
+            }else{
+                //停止或者尚未播放
+                MyApplication.mMainService.playOneMusic(worksData.playurl);
             }
         } else {//开启服务
-            ivPlay.setEnabled(false);
-            serviceIntent.putExtra("id", id);
-            serviceIntent.putExtra("from", from);
-            serviceIntent.putExtra("gedanid", gedanid);
-            startService(serviceIntent);
+            MyApplication.mMainService.loadData(id, from, gedanid);
         }
     }
 
     public void adapterData() {
         sv_content.fullScroll(ScrollView.FOCUS_UP);
-        if (from.equals("info_comment")) viewPager.setCurrentItem(1);
-        else viewPager.setCurrentItem(0);
+        viewPager.setCurrentItem(0);
         try {
             String pic = worksData.getPic();
             if (!TextUtils.isEmpty(pic)) {
@@ -333,8 +335,8 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
             updateZanNum();
             updateCommentNum();
             playLyricsAdapter = new PlayLyricsAdapter(context, lyricsList);
-            tvHotName.setText("伴奏："+worksData.getHotTitle());
-            tvDetail.setText("描述："+worksData.getDetail());
+            tvHotName.setText("伴奏：" + worksData.getHotTitle());
+            tvDetail.setText("描述：" + worksData.getDiyids());
             listview_lyrics.setAdapter(playLyricsAdapter);
             listview_lyrics.setOnScrollListener(new AbsListView.OnScrollListener() {
                 @Override
@@ -361,7 +363,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
             blurImageView.setImageBitmap(BitmapUtils.getSDCardImg(path));
         } else {//下载并保存到本地
             imageUrl = MyCommon.getImageUrl(imageUrl, 200, 200);
-            playPresenter.downLoadPic(imageUrl, path);
+            downPicPresenter.downLoadPic(imageUrl, path);
         }
     }
 
@@ -381,7 +383,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
                 @Override
                 public void run() {
                     try {
-                        if (musicBinder == null) {
+                        if (MyApplication.mMainService == null) {
                             return;
                         }
                         handler.sendEmptyMessage(1);
@@ -401,8 +403,8 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
                     return;
                 }
                 if (worksData != null) {
-                    tvTime.setText(FormatHelper.formatDuration(musicBinder.getCurrentPosition() / 1000));//播放的时间变化
-                    playSeekBar.setProgress(musicBinder.getCurrentPosition());//进度条对时间
+                    tvTime.setText(FormatHelper.formatDuration(MyApplication.mMainService.getCurrentPosition() / 1000));//播放的时间变化
+                    playSeekBar.setProgress(MyApplication.mMainService.getCurrentPosition());//进度条对时间
                 }
             }
         }
@@ -410,23 +412,20 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_share, menu);
+        getMenuInflater().inflate(R.menu.menu_more, menu);
+        MenuItem menuItem = menu.findItem(R.id.menu_more);
+        menuItem.setTitle("分享");
+        menuItem.setIcon(R.drawable.ic_play_share);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_share:
+            case R.id.menu_more:
                 if (worksData != null && worksData.itemid > 0) {
                     if (shareDialog == null) {
-                        String shareTitle = worksData.title;
-                        String shareAuthor = worksData.author;
-                        String shareLink = worksData.shareurl + "?id=" + worksData.itemid;
-                        String sharePic = worksData.pic;
-                        String playurl = worksData.playurl;
-                        String shareContent = "我在音巢APP淘到一首好听的歌，快来看看有没有你喜欢的原创style 《" + shareTitle + "》 ▷" + shareLink + " (@音巢音乐)";
-                        shareDialog = new ShareDialog(PlayAudioActivity.this, new ShareBean(shareTitle, shareAuthor, shareContent, shareLink, sharePic, playurl));
+                        shareDialog = new ShareDialog(PlayAudioActivity.this, worksData);
                     }
                     if (!shareDialog.isShowing()) {
                         shareDialog.showDialog();
@@ -467,22 +466,31 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
                 }
                 break;
             case R.id.iv_pre:
-                musicBinder.toPreMusic();
+                MyApplication.mMainService.toPreMusic();
                 break;
             case R.id.iv_play:
-                musicBinder.toPPMusic();
+                playStatus = 1-playStatus;
+                MyApplication.mMainService.doPP(playStatus);
+                if(MyApplication.mMainService.status==1){
+                    if(playStatus==0){
+                        ivPlay.setImageResource(R.drawable.ic_play_play);
+                    }else{
+                        ivPlay.setImageResource(R.drawable.ic_play_pause);
+                    }
+                }
                 break;
             case R.id.iv_next:
-                musicBinder.toNextMusic();
+                MyApplication.mMainService.toNextMusic();
                 break;
+
             case R.id.iv_mode:
                 int mode = PrefsUtil.getInt("playmodel", context);
                 ivMode.setImageResource(mode == MyCommon.PLAY_MODEL_ORDER ? R.drawable.ic_play_loop : R.drawable.ic_play_order);
                 PrefsUtil.putInt("playmodel", mode == MyCommon.PLAY_MODEL_ORDER ? MyCommon.PLAY_MODEL_LOOP : MyCommon.PLAY_MODEL_ORDER, context);
-                if (mode == MyCommon.PLAY_MODEL_ORDER){
-                    ToastUtils.toast(context,"单曲循环");
+                if (mode == MyCommon.PLAY_MODEL_ORDER) {
+                    ToastUtils.toast(context, "单曲循环");
                 } else {
-                    ToastUtils.toast(context,"顺序播放");
+                    ToastUtils.toast(context, "顺序播放");
                 }
                 break;
             case R.id.iv_hot:
@@ -507,7 +515,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     @Override
     public void toUserInfo() {
         if (worksData.uid > 0) {
-            UserInfoActivity.ToUserInfoActivity(context, worksData.uid, worksData.author);
+            NewUserInfoActivity.ToNewUserInfoActivity(context, worksData.uid, worksData.author);
         }
     }
 
@@ -539,7 +547,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
         rlFav.setEnabled(true);
         worksData.iscollect = 1 - worksData.iscollect;
         if (worksData.iscollect == 1) showMsg("收藏成功！");
-        worksData.fovnum = worksData.fovnum+(worksData.iscollect==1?1:-1);
+        worksData.fovnum = worksData.fovnum + (worksData.iscollect == 1 ? 1 : -1);
         EventBus.getDefault().post(new Event.UpdateWorkNum(worksData, 1));
         EventBus.getDefault().post(new Event.UpdataWorksList(worksData, 3, 1 - worksData.iscollect));
         tvFav.setChecked(worksData.iscollect == 1);
@@ -549,7 +557,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
 
     @Override
     public void collectionMusicFail() {
-        if (rlFav == null){
+        if (rlFav == null) {
             return;
         }
         rlFav.setEnabled(true);
@@ -560,13 +568,14 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
         rlZan.setEnabled(false);
         playPresenter.setZambiaState(id, worksData.uid);
     }
+
     @Override
     public void zambiaMusicSuccess() {
         if (rlZan == null) return;
         rlZan.setEnabled(true);
         worksData.isZan = 1 - worksData.isZan;
         if (worksData.isZan == 1) showMsg("点赞成功！");
-        worksData.zannum = worksData.zannum+(worksData.isZan==1?1:-1);
+        worksData.zannum = worksData.zannum + (worksData.isZan == 1 ? 1 : -1);
         EventBus.getDefault().post(new Event.UpdateWorkNum(worksData, 2));
         tvZan.setChecked(worksData.isZan == 1);
         tvZan.startAnimation(AnimationUtils.loadAnimation(context, R.anim.dianzan_anim));
@@ -575,14 +584,17 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
 
     @Override
     public void zambiaMusicFail() {
-        if (rlZan == null){
+        if (rlZan == null) {
             return;
         }
         rlZan.setEnabled(true);
     }
 
     @Override
-    public void setPic(Bitmap bitmap) {
+    public void setPic(String path,Bitmap bitmap) {
+        if(PermissionUtils.checkSdcardPermission(this)) {
+            FileUtils.saveBmp(path, bitmap);
+        }
         if (blurImageView != null)
             blurImageView.setImageBitmap(bitmap);
     }
@@ -606,7 +618,8 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
 
 
     //更新评论数量
-    @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.UpdataCommentNumEvent event) {
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(Event.UpdataCommentNumEvent event) {
         if (event.getType() == 1) {
             worksData.commentnum = worksData.getCommentnum() + event.getNum();
             updateCommentNum();
@@ -626,77 +639,64 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
 
     public void updateZanNum() {
         tvZanNum.setText(NumberUtil.format(worksData.zannum));
-
         PrefsUtil.saveMusicData(context, worksData);
     }
 
-
-
-
-
     //更新缓存进度
-    @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.UpdataSecondProgressEvent event) {
-//        if (event.getPercent() > 0) {
-//            playSeekBar.setSecondaryProgress(event.getPercent());
-//            if(event.getPercent()==100){
-//            }
-//        }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(Event.UpdataSecondProgressEvent event) {
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.PPStatusEvent event) {
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(Event.PPStatusEvent event) {
         switch (event.getStatus()) {
-            case MyCommon.PP_START://开始
-                ivPlay.setEnabled(true);
-                playSeekBar.setMax(musicBinder.getDuration());
+            case MyCommon.STARTED://开始
                 ivPlay.setImageResource(R.drawable.ic_play_pause);
-                if (musicBinder != null)
-                    tvAlltime.setText(FormatHelper.formatDuration(musicBinder.getDuration() / 1000));
+                if (MyApplication.mMainService != null) {
+                    playSeekBar.setMax(MyApplication.mMainService.getDuration());
+                    tvAlltime.setText(FormatHelper.formatDuration(MyApplication.mMainService.getDuration() / 1000));
+                }
                 startTimer();
                 break;
-            case MyCommon.PP_STOP://停止
-                closeTimer();
-                ivPlay.setImageResource(R.drawable.ic_play_play);
-                break;
-            case MyCommon.PP_PLAY://播放
+            case MyCommon.PLAYED://播放
                 startTimer();
                 ivPlay.setImageResource(R.drawable.ic_play_pause);
                 break;
-            case MyCommon.PP_PAUSE://暂停
+            case MyCommon.PAUSED://暂停
                 closeTimer();
                 ivPlay.setImageResource(R.drawable.ic_play_play);
                 break;
-            case MyCommon.PP_OVER://完成
+            case MyCommon.STOPPED://停止
+            case MyCommon.COMPLETED://完成
+            case MyCommon.END://释放
+            case MyCommon.ERROR://出错
+            case MyCommon.FAILED://获取数据失败
                 closeTimer();
-                ivPlay.setImageResource(R.drawable.ic_play_play);
-                tvTime.setText("00:00");
-                break;
-            case MyCommon.PP_ERROR://出错
-                closeTimer();
-                ivPlay.setImageResource(R.drawable.ic_play_play);
-                showMsg("播放出错！");
-                break;
-            case MyCommon.PP_NO_DATA://获取数据失败
-                closeTimer();
-                ivPlay.setImageResource(R.drawable.ic_play_play);
+                ivPlay.setImageResource(R.drawable.ic_play_pause);
+                playStatus=1;
                 playSeekBar.setProgress(0);
                 tvTime.setText("00:00");
-                break;
-            case MyCommon.PP_NO_PRE://
-                showMsg("没有上一首");
-            case MyCommon.PP_NO_NEXT://
-                showMsg("没有下一首");
                 break;
         }
     }
 
-//    @Override
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(MyApplication.mMainService.status==1){
+            playStatus = 1;
+            MyApplication.mMainService.doPP(playStatus);
+        }
+    }
+    //    @Override
 //    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 //        super.onActivityResult(requestCode, resultCode, data);
 //        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
 //    }
 
-    @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.MusicDataEvent event) {
-        worksData = musicBinder.getWorksData();
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(Event.MusicDataEvent event) {
+        worksData = MyApplication.mMainService.getCurrentAudio();
         worksData.type = 1;
         worksData.status = 1;
         adapterData();
@@ -706,16 +706,14 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         actionMoreDialog.dismiss();
-        if (actionBeanList.size() > 1) {
-            switch (position) {
-                case 0://个人主页
-                    toUserInfo();
-                    break;
-                case 1:
-                    toJubao();
-                    break;
-            }
-        } else if (actionBeanList.size() == 1) {
+        String type = actionBeanList.get(position).getType();
+        if (type.equals("status")) {
+
+        } else if (type.equals("homepage")) {
+            toUserInfo();
+        } else if (type.equals("jubao")) {
+            toJubao();
+        } else if (type.equals("del")) {
             showDeleteDialog();
         }
     }
@@ -752,7 +750,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
         if (playPresenter != null)
             playPresenter.cancleRequest();
         PrefsUtil.saveMusicData(context, worksData);
-        unbindService(serviceConnection);
+//        unbindService(serviceConnection);
         EventBus.getDefault().unregister(this);
 
         if (playPresenter != null) {

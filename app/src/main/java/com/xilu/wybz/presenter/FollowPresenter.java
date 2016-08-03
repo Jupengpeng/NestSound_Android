@@ -29,8 +29,9 @@ public class FollowPresenter extends BasePresenter<IFollowAndFansView> {
         params = new HashMap<>();
         params.put("userid", userId + "");
         boolean isMe = PrefsUtil.getUserId(context) == userId;
-        if (!isMe)
+        if (!isMe) {
             params.put("uid", PrefsUtil.getUserId(context) + "");
+        }
         params.put("type", type + "");
         params.put("page", page + "");
 

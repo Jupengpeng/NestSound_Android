@@ -12,7 +12,6 @@ import android.widget.AdapterView;
 import android.widget.CheckedTextView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
 import com.xilu.wybz.adapter.HotListAdapter;
@@ -20,20 +19,18 @@ import com.xilu.wybz.bean.TemplateBean;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.FileDir;
 import com.xilu.wybz.common.MyCommon;
-import com.xilu.wybz.common.PlayBanZouInstance;
 import com.xilu.wybz.common.PlayMediaInstance;
 import com.xilu.wybz.common.interfaces.IMediaPlayerListener;
 import com.xilu.wybz.common.interfaces.ITemplateMusicListener;
 import com.xilu.wybz.presenter.HotPresenter;
 import com.xilu.wybz.ui.IView.IHotView;
+import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.utils.MD5Util;
 import com.xilu.wybz.utils.PermissionUtils;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.Bind;
 import org.greenrobot.eventbus.EventBus;
 
@@ -92,6 +89,7 @@ public class NewMakeHotActivity extends ToolbarActivity implements IHotView, Vie
 
     public void initView() {
         setTitle("伴奏");
+        MyApplication.mMainService.doRelease();
         infater = LayoutInflater.from(this);
         titleView = infater.inflate(R.layout.hot_headview, null);
         ivQc = (SimpleDraweeView) titleView.findViewById(R.id.iv_qc);
@@ -123,8 +121,8 @@ public class NewMakeHotActivity extends ToolbarActivity implements IHotView, Vie
         listViewNew.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (PlayBanZouInstance.getInstance().status == 3) {
-                    PlayBanZouInstance.getInstance().pauseMediaPlay();
+                if (PlayMediaInstance.getInstance().status == 3) {
+                    PlayMediaInstance.getInstance().pauseMediaPlay();
                     newAdapter.updateData();
                 }
                 TemplateBean bean = item1.get(position-2);
@@ -134,8 +132,8 @@ public class NewMakeHotActivity extends ToolbarActivity implements IHotView, Vie
         listViewHot.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (PlayBanZouInstance.getInstance().status == 3) {
-                    PlayBanZouInstance.getInstance().pauseMediaPlay();
+                if (PlayMediaInstance.getInstance().status == 3) {
+                    PlayMediaInstance.getInstance().pauseMediaPlay();
                     hotAdapter.updateData();
                 }
                 TemplateBean bean = item2.get(position-2);
@@ -245,17 +243,17 @@ public class NewMakeHotActivity extends ToolbarActivity implements IHotView, Vie
 
             @Override
             public void onStopMusic() {
-                PlayBanZouInstance.getInstance().stopMediaPlay();
+                PlayMediaInstance.getInstance().stopMediaPlay();
             }
 
             @Override
             public void onPauseMusic() {
-                PlayBanZouInstance.getInstance().pauseMediaPlay();
+                PlayMediaInstance.getInstance().pauseMediaPlay();
             }
 
             @Override
             public void onResumeMusic() {
-                PlayBanZouInstance.getInstance().resumeMediaPlay();
+                PlayMediaInstance.getInstance().resumeMediaPlay();
             }
         });
         hotAdapter.setITemplateMusicListener(new ITemplateMusicListener() {
@@ -267,17 +265,17 @@ public class NewMakeHotActivity extends ToolbarActivity implements IHotView, Vie
 
             @Override
             public void onStopMusic() {
-                PlayBanZouInstance.getInstance().stopMediaPlay();
+                PlayMediaInstance.getInstance().stopMediaPlay();
             }
 
             @Override
             public void onPauseMusic() {
-                PlayBanZouInstance.getInstance().pauseMediaPlay();
+                PlayMediaInstance.getInstance().pauseMediaPlay();
             }
 
             @Override
             public void onResumeMusic() {
-                PlayBanZouInstance.getInstance().resumeMediaPlay();
+                PlayMediaInstance.getInstance().resumeMediaPlay();
             }
         });
         listViewNew.setAdapter(newAdapter);
@@ -287,7 +285,7 @@ public class NewMakeHotActivity extends ToolbarActivity implements IHotView, Vie
     }
 
     public void playTemplateMusic() {
-        PlayBanZouInstance.getInstance().stopMediaPlay();
+        PlayMediaInstance.getInstance().stopMediaPlay();
         String filePath = FileDir.hotDir;
         if (!new File(filePath).exists()) {
             new File(filePath).mkdirs();
@@ -295,13 +293,13 @@ public class NewMakeHotActivity extends ToolbarActivity implements IHotView, Vie
         String fileName = MD5Util.getMD5String(tb.mp3);
         playPath = filePath+fileName;
         if (new File(playPath).exists()) {
-            PlayBanZouInstance.getInstance().setData(playPath, tb.id);
+            PlayMediaInstance.getInstance().setData(playPath, tb.id);
         } else {
             if(PermissionUtils.checkSdcardPermission(this)) {
                 hotPresenter.downHot(filePath, fileName, tb.mp3);
             }
         }
-        PlayBanZouInstance.getInstance().setIMediaPlayerListener(new IMediaPlayerListener() {
+        PlayMediaInstance.getInstance().setIMediaPlayerListener(new IMediaPlayerListener() {
             @Override
             public void onStart() {
                 if (PlayMediaInstance.getInstance().status == 3) {
@@ -441,7 +439,7 @@ public class NewMakeHotActivity extends ToolbarActivity implements IHotView, Vie
 
     @Override
     public void downloadSuccess() {
-        PlayBanZouInstance.getInstance().setData(playPath, tb.id);
+        PlayMediaInstance.getInstance().setData(playPath, tb.id);
     }
 
     @Override
@@ -476,8 +474,8 @@ public class NewMakeHotActivity extends ToolbarActivity implements IHotView, Vie
         return super.onOptionsItemSelected(item);
     }
     public void stopPlayBz(){
-        if(PlayBanZouInstance.getInstance().status>1){
-            PlayBanZouInstance.getInstance().stopMediaPlay();
+        if(PlayMediaInstance.getInstance().status>1){
+            PlayMediaInstance.getInstance().stopMediaPlay();
             if(currentType==TYPE_TAB_1) {
                 if (newAdapter != null) {
                     newAdapter.updateData();

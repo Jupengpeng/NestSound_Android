@@ -27,11 +27,8 @@ public class LoadMusicDetailPresenter extends BasePresenter<IMusicDetailView> {
     public void loadMusicDetail(int id) {
         params = new HashMap<>();
         params.put("uid", PrefsUtil.getUserId(context)+"");
-        params.put("openmodel", "1");
         params.put("id",id+"");
-        params.put("gedanid","0");
-        params.put("com","");
-        httpUtils.get(MyHttpClient.getSmsCodeUrl(), params, new AppJsonCalback(context) {
+        httpUtils.get(MyHttpClient.getMusicWorkUrl(), params, new AppJsonCalback(context) {
             @Override
             public void onResult(JsonResponse<? extends Object> response) {
                 super.onResult(response);

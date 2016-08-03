@@ -30,6 +30,7 @@ import com.xilu.wybz.common.RecordInstance;
 import com.xilu.wybz.common.interfaces.IMediaPlayerListener;
 import com.xilu.wybz.presenter.MakeSongPresenter;
 import com.xilu.wybz.ui.IView.IMakeSongView;
+import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.ui.lyrics.ImportWordActivity;
 import com.xilu.wybz.utils.FileUtils;
@@ -129,16 +130,10 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
 //        }
         makeSongPresenter = new MakeSongPresenter(context, this);
         makeSongPresenter.init();
-
+        MyApplication.mMainService.doRelease();
         EventBus.getDefault().register(this);
 
-        if (PlayMediaInstance.getInstance().status == 3) {
-            PlayMediaInstance.getInstance().pauseMediaPlay();
-            EventBus.getDefault().post(new Event.PPStatusEvent(4));
-        }
-
         upData();
-
     }
 
     @Override

@@ -9,18 +9,15 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.xilu.wybz.R;
 import com.xilu.wybz.common.Event;
-import com.xilu.wybz.common.PlayBanZouInstance;
+import com.xilu.wybz.common.PlayMediaInstance;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.ui.fragment.HotFragment;
 import com.xilu.wybz.utils.KeyBoardUtil;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
 import butterknife.Bind;
 import butterknife.OnClick;
 
@@ -112,8 +109,8 @@ public class SearchHotActivity extends ToolbarActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(PlayBanZouInstance.getInstance().status>1){
-            PlayBanZouInstance.getInstance().stopMediaPlay();
+        if(PlayMediaInstance.getInstance().status>1){
+            PlayMediaInstance.getInstance().stopMediaPlay();
         }
         EventBus.getDefault().unregister(this);
     }

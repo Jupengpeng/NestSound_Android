@@ -5,14 +5,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckedTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.TemplateBean;
-import com.xilu.wybz.common.PlayBanZouInstance;
+import com.xilu.wybz.common.PlayMediaInstance;
+import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.ui.fragment.HotFragment;
 import butterknife.Bind;
@@ -43,6 +42,7 @@ public class MakeHotActivity extends ToolbarActivity {
 
     private void initViews() {
         setTitle("原唱伴奏");
+        MyApplication.mMainService.doRelease();
         loadImage("res:///" + R.drawable.ic_qc_bg, ivQc);
         HotAdapter pagerAdapter = new HotAdapter(getSupportFragmentManager());
         container.setAdapter(pagerAdapter);
@@ -123,33 +123,11 @@ public class MakeHotActivity extends ToolbarActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_search, menu);
-        return true;
-    }
-
-    public void stopPlayBz() {
-        if (PlayBanZouInstance.getInstance().status > 1) {
-            PlayBanZouInstance.getInstance().stopMediaPlay();
-        }
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
         //关闭播放
-        stopPlayBz();
+        PlayMediaInstance.getInstance().release();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_search:
-                //关闭播放
-                stopPlayBz();
-                startActivity(SearchHotActivity.class);
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+
 }

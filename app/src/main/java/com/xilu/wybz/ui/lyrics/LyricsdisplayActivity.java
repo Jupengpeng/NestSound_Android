@@ -1,6 +1,7 @@
 package com.xilu.wybz.ui.lyrics;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -21,9 +23,11 @@ import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.LyricsPresenter;
+import com.xilu.wybz.presenter.OnlyFollowPresenter;
 import com.xilu.wybz.ui.IView.ILyricsView;
+import com.xilu.wybz.ui.IView.IOnlyFollowView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
-import com.xilu.wybz.ui.mine.UserInfoActivity;
+import com.xilu.wybz.ui.mine.NewUserInfoActivity;
 import com.xilu.wybz.ui.setting.SettingFeedActivity;
 import com.xilu.wybz.ui.song.CommentActivity;
 import com.xilu.wybz.utils.BitmapUtils;
@@ -33,6 +37,7 @@ import com.xilu.wybz.utils.NumberUtil;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringStyleUtil;
 import com.xilu.wybz.utils.SystemUtils;
+import com.xilu.wybz.view.CircleImageView;
 import com.xilu.wybz.view.dialog.ActionMoreDialog;
 import com.xilu.wybz.view.dialog.ShareDialog;
 
@@ -49,9 +54,11 @@ import butterknife.OnClick;
 /**
  * Created by Administrator on 2016/3/10 0010.
  */
-public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsView, AdapterView.OnItemClickListener {
+public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsView, IOnlyFollowView, AdapterView.OnItemClickListener {
     @Bind(R.id.iv_comment)
     ImageView ivComment;
+    @Bind(R.id.ll_follow)
+    LinearLayout llFollow;
     @Bind(R.id.ll_loading)
     LinearLayout ll_loading;
     @Bind(R.id.ll_nonet)
@@ -59,7 +66,7 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
     @Bind(R.id.ly_content)
     TextView ly_content;
     @Bind(R.id.iv_head)
-    SimpleDraweeView ivHead;
+    CircleImageView ivHead;
     @Bind(R.id.tv_author)
     TextView tvAuthor;
     @Bind(R.id.tv_time)
@@ -74,6 +81,10 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
     TextView tvFavNum;
     @Bind(R.id.tv_zannum)
     TextView tvZanNum;
+    @Bind(R.id.iv_follow_state)
+    ImageView ivFollowState;
+    @Bind(R.id.tv_follow_state)
+    TextView tvFollowState;
     String title;
     int id;
     int pos;
@@ -83,8 +94,13 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
     List<ActionBean> actionBeanList;
     ActionMoreDialog actionMoreDialog;
     LyricsPresenter lyricsPresenter;
+    OnlyFollowPresenter onlyFollowPresenter;
+    int isFocus = -1;
     String[] actionTitles = new String[]{"分享", "举报", "编辑"};
     String[] actionTypes = new String[]{"share", "jubao", "edit"};
+    private int ivfollowStates[] = new int[]{R.drawable.ic_user_follow, R.drawable.ic_user_followed, R.drawable.ic_user_each_follow};
+    private int followColors[] = new int[]{R.color.main_theme_color, R.color.main_text_color3, R.color.follow_blue};
+    private String tvfollowStates[] = new String[]{"关注", "已关注", "互相关注"};
 
     public static void toLyricsdisplayActivity(Context context, int id, int from, String title) {
         Intent intent = new Intent(context, LyricsdisplayActivity.class);
@@ -105,6 +121,7 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
         EventBus.getDefault().register(this);
         lyricsPresenter = new LyricsPresenter(this, this);
         lyricsPresenter.init();
+        onlyFollowPresenter = new OnlyFollowPresenter(this, this);
         initData();
     }
 
@@ -136,9 +153,12 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
         }
     }
 
-    @OnClick({R.id.rl_zan, R.id.rl_fav, R.id.iv_nonet, R.id.rl_head, R.id.iv_comment})
+    @OnClick({R.id.rl_zan, R.id.rl_fav, R.id.iv_nonet, R.id.rl_head, R.id.rl_comment, R.id.tv_author, R.id.ll_follow})
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.ll_follow:
+                FollowUser();
+                break;
             case R.id.rl_fav:
                 if (SystemUtils.isLogin(context)) {
                     lyricsPresenter.setCollectionState(worksData.itemid, worksData.uid);
@@ -152,24 +172,39 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
             case R.id.iv_nonet:
                 loadData();
                 break;
-            case R.id.iv_comment:
+            case R.id.rl_comment:
                 toCommentActivity();
                 break;
+            case R.id.tv_author:
             case R.id.rl_head:
                 if (worksData.uid > 0 && worksData.uid != PrefsUtil.getUserId(context)) {
-                    UserInfoActivity.ToUserInfoActivity(context, worksData.uid, worksData.author);
+                    NewUserInfoActivity.ToNewUserInfoActivity(context, worksData.uid, worksData.author);
                 }
                 break;
         }
     }
 
+    private void FollowUser() {
+        if (isFocus > -1 && worksData.uid > 0) {
+            showPd(isFocus==0?"正在关注中，请稍候...":"正在取消关注，请稍候...");
+            setOnCancelListener(new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialog) {
+                    if (onlyFollowPresenter != null)
+                        onlyFollowPresenter.cancel();
+                }
+            });
+            onlyFollowPresenter.follow(worksData.uid);
+        }
+    }
 
     public void loadData() {
         lyricsPresenter.getLyric(id);
     }
 
     //修改歌词以后 更新
-    @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.SaveLyricsSuccessEvent event) {
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(Event.SaveLyricsSuccessEvent event) {
         if (event.getWhich() == 2) {
             worksData = event.getLyricsdisplayBean();
             loadTitleContent();
@@ -177,7 +212,8 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
     }
 
     //更新评论数量
-    @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.UpdataCommentNumEvent event) {
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(Event.UpdataCommentNumEvent event) {
         if (event.getType() == 2) {
             worksData.commentnum = worksData.getCommentnum() + event.getNum();
             updateCommentNum();
@@ -193,31 +229,31 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
         if (!TextUtils.isEmpty(str))
             ly_content.setText(StringStyleUtil.getLyrics(worksData));
     }
-    public void updateZanFavNum(){
-        if(worksData.zannum>0){
+
+    public void updateZanFavNum() {
+        if (worksData.zannum > 0) {
             tvZanNum.setVisibility(View.VISIBLE);
             tvZanNum.setText(NumberUtil.format(worksData.zannum));
-        }else{
+        } else {
             tvZanNum.setVisibility(View.INVISIBLE);
         }
-        if(worksData.fovnum>0){
+        if (worksData.fovnum > 0) {
             tvFavNum.setVisibility(View.VISIBLE);
             tvFavNum.setText(NumberUtil.format(worksData.fovnum));
-        }else{
+        } else {
             tvFavNum.setVisibility(View.INVISIBLE);
         }
     }
+
     public void updateCommentNum() {
         if (worksData.commentnum > 0) {
-            if(worksData.commentnum<1000) {
+            if (worksData.commentnum < 1000) {
                 tvCommentNum.setText(NumberUtil.format(worksData.commentnum));
-            }else{
+            } else {
                 tvCommentNum.setText("999+");
             }
-            ivComment.setImageResource(R.drawable.ic_lyrics_reply);
         } else {
             tvCommentNum.setText("");
-            ivComment.setImageResource(R.drawable.ic_lyrics_reply_full);
         }
     }
 
@@ -248,12 +284,17 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
         }
         this.worksData = worksData;
         worksData.type = worksData.status;//type表示是否公开
+        if (PrefsUtil.getUserId(context) == worksData.uid) {
+            llFollow.setVisibility(View.GONE);
+        }
         worksData.status = 2;//status=2歌词
         ivZan.setImageResource(worksData.getIsZan() == 0 ? R.drawable.ic_lyrics_zan1 : R.drawable.ic_lyrics_zan2);
+        ivFav.setImageResource(worksData.getIscollect() == 0 ? R.drawable.ic_lyrics_fav1 : R.drawable.ic_lyrics_fav2);
         loadTitleContent();
         tvAuthor.setText(worksData.getAuthor());
         tvTime.setText(DateTimeUtil.timestamp2Date(worksData.getCreatedate()));
         String headUrl = worksData.headurl.replace(MyCommon.defult_head, "");
+        loadHeadImage(headUrl.replace(MyCommon.defult_head, ""), ivHead);
         updateCommentNum();
         updateZanFavNum();
     }
@@ -276,7 +317,7 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
         worksData.zannum = worksData.zannum + (worksData.isZan == 1 ? 1 : -1);
         updateZanFavNum();
         EventBus.getDefault().post(new Event.UpdateWorkNum(worksData, 2));
-//        ivZan.startAnimation(AnimationUtils.loadAnimation(context, R.anim.dianzan_anim));
+        ivZan.startAnimation(AnimationUtils.loadAnimation(context, R.anim.dianzan_anim));
         ivZan.setImageResource(worksData.isZan == 0 ? R.drawable.ic_lyrics_zan1 : R.drawable.ic_lyrics_zan2);
 
     }
@@ -310,7 +351,7 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
         updateZanFavNum();
         EventBus.getDefault().post(new Event.UpdateWorkNum(worksData, 1));
         EventBus.getDefault().post(new Event.UpdataWorksList(worksData, 3, 1 - worksData.iscollect));
-//        ivFav.startAnimation(AnimationUtils.loadAnimation(context, R.anim.dianzan_anim));
+        ivFav.startAnimation(AnimationUtils.loadAnimation(context, R.anim.dianzan_anim));
         ivFav.setImageResource(worksData.iscollect == 0 ? R.drawable.ic_lyrics_fav1 : R.drawable.ic_lyrics_fav2);
     }
 
@@ -372,13 +413,7 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
         if (actionBean.getType().equals("share")) {
             if (worksData != null && worksData.getItemid() > 0) {
                 if (shareDialog == null) {
-                    String shareTitle = worksData.title;
-                    String shareAuthor = worksData.author;
-                    String shareLink = worksData.shareurl + "?id=" + worksData.itemid;
-                    String sharePic = worksData.pic;
-                    String shareBody = PrefsUtil.getUserId(context) == worksData.uid ? "我用音巢app创作了一首歌词，快来看看吧!" : "我在音巢app上发现一首好歌词，太棒了~";
-                    String shareContent = shareBody + " 《" + shareTitle + "》 ▷" + shareLink + " (@音巢音乐)";
-                    shareDialog = new ShareDialog(LyricsdisplayActivity.this, new ShareBean(shareTitle, shareAuthor, shareContent, shareLink, sharePic, ""));
+                    shareDialog = new ShareDialog(LyricsdisplayActivity.this, worksData);
                 }
                 if (!shareDialog.isShowing()) {
                     shareDialog.showDialog();
@@ -397,5 +432,22 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
 
     public void toCommentActivity() {
         CommentActivity.ToCommentActivity(context, worksData);
+    }
+
+    @Override
+    public void followSuccess(String message) {
+        cancelPd();
+        isFocus = OnlyFollowPresenter.paraseStatuByString(message);
+        if (isFocus >= 0 && isFocus <= 2) {
+            ivFollowState.setImageResource(ivfollowStates[isFocus]);
+            tvFollowState.setText(tvfollowStates[isFocus]);
+            tvFollowState.setTextColor(getResources().getColor(followColors[isFocus]));
+        }
+        EventBus.getDefault().post(new Event.UpdateFollowNumEvent(isFocus, 0));
+    }
+
+    @Override
+    public void followFailed(String message) {
+        cancelPd();
     }
 }

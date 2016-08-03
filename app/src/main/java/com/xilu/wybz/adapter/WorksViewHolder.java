@@ -11,6 +11,7 @@ import com.xilu.wybz.R;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.common.MyHttpClient;
+import com.xilu.wybz.service.MainService;
 import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.ui.fragment.WorksDataFragment;
 import com.xilu.wybz.ui.lyrics.LyricsdisplayActivity;
@@ -131,13 +132,13 @@ public class WorksViewHolder extends com.xilu.wybz.view.pull.BaseViewHolder {
     public void toPlayPos(int position) {
         if (mDataList.size() > 0) {
             String playFrom = PrefsUtil.getString("playFrom", mContext);
-            if (!playFrom.equals(COME) || MyApplication.ids.size() == 0) {
-                if (MyApplication.ids.size() > 0)
-                    MyApplication.ids.clear();
+            if (!playFrom.equals(COME) || MainService.ids.size() == 0) {
+                if (MainService.ids.size() > 0)
+                    MainService.ids.clear();
                 for (WorksData worksData : mDataList) {
                     if (worksData.status == 1) {
                         MyApplication.posMap.put(worksData.getItemid(), position);
-                        MyApplication.ids.add(worksData.getItemid());
+                        MainService.ids.add(worksData.getItemid());
                     }
                 }
             }

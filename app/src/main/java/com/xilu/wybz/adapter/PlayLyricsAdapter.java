@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created by June on 16/5/8.
  */
-public class PlayLyricsAdapter extends WyBaseAdapter<String> {
+public class PlayLyricsAdapter extends YcBaseAdapter<String> {
     public PlayLyricsAdapter(Context context, List<String> list) {
         super(context, list);
     }

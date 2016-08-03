@@ -16,12 +16,13 @@ import com.xilu.wybz.R;
 import com.xilu.wybz.adapter.MyPagerAdapter;
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.common.Event;
+import com.xilu.wybz.service.MainService;
 import com.xilu.wybz.ui.base.BaseActivity;
 import com.xilu.wybz.ui.find.FindActivity;
 import com.xilu.wybz.ui.login.LoginActivity;
 import com.xilu.wybz.ui.lyrics.MakeWordActivity;
 import com.xilu.wybz.ui.main.MainActivity;
-import com.xilu.wybz.ui.mine.MineActivity;
+import com.xilu.wybz.ui.mine.NewMineActivity;
 import com.xilu.wybz.ui.msg.MsgActivity;
 import com.xilu.wybz.ui.record.InspireRecordActivity;
 import com.xilu.wybz.ui.song.NewMakeHotActivity;
@@ -102,7 +103,7 @@ public class MainTabActivity extends BaseActivity {
         list.add(getView("FIND", intent));
         intent = new Intent(this, MsgActivity.class);
         list.add(getView("MSG", intent));
-        intent = new Intent(this, MineActivity.class);
+        intent = new Intent(this, NewMineActivity.class);
         list.add(getView("MINE", intent));
         adapter = new MyPagerAdapter(list);
         viewpager.setAdapter(adapter);
@@ -132,7 +133,7 @@ public class MainTabActivity extends BaseActivity {
             if(arg0==1){
                 ((FindActivity)manager.getActivity("FIND")).initView();
             }else if(arg0==3){
-                ((MineActivity)manager.getActivity("MINE")).initData();
+                ((NewMineActivity)manager.getActivity("MINE")).initData();
             }
         }
         @Override
@@ -241,7 +242,7 @@ public class MainTabActivity extends BaseActivity {
             mMoreWindow.destroy();
         }
         if(manager!=null) {
-            ((MineActivity)manager.getActivity("MINE")).onDestroy();
+            ((NewMineActivity)manager.getActivity("MINE")).onDestroy();
         }
         EventBus.getDefault().unregister(this);
     }
@@ -254,10 +255,10 @@ public class MainTabActivity extends BaseActivity {
                 return true;
             }
             if ((System.currentTimeMillis() - exitTime) < 2000) {
-                if (MyApplication.ids.size() > 0) {
+                if (MainService.ids.size() > 0) {
                     String ids = "";
-                    for (int i = 0; i < MyApplication.ids.size(); i++) {
-                        ids += MyApplication.ids.get(i) + (i < MyApplication.ids.size() - 1 ? "," : "");
+                    for (int i = 0; i < MainService.ids.size(); i++) {
+                        ids += MainService.ids.get(i) + (i < MainService.ids.size() - 1 ? "," : "");
                     }
                     PrefsUtil.putString(PrefsUtil.getString("playFrom", context), ids, context);
                 }

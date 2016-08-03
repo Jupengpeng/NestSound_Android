@@ -78,7 +78,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="加关注"
-            android:textColor="@color/main_text_color"
+            android:layout_marginTop="2dp"
+            android:textColor="@color/main_theme_color"
             android:textSize="10sp" />
     </LinearLayout>
 <View

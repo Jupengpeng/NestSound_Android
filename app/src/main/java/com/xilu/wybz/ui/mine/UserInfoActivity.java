@@ -80,7 +80,7 @@ public class UserInfoActivity extends ToolbarActivity implements IOnlyFollowView
 
     OnlyFollowPresenter presenter;
     public static void ToUserInfoActivity(Context context, int userId, String userName) {
-        Intent intent = new Intent(context, UserInfoActivity.class);
+        Intent intent = new Intent(context, NewUserInfoActivity.class);
         intent.putExtra("userId", userId);
         intent.putExtra("userName", userName);
         context.startActivity(intent);

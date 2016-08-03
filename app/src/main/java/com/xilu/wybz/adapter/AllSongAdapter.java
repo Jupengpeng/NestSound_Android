@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * Created by Administrator on 2016/3/11.
  */
-public class AllSongAdapter extends WyBaseAdapter<MusicBean> {
+public class AllSongAdapter extends YcBaseAdapter<MusicBean> {
     int itemWidth;
 
     public AllSongAdapter(Context context, List<MusicBean> list) {

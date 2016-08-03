@@ -26,6 +26,7 @@ import com.xilu.wybz.common.YinChaoConfig;
 import com.xilu.wybz.http.HttpUtils;
 import com.xilu.wybz.http.callback.BitmapCallback;
 import com.xilu.wybz.presenter.SongAlbumPresenter;
+import com.xilu.wybz.service.MainService;
 import com.xilu.wybz.ui.IView.IRecSongView;
 import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.ui.base.ToolbarActivity;
@@ -185,11 +186,11 @@ public class SongAblumActivity extends ToolbarActivity implements IRecSongView {
         if (musicBeans.size() > 0) {
             String playFrom = PrefsUtil.getString("playFrom",context);
             String playGedanId = PrefsUtil.getString("playGedanId",context);
-            if(!playFrom.equals(MyCommon.GEDAN)||MyApplication.ids.size()==0||!playGedanId.equals(songAlbum.id)){
-                if (MyApplication.ids.size() > 0)
-                    MyApplication.ids.clear();
+            if(!playFrom.equals(MyCommon.GEDAN)||MainService.ids.size()==0||!playGedanId.equals(songAlbum.id)){
+                if (MainService.ids.size() > 0)
+                    MainService.ids.clear();
                 for (WorksData worksData : musicBeans) {
-                    MyApplication.ids.add(worksData.getItemid());
+                    MainService.ids.add(worksData.getItemid());
                 }
             }
             WorksData worksData = musicBeans.get(position);

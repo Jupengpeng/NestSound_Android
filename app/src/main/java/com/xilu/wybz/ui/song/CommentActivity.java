@@ -25,9 +25,11 @@ import com.xilu.wybz.bean.CommentBean;
 import com.xilu.wybz.bean.MsgCommentBean;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.Event;
+import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.CommentPresenter;
 import com.xilu.wybz.ui.IView.ICommentView;
 import com.xilu.wybz.ui.base.BaseListActivity;
+import com.xilu.wybz.ui.mine.NewUserInfoActivity;
 import com.xilu.wybz.utils.DateTimeUtil;
 import com.xilu.wybz.utils.KeyBoardUtil;
 import com.xilu.wybz.utils.NetWorkUtil;
@@ -299,7 +301,6 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
         TextView tvDate;
         @Bind(R.id.tv_content)
         TextView tvContent;
-
         public CommentViewHolder(View itemView) {
             super(itemView);
         }
@@ -307,7 +308,7 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
         @Override
         public void onBindViewHolder(int position) {
             CommentBean bean = mDataList.get(position);
-            loadImage(bean.headerurl, ivHead);
+            loadHeadImage(bean.headerurl.replace(MyCommon.defult_head,""), ivHead);
             tvName.setText(bean.nickname);
             tvDate.setText(DateTimeUtil.timestamp2DateTime(bean.createdate));
             SpannableString s = StringStyleUtil.getWorkCommentStyleStr(context,bean);
@@ -318,6 +319,13 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
                 @Override
                 public void onClick(View v) {
                     onItemClick(v,position);
+                }
+            });
+            ivHead.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(bean.getUid()!=PrefsUtil.getUserId(context))
+                    NewUserInfoActivity.ToNewUserInfoActivity(context,bean.getUid(),bean.getNickname());
                 }
             });
         }

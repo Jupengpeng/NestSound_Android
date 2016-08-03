@@ -5,7 +5,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.xilu.wybz.R;
@@ -13,7 +12,7 @@ import com.xilu.wybz.R;
 import java.util.List;
 
 
-public class LyricListAdapter extends WyBaseAdapter<String> {
+public class LyricListAdapter extends YcBaseAdapter<String> {
     List<String> dataList;
     Context mContext;
     String currTitle;

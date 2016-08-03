@@ -10,6 +10,7 @@ import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.multidex.MultiDex;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -41,36 +42,25 @@ import java.util.Map;
  * Created by June on 2016/3/1.
  */
 public class MyApplication extends Application implements ServiceConnection {
-    public MainService mMainService;
+    public static MainService mMainService;
     public static Context context;
     public static String musicId = "";
     public static String from;
     public static String id;
-    public static List<Integer> ids;
     public static Map<Integer, Integer> posMap;
     public static boolean isPlay;
     public static UploadManager uploadManager;
     public int userid;
     public boolean isLogin;
-    public static MyApplication instance;
 
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
         MultiDex.install(this);
     }
-
-    public static MyApplication getInstance() {
-        if (instance == null) {
-            instance = new MyApplication();
-        }
-        return instance;
-    }
-
     @Override
     public void onCreate() {
         super.onCreate();
         context = this;
-        ids = new ArrayList<>();
         posMap = new HashMap<>();
         //检查版本
         if (PrefsUtil.getInt("versionCode", context) == 0) {
@@ -149,12 +139,12 @@ public class MyApplication extends Application implements ServiceConnection {
         stopService(it);
     }
 
-    private void bindMainService() {
+    public void bindMainService() {
         Intent it = new Intent(this, MainService.class);
         this.bindService(it, this, Service.BIND_AUTO_CREATE);
     }
 
-    private void unbindMainService() {
+    public void unbindMainService() {
         this.unbindService(this);
     }
 
@@ -163,14 +153,12 @@ public class MyApplication extends Application implements ServiceConnection {
         if (service instanceof MainService.ServiceBinder) {
             MainService.ServiceBinder binder = (MainService.ServiceBinder) service;
             mMainService = binder.getService();
+            Log.e("mMainService","onServiceConnected");
         }
     }
 
     @Override
     public void onServiceDisconnected(ComponentName name) {
-    }
-
-    public MainService getMainService() {
-        return mMainService;
+        Log.e("mMainService","onServiceDisconnected");
     }
 }

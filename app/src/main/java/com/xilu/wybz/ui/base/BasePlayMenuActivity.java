@@ -10,6 +10,7 @@ import com.xilu.wybz.R;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.common.PlayMediaInstance;
+import com.xilu.wybz.service.MainService;
 import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.ui.song.PlayAudioActivity;
 import com.xilu.wybz.utils.PrefsUtil;
@@ -86,10 +87,10 @@ public abstract class BasePlayMenuActivity extends ToolbarActivity {
         if(StringUtil.isNotBlank(idData)){
             String ids[] = idData.split(",");
             for(int i=0;i<ids.length;i++){
-                MyApplication.ids.add(Integer.valueOf(ids[i]));
+                MainService.ids.add(Integer.valueOf(ids[i]));
             }
         }else{
-            MyApplication.ids.add(playId);
+            MainService.ids.add(playId);
         }
         if (playId>0) {
             PlayAudioActivity.toPlayAudioActivity(context, PrefsUtil.getInt("playId", context),
@@ -104,7 +105,7 @@ public abstract class BasePlayMenuActivity extends ToolbarActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        if (PlayMediaInstance.getInstance().status == 3) {
+        if (MainService.status == 3) {
             stopAnimal();
         }
     }
@@ -113,7 +114,7 @@ public abstract class BasePlayMenuActivity extends ToolbarActivity {
     public void onResume() {
         super.onResume();
         if(visible) {
-            if (PlayMediaInstance.getInstance().status == 3) {
+            if (MainService.status == 3) {
                 startAnimal();
             } else {
                 stopAnimal();
@@ -130,12 +131,14 @@ public abstract class BasePlayMenuActivity extends ToolbarActivity {
     @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.PPStatusEvent event) {
         if(visible) {
             switch (event.getStatus()) {
-                case MyCommon.PP_START://开始
-                case MyCommon.PP_PLAY://播放
+                case MyCommon.STARTED://开始
+                case MyCommon.PLAYED://播放
                     startAnimal();
                     break;
-                case MyCommon.PP_STOP://停止
-                case MyCommon.PP_PAUSE://暂停
+                case MyCommon.STOPPED://停止
+                case MyCommon.END://停止
+                case MyCommon.COMPLETED://停止
+                case MyCommon.PAUSED://暂停
                     stopAnimal();
                     break;
             }

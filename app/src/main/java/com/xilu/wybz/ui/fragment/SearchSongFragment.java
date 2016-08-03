@@ -15,6 +15,7 @@ import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.SearchPresenter;
+import com.xilu.wybz.service.MainService;
 import com.xilu.wybz.ui.IView.ISearchView;
 import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.ui.song.PlayAudioActivity;
@@ -161,11 +162,11 @@ public class SearchSongFragment extends BaseListFragment<WorksData> implements I
     public void toPlayPos(int position){
         if (mDataList.size() > 0) {
             String playFrom = PrefsUtil.getString("playFrom",context);
-            if(!playFrom.equals(MyCommon.SEARCH)|| MyApplication.ids.size()==0){
-                if (MyApplication.ids.size() > 0)
-                    MyApplication.ids.clear();
+            if(!playFrom.equals(MyCommon.SEARCH)|| MainService.ids.size()==0){
+                if (MainService.ids.size() > 0)
+                    MainService.ids.clear();
                 for (WorksData worksData : mDataList) {
-                    MyApplication.ids.add(worksData.getItemid());
+                    MainService.ids.add(worksData.getItemid());
                 }
             }
             WorksData worksData = mDataList.get(position);

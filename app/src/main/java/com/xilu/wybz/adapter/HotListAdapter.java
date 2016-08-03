@@ -10,11 +10,9 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.TemplateBean;
-import com.xilu.wybz.common.PlayBanZouInstance;
 import com.xilu.wybz.common.PlayMediaInstance;
 import com.xilu.wybz.common.interfaces.ITemplateMusicListener;
 import com.xilu.wybz.ui.MyApplication;
@@ -26,7 +24,7 @@ import java.util.List;
 /**
  * Created by hujunwei on 16/4/14.
  */
-public class HotListAdapter extends WyBaseAdapter<TemplateBean> {
+public class HotListAdapter extends YcBaseAdapter<TemplateBean> {
     private ITemplateMusicListener iml;
     private ImageView currIv;
     private ProgressBar currProgress;
@@ -56,7 +54,7 @@ public class HotListAdapter extends WyBaseAdapter<TemplateBean> {
         tvTitle.setText(templateBean.title);
         tvAuthor.setText(templateBean.author);
         if(StringUtil.isNotBlank(templateBean.pic)) loadImage(templateBean.pic, iv_cover, itemWidth, itemHeight);
-        if (!TextUtils.isEmpty(MyApplication.musicId) && MyApplication.musicId.equals(templateBean.id)&&PlayBanZouInstance.getInstance().status==3) {
+        if (!TextUtils.isEmpty(MyApplication.musicId) && MyApplication.musicId.equals(templateBean.id)&& PlayMediaInstance.getInstance().status==3) {
             currIv = ivPlay;
             ivPlay.setImageResource(R.drawable.ic_bz_pause);
         }else{
@@ -68,7 +66,7 @@ public class HotListAdapter extends WyBaseAdapter<TemplateBean> {
                 if (!TextUtils.isEmpty(MyApplication.musicId) && MyApplication.musicId.equals(templateBean.id)) {
                     if (iml != null) {
                         currIv = ivPlay;
-                        if (PlayBanZouInstance.getInstance().status == 3) {
+                        if (PlayMediaInstance.getInstance().status == 3) {
                             currIv.setImageResource(R.drawable.ic_bz_play);
                             iml.onPauseMusic();
                         } else {
@@ -95,7 +93,7 @@ public class HotListAdapter extends WyBaseAdapter<TemplateBean> {
     }
 
     public void updateData() {
-        if (PlayBanZouInstance.getInstance().status != 3 && currIv != null) {
+        if (PlayMediaInstance.getInstance().status != 3 && currIv != null) {
             currIv.setImageResource(R.drawable.ic_bz_play);
         }
     }
