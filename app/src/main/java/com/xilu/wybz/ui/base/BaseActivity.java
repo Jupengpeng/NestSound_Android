@@ -8,8 +8,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -30,10 +30,8 @@ import com.xilu.wybz.ui.lyrics.LyricsPosterActivity;
 import com.xilu.wybz.ui.lyrics.ShareActivity;
 import com.xilu.wybz.ui.main.MainActivity;
 import com.xilu.wybz.ui.mine.MineActivity;
-import com.xilu.wybz.ui.mine.NewMineActivity;
 import com.xilu.wybz.ui.mine.NewUserInfoActivity;
 import com.xilu.wybz.ui.msg.MsgActivity;
-import com.xilu.wybz.ui.song.MakeSongActivity;
 import com.xilu.wybz.ui.song.PlayAudioActivity;
 import com.xilu.wybz.ui.song.SongAblumActivity;
 import com.xilu.wybz.utils.NetWorkUtil;
@@ -206,15 +204,18 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        Log.i("activity",this.getClass().getName()+":onResume");
         MobclickAgent.onResume(this);
     }
     @Override
     protected void onPause() {
         super.onPause();
+        Log.i("activity",this.getClass().getName()+":onPause");
         MobclickAgent.onPause(this);
     }
     protected void onDestroy() {
         super.onDestroy();
+        Log.i("activity",this.getClass().getName()+":onDestroy");
         isDestroy = true;
     }
 }
