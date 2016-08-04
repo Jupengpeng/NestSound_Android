@@ -16,22 +16,24 @@ import android.widget.TextView;
 
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.WorksData;
+import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.FileDir;
 import com.xilu.wybz.common.KeySet;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.ui.base.ToolbarActivity;
-import com.xilu.wybz.ui.song.PlayAudioActivity;
 import com.xilu.wybz.utils.BitmapUtils;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.FileUtils;
 import com.xilu.wybz.utils.ImageLoadUtil;
 import com.xilu.wybz.utils.ImageUtils;
 import com.xilu.wybz.utils.PermissionUtils;
+import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.view.dialog.ShareDialog;
 
-import java.io.File;
+import org.greenrobot.eventbus.EventBus;
 
+import java.io.File;
 import butterknife.Bind;
 import butterknife.OnClick;
 
@@ -94,9 +96,10 @@ public class SharePosterActivity extends ToolbarActivity {
         switch (view.getId()) {
             case R.id.rl_share:
                 savePic();
-                if (worksData != null && worksData.itemid > 0) {
+                if (StringUtil.isNotBlank(savePath)) {
                     if (shareDialog == null) {
-                        shareDialog = new ShareDialog(SharePosterActivity.this, worksData);
+                        worksData.pic = savePath;
+                        shareDialog = new ShareDialog(SharePosterActivity.this, worksData, 1);
                     }
                     if (!shareDialog.isShowing()) {
                         shareDialog.showDialog();
@@ -114,8 +117,9 @@ public class SharePosterActivity extends ToolbarActivity {
     }
 
     public void savePic() {
-        Bitmap bitmap1 = ivCover.getDrawingCache();
-        Bitmap bitmap2 = llContent.getDrawingCache();
+        if(StringUtil.isNotBlank(savePath))return;//已经保存过了
+        Bitmap bitmap1 = BitmapUtils.loadBitmapFromView(ivCover);
+        Bitmap bitmap2 = BitmapUtils.loadBitmapFromView(llContent);
         Bitmap bitmap = BitmapUtils.add2Bitmap(bitmap1, bitmap2);
         if (!new File(FileDir.posterPic).exists()) {
             new File(FileDir.posterPic).mkdirs();
@@ -124,6 +128,8 @@ public class SharePosterActivity extends ToolbarActivity {
             savePath = FileDir.posterPic + System.currentTimeMillis() / 1000 + ".jpg";
             FileUtils.saveBmp(savePath, bitmap);
         }
+        //保存成功的时候 通知上个页面关闭
+        EventBus.getDefault().post(new Event.SavePosterSuccessEvent());
     }
 
     @Override

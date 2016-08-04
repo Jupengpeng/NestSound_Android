@@ -24,6 +24,10 @@ public class UmengShareUtil {
     public UmengShareUtil(Activity act, ShareBean shareBean) {
         activity = act;
         this.shareBean = shareBean;
+        if(shareBean.type==1){//分享图片
+            image = new UMImage(act, new File(shareBean.pic));
+            return;
+        }
         if(!TextUtils.isEmpty(shareBean.pic)){
             if(shareBean.pic.contains("http")){
                 image = new UMImage(act, shareBean.getPic());
@@ -72,17 +76,21 @@ public class UmengShareUtil {
         }
         ShareAction action =  new ShareAction(activity);
         action.setPlatform(share_media).setCallback(umShareListener);
-        if(type>1){
-            action.withTitle(shareBean.title);
-            action.withTargetUrl(shareBean.link);
-        }
-        if(music!=null&&type>1){
-            action.withMedia(music);
-            action.withText(shareBean.author);
-        }else{
-            if(image!=null)
+        if(shareBean.type==1){
             action.withMedia(image);
-            action.withText(shareBean.content);
+        }else {
+            if (type > 1) {
+                action.withTitle(shareBean.title);
+                action.withTargetUrl(shareBean.link);
+            }
+            if (music != null && type > 1) {
+                action.withMedia(music);
+                action.withText(shareBean.author);
+            } else {
+                if (image != null)
+                    action.withMedia(image);
+                action.withText(shareBean.content);
+            }
         }
         action.share();
     }

@@ -48,7 +48,7 @@ public class ShareActivity extends ToolbarActivity {
         String shareBody = PrefsUtil.getUserId(context)==worksData.uid ? "我用音巢app创作了一首歌词，快来看看吧!" : "我在音巢app上发现一首好歌词，太棒了~";
         String shareContent = shareBody + " 《" + shareTitle + "》 ▷" + shareLink + " (@音巢音乐)";
         String playUrl = worksData.playurl;
-        ShareBean shareBean = new ShareBean(shareTitle, shareAuthor, shareContent, shareLink, sharePic, playUrl);
+        ShareBean shareBean = new ShareBean(shareTitle, shareAuthor, shareContent, shareLink, sharePic, playUrl, 0);
         shareUtil = new UmengShareUtil(this,shareBean);
     }
 

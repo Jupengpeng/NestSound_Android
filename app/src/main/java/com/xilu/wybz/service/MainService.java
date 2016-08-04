@@ -245,6 +245,7 @@ public class MainService extends Service implements IMusicDetailView, AudioManag
 
     //播放伴奏或者本地的音频文件 playUrl可以是网络或者本地的路径
     public void playOneMusic(String playUrl) {
+        if(StringUtil.isBlank(playUrl))return;
         PlyStatus = 1;
         PlayType = 1;//单曲的标识
         playMusic(playUrl);
@@ -289,6 +290,7 @@ public class MainService extends Service implements IMusicDetailView, AudioManag
             PlayId = PrefsUtil.getInt(CurrentMusic.PLAY_ID,MainService.this);
             mCurrentAudio = PrefsUtil.getMusicData(MainService.this, PlayId);
         }
+        if(mCurrentAudio!=null)
         playMusic(mCurrentAudio.getPlayurl());
     }
 

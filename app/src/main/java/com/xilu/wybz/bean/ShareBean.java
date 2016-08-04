@@ -10,13 +10,15 @@ public class ShareBean {
     public String link;
     public String pic;
     public String playurl;
-    public ShareBean(String title,String author,String content,String link,String pic,String playurl){
+    public int type;
+    public ShareBean(String title,String author,String content,String link,String pic,String playurl,int type){
         this.title = title;
         this.author = author;
         this.content = content;
         this.link = link;
         this.pic = pic;
         this.playurl = playurl;
+        this.type = type;
     }
     public String getAuthor() {
         return author;

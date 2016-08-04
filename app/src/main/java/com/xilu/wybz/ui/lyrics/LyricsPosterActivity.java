@@ -8,13 +8,24 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
+import com.umeng.analytics.MobclickAgent;
+import com.umeng.message.PushAgent;
 import com.xilu.wybz.R;
 import com.xilu.wybz.adapter.LyricsPosterAdapter;
 import com.xilu.wybz.bean.LyricsPoster;
+import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.bean.WorksData;
+import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.KeySet;
 import com.xilu.wybz.ui.base.ToolbarActivity;
+import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtil;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.List;
 import butterknife.Bind;
@@ -42,6 +53,7 @@ public class LyricsPosterActivity extends ToolbarActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
         initData();
     }
 
@@ -95,5 +107,14 @@ public class LyricsPosterActivity extends ToolbarActivity{
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(Event.SavePosterSuccessEvent event){
+        finish();
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

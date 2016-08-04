@@ -266,4 +266,8 @@ public class Event {
             return percent;
         }
     }
+
+    public static class SavePosterSuccessEvent {
+
+    }
 }

@@ -47,17 +47,14 @@ public class WorksData implements Serializable {
     public String audio;//录歌时人声或者灵感记录的音频
     public String spirecontent;//录歌时人声或者灵感记录的音频
     public String pics;//灵感记录的图片集合
-    public boolean isPlay;
-    public int draftType;//1歌曲 2歌词 3灵感记录
-    public String picdomain;//灵感记录图片域名
-    public String audiodomain;////灵感记录声音域名
     public String createtype;//HOT/DIY
     public String useheadset;//耳机1是，0否
     public String recordmp3;
     public String recordurl;
     public String musicurl;
-    public String diyids;
+    public String diyids;//歌词详情页返回的描述
     public int is_issue = 1;//0不公开,1公开
+    public boolean isPlay;//是否播放
 
     public int getType() {
         return type;
@@ -145,14 +142,6 @@ public class WorksData implements Serializable {
 
     public void setIs_issue(int is_issue) {
         this.is_issue = is_issue;
-    }
-
-    public int getDraftType() {
-        return draftType;
-    }
-
-    public void setDraftType(int draftType) {
-        this.draftType = draftType;
     }
 
     public String getPics() {
