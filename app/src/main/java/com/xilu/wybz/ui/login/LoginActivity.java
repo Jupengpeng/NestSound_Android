@@ -144,7 +144,7 @@ public class LoginActivity extends BaseActivity implements ILoginView,IRegisterV
                 finish();
                 break;
             case R.id.tv_forget_pwd:
-                startActivity(PasswordActivity.class);
+                startActivity(PassWorddActivity.class);
                 break;
             case R.id.tv_login:
                 toLoin();
