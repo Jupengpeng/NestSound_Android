@@ -37,6 +37,9 @@
     <dimen name="yc_18">18dp</dimen>
     <dimen name="yc_56">56dp</dimen>
 
+    <dimen name="draw_padding">2dp</dimen>
+    <dimen name="main_tab_size">10sp</dimen>
+
     <dimen name="seekbar_progress">1.0dp</dimen>
 
     <!-- Margin around the dialog, excluding the button bar -->

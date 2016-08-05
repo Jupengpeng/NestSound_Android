@@ -15,13 +15,11 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.commit451.nativestackblur.NativeStackBlur;
 import com.xilu.wybz.R;
-import com.xilu.wybz.utils.FastBlur;
 import com.xilu.wybz.utils.KickBackAnimator;
 
 public class MoreWindow{
@@ -190,8 +188,8 @@ public class MoreWindow{
     }
 
     public void onCreateActionAnim() {
-        toCloseAnim = ObjectAnimator.ofFloat(close, "rotation", 0, 45);
-        toAddAnim = ObjectAnimator.ofFloat(close, "rotation", 45, 0);
+        toCloseAnim = ObjectAnimator.ofFloat(close, "rotation", 45, 90);
+        toAddAnim = ObjectAnimator.ofFloat(close, "rotation", 90, 45);
     }
     public void moveToClose(){
         toCloseAnim.setDuration(300);

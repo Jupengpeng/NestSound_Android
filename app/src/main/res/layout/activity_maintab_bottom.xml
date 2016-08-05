@@ -2,9 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/ll_bottom"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/actionbar_size"
+    android:layout_height="48dp"
     android:background="@color/white"
     android:gravity="center_vertical"
+    android:paddingTop="2dp"
     android:orientation="horizontal">
 
     <RelativeLayout
@@ -18,7 +19,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:background="@drawable/guide_home"
+            android:text="@string/app_tab_home"
+            android:textSize="@dimen/main_tab_size"
+            android:textColor="@color/main_tab"
+            android:drawablePadding="@dimen/draw_padding"
+            android:drawableTop="@drawable/guide_home"
             android:checked="true" />
 
     </RelativeLayout>
@@ -34,7 +39,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:background="@drawable/guide_found" />
+            android:text="@string/app_tab_find"
+            android:textSize="@dimen/main_tab_size"
+            android:textColor="@color/main_tab"
+            android:drawablePadding="@dimen/draw_padding"
+            android:drawableTop="@drawable/guide_found" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -49,7 +58,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:checked="false"
-            android:src="@drawable/ic_tab_add"
+            android:src="@drawable/ic_tab_main"
             android:visibility="visible" />
     </RelativeLayout>
 
@@ -64,7 +73,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:background="@drawable/guide_msg" />
+            android:text="@string/app_tab_msg"
+            android:textSize="@dimen/main_tab_size"
+            android:textColor="@color/main_tab"
+            android:drawablePadding="@dimen/draw_padding"
+            android:drawableTop="@drawable/guide_msg" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -78,6 +91,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:background="@drawable/guide_mine" />
+            android:text="@string/app_tab_mine"
+            android:textSize="@dimen/main_tab_size"
+            android:textColor="@color/main_tab"
+            android:drawablePadding="@dimen/draw_padding"
+            android:drawableTop="@drawable/guide_mine" />
     </RelativeLayout>
 </LinearLayout>
