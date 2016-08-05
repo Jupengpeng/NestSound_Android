@@ -282,8 +282,10 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
                 }
             }else{
                 //停止或者尚未播放
-                if(worksData!=null)
-                MyApplication.mMainService.playOneMusic(worksData.playurl);
+                if(worksData!=null) {
+                    if(MyApplication.mMainService.mCurrentState==MyCommon.IDLE)
+                    MyApplication.mMainService.playOneMusic(worksData.playurl);
+                }
             }
         } else {//开启服务
             MyApplication.mMainService.loadData(id, from, gedanid);

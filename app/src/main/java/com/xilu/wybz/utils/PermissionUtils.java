@@ -19,6 +19,7 @@ public class PermissionUtils {
     public static final int MY_PERMISSIONS_REQUEST_READ_PHONE_STATE = 1;
     public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 2;
     public static final int MY_PERMISSIONS_REQUEST_RECORD_AUDIO = 3;
+    public static final int MY_PERMISSIONS_REQUEST_WRITE_SETTINGS = 4;
     //读取手机imei
     public static boolean checkReadPhoneStatePermission(Context activity) {
         if (ContextCompat.checkSelfPermission(activity,
@@ -45,6 +46,19 @@ public class PermissionUtils {
                         new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                         MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
             }
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public static boolean checkWriteSettingPermission(Activity activity) {
+        if (ContextCompat.checkSelfPermission(activity,
+                Manifest.permission.WRITE_SETTINGS)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(activity,
+                    new String[]{Manifest.permission.WRITE_SETTINGS},
+                    MY_PERMISSIONS_REQUEST_WRITE_SETTINGS);
             return false;
         } else {
             return true;

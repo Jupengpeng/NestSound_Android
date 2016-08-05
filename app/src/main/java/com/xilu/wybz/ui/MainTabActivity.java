@@ -3,6 +3,7 @@ package com.xilu.wybz.ui;
 import android.app.LocalActivityManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
 import android.view.View;
@@ -78,6 +79,9 @@ public class MainTabActivity extends BaseActivity {
         if(PermissionUtils.checkSdcardPermission(this)){
 
         }
+        if(PermissionUtils.checkWriteSettingPermission(this)){
+            setWifiNeverSleep();
+        }
         manager = new LocalActivityManager(this, true);
         manager.dispatchCreate(savedInstanceState);
         checkedTextViewList = new ArrayList<>();
@@ -86,6 +90,21 @@ public class MainTabActivity extends BaseActivity {
         checkedTextViewList.add(tvMsg);
         checkedTextViewList.add(tvMine);
         initPagerViewer();
+    }
+
+    private void setWifiNeverSleep(){
+        int wifiSleepPolicy=0;
+        wifiSleepPolicy= Settings.System.getInt(getContentResolver(),
+                android.provider.Settings.System.WIFI_SLEEP_POLICY,
+                Settings.System.WIFI_SLEEP_POLICY_DEFAULT);
+        System.out.println("---> 修改前的Wifi休眠策略值 WIFI_SLEEP_POLICY="+wifiSleepPolicy);
+        Settings.System.putInt(getContentResolver(),
+                android.provider.Settings.System.WIFI_SLEEP_POLICY,
+                Settings.System.WIFI_SLEEP_POLICY_NEVER);
+        wifiSleepPolicy=Settings.System.getInt(getContentResolver(),
+                android.provider.Settings.System.WIFI_SLEEP_POLICY,
+                Settings.System.WIFI_SLEEP_POLICY_DEFAULT);
+        System.out.println("---> 修改后的Wifi休眠策略值 WIFI_SLEEP_POLICY="+wifiSleepPolicy);
     }
     //打开推送
     public void openPush() {
