@@ -19,7 +19,7 @@ import com.xilu.wybz.ui.fragment.SearchLyricsFragment;
 import com.xilu.wybz.ui.fragment.SearchSongFragment;
 import com.xilu.wybz.ui.fragment.SearchUserFragment;
 import com.xilu.wybz.ui.fragment.SongFragment;
-import com.xilu.wybz.ui.login.LoginActivity;
+import com.xilu.wybz.ui.login.NewLoginActivity;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.SystemUtils;

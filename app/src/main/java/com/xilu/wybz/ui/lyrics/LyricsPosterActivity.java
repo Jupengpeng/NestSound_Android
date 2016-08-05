@@ -56,7 +56,6 @@ public class LyricsPosterActivity extends ToolbarActivity{
         EventBus.getDefault().register(this);
         initData();
     }
-
     public void initData(){
         Bundle bundle = getIntent().getExtras();
         if(bundle!=null){

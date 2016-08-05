@@ -12,7 +12,7 @@ import android.text.TextUtils;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.common.MyCommon;
-import com.xilu.wybz.ui.login.LoginActivity;
+import com.xilu.wybz.ui.login.NewLoginActivity;
 
 import java.util.List;
 import java.util.Map;
@@ -114,7 +114,7 @@ public class SystemUtils {
     public static boolean isLogin(Context context) {
         UserBean userBean = PrefsUtil.getUserInfo(context);
         if (userBean == null || userBean.userid==0) {
-            toAct(context, LoginActivity.class);
+            toAct(context, NewLoginActivity.class);
             return false;
         } else {
             return true;

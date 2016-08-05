@@ -12,7 +12,7 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import com.xilu.wybz.R;
-import com.xilu.wybz.ui.login.LoginActivity;
+import com.xilu.wybz.ui.login.NewLoginActivity;
 import com.xilu.wybz.view.materialdialogs.DialogAction;
 import com.xilu.wybz.view.materialdialogs.MaterialDialog;
 

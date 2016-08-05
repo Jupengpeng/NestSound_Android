@@ -23,7 +23,7 @@ import com.xilu.wybz.ui.MainTabActivity;
 import com.xilu.wybz.ui.SplashActivity;
 import com.xilu.wybz.ui.WelActivity;
 import com.xilu.wybz.ui.find.FindActivity;
-import com.xilu.wybz.ui.login.LoginActivity;
+import com.xilu.wybz.ui.login.NewLoginActivity;
 import com.xilu.wybz.ui.login.PasswordActivity;
 import com.xilu.wybz.ui.login.RegisterActivity;
 import com.xilu.wybz.ui.lyrics.LyricsPosterActivity;
@@ -39,10 +39,8 @@ import com.xilu.wybz.utils.ToastUtils;
 import com.xilu.wybz.view.AnimImageView;
 import com.xilu.wybz.view.SystemBarHelper;
 import com.xilu.wybz.view.materialdialogs.MaterialDialog;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.ButterKnife;
 
 /**
@@ -76,10 +74,10 @@ public abstract class BaseActivity extends AppCompatActivity {
     //开启透明状态栏目
     protected void adaptTheme(boolean isTranslucentStatusFitSystemWindowTrue) {
         if (isTranslucentStatusFitSystemWindowTrue) {
-            if (!(this instanceof PlayAudioActivity || this instanceof LoginActivity || this instanceof LyricsPosterActivity
+            if (!(this instanceof PlayAudioActivity || this instanceof LyricsPosterActivity
                     || this instanceof RegisterActivity || this instanceof PasswordActivity
                     || this instanceof SongAblumActivity)) {
-                    SystemBarHelper.setStatusBarDarkMode(this);
+                SystemBarHelper.setStatusBarDarkMode(this);
             }
             if (this instanceof WelActivity || this instanceof PlayAudioActivity || this instanceof LyricsPosterActivity
                     || this instanceof SongAblumActivity || this instanceof ShareActivity
@@ -87,8 +85,10 @@ public abstract class BaseActivity extends AppCompatActivity {
                     this instanceof NewUserInfoActivity || this instanceof MainTabActivity) {
                 SystemBarHelper.immersiveStatusBar(this);
                 SystemBarHelper.tintStatusBar(this, Color.argb(0, 0xFF, 0xD7, 0x05));
-            } else if (this instanceof LoginActivity || this instanceof RegisterActivity || this instanceof PasswordActivity) {
+            } else if (this instanceof NewLoginActivity || this instanceof RegisterActivity || this instanceof PasswordActivity) {
 //                SystemBarHelper.immersiveStatusBar(this);
+            } else if (this instanceof NewLoginActivity){
+//                SystemBarHelper.tintStatusBar(this, 0xffffffff);
             }
         }
     }
