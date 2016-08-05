@@ -20,20 +20,16 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
-
 import com.xilu.wybz.R;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.ui.base.ToolbarActivity;
-import com.xilu.wybz.ui.login.LoginActivity;
+import com.xilu.wybz.ui.login.NewLoginActivity;
 import com.xilu.wybz.utils.PhoneInfoUtil;
 import com.xilu.wybz.utils.PrefsUtil;
-
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.Bind;
 
 /**
@@ -98,7 +94,7 @@ public class BrowserActivity extends ToolbarActivity {
                 // 重写此方法表明点击网页里面的链接还是在当前的webview里跳转，不跳到浏览器那边
                 String LOGIN = "yinchao://yinchao.cn/login";
                 if (url.startsWith(LOGIN)){
-                    startActivity(LoginActivity.class);
+                    startActivity(NewLoginActivity.class);
                     return true;
                 }
 
