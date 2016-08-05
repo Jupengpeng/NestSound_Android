@@ -124,11 +124,12 @@
         <activity android:name=".ui.lyrics.MakeCourseActivity" android:screenOrientation="portrait"/>
         <activity android:name=".ui.lyrics.LyricsPosterActivity" android:theme="@style/PlayTheme" android:screenOrientation="portrait"/>
         <activity android:name=".ui.lyrics.SharePosterActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.lyrics.LyricsTemplateListActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.lyrics.MakeWordByTempleateActivity" android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.lyrics.SaveWordActivity"
             android:windowSoftInputMode="stateHidden|adjustResize" android:screenOrientation="portrait" />
 
-        <service android:name=".service.PlayService" android:screenOrientation="portrait"/>
         <service android:name=".service.MainService" android:screenOrientation="portrait"/>
 
         <activity

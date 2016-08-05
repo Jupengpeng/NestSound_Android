@@ -143,15 +143,17 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ll_import:
-                startActivity(ImportWordActivity.class);
+//                startActivity(ImportWordActivity.class);
+                startActivity(MakeWordByTempleateActivity.class);
                 break;
             case R.id.ll_thesaurus:
-                if (lyricsDialog == null) {
-                    lyricsDialog = new LyricsDialog(this, etWord);
-                }
-                if (!lyricsDialog.isShowing()) {
-                    lyricsDialog.showDialog();
-                }
+                startActivity(LyricsTemplateListActivity.class);
+//                if (lyricsDialog == null) {
+//                    lyricsDialog = new LyricsDialog(this, etWord);
+//                }
+//                if (!lyricsDialog.isShowing()) {
+//                    lyricsDialog.showDialog();
+//                }
                 break;
             case R.id.ll_course:
                 startActivity(MakeCourseActivity.class);
