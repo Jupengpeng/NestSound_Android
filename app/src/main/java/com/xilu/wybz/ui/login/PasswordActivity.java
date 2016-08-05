@@ -11,7 +11,9 @@ import com.xilu.wybz.R;
 import com.xilu.wybz.bean.DataBean;
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.common.Event;
+import com.xilu.wybz.presenter.ForgetPwdPresenter;
 import com.xilu.wybz.presenter.PasswordPresenter;
+import com.xilu.wybz.ui.IView.IForgetPwdView;
 import com.xilu.wybz.ui.IView.IPasswordView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.utils.MD5Util;
@@ -19,51 +21,94 @@ import com.xilu.wybz.utils.MyCountTimer;
 import com.xilu.wybz.utils.ParseUtils;
 import com.xilu.wybz.utils.StringUtil;
 
-import butterknife.Bind;
-import butterknife.OnClick;
 import org.greenrobot.eventbus.EventBus;
 
+import butterknife.Bind;
+import butterknife.OnClick;
+
 /**
- * Created by June on 2016/5/4.
+ * Created by June on 16/3/25.
  */
-public class PasswordActivity extends ToolbarActivity implements IPasswordView, TextWatcher {
+public class PasswordActivity extends ToolbarActivity implements IPasswordView,TextWatcher {
     PasswordPresenter passwordPresenter;
-    @Bind(R.id.mpass_phone)
-    EditText mpassPhone;
-    @Bind(R.id.mpass_phonepass)
-    EditText mpassPhonepass;
-    @Bind(R.id.mpass_phonebut)
-    TextView mpassPhonebut;
-    @Bind(R.id.mpass_pass)
-    EditText mpassPass;
-    @Bind(R.id.mpass_ypass)
-    EditText mpassYpass;
-    @Bind(R.id.mpass_login)
-    TextView mpassLogin;
+    @Bind(R.id.et_phone)
+    EditText etPhone;
+    @Bind(R.id.et_sms_code)
+    EditText etSmsCode;
+    @Bind(R.id.tv_getsmscode)
+    TextView tvGetsmscode;
+    @Bind(R.id.et_pwd)
+    EditText etPwd;
+    @Bind(R.id.et_pwd2)
+    EditText etPwd2;
+    @Bind(R.id.tv_ok)
+    TextView tvOk;
 
     @Override
     protected int getLayoutRes() {
-        return R.layout.activity_password;
+        return R.layout.activity_forget_pwd;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        passwordPresenter = new PasswordPresenter(context, this);
+        passwordPresenter = new PasswordPresenter(this, this);
         passwordPresenter.init();
     }
 
-    @Override
     public void initView() {
-        mpassPhone.addTextChangedListener(this);
-        mpassPhonepass.addTextChangedListener(this);
-        mpassPass.addTextChangedListener(this);
-        mpassYpass.addTextChangedListener(this);
+        setTitle("忘记密码");
+        etPhone.addTextChangedListener(this);
+        etPwd.addTextChangedListener(this);
+        etPwd2.addTextChangedListener(this);
+        etSmsCode.addTextChangedListener(this);
     }
 
+    @OnClick({R.id.tv_getsmscode, R.id.tv_ok})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.tv_getsmscode:
+                getSmsCode();
+                break;
+            case R.id.tv_ok:
+                tvOk.setEnabled(false);
+                toLogin();
+                break;
+        }
+    }
+    private void getSmsCode() {
+        String phone = etPhone.getText().toString().trim();
+        if (StringUtil.isBlank(phone)) {
+            showMsg("请输入手机号码");
+        } else {
+            passwordPresenter.getSmsCode(phone, "2");
+        }
+    }
+
+    private void toLogin() {
+        String phone = etPhone.getText().toString().trim();
+        String code = etSmsCode.getText().toString().trim();
+        String password = MD5Util.getMD5String(etPwd.getText().toString().trim());
+        String repassword = MD5Util.getMD5String(etPwd2.getText().toString().trim());
+        if (StringUtil.isEmpty(phone)) {
+            showMsg("手机号不能为空");
+            return;
+        } else if (StringUtil.isEmpty(code)) {
+            showMsg("验证码不能为空");
+            return;
+        } else if (password.length() < 6) {
+            showMsg("密码不能少于6个字符");
+            return;
+        } else if (!repassword.equals(password)) {
+            showMsg("两次密码要输入一致");
+            return;
+        }
+        passwordPresenter.modifyPwd(phone, code, password, repassword);
+
+    }
     @Override
     public void modifyPwdStart() {
-        mpassLogin.setEnabled(false);
+        tvOk.setEnabled(false);
     }
 
     @Override
@@ -84,12 +129,12 @@ public class PasswordActivity extends ToolbarActivity implements IPasswordView, 
 
     @Override
     public void modifyPwdFinish() {
-        mpassLogin.setEnabled(true);
+        tvOk.setEnabled(true);
     }
 
     @Override
     public void SmsCodeStart() {
-        mpassPhonebut.setEnabled(false);
+        tvGetsmscode.setEnabled(false);
     }
 
     @Override
@@ -97,11 +142,11 @@ public class PasswordActivity extends ToolbarActivity implements IPasswordView, 
         DataBean mb = ParseUtils.getDataBean(context,result);
         if (mb != null) {
             if (mb.code==200) {
-                MyCountTimer timeCount = new MyCountTimer(mpassPhonebut);
+                MyCountTimer timeCount = new MyCountTimer(tvGetsmscode);
                 timeCount.start();
-                mpassPhonepass.setFocusable(true);
-                mpassPhonepass.setFocusableInTouchMode(true);
-                mpassPhonepass.requestFocus();
+                etSmsCode.setFocusable(true);
+                etSmsCode.setFocusableInTouchMode(true);
+                etSmsCode.requestFocus();
             }
         } else {
             showMsg("验证码发送失败");
@@ -118,50 +163,14 @@ public class PasswordActivity extends ToolbarActivity implements IPasswordView, 
 
     @Override
     public void SmsCodeFinish() {
-        mpassPhonebut.setEnabled(true);
+        tvGetsmscode.setEnabled(true);
     }
 
-    @OnClick({R.id.mpass_phonebut, R.id.mpass_login})
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.mpass_phonebut:
-                getSmsCode();
-                break;
-            case R.id.mpass_login:
-                toLogin();
-                break;
-        }
-    }
-
-    private void getSmsCode() {
-        String phone = mpassPhone.getText().toString().trim();
-        if (!StringUtil.checkPhone(phone)) {
-            showMsg("请输入正确手机号码");
-        } else {
-            passwordPresenter.getSmsCode(phone, "2");
-        }
-    }
-
-    private void toLogin() {
-        String phone = mpassPhone.getText().toString().trim();
-        String code = mpassPhonepass.getText().toString().trim();
-        String password = MD5Util.getMD5String(mpassPass.getText().toString().trim());
-        String repassword = MD5Util.getMD5String(mpassYpass.getText().toString().trim());
-        if (StringUtil.isEmpty(phone)) {
-            showMsg("手机号不能为空");
-            return;
-        } else if (StringUtil.isEmpty(code)) {
-            showMsg("验证码不能为空");
-            return;
-        } else if (password.length() < 6) {
-            showMsg("密码不能少于6个字符");
-            return;
-        } else if (!repassword.equals(password)) {
-            showMsg("两次密码要输入一致");
-            return;
-        }
-        passwordPresenter.modifyPwd(phone, code, password, repassword);
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (passwordPresenter != null)
+            passwordPresenter.cancelRequest();
     }
 
     @Override
@@ -176,23 +185,16 @@ public class PasswordActivity extends ToolbarActivity implements IPasswordView, 
 
     @Override
     public void afterTextChanged(Editable s) {
-        String phone = mpassPhone.getText().toString().trim();
-        String code = mpassPhonepass.getText().toString().trim();
-        String pass = mpassPass.getText().toString().trim();
-        String ypass = mpassYpass.getText().toString().trim();
+        String phone = etPhone.getText().toString().trim();
+        String code = etSmsCode.getText().toString().trim();
+        String pass = etPwd.getText().toString().trim();
+        String ypass = etPwd2.getText().toString().trim();
         if (StringUtil.isEmpty(phone) || StringUtil.isEmpty(code) || StringUtil.isEmpty(pass) || StringUtil.isEmpty(ypass)) {
-            mpassLogin.setEnabled(false);
-            mpassLogin.setBackgroundResource(R.drawable.corner_login);
+            tvOk.setEnabled(false);
+            tvOk.setBackgroundResource(R.drawable.corner_login);
         } else {
-            mpassLogin.setEnabled(true);
-            mpassLogin.setBackgroundResource(R.drawable.corner_login2);
+            tvOk.setEnabled(true);
+            tvOk.setBackgroundResource(R.drawable.corner_login2);
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if(passwordPresenter!=null)
-        passwordPresenter.cancelRequest();
     }
 }

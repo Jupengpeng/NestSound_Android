@@ -9,13 +9,12 @@ import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.text.TextUtils;
-import com.xilu.wybz.R;
+
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.common.MyCommon;
-import com.xilu.wybz.ui.login.NewLoginActivity;
+import com.xilu.wybz.ui.login.LoginActivity;
 
 import java.util.List;
-import java.util.Map;
 
 public class SystemUtils {
 
@@ -114,7 +113,7 @@ public class SystemUtils {
     public static boolean isLogin(Context context) {
         UserBean userBean = PrefsUtil.getUserInfo(context);
         if (userBean == null || userBean.userid==0) {
-            toAct(context, NewLoginActivity.class);
+            toAct(context, LoginActivity.class);
             return false;
         } else {
             return true;
