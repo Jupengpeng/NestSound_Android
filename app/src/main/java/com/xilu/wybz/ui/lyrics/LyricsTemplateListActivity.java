@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.TemplateListItemBean;
+import com.xilu.wybz.presenter.TemplateLrcListPresenter;
 import com.xilu.wybz.ui.IView.ITempleateListLrcView;
 import com.xilu.wybz.ui.base.BaseListActivity;
 import com.xilu.wybz.view.pull.BaseViewHolder;
@@ -18,10 +19,13 @@ import java.util.ArrayList;
  */
 public class LyricsTemplateListActivity extends BaseListActivity<TemplateListItemBean> implements ITempleateListLrcView {
 
-
+    TemplateLrcListPresenter presenter;
     @Override
     protected void initPresenter() {
-        initView();
+
+        presenter = new TemplateLrcListPresenter(context,this);
+        presenter.init();
+//        initView();
     }
 
     @Override

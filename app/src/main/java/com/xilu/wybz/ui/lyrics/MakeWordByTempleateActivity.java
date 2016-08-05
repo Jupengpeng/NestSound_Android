@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.xilu.wybz.R;
@@ -43,6 +44,9 @@ public class MakeWordByTempleateActivity extends BaseListActivity<TemplateLrcBea
 
         mDataList = new ArrayList<>();
 
+        mDataList.add(new TemplateLrcBean());
+        mDataList.add(new TemplateLrcBean());
+        mDataList.add(new TemplateLrcBean());
         mDataList.add(new TemplateLrcBean());
         mDataList.add(new TemplateLrcBean());
         mDataList.add(new TemplateLrcBean());
@@ -103,11 +107,11 @@ public class MakeWordByTempleateActivity extends BaseListActivity<TemplateLrcBea
     class SampleViewHolder extends BaseViewHolder {
 
         TextView templateWord;
-        TextView lrcWord;
+        EditText lrcWord;
         public SampleViewHolder(View itemView) {
             super(itemView);
             templateWord = (TextView) itemView.findViewById(R.id.lrc_template_temp);
-            lrcWord = (TextView) itemView.findViewById(R.id.lrc_template_make);
+            lrcWord = (EditText) itemView.findViewById(R.id.lrc_template_make);
         }
 
         @Override
