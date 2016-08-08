@@ -25,7 +25,6 @@ import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.FileDir;
 import com.xilu.wybz.common.MediaInstance;
 import com.xilu.wybz.common.MyCommon;
-import com.xilu.wybz.common.PlayMediaInstance;
 import com.xilu.wybz.common.RecordInstance;
 import com.xilu.wybz.common.interfaces.IMediaPlayerListener;
 import com.xilu.wybz.presenter.MakeSongPresenter;
@@ -75,10 +74,11 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
     ImageView ivPlay;
     @Bind(R.id.iv_restart)
     ImageView ivRestart;
-//    @Bind(R.id.iv_import)
-//    ImageView ivImport;
-//    @Bind(R.id.iv_edit)
-//    ImageView ivEdit;
+
+    @Bind(R.id.iv_import_banzhou)
+    ImageView ivBanzhou;
+    @Bind(R.id.iv_import_lrc)
+    ImageView ivLrc;
 
 
     private TemplateBean templateBean;
@@ -306,7 +306,7 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
     }
 
 //    @OnClick({R.id.iv_play, R.id.iv_record, R.id.iv_restart, R.id.iv_import, R.id.iv_edit})
-    @OnClick({R.id.iv_play, R.id.iv_record, R.id.iv_restart})
+    @OnClick({R.id.iv_play, R.id.iv_record, R.id.iv_restart, R.id.iv_import_banzhou, R.id.iv_import_lrc})
     public void onClick(View view) {
         switch (view.getId()) {
 
@@ -405,26 +405,22 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
                     startRecord();
                 }
                 break;
-//
-//            case R.id.iv_import:
-//                if (status == 1) {
-//                    showMsg("请先停止录音");
-//                    return;
-//                }
-//                startActivity(ImportWordActivity.class);
-//                break;
-//
-//            case R.id.iv_edit:
-//                if (etTitle.isEnabled()) {
-//                    etTitle.setEnabled(false);
-//                    etWord.setEnabled(false);
-//                    showMsg("关闭歌词编辑");
-//                } else {
-//                    etTitle.setEnabled(true);
-//                    etWord.setEnabled(true);
-//                    showMsg("开启歌词编辑");
-//                }
-//                break;
+
+            case R.id.iv_import_banzhou:
+                if (status == 1) {
+                    showMsg("请先停止录音");
+                    return;
+                }
+                startActivity(ImportWordActivity.class);
+                break;
+
+            case R.id.iv_import_lrc:
+                if (status == 1) {
+                    showMsg("请先停止录音");
+                    return;
+                }
+                startActivity(ImportWordActivity.class);
+                break;
         }
     }
 
