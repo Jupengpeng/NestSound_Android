@@ -1,12 +1,8 @@
 package com.xilu.wybz.ui.fragment;
 
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.IBinder;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -219,7 +215,7 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
                 adapter.notifyItemChanged(position);
             }
             TemplateBean bean = mDataList.get(position);
-            MakeSongActivity.ToMakeSongActivity(context, bean);
+            MakeSongActivity.toMakeSongActivity(context, bean);
         }
 
         public void updatePlayStatus() {

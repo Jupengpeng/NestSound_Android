@@ -1,6 +1,5 @@
 package com.xilu.wybz.ui.song;
 
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,7 +17,6 @@ import com.xilu.wybz.adapter.HotListAdapter;
 import com.xilu.wybz.bean.TemplateBean;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.FileDir;
-import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.common.PlayMediaInstance;
 import com.xilu.wybz.common.interfaces.IMediaPlayerListener;
 import com.xilu.wybz.common.interfaces.ITemplateMusicListener;
@@ -115,7 +113,7 @@ public class NewMakeHotActivity extends ToolbarActivity implements IHotView, Vie
                 templateBean.title = "清唱";
                 templateBean.mp3="http://7xsw6y.com2.z0.glb.qiniucdn.com/empty_hot_temp.mp3";
                 templateBean.mp3times = 706;
-                MakeSongActivity.ToMakeSongActivity(context,templateBean);
+                MakeSongActivity.toMakeSongActivity(context,templateBean);
             }
         });
         listViewNew.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -126,7 +124,7 @@ public class NewMakeHotActivity extends ToolbarActivity implements IHotView, Vie
                     newAdapter.updateData();
                 }
                 TemplateBean bean = item1.get(position-2);
-                MakeSongActivity.ToMakeSongActivity(context, bean);
+                MakeSongActivity.toMakeSongActivity(context, bean);
             }
         });
         listViewHot.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -137,7 +135,7 @@ public class NewMakeHotActivity extends ToolbarActivity implements IHotView, Vie
                     hotAdapter.updateData();
                 }
                 TemplateBean bean = item2.get(position-2);
-                MakeSongActivity.ToMakeSongActivity(context, bean);
+                MakeSongActivity.toMakeSongActivity(context, bean);
             }
         });
         listViewNew.setOnScrollListener(new AbsListView.OnScrollListener() {

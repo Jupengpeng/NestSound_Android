@@ -98,7 +98,7 @@ public class MakeHotActivity extends ToolbarActivity {
         templateBean.title = "清唱";
         templateBean.mp3="http://7xsw6y.com2.z0.glb.qiniucdn.com/empty_hot_temp.mp3";
         templateBean.mp3times = 706;
-        MakeSongActivity.ToMakeSongActivity(context,templateBean);
+        MakeSongActivity.toMakeSongActivity(context,templateBean);
     }
 
     public class HotAdapter extends FragmentStatePagerAdapter {

@@ -124,6 +124,9 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView {
                     SaveWordActivity.toSaveWordActivity(context, worksData);
                 }
                 return true;
+            case android.R.id.home:
+                tipSaveLocalData();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -143,8 +146,8 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ll_import:
-//                startActivity(ImportWordActivity.class);
-                startActivity(MakeWordByTempleateActivity.class);
+                startActivity(ImportWordActivity.class);
+//                startActivity(MakeWordByTempleateActivity.class);
                 break;
             case R.id.ll_thesaurus:
                 startActivity(LyricsTemplateListActivity.class);
@@ -194,7 +197,7 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView {
         }
     }
     //提示保存本地数据
-    public void TipSaveLocalData() {
+    public void tipSaveLocalData() {
         if(StringUtil.isBlank(worksData.title)&&StringUtil.isBlank(worksData.lyrics)) {
             finish();
             return;
@@ -224,7 +227,7 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView {
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            TipSaveLocalData();
+            tipSaveLocalData();
             return true;
         }
         return super.onKeyDown(keyCode, event);

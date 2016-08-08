@@ -107,7 +107,7 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
     protected MaterialDialog backDialog;
     protected MaterialDialog reStartDialog;
     private MakeSongTipDialog makeSongTipDialog;
-    public static void ToMakeSongActivity(Context context, TemplateBean templateBean) {
+    public static void toMakeSongActivity(Context context, TemplateBean templateBean) {
         Intent intent = new Intent(context, MakeSongActivity.class);
         intent.putExtra("templateBean", templateBean);
         context.startActivity(intent);
@@ -668,15 +668,19 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
 
         switch (item.getItemId()) {
 
-            case R.id.menu_import:
-                if (status == 1) {
-                    showMsg("请先停止录音");
-                    return true;
-                }
-                startActivity(ImportWordActivity.class);
-                break;
+//            case R.id.menu_import:
+//                if (status == 1) {
+//                    showMsg("请先停止录音");
+//                    return true;
+//                }
+//                startActivity(ImportWordActivity.class);
+//                break;
 
             case R.id.menu_next:
+                WaveSurfaceHelper.dataCache = helper.data;
+                startActivity(SongTuningActivity.class);
+
+
 
                 if (status == 1) {
                     showMsg("请先停止录音");
