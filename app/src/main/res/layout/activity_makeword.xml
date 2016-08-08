@@ -90,7 +90,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:gravity="center"
-                    android:text="导入歌词"
+                    android:text="导入草稿"
                     android:textColor="@color/main_text_color"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -118,7 +118,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:gravity="center"
-                    android:text="词库"
+                    android:text="模板"
                     android:textColor="@color/main_text_color"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -139,7 +139,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_template" />
+                    android:src="@drawable/ic_lrc_tool_box" />
 
                 <TextView
                     android:id="@+id/tv_course"
@@ -147,7 +147,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:gravity="center"
-                    android:text="使用教程"
+                    android:text="工具箱"
                     android:textColor="@color/main_text_color"
                     android:textSize="12sp" />
             </LinearLayout>

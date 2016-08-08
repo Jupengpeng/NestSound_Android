@@ -1,15 +1,11 @@
 package com.xilu.wybz.ui.song;
 
-import android.app.Application;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.IBinder;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
@@ -212,6 +208,15 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
             public void onStopTrackingTouch(SeekBar seekBar) {
                 if (isSeek) {
                     isSeek = false;
+                    Log.d("url","onStopTrackingTouch:"+progress);
+                    Log.d("url","onStopTrackingTouch:"+seekBar.getProgress());
+                    Log.d("url","onStopTrackingTouch:"+seekBar.getSecondaryProgress());
+
+
+                    Log.d("url","onStopTrackingTouch:"+MyApplication.mMainService.getCurrentPosition());
+                    Log.d("url","onStopTrackingTouch:"+MyApplication.mMainService.mPlayer.getDuration());
+
+
                     MyApplication.mMainService.setCurrentPosition(progress);
                 }
             }
@@ -281,9 +286,9 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
                     startTimer();
                 }
             }else{
-                //停止或者尚未播放
-                if(worksData!=null)
-                MyApplication.mMainService.playOneMusic(worksData.playurl);
+//                //停止或者尚未播放
+//                if(worksData!=null)
+//                MyApplication.mMainService.playOneMusic(worksData.playurl);
             }
         } else {//开启服务
             MyApplication.mMainService.loadData(id, from, gedanid);
@@ -407,6 +412,10 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
                 if (worksData != null) {
                     tvTime.setText(FormatHelper.formatDuration(MyApplication.mMainService.getCurrentPosition() / 1000));//播放的时间变化
                     playSeekBar.setProgress(MyApplication.mMainService.getCurrentPosition());//进度条对时间
+
+
+                    Log.d("url","handler:"+MyApplication.mMainService.getCurrentPosition());
+                    Log.d("url","handler:"+MyApplication.mMainService.mPlayer.getDuration());
                 }
             }
         }

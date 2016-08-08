@@ -29,7 +29,6 @@ import com.xilu.wybz.ui.IView.IMusicDetailView;
 import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.utils.FileUtils;
 import com.xilu.wybz.utils.MD5Util;
-import com.xilu.wybz.utils.ParseUtils;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.utils.ToastUtils;
@@ -54,7 +53,7 @@ public class MainService extends Service implements IMusicDetailView, AudioManag
     private AudioManager mAudioManager;
     private OnNoisyListener mNoisyListener;
     private WorksData mCurrentAudio;
-    private MediaPlayer mPlayer;
+    public MediaPlayer mPlayer;
     public int mCurrentState;
     private int PlayId;
     private String PlayFrom;
@@ -248,6 +247,7 @@ public class MainService extends Service implements IMusicDetailView, AudioManag
         if(StringUtil.isBlank(playUrl))return;
         PlyStatus = 1;
         PlayType = 1;//单曲的标识
+        Log.e("playUrl",playUrl);
         playMusic(playUrl);
     }
 

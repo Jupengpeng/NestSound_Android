@@ -3,9 +3,9 @@
     android:shape="line" >
     <stroke
         android:dashGap="2dp"
-        android:dashWidth="4dp"
-        android:width="1dp"
-        android:color="@color/main_text_color3" />
+        android:dashWidth="3dp"
+        android:width="0.25dp"
+        android:color="#ffaaaaaa" />
     <!-- 虚线的高度 -->
-    <size android:height="1dp" />
+    <size android:height="0.5dp" />
 </shape>
