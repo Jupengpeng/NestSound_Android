@@ -2,68 +2,53 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingLeft="15dp"
-    android:paddingRight="15dp">
+    android:orientation="vertical">
+
+    <include layout="@layout/view_toolbar" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="42dp"
-        android:layout_marginTop="15dp">
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/corner_yellow">
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="8"
-            android:background="@drawable/corner_yellow2">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="10dp"
-                android:text="手    机"
-                android:textColor="@color/main_text_color2"
-                android:textSize="15dp" />
-
-            <EditText
-                android:id="@+id/et_phone"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/transparent"
-                android:inputType="phone"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:textColor="@color/main_text_color2"
-                android:textSize="15dp" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/tv_getsmscode"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_weight="3"
-            android:background="@drawable/corner_e5e5e52"
-            android:gravity="center"
-            android:text="获取验证码"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/ic_mphone" />
+
+        <EditText
+            android:id="@+id/et_phone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/transparent"
+            android:hint="输入手机号码"
+            android:inputType="phone"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:textColor="@color/main_text_color2"
-            android:textSize="12dp" />
+            android:textSize="14sp" />
+
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:background="@drawable/corner_yellow">
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/corner_yellow"
+        android:gravity="center_vertical">
 
-        <TextView
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:text="验证码"
-            android:textColor="@color/main_text_color2"
-            android:textSize="15dp" />
+            android:src="@drawable/ic_regcode" />
 
         <EditText
             android:id="@+id/et_sms_code"
@@ -71,47 +56,96 @@
             android:layout_height="42dp"
             android:layout_weight="1"
             android:background="@drawable/transparent"
+            android:hint="验证码"
             android:inputType="number"
             android:maxLength="6"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:textColor="@color/main_text_color2"
-            android:textSize="15dp" />
+            android:textSize="14sp" />
+
+        <View
+            android:layout_width="2px"
+            android:layout_height="16dp"
+            android:background="@color/main_theme_color" />
+
+        <TextView
+            android:id="@+id/tv_getsmscode"
+            android:layout_width="106dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:text="获取验证码"
+            android:textColor="@color/main_text_color2"
+            android:textSize="14sp" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:background="@drawable/corner_yellow">
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/corner_yellow"
+        android:gravity="center_vertical">
 
-        <TextView
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:text="新密码"
-            android:textColor="@color/main_text_color2"
-            android:textSize="15dp" />
+            android:src="@drawable/ic_mphopas1" />
 
         <EditText
-            android:id="@+id/et_newpwd"
+            android:id="@+id/et_pwd"
             android:layout_width="0dp"
             android:layout_height="42dp"
             android:layout_weight="1"
             android:background="@drawable/transparent"
+            android:hint="输入密码"
             android:inputType="textPassword"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:textColor="@color/main_text_color2"
-            android:textSize="15dp" />
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/corner_yellow"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/ic_mphopas2" />
+
+        <EditText
+            android:id="@+id/et_pwd2"
+            android:layout_width="0dp"
+            android:layout_height="42dp"
+            android:layout_weight="1"
+            android:background="@drawable/transparent"
+            android:hint="再次输入密码"
+            android:inputType="textPassword"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:textColor="@color/main_text_color2"
+            android:textSize="14sp" />
     </LinearLayout>
 
     <TextView
         android:id="@+id/tv_ok"
         android:layout_width="match_parent"
         android:layout_height="42dp"
-        android:layout_marginTop="48dp"
-        android:background="@drawable/ok_btn"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginTop="28dp"
+        android:background="@drawable/corner_login"
         android:gravity="center"
         android:text="确定"
         android:textColor="@color/main_text_color"

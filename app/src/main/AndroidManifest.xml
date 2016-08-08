@@ -75,22 +75,14 @@
             android:theme="@style/LoginTheme"
             android:windowSoftInputMode="adjustResize|stateHidden" android:screenOrientation="portrait"/>
         <activity
-            android:name=".ui.login.NewLoginActivity"
+            android:name=".ui.login.LoginActivity"
             android:windowSoftInputMode="adjustResize|stateHidden" android:screenOrientation="portrait"/>
         <activity
-            android:name=".ui.login.ForgetPwdActivity"
+            android:name=".ui.login.PassWorddActivity"
             android:windowSoftInputMode="stateHidden|adjustResize" android:screenOrientation="portrait"/>
-        <activity
-            android:name=".ui.login.PasswordActivity"
-            android:theme="@style/LoginTheme"
-            android:windowSoftInputMode="adjustResize|stateHidden" android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.login.ModifyPwdActivity"
             android:windowSoftInputMode="stateHidden|adjustResize" android:screenOrientation="portrait"/>
-        <activity
-            android:name=".ui.login.LoginActivity"
-            android:theme="@style/LoginTheme"
-            android:windowSoftInputMode="adjustResize|stateHidden" android:screenOrientation="portrait"/>
 
         <activity android:name=".ui.song.MakeHotActivity" android:screenOrientation="portrait"/>
         <activity android:name=".ui.song.NewMakeHotActivity" android:screenOrientation="portrait"/>

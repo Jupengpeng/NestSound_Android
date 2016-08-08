@@ -4,7 +4,6 @@ import android.app.LocalActivityManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.CheckedTextView;
@@ -19,7 +18,7 @@ import com.xilu.wybz.common.Event;
 import com.xilu.wybz.service.MainService;
 import com.xilu.wybz.ui.base.BaseActivity;
 import com.xilu.wybz.ui.find.FindActivity;
-import com.xilu.wybz.ui.login.NewLoginActivity;
+import com.xilu.wybz.ui.login.LoginActivity;
 import com.xilu.wybz.ui.lyrics.MakeWordActivity;
 import com.xilu.wybz.ui.main.MainActivity;
 import com.xilu.wybz.ui.mine.NewMineActivity;
@@ -177,7 +176,7 @@ public class MainTabActivity extends BaseActivity {
                 break;
         }
         if(PrefsUtil.getUserId(context)==0&&(currentIndex==2||currentIndex==3)){
-            startActivity(NewLoginActivity.class);
+            startActivity(LoginActivity.class);
             return;
         }
         changeTab();

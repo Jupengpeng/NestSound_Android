@@ -299,6 +299,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
         sv_content.fullScroll(ScrollView.FOCUS_UP);
         viewPager.setCurrentItem(0);
         try {
+            if(worksData==null)return;
             String pic = worksData.getPic();
             if (StringUtil.isNotBlank(pic)) {
                 loadPic(pic);

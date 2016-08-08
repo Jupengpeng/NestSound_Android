@@ -9,21 +9,10 @@ import android.view.View;
 
 import com.xilu.wybz.R;
 import com.xilu.wybz.adapter.FindAdapter;
-import com.xilu.wybz.ui.base.BaseActivity;
 import com.xilu.wybz.ui.base.BasePlayMenuActivity;
-import com.xilu.wybz.ui.base.ToolbarActivity;
-import com.xilu.wybz.ui.fragment.ActFragment;
 import com.xilu.wybz.ui.fragment.LyricsFragment;
 import com.xilu.wybz.ui.fragment.RankingFragment;
-import com.xilu.wybz.ui.fragment.SearchLyricsFragment;
-import com.xilu.wybz.ui.fragment.SearchSongFragment;
-import com.xilu.wybz.ui.fragment.SearchUserFragment;
 import com.xilu.wybz.ui.fragment.SongFragment;
-import com.xilu.wybz.ui.login.NewLoginActivity;
-import com.xilu.wybz.utils.DensityUtil;
-import com.xilu.wybz.utils.PrefsUtil;
-import com.xilu.wybz.utils.SystemUtils;
-import com.xilu.wybz.view.MoreWindow;
 
 import butterknife.Bind;
 import butterknife.OnClick;

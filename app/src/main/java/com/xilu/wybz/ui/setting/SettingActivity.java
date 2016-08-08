@@ -20,6 +20,7 @@ import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.HttpUtils;
 import com.xilu.wybz.http.callback.MyStringCallback;
 import com.xilu.wybz.ui.base.ToolbarActivity;
+import com.xilu.wybz.ui.login.ModifyPwdActivity;
 import com.xilu.wybz.utils.FileUtils;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.view.materialdialogs.DialogAction;
@@ -80,7 +81,7 @@ public class SettingActivity extends ToolbarActivity {
         if(!TextUtils.isEmpty(userInfo.nickname))tvName.setText(userInfo.nickname);
         if(!TextUtils.isEmpty(userInfo.signature))tvSign.setText(userInfo.signature);
     }
-    @OnClick({R.id.iv_modify, R.id.ll_clear_cache, R.id.ll_score, R.id.ll_feedback, R.id.ll_loginout})
+    @OnClick({R.id.iv_modify, R.id.ll_clear_cache, R.id.ll_modify_pwd, R.id.ll_feedback, R.id.ll_loginout})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_modify:
@@ -89,13 +90,10 @@ public class SettingActivity extends ToolbarActivity {
             case R.id.ll_clear_cache:
                 DelCache();
                 break;
-            case R.id.ll_score:
-//                Uri uri = Uri.parse("market://details?id=com.xilu.wybz");
-//                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-//                startActivity(intent);
+            case R.id.ll_modify_pwd:
+                startActivity(ModifyPwdActivity.class);
                 break;
             case R.id.ll_feedback:
-//                startActivity(SettingFeedActivity.class);
                 startActivity(AboutMessageActivity.class);
                 break;
             case R.id.ll_loginout:

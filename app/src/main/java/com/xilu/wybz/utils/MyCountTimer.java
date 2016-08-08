@@ -29,7 +29,6 @@ public class MyCountTimer extends CountDownTimer {
             btn.setTextColor(normalColor);
         }
         if (btn.getId() == R.id.tv_getsmscode) {
-            btn.setBackgroundResource(R.drawable.corner_yellow3);
             btn.setEnabled(true);
             btn.setText(endStr);
         } else {

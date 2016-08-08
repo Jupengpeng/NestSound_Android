@@ -2,19 +2,15 @@ package com.xilu.wybz.utils;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.PixelFormat;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.xilu.wybz.R;
-import com.xilu.wybz.ui.login.NewLoginActivity;
-import com.xilu.wybz.view.dialog.ToastDialog;
+import com.xilu.wybz.ui.login.LoginActivity;
 import com.xilu.wybz.view.materialdialogs.DialogAction;
 import com.xilu.wybz.view.materialdialogs.MaterialDialog;
 
@@ -45,7 +41,7 @@ public class ToastUtils {
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        Intent intent = new Intent(context, NewLoginActivity.class);
+                        Intent intent = new Intent(context, LoginActivity.class);
                         context.startActivity(intent);
                     }
                 }).negativeText("取消")
