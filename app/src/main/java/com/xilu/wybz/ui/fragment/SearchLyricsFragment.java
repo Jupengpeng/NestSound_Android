@@ -34,17 +34,20 @@ import butterknife.Bind;
 /**
  * Created by hujunwei on 16/5/22.
  */
-public class SearchLyricsFragment extends BaseListFragment<WorksData> implements ISearchView{
+public class SearchLyricsFragment extends BaseListFragment<WorksData> implements ISearchView {
     SearchPresenter searchPresenter;
+
     @Override
     protected void initPresenter() {
-        searchPresenter = new SearchPresenter(context,this);
+        searchPresenter = new SearchPresenter(context, this);
         searchPresenter.init();
     }
+
     @Override
     public boolean hasPadding() {
         return false;
     }
+
     @Override
     protected void setUpData() {
         super.setUpData();
@@ -56,18 +59,20 @@ public class SearchLyricsFragment extends BaseListFragment<WorksData> implements
         tvNoData.setText("暂无搜索结果！");
         ivNoData.setImageResource(R.drawable.ic_nosearch);
     }
+
     @Override
     public void onRefresh(int action) {
         super.onRefresh(action);
         searchPresenter.searchWorkData(keyWord, 2, page++);
     }
+
     @Override
     public void showWorksData(List<WorksData> worksDataList) {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if(isDestroy)return;
-                if(mDataList.size()==0){
+                if (isDestroy) return;
+                if (mDataList.size() == 0) {
                     EventBus.getDefault().post(new Event.ShowSearchTabEvent(true));
                 }
                 recycler.enableLoadMore(true);
@@ -75,7 +80,7 @@ public class SearchLyricsFragment extends BaseListFragment<WorksData> implements
                 adapter.notifyDataSetChanged();
                 recycler.onRefreshCompleted();
             }
-        },600);
+        }, 600);
     }
 
     @Override
@@ -85,22 +90,22 @@ public class SearchLyricsFragment extends BaseListFragment<WorksData> implements
 
     @Override
     public void loadFail() {
-        if(isDestroy)return;
+        if (isDestroy) return;
         recycler.onRefreshCompleted();
     }
 
 
     @Override
     public void loadNoMore() {
-        if(isDestroy)return;
+        if (isDestroy) return;
         recycler.onRefreshCompleted();
         recycler.enableLoadMore(false);
     }
 
     @Override
     public void loadNoData() {
-        if(isDestroy)return;
-        if(mDataList.size()==0){
+        if (isDestroy) return;
+        if (mDataList.size() == 0) {
             EventBus.getDefault().post(new Event.ShowSearchTabEvent(false));
         }
         llNoData.setVisibility(View.VISIBLE);
@@ -113,6 +118,7 @@ public class SearchLyricsFragment extends BaseListFragment<WorksData> implements
         WorksViewHolder holder = new WorksViewHolder(LayoutInflater.from(context).inflate(R.layout.activity_work_list_item, parent, false));
         return holder;
     }
+
     class WorksViewHolder extends BaseViewHolder {
         int itemWidth;
         @Bind(R.id.iv_cover)
@@ -127,6 +133,7 @@ public class SearchLyricsFragment extends BaseListFragment<WorksData> implements
         TextView tvName;
         @Bind(R.id.tv_author)
         TextView tvAuthor;
+
         public WorksViewHolder(View view) {
             super(view);
             itemWidth = DensityUtil.dip2px(context, 66);
@@ -136,8 +143,8 @@ public class SearchLyricsFragment extends BaseListFragment<WorksData> implements
         @Override
         public void onBindViewHolder(int position) {
             WorksData worksData = mDataList.get(position);
-            if(StringUtil.isBlank(worksData.pic)){
-                worksData.pic = MyHttpClient.QINIU_URL+MyCommon.getLyricsPic().get((int)(Math.random()*10));
+            if (StringUtil.isBlank(worksData.pic)) {
+                worksData.pic = MyHttpClient.QINIU_URL + MyCommon.getLyricsPic().get((int) (Math.random() * 10));
             }
             String url = MyCommon.getImageUrl(worksData.pic, itemWidth, itemWidth);
             ImageLoadUtil.loadImage(url, ivCover);
@@ -149,20 +156,21 @@ public class SearchLyricsFragment extends BaseListFragment<WorksData> implements
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onItemClick(v,position);
+                    onItemClick(v, position);
                 }
             });
         }
 
         @Override
         public void onItemClick(View view, int position) {
-            LyricsdisplayActivity.toLyricsdisplayActivity(context,mDataList.get(position).getItemid(),0,mDataList.get(position).name);
+            LyricsdisplayActivity.toLyricsdisplayActivity(context, mDataList.get(position).getItemid(), mDataList.get(position).name);
         }
     }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if(searchPresenter!=null)
+        if (searchPresenter != null)
             searchPresenter.cancelRequest();
     }
 }

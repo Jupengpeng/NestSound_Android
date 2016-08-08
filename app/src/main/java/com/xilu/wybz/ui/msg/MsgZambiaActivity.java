@@ -133,7 +133,7 @@ public class MsgZambiaActivity extends BaseListActivity<ZambiaBean> implements I
                     PlayAudioActivity.toPlayAudioActivity(context, zambiaBean.itemid, "", MyCommon.MSG_COMMENT);
             } else {
                 if (zambiaBean.itemid > 0)
-                    LyricsdisplayActivity.toLyricsdisplayActivity(context, zambiaBean.itemid, 0, zambiaBean.title);
+                    LyricsdisplayActivity.toLyricsdisplayActivity(context, zambiaBean.itemid, zambiaBean.title);
             }
         }
 

@@ -18,8 +18,5 @@ public class UserBean {
     public String signature;//签名
     public String headurl;
     public int sex;
-    public int fansnum;
-    public int gznum;
-    public int isFocus;
     public String birthday;
 }

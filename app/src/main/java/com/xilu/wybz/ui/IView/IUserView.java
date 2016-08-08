@@ -2,6 +2,7 @@ package com.xilu.wybz.ui.IView;
 
 import com.xilu.wybz.bean.MusicTalk;
 import com.xilu.wybz.bean.UserBean;
+import com.xilu.wybz.bean.UserInfoBean;
 import com.xilu.wybz.bean.WorksData;
 
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
  */
 public interface IUserView extends IBaseView {
     void setUserInfo(UserBean userBean);
+    void setUserInfoBean(UserInfoBean userInfoBean);
     void showWorksData(List<WorksData> worksDataList);
     void loadFail();
     void loadNoData();

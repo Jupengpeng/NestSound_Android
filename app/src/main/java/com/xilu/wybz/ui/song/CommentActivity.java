@@ -29,7 +29,7 @@ import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.CommentPresenter;
 import com.xilu.wybz.ui.IView.ICommentView;
 import com.xilu.wybz.ui.base.BaseListActivity;
-import com.xilu.wybz.ui.mine.NewUserInfoActivity;
+import com.xilu.wybz.ui.mine.UserInfoActivity;
 import com.xilu.wybz.utils.DateTimeUtil;
 import com.xilu.wybz.utils.KeyBoardUtil;
 import com.xilu.wybz.utils.NetWorkUtil;
@@ -325,7 +325,7 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
                 @Override
                 public void onClick(View v) {
                     if(bean.getUid()!=PrefsUtil.getUserId(context))
-                    NewUserInfoActivity.ToNewUserInfoActivity(context,bean.getUid(),bean.getNickname());
+                    UserInfoActivity.ToNewUserInfoActivity(context,bean.getUid(),bean.getNickname());
                 }
             });
         }

@@ -6,5 +6,4 @@ package com.xilu.wybz.ui.IView;
 public interface IDraftView extends IBaseView {
 
 
-
 }

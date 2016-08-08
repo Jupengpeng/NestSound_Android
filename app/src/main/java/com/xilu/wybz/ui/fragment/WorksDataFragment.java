@@ -12,6 +12,7 @@ import com.xilu.wybz.R;
 import com.xilu.wybz.adapter.InspireRecordViewHolder;
 import com.xilu.wybz.adapter.WorksViewHolder;
 import com.xilu.wybz.bean.UserBean;
+import com.xilu.wybz.bean.UserInfoBean;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.PlayMediaInstance;
@@ -169,7 +170,10 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
     public void setUserInfo(UserBean userBean) {
         EventBus.getDefault().post(new Event.UpdataUserBean(userBean, isMe ? 1 : 2));
     }
-
+    @Override
+    public void setUserInfoBean(UserInfoBean userBean) {
+        EventBus.getDefault().post(new Event.UpdataUserInfoBean(userBean, isMe ? 1 : 2));
+    }
     @Override
     public void showWorksData(List<WorksData> worksDataList) {
         new Handler().postDelayed(new Runnable() {

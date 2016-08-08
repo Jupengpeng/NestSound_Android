@@ -44,10 +44,8 @@ public class SongPresenter extends BasePresenter<ISongView> {
                 if(ParseUtils.checkCode(response)){
                     try {
                         FindSongBean findSongBean = new Gson().fromJson(new JSONObject(response).getString("data"),FindSongBean.class);
-                        if(findSongBean.newList!=null)
-                        iView.showNewSong(findSongBean.newList);
-                        if(findSongBean.redList!=null)
-                        iView.showHotSong(findSongBean.redList);
+                        if(findSongBean!=null)
+                        iView.showFindSong(findSongBean);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

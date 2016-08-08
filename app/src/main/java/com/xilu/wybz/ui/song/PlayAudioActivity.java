@@ -1,15 +1,11 @@
 package com.xilu.wybz.ui.song;
 
-import android.app.Application;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.IBinder;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
@@ -49,7 +45,7 @@ import com.xilu.wybz.ui.IView.ILoadPicView;
 import com.xilu.wybz.ui.IView.IPlayView;
 import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.ui.base.ToolbarActivity;
-import com.xilu.wybz.ui.mine.NewUserInfoActivity;
+import com.xilu.wybz.ui.mine.UserInfoActivity;
 import com.xilu.wybz.ui.setting.SettingFeedActivity;
 import com.xilu.wybz.utils.BitmapUtils;
 import com.xilu.wybz.utils.FileUtils;
@@ -210,24 +206,19 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                if (isSeek) {
-                    isSeek = false;
-                    MyApplication.mMainService.setCurrentPosition(progress);
-                }
+                MyApplication.mMainService.setCurrentPosition(progress);
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                isSeek = MyApplication.mMainService.isPlaying();
-            }
 
+            }
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress,
                                           boolean fromUser) {
-                if (isSeek) {
-                    this.progress = progress;
-                    tvTime.setText(FormatHelper.formatDuration(progress / 1000));
-                }
+                this.progress = progress;
+                tvTime.setText(FormatHelper.formatDuration(progress / 1000));
+
             }
         });
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -329,6 +320,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
             tvFav.setChecked(worksData.getIscollect() == 1);
             int times = Integer.valueOf(worksData.getMp3times());
             tvAlltime.setText(FormatHelper.formatDuration(times));
+            playSeekBar.setMax(times*1000);
             toolbar.setSubtitle(author);
             if (!TextUtils.isEmpty(lyrics)) {
                 String[] lyricss = lyrics.split("\\n");
@@ -520,7 +512,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     @Override
     public void toUserInfo() {
         if (worksData.uid > 0) {
-            NewUserInfoActivity.ToNewUserInfoActivity(context, worksData.uid, worksData.author);
+            UserInfoActivity.ToNewUserInfoActivity(context, worksData.uid, worksData.author);
         }
     }
 

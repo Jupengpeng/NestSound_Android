@@ -121,10 +121,7 @@ public class WorksViewHolder extends com.xilu.wybz.view.pull.BaseViewHolder {
             if (mDataList.get(position).status == 1 || mDataList.get(position).status == 0) {
                 toPlayPos(position);
             } else if (mDataList.get(position).status == 2) {
-                int from = 0;
-                if (COME.equals("mylyrics")) from = 1;
-                else if (COME.equals("myfav")) from = 2;
-                LyricsdisplayActivity.toLyricsdisplayActivity(mContext, mDataList.get(position).getItemid(), from, mDataList.get(position).name);
+                LyricsdisplayActivity.toLyricsdisplayActivity(mContext, mDataList.get(position).getItemid(), mDataList.get(position).name);
             }
         }
     }

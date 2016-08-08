@@ -8,7 +8,6 @@ public class SectionData<T> {
     public int headerIndex;//用于索引ABC...的index定位
     public T t;
     public String header;
-
     public SectionData(boolean isHeader, int headerIndex, String header) {
         this.isHeader = isHeader;
         this.header = header;

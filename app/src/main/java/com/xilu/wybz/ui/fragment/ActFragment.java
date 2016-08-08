@@ -60,12 +60,6 @@ public class ActFragment extends BaseListFragment<ActBean> implements IActView {
         adapter.notifyDataSetChanged();
         recycler.onRefreshCompleted();
     }
-//    @Override
-//    protected void setUpData() {
-//        super.setUpData();
-//        recycler.onRefresh();
-//    }
-
     @Override
     public void showNoData() {
         if(isDestroy)return;

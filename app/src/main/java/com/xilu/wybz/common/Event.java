@@ -2,6 +2,7 @@ package com.xilu.wybz.common;
 
 import com.xilu.wybz.bean.PhotoBean;
 import com.xilu.wybz.bean.UserBean;
+import com.xilu.wybz.bean.UserInfoBean;
 import com.xilu.wybz.bean.WorksData;
 
 import java.util.List;
@@ -28,6 +29,27 @@ public class Event {
         }
 
         public UserBean getUserBean() {
+            return userBean;
+        }
+    }
+    public static class UpdataUserInfoBean {
+        UserInfoBean userBean;
+        int type;
+
+        public UpdataUserInfoBean(UserInfoBean userBean, int type) {
+            this.type = type;
+            this.userBean = userBean;
+        }
+
+        public int getType() {
+            return type;
+        }
+
+        public void setType(int type) {
+            this.type = type;
+        }
+
+        public UserInfoBean getUserBean() {
             return userBean;
         }
     }

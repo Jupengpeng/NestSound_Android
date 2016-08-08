@@ -1,7 +1,6 @@
 package com.xilu.wybz.ui.lyrics;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -15,19 +14,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.ActionBean;
-import com.xilu.wybz.bean.ShareBean;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.LyricsPresenter;
-import com.xilu.wybz.presenter.OnlyFollowPresenter;
 import com.xilu.wybz.ui.IView.ILyricsView;
-import com.xilu.wybz.ui.IView.IOnlyFollowView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
-import com.xilu.wybz.ui.mine.NewUserInfoActivity;
+import com.xilu.wybz.ui.mine.UserInfoActivity;
 import com.xilu.wybz.ui.setting.SettingFeedActivity;
 import com.xilu.wybz.ui.song.CommentActivity;
 import com.xilu.wybz.utils.BitmapUtils;
@@ -82,17 +77,14 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
     int pos;
     WorksData worksData;
     ShareDialog shareDialog;
-    int from;//0 默认 1是我的歌词列表 2我的收藏列表
     List<ActionBean> actionBeanList;
     ActionMoreDialog actionMoreDialog;
     LyricsPresenter lyricsPresenter;
-    int isFocus = -1;
     String[] actionTitles = new String[]{"分享", "举报", "编辑"};
     String[] actionTypes = new String[]{"share", "jubao", "edit"};
-    public static void toLyricsdisplayActivity(Context context, int id, int from, String title) {
+    public static void toLyricsdisplayActivity(Context context, int id, String title) {
         Intent intent = new Intent(context, LyricsdisplayActivity.class);
         intent.putExtra("id", id);
-        intent.putExtra("from", from);
         intent.putExtra("title", title);
         context.startActivity(intent);
     }
@@ -124,18 +116,7 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
                 setTitle(title);
             id = bundle.getInt("id");
             pos = bundle.getInt("pos");
-            from = bundle.getInt("from");
             loadData();
-        }
-        actionBeanList = new ArrayList<>();
-        for (int i = 0; i < actionTitles.length; i++) {
-            if (i == 2 && from != 1) {//不是我的歌词列表进来的 不允许编辑
-                break;
-            }
-            ActionBean actionBean = new ActionBean();
-            actionBean.setTitle(actionTitles[i]);
-            actionBean.setType(actionTypes[i]);
-            actionBeanList.add(actionBean);
         }
     }
 
@@ -161,7 +142,7 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
             case R.id.tv_author:
             case R.id.rl_head:
                 if (worksData.uid > 0 && worksData.uid != PrefsUtil.getUserId(context)) {
-                    NewUserInfoActivity.ToNewUserInfoActivity(context, worksData.uid, worksData.author);
+                    UserInfoActivity.ToNewUserInfoActivity(context, worksData.uid, worksData.author);
                 }
                 break;
         }
@@ -251,6 +232,15 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
         if (isDestroy) {
             return;
         }
+        boolean isMe = worksData.uid==PrefsUtil.getUserId(context);
+        actionBeanList = new ArrayList<>();
+        for (int i = 0; i < actionTitles.length; i++) {
+            ActionBean actionBean = new ActionBean();
+            actionBean.setTitle(actionTitles[i]);
+            actionBean.setType(actionTypes[i]);
+            actionBeanList.add(actionBean);
+        }
+        if(!isMe)actionBeanList.remove(actionBeanList.size()-1);//不是我的时候 不能编辑
         this.worksData = worksData;
         worksData.type = worksData.status;//type表示是否公开
         worksData.status = 2;//status=2歌词
@@ -346,6 +336,7 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_more:
+                if(actionBeanList==null||actionBeanList.size()==0) break;
                 if (actionMoreDialog == null) {
                     actionMoreDialog = new ActionMoreDialog(this, this, actionBeanList);
                 }
@@ -357,12 +348,6 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
         return super.onOptionsItemSelected(item);
 
     }
-
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
-//    }
 
     @Override
     protected void onDestroy() {
