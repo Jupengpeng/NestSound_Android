@@ -11,7 +11,7 @@
         android:id="@+id/lrc_template_temp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="16dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:gravity="center"
@@ -19,15 +19,15 @@
         android:ellipsize="end"
         tools:text="前生的爱终究会留下一个记号"
         android:textColor="@color/main_text_color3"
-        android:textSize="14sp"
+        android:textSize="12sp"
 
         />
     <EditText
         android:id="@+id/lrc_template_make"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="8dp"
-        android:paddingBottom="5dp"
+        android:paddingTop="6dp"
+        android:paddingBottom="2dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:gravity="center"
@@ -36,15 +36,16 @@
         android:background="@color/tran"
         tools:text="前生的爱终究会留下一个记号"
         android:textColor="@color/main_text_color"
-        android:textSize="17sp"
+        android:textSize="16sp"
 
         />
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="0.5dp"
+        android:layout_height="1dp"
+        android:layerType="software"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:src="@color/split_line" />
+        android:background="@drawable/template_word_line" />
 
 </LinearLayout>
