@@ -124,6 +124,7 @@
         <activity android:name=".ui.lyrics.LyricsTemplateListActivity" android:screenOrientation="portrait"/>
         <activity android:name=".ui.lyrics.MakeWordByTempleateActivity" android:screenOrientation="portrait"/>
         <activity android:name=".ui.lyrics.DraftLyricsActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.lyrics.LyricsRhymeActivity" android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.lyrics.SaveWordActivity"
             android:windowSoftInputMode="stateHidden|adjustResize" android:screenOrientation="portrait" />

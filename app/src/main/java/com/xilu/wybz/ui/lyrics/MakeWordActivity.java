@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,6 +22,7 @@ import com.xilu.wybz.common.KeySet;
 import com.xilu.wybz.presenter.MakeWordPresenter;
 import com.xilu.wybz.ui.IView.IMakeWordView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
+import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.view.dialog.LyricsDialog;
@@ -142,11 +144,12 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView {
         oldWorksData = new Gson().toJson(worksData);
     }
 
+    LyricsMenuPopWindow window;
     @OnClick({R.id.ll_import, R.id.ll_thesaurus, R.id.ll_course})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ll_import:
-                startActivity(ImportWordActivity.class);
+                startActivity(DraftLyricsActivity.class);
 //                startActivity(MakeWordByTempleateActivity.class);
                 break;
             case R.id.ll_thesaurus:
@@ -159,7 +162,11 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView {
 //                }
                 break;
             case R.id.ll_course:
-                startActivity(MakeCourseActivity.class);
+                if (window == null) window = new LyricsMenuPopWindow(this,etWord);
+                int y = (int) (49.4*DensityUtil.getScreenDensity(this));
+                window.showAtLocation(etTitle, Gravity.BOTTOM|Gravity.RIGHT,0,y);
+
+//                startActivity(MakeCourseActivity.class);
                 break;
         }
     }

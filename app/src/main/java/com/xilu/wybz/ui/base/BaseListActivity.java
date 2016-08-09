@@ -7,22 +7,25 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.xilu.wybz.R;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.view.pull.BaseListAdapter;
 import com.xilu.wybz.view.pull.BaseViewHolder;
-import com.xilu.wybz.view.pull.DividerItemDecoration;
 import com.xilu.wybz.view.pull.PullRecycler;
 import com.xilu.wybz.view.pull.layoutmanager.ILayoutManager;
 import com.xilu.wybz.view.pull.layoutmanager.MyLinearLayoutManager;
+
 import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.Bind;
 /**
  * Created by June on 16/5/8.
  */
 public abstract class BaseListActivity<T> extends BasePlayMenuActivity implements PullRecycler.OnRecyclerRefreshListener {
     protected BaseListAdapter adapter;
-    protected ArrayList<T> mDataList;
+    protected List<T> mDataList;
     @Bind(R.id.ll_main)
     protected LinearLayout llMain;
     @Bind(R.id.pullRecycler)
