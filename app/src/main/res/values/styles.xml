@@ -246,4 +246,5 @@
     <style name="CustomCheckboxTheme" parent="@android:style/Widget.CompoundButton.CheckBox">
         <item name="android:button">@drawable/reg_cb</item>
     </style>
+
 </resources>

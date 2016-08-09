@@ -8,7 +8,8 @@
     <include layout="@layout/ll_nonet" />
     <com.xilu.wybz.view.pull.PullRecycler
         android:id="@+id/pullRecycler"
-        android:layout_below="@+id/app_bar_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent"
+        android:layout_below="@+id/app_bar_layout"
+         />
 </LinearLayout>

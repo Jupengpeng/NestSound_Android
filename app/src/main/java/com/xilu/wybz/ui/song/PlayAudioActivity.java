@@ -45,7 +45,7 @@ import com.xilu.wybz.ui.IView.ILoadPicView;
 import com.xilu.wybz.ui.IView.IPlayView;
 import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.ui.base.ToolbarActivity;
-import com.xilu.wybz.ui.mine.NewUserInfoActivity;
+import com.xilu.wybz.ui.mine.UserInfoActivity;
 import com.xilu.wybz.ui.setting.SettingFeedActivity;
 import com.xilu.wybz.utils.BitmapUtils;
 import com.xilu.wybz.utils.FileUtils;
@@ -206,33 +206,19 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                if (isSeek) {
-                    isSeek = false;
-                    Log.d("url","onStopTrackingTouch:"+progress);
-                    Log.d("url","onStopTrackingTouch:"+seekBar.getProgress());
-                    Log.d("url","onStopTrackingTouch:"+seekBar.getSecondaryProgress());
-
-
-                    Log.d("url","onStopTrackingTouch:"+MyApplication.mMainService.getCurrentPosition());
-                    Log.d("url","onStopTrackingTouch:"+MyApplication.mMainService.mPlayer.getDuration());
-
-
-                    MyApplication.mMainService.setCurrentPosition(progress);
-                }
+                MyApplication.mMainService.setCurrentPosition(progress);
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                isSeek = MyApplication.mMainService.isPlaying();
-            }
 
+            }
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress,
                                           boolean fromUser) {
-                if (isSeek) {
-                    this.progress = progress;
-                    tvTime.setText(FormatHelper.formatDuration(progress / 1000));
-                }
+                this.progress = progress;
+                tvTime.setText(FormatHelper.formatDuration(progress / 1000));
+
             }
         });
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -286,9 +272,11 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
                     startTimer();
                 }
             }else{
-//                //停止或者尚未播放
-//                if(worksData!=null)
-//                MyApplication.mMainService.playOneMusic(worksData.playurl);
+                //停止或者尚未播放
+                if(worksData!=null) {
+                    if(MyApplication.mMainService.mCurrentState==MyCommon.IDLE)
+                    MyApplication.mMainService.playOneMusic(worksData.playurl);
+                }
             }
         } else {//开启服务
             MyApplication.mMainService.loadData(id, from, gedanid);
@@ -332,6 +320,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
             tvFav.setChecked(worksData.getIscollect() == 1);
             int times = Integer.valueOf(worksData.getMp3times());
             tvAlltime.setText(FormatHelper.formatDuration(times));
+            playSeekBar.setMax(times*1000);
             toolbar.setSubtitle(author);
             if (!TextUtils.isEmpty(lyrics)) {
                 String[] lyricss = lyrics.split("\\n");
@@ -413,10 +402,6 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
                 if (worksData != null) {
                     tvTime.setText(FormatHelper.formatDuration(MyApplication.mMainService.getCurrentPosition() / 1000));//播放的时间变化
                     playSeekBar.setProgress(MyApplication.mMainService.getCurrentPosition());//进度条对时间
-
-
-                    Log.d("url","handler:"+MyApplication.mMainService.getCurrentPosition());
-                    Log.d("url","handler:"+MyApplication.mMainService.mPlayer.getDuration());
                 }
             }
         }
@@ -527,7 +512,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     @Override
     public void toUserInfo() {
         if (worksData.uid > 0) {
-            NewUserInfoActivity.ToNewUserInfoActivity(context, worksData.uid, worksData.author);
+            UserInfoActivity.ToNewUserInfoActivity(context, worksData.uid, worksData.author);
         }
     }
 

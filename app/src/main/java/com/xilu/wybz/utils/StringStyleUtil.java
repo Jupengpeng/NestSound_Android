@@ -14,7 +14,7 @@ import com.google.gson.reflect.TypeToken;
 import com.xilu.wybz.bean.CommentBean;
 import com.xilu.wybz.bean.MsgCommentBean;
 import com.xilu.wybz.bean.WorksData;
-import com.xilu.wybz.ui.mine.NewUserInfoActivity;
+import com.xilu.wybz.ui.mine.UserInfoActivity;
 
 import java.util.List;
 
@@ -95,7 +95,7 @@ public class StringStyleUtil {
         @Override
         public void onClick(View widget) {
             if(PrefsUtil.getUserId(context)!=comment.target_uid) {
-                NewUserInfoActivity.ToNewUserInfoActivity(context, comment.target_uid, comment.target_nickname);
+                UserInfoActivity.ToNewUserInfoActivity(context, comment.target_uid, comment.target_nickname);
             }
         }
 

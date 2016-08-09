@@ -56,7 +56,7 @@ public class MainService extends Service implements IMusicDetailView, AudioManag
     public MediaPlayer mPlayer;
     public int mCurrentState;
     private int PlayId;
-    private String PlayFrom;
+    private int playProgress;
     public static List<Integer> ids;
     private String PlayUrl;
     private int currentPos;
@@ -119,6 +119,7 @@ public class MainService extends Service implements IMusicDetailView, AudioManag
         return 0;
     }
     public void setCurrentPosition(int position) {
+        playProgress = position;
         if (mPlayer != null&&status!=1) {
             mPlayer.seekTo(position);
         }
@@ -139,7 +140,6 @@ public class MainService extends Service implements IMusicDetailView, AudioManag
     //播放歌曲 首次播放 或者 切入进来的 需要定位
     public void loadData(int PlayId, String PlayFrom, String PlayGedanId) {
         PlyStatus = 1;
-        this.PlayFrom = PlayFrom;
         this.PlayId = PlayId;
         PlayType = MyCommon.getFromMusicType(PlayFrom);
         getCurrentPos();
@@ -254,6 +254,7 @@ public class MainService extends Service implements IMusicDetailView, AudioManag
     //播放指定url歌曲
     public void playMusic(String playUrl) {
         PlayUrl = playUrl;
+        playProgress = 0;
         init();
         if (StringUtil.isBlank(playUrl)) {
             ToastUtils.toast(MainService.this, "播放路径不存在！");
@@ -298,6 +299,7 @@ public class MainService extends Service implements IMusicDetailView, AudioManag
     public void doStart() {
         if(mPlayer!=null) {
             mPlayer.start();
+            mPlayer.seekTo(playProgress);
             changeState(MyCommon.STARTED);
         }
     }
@@ -442,8 +444,9 @@ public class MainService extends Service implements IMusicDetailView, AudioManag
     @Override
     public void onPrepared(MediaPlayer mp) {
         changeState(MyCommon.PREPARED);
-        if(PlyStatus==1)
+        if(PlyStatus==1) {
             doStart();
+        }
     }
 
     //线控监听

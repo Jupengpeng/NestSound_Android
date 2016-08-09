@@ -3,31 +3,39 @@ package com.xilu.wybz.ui.mine;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.facebook.drawee.view.SimpleDraweeView;
+import com.commit451.nativestackblur.NativeStackBlur;
 import com.xilu.wybz.R;
 import com.xilu.wybz.adapter.MineAdapter;
 import com.xilu.wybz.bean.UserBean;
+import com.xilu.wybz.bean.UserInfoBean;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.KeySet;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.OnlyFollowPresenter;
 import com.xilu.wybz.ui.IView.IOnlyFollowView;
-import com.xilu.wybz.ui.base.ToolbarActivity;
+import com.xilu.wybz.ui.base.BaseActivity;
 import com.xilu.wybz.ui.fragment.WorksDataFragment;
+import com.xilu.wybz.utils.BitmapUtils;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.NumberUtil;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtil;
-import com.xilu.wybz.view.StickyNavLayout;
+import com.xilu.wybz.view.CircleImageView;
+import com.xilu.wybz.view.IndexViewPager;
 import com.xilu.wybz.view.SystemBarHelper;
 
 import org.greenrobot.eventbus.EventBus;
@@ -43,22 +51,29 @@ import butterknife.OnClick;
 /**
  * Created by hujunwei on 16/6/2.
  */
-public class UserInfoActivity extends ToolbarActivity implements IOnlyFollowView{
+public class UserInfoActivity extends BaseActivity implements IOnlyFollowView {
+    @Bind(R.id.iv_blur_view)
+    ImageView ivBlurView;
+    @Bind((R.id.ll_mine_info))
+    LinearLayout llMineInfo;
     @Bind(R.id.iv_head)
-    SimpleDraweeView ivHead;
-    @Bind(R.id.user_tv_name)
-    TextView userTvName;
-    @Bind(R.id.user_tv_info)
-    TextView userTvInfo;
-    @Bind(R.id.user_follownum)
-    TextView userFollownum;
-    @Bind(R.id.user_fansnum)
-    TextView userFansnum;
-    @Bind(R.id.stickynav_layout)
-    StickyNavLayout stickynavLayout;
-    @Bind(R.id.id_stickynavlayout_viewpager)
-    ViewPager container;
-    int currentIndex;
+    CircleImageView ivHead;
+    @Bind(R.id.viewpager)
+    IndexViewPager mViewpager;
+    @Bind(R.id.appbar)
+    AppBarLayout mAppbar;
+    @Bind(R.id.collapsing_toolbar)
+    CollapsingToolbarLayout mCollapsingToolbar;
+    @Bind(R.id.toolbar)
+    Toolbar mToolbar;
+    @Bind(R.id.tv_nickname)
+    TextView mNickname;
+    @Bind(R.id.tv_desc)
+    TextView mDesc;
+    @Bind(R.id.tv_fans_num)
+    TextView mFansNum;
+    @Bind(R.id.tv_follow_num)
+    TextView mFollowNum;
     @Bind(R.id.ll_myrecord)
     LinearLayout llMyrecord;
     @Bind(R.id.ll_mysong)
@@ -67,30 +82,35 @@ public class UserInfoActivity extends ToolbarActivity implements IOnlyFollowView
     LinearLayout llMylyrics;
     @Bind(R.id.ll_myfav)
     LinearLayout llMyfav;
+    @Bind(R.id.tv_song_num)
+    TextView tvSongNum;
+    @Bind(R.id.tv_lyrics_num)
+    TextView tvLyricsNum;
+    @Bind(R.id.tv_fov_num)
+    TextView tvFovNum;
+    @Bind(R.id.tv_record_num)
+    TextView tvRecordNum;
+    private int currentIndex;
+    private MineAdapter pagerAdapter;
+    private List<LinearLayout> tabs;
+    public OnlyFollowPresenter presenter;
+    private int isFocus = -1;
+    private MenuItem menuFollowItem;
+    private int[] followIcon = new int[]{R.drawable.ic_toolbar_follow, R.drawable.ic_toolbar_followed, R.drawable.ic_toolbar_each_follow};
     int userId;
     String userName;
-    @Bind(R.id.iv_setting)
-    ImageView ivSetting;
-    private List<LinearLayout> tabs;
-    private boolean isFirst;
-    private int isFocus = -1;
-    private int[] followIcon = new int[]{R.drawable.ic_user_follow, R.drawable.ic_user_followed, R.drawable.ic_user_each_follow};
-    MineAdapter pagerAdapter;
-
-
-    OnlyFollowPresenter presenter;
-    public static void ToUserInfoActivity(Context context, int userId, String userName) {
-        Intent intent = new Intent(context, NewUserInfoActivity.class);
+    UserInfoBean userInfoBean;
+    boolean isFirst;
+    @Override
+    protected int getLayoutRes() {
+        return R.layout.activity_new_mine;
+    }
+    public static void ToNewUserInfoActivity(Context context, int userId, String userName) {
+        Intent intent = new Intent(context, UserInfoActivity.class);
         intent.putExtra("userId", userId);
         intent.putExtra("userName", userName);
         context.startActivity(intent);
     }
-
-    @Override
-    protected int getLayoutRes() {
-        return R.layout.activity_home_mine;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,7 +133,13 @@ public class UserInfoActivity extends ToolbarActivity implements IOnlyFollowView
         userName = savedInstanceState.getString("userName");
     }
 
-    public void initData() {
+    public void initData(){
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle("");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        SystemBarHelper.setHeightAndPadding(this, mToolbar);
+        SystemBarHelper.immersiveStatusBar(this, 0);
+        EventBus.getDefault().register(this);
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             userId = bundle.getInt("userId");
@@ -125,9 +151,20 @@ public class UserInfoActivity extends ToolbarActivity implements IOnlyFollowView
         if(userData!=null){
             setUserData(userData);
         }
-        container.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, DensityUtil.getScreenH(context)-DensityUtil.dip2px(context,102+40)));
-        ivSetting.setImageResource(R.drawable.ic_user_follow);
-        EventBus.getDefault().register(this);
+        Bitmap bmp = NativeStackBlur.process(BitmapUtils.ReadBitmapById(this,R.mipmap.bg_top_mine), 200);
+        ivBlurView.setImageBitmap(bmp);
+        mAppbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                boolean showTitle = mCollapsingToolbar.getHeight() + verticalOffset <= mToolbar.getHeight() * 2;
+                llMineInfo.setVisibility(showTitle ? View.GONE : View.VISIBLE);
+                int height = mCollapsingToolbar.getHeight()-mToolbar.getHeight();
+                float alpha = Math.abs(verticalOffset)/(height+0.0f);
+                Log.e("alpha",alpha+"");
+                ivBlurView.setAlpha(alpha);
+            }
+        });
+
         tabs = new ArrayList<>();
         llMyrecord.setVisibility(View.GONE);
         llMysong.setSelected(true);
@@ -135,35 +172,14 @@ public class UserInfoActivity extends ToolbarActivity implements IOnlyFollowView
         tabs.add(llMylyrics);
         tabs.add(llMyfav);
         pagerAdapter = new MineAdapter(context, getSupportFragmentManager(), userId, userName);
-        container.setAdapter(pagerAdapter);
-        container.setOffscreenPageLimit(tabs.size());
-        mToolbar.setAlpha(1);
-        mToolbar.setBackgroundColor(Color.TRANSPARENT);
-        mToolbar.setTitleTextColor(Color.TRANSPARENT);
-        stickynavLayout.setOnStickStateChangeListener(new StickyNavLayout.onStickStateChangeListener() {
-            @Override
-            public void isStick(boolean isStick) {
-                if(!isStick) {
-                    for (int i = 0; i < 3; i++) {
-                        if (i != container.getCurrentItem()) {
-                            pagerAdapter.getFragment(i).moveToFirst();
-                        }
-                    }
-                }
-            }
-            @Override
-            public void scrollPercent(float percent) {
-                mToolbar.setBackgroundColor(Color.argb((int) (percent*255),0xFF,0xD7,0x05));
-                mToolbar.setTitleTextColor(Color.argb((int) (percent*255),0x18,0x18,0x18));
-                SystemBarHelper.tintStatusBar(UserInfoActivity.this, Color.argb((int) (percent*255),0xFF,0xD7,0x05));
-            }
-        });
-        container.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        mViewpager.setAdapter(pagerAdapter);
+        mViewpager.setOffscreenPageLimit(tabs.size());
+
+        mViewpager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
             }
-
             @Override
             public void onPageSelected(int position) {
                 currentIndex = position;
@@ -174,7 +190,7 @@ public class UserInfoActivity extends ToolbarActivity implements IOnlyFollowView
                         WorksDataFragment worksDataFragment = pagerAdapter.getFragment(position);
                         worksDataFragment.loadData();
                     }
-                },120);
+                }, 120);
             }
 
             @Override
@@ -183,14 +199,6 @@ public class UserInfoActivity extends ToolbarActivity implements IOnlyFollowView
             }
         });
     }
-
-    private void changeTabColor() {
-        for (int i = 0; i < tabs.size(); i++) {
-            LinearLayout tab = tabs.get(i);
-            tab.setSelected(currentIndex == i);
-        }
-    }
-
     public void setUserInfo(UserBean userBean) {
         if (isFirst) return;
         isFirst = true;
@@ -202,15 +210,32 @@ public class UserInfoActivity extends ToolbarActivity implements IOnlyFollowView
             int headWidth = DensityUtil.dip2px(context,92);
             loadImage(MyCommon.getImageUrl(userBean.headurl,headWidth,headWidth), ivHead);
         }
-        if (StringUtil.isNotBlank(userBean.nickname)) userTvName.setText(userBean.nickname);
-        if (StringUtil.isNotBlank(userBean.signature)) userTvInfo.setText(userBean.signature);
-        if (StringUtil.isNotBlank(userBean.nickname)) mToolbar.setTitle(userBean.nickname);
-        userFansnum.setText("粉丝:  " + NumberUtil.format(userBean.fansnum));
-        userFollownum.setText("关注:  " + NumberUtil.format(userBean.gznum));
-        ivSetting.setImageResource(followIcon[userBean.isFocus]);
-        isFocus = userBean.isFocus;
+        if (StringUtil.isNotBlank(userBean.nickname)) mNickname.setText(userBean.nickname);
+        if (StringUtil.isNotBlank(userBean.signature))mDesc.setText(userBean.signature);
+
     }
-    @OnClick({R.id.user_fansnum, R.id.user_follownum, R.id.ll_mysong, R.id.ll_mylyrics, R.id.ll_myfav, R.id.rl_setting})
+    public void updateUserFansNum(UserInfoBean userBean) {
+        userInfoBean = userBean;
+        mFansNum.setText(NumberUtil.format(userBean.fansnum));
+        mFollowNum.setText(NumberUtil.format(userBean.gznum));
+
+        if(menuFollowItem!=null)
+            menuFollowItem.setIcon(followIcon[userBean.isFocus]);
+        isFocus = userBean.isFocus;
+
+        tvSongNum.setText(NumberUtil.format(userBean.worknum));
+        tvLyricsNum.setText(NumberUtil.format(userBean.lyricsnum));
+        tvFovNum.setText(NumberUtil.format(userBean.fovnum));
+        tvRecordNum.setText(NumberUtil.format(userBean.inspirenum));
+    }
+    private void changeTabColor() {
+        for (int i = 0; i < tabs.size(); i++) {
+            LinearLayout tab = tabs.get(i);
+            tab.setSelected(currentIndex == i);
+        }
+    }
+
+    @OnClick({R.id.user_fansnum, R.id.user_follownum, R.id.ll_mysong, R.id.ll_mylyrics, R.id.ll_myfav})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.user_follownum:
@@ -225,7 +250,7 @@ public class UserInfoActivity extends ToolbarActivity implements IOnlyFollowView
                 } else {
                     currentIndex = 0;
                 }
-                container.setCurrentItem(currentIndex);
+                mViewpager.setCurrentItem(currentIndex);
                 changeTabColor();
                 break;
             case R.id.ll_mylyrics:
@@ -234,7 +259,7 @@ public class UserInfoActivity extends ToolbarActivity implements IOnlyFollowView
                 } else {
                     currentIndex = 1;
                 }
-                container.setCurrentItem(currentIndex);
+                mViewpager.setCurrentItem(currentIndex);
                 changeTabColor();
                 break;
             case R.id.ll_myfav:
@@ -243,19 +268,31 @@ public class UserInfoActivity extends ToolbarActivity implements IOnlyFollowView
                 } else {
                     currentIndex = 2;
                 }
-                container.setCurrentItem(currentIndex);
+                mViewpager.setCurrentItem(currentIndex);
                 changeTabColor();
-                break;
-            case R.id.rl_setting:
-                FollowUser();
                 break;
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_setting,menu);
+        menuFollowItem = menu.findItem(R.id.menu_setting);
+        menuFollowItem.setIcon(R.drawable.ic_user_follow);
+        return super.onCreateOptionsMenu(menu);
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId()==R.id.menu_setting){
+            FollowUser();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
     private void FollowUser() {
         if (isFocus > -1) {
-            showPd("正在请求网络，请稍候");
+            showPd(isFocus==0?"正在关注中，请稍候...":"正在取消关注，请稍候...");
             setOnCancelListener(new DialogInterface.OnCancelListener() {
                 @Override
                 public void onCancel(DialogInterface dialog) {
@@ -266,14 +303,12 @@ public class UserInfoActivity extends ToolbarActivity implements IOnlyFollowView
             presenter.follow(userId);
         }
     }
-
-
     @Override
     public void followSuccess(String message) {
         cancelPd();
         isFocus = OnlyFollowPresenter.paraseStatuByString(message);
-        if (isFocus>=0&&isFocus<=2){
-            ivSetting.setImageResource(followIcon[isFocus]);
+        if (isFocus>=0&&isFocus<=2&&menuFollowItem!=null){
+            menuFollowItem.setIcon(followIcon[isFocus]);
         }
         EventBus.getDefault().post(new Event.UpdateFollowNumEvent(isFocus,0));
     }
@@ -293,6 +328,13 @@ public class UserInfoActivity extends ToolbarActivity implements IOnlyFollowView
     public void onEventMainThread(Event.UpdataUserBean event) {
         if (event.getType() == 2) {
             setUserInfo(event.getUserBean());
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(Event.UpdataUserInfoBean event) {
+        if (event.getType() == 2) {
+            updateUserFansNum(event.getUserBean());
         }
     }
 

@@ -51,6 +51,7 @@ public abstract class BaseListFragment<T> extends BaseFragment implements PullRe
     int action;
     int page = 1;
     int dip10;
+    int dip5;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -66,6 +67,7 @@ public abstract class BaseListFragment<T> extends BaseFragment implements PullRe
         super.onAttach(activity);
         context = activity;
         dip10 = DensityUtil.dip2px(context, 10);
+        dip5 = DensityUtil.dip2px(context, 5);
     }
 
     @Override
@@ -82,11 +84,11 @@ public abstract class BaseListFragment<T> extends BaseFragment implements PullRe
     protected void setUpData() {
         setUpAdapter();
         if (hasPadding()) {
-//            if(this instanceof WorksDataFragment){
-//                recycler.setReclylerPaddiing(dip10, dip10, dip10, dip10+DensityUtil.dip2px(context,48));
-//            }else {
-            recycler.setReclylerPaddiing(dip10, dip10, dip10, dip10);
-//            }
+            if(this instanceof BaseSectionListFragment)
+                recycler.setReclylerPaddiing(dip5, dip5, dip5, dip5);
+            else
+                recycler.setReclylerPaddiing(dip10, dip10, dip10, dip10);
+
         }
         recycler.setOnRefreshListener(this);
         recycler.setLayoutManager(getLayoutManager());
@@ -116,7 +118,7 @@ public abstract class BaseListFragment<T> extends BaseFragment implements PullRe
     }
 
     protected ILayoutManager getLayoutManager() {
-        MyLinearLayoutManager myLinearLayoutManager = new MyLinearLayoutManager(getActivity().getApplicationContext());
+        MyLinearLayoutManager myLinearLayoutManager = new MyLinearLayoutManager(getContext());
         return myLinearLayoutManager;
     }
 

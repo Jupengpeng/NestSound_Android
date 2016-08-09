@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.google.gson.Gson;
 import com.xilu.wybz.R;
 import com.xilu.wybz.adapter.ImageAdapter;
@@ -167,7 +168,7 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
                 if (recommendWorkList.size() > 0) {
                     WorksData worksData = recommendWorkList.get(position);
                     if (worksData.status == 2) {
-                        LyricsdisplayActivity.toLyricsdisplayActivity(context, worksData.itemid, 0, worksData.getTitle());
+                        LyricsdisplayActivity.toLyricsdisplayActivity(context, worksData.itemid, worksData.getTitle());
                     } else {
                         String playFrom = PrefsUtil.getString("playFrom", context);
                         if (!playFrom.equals(MyCommon.TUIJIAN) || MainService.ids.size() == 0) {
@@ -202,7 +203,7 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
                 if (newWorkList.size() > 0) {
                     WorksData worksData = newWorkList.get(position);
                     if (worksData.status == 2) {
-                        LyricsdisplayActivity.toLyricsdisplayActivity(context, worksData.itemid, 0, worksData.getTitle());
+                        LyricsdisplayActivity.toLyricsdisplayActivity(context, worksData.itemid, worksData.getTitle());
                     } else {
                         String playFrom = PrefsUtil.getString("playFrom", context);
                         if (!playFrom.equals(MyCommon.ZUIXIN) || MainService.ids.size() == 0) {

@@ -78,15 +78,16 @@ public class AppJsonCalback extends JsonCallback {
     @Override
     public void onError(Call call, Exception e) {
         super.onError(call, e);
+        e.printStackTrace();
         if (e.getMessage().contains("timeout")){
             Log.i("url",e.getMessage());
-            ToastUtils.toast(context,"网络连接失败");
+            ToastUtils.toast(context,"链接超时");
             return;
         }
         if (!NetWorkUtil.isNetworkAvailable(context)){
-            ToastUtils.toast(context,"链接超时");
+            ToastUtils.toast(context,"网络连接失败");
         } else {
-            ToastUtils.toast(context,"服务器错误");
+            ToastUtils.toast(context,"服务器错误"+e.getClass().getCanonicalName());
         }
     }
 
