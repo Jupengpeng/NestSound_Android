@@ -1,5 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:descendantFocusability="blocksDescendants"
@@ -7,11 +8,10 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="101dp"
+        android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
+        android:padding="10dp">
 
         <RelativeLayout
             android:id="@+id/rl_cover"
@@ -40,18 +40,13 @@
                 android:layout_centerInParent="true"
                 android:background="@drawable/selector"
                 android:padding="10dp">
+
                 <ImageView
                     android:id="@+id/iv_play"
                     android:layout_width="21dip"
                     android:layout_height="21dip"
                     android:src="@drawable/ic_bz_play" />
 
-                <ProgressBar
-                    android:id="@+id/pb_play"
-                    style="@style/android:Widget.Holo.Light.ProgressBar.Large.Inverse"
-                    android:layout_width="21dip"
-                    android:layout_height="21dip"
-                    android:visibility="invisible" />
             </RelativeLayout>
 
         </RelativeLayout>
@@ -69,19 +64,40 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxLines="2"
-                android:text=""
                 android:textColor="@color/main_text_color"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                tools:text="title" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/tv_author"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/main_text_color2"
+                    android:textSize="12sp"
+                    tools:text="author" />
+
+                <TextView
+                    android:id="@+id/tv_times"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/main_text_color2"
+                    android:textSize="12sp"
+                    tools:text=" 06:20" />
+            </LinearLayout>
 
             <TextView
-                android:id="@+id/tv_author"
+                android:id="@+id/tv_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:text=""
+                android:layout_marginTop="10dp"
                 android:textColor="@color/main_text_color2"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                tools:text="使用次数:1212" />
         </LinearLayout>
     </LinearLayout>
 

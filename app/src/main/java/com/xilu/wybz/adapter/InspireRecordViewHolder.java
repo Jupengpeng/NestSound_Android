@@ -57,13 +57,13 @@ public class InspireRecordViewHolder extends com.xilu.wybz.view.pull.BaseViewHol
     TextView tvText;
     @Bind(R.id.top_view)
     View topView;
-    OnDeleteListener onDeleteListener;
+    OnItemClickListener OnItemClickListener;
 
-    public InspireRecordViewHolder(View view, Context context, List<WorksData> worksDataList, String from, OnDeleteListener onDeleteListener) {
+    public InspireRecordViewHolder(View view, Context context, List<WorksData> worksDataList, String from, OnItemClickListener OnItemClickListener) {
         super(view);
         mDataList = worksDataList;
         COME = from;
-        this.onDeleteListener = onDeleteListener;
+        this.OnItemClickListener = OnItemClickListener;
         mContext = context;
         itemWidth = DensityUtil.getScreenW(context) - DensityUtil.dip2px(context, 20);
         itemHeight = itemWidth / 3;
@@ -72,7 +72,7 @@ public class InspireRecordViewHolder extends com.xilu.wybz.view.pull.BaseViewHol
         params.gravity = Gravity.CENTER_HORIZONTAL;
         flMain.setLayoutParams(params);
         ivFrequency.setPadding(0, 0, 0, itemHeight / 6);
-        if (onDeleteListener == null) return;
+        if (OnItemClickListener == null) return;
         itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -149,16 +149,15 @@ public class InspireRecordViewHolder extends com.xilu.wybz.view.pull.BaseViewHol
     }
 
     public void onItemLongClick(View view, int position) {
-        if (onDeleteListener == null) return;
+        if (OnItemClickListener == null) return;
         new MaterialDialog.Builder(mContext)
                 .title(R.string.dialog_title)
                 .items(R.array.states)
-                .itemsColor(Color.RED)
                 .itemsCallback(new MaterialDialog.ListCallback() {
                     @Override
                     public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
                         if (which == 0) {
-                            onDeleteListener.deletePos(position);
+                            OnItemClickListener.onClick(position,which);
                         }
                     }
                 }).show();
@@ -169,7 +168,7 @@ public class InspireRecordViewHolder extends com.xilu.wybz.view.pull.BaseViewHol
         ModifyInspireRecordActivity.toModifyInspireRecordActivity(mContext, mDataList.get(position));
     }
 
-    public interface OnDeleteListener {
-        void deletePos(int pos);
+    public interface OnItemClickListener {
+        void onClick(int pos,int which);
     }
 }

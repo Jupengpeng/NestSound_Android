@@ -84,7 +84,7 @@ public class LyricsDialog extends Dialog {
         lrcLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String msg = ((LibArr) parent.getItemAtPosition(position)).lyrics;
+                String msg =lyricsList.get(position);
                 if (focusEt != null) {
                     focusEt.setText(focusEt.getText() + msg + "\n");
                     focusEt.setSelection(focusEt.getText().length());

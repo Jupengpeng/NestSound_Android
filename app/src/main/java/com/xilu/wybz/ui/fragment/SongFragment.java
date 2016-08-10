@@ -66,20 +66,10 @@ public class SongFragment extends BaseSectionListFragment<WorksData> implements 
     }
     @Override
     public void onRefresh(int action) {
-        this.action = action;
-        if (mDataList == null) {
-            mDataList = new ArrayList<>();
-        }
-        if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
-            page = 1;
-        }
+        super.onRefresh(action);
         songPresenter.getWorkList(1);
     }
 
-    protected ILayoutManager getLayoutManager() {
-        MyGridLayoutManager myGridLayoutManager = new MyGridLayoutManager(getActivity().getApplicationContext(),column);
-        return myGridLayoutManager;
-    }
     @Override
     public void showFindSong(FindSongBean findSongBean) {
         if (isDestroy) return;
@@ -120,6 +110,10 @@ public class SongFragment extends BaseSectionListFragment<WorksData> implements 
         recycler.onRefreshCompleted();
     }
 //
+    protected ILayoutManager getLayoutManager() {
+        MyGridLayoutManager myGridLayoutManager = new MyGridLayoutManager(getActivity().getApplicationContext(),column);
+        return myGridLayoutManager;
+    }
     public BaseViewHolder onCreateSectionHeaderViewHolder(ViewGroup parent) {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.find_song_item_header, parent, false);
         return new SectionHeaderViewHolder(view);

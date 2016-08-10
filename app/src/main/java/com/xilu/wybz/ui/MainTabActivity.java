@@ -25,21 +25,18 @@ import com.xilu.wybz.ui.main.MainActivity;
 import com.xilu.wybz.ui.mine.MineActivity;
 import com.xilu.wybz.ui.msg.MsgActivity;
 import com.xilu.wybz.ui.record.InspireRecordActivity;
-import com.xilu.wybz.ui.song.NewMakeHotActivity;
+import com.xilu.wybz.ui.song.HotCatalogActivity;
 import com.xilu.wybz.utils.PermissionUtils;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.utils.VersionUtil;
 import com.xilu.wybz.view.IndexViewPager;
 import com.xilu.wybz.view.MoreWindow;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.Bind;
 import butterknife.OnClick;
 
@@ -231,7 +228,7 @@ public class MainTabActivity extends BaseActivity {
                     mMoreWindow.closeByAnimation();
                     break;
                 case R.id.tv_zuoqu:
-                    startActivity(NewMakeHotActivity.class);
+                    startActivity(HotCatalogActivity.class);
                     mMoreWindow.closeByAnimation();
                     break;
             }

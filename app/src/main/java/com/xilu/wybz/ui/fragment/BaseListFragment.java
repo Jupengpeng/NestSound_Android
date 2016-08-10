@@ -47,12 +47,11 @@ public abstract class BaseListFragment<T> extends BaseFragment implements PullRe
     protected LinearLayout llNoData;
     @Bind(R.id.iv_nonet)
     ImageView ivNoNet;
-    String keyWord;
     int action;
     int page = 1;
     int dip10;
     int dip5;
-
+    String keyWord;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(getLayoutResId(), container, false);
@@ -144,7 +143,7 @@ public abstract class BaseListFragment<T> extends BaseFragment implements PullRe
 
     public void updateItem(int position, T worksData) {
         mDataList.set(position, worksData);
-        adapter.notifyItemChanged(position);
+        updateItem(position);
     }
     public void updateItem(int position) {
         adapter.notifyItemChanged(position);

@@ -10,6 +10,7 @@ import com.xilu.wybz.http.callback.MyStringCallback;
 import com.xilu.wybz.ui.IView.IUserView;
 import com.xilu.wybz.utils.ParseUtils;
 import com.xilu.wybz.utils.PrefsUtil;
+import com.xilu.wybz.utils.ToastUtils;
 
 import java.util.HashMap;
 
@@ -106,7 +107,6 @@ public class UserPresenter extends BasePresenter<IUserView> {
     public void unfav(int music_id, int target_uid, int wtype) {
         params = new HashMap<>();
         params.put("user_id", PrefsUtil.getUserId(context) + "");
-        ;
         params.put("work_id", music_id + "");
         params.put("target_uid", target_uid + "");
         params.put("wtype", "" + wtype);
@@ -123,6 +123,31 @@ public class UserPresenter extends BasePresenter<IUserView> {
             @Override
             public void onError(Call call, Exception e) {
                 iView.deleteFail();
+            }
+        });
+    }
+    /* 取消收藏
+     * id 作品id
+     * type 1歌曲 2歌词
+     * status 0不公开 1公开
+    */
+    public void updateWorksState(int id, int type, int status) {
+        params = new HashMap<>();
+        params.put("uid", PrefsUtil.getUserId(context) + "");
+        params.put("id", id + "");
+        params.put(type==1?"is_issue":"status", status + "");
+        httpUtils.post(type==1?MyHttpClient.getUpdateMusicUrl():MyHttpClient.getUpdateLyricsUrl(), params, new MyStringCallback() {
+            @Override
+            public void onResponse(String response) {
+                DataBean dataBean = ParseUtils.getDataBean(context, response);
+                if (dataBean != null && dataBean.code == 200) {
+                    iView.updateSuccess();
+                }else
+                    iView.updateFail();
+            }
+            @Override
+            public void onError(Call call, Exception e) {
+                iView.updateFail();
             }
         });
     }

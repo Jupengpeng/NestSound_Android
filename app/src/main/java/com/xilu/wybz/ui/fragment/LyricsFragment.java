@@ -66,13 +66,7 @@ public class LyricsFragment extends BaseSectionListFragment<WorksData> implement
     }
     @Override
     public void onRefresh(int action) {
-        this.action = action;
-        if (mDataList == null) {
-            mDataList = new ArrayList<>();
-        }
-        if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
-            page = 1;
-        }
+        super.onRefresh(action);
         songPresenter.getWorkList(type);
     }
 
@@ -97,12 +91,7 @@ public class LyricsFragment extends BaseSectionListFragment<WorksData> implement
         if(findSongBean.newList!=null) {
             mDataList.add(new SectionData(true, mDataList.size(), "最新歌词"));
             for (WorksData worksData : findSongBean.newList) {
-                worksData.status = type
-
-
-
-
-                ;
+                worksData.status = type;
                 mDataList.add(new SectionData(worksData));
             }
         }

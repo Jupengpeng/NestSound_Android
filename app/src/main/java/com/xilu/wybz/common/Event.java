@@ -215,13 +215,17 @@ public class Event {
 
     public static class PPStatusEvent {
         int status;
-
-        public PPStatusEvent(int type) {
+        String from;
+        public PPStatusEvent(int type, String come) {
             status = type;
+            from = come;
         }
 
         public int getStatus() {
             return status;
+        }
+        public String getFrom() {
+            return from;
         }
 
         public void setStatus(int status) {

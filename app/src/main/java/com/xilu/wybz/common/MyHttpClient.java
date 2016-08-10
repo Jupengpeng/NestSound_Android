@@ -28,7 +28,7 @@ public class MyHttpClient {
 
     //伴奏列表
     public static String getHotUrl() {
-        return "common/accompaniment/list";
+        return "common/accompaniment/list21";
     }
 
     //伴奏详情
@@ -259,6 +259,16 @@ public class MyHttpClient {
     public static String getDeleteWorksUrl(){
         return "userCenter/deleteWork";
     }
-
+    //更新歌曲 歌词公开的状态
+    public static String getUpdateMusicUrl(){
+        return "musiopt/updateMusic";
+    }
+    public static String getUpdateLyricsUrl(){
+        return "musiopt/updateLyrics";
+    }
+    //伴奏分类
+    public static String getHotCatalogUrl(){
+        return "common/accompanimentcategory/list";
+    }
 }
 

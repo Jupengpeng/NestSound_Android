@@ -26,7 +26,6 @@ import com.xilu.wybz.ui.find.FindActivity;
 import com.xilu.wybz.ui.lyrics.LyricsPosterActivity;
 import com.xilu.wybz.ui.lyrics.ShareActivity;
 import com.xilu.wybz.ui.main.MainActivity;
-import com.xilu.wybz.ui.mine.UserInfoActivity;
 import com.xilu.wybz.ui.msg.MsgActivity;
 import com.xilu.wybz.ui.song.PlayAudioActivity;
 import com.xilu.wybz.ui.song.SongAblumActivity;
@@ -38,7 +37,6 @@ import com.xilu.wybz.view.materialdialogs.MaterialDialog;
 import java.util.ArrayList;
 import java.util.List;
 import butterknife.ButterKnife;
-
 /**
  * Created by June on 8/9/15.
  */
@@ -76,8 +74,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             }
             if (this instanceof WelActivity || this instanceof PlayAudioActivity || this instanceof LyricsPosterActivity
                     || this instanceof SongAblumActivity || this instanceof ShareActivity
-                    || this instanceof SplashActivity ||
-                    this instanceof UserInfoActivity || this instanceof MainTabActivity) {
+                    || this instanceof SplashActivity || this instanceof MainTabActivity) {
                 SystemBarHelper.immersiveStatusBar(this);
                 SystemBarHelper.tintStatusBar(this, Color.argb(0, 0xFF, 0xD7, 0x05));
             }

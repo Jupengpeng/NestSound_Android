@@ -71,7 +71,7 @@ public class HomeWorksViewHolder extends com.xilu.wybz.view.pull.BaseViewHolder 
             tvName.setText(worksData.title);
         }
         tvAuthor.setText(worksData.author);
-        tvCount.setText(worksData.looknum + "");
+        tvCount.setText(NumberUtil.format(worksData.looknum));
         ivType.setImageResource(worksData.status == 1 ? R.drawable.ic_song_type : R.drawable.ic_lyric_type);
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override

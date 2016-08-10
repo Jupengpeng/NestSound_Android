@@ -3,6 +3,7 @@ package com.xilu.wybz.ui.mine;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.PersistableBundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.view.ViewPager;
@@ -100,6 +101,7 @@ public class MineActivity extends BaseActivity {
         return R.layout.activity_new_mine;
     }
 
+
     public void initData() {
         if (isFirst) return;
         else isFirst = true;
@@ -107,7 +109,7 @@ public class MineActivity extends BaseActivity {
         getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         SystemBarHelper.setHeightAndPadding(this, mToolbar);
-        EventBus.getDefault().register(this);
+        SystemBarHelper.immersiveStatusBar(this, 0);
         setLocalUserInfo(PrefsUtil.getUserInfo(this));
         Bitmap bmp = NativeStackBlur.process(BitmapUtils.ReadBitmapById(this, R.mipmap.bg_top_mine), 200);
         ivBlurView.setImageBitmap(bmp);
@@ -240,14 +242,14 @@ public class MineActivity extends BaseActivity {
         setLocalUserInfo(userBean);
     }
 
-    //在灵感记录的列表 发送过来的
+    //在歌曲的列表 发送过来的
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(Event.UpdataUserBean event) {
         if (event.getType() == 1) {
             setUserInfo(event.getUserBean());
         }
     }
-    //在灵感记录的列表 发送过来的
+    //在歌曲的列表 发送过来的
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(Event.UpdataUserInfoBean event) {
         if (event.getType() == 1) {
@@ -367,7 +369,6 @@ public class MineActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
+        EventBus.getDefault().register(this);
     }
 }

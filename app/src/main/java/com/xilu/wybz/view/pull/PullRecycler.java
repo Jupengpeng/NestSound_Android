@@ -9,6 +9,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import com.xilu.wybz.R;
+import com.xilu.wybz.view.NoAlphaItemAnimator;
 import com.xilu.wybz.view.pull.layoutmanager.ILayoutManager;
 
 /**
@@ -52,7 +53,7 @@ public class PullRecycler extends FrameLayout implements SwipeRefreshLayout.OnRe
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mRecyclerView = (RecyclerView) findViewById(R.id.id_stickynavlayout_innerscrollview);
-        mRecyclerView = (RecyclerView) findViewById(R.id.id_stickynavlayout_innerscrollview);
+        mRecyclerView.setItemAnimator(new NoAlphaItemAnimator());
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {

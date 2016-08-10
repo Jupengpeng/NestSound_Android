@@ -49,6 +49,7 @@ public class MyCommon {
     public static final String TUIJIAN = "tuijian";
     public static final String ZUIXIN = "zuixin";
     public static final String MYSONG = "mysong";
+    public static final String MYLYRICS = "mylyrics";
     public static final String MYFAV = "myfav";
     public static final String USERSONG = "usersong";
     public static final String USERFAV = "userfav";

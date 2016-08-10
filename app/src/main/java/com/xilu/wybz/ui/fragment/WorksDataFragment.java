@@ -19,6 +19,7 @@ import com.xilu.wybz.common.PlayMediaInstance;
 import com.xilu.wybz.presenter.UserPresenter;
 import com.xilu.wybz.ui.IView.IUserView;
 import com.xilu.wybz.utils.PrefsUtil;
+import com.xilu.wybz.utils.ToastUtils;
 import com.xilu.wybz.view.materialdialogs.DialogAction;
 import com.xilu.wybz.view.materialdialogs.MaterialDialog;
 import com.xilu.wybz.view.pull.BaseViewHolder;
@@ -43,12 +44,12 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
     public static String AUTHOR = "author";
     private int type;
     private int userId;
-    private int deletePos;
+    private int selectPos;
     private String COME;
     private String author;
     private boolean isMe;
     private int workType;
-    private String[] COMES = new String[]{ "mysong", "mylyrics", "myfav","myrecord"};
+    private String[] COMES = new String[]{"mysong", "mylyrics", "myfav", "myrecord"};
     private String[] COMESs = new String[]{"usersong", "userlyrics", "userfav"};
     private boolean isFirst;
     private boolean isFirstTab;
@@ -118,9 +119,6 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
         return tabFragment;
     }
 
-//    protected RecyclerView.ItemDecoration getItemDecoration() {
-//        return new SpacesItemDecoration(dip10);
-//    }
 
     @Override
     public void initView() {
@@ -130,7 +128,7 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
     @Override
     protected void setUpData() {
         super.setUpData();
-        if (recycler == null){
+        if (recycler == null) {
             return;
         }
         if (isFirstTab) {
@@ -139,7 +137,7 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
         }
     }
 
-    public void reSet(){
+    public void reSet() {
         userId = PrefsUtil.getUserId(context);
         author = PrefsUtil.getUserInfo(context).name;
         isMe = (userId == PrefsUtil.getUserId(context));
@@ -152,34 +150,32 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(Event.LoginOutEvent event){
+    public void onEvent(Event.LoginOutEvent event) {
         isFirst = false;
-        if(mDataList !=null&& mDataList.size()!=0){
-            page=1;
+        if (mDataList != null && mDataList.size() != 0) {
+            page = 1;
             mDataList.clear();
             adapter.notifyDataSetChanged();
             recycler.requestLayout();
         }
     }
-//    public void onEvent(Event.LoginSuccessEvent event){
-//        if(isFirstTab){
-//            loadData();
-//        }
-//    }
+
     @Override
     public void setUserInfo(UserBean userBean) {
         EventBus.getDefault().post(new Event.UpdataUserBean(userBean, isMe ? 1 : 2));
     }
+
     @Override
     public void setUserInfoBean(UserInfoBean userBean) {
         EventBus.getDefault().post(new Event.UpdataUserInfoBean(userBean, isMe ? 1 : 2));
     }
+
     @Override
     public void showWorksData(List<WorksData> worksDataList) {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if(isDestroy)return;
+                if (isDestroy) return;
                 if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
                     mDataList.clear();
                 }
@@ -205,8 +201,8 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
         }, 600);
     }
 
-    public void updateList(){
-        if (recycler == null){
+    public void updateList() {
+        if (recycler == null) {
             return;
         }
         recycler.onRefresh();
@@ -214,30 +210,30 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
 
     @Override
     public void loadFail() {
-        if(isDestroy)return;
+        if (isDestroy) return;
         recycler.onRefreshCompleted();
     }
 
     @Override
     public void loadNoMore() {
-        if(isDestroy)return;
+        if (isDestroy) return;
         recycler.onRefreshCompleted();
         recycler.enableLoadMore(false);
     }
 
     public void updateNum(WorksData worksData, int type) {
-        if(isDestroy)return;
+        if (isDestroy) return;
         int index = -1;
         for (int i = 0; i < mDataList.size(); i++) {
-            if (worksData.itemid == mDataList.get(i).itemid&&worksData.status==mDataList.get(i).status) {
+            if (worksData.itemid == mDataList.get(i).itemid && worksData.status == mDataList.get(i).status) {
                 index = i;
                 break;
             }
         }
         if (index > -1) {
-            if(type==2) {
+            if (type == 2) {
                 mDataList.get(index).setZannum(worksData.zannum);
-            }else if(type==1){
+            } else if (type == 1) {
                 mDataList.get(index).setFovnum(worksData.fovnum);
             }
             updateItem(index);
@@ -245,57 +241,57 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(Event.UpdateWorkNum event){
-        updateNum(event.getWorksData(),event.getType());
+    public void onEvent(Event.UpdateWorkNum event) {
+        updateNum(event.getWorksData(), event.getType());
     }
 
 
     @Override
     public void deleteSuccess() {
-        if(isDestroy)return;
+        if (isDestroy) return;
         //更新本地当前播放音乐的缓存
         if (type == 3) {//删除了收藏 判断是否删除的是当前播放的这首歌
-            WorksData worksData = PrefsUtil.getMusicData(context, mDataList.get(deletePos).itemid);
+            WorksData worksData = PrefsUtil.getMusicData(context, mDataList.get(selectPos).itemid);
             if (worksData != null) {
                 worksData.iscollect = 0;
                 PrefsUtil.saveMusicData(context, worksData);
             }
         } else if (type == 1) {//删除我的歌曲成功 判断正在播放的是不是本首歌
-            WorksData worksData = PrefsUtil.getMusicData(context, mDataList.get(deletePos).itemid);
+            WorksData worksData = PrefsUtil.getMusicData(context, mDataList.get(selectPos).itemid);
             if (worksData != null) {//清除当前已删除歌曲的本地数据并停止播放
                 PrefsUtil.clearMusicData(context, worksData.itemid);
                 PlayMediaInstance.getInstance().release();
             }
         }
-        removeItem(deletePos);
+        removeItem(selectPos);
     }
 
     @Override
     public void deleteFail() {
+    }
+
+    @Override
+    public void updateSuccess() {
+        if (type == 1) {
+            mDataList.get(selectPos).is_issue = 1 - mDataList.get(selectPos).is_issue;
+        } else if (type == 2) {
+            mDataList.get(selectPos).status = 1 - mDataList.get(selectPos).status;
+        }
+        updateItem(selectPos);
+        ToastUtils.toast(context,"设置成功！");
+    }
+
+    @Override
+    public void updateFail() {
 
     }
 
     @Override
     public void loadNoData() {
-        if(isDestroy)return;
+        if (isDestroy) return;
         llNoData.setVisibility(View.VISIBLE);
         recycler.onRefreshCompleted();
         recycler.enableLoadMore(false);
-    }
-
-    public void deleteWorksData(int pos) {
-        deletePos = pos;
-        if(pos>=0&&pos<mDataList.size()) {
-            userPresenter.delete(mDataList.get(pos).getItemid(), workType);
-        }
-    }
-
-    public void unfavWorksData(int pos) {
-        deletePos = pos;
-        if(pos>=0&&pos<mDataList.size()) {
-            WorksData worksData = mDataList.get(pos);
-            userPresenter.unfav(worksData.itemid, worksData.uid, worksData.status);
-        }
     }
 
     //移除某个item
@@ -341,6 +337,39 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
         }
     }
 
+    //删除作品
+    public void deleteWorksData(int pos) {
+        selectPos = pos;
+        if (pos >= 0 && pos < mDataList.size()) {
+            userPresenter.delete(mDataList.get(pos).getItemid(), workType);
+        }
+    }
+
+    //取消收藏作品
+    public void unfavWorksData(int pos) {
+        selectPos = pos;
+        if (pos >= 0 && pos < mDataList.size()) {
+            WorksData worksData = mDataList.get(pos);
+            userPresenter.unfav(worksData.itemid, worksData.uid, worksData.status);
+        }
+    }
+
+    //改变作品的公开状态
+    public void changeWorksState(int pos) {
+        selectPos = pos;
+        if (pos >= 0 && pos < mDataList.size()) {
+            WorksData worksData = mDataList.get(pos);
+            int status;
+            if (type == 1) {
+                status = 1 - worksData.is_issue;
+            } else {
+                status = 1 - worksData.status;
+            }
+            userPresenter.updateWorksState(worksData.itemid, type, status);
+        }
+    }
+
+    //删除作品提示
     public void showDeleteDialog(int pos) {
         new MaterialDialog.Builder(context)
                 .title(getString(R.string.dialog_title))
@@ -350,46 +379,45 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        deletePos = pos;
-                        if (type == 3) {
-                            unfavWorksData(pos);
-                        } else {
-                            deleteWorksData(pos);
-                        }
+                        selectPos = pos;
+                        deleteWorksData(pos);
                     }
-                }).negativeText("取消")
-                .onNegative(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-
-                    }
-                })
-                .show();
+                }).show();
     }
 
     @Override
     protected BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
         if (type == 4) {//灵感记录
             View view = LayoutInflater.from(context).inflate(R.layout.fragment_inspirerecord_item, parent, false);
-            InspireRecordViewHolder holder = new InspireRecordViewHolder(view, context, mDataList, COME, !isMe ? null : new InspireRecordViewHolder.OnDeleteListener() {
-                @Override
-                public void deletePos(int pos) {
-                    showDeleteDialog(pos);
-                }
-            });
+            InspireRecordViewHolder holder = new InspireRecordViewHolder(view, context, mDataList, COME,
+                    !isMe ? null : new InspireRecordViewHolder.OnItemClickListener() {
+                        @Override
+                        public void onClick(int pos, int which) {
+                            if (which == 0) {
+                                showDeleteDialog(pos);
+                            }
+                        }
+                    });
             return holder;
         } else {
             View view = LayoutInflater.from(context).inflate(R.layout.activity_work_list_item, parent, false);
-            WorksViewHolder holder = new WorksViewHolder(view, context, mDataList, COME, !isMe ? null : new WorksViewHolder.OnDeleteListener() {
-                @Override
-                public void deletePos(int pos) {
-                    if (type == 3) {
-                        unfavWorksData(pos);
-                    } else {
-                        showDeleteDialog(pos);
-                    }
-                }
-            });
+            WorksViewHolder holder = new WorksViewHolder(view, context, mDataList, COME,
+                    !isMe ? null : new WorksViewHolder.OnItemClickListener() {
+                        @Override
+                        public void onClick(int pos, int which) {
+                            if (type == 3) {//取消收藏的时候 不提示 直接取消
+                                if (which == 0) {
+                                    unfavWorksData(pos);
+                                }
+                            } else {
+                                if (which == 0) {
+                                    changeWorksState(pos);
+                                } else if (which == 1) {
+                                    showDeleteDialog(pos);
+                                }
+                            }
+                        }
+                    });
             return holder;
         }
     }

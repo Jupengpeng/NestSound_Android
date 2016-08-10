@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
+import com.xilu.wybz.bean.HotBean;
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.KeySet;
@@ -110,7 +111,18 @@ public class PrefsUtil {
         }
         return worksData;
     }
-
+    //保存伴奏分类
+    public static void saveHotBean(Context context, HotBean hotBean){
+        putString("hotBean",new Gson().toJson(hotBean),context);
+    }
+    //保存伴奏分类
+    public static HotBean getHotBean(Context context){
+        String hotBean = getString("hotBean",context);
+        if(StringUtil.isNotBlank(hotBean)){
+            return new Gson().fromJson(hotBean,HotBean.class);
+        }
+        return null;
+    }
     //保存正在播放的音乐
     public static void saveMusicData(Context context, WorksData worksData){
         putString("musicData_"+worksData.itemid,new Gson().toJson(worksData),context);

@@ -28,9 +28,9 @@ public class HotPresenter extends BasePresenter<IHotView> {
     * name 搜索的关键词
     * type 1=最新伴奏列表 2=最热伴奏列表 默认为最新
      */
-    public void loadHotData(String title, int type, int page) {
+    public void loadHotData(int cid, String type, int page) {
         Map<String, String> params = new HashMap<>();
-        params.put("title", title);
+        params.put("cid", cid + "");
         params.put("type", type + "");
         params.put("page", page + "");
         httpUtils.get(MyHttpClient.getHotUrl(), params, new MyStringCallback() {
@@ -44,7 +44,7 @@ public class HotPresenter extends BasePresenter<IHotView> {
                         iView.loadNoMore();
                     }
                 } else {
-                    iView.showHotData(mList,type);
+                    iView.showHotData(mList);
                 }
             }
             @Override
