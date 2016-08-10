@@ -78,6 +78,9 @@ public class UmengShareUtil {
         action.setPlatform(share_media).setCallback(umShareListener);
         if(shareBean.type==1){
             action.withMedia(image);
+            action.withTitle("");
+            action.withTargetUrl("");
+            action.withText("");
         }else {
             if (type > 1) {
                 action.withTitle(shareBean.title);

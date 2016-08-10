@@ -81,10 +81,11 @@ public class SharePosterActivity extends ToolbarActivity {
             worksData = (WorksData) bundle.getSerializable(KeySet.WORKS_DATA);
             content = bundle.getString(KeySet.CONTENT);
             tvContent.setText(content);
-            tvTitle.setText("『" + worksData.title + "』\n作词：" + worksData.author);
+            tvTitle.setText("『" + worksData.title.replace("\n","") + "』\n作词：" + worksData.author);
             int width = DensityUtil.getScreenW(context);
             int height = width * 2 / 3;
             rlCover.setLayoutParams(new LinearLayout.LayoutParams(width, height));
+            if(StringUtil.isNotBlank(worksData.pic))
             ImageLoadUtil.loadImage(context, worksData.pic, ivCover, width, height);
             ivCover.setDrawingCacheEnabled(true);
             llContent.setDrawingCacheEnabled(true);
@@ -117,7 +118,6 @@ public class SharePosterActivity extends ToolbarActivity {
     }
 
     public void savePic() {
-        if(StringUtil.isNotBlank(savePath))return;//已经保存过了
         Bitmap bitmap1 = BitmapUtils.loadBitmapFromView(ivCover);
         Bitmap bitmap2 = BitmapUtils.loadBitmapFromView(llContent);
         Bitmap bitmap = BitmapUtils.add2Bitmap(bitmap1, bitmap2);

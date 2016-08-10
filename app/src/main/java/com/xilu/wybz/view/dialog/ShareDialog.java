@@ -15,6 +15,7 @@ import com.xilu.wybz.R;
 import com.xilu.wybz.bean.ShareBean;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.ui.lyrics.LyricsPosterActivity;
+import com.xilu.wybz.utils.AppInfoUtil;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtil;
@@ -42,7 +43,7 @@ public class ShareDialog extends Dialog implements View.OnClickListener {
         if (shareUtil == null) {
             String shareContent = "";
             String playurl = "";
-            String shareTitle = worksData.title;
+            String shareTitle = worksData.title.replace("\n","");
             String shareAuthor = worksData.author;
             String shareLink = worksData.shareurl + "?id=" + worksData.itemid;
             String sharePic = worksData.pic;
@@ -94,19 +95,39 @@ public class ShareDialog extends Dialog implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.ll_share_weixin:
-                shareUtil.toShareWeChat();
+                if(AppInfoUtil.isAppInstalled(context,"com.tencent.mm")) {
+                    shareUtil.toShareWeChat();
+                }else{
+                    ToastUtils.toast(context,"您尚未安装微信！");
+                }
                 break;
             case R.id.ll_share_weibo:
-                shareUtil.toShareSina();
+                if(AppInfoUtil.isAppInstalled(context,"com.sina.weibo")) {
+                    shareUtil.toShareSina();
+                }else{
+                    ToastUtils.toast(context,"您尚未安装微博！");
+                }
                 break;
             case R.id.ll_share_friend:
-                shareUtil.toShareWeChatCircle();
+                if(AppInfoUtil.isAppInstalled(context,"com.tencent.mm")) {
+                    shareUtil.toShareWeChatCircle();
+                }else{
+                    ToastUtils.toast(context,"您尚未安装微信！");
+                }
                 break;
             case R.id.ll_share_qq:
-                shareUtil.toShareQQ();
+                if(AppInfoUtil.isAppInstalled(context,"com.tencent.mobileqq")) {
+                    shareUtil.toShareQQ();
+                }else {
+                    ToastUtils.toast(context,"您尚未安装QQ！");
+                }
                 break;
             case R.id.ll_share_qzone:
-                shareUtil.toShareQzone();
+                if(AppInfoUtil.isAppInstalled(context,"com.tencent.qzone")) {
+                    shareUtil.toShareQzone();
+                }else {
+                    ToastUtils.toast(context,"您尚未安装QQ空间！");
+                }
                 break;
             case R.id.ll_share_copy:
                 StringUtil.copy(mWorksData.shareurl, context);

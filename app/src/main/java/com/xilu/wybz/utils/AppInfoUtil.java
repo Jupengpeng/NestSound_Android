@@ -34,4 +34,22 @@ public class AppInfoUtil {
 
         return pi;
     }
+
+    /*
+    * check the app is installed
+    */
+    public static boolean isAppInstalled(Context context, String packagename) {
+        PackageInfo packageInfo;
+        try {
+            packageInfo = context.getPackageManager().getPackageInfo(packagename, 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            packageInfo = null;
+            e.printStackTrace();
+        }
+        if (packageInfo == null) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 }
