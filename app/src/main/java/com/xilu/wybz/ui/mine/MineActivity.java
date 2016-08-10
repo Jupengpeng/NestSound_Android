@@ -101,15 +101,20 @@ public class MineActivity extends BaseActivity {
         return R.layout.activity_new_mine;
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        SystemBarHelper.setHeightAndPadding(this, mToolbar);
+    }
 
     public void initData() {
         if (isFirst) return;
         else isFirst = true;
+        EventBus.getDefault().register(this);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        SystemBarHelper.setHeightAndPadding(this, mToolbar);
-        SystemBarHelper.immersiveStatusBar(this, 0);
+//        SystemBarHelper.immersiveStatusBar(this, 0);
         setLocalUserInfo(PrefsUtil.getUserInfo(this));
         Bitmap bmp = NativeStackBlur.process(BitmapUtils.ReadBitmapById(this, R.mipmap.bg_top_mine), 200);
         ivBlurView.setImageBitmap(bmp);
@@ -366,9 +371,4 @@ public class MineActivity extends BaseActivity {
         return false;
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        EventBus.getDefault().register(this);
-    }
 }

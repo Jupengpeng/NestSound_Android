@@ -14,7 +14,7 @@
             android:id="@+id/listView"
             android:layout_width="match_parent"
             android:dividerHeight="1px"
-            android:divider="#bbb"
+            android:divider="#ddd"
             android:layout_height="wrap_content"
             android:listSelector="@drawable/selector2"
             android:overScrollMode="never" />
@@ -30,7 +30,7 @@
             android:gravity="center"
             android:text="取消"
             android:background="@drawable/selector2"
-            android:textColor="#444"
+            android:textColor="#666"
             android:textSize="20sp" />
     </LinearLayout>
 </ScrollView>

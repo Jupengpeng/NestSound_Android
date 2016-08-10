@@ -136,10 +136,10 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     PlayPresenter playPresenter;
     DownPicPresenter downPicPresenter;
     List<ActionBean> actionBeanList;
-    String[] actionTitles = new String[]{"个人主页", "将作品设为公开", "举报"};
-    String[] actionTitles2 = new String[]{"将作品设为公开", "删除"};
+    String[] actionTitles = new String[]{"个人主页", "举报"};
+    String[] actionTitles2 = new String[]{ "删除"};
     String[] actionTypes = new String[]{"homepage", "status", "jubao"};
-    String[] actionTypes2 = new String[]{"status", "del"};
+    String[] actionTypes2 = new String[]{ "del"};
     PlayLyricsAdapter playLyricsAdapter;
     List<String> lyricsList;
     boolean isPlay = false;

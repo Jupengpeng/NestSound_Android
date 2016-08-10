@@ -13,6 +13,7 @@ import com.xilu.wybz.ui.base.BasePlayMenuActivity;
 import com.xilu.wybz.ui.fragment.LyricsFragment;
 import com.xilu.wybz.ui.fragment.RankingFragment;
 import com.xilu.wybz.ui.fragment.SongFragment;
+import com.xilu.wybz.view.SystemBarHelper;
 
 import butterknife.Bind;
 import butterknife.OnClick;
