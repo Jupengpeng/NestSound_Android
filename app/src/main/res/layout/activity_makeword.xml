@@ -74,7 +74,7 @@
 
             <LinearLayout
                 android:id="@+id/ll_import"
-                android:background="@drawable/selector"
+                android:background="?selectableItemBackground"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -101,7 +101,7 @@
                 android:background="@color/split_line" />
             <LinearLayout
                 android:id="@+id/ll_thesaurus"
-                android:background="@drawable/selector"
+                android:background="?selectableItemBackground"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -130,7 +130,7 @@
                 android:background="@color/split_line" />
             <LinearLayout
                 android:id="@+id/ll_course"
-                android:background="@drawable/selector"
+                android:background="?selectableItemBackground"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"

@@ -100,6 +100,8 @@
         <activity
             android:name=".ui.song.PlayAudioActivity"
             android:theme="@style/PlayTheme" android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.song.SongTuningActivity" android:screenOrientation="portrait" />
 
 
         <activity android:name=".ui.record.InspireRecordActivity"
@@ -120,6 +122,8 @@
         <activity android:name=".ui.lyrics.SharePosterActivity" android:screenOrientation="portrait"/>
         <activity android:name=".ui.lyrics.LyricsTemplateListActivity" android:screenOrientation="portrait"/>
         <activity android:name=".ui.lyrics.MakeWordByTempleateActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.lyrics.DraftLyricsActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.lyrics.LyricsRhymeActivity" android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.lyrics.SaveWordActivity"
             android:windowSoftInputMode="stateHidden|adjustResize" android:screenOrientation="portrait" />

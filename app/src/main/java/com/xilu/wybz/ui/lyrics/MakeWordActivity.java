@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,6 +22,7 @@ import com.xilu.wybz.common.KeySet;
 import com.xilu.wybz.presenter.MakeWordPresenter;
 import com.xilu.wybz.ui.IView.IMakeWordView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
+import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.view.dialog.LyricsDialog;
@@ -124,6 +126,9 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView {
                     SaveWordActivity.toSaveWordActivity(context, worksData);
                 }
                 return true;
+            case android.R.id.home:
+                tipSaveLocalData();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -139,12 +144,22 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView {
         oldWorksData = new Gson().toJson(worksData);
     }
 
+    public void showLyrics() {
+        if (lyricsDialog == null) {
+            lyricsDialog = new LyricsDialog(this, etWord);
+        }
+        if (!lyricsDialog.isShowing()) {
+            lyricsDialog.showDialog();
+        }
+    }
+
+    LyricsMenuPopWindow window;
     @OnClick({R.id.ll_import, R.id.ll_thesaurus, R.id.ll_course})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ll_import:
-//                startActivity(ImportWordActivity.class);
-                startActivity(MakeWordByTempleateActivity.class);
+                startActivity(DraftLyricsActivity.class);
+//                startActivity(MakeWordByTempleateActivity.class);
                 break;
             case R.id.ll_thesaurus:
                 startActivity(LyricsTemplateListActivity.class);
@@ -156,7 +171,10 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView {
 //                }
                 break;
             case R.id.ll_course:
-                startActivity(MakeCourseActivity.class);
+                if (window == null) window = new LyricsMenuPopWindow(this);
+                int y = (int) (49.4*DensityUtil.getScreenDensity(this));
+                window.showAtLocation(etTitle, Gravity.BOTTOM|Gravity.RIGHT,0,y);
+
                 break;
         }
     }
@@ -184,6 +202,7 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView {
             importData(event.getWorksData());
         }
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.UpdateLyricsData event) {
         worksData = event.getWorksData();
     }
@@ -194,7 +213,7 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView {
         }
     }
     //提示保存本地数据
-    public void TipSaveLocalData() {
+    public void tipSaveLocalData() {
         if(StringUtil.isBlank(worksData.title)&&StringUtil.isBlank(worksData.lyrics)) {
             finish();
             return;
@@ -224,7 +243,7 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView {
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            TipSaveLocalData();
+            tipSaveLocalData();
             return true;
         }
         return super.onKeyDown(keyCode, event);

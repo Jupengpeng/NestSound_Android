@@ -66,6 +66,7 @@ public class WelActivity extends BaseActivity {
                     Log.e("welcom_yinchao","onClick.DEBUG");
                     isConsole = true;
                     Intent intent = new Intent(WelActivity.this, ConsoleActivity.class);
+//                    Intent intent = new Intent(WelActivity.this, SongTuningActivity.class);
                     startActivityForResult(intent,CODE);
                 }
             });

@@ -4,8 +4,16 @@ package com.xilu.wybz.bean;
  * Created by June on 16/4/6.
  */
 public class RhymeBean {
-    String yunjiao;
-    String text;
+    public String yunjiao;
+    public String text;
+
+    public RhymeBean() {
+    }
+
+    public RhymeBean(String yunjiao, String text) {
+        this.yunjiao = yunjiao;
+        this.text = text;
+    }
 
     public String getYunjiao() {
         return yunjiao;

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include layout="@layout/view_toolbar" />
+
+    <LinearLayout
+        android:id="@+id/tuning_header"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/corner_tuning_header"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/tuning_control"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/corner_tuning_image"
+            android:scaleType="center"
+            android:src="@drawable/song_tuning_control" />
+
+        <com.xilu.wybz.view.WaveSurfaceView
+            android:id="@+id/tuning_wave"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="1dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginTop="1dp" />
+
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tuning_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="20dp"
+        android:text="音效"
+        android:textColor="@color/main_text_color2"
+        android:textSize="18sp" />
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/tuning_effect"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        tools:listitem="@layout/item_song_tuning_effect" />
+
+
+</LinearLayout>

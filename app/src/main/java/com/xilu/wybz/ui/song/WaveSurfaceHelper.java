@@ -31,7 +31,8 @@ public class WaveSurfaceHelper {
     public boolean isrun = false;
     public boolean prepare = false;
 
-    private List<Short> data;
+    public List<Short> data;
+    public static List<Short> dataCache;
 
 
 
@@ -253,6 +254,14 @@ public class WaveSurfaceHelper {
         if (currentPosition%20 > 1){
             size++;
         }
+        return size;
+    }
+    public int caculateTotalSize(){
+        int size = data.size()/20;
+        if (data.size()%20 > 1){
+            size++;
+        }
+        totalSize = size;
         return size;
     }
 
