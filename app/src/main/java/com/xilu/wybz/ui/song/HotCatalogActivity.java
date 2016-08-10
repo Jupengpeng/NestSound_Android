@@ -87,7 +87,7 @@ public class HotCatalogActivity extends BaseSectionListActivity<HotCatalog> impl
                 @Override
                 public void onClick(View v) {
                     if(templateBean!=null) {
-                        MakeSongActivity.ToMakeSongActivity(context, templateBean);
+                        MakeSongActivity.toMakeSongActivity(context, templateBean);
                     }
                 }
             });
