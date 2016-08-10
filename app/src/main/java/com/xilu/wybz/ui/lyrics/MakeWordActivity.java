@@ -144,6 +144,15 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView {
         oldWorksData = new Gson().toJson(worksData);
     }
 
+    public void showLyrics() {
+        if (lyricsDialog == null) {
+            lyricsDialog = new LyricsDialog(this, etWord);
+        }
+        if (!lyricsDialog.isShowing()) {
+            lyricsDialog.showDialog();
+        }
+    }
+
     LyricsMenuPopWindow window;
     @OnClick({R.id.ll_import, R.id.ll_thesaurus, R.id.ll_course})
     public void onClick(View view) {
@@ -162,11 +171,10 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView {
 //                }
                 break;
             case R.id.ll_course:
-                if (window == null) window = new LyricsMenuPopWindow(this,etWord);
+                if (window == null) window = new LyricsMenuPopWindow(this);
                 int y = (int) (49.4*DensityUtil.getScreenDensity(this));
                 window.showAtLocation(etTitle, Gravity.BOTTOM|Gravity.RIGHT,0,y);
 
-//                startActivity(MakeCourseActivity.class);
                 break;
         }
     }
@@ -194,6 +202,7 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView {
             importData(event.getWorksData());
         }
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.UpdateLyricsData event) {
         worksData = event.getWorksData();
     }

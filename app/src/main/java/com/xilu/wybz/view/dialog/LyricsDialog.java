@@ -3,7 +3,6 @@ package com.xilu.wybz.view.dialog;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -84,7 +83,12 @@ public class LyricsDialog extends Dialog {
         lrcLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String msg = ((LibArr) parent.getItemAtPosition(position)).lyrics;
+
+                Object o = parent.getItemAtPosition(position);
+                String msg = "";
+                if (o != null){
+                    msg = (String)o;
+                }
                 if (focusEt != null) {
                     focusEt.setText(focusEt.getText() + msg + "\n");
                     focusEt.setSelection(focusEt.getText().length());

@@ -8,7 +8,6 @@ import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
@@ -23,12 +22,10 @@ public class LyricsMenuPopWindow extends PopupWindow {
     public Activity act;
 
     public LyricsDialog lyricsDialog;
-    public EditText etWord;
 
-    public LyricsMenuPopWindow(Activity context, EditText etWord) {
+    public LyricsMenuPopWindow(Activity context) {
         super(context);
         act = context;
-        this.etWord = etWord;
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View mMenuView = inflater.inflate(R.layout.popup_lyrics_menu, null);
 
@@ -49,13 +46,7 @@ public class LyricsMenuPopWindow extends PopupWindow {
         ll_repertory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if (lyricsDialog == null) {
-                    lyricsDialog = new LyricsDialog(act, etWord);
-                }
-                if (!lyricsDialog.isShowing()) {
-                    lyricsDialog.showDialog();
-                }
+                ((MakeWordActivity)act).showLyrics();
                 dismiss();
             }
         });
