@@ -12,6 +12,31 @@ public class DateFormatUtils {
 
     public static final String[] MONTH_MASK = {"一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月"};
 
+    public static final String PATTERN = "yyyy/MM/dd HH:mm:ss SSS";
+    public static final String PATTERN_A = "yyyy-MM-dd HH:mm:ss";
+    public static final String PATTERN_B = "yyyy/MM/dd HH:mm:ss";
+
+    public static String format(String dateString,String pattern){
+        String result = null;
+        try {
+            long dateValue = Long.valueOf(dateString);
+            result = format(dateValue,pattern);
+        }catch (Exception e){
+
+        }
+        return result;
+    }
+
+    public static String format(long dateValue,String pattern){
+        String result = null;
+        try {
+            SimpleDateFormat format = new SimpleDateFormat(pattern);
+            result = format.format(new Date(dateValue));
+        }catch (Exception e){
+
+        }
+        return result;
+    }
 
 
     public static String formatTime(int time){
@@ -63,6 +88,20 @@ public class DateFormatUtils {
 
         return String.format("%01d:%02d:%02d",hour,minute,second);
 
+    }
+
+
+    public static String format(String dateString){
+        String result = null;
+        try {
+            long dataValue = Long.valueOf(dateString);
+            SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss SSS");
+            result = format.format(new Date(dataValue));
+        }catch (Exception e){
+
+        }
+
+        return result;
     }
 
 

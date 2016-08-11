@@ -221,6 +221,7 @@ public class MainTabActivity extends BaseActivity {
             switch (v.getId()){
                 case R.id.tv_zuoci:
                     MakeWordActivity.toMakeWordActivity(context,PrefsUtil.getLocalLyrics(context));
+//                    MakeWordActivity.toMakeWordActivity(context);
                     mMoreWindow.closeByAnimation();
                     break;
                 case R.id.tv_record:

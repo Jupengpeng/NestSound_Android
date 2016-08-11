@@ -1,5 +1,7 @@
 package com.xilu.wybz.user;
 
+import com.xilu.wybz.utils.LyricsDraftUtils;
+
 import org.junit.Test;
 
 import java.io.File;
@@ -18,25 +20,41 @@ public class FilesTest {
     public void testFiles() throws Exception{
 
 
-        File file = new File("E:\\bookmark\\1.txt");
+        File file = new File(".");
 
-//        println("mkdir:"+file.mkdir());
-//        println("isFile:"+file.isFile());
-//        println("isDirectory:"+file.isDirectory());
-//
-//        println("exists:"+file.exists());
+        String[] strings = file.list();
+        for(String e:strings){
+            println(e);
+        }
+        println(file.getCanonicalPath());
 
 
-//        if (!file.isFile()) {
-//            file.createNewFile();
+        assertEquals(1, 1);
+
+    }
+
+    @Test
+    public void testDraft() throws Exception{
+
+        LyricsDraftUtils.directories = "draftDir/";
+        File file = new File("src/main/assets/rhyme.json");
+        println(file.getCanonicalPath());
+
+//        String text = LyricsDraftUtils.get(file);
+//        println("text:"+text);
+
+//        LyricsDraftBean bean = new LyricsDraftBean();
+//        bean.id = "111";
+//        bean.name = "111";
+//        bean.file = "teest";
+//        LyricsDraftUtils.save(bean);
+
+//        List<LyricsDraftBean> files =LyricsDraftUtils.getAllDraft();
+//        for(LyricsDraftBean e:files){
+//            println(e.name);
 //        }
-//
-//        if (!file.exists()) {
-//            file.mkdirs();
-//        }
-        println(file.getName());
-        println(file.getPath());
-        println(file.getParent());
+
+//        LyricsDraftUtils.deleteAll();
 
         assertEquals(1, 1);
 

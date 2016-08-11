@@ -16,6 +16,7 @@ import android.widget.EditText;
 
 import com.google.gson.Gson;
 import com.xilu.wybz.R;
+import com.xilu.wybz.bean.LyricsDraftBean;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.KeySet;
@@ -23,6 +24,7 @@ import com.xilu.wybz.presenter.MakeWordPresenter;
 import com.xilu.wybz.ui.IView.IMakeWordView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.utils.DensityUtil;
+import com.xilu.wybz.utils.LyricsDraftUtils;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.view.dialog.LyricsDialog;
@@ -35,6 +37,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+
 /**
  * Created by June on 16/5/13.
  */
@@ -47,28 +50,36 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView {
     WorksData worksData;
     String oldWorksData;
     LyricsDialog lyricsDialog;
+
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_makeword;
     }
-    public static void toMakeWordActivity(Context context, WorksData worksData){
-        Intent intent = new Intent(context,MakeWordActivity.class);
-        intent.putExtra(KeySet.WORKS_DATA,worksData);
+
+    public static void toMakeWordActivity(Context context) {
+        Intent intent = new Intent(context, MakeWordActivity.class);
         context.startActivity(intent);
     }
+    public static void toMakeWordActivity(Context context, WorksData worksData) {
+        Intent intent = new Intent(context, MakeWordActivity.class);
+        intent.putExtra(KeySet.WORKS_DATA, worksData);
+        context.startActivity(intent);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle bundle = getIntent().getExtras();
-        if(bundle!=null) {
+        if (bundle != null) {
             worksData = (WorksData) bundle.getSerializable(KeySet.WORKS_DATA);
         }
         makeWordPresenter = new MakeWordPresenter(context, this);
         makeWordPresenter.init();
     }
-    public void initData(){
+
+    public void initData() {
         etTitle.setText(worksData.getTitle());
-        if(StringUtil.isNotBlank(worksData.getLyrics())) {
+        if (StringUtil.isNotBlank(worksData.getLyrics())) {
             etWord.setText(worksData.getLyrics());
             etWord.requestFocus();
             etWord.setSelection(worksData.getLyrics().length());
@@ -108,6 +119,7 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView {
             }
         });
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_next, menu);
@@ -116,11 +128,11 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.menu_next:
                 String title = etTitle.getText().toString().trim();
                 String lyrics = etWord.getText().toString().trim();
-                if(!TextUtils.isEmpty(title)&&!TextUtils.isEmpty(lyrics)) {
+                if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(lyrics)) {
                     worksData.setTitle(title);
                     worksData.setLyrics(lyrics);
                     SaveWordActivity.toSaveWordActivity(context, worksData);
@@ -136,9 +148,9 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView {
     public void initView() {
         EventBus.getDefault().register(this);
         setTitle("");
-        if(worksData!=null){
+        if (worksData != null) {
             initData();
-        }else{
+        } else {
             worksData = new WorksData();
         }
         oldWorksData = new Gson().toJson(worksData);
@@ -154,6 +166,7 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView {
     }
 
     LyricsMenuPopWindow window;
+
     @OnClick({R.id.ll_import, R.id.ll_thesaurus, R.id.ll_course})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -163,25 +176,21 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView {
                 break;
             case R.id.ll_thesaurus:
                 startActivity(LyricsTemplateListActivity.class);
-//                if (lyricsDialog == null) {
-//                    lyricsDialog = new LyricsDialog(this, etWord);
-//                }
-//                if (!lyricsDialog.isShowing()) {
-//                    lyricsDialog.showDialog();
-//                }
                 break;
             case R.id.ll_course:
                 if (window == null) window = new LyricsMenuPopWindow(this);
-                int y = (int) (49.4*DensityUtil.getScreenDensity(this));
-                window.showAtLocation(etTitle, Gravity.BOTTOM|Gravity.RIGHT,0,y);
+                int y = (int) (49.4 * DensityUtil.getScreenDensity(this));
+                window.showAtLocation(etTitle, Gravity.BOTTOM | Gravity.RIGHT, 0, y);
 
                 break;
         }
     }
-    @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.ImportWordEvent event) {
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(Event.ImportWordEvent event) {
         String title = etTitle.getText().toString().trim();
         String content = etWord.getText().toString().trim();
-        if(!TextUtils.isEmpty(title)||!TextUtils.isEmpty(content)){
+        if (!TextUtils.isEmpty(title) || !TextUtils.isEmpty(content)) {
             new MaterialDialog.Builder(context)
                     .content("导入的歌词会覆盖掉当前内容？")
                     .positiveText("继续导入")
@@ -197,34 +206,47 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView {
 
                         }
                     })
-            .show();
-        }else{
+                    .show();
+        } else {
             importData(event.getWorksData());
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.UpdateLyricsData event) {
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(Event.UpdateLyricsData event) {
         worksData = event.getWorksData();
+        oldWorksData = new Gson().toJson(worksData);
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.SaveLyricsSuccessEvent event) {
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(Event.SaveLyricsSuccessEvent event) {
         if (event.getWhich() == 1) {
             finish();
         }
     }
+
     //提示保存本地数据
     public void tipSaveLocalData() {
-        if(StringUtil.isBlank(worksData.title)&&StringUtil.isBlank(worksData.lyrics)) {
+        if (StringUtil.isBlank(worksData.title) && StringUtil.isBlank(worksData.lyrics)) {
             finish();
             return;
         }
-        if (!new Gson().toJson(worksData).equals(oldWorksData)) {
+        String newWorksData = new Gson().toJson(worksData);
+
+        if (!newWorksData.equals(oldWorksData)) {
             new MaterialDialog.Builder(context)
                     .content("是否保存到本地？")
                     .positiveText("保存")
                     .onPositive(new MaterialDialog.SingleButtonCallback() {
                         @Override
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            LyricsDraftBean bean = new LyricsDraftBean();
+                            bean.id = LyricsDraftUtils.getId();
+                            bean.name = worksData.title;
+                            bean.text = worksData.lyrics.replaceAll("[\\t\\n\\r]",";");
+                            bean.time = String.valueOf(System.currentTimeMillis());
+                            LyricsDraftUtils.save(bean);
+                            PrefsUtil.putString(KeySet.LOCAL_LYRICS, "", context);
                             finish();
                         }
                     }).negativeText("放弃")
@@ -237,6 +259,7 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView {
                     })
                     .show();
         } else {
+            PrefsUtil.putString(KeySet.LOCAL_LYRICS, "", context);
             finish();
         }
     }
@@ -248,15 +271,18 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView {
         }
         return super.onKeyDown(keyCode, event);
     }
-    private void importData(WorksData worksData){
+
+    private void importData(WorksData worksData) {
         this.worksData = worksData;
+        oldWorksData = new Gson().toJson(worksData);
         initData();
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
-        if(makeWordPresenter!=null)
+        if (makeWordPresenter != null)
             makeWordPresenter.cancelRequest();
     }
 }
