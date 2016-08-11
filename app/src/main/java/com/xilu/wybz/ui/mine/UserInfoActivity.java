@@ -206,7 +206,7 @@ public class UserInfoActivity extends BaseActivity implements IOnlyFollowView {
         setUserData(userBean);
     }
     public void setUserData(UserBean userBean){
-        if(StringUtil.isNotBlank(userBean.headurl)&&!userBean.headurl.equals("http://pic.yinchao.cn/uploadfiles/2015/09/14/201509141121211442200881.png")) {
+        if(StringUtil.isNotBlank(userBean.headurl)&&!userBean.headurl.equals(MyCommon.defult_head)) {
             int headWidth = DensityUtil.dip2px(context,92);
             loadImage(MyCommon.getImageUrl(userBean.headurl,headWidth,headWidth), ivHead);
         }

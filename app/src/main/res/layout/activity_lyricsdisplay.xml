@@ -116,7 +116,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:layout_toRightOf="@+id/iv_comment"
-                        tools:text="1222"
+                        tools:text="2"
                         android:layout_centerVertical="true"
                         android:textColor="@color/main_text_color3"
                         android:textSize="12sp" />
@@ -144,7 +144,7 @@
                             android:layout_marginLeft="5dp"
                             android:layout_toRightOf="@+id/iv_fav"
                             android:layout_centerVertical="true"
-                            tools:text="1222"
+                            tools:text="2"
                             android:textColor="@color/main_text_color3"
                             android:textSize="12sp" />
                     </RelativeLayout>
@@ -170,7 +170,7 @@
                             android:layout_centerVertical="true"
                             android:layout_toRightOf="@+id/iv_zan"
                             android:layout_marginLeft="5dp"
-                            tools:text="1222"
+                            tools:text="2"
                             android:textColor="@color/main_text_color3"
                             android:textSize="12sp" />
                     </RelativeLayout>

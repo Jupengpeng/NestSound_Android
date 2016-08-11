@@ -107,10 +107,7 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
     int itemSpace;
     protected MaterialDialog backDialog;
     InspireRecordPresenter inspireRecordPresenter;
-
-
     List<Short> volumeData;
-
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_publish_record;
@@ -135,7 +132,6 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
         getMenuInflater().inflate(R.menu.menu_send, menu);
         return true;
     }
-
     private void uploadPics() {
         UploadMorePicUtil uploadMorePicUtil = new UploadMorePicUtil(context);
         List<String> pics = new ArrayList<>();
@@ -218,16 +214,6 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
         itemSpace = DensityUtil.dip2px(context, 10);
         recyclerViewPic.setLayoutManager(new GridLayoutManager(context, column));
         recyclerViewPic.addItemDecoration(new GridSpacingItemDecoration(column, itemSpace, false));
-        KeyboardUtil.attach(this, mPanelRoot,
-                // Add keyboard showing state callback, do like this when you want to listen in the
-                // keyboard's setCurrentPageView/hide change.
-                new KeyboardUtil.OnKeyboardShowingListener() {
-                    @Override
-                    public void onKeyboardShowing(boolean isShowing) {
-                        Log.d("onKeyboardShowing", String.format("Keyboard is %s", isShowing ? "showing" : "hiding"));
-                    }
-                });
-
         KPSwitchConflictUtil.attach(mPanelRoot, rlAddVoice, etContent,
                 new KPSwitchConflictUtil.SwitchClickListener() {
                     @Override
@@ -496,12 +482,6 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
-                case 0:
-//                    if (isDestroy) return;
-//                    recordIndex++;
-//                    tvTime.setText(SystemUtils.getTimeFormat(recordIndex * 1000));
-//                    allTime = recordIndex * 1000;
-                    break;
                 case 1:
                     if (isDestroy) return;
                     playIndex++;

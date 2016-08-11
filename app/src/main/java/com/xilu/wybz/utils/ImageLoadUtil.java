@@ -19,8 +19,6 @@ public class ImageLoadUtil {
     public static void loadImage(String url, SimpleDraweeView mDraweeView) {
         ImageRequest request =
                 ImageRequestBuilder.newBuilderWithSource(Uri.parse(url))
-//                        .setResizeOptions(
-//                                new ResizeOptions(mDraweeView.getLayoutParams().width, mDraweeView.getLayoutParams().height))
                         .setProgressiveRenderingEnabled(true)
                         .build();
         PipelineDraweeController controller = (PipelineDraweeController) Fresco.newDraweeControllerBuilder()
