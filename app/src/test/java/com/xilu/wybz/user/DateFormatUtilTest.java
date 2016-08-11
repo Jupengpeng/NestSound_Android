@@ -63,6 +63,20 @@ public class DateFormatUtilTest {
     }
 
     @Test
+    public void testformatDateForDraft() throws Exception {
+
+        String value = "1470809674622";
+        String format = "2016/08/10 14:14:34 622";
+
+        String date = DateFormatUtils.format(value);
+
+        println("this is:"+date);
+
+        assertEquals(date,format);
+
+    }
+
+    @Test
     public void testPrintln() throws Exception {
 
         println("this is testPrintln...");
