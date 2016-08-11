@@ -41,10 +41,12 @@ public abstract class BaseListActivity<T> extends BasePlayMenuActivity implement
     protected int action;
     protected int page;
     protected int dip10;
+    protected int dip5;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         dip10 = DensityUtil.dip2px(context, 10);
+        dip5 = DensityUtil.dip2px(context, 5);
         initPresenter();
         setUpData();
     }
@@ -56,7 +58,12 @@ public abstract class BaseListActivity<T> extends BasePlayMenuActivity implement
     protected void setUpData() {
         setUpAdapter();
         if(hasPadding()){
-            recycler.setReclylerPaddiing(dip10, dip10, dip10, dip10);
+            if(this instanceof BaseSectionListActivity){
+                recycler.setReclylerPaddiing(dip5, dip5, dip5, dip5);
+            }else{
+                recycler.setReclylerPaddiing(dip10, dip10, dip10, dip10);
+            }
+
         }
         recycler.setOnRefreshListener(this);
         recycler.setLayoutManager(getLayoutManager());

@@ -1,95 +1,17 @@
-<com.xilu.wybz.view.StickyNavLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:orientation="vertical">
 
     <include layout="@layout/view_toolbar" />
 
-    <RelativeLayout
-        android:id="@id/id_stickynavlayout_topview"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent">
 
-        <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/iv_qc"
-            android:layout_centerInParent="true"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:paddingTop="10dp"
-            fresco:actualImageScaleType="centerCrop"
-            fresco:fadeDuration="300"
-            fresco:failureImageScaleType="centerCrop"
-            fresco:placeholderImageScaleType="centerCrop"
-            fresco:roundedCornerRadius="4dp"
-            fresco:viewAspectRatio="2.87" />
+    <FrameLayout
+        android:id="@+id/frame_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/main_bg"
+        />
 
-        <TextView
-            android:layout_centerInParent="true"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:text="清唱"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:id="@+id/id_stickynavlayout_indicator"
-        android:layout_height="@dimen/actionbar_size"
-        android:layout_width="match_parent">
-
-        <CheckedTextView
-            android:background="@drawable/selector"
-            android:checked="true"
-            android:gravity="center"
-            android:id="@+id/tv_new"
-            android:layout_height="match_parent"
-            android:layout_width="wrap_content"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:text="最新"
-            android:textColor="@color/txt_check"
-            android:textSize="15sp" />
-
-        <TextView
-            android:gravity="center"
-            android:id="@+id/line"
-            android:layout_height="match_parent"
-            android:layout_toRightOf="@+id/tv_new"
-            android:layout_width="wrap_content"
-            android:text="|"
-            android:textColor="@color/main_text_color"
-            android:textSize="15sp" />
-
-        <CheckedTextView
-            android:background="@drawable/selector"
-            android:gravity="center"
-            android:id="@+id/tv_hot"
-            android:layout_height="match_parent"
-            android:layout_toRightOf="@+id/line"
-            android:layout_width="wrap_content"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:text="最热"
-            android:textColor="@color/txt_check"
-            android:textSize="15sp" />
-
-        <View
-            android:background="@color/split_line"
-            android:layout_alignParentBottom="true"
-            android:layout_height="0.6dp"
-            android:layout_width="match_parent" />
-    </RelativeLayout>
-
-    <android.support.v4.view.ViewPager
-        android:id="@id/id_stickynavlayout_viewpager"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent" />
-
-</com.xilu.wybz.view.StickyNavLayout>
+</LinearLayout>

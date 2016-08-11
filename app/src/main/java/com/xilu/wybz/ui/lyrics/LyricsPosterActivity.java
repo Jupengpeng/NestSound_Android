@@ -64,7 +64,7 @@ public class LyricsPosterActivity extends ToolbarActivity{
             finish();
         }
         mToolbar.setTitleTextColor(Color.WHITE);
-        setTitle(worksData.title);
+        setTitle(worksData.title.replace("\n",""));
         lyricsPosters = new ArrayList<>();
         if (StringUtil.isNotBlank(worksData.lyrics)) {
             String[] lyricss = worksData.lyrics.split("\\n");

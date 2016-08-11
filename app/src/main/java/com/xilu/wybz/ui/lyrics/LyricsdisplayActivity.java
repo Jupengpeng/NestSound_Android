@@ -346,9 +346,7 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
                 break;
         }
         return super.onOptionsItemSelected(item);
-
     }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();

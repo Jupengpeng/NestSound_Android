@@ -9,7 +9,7 @@ import java.util.List;
  */
 public interface IHotView extends IBaseView {
 
-    void showHotData(List<TemplateBean> templateBeens,int currentType);
+    void showHotData(List<TemplateBean> templateBeens);
 
     void loadFail();
 

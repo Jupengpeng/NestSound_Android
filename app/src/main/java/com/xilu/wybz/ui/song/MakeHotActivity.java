@@ -1,5 +1,7 @@
 package com.xilu.wybz.ui.song;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -7,28 +9,40 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.CheckedTextView;
+import android.widget.FrameLayout;
+import android.widget.TextView;
+
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
+import com.xilu.wybz.bean.HotCatalog;
 import com.xilu.wybz.bean.TemplateBean;
+import com.xilu.wybz.common.Event;
+import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.common.PlayMediaInstance;
 import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.ui.fragment.HotFragment;
+import com.xilu.wybz.utils.StringUtil;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import butterknife.Bind;
 import butterknife.OnClick;
 
 public class MakeHotActivity extends ToolbarActivity {
-    @Bind(R.id.iv_qc)
-    SimpleDraweeView ivQc;
-    @Bind(R.id.tv_new)
-    CheckedTextView tvNew;
-    @Bind(R.id.tv_hot)
-    CheckedTextView tvHot;
-    @Bind(R.id.id_stickynavlayout_viewpager)
-    ViewPager container;
-    private int currentIndex;
-    private String[] mTitles = new String[]{"最新", "最热"};
-
+    private HotCatalog hotCatalog;
+    private HotFragment hotFragment;
+    String type = "";
+    public static void toMakeHotActivity(Context context, HotCatalog hotCatalog){
+        Intent intent = new Intent(context,MakeHotActivity.class);
+        intent.putExtra("hotCatalog",hotCatalog);
+        context.startActivity(intent);
+    }
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_makehot;
@@ -39,95 +53,59 @@ public class MakeHotActivity extends ToolbarActivity {
         super.onCreate(savedInstanceState);
         initViews();
     }
-
     private void initViews() {
-        setTitle("原唱伴奏");
+        Bundle bundle = getIntent().getExtras();
+        if(bundle!=null){
+            hotCatalog = (HotCatalog) bundle.getSerializable("hotCatalog");
+        }
+        if(hotCatalog==null)finish();
+        EventBus.getDefault().register(this);
         MyApplication.mMainService.doRelease();
-        loadImage("res:///" + R.drawable.ic_qc_bg, ivQc);
-        HotAdapter pagerAdapter = new HotAdapter(getSupportFragmentManager());
-        container.setAdapter(pagerAdapter);
-        container.setOffscreenPageLimit(mTitles.length);
-        container.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+        if(StringUtil.isNotBlank(hotCatalog.categoryname))
+            setTitle(hotCatalog.categoryname);
+        else
+            setTitle("原创伴奏");
 
+        if(hotCatalog.categoryname.contains("最新")){
+            type = "new";
+        }else if(hotCatalog.categoryname.contains("最热")){
+            type = "hot";
+        }
+        hotFragment = HotFragment.newInstance(type,hotCatalog.id);
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, hotFragment).commit();
+
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(Event.PPStatusEvent event) {
+        String from = event.getFrom();
+        if(StringUtil.isBlank(from))return;
+        if(from.equals(type+"_hot")) {
+            switch (event.getStatus()) {
+                case MyCommon.STARTED://开始
+                    break;
+                case MyCommon.PLAYED://播放
+                    break;
+                case MyCommon.PAUSED://暂停
+                    break;
+                case MyCommon.STOPPED://停止
+                case MyCommon.COMPLETED://完成
+                case MyCommon.END://释放
+                case MyCommon.ERROR://出错
+                case MyCommon.FAILED://获取数据失败
+                    if(hotFragment!=null){
+                        hotFragment.doStop();
+                    }
+                    break;
             }
-
-            @Override
-            public void onPageSelected(int position) {
-                currentIndex = position;
-                changeTabColor();
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-    }
-
-    @OnClick({R.id.tv_new, R.id.tv_hot})
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.tv_new:
-                if (currentIndex == 0) {
-                    return;
-                }
-                currentIndex = 0;
-                break;
-            case R.id.tv_hot:
-                if (currentIndex == 1) {
-                    return;
-                }
-                currentIndex = 1;
-                break;
-        }
-        changeTabColor();
-        container.setCurrentItem(currentIndex);
-    }
-
-    private void changeTabColor() {
-        tvHot.setChecked(currentIndex == 1);
-        tvNew.setChecked(currentIndex == 0);
-    }
-
-    @OnClick(R.id.iv_qc)
-    public void onClick() {
-        TemplateBean templateBean = new TemplateBean();
-        templateBean.id = "108";
-        templateBean.title = "清唱";
-        templateBean.mp3="http://7xsw6y.com2.z0.glb.qiniucdn.com/empty_hot_temp.mp3";
-        templateBean.mp3times = 706;
-        MakeSongActivity.toMakeSongActivity(context,templateBean);
-    }
-
-    public class HotAdapter extends FragmentStatePagerAdapter {
-        public HotAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return HotFragment.newInstance(position);
-        }
-
-        @Override
-        public int getCount() {
-            return mTitles.length;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mTitles[position];
         }
     }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
         //关闭播放
-        PlayMediaInstance.getInstance().release();
+        EventBus.getDefault().unregister(this);
+        MyApplication.mMainService.doRelease();
     }
-
 
 }

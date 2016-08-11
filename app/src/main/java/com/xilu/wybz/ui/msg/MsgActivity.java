@@ -7,6 +7,7 @@ import com.xilu.wybz.R;
 import com.xilu.wybz.ui.base.BaseActivity;
 import com.xilu.wybz.ui.base.BasePlayMenuActivity;
 import com.xilu.wybz.utils.DensityUtil;
+import com.xilu.wybz.view.SystemBarHelper;
 
 import butterknife.OnClick;
 

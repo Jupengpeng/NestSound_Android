@@ -120,7 +120,6 @@ public class LoginActivity extends BaseActivity implements ILoginView,IRegisterV
             tvLogin.setEnabled(true);
             tvLogin.setBackgroundResource(R.drawable.corner_login2);
         }
-
         String nickname = etNickname.getText().toString();
         String phone = etRegPhone.getText().toString();
         String regcode = etRegCode.getText().toString();

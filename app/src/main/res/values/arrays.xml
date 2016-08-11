@@ -2,10 +2,6 @@
 <resources>
 
     <string-array name="states">
-
         <item>@string/del</item>
-
-
     </string-array>
-
 </resources>

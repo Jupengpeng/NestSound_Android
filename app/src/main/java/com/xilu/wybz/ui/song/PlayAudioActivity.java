@@ -128,7 +128,6 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     String gedanid;
     ActionMoreDialog actionMoreDialog;
     boolean isCurrentMusic;
-    boolean isSeek;
     int hotid;//伴奏ID
     Intent intent;
     Timer timer;
@@ -137,13 +136,13 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     PlayPresenter playPresenter;
     DownPicPresenter downPicPresenter;
     List<ActionBean> actionBeanList;
-    String[] actionTitles = new String[]{"个人主页", "将作品设为公开", "举报"};
-    String[] actionTitles2 = new String[]{"将作品设为公开", "删除"};
+    String[] actionTitles = new String[]{"个人主页", "举报"};
+    String[] actionTitles2 = new String[]{ "删除"};
     String[] actionTypes = new String[]{"homepage", "status", "jubao"};
-    String[] actionTypes2 = new String[]{"status", "del"};
+    String[] actionTypes2 = new String[]{ "del"};
     PlayLyricsAdapter playLyricsAdapter;
     List<String> lyricsList;
-    int playStatus = 1;//1播放 0暂停
+    boolean isPlay = false;
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_playaudio;
@@ -275,7 +274,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
                 //停止或者尚未播放
                 if(worksData!=null) {
                     if(MyApplication.mMainService.mCurrentState==MyCommon.IDLE)
-                    MyApplication.mMainService.playOneMusic(worksData.playurl);
+                    MyApplication.mMainService.playOneMusic(worksData.playurl,from);
                 }
             }
         } else {//开启服务
@@ -466,13 +465,13 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
                 MyApplication.mMainService.toPreMusic();
                 break;
             case R.id.iv_play:
-                playStatus = 1-playStatus;
-                MyApplication.mMainService.doPP(playStatus);
+                isPlay = !isPlay;
+                MyApplication.mMainService.doPP(isPlay);
                 if(MyApplication.mMainService.status==1){
-                    if(playStatus==0){
-                        ivPlay.setImageResource(R.drawable.ic_play_play);
-                    }else{
+                    if(isPlay){
                         ivPlay.setImageResource(R.drawable.ic_play_pause);
+                    }else{
+                        ivPlay.setImageResource(R.drawable.ic_play_play);
                     }
                 }
                 break;
@@ -646,42 +645,38 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(Event.PPStatusEvent event) {
-        switch (event.getStatus()) {
-            case MyCommon.STARTED://开始
-                ivPlay.setImageResource(R.drawable.ic_play_pause);
-                if (MyApplication.mMainService != null) {
-                    playSeekBar.setMax(MyApplication.mMainService.getDuration());
-                    tvAlltime.setText(FormatHelper.formatDuration(MyApplication.mMainService.getDuration() / 1000));
-                }
-                startTimer();
-                break;
-            case MyCommon.PLAYED://播放
-                startTimer();
-                ivPlay.setImageResource(R.drawable.ic_play_pause);
-                break;
-            case MyCommon.PAUSED://暂停
-                closeTimer();
-                ivPlay.setImageResource(R.drawable.ic_play_play);
-                break;
-            case MyCommon.STOPPED://停止
-            case MyCommon.COMPLETED://完成
-            case MyCommon.END://释放
-            case MyCommon.ERROR://出错
-            case MyCommon.FAILED://获取数据失败
-                closeTimer();
-                ivPlay.setImageResource(R.drawable.ic_play_pause);
-                playStatus=1;
-                playSeekBar.setProgress(0);
-                tvTime.setText("00:00");
-                break;
+        if(event.getFrom().equals(from)) {
+            switch (event.getStatus()) {
+                case MyCommon.STARTED://开始
+                    ivPlay.setImageResource(R.drawable.ic_play_pause);
+                    if (MyApplication.mMainService != null) {
+                        playSeekBar.setMax(MyApplication.mMainService.getDuration());
+                        tvAlltime.setText(FormatHelper.formatDuration(MyApplication.mMainService.getDuration() / 1000));
+                    }
+                    startTimer();
+                    break;
+                case MyCommon.PLAYED://播放
+                    startTimer();
+                    ivPlay.setImageResource(R.drawable.ic_play_pause);
+                    break;
+                case MyCommon.PAUSED://暂停
+                    closeTimer();
+                    ivPlay.setImageResource(R.drawable.ic_play_play);
+                    break;
+                case MyCommon.STOPPED://停止doPP
+                case MyCommon.COMPLETED://完成
+                case MyCommon.END://释放
+                case MyCommon.ERROR://出错
+                case MyCommon.FAILED://获取数据失败
+                    closeTimer();
+                    ivPlay.setImageResource(R.drawable.ic_play_pause);
+                    isPlay = false;
+                    playSeekBar.setProgress(0);
+                    tvTime.setText("00:00");
+                    break;
+            }
         }
     }
-
-    //    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
-//    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(Event.MusicDataEvent event) {

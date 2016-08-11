@@ -24,39 +24,50 @@ import com.xilu.wybz.ui.IView.IHotView;
 import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.ui.song.MakeSongActivity;
 import com.xilu.wybz.utils.DensityUtil;
+import com.xilu.wybz.utils.FormatHelper;
+import com.xilu.wybz.utils.NumberUtil;
 import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.view.pull.BaseViewHolder;
+
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.Bind;
 
 public class HotFragment extends BaseListFragment<TemplateBean> implements IHotView {
     public static final String TYPE = "type";
-    private int type;
+    public static final String CID = "cid";
+    private String type;
+    private int cid;
     private HotPresenter hotPresenter;
     private SampleViewHolder sampleViewHolder;
     private int itemWidth;
     private int itemHeight;
     private int playPos = -1;
-    private Intent serviceIntent;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            type = getArguments().getInt(TYPE);
+            type = getArguments().getString(TYPE);
+            cid = getArguments().getInt(CID);
         }
     }
-    public void loadData(String name){
+
+    public void loadData(String name) {
         if (mDataList != null && mDataList.size() > 0) {
             mDataList.clear();
             adapter.notifyDataSetChanged();
         }
-        keyWord = name;
         page = 1;
         llNoData.setVisibility(View.GONE);
         recycler.setRefreshing();
     }
+
     @Override
     public boolean hasPadding() {
         return false;
@@ -70,15 +81,14 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
 
     @Override
     public void initView() {
-        recycler.enablePullToRefresh(false);
-        tvNoData.setText("暂无搜索结果！");
-        ivNoData.setImageResource(R.drawable.ic_nosearch);
+//        recycler.enablePullToRefresh(false);
     }
 
-    public static HotFragment newInstance(int type) {
+    public static HotFragment newInstance(String type, int cid) {
         HotFragment tabFragment = new HotFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt(TYPE, type);
+        bundle.putString(TYPE, type);
+        bundle.putInt(CID, cid);
         tabFragment.setArguments(bundle);
         return tabFragment;
     }
@@ -86,28 +96,26 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
     @Override
     protected void setUpData() {
         super.setUpData();
-        if (type ==0||type==1) {
-            recycler.setRefreshing();
-        }
+        recycler.setRefreshing();
     }
 
     @Override
     public void onRefresh(int action) {
-        hotPresenter.loadHotData(keyWord, type + 1, page++);
+        hotPresenter.loadHotData(cid, type, page++);
     }
 
     @Override
-    public void showHotData(List<TemplateBean> templateBeens,int currentType) {
+    public void showHotData(List<TemplateBean> templateBeens) {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if(isDestroy)return;
-                if(mDataList==null)
-                mDataList = new ArrayList<>();
-                if(mDataList.size()==0){
+                if (isDestroy) return;
+                if (mDataList == null)
+                    mDataList = new ArrayList<>();
+                if (mDataList.size() == 0) {
                     EventBus.getDefault().post(new Event.HideKeyboardEvent());
                 }
-                if (recycler == null){
+                if (recycler == null) {
                     return;
                 }
                 llNoData.setVisibility(View.GONE);
@@ -116,18 +124,18 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
                 adapter.notifyDataSetChanged();
                 recycler.onRefreshCompleted();
             }
-        },600);
+        }, 600);
     }
 
     @Override
     public void loadFail() {
-        if(isDestroy)return;
+        if (isDestroy) return;
         recycler.onRefreshCompleted();
     }
 
     @Override
     public void loadNoMore() {
-        if(isDestroy)return;
+        if (isDestroy) return;
         recycler.onRefreshCompleted();
         recycler.enableLoadMore(false);
     }
@@ -139,7 +147,7 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
 
     @Override
     public void loadNoData() {
-        if(isDestroy)return;
+        if (isDestroy) return;
         llNoData.setVisibility(View.VISIBLE);
         recycler.onRefreshCompleted();
         recycler.enableLoadMore(false);
@@ -166,10 +174,10 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
         TextView tvTitle;
         @Bind(R.id.tv_author)
         TextView tvAuthor;
-        @Bind(R.id.pb_play)
-        ProgressBar pbPlay;
-
-
+        @Bind(R.id.tv_count)
+        TextView tvCount;
+        @Bind(R.id.tv_times)
+        TextView tvTimes;
         public SampleViewHolder(View itemView) {
             super(itemView);
             itemWidth = (DensityUtil.getScreenW(context) - DensityUtil.dip2px(context, 40)) / 2;
@@ -184,57 +192,63 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
             itemView.setTag(templateBean);
             tvTitle.setText(templateBean.title);
             tvAuthor.setText(templateBean.author);
+            tvTimes.setText(" "+FormatHelper.formatDuration(templateBean.mp3times));
+            tvCount.setText("使用次数:"+ NumberUtil.format(templateBean.usenum));
             if (StringUtil.isNotBlank(templateBean.pic)) {
                 String imageUrl = MyCommon.getImageUrl(templateBean.pic, itemWidth, itemHeight);
                 loadImage(imageUrl, ivCover);
             }
-            if (!TextUtils.isEmpty(MyApplication.musicId) && MyApplication.musicId.equals(templateBean.id)) {
-                templateBean.playStatus = PlayMediaInstance.getInstance().status;
-            }
-            ivPlay.setImageResource(templateBean.playStatus == 3 ? R.drawable.ic_bz_pause : R.drawable.ic_bz_play);
-            ivPlay.setVisibility(templateBean.playStatus == 1 ? View.GONE : View.VISIBLE);
-            pbPlay.setVisibility(templateBean.playStatus != 1 ? View.GONE : View.VISIBLE);
+            ivPlay.setImageResource(templateBean.isPlay ? R.drawable.ic_bz_pause : R.drawable.ic_bz_play);
             rlPlay.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    musicBinder.toPPMusic();
+                    if (playPos >= 0 && playPos != position) {//切换伴奏 重置上一首的状态
+                        MyApplication.mMainService.doRelease();
+                        MyApplication.mMainService.playOneMusic(mDataList.get(position).mp3,type+"_hot");
+                        mDataList.get(position).isPlay = true;
+                        ivPlay.setImageResource(R.drawable.ic_bz_pause);
+                        playPos = position;//重新赋值当前播放的位置
+                    }else if(playPos >= 0&&playPos==position){//播放当前
+                        mDataList.get(playPos).isPlay = !mDataList.get(playPos).isPlay;
+                        ivPlay.setImageResource(mDataList.get(playPos).isPlay
+                                ? R.drawable.ic_bz_pause : R.drawable.ic_bz_play);
+                        MyApplication.mMainService.doPP(mDataList.get(playPos).isPlay);
+                    }else{//初此播放
+                        MyApplication.mMainService.playOneMusic(mDataList.get(position).mp3,type+"_hot");
+                        mDataList.get(position).isPlay = true;
+                        ivPlay.setImageResource(R.drawable.ic_bz_pause);
+                        playPos = position;//重新赋值当前播放的位置
+                    }
                 }
             });
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onItemClick(v,position);
+                    onItemClick(v, position);
                 }
             });
         }
 
         @Override
         public void onItemClick(View view, int position) {
-            if (PlayMediaInstance.getInstance().status == 3) {
-                PlayMediaInstance.getInstance().stopMediaPlay();
-                adapter.notifyItemChanged(position);
-            }
+            doStop();
             TemplateBean bean = mDataList.get(position);
             MakeSongActivity.toMakeSongActivity(context, bean);
         }
 
-        public void updatePlayStatus() {
-
-        }
     }
-
-    public void playTemplateMusic() {
-//        if (serviceIntent == null) {
-//            serviceIntent = new Intent(getActivity(), PlayService.class);
-//            getActivity().bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
-//        }
-
+    public void doStop(){
+        if (playPos >= 0) {
+            mDataList.get(playPos).isPlay = false;
+            updateItem(playPos);
+            playPos = -1;
+        }
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if(hotPresenter!=null)
+        if (hotPresenter != null)
             hotPresenter.cancelRequest();
     }
 }

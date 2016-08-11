@@ -3,6 +3,7 @@ package com.xilu.wybz.view.materialdialogs;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.LayoutRes;
 import android.view.Gravity;
@@ -79,7 +80,11 @@ class DefaultAdapter extends BaseAdapter {
             }
         }
         tv.setText(dialog.mBuilder.items[index]);
-        tv.setTextColor(dialog.mBuilder.itemColor);
+        if(dialog.mBuilder.items[index].equals("删除")){
+            tv.setTextColor(Color.RED);
+        }else{
+            tv.setTextColor(dialog.mBuilder.itemColor);
+        }
         dialog.setTypeface(tv, dialog.mBuilder.regularFont);
 
         view.setTag(index + ":" + dialog.mBuilder.items[index]);
