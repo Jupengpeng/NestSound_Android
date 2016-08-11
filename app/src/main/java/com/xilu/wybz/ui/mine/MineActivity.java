@@ -208,15 +208,6 @@ public class MineActivity extends BaseActivity {
             PrefsUtil.saveUserInfo(context, localUserBean);
             //更新本地我的信息
             setLocalUserInfo(localUserBean);
-            firstLoadUserInfo = true;
-        } else {
-            //更新本地数据
-            UserBean localUserBean = PrefsUtil.getUserInfo(context);
-            if (userBean.userid > 0) localUserBean.userid = userBean.userid;
-            if (StringUtil.isNotBlank(userBean.headurl)) localUserBean.headurl = userBean.headurl;
-            PrefsUtil.saveUserInfo(context, localUserBean);
-            //更新本地我的信息
-            setLocalUserInfo(localUserBean);
         }
     }
 

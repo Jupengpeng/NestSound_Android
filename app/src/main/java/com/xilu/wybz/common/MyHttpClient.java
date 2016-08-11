@@ -128,7 +128,7 @@ public class MyHttpClient {
 
     //修改密码
     public static String getPasswordUrl() {
-        return "common/login/resetPassword";
+        return "userCenter/updateuserpass";
     }
 
     //注册验证码发送

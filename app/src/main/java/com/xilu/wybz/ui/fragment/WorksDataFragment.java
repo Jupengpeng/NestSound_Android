@@ -56,6 +56,7 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
 
     @Override
     protected void initPresenter() {
+        EventBus.getDefault().register(this);
         userPresenter = new UserPresenter(context, this);
         userPresenter.init();
     }
@@ -64,18 +65,6 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
         if (isFirst) return;
         else isFirst = true;
         recycler.setRefreshing();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -427,5 +416,6 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
         super.onDestroyView();
         if (userPresenter != null)
             userPresenter.cancelRequest();
+        EventBus.getDefault().unregister(this);
     }
 }
