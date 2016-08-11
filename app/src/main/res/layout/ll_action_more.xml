@@ -16,7 +16,7 @@
             android:dividerHeight="1px"
             android:divider="#ddd"
             android:layout_height="wrap_content"
-            android:listSelector="@drawable/selector2"
+            android:listSelector="@drawable/selector"
             android:overScrollMode="never" />
         <View
             android:layout_width="match_parent"
@@ -29,8 +29,8 @@
             android:layout_height="50dp"
             android:gravity="center"
             android:text="取消"
-            android:background="@drawable/selector2"
-            android:textColor="#666"
-            android:textSize="20sp" />
+            android:background="@drawable/selector"
+            android:textColor="#555"
+            android:textSize="18sp" />
     </LinearLayout>
 </ScrollView>

@@ -126,8 +126,11 @@ public class SharePosterActivity extends ToolbarActivity {
         }
         if (PermissionUtils.checkSdcardPermission(this)) {
             savePath = FileDir.posterPic + System.currentTimeMillis() / 1000 + ".jpg";
-            FileUtils.saveBmp(savePath, bitmap);
+            BitmapUtils.toSaveFile(savePath, bitmap);
         }
+        bitmap1.recycle();
+        bitmap2.recycle();
+        bitmap.recycle();
         //保存成功的时候 通知上个页面关闭
         EventBus.getDefault().post(new Event.SavePosterSuccessEvent());
     }
@@ -157,7 +160,6 @@ public class SharePosterActivity extends ToolbarActivity {
                     Bitmap bitmap = ImageUtils.rotaingImageView(degree, cameraBitmap);
                     ImageUtils.saveBitmap(bitmap, imagePath);
                     coverPath = imagePath;
-
                 }
                 int width = DensityUtil.getScreenW(context);
                 int height = width * 2 / 3;

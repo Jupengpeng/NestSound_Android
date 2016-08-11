@@ -10,5 +10,5 @@
     android:text="action"
     android:gravity="center"
     android:textSize="18sp"
-    android:textColor="#444" />
+    android:textColor="#555" />
 </LinearLayout>

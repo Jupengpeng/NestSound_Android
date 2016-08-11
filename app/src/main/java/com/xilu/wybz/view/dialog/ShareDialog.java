@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.ShareBean;
 import com.xilu.wybz.bean.WorksData;
+import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.ui.lyrics.LyricsPosterActivity;
 import com.xilu.wybz.utils.AppInfoUtil;
 import com.xilu.wybz.utils.DensityUtil;
@@ -95,35 +96,35 @@ public class ShareDialog extends Dialog implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.ll_share_weixin:
-                if(AppInfoUtil.isAppInstalled(context,"com.tencent.mm")) {
+                if(AppInfoUtil.isAppInstalled(context, MyCommon.WECHAT_PKG)) {
                     shareUtil.toShareWeChat();
                 }else{
                     ToastUtils.toast(context,"您尚未安装微信！");
                 }
                 break;
             case R.id.ll_share_weibo:
-                if(AppInfoUtil.isAppInstalled(context,"com.sina.weibo")) {
+                if(AppInfoUtil.isAppInstalled(context, MyCommon.SINA_PKG)) {
                     shareUtil.toShareSina();
                 }else{
                     ToastUtils.toast(context,"您尚未安装微博！");
                 }
                 break;
             case R.id.ll_share_friend:
-                if(AppInfoUtil.isAppInstalled(context,"com.tencent.mm")) {
+                if(AppInfoUtil.isAppInstalled(context, MyCommon.WECHAT_PKG)) {
                     shareUtil.toShareWeChatCircle();
                 }else{
                     ToastUtils.toast(context,"您尚未安装微信！");
                 }
                 break;
             case R.id.ll_share_qq:
-                if(AppInfoUtil.isAppInstalled(context,"com.tencent.mobileqq")) {
+                if(AppInfoUtil.isAppInstalled(context, MyCommon.QQ_PKG)) {
                     shareUtil.toShareQQ();
                 }else {
                     ToastUtils.toast(context,"您尚未安装QQ！");
                 }
                 break;
             case R.id.ll_share_qzone:
-                if(AppInfoUtil.isAppInstalled(context,"com.tencent.qzone")) {
+                if(AppInfoUtil.isAppInstalled(context, MyCommon.QZONE_PKG)) {
                     shareUtil.toShareQzone();
                 }else {
                     ToastUtils.toast(context,"您尚未安装QQ空间！");
