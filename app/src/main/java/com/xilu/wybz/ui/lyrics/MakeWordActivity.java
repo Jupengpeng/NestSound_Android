@@ -242,9 +242,9 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView {
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                             LyricsDraftBean bean = new LyricsDraftBean();
                             bean.id = LyricsDraftUtils.getId();
-                            bean.name = worksData.title;
-                            bean.text = worksData.lyrics.replaceAll("[\\t\\n\\r]",";");
-                            bean.time = String.valueOf(System.currentTimeMillis());
+                            bean.title = worksData.title;
+                            bean.content = worksData.lyrics.replaceAll("[\\t\\n\\r]",";");
+                            bean.createtime = String.valueOf(System.currentTimeMillis());
                             LyricsDraftUtils.save(bean);
                             PrefsUtil.putString(KeySet.LOCAL_LYRICS, "", context);
                             finish();

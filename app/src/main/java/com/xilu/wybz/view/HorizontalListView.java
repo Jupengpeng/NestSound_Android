@@ -533,7 +533,7 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
         // Force the OS to redraw this view
         invalidate();
 
-        // If the data changed then reset everything and render from scratch at the same offset as last time
+        // If the data changed then reset everything and render from scratch at the same offset as last createtime
         if (mDataChanged) {
             int oldCurrentX = mCurrentX;
             initView();
@@ -578,7 +578,7 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
             setCurrentScrollState(OnScrollStateChangedListener.ScrollState.SCROLL_STATE_IDLE);
         }
 
-        // Calculate our delta from the last time the view was drawn
+        // Calculate our delta from the last createtime the view was drawn
         int dx = mCurrentX - mNextX;
         removeNonVisibleChildren(dx);
         fillList(dx);
@@ -767,7 +767,7 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
         while (rightEdge + dx + mDividerWidth < getWidth() && mRightViewAdapterIndex + 1 < mAdapter.getCount()) {
             mRightViewAdapterIndex++;
 
-            // If mLeftViewAdapterIndex < 0 then this is the first time a view is being added, and left == right
+            // If mLeftViewAdapterIndex < 0 then this is the first createtime a view is being added, and left == right
             if (mLeftViewAdapterIndex < 0) {
                 mLeftViewAdapterIndex = mRightViewAdapterIndex;
             }
@@ -1337,7 +1337,7 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
 
     /**
      * Checks if the edge glow should be used enabled.
-     * The glow is not enabled unless there are more views than can fit on the screen at one time.
+     * The glow is not enabled unless there are more views than can fit on the screen at one createtime.
      */
     boolean isEdgeGlowEnabled() {
         if (mAdapter == null || mAdapter.isEmpty()) return false;

@@ -201,8 +201,8 @@ public class DraftLyricsActivity extends BaseListActivity<LyricsDraftBean> imple
         @Override
         public void onBindViewHolder(final int position) {
             LyricsDraftBean bean = mDataList.get(position);
-            tvName.setText(bean.name);
-            tvText.setText(bean.text);
+            tvName.setText(bean.title);
+            tvText.setText(bean.content);
             tvTime.setText(bean.getFormatTime());
             rlRoot.setTag(position);
 
@@ -234,8 +234,8 @@ public class DraftLyricsActivity extends BaseListActivity<LyricsDraftBean> imple
                     }
                     WorksData worksData = new WorksData();
                     LyricsDraftBean bean1 = mDataList.get(position);
-                    worksData.title = bean1.name;
-                    worksData.lyrics = bean1.text.replace(";","\n");
+                    worksData.title = bean1.title;
+                    worksData.lyrics = bean1.content.replace(";","\n");
                     EventBus.getDefault().post(new Event.ImportWordEvent(worksData));
                     finish();
 

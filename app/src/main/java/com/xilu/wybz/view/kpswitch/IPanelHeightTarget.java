@@ -24,7 +24,7 @@ package com.xilu.wybz.view.kpswitch;
 public interface IPanelHeightTarget {
 
     /**
-     * for handle the panel's height, will be equal to the keyboard height which had saved last time.
+     * for handle the panel's height, will be equal to the keyboard height which had saved last createtime.
      */
     void refreshHeight(final int panelHeight);
 

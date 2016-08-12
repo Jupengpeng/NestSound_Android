@@ -176,7 +176,7 @@ public class WaveSurfaceHelper {
                     long start = System.currentTimeMillis();
                     onDrawWave();
                     long stop = System.currentTimeMillis();
-                    Log.e("surface","onDraw time:"+(stop -start));
+                    Log.e("surface","onDraw createtime:"+(stop -start));
 
                     if (i>20){
 

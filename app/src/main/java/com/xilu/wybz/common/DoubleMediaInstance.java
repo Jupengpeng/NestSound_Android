@@ -314,7 +314,7 @@ public class DoubleMediaInstance {
             public void run() {
                 if (mediaPlayer1 != null){
                     int current = mediaPlayer1.getCurrentPosition();
-                    Log.d("timer","time:"+current);
+                    Log.d("timer","createtime:"+current);
                     if (onProgressLitsener != null){
                         onProgressLitsener.progress(current);
                     }

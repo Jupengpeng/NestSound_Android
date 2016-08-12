@@ -9,15 +9,17 @@ import com.xilu.wybz.utils.DateFormatUtils;
 public class LyricsDraftBean {
 
     public String id = "";
-    public String name = "";
-    public String text = "";
-    public String user = "";
-    public String time = "";
+    public String title = "";
+    public String content = "";
+    public String uid = "";
+    public String workname = "";
+    public String draftdesc = "";
+    public String createtime = "";
 
     transient public String file = null;
 
     public String getFormatTime(){
-        return DateFormatUtils.format(time,DateFormatUtils.PATTERN_B);
+        return DateFormatUtils.format(createtime,DateFormatUtils.PATTERN_B);
     }
 
 
