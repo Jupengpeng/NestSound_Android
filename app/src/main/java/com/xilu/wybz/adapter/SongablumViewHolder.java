@@ -50,6 +50,12 @@ public class SongablumViewHolder extends com.xilu.wybz.view.pull.BaseViewHolder 
         }else if(StringUtil.isNotBlank(songAlbum.detail)){
             tvDesc.setText(songAlbum.detail);
         }
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onItemClick(v,position);
+            }
+        });
     }
     @Override
     public void onItemClick(View view, int position) {

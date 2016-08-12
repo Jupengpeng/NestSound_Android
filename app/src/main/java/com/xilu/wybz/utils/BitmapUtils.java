@@ -5,12 +5,14 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
 import android.os.Build;
+import android.os.Environment;
 import android.view.View;
 
 import java.io.ByteArrayInputStream;
@@ -293,14 +295,7 @@ public class BitmapUtils {
      */
     public static Bitmap compressImage(Bitmap bitmap, int size) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);//质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
-        int options = 100;
-        while (baos.toByteArray().length / 1024 > size) {    //循环判断如果压缩后图片是否大于100kb,大于继续压缩
-            baos.reset();//重置baos即清空baos
-            options -= 10;//每次都减少10
-            bitmap.compress(Bitmap.CompressFormat.JPEG, options, baos);//这里压缩options%，把压缩后的数据存放到baos中
-
-        }
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 90, baos);//质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
         ByteArrayInputStream isBm = new ByteArrayInputStream(baos.toByteArray());//把压缩后的数据baos存放到ByteArrayInputStream中
         return BitmapFactory.decodeStream(isBm, null, null);//把ByteArrayInputStream数据生成图片
     }
@@ -380,11 +375,26 @@ public class BitmapUtils {
     public static Bitmap add2Bitmap(Bitmap first, Bitmap second) {
         int width = Math.max(first.getWidth(), second.getWidth());
         int height = first.getHeight() + second.getHeight();
-        Bitmap result = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
+        Bitmap result = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_4444);
         Canvas canvas = new Canvas(result);
+        canvas.drawColor(Color.WHITE);
         canvas.drawBitmap(first, 0, 0, null);
         canvas.drawBitmap(second, 0, first.getHeight(), null);
-        return compressImage(result,300);
+        return result;
+    }
+    public static String toSaveFile(String strPath,Bitmap bitmap){
+        File file = new File(strPath);
+        if (!file.getParentFile().exists()) {
+            file.getParentFile().mkdirs();
+        }
+        try {
+            FileOutputStream os = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, os);
+            os.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return file.getAbsolutePath();
     }
     public static Bitmap convertViewToBitmap(View view){
         view.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
@@ -398,7 +408,7 @@ public class BitmapUtils {
             return null;
         }
         Bitmap screenshot;
-        screenshot = Bitmap.createBitmap(v.getWidth(), v.getHeight(), Bitmap.Config.RGB_565);
+        screenshot = Bitmap.createBitmap(v.getWidth(), v.getHeight(), Bitmap.Config.ARGB_4444);
         Canvas c = new Canvas(screenshot);
         v.draw(c);
         return screenshot;

@@ -643,7 +643,7 @@ public class ModifyInspireRecordActivity extends ToolbarActivity implements IIns
     }
 
     private void ToSelectPicActivity() {
-        Intent intent = new Intent(this, SelectPicActivity.class);
+        Intent intent = new Intent(this, NewSelectPicActivity.class);
         ArrayList<String> pics = new ArrayList<>();
         if (list.size() > 0) {
             for (PhotoBean photoBean : list) {

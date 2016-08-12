@@ -212,7 +212,7 @@ public class NewSelectPicActivity extends BaseListActivity<PhotoBean> {
             if(selectPicProvider!=null){
                 selectPicProvider.setCount(picList.size());
             }
-            adapter.notifyDataSetChanged();
+            adapter.notifyItemChanged(position);
         }
     }
 }

@@ -142,7 +142,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     String[] actionTypes2 = new String[]{ "del"};
     PlayLyricsAdapter playLyricsAdapter;
     List<String> lyricsList;
-    boolean isPlay = false;
+    boolean isPlay = true;
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_playaudio;
@@ -466,14 +466,12 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
                 break;
             case R.id.iv_play:
                 isPlay = !isPlay;
-                MyApplication.mMainService.doPP(isPlay);
-                if(MyApplication.mMainService.status==1){
-                    if(isPlay){
-                        ivPlay.setImageResource(R.drawable.ic_play_pause);
-                    }else{
-                        ivPlay.setImageResource(R.drawable.ic_play_play);
-                    }
+                if(isPlay){
+                    ivPlay.setImageResource(R.drawable.ic_play_pause);
+                }else{
+                    ivPlay.setImageResource(R.drawable.ic_play_play);
                 }
+                MyApplication.mMainService.doPP(isPlay);
                 break;
             case R.id.iv_next:
                 MyApplication.mMainService.toNextMusic();
@@ -648,7 +646,6 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
         if(event.getFrom().equals(from)) {
             switch (event.getStatus()) {
                 case MyCommon.STARTED://开始
-                    ivPlay.setImageResource(R.drawable.ic_play_pause);
                     if (MyApplication.mMainService != null) {
                         playSeekBar.setMax(MyApplication.mMainService.getDuration());
                         tvAlltime.setText(FormatHelper.formatDuration(MyApplication.mMainService.getDuration() / 1000));
@@ -657,11 +654,9 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
                     break;
                 case MyCommon.PLAYED://播放
                     startTimer();
-                    ivPlay.setImageResource(R.drawable.ic_play_pause);
                     break;
                 case MyCommon.PAUSED://暂停
                     closeTimer();
-                    ivPlay.setImageResource(R.drawable.ic_play_play);
                     break;
                 case MyCommon.STOPPED://停止doPP
                 case MyCommon.COMPLETED://完成
@@ -670,7 +665,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
                 case MyCommon.FAILED://获取数据失败
                     closeTimer();
                     ivPlay.setImageResource(R.drawable.ic_play_pause);
-                    isPlay = false;
+                    isPlay = true;
                     playSeekBar.setProgress(0);
                     tvTime.setText("00:00");
                     break;

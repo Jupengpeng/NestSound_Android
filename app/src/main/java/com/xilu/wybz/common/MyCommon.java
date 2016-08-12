@@ -69,6 +69,11 @@ public class MyCommon {
     public static final String WECHAT_APP_SECRET = "e82e6e746efa3e92a6afa3e4be4ae7e4";
     public static final String SINA_APP_KEY = "4209676241";
     public static final String SINA_APP_SECRET = "8856a07ab99f27d94005a3fb536ad4c8";
+    public static final String WECHAT_PKG = "com.tencent.mm";
+    public static final String SINA_PKG = "com.sina.weibo";
+    public static final String QQ_PKG = "com.tencent.mobileqq";
+    public static final String QZONE_PKG = "com.tencent.qzone";
+    public static final String WECHAT_CIRCLE_PKG = "com.tencent.mm";
     //默认歌词图片
     public static List<String> getLyricsPic() {
         List<String> lyricsPics = new ArrayList<>();

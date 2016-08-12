@@ -27,7 +27,7 @@ public class ActionAdapter extends YcBaseAdapter<ActionBean> {
         if(title.equals("删除")) {
             tv_title.setTextColor(context.getResources().getColor(R.color.red));
         }else{
-            tv_title.setTextColor(0xff666666);
+            tv_title.setTextColor(0xff555555);
         }
         tv_title.setText(title);
         return convertView;
