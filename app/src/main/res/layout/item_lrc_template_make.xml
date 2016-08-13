@@ -34,6 +34,7 @@
         android:maxLines="1"
         android:ellipsize="end"
         android:background="@color/tran"
+        android:textColorHint="@color/main_text_color5"
         tools:text="前生的爱终究会留下一个记号"
         android:textColor="@color/main_text_color"
         android:textSize="16sp"

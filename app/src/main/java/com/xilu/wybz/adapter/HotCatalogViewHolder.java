@@ -2,26 +2,15 @@ package com.xilu.wybz.adapter;
 
 import android.content.Context;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
-import com.xilu.wybz.bean.HotBean;
 import com.xilu.wybz.bean.HotCatalog;
-import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.MyCommon;
-import com.xilu.wybz.common.MyHttpClient;
-import com.xilu.wybz.service.MainService;
-import com.xilu.wybz.ui.lyrics.LyricsdisplayActivity;
 import com.xilu.wybz.ui.song.MakeHotActivity;
-import com.xilu.wybz.ui.song.PlayAudioActivity;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.ImageLoadUtil;
-import com.xilu.wybz.utils.PrefsUtil;
-import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.view.pull.section.SectionData;
 
 import java.util.List;
@@ -37,6 +26,7 @@ public class HotCatalogViewHolder extends com.xilu.wybz.view.pull.BaseViewHolder
     private int itemWidth;
     @Bind(R.id.iv_cover)
     SimpleDraweeView ivCover;
+    public boolean flash = false;
 
     public HotCatalogViewHolder(View view, Context context, List<SectionData<HotCatalog>> sectionDatas, int column) {
         super(view);
@@ -64,7 +54,7 @@ public class HotCatalogViewHolder extends com.xilu.wybz.view.pull.BaseViewHolder
 
     @Override
     public void onItemClick(View view, int position) {
-        MakeHotActivity.toMakeHotActivity(mContext, mDataList.get(position).t);
+        MakeHotActivity.toMakeHotActivity(mContext, mDataList.get(position).t,flash);
     }
 
 }

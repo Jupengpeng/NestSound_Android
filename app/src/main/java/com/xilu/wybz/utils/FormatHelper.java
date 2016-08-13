@@ -4,7 +4,7 @@ package com.xilu.wybz.utils;
 public class FormatHelper {
 
     /**
-     * return a format time of 00:00
+     * return a format createtime of 00:00
      *
      * @return
      */

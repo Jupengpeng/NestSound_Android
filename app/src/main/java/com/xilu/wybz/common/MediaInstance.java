@@ -216,7 +216,7 @@ public class MediaInstance {
             public void run() {
                 if (mediaPlayer != null) {
                     int current = mediaPlayer.getCurrentPosition();
-                    Log.d("timer", "time:" + current);
+                    Log.d("timer", "createtime:" + current);
                     if (onProgressLitsener != null && current != 1) {
                         onProgressLitsener.progress(current);
                     }

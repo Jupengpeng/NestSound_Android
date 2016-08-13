@@ -7,35 +7,38 @@ import com.xilu.wybz.bean.JsonResponse;
 import com.xilu.wybz.bean.LyricsDraftBean;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.callback.AppJsonCalback;
-import com.xilu.wybz.ui.IView.ITempleateListLrcView;
+import com.xilu.wybz.ui.IView.IDraftListView;
+import com.xilu.wybz.utils.PrefsUtil;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-/**
- * Created by Administrator on 2016/8/5.
- */
-public class TemplateLrcListPresenter extends BasePresenter<ITempleateListLrcView>{
+import okhttp3.Call;
 
-    public TemplateLrcListPresenter(Context context, ITempleateListLrcView iView) {
+/**
+ * Created by Administrator on 2016/8/13.
+ */
+public class DraftListPresenter extends BasePresenter<IDraftListView>{
+
+    public DraftListPresenter(Context context, IDraftListView iView) {
         super(context, iView);
     }
-
-    public void getTemplateList(int page){
+    public void getDraftList(int page){
         params = new HashMap<>();
         params.put("page",""+page);
+        params.put("uid",""+ PrefsUtil.getUserId(context));
 
-        httpUtils.post(MyHttpClient.getLyricstemplateList(),params, new AppJsonCalback(context){
+        httpUtils.post(MyHttpClient.getDraftList(),params, new AppJsonCalback(context){
             @Override
             public void onResult(JsonResponse<? extends Object> response) {
                 super.onResult(response);
                 List<LyricsDraftBean> list = response.getData();
-                if (list == null || list.size()==0){
-                    iView.onError("没有更多数据了");
-                } else {
-                    iView.onSuccess(list);
+                if (list == null){
+                    list = new ArrayList<LyricsDraftBean>();
                 }
+                iView.onSuccess(list);
             }
 
             @Override
@@ -46,13 +49,18 @@ public class TemplateLrcListPresenter extends BasePresenter<ITempleateListLrcVie
             }
 
             @Override
+            public void onError(Call call, Exception e) {
+                super.onError(call, e);
+                iView.onError(e.getMessage());
+            }
+
+            @Override
             public Type getDataType() {
                 return new TypeToken<List<LyricsDraftBean>>(){}.getType();
             }
         });
 
     }
-
 
 
 

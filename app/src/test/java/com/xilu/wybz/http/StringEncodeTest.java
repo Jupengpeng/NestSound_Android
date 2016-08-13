@@ -5,6 +5,8 @@ import com.xilu.wybz.http.rsa.RSAUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.junit.Test;
 
+import java.util.regex.Pattern;
+
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -86,6 +88,25 @@ public class StringEncodeTest {
             System.out.print(data4[i]);
         }
 
+    }
+
+    @Test
+    public void test4() throws Exception {
+        String match = "1234\n\r1124\n1245\\n";
+        System.out.println(":"+match);
+
+        match = match.replaceAll("\\\\n","@");
+        System.out.println(":"+match);
+        match = match.replaceAll("[\\n\\r\\t]+","@");
+
+        System.out.println(":"+match);
+        System.out.println(":"+match.split("@").length);
+        System.out.println(":"+new int[2].length);
+
+    }
+
+    public String replaceAll(String s,String regularExpression,String replacement ){
+        return Pattern.compile(regularExpression).matcher(s).replaceAll(replacement);
     }
 
 }

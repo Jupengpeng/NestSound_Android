@@ -16,7 +16,7 @@ import com.xilu.wybz.R;
 public class AppMsg {
 
     /**
-     * Show the view or text notification for a short period of time. This time
+     * Show the view or text notification for a short period of createtime. This createtime
      * could be user-definable. This is the default.
      *
      * @see #setDuration
@@ -24,7 +24,7 @@ public class AppMsg {
     public static final int LENGTH_SHORT = 1500;
 
     /**
-     * Show the view or text notification for a long period of time. This time
+     * Show the view or text notification for a long period of createtime. This createtime
      * could be user-definable.
      *
      * @see #setDuration
@@ -32,7 +32,7 @@ public class AppMsg {
     public static final int LENGTH_LONG = 3000;
 
     /**
-     * <p>Show the view or text notification for an undefined amount of time
+     * <p>Show the view or text notification for an undefined amount of createtime
      * -Usually until an invocation of {@link #cancel()}, {@link #cancelAll(android.app.Activity)},
      * {@link #cancelAll()} or {@link android.app.Activity#onDestroy()}-,
      *
@@ -64,17 +64,17 @@ public class AppMsg {
     public static final int PRIORITY_HIGH = Integer.MAX_VALUE;
 
     /**
-     * Show the text notification for a long period of time with a negative style.
+     * Show the text notification for a long period of createtime with a negative style.
      */
     public static final Style STYLE_ALERT = new Style(LENGTH_LONG, R.color.alert);
 
     /**
-     * Show the text notification for a short period of time with a positive style.
+     * Show the text notification for a short period of createtime with a positive style.
      */
     public static final Style STYLE_CONFIRM = new Style(LENGTH_SHORT, R.color.confirm);
 
     /**
-     * Show the text notification for a short period of time with a neutral style.
+     * Show the text notification for a short period of createtime with a neutral style.
      */
     public static final Style STYLE_INFO = new Style(LENGTH_SHORT, R.color.info);
 

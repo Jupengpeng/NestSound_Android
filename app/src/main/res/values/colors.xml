@@ -28,6 +28,7 @@
     <color name="main_text_color2">#666</color>
     <color name="main_text_color3">#999</color>
     <color name="main_text_color4">#bcffffff</color>
+    <color name="main_text_color5">#ffaaaaaa</color>
     <color name="green">#00ff00</color>
     <color name="yellow">#ffd527</color>
     <color name="lightblue">#539ac2</color>

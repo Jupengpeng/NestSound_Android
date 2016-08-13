@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import com.google.gson.Gson;
 import com.xilu.wybz.R;
@@ -20,13 +21,16 @@ import com.xilu.wybz.bean.LyricsDraftBean;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.KeySet;
+import com.xilu.wybz.presenter.DraftPresenter;
 import com.xilu.wybz.presenter.MakeWordPresenter;
 import com.xilu.wybz.ui.IView.IMakeWordView;
+import com.xilu.wybz.ui.IView.ISimpleView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.LyricsDraftUtils;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtil;
+import com.xilu.wybz.utils.ToastUtils;
 import com.xilu.wybz.view.dialog.LyricsDialog;
 import com.xilu.wybz.view.materialdialogs.DialogAction;
 import com.xilu.wybz.view.materialdialogs.MaterialDialog;
@@ -41,8 +45,9 @@ import butterknife.OnClick;
 /**
  * Created by June on 16/5/13.
  */
-public class MakeWordActivity extends ToolbarActivity implements IMakeWordView {
+public class MakeWordActivity extends ToolbarActivity implements IMakeWordView,ISimpleView {
     MakeWordPresenter makeWordPresenter;
+    DraftPresenter draftPresenter;
     @Bind(R.id.et_title)
     EditText etTitle;
     @Bind(R.id.et_word)
@@ -73,6 +78,7 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView {
         if (bundle != null) {
             worksData = (WorksData) bundle.getSerializable(KeySet.WORKS_DATA);
         }
+        draftPresenter  = new DraftPresenter(context,this);
         makeWordPresenter = new MakeWordPresenter(context, this);
         makeWordPresenter.init();
     }
@@ -132,11 +138,17 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView {
             case R.id.menu_next:
                 String title = etTitle.getText().toString().trim();
                 String lyrics = etWord.getText().toString().trim();
-                if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(lyrics)) {
-                    worksData.setTitle(title);
-                    worksData.setLyrics(lyrics);
-                    SaveWordActivity.toSaveWordActivity(context, worksData);
+                if (TextUtils.isEmpty(title)){
+                    ToastUtils.toast(this,"请填写歌词名称");
+                    return true;
                 }
+                if (TextUtils.isEmpty(lyrics)) {
+                    ToastUtils.toast(this,"请填写歌词");
+                    return true;
+                }
+                worksData.setTitle(title);
+                worksData.setLyrics(lyrics);
+                SaveWordActivity.toSaveWordActivity(context, worksData);
                 return true;
             case android.R.id.home:
                 tipSaveLocalData();
@@ -144,6 +156,9 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
+
 
     public void initView() {
         EventBus.getDefault().register(this);
@@ -165,6 +180,18 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView {
         }
     }
 
+    @Override
+    public void onSuccess(int id, String message) {
+        cancelPd();
+        ToastUtils.toast(this,message);
+    }
+
+    @Override
+    public void onError(int id, String error) {
+        cancelPd();
+        ToastUtils.toast(this,error);
+    }
+
     LyricsMenuPopWindow window;
 
     @OnClick({R.id.ll_import, R.id.ll_thesaurus, R.id.ll_course})
@@ -180,7 +207,13 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView {
             case R.id.ll_course:
                 if (window == null) window = new LyricsMenuPopWindow(this);
                 int y = (int) (49.4 * DensityUtil.getScreenDensity(this));
-                window.showAtLocation(etTitle, Gravity.BOTTOM | Gravity.RIGHT, 0, y);
+
+                LinearLayout layout= (LinearLayout)findViewById(R.id.ll_course);
+                int h = DensityUtil.getScreenH(this);
+                int n = DensityUtil.getNavigationBarHeight(this);
+                int[] local = new int[2];
+                layout.getLocationOnScreen(local);
+                window.showAtLocation(etTitle, Gravity.BOTTOM | Gravity.RIGHT, 0, h+n-local[1]);
 
                 break;
         }
@@ -242,10 +275,15 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView {
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                             LyricsDraftBean bean = new LyricsDraftBean();
                             bean.id = LyricsDraftUtils.getId();
-                            bean.name = worksData.title;
-                            bean.text = worksData.lyrics.replaceAll("[\\t\\n\\r]",";");
-                            bean.time = String.valueOf(System.currentTimeMillis());
-                            LyricsDraftUtils.save(bean);
+                            bean.title = worksData.title;
+                            bean.draftdesc = worksData.title;
+                            bean.content = worksData.lyrics.replaceAll("[\\t\\n\\r]","\n");
+                            bean.createtime = String.valueOf(System.currentTimeMillis());
+
+//                            LyricsDraftUtils.save(bean);
+                            draftPresenter.saveDraft(bean);
+                            showPd("正在保存中");
+
                             PrefsUtil.putString(KeySet.LOCAL_LYRICS, "", context);
                             finish();
                         }

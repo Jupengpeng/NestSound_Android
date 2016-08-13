@@ -45,7 +45,7 @@ public class HttpUtils {
         headers.put("machine", PhoneInfoUtil.getMachine(context));
     }
     //普通post提交
-    public void post(String url, Map<String, String> params, Callback stringCallback) {
+    public void post(String url, Map<String, String> params, Callback callback) {
         if(params==null){
             params = new HashMap<>();
         }
@@ -63,7 +63,7 @@ public class HttpUtils {
                 .addParams("data", content)
                 .headers(headers)
                 .build()
-                .execute(stringCallback);
+                .execute(callback);
 
     }
     //普通post提交

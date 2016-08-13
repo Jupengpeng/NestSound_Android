@@ -1,21 +1,22 @@
 package com.xilu.wybz.ui.song;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
-import com.xilu.wybz.adapter.HomeWorksViewHolder;
 import com.xilu.wybz.adapter.HotCatalogViewHolder;
 import com.xilu.wybz.bean.HotBean;
 import com.xilu.wybz.bean.HotCatalog;
 import com.xilu.wybz.bean.TemplateBean;
+import com.xilu.wybz.common.Event;
 import com.xilu.wybz.presenter.HotCatalogPresenter;
 import com.xilu.wybz.ui.IView.IHotCatalogView;
 import com.xilu.wybz.ui.base.BaseSectionListActivity;
-import com.xilu.wybz.ui.find.MoreWorkActivity;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.PullRecycler;
@@ -23,8 +24,9 @@ import com.xilu.wybz.view.pull.layoutmanager.ILayoutManager;
 import com.xilu.wybz.view.pull.layoutmanager.MyGridLayoutManager;
 import com.xilu.wybz.view.pull.section.SectionData;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.Bind;
 
@@ -32,11 +34,29 @@ import butterknife.Bind;
  * Created by hujunwei on 16/8/8.
  */
 public class HotCatalogActivity extends BaseSectionListActivity<HotCatalog> implements IHotCatalogView{
+    public static final String FLASH_TAG = "FLASH_TAG";
     private int page = 1;
     private int action = 0;
     private int column = 3;
     HotCatalogPresenter hotCatalogPresenter;
     TemplateBean templateBean;
+    private boolean flash = false;
+
+    public static void toHotCatalogActivity(Activity context,boolean flash){
+        Intent intent = new Intent(context,HotCatalogActivity.class);
+        intent.putExtra(FLASH_TAG,flash);
+        context.startActivity(intent);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Intent intent = getIntent();
+        if (intent != null){
+            flash = intent.getBooleanExtra(FLASH_TAG,false);
+        }
+    }
+
     @Override
     protected void initPresenter() {
         hotCatalogPresenter = new HotCatalogPresenter(this,this);
@@ -60,10 +80,19 @@ public class HotCatalogActivity extends BaseSectionListActivity<HotCatalog> impl
         recycler.setRefreshing();
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(Event.ImportHotEvent event) {
+        if (flash){
+            finish();
+        }
+    }
+
     @Override
     protected BaseViewHolder onCreateSectionViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.hotcatalog_item, parent, false);
-        return new HotCatalogViewHolder(view, context, mDataList, column);
+        HotCatalogViewHolder holder = new HotCatalogViewHolder(view, context, mDataList, column);
+        holder.flash =flash;
+        return holder;
     }
 
     public BaseViewHolder onCreateSectionHeaderViewHolder(ViewGroup parent) {
@@ -87,7 +116,12 @@ public class HotCatalogActivity extends BaseSectionListActivity<HotCatalog> impl
                 @Override
                 public void onClick(View v) {
                     if(templateBean!=null) {
-                        MakeSongActivity.toMakeSongActivity(context, templateBean);
+                        if (flash){
+                            EventBus.getDefault().post(new Event.ImportHotEvent(templateBean));
+                            finish();
+                        } else {
+                            MakeSongActivity.toMakeSongActivity(context, templateBean);
+                        }
                     }
                 }
             });

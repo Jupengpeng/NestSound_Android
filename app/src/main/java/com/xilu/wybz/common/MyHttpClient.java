@@ -270,5 +270,20 @@ public class MyHttpClient {
     public static String getHotCatalogUrl(){
         return "common/accompanimentcategory/list";
     }
+
+
+
+    public static String getLyricstemplateList(){
+        return "lyricstemplate/list";
+    }
+    public static String getDraftList(){
+        return "draft/list";
+    }
+    public static String getDraftSave(){
+        return "draft/save";
+    }
+    public static String getDraftDelete(){
+        return "draft/delete";
+    }
 }
 

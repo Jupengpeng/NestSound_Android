@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
 import com.xilu.wybz.R;
+import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.view.dialog.LyricsDialog;
 
 /**
@@ -58,9 +59,13 @@ public class LyricsMenuPopWindow extends PopupWindow {
             ll_main.setTranslationX(1f);
         }
 
+        int w = DensityUtil.getScreenW(act);
+        float d = DensityUtil.getScreenDensity(act);
+
         setContentView(mMenuView);
         //设置SelectPicPopupWindow弹出窗体的宽
-        setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
+//        setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
+        setWidth((int)((w)/3+0.5));
         //设置SelectPicPopupWindow弹出窗体的高
         setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         //设置SelectPicPopupWindow弹出窗体可点击
