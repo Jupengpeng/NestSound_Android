@@ -26,6 +26,7 @@ ext {
                     "materialdatetimepicker": "com.wdullaer:materialdatetimepicker:2.3.0",
                     "fresco"                : "com.facebook.fresco:fresco:0.9.0+",
                     "compressor"            : "id.zelory:compressor:1.0.2",
-                    "analytics"             : "com.umeng.analytics:analytics:latest.integration"]
+                    "analytics"             : "com.umeng.analytics:analytics:latest.integration",
+                    "ultra"             : "in.srain.cube:ultra-ptr:1.0.11"]
 
 }

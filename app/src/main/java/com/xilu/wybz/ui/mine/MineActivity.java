@@ -242,6 +242,7 @@ public class MineActivity extends BaseActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(Event.UpdataUserBean event) {
         if (event.getType() == 1) {
+            if(event.getUserBean()!=null)
             setUserInfo(event.getUserBean());
         }
     }
