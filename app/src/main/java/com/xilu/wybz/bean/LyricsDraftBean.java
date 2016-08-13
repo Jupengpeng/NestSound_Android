@@ -3,10 +3,12 @@ package com.xilu.wybz.bean;
 import com.google.gson.Gson;
 import com.xilu.wybz.utils.DateFormatUtils;
 
+import java.io.Serializable;
+
 /**
  * Created by Administrator on 2016/8/10.
  */
-public class LyricsDraftBean {
+public class LyricsDraftBean implements Serializable{
 
     public String id = "";
     public String title = "";

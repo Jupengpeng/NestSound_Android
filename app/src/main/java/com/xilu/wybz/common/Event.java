@@ -1,6 +1,7 @@
 package com.xilu.wybz.common;
 
 import com.xilu.wybz.bean.PhotoBean;
+import com.xilu.wybz.bean.TemplateBean;
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.bean.UserInfoBean;
 import com.xilu.wybz.bean.WorksData;
@@ -181,6 +182,21 @@ public class Event {
 
         public void setWorksData(WorksData worksData) {
             this.worksData = worksData;
+        }
+    }
+    public static class ImportHotEvent {
+        TemplateBean templateBean;
+
+        public ImportHotEvent(TemplateBean templateBean) {
+            this.templateBean = templateBean;
+        }
+
+        public TemplateBean getWorksData() {
+            return templateBean;
+        }
+
+        public void setWorksData(TemplateBean templateBean) {
+            this.templateBean = templateBean;
         }
     }
 

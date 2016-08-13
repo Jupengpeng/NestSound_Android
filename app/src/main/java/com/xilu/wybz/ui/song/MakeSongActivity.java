@@ -286,14 +286,21 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
 
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.ImportWordEvent event) {
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(Event.ImportHotEvent event) {
+        this.templateBean = event.getWorksData();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(Event.ImportWordEvent event) {
         this.worksData = new WorksData();
         this.worksData.title = event.getWorksData().title;
         this.worksData.lyrics = event.getWorksData().lyrics;
         showWorks();
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.SaveSongSeccess event) {
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(Event.SaveSongSeccess event) {
         finish();
     }
 
@@ -411,7 +418,7 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
                     showMsg("请先停止录音");
                     return;
                 }
-                startActivity(ImportWordActivity.class);
+                HotCatalogActivity.toHotCatalogActivity(this,true);
                 break;
 
             case R.id.iv_import_lrc:

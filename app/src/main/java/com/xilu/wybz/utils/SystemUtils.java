@@ -119,4 +119,12 @@ public class SystemUtils {
             return true;
         }
     }
+
+
+    public static String formatByEnter(String content){
+        String mat = content.replaceAll("<br>","\n");
+        mat = mat.replaceAll("\\\\n","\n");
+        mat = mat.replaceAll("[\\r\\n\\t]+","#");
+        return mat;
+    }
 }

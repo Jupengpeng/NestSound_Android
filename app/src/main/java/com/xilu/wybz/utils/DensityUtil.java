@@ -1,10 +1,14 @@
 package com.xilu.wybz.utils;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
+import android.view.KeyCharacterMap;
+import android.view.KeyEvent;
+import android.view.ViewConfiguration;
 
 import java.lang.reflect.Field;
 
@@ -12,9 +16,9 @@ import java.lang.reflect.Field;
  * Created by Administrator on 2016/3/9.
  */
 public class DensityUtil {
-    static int screenW;
-    static int screenH;
-    static float screenDensity;
+    static int screenW = 0;
+    static int screenH = 0;
+    static float screenDensity = 0;
 
     public static int getScreenW(Context context) {
         if (screenW == 0) {
@@ -111,10 +115,30 @@ public class DensityUtil {
     }
 
     //获取底部 navigation bar 高度
-    public static int getNavigationBarHeight(Context mActivity) {
-        Resources resources = mActivity.getResources();
+    public static int getNavigationBarHeight(Context activity) {
+        if (!checkDeviceHasNavigationBar(activity)){
+            return 0;
+        }
+        Resources resources = activity.getResources();
         int resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android");
         int height = resources.getDimensionPixelSize(resourceId);
         return height;
     }
+
+    @SuppressLint("NewApi")
+    public static boolean checkDeviceHasNavigationBar(Context activity) {
+
+        //通过判断设备是否有返回键、菜单键(不是虚拟键,是手机屏幕外的按键)来确定是否有navigation bar
+        boolean hasMenuKey = ViewConfiguration.get(activity)
+                .hasPermanentMenuKey();
+        boolean hasBackKey = KeyCharacterMap
+                .deviceHasKey(KeyEvent.KEYCODE_BACK);
+
+        if (!hasMenuKey && !hasBackKey) {
+            // 做任何你需要做的,这个设备有一个导航栏
+            return true;
+        }
+        return false;
+    }
+
 }

@@ -1,15 +1,12 @@
 package com.xilu.wybz.ui.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -18,7 +15,6 @@ import com.xilu.wybz.R;
 import com.xilu.wybz.bean.TemplateBean;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.MyCommon;
-import com.xilu.wybz.common.PlayMediaInstance;
 import com.xilu.wybz.presenter.HotPresenter;
 import com.xilu.wybz.ui.IView.IHotView;
 import com.xilu.wybz.ui.MyApplication;
@@ -30,8 +26,6 @@ import com.xilu.wybz.utils.StringUtil;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +35,7 @@ import butterknife.Bind;
 public class HotFragment extends BaseListFragment<TemplateBean> implements IHotView {
     public static final String TYPE = "type";
     public static final String CID = "cid";
+    public static final String FLASH_TAG = "FLASH_TAG";
     private String type;
     private int cid;
     private HotPresenter hotPresenter;
@@ -48,6 +43,7 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
     private int itemWidth;
     private int itemHeight;
     private int playPos = -1;
+    public boolean flash = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,6 +51,7 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
         if (getArguments() != null) {
             type = getArguments().getString(TYPE);
             cid = getArguments().getInt(CID);
+            flash = getArguments().getBoolean(FLASH_TAG,false);
         }
     }
 
@@ -84,11 +81,12 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
 //        recycler.enablePullToRefresh(false);
     }
 
-    public static HotFragment newInstance(String type, int cid) {
+    public static HotFragment newInstance(String type, int cid, boolean flash) {
         HotFragment tabFragment = new HotFragment();
         Bundle bundle = new Bundle();
         bundle.putString(TYPE, type);
         bundle.putInt(CID, cid);
+        bundle.putBoolean(FLASH_TAG, flash);
         tabFragment.setArguments(bundle);
         return tabFragment;
     }
@@ -233,7 +231,16 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
         public void onItemClick(View view, int position) {
             doStop();
             TemplateBean bean = mDataList.get(position);
-            MakeSongActivity.toMakeSongActivity(context, bean);
+            if (flash){
+                EventBus.getDefault().post(new Event.ImportHotEvent(bean));
+                if (getActivity() != null){
+                    getActivity().finish();
+                }
+            } else {
+                MakeSongActivity.toMakeSongActivity(context, bean);
+            }
+
+
         }
 
     }

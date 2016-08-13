@@ -3,22 +3,11 @@ package com.xilu.wybz.ui.song;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.view.View;
-import android.widget.CheckedTextView;
-import android.widget.FrameLayout;
-import android.widget.TextView;
 
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.HotCatalog;
-import com.xilu.wybz.bean.TemplateBean;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.MyCommon;
-import com.xilu.wybz.common.PlayMediaInstance;
 import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.ui.fragment.HotFragment;
@@ -28,19 +17,16 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import butterknife.Bind;
-import butterknife.OnClick;
-
 public class MakeHotActivity extends ToolbarActivity {
+    public static final String FLASH_TAG = "FLASH_TAG";
     private HotCatalog hotCatalog;
     private HotFragment hotFragment;
     String type = "";
-    public static void toMakeHotActivity(Context context, HotCatalog hotCatalog){
+    public boolean flash = false;
+    public static void toMakeHotActivity(Context context, HotCatalog hotCatalog,boolean flash){
         Intent intent = new Intent(context,MakeHotActivity.class);
         intent.putExtra("hotCatalog",hotCatalog);
+        intent.putExtra(FLASH_TAG,flash);
         context.startActivity(intent);
     }
     @Override
@@ -57,6 +43,7 @@ public class MakeHotActivity extends ToolbarActivity {
         Bundle bundle = getIntent().getExtras();
         if(bundle!=null){
             hotCatalog = (HotCatalog) bundle.getSerializable("hotCatalog");
+            flash = bundle.getBoolean(FLASH_TAG,false);
         }
         if(hotCatalog==null)finish();
         EventBus.getDefault().register(this);
@@ -68,10 +55,11 @@ public class MakeHotActivity extends ToolbarActivity {
 
         if(hotCatalog.categoryname.contains("最新")){
             type = "new";
+
         }else if(hotCatalog.categoryname.contains("最热")){
             type = "hot";
         }
-        hotFragment = HotFragment.newInstance(type,hotCatalog.id);
+        hotFragment = HotFragment.newInstance(type,hotCatalog.id,flash);
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, hotFragment).commit();
 
     }

@@ -15,6 +15,7 @@ import com.xilu.wybz.http.cookie.store.CookieStore;
 import com.xilu.wybz.http.cookie.store.HasCookieStore;
 import com.xilu.wybz.http.cookie.store.MemoryCookieStore;
 import com.xilu.wybz.http.https.HttpsUtils;
+import com.xilu.wybz.http.interceptor.LogInterceptor;
 import com.xilu.wybz.http.log.LoggerInterceptor;
 import com.xilu.wybz.http.request.RequestCall;
 import com.xilu.wybz.http.utils.Exceptions;
@@ -54,8 +55,11 @@ public class OkHttpUtils {
                 }
             });
             okHttpClientBuilder.retryOnConnectionFailure(false);
+            okHttpClientBuilder.addInterceptor(new LoggerInterceptor("url",true));
+            okHttpClientBuilder.addInterceptor(new LogInterceptor());
 
             mOkHttpClient = okHttpClientBuilder.build();
+
         } else {
             mOkHttpClient = okHttpClient;
         }
@@ -158,14 +162,14 @@ public class OkHttpUtils {
 
             @Override
             public void onResponse(final Call call, final Response response) {
-                if (response.code() >= 400 && response.code() <= 599) {
-                    try {
-                        sendFailResultCallback(call, new RuntimeException(response.body().string()), finalCallback);
-                    } catch (IOException e) {
+//                if (response.code() >= 400 && response.code() <= 599) {
+//                    try {
+//                        sendFailResultCallback(call, new RuntimeException(response.body().string()), finalCallback);
+//                    } catch (IOException e) {
 //                        e.printStackTrace();
-                    }
-                    return;
-                }
+//                    }
+//                    return;
+//                }
 
                 try {
                     Object o = finalCallback.parseNetworkResponse(response);

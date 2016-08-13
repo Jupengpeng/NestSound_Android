@@ -70,10 +70,12 @@ public class LyricsDialog extends Dialog {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 List<LibArr> libArrs= lyricats.get(position).libArr;
+                if(lyricsList.size()>0)lyricsList.clear();
+
                 for(LibArr libArr : libArrs){
-                    if(lyricsList.size()>0)lyricsList.clear();
                     lyricsList.add(libArr.lyrics);
                 }
+                lrcLv.smoothScrollToPosition(0);
                 strAdapter.notifyDataSetChanged();
                 lyricsListAdapter.setCurrTitle(titles.get(position));
                 lyricsListAdapter.notifyDataSetChanged();
@@ -89,6 +91,7 @@ public class LyricsDialog extends Dialog {
                 if (o != null){
                     msg = (String)o;
                 }
+//                String msg = ((LibArr) parent.getItemAtPosition(position)).lyrics;
                 if (focusEt != null) {
                     focusEt.setText(focusEt.getText() + msg + "\n");
                     focusEt.setSelection(focusEt.getText().length());
