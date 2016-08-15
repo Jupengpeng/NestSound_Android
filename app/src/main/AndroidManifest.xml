@@ -45,6 +45,9 @@
             android:name=".ui.MainTabActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.WelActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.BrowserActivity"
             android:screenOrientation="portrait"
             android:theme="@style/MianTheme" />
