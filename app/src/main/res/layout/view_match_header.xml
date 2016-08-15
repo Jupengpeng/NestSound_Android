@@ -41,7 +41,7 @@
                 android:layout_marginTop="8dp"
                 android:text="2016.06.18-2016.06.28"
                 android:textColor="@color/main_text_color2"
-                android:textSize="12sp" />
+                android:textSize="13sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -49,25 +49,25 @@
                 android:layout_marginTop="10dp">
 
                 <TextView
-                    android:id="@+id/tv_join_num"
+                    android:id="@+id/tv_work_num"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_item_fav"
+                    android:drawableLeft="@drawable/ic_match_work_num"
                     android:drawablePadding="3dp"
                     android:text="1121"
                     android:textColor="@color/main_text_color3"
-                    android:textSize="10sp" />
+                    android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/tv_look_num"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="30dp"
-                    android:drawableLeft="@drawable/ic_item_show"
+                    android:drawableLeft="@drawable/ic_match_look_num"
                     android:drawablePadding="3dp"
                     android:text="1121"
                     android:textColor="@color/main_text_color3"
-                    android:textSize="10sp" />
+                    android:textSize="12sp" />
 
             </LinearLayout>
 

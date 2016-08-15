@@ -10,6 +10,16 @@
         android:layout_height="40dp"
         fresco:actualImageScaleType="centerCrop"
         fresco:fadeDuration="300"
-        fresco:roundAsCircle="true"
-        fresco:placeholderImage="@drawable/default_pic" />
+        fresco:roundAsCircle="true" />
+    <RelativeLayout
+        android:id="@+id/rl_more"
+        android:layout_width="40dp"
+        android:layout_height="40dp">
+    <ImageView
+        android:id="@+id/iv_more"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:src="@drawable/ic_match_more_user" />
+    </RelativeLayout>
 </FrameLayout>

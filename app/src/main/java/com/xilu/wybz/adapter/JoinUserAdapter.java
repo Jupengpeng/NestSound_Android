@@ -6,11 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.common.MyCommon;
+import com.xilu.wybz.ui.market.StarListActivity;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.ImageLoadUtil;
 import com.xilu.wybz.utils.StringUtils;
@@ -49,8 +51,16 @@ public class JoinUserAdapter extends RecyclerView.Adapter<JoinUserAdapter.JoinUs
     @Override
     public void onBindViewHolder(final JoinUserViewHolder holder, final int position) {
         UserBean userBean = mList.get(position);
-        if(StringUtils.isNotBlank(userBean.headurl))
-        ImageLoadUtil.loadImage(MyCommon.getImageUrl(userBean.headurl,itemWidth,itemWidth), holder.ivHead);
+        if(position==mList.size()-1){
+            holder.rlMore.setVisibility(View.VISIBLE);
+        }else{
+            holder.rlMore.setVisibility(View.GONE);
+            if(StringUtils.isNotBlank(userBean.headurl))
+                ImageLoadUtil.loadImage(MyCommon.getImageUrl(userBean.headurl,itemWidth,itemWidth), holder.ivHead);
+            else
+                ImageLoadUtil.loadImage("res:///"+R.drawable.ic_default_head_252, holder.ivHead);
+        }
+
         if (mOnItemClickListener != null) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -60,6 +70,12 @@ public class JoinUserAdapter extends RecyclerView.Adapter<JoinUserAdapter.JoinUs
                 }
             });
         }
+        holder.rlMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                StarListActivity.toStarListActivity(context);
+            }
+        });
     }
 
     @Override
@@ -70,10 +86,13 @@ public class JoinUserAdapter extends RecyclerView.Adapter<JoinUserAdapter.JoinUs
     class JoinUserViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.iv_head)
         SimpleDraweeView ivHead;
+        @Bind(R.id.rl_more)
+        RelativeLayout rlMore;
         public JoinUserViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
             ivHead.setLayoutParams(new FrameLayout.LayoutParams(itemWidth, itemWidth));
+            rlMore.setLayoutParams(new FrameLayout.LayoutParams(itemWidth, itemWidth));
         }
     }
 }

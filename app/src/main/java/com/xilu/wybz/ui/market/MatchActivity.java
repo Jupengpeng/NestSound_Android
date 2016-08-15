@@ -164,6 +164,7 @@ public class MatchActivity extends BasePlayMenuActivity implements ViewPager.OnP
                         }
                     },actionBeans);
                 }
+                actionMoreDialog.showDialog();
                 break;
         }
     }

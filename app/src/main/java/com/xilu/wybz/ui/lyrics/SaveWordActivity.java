@@ -138,6 +138,7 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView {
             case R.id.iv_cover:
                 SystemUtils.openGallery(this);
                 break;
+
         }
     }
 
@@ -198,6 +199,9 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView {
                         }
                     });
                 }
+                return true;
+            case android.R.id.home:
+                closeActivity();
                 return true;
         }
         return super.onOptionsItemSelected(item);
