@@ -13,19 +13,17 @@ import com.xilu.wybz.presenter.MusicTalkMorePresenter;
 import com.xilu.wybz.service.MainService;
 import com.xilu.wybz.ui.BrowserActivity;
 import com.xilu.wybz.ui.IView.IMusicTalkMoreView;
-import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.ui.base.BaseListActivity;
 import com.xilu.wybz.ui.song.PlayAudioActivity;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.PrefsUtil;
-import com.xilu.wybz.utils.StringUtil;
+import com.xilu.wybz.utils.StringUtils;
 import com.xilu.wybz.view.SpacesItemDecoration;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.PullRecycler;
 import com.xilu.wybz.view.pull.layoutmanager.ILayoutManager;
 import com.xilu.wybz.view.pull.layoutmanager.MyLinearLayoutManager;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -145,7 +143,7 @@ public class MusicTalkMoreActivity extends BaseListActivity<MusicTalk> implement
     public void toPlayPos(int position){
         if (mDataList.size() > 0) {
             MusicTalk musicTalk = mDataList.get(position);
-            if(StringUtil.isBlank(musicTalk.url)&&musicTalk.itemid>0) {
+            if(StringUtils.isBlank(musicTalk.url)&&musicTalk.itemid>0) {
                 String playFrom = PrefsUtil.getString("playFrom", context);
                 if (!playFrom.equals(MyCommon.MUSICTALK) || MainService.ids.size() == 0) {
                     if (MainService.ids.size() > 0)
@@ -155,7 +153,7 @@ public class MusicTalkMoreActivity extends BaseListActivity<MusicTalk> implement
                     }
                 }
                 PlayAudioActivity.toPlayAudioActivity(context, musicTalk.itemid, "", MyCommon.MUSICTALK);
-            }else if(StringUtil.isNotBlank(musicTalk.url)){
+            }else if(StringUtils.isNotBlank(musicTalk.url)){
                 BrowserActivity.toBrowserActivity(context,musicTalk.url);
             }
         }

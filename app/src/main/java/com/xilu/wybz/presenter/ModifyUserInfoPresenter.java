@@ -6,14 +6,11 @@ import com.xilu.wybz.bean.DataBean;
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.callback.MyStringCallback;
-import com.xilu.wybz.ui.IView.IForgetPwdView;
 import com.xilu.wybz.ui.IView.IModifyUserInfoView;
 import com.xilu.wybz.utils.ParseUtils;
 import com.xilu.wybz.utils.PrefsUtil;
-import com.xilu.wybz.utils.StringUtil;
 
 import java.util.HashMap;
-import java.util.Map;
 
 import okhttp3.Call;
 

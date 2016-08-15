@@ -9,12 +9,11 @@ import android.widget.FrameLayout;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
-import com.xilu.wybz.bean.MusicTalk;
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.ImageLoadUtil;
-import com.xilu.wybz.utils.StringUtil;
+import com.xilu.wybz.utils.StringUtils;
 
 import java.util.List;
 
@@ -50,7 +49,7 @@ public class JoinUserAdapter extends RecyclerView.Adapter<JoinUserAdapter.JoinUs
     @Override
     public void onBindViewHolder(final JoinUserViewHolder holder, final int position) {
         UserBean userBean = mList.get(position);
-        if(StringUtil.isNotBlank(userBean.headurl))
+        if(StringUtils.isNotBlank(userBean.headurl))
         ImageLoadUtil.loadImage(MyCommon.getImageUrl(userBean.headurl,itemWidth,itemWidth), holder.ivHead);
         if (mOnItemClickListener != null) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {

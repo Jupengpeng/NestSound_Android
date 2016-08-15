@@ -24,7 +24,7 @@ import com.xilu.wybz.ui.base.BaseActivity;
 import com.xilu.wybz.utils.MD5Util;
 import com.xilu.wybz.utils.MyCountTimer;
 import com.xilu.wybz.utils.ParseUtils;
-import com.xilu.wybz.utils.StringUtil;
+import com.xilu.wybz.utils.StringUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -113,7 +113,7 @@ public class LoginActivity extends BaseActivity implements ILoginView,IRegisterV
     public void afterTextChanged(Editable s) {
         String user = etPhone.getText().toString();
         String pass = etPassword.getText().toString();
-        if (StringUtil.isEmpty(user) || StringUtil.isEmpty(pass)) {
+        if (StringUtils.isEmpty(user) || StringUtils.isEmpty(pass)) {
             tvLogin.setEnabled(false);
             tvLogin.setBackgroundResource(R.drawable.corner_login);
         } else {
@@ -125,8 +125,8 @@ public class LoginActivity extends BaseActivity implements ILoginView,IRegisterV
         String regcode = etRegCode.getText().toString();
         String pwd = etRegPwd.getText().toString();
         String pwd2 = etRegPwd2.getText().toString();
-        if (StringUtil.isEmpty(nickname) || StringUtil.isEmpty(phone) || StringUtil.isEmpty(regcode)
-                || StringUtil.isEmpty(pwd) || StringUtil.isEmpty(pwd2)) {
+        if (StringUtils.isEmpty(nickname) || StringUtils.isEmpty(phone) || StringUtils.isEmpty(regcode)
+                || StringUtils.isEmpty(pwd) || StringUtils.isEmpty(pwd2)) {
             tvReg.setEnabled(false);
             tvReg.setBackgroundResource(R.drawable.corner_login);
         } else {
@@ -185,19 +185,19 @@ public class LoginActivity extends BaseActivity implements ILoginView,IRegisterV
             showMsg("请先同意使用协议");
             return;
         }
-        if (StringUtil.isEmpty(nickname)) {
+        if (StringUtils.isEmpty(nickname)) {
             showMsg("用户名不能为空");
             return;
-        } else if (StringUtil.isEmpty(phone)) {
+        } else if (StringUtils.isEmpty(phone)) {
             showMsg("手机号不能为空");
             return;
-        } else if (!StringUtil.checkPhone(phone)) {
+        } else if (!StringUtils.checkPhone(phone)) {
             showMsg("手机号填写不正确");
             return;
-        } else if (StringUtil.isEmpty(code)) {
+        } else if (StringUtils.isEmpty(code)) {
             showMsg("验证码不能为空");
             return;
-        } else if (StringUtil.isEmpty(repassword)) {
+        } else if (StringUtils.isEmpty(repassword)) {
             showMsg("确认密码不能为空");
             return;
         } else if (password.length() < 6) {
@@ -212,7 +212,7 @@ public class LoginActivity extends BaseActivity implements ILoginView,IRegisterV
 
     public void getSmsCode() {
         String phone = etRegPhone.getText().toString().trim();
-        if (StringUtil.isBlank(phone)) {
+        if (StringUtils.isBlank(phone)) {
             showMsg("请输入手机号码");
         } else {
             registerPresenter.getSmsCode(phone, "1");

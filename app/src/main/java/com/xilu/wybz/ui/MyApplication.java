@@ -24,7 +24,7 @@ import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.service.MainService;
 import com.xilu.wybz.utils.PhoneInfoUtil;
 import com.xilu.wybz.utils.PrefsUtil;
-import com.xilu.wybz.utils.StringUtil;
+import com.xilu.wybz.utils.StringUtils;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -61,7 +61,7 @@ public class MyApplication extends Application implements ServiceConnection {
         }
         PrefsUtil.putInt("versionCode", PhoneInfoUtil.getVersionCode(context), context);
         String url = PrefsUtil.getString("domain", this);
-        if (StringUtil.isNotBlank(url)) {
+        if (StringUtils.isNotBlank(url)) {
             MyHttpClient.ROOT_URL = url;
             MyHttpClient.BASE_URL = MyHttpClient.ROOT_URL+MyHttpClient.BASE_PATH;
         }

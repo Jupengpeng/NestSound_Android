@@ -1,6 +1,5 @@
 package com.xilu.wybz.utils;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -11,8 +10,6 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.provider.Settings;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.telephony.TelephonyManager;
 import android.view.Window;
 
@@ -77,7 +74,7 @@ public class PhoneInfoUtil {
                 .getSystemService(Context.WIFI_SERVICE);
         WifiInfo info = wifi.getConnectionInfo();
         String mac = info.getMacAddress();
-        if (StringUtil.isEmpty(mac)) {
+        if (StringUtils.isEmpty(mac)) {
             mac = "";
         }
         return mac;
@@ -91,13 +88,13 @@ public class PhoneInfoUtil {
     public static String getUDID(Context context) {
         String udid = Settings.Secure.getString(context.getContentResolver(),
                 Settings.Secure.ANDROID_ID);
-        if (StringUtil.isEmpty(udid) || udid.equals("9774d56d682e549c")
+        if (StringUtils.isEmpty(udid) || udid.equals("9774d56d682e549c")
                 || udid.length() < 15) {
             SecureRandom random = new SecureRandom();
             udid = new BigInteger(64, random).toString(16);
         }
 
-        if (StringUtil.isEmpty(udid)) {
+        if (StringUtils.isEmpty(udid)) {
             udid = "";
         }
 

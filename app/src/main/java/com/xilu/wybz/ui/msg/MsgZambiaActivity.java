@@ -16,11 +16,10 @@ import com.xilu.wybz.ui.base.BaseListActivity;
 import com.xilu.wybz.ui.lyrics.LyricsdisplayActivity;
 import com.xilu.wybz.ui.song.PlayAudioActivity;
 import com.xilu.wybz.utils.DateTimeUtil;
-import com.xilu.wybz.utils.StringUtil;
+import com.xilu.wybz.utils.StringUtils;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.PullRecycler;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -147,7 +146,7 @@ public class MsgZambiaActivity extends BaseListActivity<ZambiaBean> implements I
             tvTime.setText(DateTimeUtil.timestamp2DateTime(zanbiaBean.add_time));
             tvUserName.setText(zanbiaBean.nickname);
             tvAuthor.setText(zanbiaBean.author);
-            if (StringUtil.isEmpty(zanbiaBean.title)) zanbiaBean.title = "未命名";
+            if (StringUtils.isEmpty(zanbiaBean.title)) zanbiaBean.title = "未命名";
             tvMusicName.setText(zanbiaBean.title);
             loadImage(zanbiaBean.pic, ivCover);
             String headUrl = zanbiaBean.headerurl;

@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.xilu.wybz.R;
@@ -23,11 +22,10 @@ import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.utils.BitmapUtils;
 import com.xilu.wybz.utils.DensityUtil;
-import com.xilu.wybz.utils.FileUtils;
 import com.xilu.wybz.utils.ImageLoadUtil;
 import com.xilu.wybz.utils.ImageUtils;
 import com.xilu.wybz.utils.PermissionUtils;
-import com.xilu.wybz.utils.StringUtil;
+import com.xilu.wybz.utils.StringUtils;
 import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.view.dialog.ShareDialog;
 
@@ -85,7 +83,7 @@ public class SharePosterActivity extends ToolbarActivity {
             int width = DensityUtil.getScreenW(context);
             int height = width * 2 / 3;
             rlCover.setLayoutParams(new LinearLayout.LayoutParams(width, height));
-            if(StringUtil.isNotBlank(worksData.pic))
+            if(StringUtils.isNotBlank(worksData.pic))
             ImageLoadUtil.loadImage(context, worksData.pic, ivCover, width, height);
             ivCover.setDrawingCacheEnabled(true);
             llContent.setDrawingCacheEnabled(true);
@@ -97,7 +95,7 @@ public class SharePosterActivity extends ToolbarActivity {
         switch (view.getId()) {
             case R.id.rl_share:
                 savePic();
-                if (StringUtil.isNotBlank(savePath)) {
+                if (StringUtils.isNotBlank(savePath)) {
                     if (shareDialog == null) {
                         worksData.pic = savePath;
                         shareDialog = new ShareDialog(SharePosterActivity.this, worksData, 1);

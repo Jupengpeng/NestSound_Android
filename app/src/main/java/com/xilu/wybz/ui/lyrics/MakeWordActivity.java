@@ -29,7 +29,7 @@ import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.LyricsDraftUtils;
 import com.xilu.wybz.utils.PrefsUtil;
-import com.xilu.wybz.utils.StringUtil;
+import com.xilu.wybz.utils.StringUtils;
 import com.xilu.wybz.utils.ToastUtils;
 import com.xilu.wybz.view.dialog.LyricsDialog;
 import com.xilu.wybz.view.materialdialogs.DialogAction;
@@ -85,7 +85,7 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView,I
 
     public void initData() {
         etTitle.setText(worksData.getTitle());
-        if (StringUtil.isNotBlank(worksData.getLyrics())) {
+        if (StringUtils.isNotBlank(worksData.getLyrics())) {
             etWord.setText(worksData.getLyrics());
             etWord.requestFocus();
             etWord.setSelection(worksData.getLyrics().length());
@@ -260,7 +260,7 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView,I
 
     //提示保存本地数据
     public void tipSaveLocalData() {
-        if (StringUtil.isBlank(worksData.title) && StringUtil.isBlank(worksData.lyrics)) {
+        if (StringUtils.isBlank(worksData.title) && StringUtils.isBlank(worksData.lyrics)) {
             finish();
             return;
         }

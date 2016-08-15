@@ -19,7 +19,7 @@ import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.utils.MD5Util;
 import com.xilu.wybz.utils.MyCountTimer;
 import com.xilu.wybz.utils.ParseUtils;
-import com.xilu.wybz.utils.StringUtil;
+import com.xilu.wybz.utils.StringUtils;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -157,19 +157,19 @@ public class RegisterActivity extends ToolbarActivity implements IRegisterView,T
         String code = mregPhonepass.getText().toString().trim();
         String password = MD5Util.getMD5String(mregPass.getText().toString().trim());
         String repassword = MD5Util.getMD5String((mregYpass.getText().toString().trim()));
-        if (StringUtil.isEmpty(nickname)) {
+        if (StringUtils.isEmpty(nickname)) {
             showMsg("用户名不能为空");
             return;
-        } else if (StringUtil.isEmpty(phone)) {
+        } else if (StringUtils.isEmpty(phone)) {
             showMsg("手机号不能为空");
             return;
-        } else if (!StringUtil.checkPhone(phone)) {
+        } else if (!StringUtils.checkPhone(phone)) {
             showMsg("手机号填写不正确");
             return;
-        } else if (StringUtil.isEmpty(code)) {
+        } else if (StringUtils.isEmpty(code)) {
             showMsg("验证码不能为空");
             return;
-        } else if (StringUtil.isEmpty(repassword)) {
+        } else if (StringUtils.isEmpty(repassword)) {
             showMsg("确认密码不能为空");
             return;
         } else if (password.length() < 6) {
@@ -184,7 +184,7 @@ public class RegisterActivity extends ToolbarActivity implements IRegisterView,T
 
     public void getSmsCode() {
         String phone = mregPhone.getText().toString().trim();
-        if (!StringUtil.checkPhone(phone)) {
+        if (!StringUtils.checkPhone(phone)) {
             showMsg("请输入正确手机号码");
         } else {
             registerPresenter.getSmsCode(phone, "1");
@@ -208,7 +208,7 @@ public class RegisterActivity extends ToolbarActivity implements IRegisterView,T
         String phonepass = mregPhonepass.getText().toString();
         String pass = mregPass.getText().toString();
         String ypass = mregYpass.getText().toString();
-        if (StringUtil.isEmpty(user) || StringUtil.isEmpty(phone) || StringUtil.isEmpty(phonepass) || StringUtil.isEmpty(pass) || StringUtil.isEmpty(ypass)) {
+        if (StringUtils.isEmpty(user) || StringUtils.isEmpty(phone) || StringUtils.isEmpty(phonepass) || StringUtils.isEmpty(pass) || StringUtils.isEmpty(ypass)) {
             mregReg.setEnabled(false);
             mregReg.setBackgroundResource(R.drawable.corner_login);
         } else {

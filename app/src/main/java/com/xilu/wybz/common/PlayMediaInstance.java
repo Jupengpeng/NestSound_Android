@@ -8,7 +8,7 @@ import com.xilu.wybz.common.interfaces.IMediaPlayerListener;
 import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.utils.FileUtils;
 import com.xilu.wybz.utils.MD5Util;
-import com.xilu.wybz.utils.StringUtil;
+import com.xilu.wybz.utils.StringUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -85,7 +85,7 @@ public class PlayMediaInstance {
         try {
             mediaPlayer.reset();
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-            if(StringUtil.isNotBlank(url)){
+            if(StringUtils.isNotBlank(url)){
                 String fileName = MD5Util.getMD5String(url);
                 String filePath = FileDir.songMp3Dir+fileName;
                 File file = new File(filePath);

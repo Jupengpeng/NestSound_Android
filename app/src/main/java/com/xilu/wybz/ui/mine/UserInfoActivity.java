@@ -33,7 +33,7 @@ import com.xilu.wybz.utils.BitmapUtils;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.NumberUtil;
 import com.xilu.wybz.utils.PrefsUtil;
-import com.xilu.wybz.utils.StringUtil;
+import com.xilu.wybz.utils.StringUtils;
 import com.xilu.wybz.view.CircleImageView;
 import com.xilu.wybz.view.IndexViewPager;
 import com.xilu.wybz.view.SystemBarHelper;
@@ -206,12 +206,12 @@ public class UserInfoActivity extends BaseActivity implements IOnlyFollowView {
         setUserData(userBean);
     }
     public void setUserData(UserBean userBean){
-        if(StringUtil.isNotBlank(userBean.headurl)&&!userBean.headurl.equals(MyCommon.defult_head)) {
+        if(StringUtils.isNotBlank(userBean.headurl)&&!userBean.headurl.equals(MyCommon.defult_head)) {
             int headWidth = DensityUtil.dip2px(context,92);
             loadImage(MyCommon.getImageUrl(userBean.headurl,headWidth,headWidth), ivHead);
         }
-        if (StringUtil.isNotBlank(userBean.nickname)) mNickname.setText(userBean.nickname);
-        if (StringUtil.isNotBlank(userBean.signature))mDesc.setText(userBean.signature);
+        if (StringUtils.isNotBlank(userBean.nickname)) mNickname.setText(userBean.nickname);
+        if (StringUtils.isNotBlank(userBean.signature))mDesc.setText(userBean.signature);
 
     }
     public void updateUserFansNum(UserInfoBean userBean) {

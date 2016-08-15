@@ -3,7 +3,6 @@ package com.xilu.wybz.ui.mine;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.PersistableBundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.view.ViewPager;
@@ -32,7 +31,7 @@ import com.xilu.wybz.utils.BitmapUtils;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.NumberUtil;
 import com.xilu.wybz.utils.PrefsUtil;
-import com.xilu.wybz.utils.StringUtil;
+import com.xilu.wybz.utils.StringUtils;
 import com.xilu.wybz.view.CircleImageView;
 import com.xilu.wybz.view.IndexViewPager;
 import com.xilu.wybz.view.SystemBarHelper;
@@ -45,7 +44,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -202,9 +200,9 @@ public class MineActivity extends BaseActivity {
             //更新本地数据
             UserBean localUserBean = PrefsUtil.getUserInfo(context);
             if (userBean.userid > 0) localUserBean.userid = userBean.userid;
-            if (StringUtil.isNotBlank(userBean.nickname)) localUserBean.name = userBean.nickname;
-            if (StringUtil.isNotBlank(userBean.signature)) localUserBean.descr = userBean.signature;
-            if (StringUtil.isNotBlank(userBean.headurl)) localUserBean.headurl = userBean.headurl;
+            if (StringUtils.isNotBlank(userBean.nickname)) localUserBean.name = userBean.nickname;
+            if (StringUtils.isNotBlank(userBean.signature)) localUserBean.descr = userBean.signature;
+            if (StringUtils.isNotBlank(userBean.headurl)) localUserBean.headurl = userBean.headurl;
             PrefsUtil.saveUserInfo(context, localUserBean);
             //更新本地我的信息
             setLocalUserInfo(localUserBean);
@@ -212,13 +210,13 @@ public class MineActivity extends BaseActivity {
     }
 
     public void setLocalUserInfo(UserBean userBean) {
-        if (StringUtil.isNotBlank(userBean.headurl) && !userBean.headurl.equals(MyCommon.defult_head)) {
+        if (StringUtils.isNotBlank(userBean.headurl) && !userBean.headurl.equals(MyCommon.defult_head)) {
             int headWidth = DensityUtil.dip2px(context, 92);
             loadImage(MyCommon.getImageUrl(userBean.headurl, headWidth, headWidth), ivHead);
         }
-        if (StringUtil.isNotBlank(userBean.nickname)) mNickname.setText(userBean.nickname);
-        if (StringUtil.isNotBlank(userBean.signature)) mDesc.setText(userBean.signature);
-        if (StringUtil.isNotBlank(userBean.nickname)) setTitle(userBean.nickname);
+        if (StringUtils.isNotBlank(userBean.nickname)) mNickname.setText(userBean.nickname);
+        if (StringUtils.isNotBlank(userBean.signature)) mDesc.setText(userBean.signature);
+        if (StringUtils.isNotBlank(userBean.nickname)) setTitle(userBean.nickname);
     }
 
     public void updateUserFansNum(UserInfoBean userBean) {

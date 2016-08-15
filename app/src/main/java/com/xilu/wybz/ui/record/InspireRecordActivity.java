@@ -8,7 +8,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -37,7 +36,7 @@ import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.FileUtils;
 import com.xilu.wybz.utils.PermissionUtils;
 import com.xilu.wybz.utils.PrefsUtil;
-import com.xilu.wybz.utils.StringUtil;
+import com.xilu.wybz.utils.StringUtils;
 import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.utils.UploadFileUtil;
 import com.xilu.wybz.utils.UploadMorePicUtil;
@@ -45,7 +44,6 @@ import com.xilu.wybz.view.GridSpacingItemDecoration;
 import com.xilu.wybz.view.RoundProgressBar;
 import com.xilu.wybz.view.SystemBarHelper;
 import com.xilu.wybz.view.kpswitch.util.KPSwitchConflictUtil;
-import com.xilu.wybz.view.kpswitch.util.KeyboardUtil;
 import com.xilu.wybz.view.kpswitch.widget.KPSwitchPanelLinearLayout;
 import com.xilu.wybz.view.materialdialogs.DialogAction;
 import com.xilu.wybz.view.materialdialogs.MaterialDialog;
@@ -136,7 +134,7 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
         UploadMorePicUtil uploadMorePicUtil = new UploadMorePicUtil(context);
         List<String> pics = new ArrayList<>();
         for (PhotoBean photoBean : list) {
-            if (StringUtil.isNotBlank(photoBean.path) && new File(photoBean.path).exists())
+            if (StringUtils.isNotBlank(photoBean.path) && new File(photoBean.path).exists())
                 pics.add(photoBean.path);
         }
         uploadMorePicUtil.uploadPics(pics, new UploadMorePicUtil.UploadPicResult() {
@@ -144,7 +142,7 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
             public void onSuccess(String images) {
                 worksData.pics = images;
                 if (!TextUtils.isEmpty(images)) {
-                    if (StringUtil.isNotBlank(recordPath) && new File(recordPath).exists()) {
+                    if (StringUtils.isNotBlank(recordPath) && new File(recordPath).exists()) {
                         uploadRecord();
                     } else {
                         inspireRecordPresenter.publishData(worksData);
@@ -194,7 +192,7 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
                     if (list.size() > 0) {
                         uploadPics();
                     } else {
-                        if (TextUtils.isEmpty(recordPath) || StringUtil.isNotBlank(worksData.audio)) {
+                        if (TextUtils.isEmpty(recordPath) || StringUtils.isNotBlank(worksData.audio)) {
                             inspireRecordPresenter.publishData(worksData);
                         } else {
                             uploadRecord();
@@ -435,8 +433,8 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
         onKeyBack();
     }
     public void onKeyBack(){
-        if(recordStatus==0&&StringUtil.isBlank(recordPath)
-                &&StringUtil.isBlank(etContent.getText().toString().trim())
+        if(recordStatus==0&& StringUtils.isBlank(recordPath)
+                && StringUtils.isBlank(etContent.getText().toString().trim())
                 &&list.size()==0){
             finish();
         }else {
@@ -464,8 +462,8 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
         }
         stopPlayTimer();
         //没有发布就退出 默认不保存本地的音频文件
-        if(StringUtil.isBlank(worksData.audio)){
-            if(StringUtil.isNotBlank(recordPath)&&new File(recordPath).exists()){
+        if(StringUtils.isBlank(worksData.audio)){
+            if(StringUtils.isNotBlank(recordPath)&&new File(recordPath).exists()){
                 new File(recordPath).delete();
             }
         }

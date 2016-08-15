@@ -13,20 +13,20 @@
         <com.xilu.wybz.view.NoScrollListView
             android:id="@+id/listView"
             android:layout_width="match_parent"
-            android:dividerHeight="1px"
+            android:dividerHeight="2px"
             android:divider="#ddd"
             android:layout_height="wrap_content"
             android:listSelector="@drawable/selector"
             android:overScrollMode="never" />
         <View
             android:layout_width="match_parent"
-            android:layout_height="5dp"
-            android:background="#eee" />
+            android:layout_height="2px"
+            android:background="#ddd" />
 
         <TextView
             android:id="@+id/tv_cancle"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="52dp"
             android:gravity="center"
             android:text="取消"
             android:background="@drawable/selector"

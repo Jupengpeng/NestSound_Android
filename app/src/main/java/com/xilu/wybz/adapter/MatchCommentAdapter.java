@@ -5,17 +5,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.CommentBean;
-import com.xilu.wybz.bean.UserBean;
-import com.xilu.wybz.common.MyCommon;
-import com.xilu.wybz.utils.DensityUtil;
-import com.xilu.wybz.utils.ImageLoadUtil;
-import com.xilu.wybz.utils.StringUtil;
 
 import java.util.List;
 

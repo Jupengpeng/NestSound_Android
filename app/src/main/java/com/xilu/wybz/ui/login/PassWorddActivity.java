@@ -16,7 +16,7 @@ import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.utils.MD5Util;
 import com.xilu.wybz.utils.MyCountTimer;
 import com.xilu.wybz.utils.ParseUtils;
-import com.xilu.wybz.utils.StringUtil;
+import com.xilu.wybz.utils.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -72,7 +72,7 @@ public class PassWorddActivity extends ToolbarActivity implements IPasswordView,
     }
     private void getSmsCode() {
         String phone = etPhone.getText().toString().trim();
-        if (StringUtil.isBlank(phone)) {
+        if (StringUtils.isBlank(phone)) {
             showMsg("请输入手机号码");
         } else {
             passwordPresenter.getSmsCode(phone, "2");
@@ -84,10 +84,10 @@ public class PassWorddActivity extends ToolbarActivity implements IPasswordView,
         String code = etSmsCode.getText().toString().trim();
         String password = MD5Util.getMD5String(etPwd.getText().toString().trim());
         String repassword = MD5Util.getMD5String(etPwd2.getText().toString().trim());
-        if (StringUtil.isEmpty(phone)) {
+        if (StringUtils.isEmpty(phone)) {
             showMsg("手机号不能为空");
             return;
-        } else if (StringUtil.isEmpty(code)) {
+        } else if (StringUtils.isEmpty(code)) {
             showMsg("验证码不能为空");
             return;
         } else if (password.length() < 6) {
@@ -183,7 +183,7 @@ public class PassWorddActivity extends ToolbarActivity implements IPasswordView,
         String code = etSmsCode.getText().toString().trim();
         String pass = etPwd.getText().toString().trim();
         String ypass = etPwd2.getText().toString().trim();
-        if (StringUtil.isEmpty(phone) || StringUtil.isEmpty(code) || StringUtil.isEmpty(pass) || StringUtil.isEmpty(ypass)) {
+        if (StringUtils.isEmpty(phone) || StringUtils.isEmpty(code) || StringUtils.isEmpty(pass) || StringUtils.isEmpty(ypass)) {
             tvOk.setEnabled(false);
             tvOk.setBackgroundResource(R.drawable.corner_login);
         } else {

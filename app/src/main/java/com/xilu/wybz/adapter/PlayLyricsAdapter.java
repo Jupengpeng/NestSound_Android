@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.xilu.wybz.R;
-import com.xilu.wybz.utils.StringUtil;
+import com.xilu.wybz.utils.StringUtils;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ public class PlayLyricsAdapter extends YcBaseAdapter<String> {
             convertView = LayoutInflater.from(context).inflate(R.layout.ll_lyrics_item,null);
         }
         TextView tv_content = BaseViewHolder.get(convertView,R.id.tv_content);
-        if(StringUtil.isNotBlank(mList.get(position))){
+        if(StringUtils.isNotBlank(mList.get(position))){
             tv_content.setText(mList.get(position).trim());
         }else{
             tv_content.setText("");

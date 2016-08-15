@@ -1,12 +1,10 @@
 package com.xilu.wybz.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -16,7 +14,7 @@ import com.xilu.wybz.bean.SongAlbum;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.ImageLoadUtil;
-import com.xilu.wybz.utils.StringUtil;
+import com.xilu.wybz.utils.StringUtils;
 
 import java.util.List;
 
@@ -55,9 +53,9 @@ public class SongAlbumAdapter extends RecyclerView.Adapter<SongAlbumAdapter.Song
         holder.ivCover.setTag(songAlbum);
         String url = MyCommon.getImageUrl(songAlbum.getPic(), itemWidth, itemHeight);
         ImageLoadUtil.loadImage(url, holder.ivCover);
-        if(StringUtil.isNotBlank(songAlbum.name)) {
+        if(StringUtils.isNotBlank(songAlbum.name)) {
             holder.tvDesc.setText("『" + songAlbum.name + "』" + songAlbum.detail);
-        }else if(StringUtil.isNotBlank(songAlbum.detail)){
+        }else if(StringUtils.isNotBlank(songAlbum.detail)){
             holder.tvDesc.setText(songAlbum.detail);
         }
         if(mOnItemClickListener!=null) {

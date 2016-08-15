@@ -69,7 +69,7 @@ public class MacthFragment extends BaseListFragment<WorksData> implements Scroll
 
     @Override
     public void initView() {
-
+        recycler.enablePullToRefresh(false);
     }
 
     @Override

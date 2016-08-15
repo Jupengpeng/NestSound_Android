@@ -2,13 +2,10 @@ package com.xilu.wybz.view.dialog;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Intent;
-import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.xilu.wybz.R;
@@ -19,8 +16,7 @@ import com.xilu.wybz.ui.lyrics.LyricsPosterActivity;
 import com.xilu.wybz.utils.AppInfoUtil;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.PrefsUtil;
-import com.xilu.wybz.utils.StringUtil;
-import com.xilu.wybz.utils.SystemUtils;
+import com.xilu.wybz.utils.StringUtils;
 import com.xilu.wybz.utils.ToastUtils;
 import com.xilu.wybz.utils.UmengShareUtil;
 
@@ -84,7 +80,7 @@ public class ShareDialog extends Dialog implements View.OnClickListener {
         ll_qzone.setOnClickListener(this);
         ll_friend.setOnClickListener(this);
         ll_poster.setOnClickListener(this);
-        if (type == 1 || StringUtil.isBlank(mWorksData.lyrics))
+        if (type == 1 || StringUtils.isBlank(mWorksData.lyrics))
             ll_poster.setVisibility(View.INVISIBLE);
         if (type == 1) {
             ll_copylink.setVisibility(View.INVISIBLE);
@@ -131,7 +127,7 @@ public class ShareDialog extends Dialog implements View.OnClickListener {
                 }
                 break;
             case R.id.ll_share_copy:
-                StringUtil.copy(mWorksData.shareurl, context);
+                StringUtils.copy(mWorksData.shareurl, context);
                 ToastUtils.toast(context, "复制成功!");
                 break;
             case R.id.ll_poster:

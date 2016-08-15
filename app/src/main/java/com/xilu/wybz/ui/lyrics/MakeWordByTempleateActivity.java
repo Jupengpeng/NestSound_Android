@@ -22,7 +22,7 @@ import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.KeySet;
 import com.xilu.wybz.ui.IView.ITempleateMakeLrcView;
 import com.xilu.wybz.ui.base.BaseListActivity;
-import com.xilu.wybz.utils.StringUtil;
+import com.xilu.wybz.utils.StringUtils;
 import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.utils.ToastUtils;
 import com.xilu.wybz.view.pull.BaseViewHolder;
@@ -126,11 +126,11 @@ public class MakeWordByTempleateActivity extends BaseListActivity<TemplateLrcBea
             worksData.title = getFormatTitle();
             worksData.lyrics = getFormatLyrics();
 
-            if (StringUtil.isBlank(worksData.title)){
+            if (StringUtils.isBlank(worksData.title)){
                 ToastUtils.toast(this,"请输入歌词名称");
                 return true;
             }
-            if (StringUtil.isBlank(worksData.lyrics)){
+            if (StringUtils.isBlank(worksData.lyrics)){
                 ToastUtils.toast(this,"请输入歌词");
                 return true;
             }
@@ -160,7 +160,7 @@ public class MakeWordByTempleateActivity extends BaseListActivity<TemplateLrcBea
             String item = mDataList.get(i).lrcWord;
             if (item == null) item = "";
             buffer.append(item);
-            if (i<size-1 && StringUtil.isNotBlank(item) ){
+            if (i<size-1 && StringUtils.isNotBlank(item) ){
                 buffer.append("\n");
             }
         }

@@ -40,7 +40,7 @@ public class WelActivity extends BaseActivity {
         String appLogo = PrefsUtil.getString("applogo", context);
 //        String fileName = MD5Util.getMD5String(appLogo) + ".png";
 //        String filePath = FileDir.logoDir + fileName;
-//        if (StringUtil.isNotBlank(appLogo)) {
+//        if (StringUtils.isNotBlank(appLogo)) {
 //            if (new File(filePath).exists()) {
 //                rlMain.setBackground(new BitmapDrawable(BitmapUtils.getSDCardImg(filePath)));
 //            }else{

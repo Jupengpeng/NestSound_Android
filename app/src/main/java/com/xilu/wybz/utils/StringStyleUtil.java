@@ -29,7 +29,7 @@ public class StringStyleUtil {
 
     public static SpannableString getCommentStyleStr(MsgCommentBean commentBean) {
         String nickName = commentBean.targetname;
-        if (StringUtil.isBlank(nickName)){
+        if (StringUtils.isBlank(nickName)){
             return new SpannableString(commentBean.getComment());
         }
         String comment ="回复" + nickName+"："+commentBean.getComment();
@@ -43,7 +43,7 @@ public class StringStyleUtil {
 
     public static SpannableString getWorkCommentStyleStr(Context context, CommentBean commentBean) {
         String nickName = commentBean.target_nickname;
-        if (StringUtil.isBlank(nickName)){
+        if (StringUtils.isBlank(nickName)){
             return new SpannableString(commentBean.getComment());
         }
         String comment ="回复" + nickName+"："+commentBean.getComment();

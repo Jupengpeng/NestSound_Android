@@ -12,7 +12,7 @@ import com.xilu.wybz.http.request.RequestCall;
 import com.xilu.wybz.http.rsa.RSAUtils;
 import com.xilu.wybz.utils.PhoneInfoUtil;
 import com.xilu.wybz.utils.PrefsUtil;
-import com.xilu.wybz.utils.StringUtil;
+import com.xilu.wybz.utils.StringUtils;
 import com.xilu.wybz.utils.ToastUtils;
 
 import java.io.File;
@@ -54,9 +54,9 @@ public class HttpUtils {
 
         String paramString = new Gson().toJson(params);
 
-        Log.d("url","url:"+url+"params:"+paramString);
+        Log.e("url","url:"+url+"params:"+paramString);
         String content = RSAUtils.encodeConvert(RSAUtils.encryptByPublicKey(paramString).getBytes());
-        Log.d("url","encode:"+content);
+        Log.e("url","encode:"+content);
         OkHttpUtils.post()
                 .url(MyHttpClient.BASE_URL + url)
                 .tag(httpTag)
@@ -76,9 +76,9 @@ public class HttpUtils {
 
         String paramString = new Gson().toJson(params);
 
-        Log.d("url","url:"+url+"params:"+paramString);
+        Log.e("url","url:"+url+"params:"+paramString);
         String content = RSAUtils.encodeConvert(RSAUtils.encryptByPublicKey(paramString).getBytes());
-        Log.d("url","encode:"+content);
+        Log.e("url","encode:"+content);
         OkHttpUtils.post()
                 .url(MyHttpClient.BASE_URL + url)
                 .tag(httpTag)
@@ -103,9 +103,9 @@ public class HttpUtils {
 
         String paramString = new Gson().toJson(params);
 
-        Log.d("url","url:"+url+"params:"+paramString);
+        Log.e("url","url:"+url+"params:"+paramString);
         String content = RSAUtils.encodeConvert(RSAUtils.encryptByPublicKey(paramString).getBytes());
-        Log.d("url","encode:"+content);
+        Log.e("url","encode:"+content);
         RequestCall call = OkHttpUtils.post()
                 .url(MyHttpClient.BASE_URL + url)
                 .tag(tag)
@@ -162,10 +162,10 @@ public class HttpUtils {
         params.put("token",PrefsUtil.getUserInfo(context).loginToken);
 
         String paramString = new Gson().toJson(params);
-        Log.d("url","url:"+url+"params:"+paramString);
+        Log.e("url","url:"+url+"params:"+paramString);
 
         String content = RSAUtils.encodeConvert(RSAUtils.encryptByPublicKey(paramString).getBytes());
-        Log.d("url","encode:"+content);
+        Log.e("url","encode:"+content);
         OkHttpUtils
                 .get()
                 .headers(headers)
@@ -219,7 +219,7 @@ public class HttpUtils {
             return;
         }
 
-        Log.d("upload","url:"+url);
+        Log.e("upload","url:"+url);
         File file = new File(fileName);
         OkHttpUtils
                 .post()
@@ -245,7 +245,7 @@ public class HttpUtils {
      * @return
      */
     protected String stringEncode(String text){
-        return StringUtil.toUtf8(text);
+        return StringUtils.toUtf8(text);
     }
 
 

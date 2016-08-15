@@ -54,7 +54,7 @@ import com.xilu.wybz.utils.MD5Util;
 import com.xilu.wybz.utils.NumberUtil;
 import com.xilu.wybz.utils.PermissionUtils;
 import com.xilu.wybz.utils.PrefsUtil;
-import com.xilu.wybz.utils.StringUtil;
+import com.xilu.wybz.utils.StringUtils;
 import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.utils.ToastUtils;
 import com.xilu.wybz.view.dialog.ActionMoreDialog;
@@ -288,7 +288,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
         try {
             if(worksData==null)return;
             String pic = worksData.getPic();
-            if (StringUtil.isNotBlank(pic)) {
+            if (StringUtils.isNotBlank(pic)) {
                 loadPic(pic);
             }
             worksData.status = 1;

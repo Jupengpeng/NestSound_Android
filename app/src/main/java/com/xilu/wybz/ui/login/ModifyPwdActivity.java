@@ -11,7 +11,7 @@ import com.xilu.wybz.presenter.ModifyPwdPresenter;
 import com.xilu.wybz.ui.IView.IModifyPwdView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.utils.MD5Util;
-import com.xilu.wybz.utils.StringUtil;
+import com.xilu.wybz.utils.StringUtils;
 import com.xilu.wybz.utils.ToastUtils;
 
 import butterknife.Bind;
@@ -100,7 +100,7 @@ public class ModifyPwdActivity extends ToolbarActivity implements IModifyPwdView
         String oPwd = etPwd.getText().toString().toString().trim();
         String nPwd = etPwd1.getText().toString().toString().trim();
         String rPwd = etPwd2.getText().toString().toString().trim();
-        if (StringUtil.isBlank(oPwd) || StringUtil.isBlank(nPwd)||StringUtil.isBlank(rPwd)) {
+        if (StringUtils.isBlank(oPwd) || StringUtils.isBlank(nPwd)|| StringUtils.isBlank(rPwd)) {
             tvOk.setEnabled(false);
             tvOk.setBackgroundResource(R.drawable.corner_login);
         } else {

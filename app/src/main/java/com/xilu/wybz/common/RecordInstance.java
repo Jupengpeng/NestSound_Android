@@ -6,7 +6,7 @@ import android.util.Log;
 
 import com.czt.mp3recorder.MP3Recorder;
 import com.xilu.wybz.utils.FileUtils;
-import com.xilu.wybz.utils.StringUtil;
+import com.xilu.wybz.utils.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -237,7 +237,7 @@ public class RecordInstance {
     }
 
     public boolean saveRecorderFileTo(String fileName) {
-        if (StringUtil.isBlank(fileName)) {
+        if (StringUtils.isBlank(fileName)) {
             return false;
         }
         return FileUtils.copyFile(localCacheFile, fileName);

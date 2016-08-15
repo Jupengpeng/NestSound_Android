@@ -2,7 +2,7 @@ package com.xilu.wybz.bean;
 
 
 import com.xilu.wybz.common.MyHttpClient;
-import com.xilu.wybz.utils.StringUtil;
+import com.xilu.wybz.utils.StringUtils;
 import java.io.Serializable;
 
 /**
@@ -217,7 +217,7 @@ public class WorksData implements Serializable {
     }
 
     public String getPic() {
-        if(StringUtil.isNotBlank(pic)&&!pic.startsWith("http")){
+        if(StringUtils.isNotBlank(pic)&&!pic.startsWith("http")){
             pic = MyHttpClient.QINIU_URL+pic;
         }
         return pic;

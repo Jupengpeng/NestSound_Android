@@ -5,7 +5,7 @@ import android.util.Log;
 
 import com.xilu.wybz.bean.JsonResponse;
 import com.xilu.wybz.utils.NetWorkUtil;
-import com.xilu.wybz.utils.StringUtil;
+import com.xilu.wybz.utils.StringUtils;
 import com.xilu.wybz.utils.ToastUtils;
 
 import java.lang.reflect.Type;
@@ -63,7 +63,7 @@ public class AppJsonCalback extends JsonCallback {
             ToastUtils.toastLong(context,"登录状态失效，请重新进行登录！");
             return;
         }
-        if (StringUtil.isNotBlank(response.getMessage())){
+        if (StringUtils.isNotBlank(response.getMessage())){
             ToastUtils.toastLong(context,response.getMessage());
         }
 
