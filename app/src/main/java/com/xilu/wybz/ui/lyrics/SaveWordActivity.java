@@ -30,7 +30,7 @@ import com.xilu.wybz.ui.IView.ISaveWordView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.utils.ImageUtils;
 import com.xilu.wybz.utils.PrefsUtil;
-import com.xilu.wybz.utils.StringUtil;
+import com.xilu.wybz.utils.StringUtils;
 import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.utils.UploadFileUtil;
 
@@ -91,7 +91,7 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView {
         //修改歌词的时候 还原数据
         if (worksData != null) {
             cb_isopen.setChecked(worksData.type == 1 ? true : false);
-            if (StringUtil.isNotBlank(worksData.detail)) {
+            if (StringUtils.isNotBlank(worksData.detail)) {
                 et_content.setText(worksData.detail);
             }
             if (!TextUtils.isEmpty(worksData.pic)) {
@@ -138,6 +138,7 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView {
             case R.id.iv_cover:
                 SystemUtils.openGallery(this);
                 break;
+
         }
     }
 
@@ -174,11 +175,11 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView {
         switch (item.getItemId()) {
             case R.id.menu_save:
                 //先检查歌词的描述
-                if (StringUtil.isBlank(worksData.detail)) {
+                if (StringUtils.isBlank(worksData.detail)) {
                     showMsg("请先添加歌词描述！");
                     return true;
                 }
-                if (StringUtil.isBlank(worksData.pic)) {
+                if (StringUtils.isBlank(worksData.pic)) {
                     showMsg("请先选择歌词的封面！");
                     return true;
                 }
@@ -198,6 +199,9 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView {
                         }
                     });
                 }
+                return true;
+            case android.R.id.home:
+                closeActivity();
                 return true;
         }
         return super.onOptionsItemSelected(item);

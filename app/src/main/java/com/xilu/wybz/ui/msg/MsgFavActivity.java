@@ -17,15 +17,13 @@ import com.xilu.wybz.ui.base.BaseListActivity;
 import com.xilu.wybz.ui.lyrics.LyricsdisplayActivity;
 import com.xilu.wybz.ui.song.PlayAudioActivity;
 import com.xilu.wybz.utils.DateTimeUtil;
-import com.xilu.wybz.utils.StringUtil;
+import com.xilu.wybz.utils.StringUtils;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.PullRecycler;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
-import butterknife.OnClick;
 
 /**
  * Created by Administrator on 2016/1/27.
@@ -138,7 +136,7 @@ public class MsgFavActivity extends BaseListActivity<CollectionBean> implements 
             tvTime.setText(DateTimeUtil.timestamp2DateTime(collectionBean.intabletime));
             tvUserName.setText(collectionBean.nickname);
             tvAuthor.setText(collectionBean.author);
-            if(StringUtil.isEmpty(collectionBean.title))collectionBean.title="未命名";
+            if(StringUtils.isEmpty(collectionBean.title))collectionBean.title="未命名";
             tvMusicName.setText(collectionBean.title);
             tvContent.setText("收藏了你的作品");
             loadImage(collectionBean.pic, ivCover);

@@ -17,7 +17,7 @@ import com.xilu.wybz.view.materialdialogs.MaterialDialog;
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
-public abstract class BaseFragment extends Fragment {
+public abstract class BaseFragment extends Fragment{
     protected Context context;
     protected MaterialDialog materialDialog;
     protected ArrayList<Integer> resourceIdList;

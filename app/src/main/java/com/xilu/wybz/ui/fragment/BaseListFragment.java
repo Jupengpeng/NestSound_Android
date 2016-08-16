@@ -60,7 +60,9 @@ public abstract class BaseListFragment<T> extends BaseFragment implements PullRe
         setUpData();
         return view;
     }
-
+    public RecyclerView getRecyclerView(){
+        return recycler.getRecyclerView();
+    }
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);

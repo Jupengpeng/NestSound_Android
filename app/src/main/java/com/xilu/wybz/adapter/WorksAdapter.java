@@ -18,7 +18,7 @@ import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.ImageLoadUtil;
 import com.xilu.wybz.utils.NumberUtil;
-import com.xilu.wybz.utils.StringUtil;
+import com.xilu.wybz.utils.StringUtils;
 import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -51,12 +51,12 @@ public class WorksAdapter extends RecyclerView.Adapter<WorksAdapter.WorksViewHol
     @Override
     public void onBindViewHolder(WorksViewHolder holder, int position) {
         WorksData worksData = mList.get(position);
-        if(StringUtil.isBlank(worksData.pic)){
+        if(StringUtils.isBlank(worksData.pic)){
             worksData.pic = MyHttpClient.QINIU_URL+MyCommon.getLyricsPic().get((int)(Math.random()*10));
         }
         String url = MyCommon.getImageUrl(worksData.getPic(), itemWidth, itemWidth);
         ImageLoadUtil.loadImage(url, holder.ivCover);
-        if(StringUtil.isNotBlank(worksData.name)) {
+        if(StringUtils.isNotBlank(worksData.name)) {
             holder.tvName.setText(worksData.name);
         }else{
             holder.tvName.setText(worksData.title);

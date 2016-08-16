@@ -15,7 +15,7 @@ import com.xilu.wybz.utils.FileUtils;
 import com.xilu.wybz.utils.MD5Util;
 import com.xilu.wybz.utils.ParseUtils;
 import com.xilu.wybz.utils.PrefsUtil;
-import com.xilu.wybz.utils.StringUtil;
+import com.xilu.wybz.utils.StringUtils;
 
 import org.json.JSONObject;
 
@@ -120,7 +120,7 @@ public class LyricsPresenter extends BasePresenter<ILyricsView> {
         });
     }
     public void loadHead(String headUrl){
-        if(StringUtil.isBlank(headUrl))return;
+        if(StringUtils.isBlank(headUrl))return;
         if(!new File(FileDir.headPic).exists())new File(FileDir.headPic).mkdirs();
         String fileName = MD5Util.getMD5String(headUrl);
         httpUtils.getFile(MyCommon.getImageUrl(headUrl, 100, 100), new FileCallBack(FileDir.headPic,fileName+".cache") {

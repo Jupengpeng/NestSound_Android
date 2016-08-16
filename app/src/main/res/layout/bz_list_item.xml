@@ -64,6 +64,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxLines="2"
+                android:ellipsize="end"
                 android:textColor="@color/main_text_color"
                 android:textSize="15sp"
                 tools:text="title" />
@@ -71,7 +72,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="6dp">
 
                 <TextView
                     android:id="@+id/tv_author"
@@ -94,7 +95,7 @@
                 android:id="@+id/tv_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="6dp"
                 android:textColor="@color/main_text_color2"
                 android:textSize="12sp"
                 tools:text="使用次数:1212" />

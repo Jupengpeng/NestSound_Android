@@ -270,8 +270,14 @@ public class MyHttpClient {
     public static String getHotCatalogUrl(){
         return "common/accompanimentcategory/list";
     }
-
-
+    //音乐人列表
+    public static String getMusicianListUrl(){
+        return "common/musician/list";
+    }
+    //音乐人详情
+    public static String getMusicianDetailUrl(){
+        return "common/musician/detail";
+    }
 
     public static String getLyricstemplateList(){
         return "lyricstemplate/list";

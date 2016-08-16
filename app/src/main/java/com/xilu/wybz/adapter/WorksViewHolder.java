@@ -1,7 +1,6 @@
 package com.xilu.wybz.adapter;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -20,7 +19,7 @@ import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.ImageLoadUtil;
 import com.xilu.wybz.utils.NumberUtil;
 import com.xilu.wybz.utils.PrefsUtil;
-import com.xilu.wybz.utils.StringUtil;
+import com.xilu.wybz.utils.StringUtils;
 import com.xilu.wybz.view.materialdialogs.MaterialDialog;
 
 import java.util.ArrayList;
@@ -74,7 +73,7 @@ public class WorksViewHolder extends com.xilu.wybz.view.pull.BaseViewHolder {
     @Override
     public void onBindViewHolder(int position) {
         WorksData worksData = mDataList.get(position);
-        if (StringUtil.isBlank(worksData.pic) && worksData.status == 2) {
+        if (StringUtils.isBlank(worksData.pic) && worksData.status == 2) {
             worksData.pic = MyHttpClient.QINIU_URL + MyCommon.getLyricsPic().get((int) (Math.random() * 10));
         }
         String url = MyCommon.getImageUrl(worksData.getPic(), itemWidth, itemWidth);

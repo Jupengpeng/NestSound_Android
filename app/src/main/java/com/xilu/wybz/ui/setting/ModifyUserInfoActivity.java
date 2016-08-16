@@ -21,7 +21,7 @@ import com.xilu.wybz.presenter.ModifyUserInfoPresenter;
 import com.xilu.wybz.ui.IView.IModifyUserInfoView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.utils.PrefsUtil;
-import com.xilu.wybz.utils.StringUtil;
+import com.xilu.wybz.utils.StringUtils;
 import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.utils.UploadFileUtil;
 import com.xilu.wybz.view.materialdialogs.MaterialDialog;
@@ -89,7 +89,7 @@ public class ModifyUserInfoActivity extends ToolbarActivity implements IModifyUs
         tv_usersign.setText(userBean.signature);
         tv_birthday.setText(userBean.birthday);
         tv_gender.setText(genders[userBean.sex]);
-        if(StringUtil.isNotBlank(userBean.headurl)){
+        if(StringUtils.isNotBlank(userBean.headurl)){
             if(!userBean.headurl.startsWith("http")){
                 userBean.headurl = MyHttpClient.QINIU_URL+userBean.headurl;
             }

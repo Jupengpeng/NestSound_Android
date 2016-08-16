@@ -22,7 +22,7 @@ import com.xilu.wybz.ui.song.MakeSongActivity;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.FormatHelper;
 import com.xilu.wybz.utils.NumberUtil;
-import com.xilu.wybz.utils.StringUtil;
+import com.xilu.wybz.utils.StringUtils;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 
 import org.greenrobot.eventbus.EventBus;
@@ -192,7 +192,7 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
             tvAuthor.setText(templateBean.author);
             tvTimes.setText(" "+FormatHelper.formatDuration(templateBean.mp3times));
             tvCount.setText("使用次数:"+ NumberUtil.format(templateBean.usenum));
-            if (StringUtil.isNotBlank(templateBean.pic)) {
+            if (StringUtils.isNotBlank(templateBean.pic)) {
                 String imageUrl = MyCommon.getImageUrl(templateBean.pic, itemWidth, itemHeight);
                 loadImage(imageUrl, ivCover);
             }

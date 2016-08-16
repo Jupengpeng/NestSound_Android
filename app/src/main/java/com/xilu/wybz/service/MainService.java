@@ -30,7 +30,7 @@ import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.utils.FileUtils;
 import com.xilu.wybz.utils.MD5Util;
 import com.xilu.wybz.utils.PrefsUtil;
-import com.xilu.wybz.utils.StringUtil;
+import com.xilu.wybz.utils.StringUtils;
 import com.xilu.wybz.utils.ToastUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -174,7 +174,7 @@ public class MainService extends Service implements IMusicDetailView, AudioManag
     }
     @Override
     public void showMusicDetail(WorksData worksData) {
-        if(StringUtil.isNotBlank(worksData.playurl)){
+        if(StringUtils.isNotBlank(worksData.playurl)){
             mCurrentAudio = worksData;
             EventBus.getDefault().post(new Event.MusicDataEvent());
             PrefsUtil.saveMusicData(MainService.this, worksData);
@@ -246,7 +246,7 @@ public class MainService extends Service implements IMusicDetailView, AudioManag
 
     //播放伴奏或者本地的音频文件 playUrl可以是网络或者本地的路径
     public void playOneMusic(String playUrl,String from) {
-        if(StringUtil.isBlank(playUrl))return;
+        if(StringUtils.isBlank(playUrl))return;
         isPlay = true;
         playType = 1;//单曲的标识
         playFrom = from;//单曲的标识
@@ -259,7 +259,7 @@ public class MainService extends Service implements IMusicDetailView, AudioManag
         this.playUrl = playUrl;
         playProgress = 0;
         init();
-        if (StringUtil.isBlank(playUrl)) {
+        if (StringUtils.isBlank(playUrl)) {
             ToastUtils.toast(MainService.this, "播放路径不存在！");
             return;
         }

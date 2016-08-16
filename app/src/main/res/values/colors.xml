@@ -4,7 +4,7 @@
     <color name="main_theme_color">#ffffd705</color>
     <color name="main_theme_color_dark">#ffb79b04</color>
     <color name="black">#ff000000</color>
-    <color name="main_bg">#f8f8f8</color>
+    <color name="main_bg">#f5f5f5</color>
     <color name="split_line">#ffe5e5e5</color>
     <color name="lite_blue">#ff359ff2</color>
     <color name="follow_blue">#3e8eff</color>

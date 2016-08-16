@@ -118,7 +118,7 @@ public class PrefsUtil {
     //保存伴奏分类
     public static HotBean getHotBean(Context context){
         String hotBean = getString("hotBean",context);
-        if(StringUtil.isNotBlank(hotBean)){
+        if(StringUtils.isNotBlank(hotBean)){
             return new Gson().fromJson(hotBean,HotBean.class);
         }
         return null;
@@ -140,7 +140,7 @@ public class PrefsUtil {
     public static WorksData getMusicData(Context context,int id){
         WorksData worksData = null;
         String data = getString("musicData_"+id,context);
-        if(StringUtil.isNotBlank(data)){
+        if(StringUtils.isNotBlank(data)){
             worksData = new Gson().fromJson(data,WorksData.class);
         };
         return worksData;
@@ -157,7 +157,7 @@ public class PrefsUtil {
     public static UserBean getUserInfo(Context context, int uid) {
         preferences = context.getSharedPreferences(USERINFO, Context.MODE_PRIVATE);
         String userData = preferences.getString("uid_"+uid,"");
-        if(StringUtil.isNotBlank(userData)){
+        if(StringUtils.isNotBlank(userData)){
             return new Gson().fromJson(userData,UserBean.class);
         }
         return null;

@@ -1,7 +1,6 @@
 package com.xilu.wybz.ui.fragment;
 
 import android.os.Handler;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +20,7 @@ import com.xilu.wybz.ui.lyrics.LyricsdisplayActivity;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.ImageLoadUtil;
 import com.xilu.wybz.utils.NumberUtil;
-import com.xilu.wybz.utils.StringUtil;
-import com.xilu.wybz.view.SpacesItemDecoration;
+import com.xilu.wybz.utils.StringUtils;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 
 import org.greenrobot.eventbus.EventBus;
@@ -143,7 +141,7 @@ public class SearchLyricsFragment extends BaseListFragment<WorksData> implements
         @Override
         public void onBindViewHolder(int position) {
             WorksData worksData = mDataList.get(position);
-            if (StringUtil.isBlank(worksData.pic)) {
+            if (StringUtils.isBlank(worksData.pic)) {
                 worksData.pic = MyHttpClient.QINIU_URL + MyCommon.getLyricsPic().get((int) (Math.random() * 10));
             }
             String url = MyCommon.getImageUrl(worksData.pic, itemWidth, itemWidth);

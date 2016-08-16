@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -15,16 +14,11 @@ import com.xilu.wybz.R;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.common.MyHttpClient;
-import com.xilu.wybz.ui.MyApplication;
-import com.xilu.wybz.ui.lyrics.LyricsdisplayActivity;
 import com.xilu.wybz.ui.record.ModifyInspireRecordActivity;
-import com.xilu.wybz.ui.song.PlayAudioActivity;
 import com.xilu.wybz.utils.DateFormatUtils;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.ImageLoadUtil;
-import com.xilu.wybz.utils.NumberUtil;
-import com.xilu.wybz.utils.PrefsUtil;
-import com.xilu.wybz.utils.StringUtil;
+import com.xilu.wybz.utils.StringUtils;
 import com.xilu.wybz.view.materialdialogs.MaterialDialog;
 
 import java.util.List;
@@ -87,11 +81,11 @@ public class InspireRecordViewHolder extends com.xilu.wybz.view.pull.BaseViewHol
         WorksData worksData = mDataList.get(position);
         tvDateDay.setText(DateFormatUtils.prase2DateText(worksData.createdate).getDay());
         tvDateTime.setText(DateFormatUtils.prase2DateText(worksData.createdate).getYearMonth());
-        boolean hasAudio = StringUtil.isNotBlank(worksData.audio);
-        boolean hasText = StringUtil.isNotBlank(worksData.spirecontent);
+        boolean hasAudio = StringUtils.isNotBlank(worksData.audio);
+        boolean hasText = StringUtils.isNotBlank(worksData.spirecontent);
 
         boolean hasPic = false;
-        if (StringUtil.isNotBlank(worksData.pics)) {
+        if (StringUtils.isNotBlank(worksData.pics)) {
             String[] pics = worksData.pics.split(",");
             hasPic = pics.length > 0;
         }

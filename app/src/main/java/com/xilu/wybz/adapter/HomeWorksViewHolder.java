@@ -1,7 +1,6 @@
 package com.xilu.wybz.adapter;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -14,15 +13,13 @@ import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.service.MainService;
-import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.ui.lyrics.LyricsdisplayActivity;
 import com.xilu.wybz.ui.song.PlayAudioActivity;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.ImageLoadUtil;
 import com.xilu.wybz.utils.NumberUtil;
 import com.xilu.wybz.utils.PrefsUtil;
-import com.xilu.wybz.utils.StringUtil;
-import com.xilu.wybz.view.materialdialogs.MaterialDialog;
+import com.xilu.wybz.utils.StringUtils;
 import com.xilu.wybz.view.pull.section.SectionData;
 
 import java.util.List;
@@ -60,12 +57,12 @@ public class HomeWorksViewHolder extends com.xilu.wybz.view.pull.BaseViewHolder 
     @Override
     public void onBindViewHolder(int position) {
         WorksData worksData = mDataList.get(position).t;
-        if(StringUtil.isBlank(worksData.pic)){
+        if(StringUtils.isBlank(worksData.pic)){
             worksData.pic = MyHttpClient.QINIU_URL+MyCommon.getLyricsPic().get((int)(Math.random()*10));
         }
         String url = MyCommon.getImageUrl(worksData.getPic(), itemWidth, itemWidth);
         ImageLoadUtil.loadImage(url, ivCover);
-        if(StringUtil.isNotBlank(worksData.name)) {
+        if(StringUtils.isNotBlank(worksData.name)) {
             tvName.setText(worksData.name);
         }else{
             tvName.setText(worksData.title);

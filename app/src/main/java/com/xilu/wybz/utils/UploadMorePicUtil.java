@@ -2,7 +2,6 @@ package com.xilu.wybz.utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -37,7 +36,7 @@ public class UploadMorePicUtil {
         images = "";
         for (int i = 0; i < pics.size(); i++) {
             String imgPath = pics.get(i);
-            if(StringUtil.isNotBlank(imgPath)&&new File(imgPath).exists()) {
+            if(StringUtils.isNotBlank(imgPath)&&new File(imgPath).exists()) {
                 imageUrls.add("");
                 if(!new File(FileDir.inspirePicDir).exists()){
                     new File(FileDir.inspirePicDir).mkdirs();

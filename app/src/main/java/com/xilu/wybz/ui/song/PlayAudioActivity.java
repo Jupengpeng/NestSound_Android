@@ -54,7 +54,7 @@ import com.xilu.wybz.utils.MD5Util;
 import com.xilu.wybz.utils.NumberUtil;
 import com.xilu.wybz.utils.PermissionUtils;
 import com.xilu.wybz.utils.PrefsUtil;
-import com.xilu.wybz.utils.StringUtil;
+import com.xilu.wybz.utils.StringUtils;
 import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.utils.ToastUtils;
 import com.xilu.wybz.view.dialog.ActionMoreDialog;
@@ -153,7 +153,6 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
 //        public void onServiceConnected(ComponentName name, IBinder service) {
 //            musicBinder = (PlayService.MusicBinder) service;
 //        }
-//
 //        @Override
 //        public void onServiceDisconnected(ComponentName name) {
 //
@@ -266,12 +265,15 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
                 tvTime.setText(FormatHelper.formatDuration(MyApplication.mMainService.getCurrentPosition() / 1000));
                 if (MainService.status==2) {
                     ivPlay.setImageResource(R.drawable.ic_play_play);
+                    isPlay = false;
                 } else if (MainService.status==3) {
                     ivPlay.setImageResource(R.drawable.ic_play_pause);
+                    isPlay = true;
                     startTimer();
                 }
             }else{
                 //停止或者尚未播放
+                isPlay = false;
                 if(worksData!=null) {
                     if(MyApplication.mMainService.mCurrentState==MyCommon.IDLE)
                     MyApplication.mMainService.playOneMusic(worksData.playurl,from);
@@ -288,7 +290,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
         try {
             if(worksData==null)return;
             String pic = worksData.getPic();
-            if (StringUtil.isNotBlank(pic)) {
+            if (StringUtils.isNotBlank(pic)) {
                 loadPic(pic);
             }
             worksData.status = 1;

@@ -6,6 +6,13 @@ package com.xilu.wybz.bean;
 public class ActionBean {
     String title;
     String type;
+    public ActionBean(){
+
+    }
+    public ActionBean(String title, String type) {
+        this.title = title;
+        this.type = type;
+    }
 
     public String getTitle() {
         return title;

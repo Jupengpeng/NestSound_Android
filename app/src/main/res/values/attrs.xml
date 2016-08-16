@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <!-- These top three attributes are not accessible to library users -->
     <attr name="md_divider" format="color" />
 
@@ -64,7 +65,9 @@
     <declare-styleable name="MDRootLayout">
         <attr name="md_reduce_padding_no_title_no_buttons" format="boolean" />
     </declare-styleable>
-
+    <declare-styleable name="FolderTextView">
+        <attr name="foldline" format="integer" />
+    </declare-styleable>
     <attr name="md_medium_font" format="string" />
     <attr name="md_regular_font" format="string" />
     <declare-styleable name="ExpandableTextView">

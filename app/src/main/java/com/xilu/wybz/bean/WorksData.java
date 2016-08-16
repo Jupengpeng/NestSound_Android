@@ -2,7 +2,7 @@ package com.xilu.wybz.bean;
 
 
 import com.xilu.wybz.common.MyHttpClient;
-import com.xilu.wybz.utils.StringUtil;
+import com.xilu.wybz.utils.StringUtils;
 import java.io.Serializable;
 
 /**
@@ -24,6 +24,7 @@ public class WorksData implements Serializable {
     public String shareurl;//分享地址
     public int sampleid;//模板Id
     public String playurl;//mp3地址
+    public String mp3;//mp3地址
     public int mp3times;//mp3时长
     public String hotmp3;//伴奏播放地址
     public int hotmp3times;//伴奏时长 秒
@@ -217,7 +218,7 @@ public class WorksData implements Serializable {
     }
 
     public String getPic() {
-        if(StringUtil.isNotBlank(pic)&&!pic.startsWith("http")){
+        if(StringUtils.isNotBlank(pic)&&!pic.startsWith("http")){
             pic = MyHttpClient.QINIU_URL+pic;
         }
         return pic;

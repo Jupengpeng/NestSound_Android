@@ -17,14 +17,12 @@ import com.xilu.wybz.ui.base.BaseListActivity;
 import com.xilu.wybz.ui.lyrics.LyricsdisplayActivity;
 import com.xilu.wybz.ui.song.PlayAudioActivity;
 import com.xilu.wybz.utils.DateTimeUtil;
-import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringStyleUtil;
-import com.xilu.wybz.utils.StringUtil;
+import com.xilu.wybz.utils.StringUtils;
 import com.xilu.wybz.view.dialog.CommentDialog;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.PullRecycler;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -183,15 +181,15 @@ public class MsgCommentActivity extends BaseListActivity<MsgCommentBean> impleme
             tvContent.setText(StringStyleUtil.getCommentStyleStr(commentBean));
 
             if(commentBean.createdate>0)tvTime.setText(DateTimeUtil.timestamp2Date(commentBean.createdate));
-            if (StringUtil.isNotBlank(commentBean.nickname))tvUserName.setText(commentBean.nickname);
-            if (StringUtil.isNotBlank(commentBean.headerurl)) loadImage(commentBean.headerurl, ivHead);
+            if (StringUtils.isNotBlank(commentBean.nickname))tvUserName.setText(commentBean.nickname);
+            if (StringUtils.isNotBlank(commentBean.headerurl)) loadImage(commentBean.headerurl, ivHead);
 
             if(commentBean.itemid>0) {
                 tvMusicName.setVisibility(View.VISIBLE);
-                if (StringUtil.isNotBlank(commentBean.author)) tvAuthor.setText(commentBean.author);
-                if (StringUtil.isBlank(commentBean.title))commentBean.title = "未命名";
+                if (StringUtils.isNotBlank(commentBean.author)) tvAuthor.setText(commentBean.author);
+                if (StringUtils.isBlank(commentBean.title))commentBean.title = "未命名";
                 tvMusicName.setText(commentBean.title);
-                if (StringUtil.isNotBlank(commentBean.pic)) loadImage(commentBean.pic, ivCover);
+                if (StringUtils.isNotBlank(commentBean.pic)) loadImage(commentBean.pic, ivCover);
             }else{
                 tvMusicName.setVisibility(View.GONE);
                 loadImage("res:///"+R.drawable.ic_nodata_pic,ivCover);

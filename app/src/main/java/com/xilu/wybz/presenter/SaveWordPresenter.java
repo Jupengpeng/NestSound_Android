@@ -9,7 +9,6 @@ import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.callback.AppStringCallback;
 import com.xilu.wybz.ui.IView.ISaveWordView;
 import com.xilu.wybz.utils.PrefsUtil;
-import com.xilu.wybz.utils.StringUtil;
 
 import java.util.HashMap;
 import java.util.Map;

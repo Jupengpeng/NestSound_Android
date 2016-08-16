@@ -9,12 +9,10 @@ import android.widget.RelativeLayout;
 import com.xilu.wybz.R;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.MyCommon;
-import com.xilu.wybz.common.PlayMediaInstance;
 import com.xilu.wybz.service.MainService;
-import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.ui.song.PlayAudioActivity;
 import com.xilu.wybz.utils.PrefsUtil;
-import com.xilu.wybz.utils.StringUtil;
+import com.xilu.wybz.utils.StringUtils;
 import com.xilu.wybz.view.AnimImageView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -84,7 +82,7 @@ public abstract class BasePlayMenuActivity extends ToolbarActivity {
         int playId = PrefsUtil.getInt("playId", context);
         String playFrom = PrefsUtil.getString("playFrom", context);
         String idData = PrefsUtil.getString(playFrom,context);
-        if(StringUtil.isNotBlank(idData)){
+        if(StringUtils.isNotBlank(idData)){
             String ids[] = idData.split(",");
             for(int i=0;i<ids.length;i++){
                 MainService.ids.add(Integer.valueOf(ids[i]));

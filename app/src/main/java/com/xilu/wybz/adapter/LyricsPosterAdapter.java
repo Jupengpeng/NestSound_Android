@@ -4,13 +4,12 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckedTextView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.LyricsPoster;
-import com.xilu.wybz.utils.StringUtil;
+import com.xilu.wybz.utils.StringUtils;
 
 import java.util.List;
 
@@ -30,7 +29,7 @@ public class LyricsPosterAdapter extends YcBaseAdapter<LyricsPoster>{
         LyricsPoster lyricsPoster = mList.get(position);
         TextView tvTitle = BaseViewHolder.get(convertView, R.id.tv_title);
         ImageView ivCheckState = BaseViewHolder.get(convertView, R.id.iv_check_state);
-        if(StringUtil.isNotBlank(lyricsPoster.lyrics))
+        if(StringUtils.isNotBlank(lyricsPoster.lyrics))
         tvTitle.setText(lyricsPoster.lyrics);
         tvTitle.setSelected(lyricsPoster.isChecked);
         ivCheckState.setVisibility(lyricsPoster.isChecked?View.VISIBLE:View.GONE);

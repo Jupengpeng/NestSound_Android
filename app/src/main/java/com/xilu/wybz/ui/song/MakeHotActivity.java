@@ -11,7 +11,7 @@ import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.ui.fragment.HotFragment;
-import com.xilu.wybz.utils.StringUtil;
+import com.xilu.wybz.utils.StringUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -48,7 +48,7 @@ public class MakeHotActivity extends ToolbarActivity {
         if(hotCatalog==null)finish();
         EventBus.getDefault().register(this);
         MyApplication.mMainService.doRelease();
-        if(StringUtil.isNotBlank(hotCatalog.categoryname))
+        if(StringUtils.isNotBlank(hotCatalog.categoryname))
             setTitle(hotCatalog.categoryname);
         else
             setTitle("原创伴奏");
@@ -67,7 +67,7 @@ public class MakeHotActivity extends ToolbarActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(Event.PPStatusEvent event) {
         String from = event.getFrom();
-        if(StringUtil.isBlank(from))return;
+        if(StringUtils.isBlank(from))return;
         if(from.equals(type+"_hot")) {
             switch (event.getStatus()) {
                 case MyCommon.STARTED://开始

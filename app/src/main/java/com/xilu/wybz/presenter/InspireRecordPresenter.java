@@ -9,7 +9,7 @@ import com.xilu.wybz.http.callback.MyStringCallback;
 import com.xilu.wybz.ui.IView.IInspireRecordView;
 import com.xilu.wybz.utils.ParseUtils;
 import com.xilu.wybz.utils.PrefsUtil;
-import com.xilu.wybz.utils.StringUtil;
+import com.xilu.wybz.utils.StringUtils;
 
 import java.util.HashMap;
 
@@ -28,10 +28,10 @@ public class InspireRecordPresenter extends BasePresenter<IInspireRecordView>{
         params = new HashMap<>();
         params.put("uid", PrefsUtil.getUserId(context)+"");
         params.put("spirecontent",worksData.spirecontent);
-        if(StringUtil.isNotBlank(worksData.pics)) {
+        if(StringUtils.isNotBlank(worksData.pics)) {
             params.put("pics", worksData.pics.replace(MyHttpClient.QINIU_URL, ""));
         }
-        if(StringUtil.isNotBlank(worksData.audio)){
+        if(StringUtils.isNotBlank(worksData.audio)){
             params.put("audio",worksData.audio.replace(MyHttpClient.QINIU_AUDIO_URL,""));
         }
         httpUtils.post(MyHttpClient.getSaveInspireUrl(),params,new MyStringCallback(){

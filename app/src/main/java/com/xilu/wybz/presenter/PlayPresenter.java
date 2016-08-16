@@ -1,20 +1,13 @@
 package com.xilu.wybz.presenter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 
-import com.commit451.nativestackblur.NativeStackBlur;
-import com.umeng.socialize.utils.Log;
 import com.xilu.wybz.bean.DataBean;
 import com.xilu.wybz.common.MyHttpClient;
-import com.xilu.wybz.http.callback.BitmapCallback;
 import com.xilu.wybz.http.callback.MyStringCallback;
 import com.xilu.wybz.ui.IView.IPlayView;
-import com.xilu.wybz.utils.BitmapUtils;
-import com.xilu.wybz.utils.FileUtils;
 import com.xilu.wybz.utils.ParseUtils;
 import com.xilu.wybz.utils.PrefsUtil;
-import com.xilu.wybz.utils.StringUtil;
 
 import java.util.HashMap;
 

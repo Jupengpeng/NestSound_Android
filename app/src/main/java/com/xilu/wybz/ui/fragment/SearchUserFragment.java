@@ -19,7 +19,7 @@ import com.xilu.wybz.ui.IView.ISearchView;
 import com.xilu.wybz.ui.mine.UserInfoActivity;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.PrefsUtil;
-import com.xilu.wybz.utils.StringUtil;
+import com.xilu.wybz.utils.StringUtils;
 import com.xilu.wybz.view.GridSpacingItemDecoration;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.layoutmanager.ILayoutManager;
@@ -139,11 +139,11 @@ public class SearchUserFragment extends BaseListFragment<FansBean> implements IS
         @Override
         public void onBindViewHolder(int position) {
             FansBean fansBean = mDataList.get(position);
-            if(StringUtil.isNotBlank(fansBean.headurl)&&!fansBean.headurl.equals(MyCommon.defult_head)) {
+            if(StringUtils.isNotBlank(fansBean.headurl)&&!fansBean.headurl.equals(MyCommon.defult_head)) {
                 String url = MyCommon.getImageUrl(fansBean.headurl, itemWidth, itemWidth);
                 loadImage(url, ivHead);
             }
-            if(StringUtil.isNotBlank(fansBean.nickname))tvName.setText(fansBean.nickname);
+            if(StringUtils.isNotBlank(fansBean.nickname))tvName.setText(fansBean.nickname);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

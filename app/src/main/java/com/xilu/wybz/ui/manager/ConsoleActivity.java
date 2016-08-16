@@ -12,7 +12,7 @@ import com.xilu.wybz.R;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.utils.PrefsUtil;
-import com.xilu.wybz.utils.StringUtil;
+import com.xilu.wybz.utils.StringUtils;
 
 import butterknife.Bind;
 
@@ -61,7 +61,7 @@ public class ConsoleActivity extends ToolbarActivity {
 
         tvRelease.setText(MyHttpClient.RELEASE_ROOT_URL);
         tvTest.setText(MyHttpClient.TEST_ROOT_URL);
-        if (StringUtil.isNotBlank(temp)){
+        if (StringUtils.isNotBlank(temp)){
             etTemp.setText(temp);
         } else {
             etTemp.setText(MyHttpClient.TEMP_ROOT_URL);
@@ -70,7 +70,7 @@ public class ConsoleActivity extends ToolbarActivity {
 
         String host = PrefsUtil.getString(PrefsUtil.DOMAIN,this);
 
-        if (StringUtil.isBlank(host)){
+        if (StringUtils.isBlank(host)){
             selectedService(RELEASE_SERVICE);
         } else {
             if (host.equalsIgnoreCase(MyHttpClient.RELEASE_ROOT_URL)){

@@ -36,7 +36,7 @@ import com.xilu.wybz.utils.FileUtils;
 import com.xilu.wybz.utils.MD5Util;
 import com.xilu.wybz.utils.PermissionUtils;
 import com.xilu.wybz.utils.PrefsUtil;
-import com.xilu.wybz.utils.StringUtil;
+import com.xilu.wybz.utils.StringUtils;
 import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.utils.ToastUtils;
 import com.xilu.wybz.view.WaveSurfaceView;
@@ -715,7 +715,7 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
                     showMsg("还未开始录音");
                     return true;
                 }
-                if (StringUtil.isBlank(etTitle.getText().toString())) {
+                if (StringUtils.isBlank(etTitle.getText().toString())) {
                     showMsg("请填写标题");
                     return true;
                 }

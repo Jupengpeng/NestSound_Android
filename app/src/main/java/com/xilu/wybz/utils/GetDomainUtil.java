@@ -40,7 +40,7 @@ public class GetDomainUtil {
                 try {
                     String api_domain = new JSONObject(response).getString("api_domain");
 //                    String page_start_pic = new JSONObject(response).getString("page_start_pic");
-                    if(StringUtil.isNotBlank(api_domain)) {
+                    if(StringUtils.isNotBlank(api_domain)) {
                         PrefsUtil.putString("domain", api_domain, mContext);
                         MyHttpClient.ROOT_URL = api_domain;
                         MyHttpClient.BASE_URL = MyHttpClient.ROOT_URL+MyHttpClient.BASE_PATH;

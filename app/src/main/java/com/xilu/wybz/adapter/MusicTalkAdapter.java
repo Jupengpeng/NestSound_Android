@@ -12,7 +12,7 @@ import com.xilu.wybz.bean.MusicTalk;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.ImageLoadUtil;
-import com.xilu.wybz.utils.StringUtil;
+import com.xilu.wybz.utils.StringUtils;
 
 import java.util.List;
 
@@ -49,7 +49,7 @@ public class MusicTalkAdapter extends RecyclerView.Adapter<MusicTalkAdapter.Musi
     @Override
     public void onBindViewHolder(final MusicTalkViewHolder holder, final int position) {
         MusicTalk musicTalk = mList.get(position);
-        if(StringUtil.isNotBlank(musicTalk.pic))
+        if(StringUtils.isNotBlank(musicTalk.pic))
         ImageLoadUtil.loadImage(MyCommon.getImageUrl(musicTalk.pic,itemWidth,itemHeight), holder.ivCover);
         if (mOnItemClickListener != null) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {

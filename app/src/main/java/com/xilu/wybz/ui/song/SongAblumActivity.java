@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -29,14 +28,13 @@ import com.xilu.wybz.http.callback.BitmapCallback;
 import com.xilu.wybz.presenter.SongAlbumPresenter;
 import com.xilu.wybz.service.MainService;
 import com.xilu.wybz.ui.IView.IRecSongView;
-import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.utils.BitmapUtils;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.FileUtils;
 import com.xilu.wybz.utils.MD5Util;
 import com.xilu.wybz.utils.PrefsUtil;
-import com.xilu.wybz.utils.StringUtil;
+import com.xilu.wybz.utils.StringUtils;
 import com.xilu.wybz.view.YcScrollView;
 
 import java.io.File;
@@ -232,9 +230,9 @@ public class SongAblumActivity extends ToolbarActivity implements IRecSongView {
         songListAdapter.notifyDataSetChanged();
     }
     public void updateHeaderView(){
-        if(StringUtil.isNotBlank(songAlbum.name))
+        if(StringUtils.isNotBlank(songAlbum.name))
             tvTitle.setText(songAlbum.name);
-        if(StringUtil.isNotBlank(songAlbum.detail))
+        if(StringUtils.isNotBlank(songAlbum.detail))
             tvDesc.setText(songAlbum.detail);
     }
     @Override

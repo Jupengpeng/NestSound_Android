@@ -33,7 +33,7 @@ import com.xilu.wybz.ui.IView.ISaveSongView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.ui.lyrics.ShareActivity;
 import com.xilu.wybz.utils.ImageUtils;
-import com.xilu.wybz.utils.StringUtil;
+import com.xilu.wybz.utils.StringUtils;
 import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.utils.UploadFileUtil;
 import com.xilu.wybz.view.materialdialogs.MaterialDialog;
@@ -256,7 +256,7 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView ,
     @OnClick(R.id.iv_play)
     public void onClickPlay() {
 
-        if (StringUtil.isBlank(worksData.musicurl)){
+        if (StringUtils.isBlank(worksData.musicurl)){
             showMsg("没有找到合成mp3文件");
             return;
         }
@@ -307,11 +307,11 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView ,
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_publish) {
             //先检查歌词的描述
-            if(StringUtil.isBlank(worksData.detail)){
+            if(StringUtils.isBlank(worksData.detail)){
                 showMsg("请先添加歌曲描述！");
                 return true;
             }
-            if(StringUtil.isBlank(worksData.pic)){
+            if(StringUtils.isBlank(worksData.pic)){
                 showMsg("请先选择歌曲的封面！");
                 return true;
             }

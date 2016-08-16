@@ -122,6 +122,13 @@ public abstract class BaseListActivity<T> extends BasePlayMenuActivity implement
             return BaseListActivity.this.isSectionHeader(position);
         }
     }
+    public void updateItem(int position, T worksData) {
+        mDataList.set(position, worksData);
+        updateItem(position);
+    }
+    public void updateItem(int position) {
+        adapter.notifyItemChanged(position);
+    }
     public void removeItem(int position){
         mDataList.remove(position);
         adapter.notifyItemRemoved(position);

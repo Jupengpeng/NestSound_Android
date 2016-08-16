@@ -9,18 +9,14 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.umeng.analytics.MobclickAgent;
-import com.umeng.message.PushAgent;
 import com.xilu.wybz.R;
 import com.xilu.wybz.adapter.LyricsPosterAdapter;
 import com.xilu.wybz.bean.LyricsPoster;
-import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.KeySet;
 import com.xilu.wybz.ui.base.ToolbarActivity;
-import com.xilu.wybz.utils.PrefsUtil;
-import com.xilu.wybz.utils.StringUtil;
+import com.xilu.wybz.utils.StringUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -66,10 +62,10 @@ public class LyricsPosterActivity extends ToolbarActivity{
         mToolbar.setTitleTextColor(Color.WHITE);
         setTitle(worksData.title.replace("\n",""));
         lyricsPosters = new ArrayList<>();
-        if (StringUtil.isNotBlank(worksData.lyrics)) {
+        if (StringUtils.isNotBlank(worksData.lyrics)) {
             String[] lyricss = worksData.lyrics.split("\\n");
             for(String lyrics : lyricss){
-                if(StringUtil.isNotBlank(lyrics)){
+                if(StringUtils.isNotBlank(lyrics)){
                     LyricsPoster lyricsPoster = new LyricsPoster();
                     lyricsPoster.lyrics = lyrics;
                     lyricsPosters.add(lyricsPoster);
