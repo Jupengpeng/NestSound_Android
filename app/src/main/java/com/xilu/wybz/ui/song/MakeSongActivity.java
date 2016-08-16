@@ -286,9 +286,27 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
 
     }
 
+    public void reSetActivity(){
+
+        useheadset = true;
+        status = 0; //0:未开始  1：录音中  2：暂停  3：完成
+        playInstance = 1;
+        playProgress = -1;
+        helper.data = null;
+
+        DoubleMediaInstance.getInstance().stopMediaPlay();
+        MediaInstance.getInstance().stopMediaPlay();
+        RecordInstance.getInstance().toStop();
+
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(Event.ImportHotEvent event) {
         this.templateBean = event.getWorksData();
+
+        reSetActivity();
+
+        upData();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

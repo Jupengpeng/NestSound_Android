@@ -2,6 +2,8 @@ package com.xilu.wybz.ui.lyrics;
 
 import android.graphics.Color;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -79,6 +81,17 @@ public class LyricsTemplateListActivity extends BaseListActivity<LyricsDraftBean
             return;
         }
         recycler.onRefreshCompleted();
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
