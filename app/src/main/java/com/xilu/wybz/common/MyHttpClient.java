@@ -274,7 +274,10 @@ public class MyHttpClient {
     public static String getMusicianListUrl(){
         return "common/musician/list";
     }
-
+    //音乐人详情
+    public static String getMusicianDetailUrl(){
+        return "common/musician/detail";
+    }
 
     public static String getLyricstemplateList(){
         return "lyricstemplate/list";

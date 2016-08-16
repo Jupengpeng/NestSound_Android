@@ -9,15 +9,19 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:paddingBottom="10dp">
 
         <FrameLayout
-            android:layout_width="72dp"
-            android:layout_height="72dp">
+            android:layout_width="80dp"
+            android:layout_height="80dp">
 
             <com.facebook.drawee.view.SimpleDraweeView
-                android:layout_width="72dp"
-                android:layout_height="72dp"
+                android:id="@+id/iv_cover"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 fresco:actualImageScaleType="centerCrop"
                 fresco:fadeDuration="300"
                 fresco:placeholderImage="@drawable/default_pic"
@@ -34,31 +38,33 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:padding="20dp"
-                android:src="@drawable/ic_bz_play" />
+                android:padding="15dp"
+                android:src="@drawable/ic_match_play" />
         </FrameLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="25dp"
             android:gravity="center_vertical"
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/tv_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/main_text_color3"
                 android:textSize="15sp"
-                tools:text="歌曲名：所有质疑我的人" />
+                android:text="所有质疑我的人" />
 
             <TextView
+                android:id="@+id/tv_author"
                 android:layout_marginTop="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/main_text_color3"
                 android:textSize="15sp"
-                tools:text="作者：高萤" />
+                android:text="高萤" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

@@ -149,7 +149,7 @@ public class HotCatalogActivity extends BaseSectionListActivity<HotCatalog> impl
         if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
             mDataList.clear();
         }
-        if(page==1){
+        if(page==2){
             PrefsUtil.saveHotBean(context,hotBean);
         }
         if(mDataList.size()==0) {

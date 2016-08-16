@@ -24,6 +24,7 @@ public class WorksData implements Serializable {
     public String shareurl;//分享地址
     public int sampleid;//模板Id
     public String playurl;//mp3地址
+    public String mp3;//mp3地址
     public int mp3times;//mp3时长
     public String hotmp3;//伴奏播放地址
     public int hotmp3times;//伴奏时长 秒

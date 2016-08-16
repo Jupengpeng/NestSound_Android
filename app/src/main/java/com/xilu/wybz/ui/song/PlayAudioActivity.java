@@ -153,7 +153,6 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
 //        public void onServiceConnected(ComponentName name, IBinder service) {
 //            musicBinder = (PlayService.MusicBinder) service;
 //        }
-//
 //        @Override
 //        public void onServiceDisconnected(ComponentName name) {
 //
@@ -266,12 +265,15 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
                 tvTime.setText(FormatHelper.formatDuration(MyApplication.mMainService.getCurrentPosition() / 1000));
                 if (MainService.status==2) {
                     ivPlay.setImageResource(R.drawable.ic_play_play);
+                    isPlay = false;
                 } else if (MainService.status==3) {
                     ivPlay.setImageResource(R.drawable.ic_play_pause);
+                    isPlay = true;
                     startTimer();
                 }
             }else{
                 //停止或者尚未播放
+                isPlay = false;
                 if(worksData!=null) {
                     if(MyApplication.mMainService.mCurrentState==MyCommon.IDLE)
                     MyApplication.mMainService.playOneMusic(worksData.playurl,from);
