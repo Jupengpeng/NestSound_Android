@@ -21,6 +21,8 @@ import com.xilu.wybz.presenter.StarInfoPresenter;
 import com.xilu.wybz.ui.IView.IStarInfoView;
 import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.ui.base.BaseSectionListActivity;
+import com.xilu.wybz.utils.DensityUtil;
+import com.xilu.wybz.utils.ImageLoadUtil;
 import com.xilu.wybz.utils.StringUtils;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.PullRecycler;
@@ -36,30 +38,37 @@ import butterknife.ButterKnife;
 /**
  * Created by hujunwei on 16/8/12.
  */
-public class StarInfoActivity extends BaseSectionListActivity<WorksData> implements IStarInfoView{
+public class StarInfoActivity extends BaseSectionListActivity<WorksData> implements IStarInfoView {
 
     private StarBean starBean;
     private StarInfoPresenter starInfoPresenter;
     private int uid;
     private int playPos = -1;
     private String type = "musician";
-    public static void toStarInfoActivity(Context context, int uid){
-        Intent intent = new Intent(context,StarInfoActivity.class);
-        intent.putExtra("uid",uid);
+
+    public static void toStarInfoActivity(Context context, int uid) {
+        Intent intent = new Intent(context, StarInfoActivity.class);
+        intent.putExtra("uid", uid);
         context.startActivity(intent);
     }
+
     @Override
     protected void initPresenter() {
-        EventBus.getDefault().register(this);
-        starInfoPresenter = new StarInfoPresenter(context,this);
+        starInfoPresenter = new StarInfoPresenter(context, this);
         starInfoPresenter.init();
     }
+
+    @Override
+    public boolean hasPadding() {
+        return false;
+    }
+
     @Override
     public void initView() {
         Bundle bundle = getIntent().getExtras();
-        if(bundle!=null){
+        if (bundle != null) {
             uid = bundle.getInt("uid");
-        }else{
+        } else {
             finish();
         }
         recycler.enablePullToRefresh(false);
@@ -81,19 +90,19 @@ public class StarInfoActivity extends BaseSectionListActivity<WorksData> impleme
 
     @Override
     public void showData(StarInfoBean starInfoBean) {
-        if(isDestroy)return;
+        if (isDestroy) return;
         if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
             mDataList.clear();
         }
-        if(mDataList.size()==0){
+        if (mDataList.size() == 0) {
             starBean = starInfoBean.musician;
-            mDataList.add(new SectionData<>(true,0,"用户个人资料"));
+            mDataList.add(new SectionData<>(true, 0, "用户个人资料"));
         }
-        if(starInfoBean.worklist!=null){
-            if(starInfoBean.worklist.size()==0){
+        if (starInfoBean.worklist != null) {
+            if (starInfoBean.worklist.size() == 0) {
                 loadNoMore();
-            }else{
-                for(WorksData worksData:starInfoBean.worklist){
+            } else {
+                for (WorksData worksData : starInfoBean.worklist) {
                     mDataList.add(new SectionData<>(worksData));
                 }
             }
@@ -118,12 +127,14 @@ public class StarInfoActivity extends BaseSectionListActivity<WorksData> impleme
         recycler.onRefreshCompleted();
         recycler.enableLoadMore(false);
     }
+
     @Override
     protected BaseViewHolder onCreateSectionHeaderViewHolder(ViewGroup parent) {
         View view = LayoutInflater.from(context).inflate(R.layout.view_startinfo_header, parent, false);
         return new SectionHeaderViewHolder(view);
 
     }
+
     public class SectionHeaderViewHolder extends BaseViewHolder {
         @Bind(R.id.iv_head)
         SimpleDraweeView ivHead;
@@ -148,41 +159,42 @@ public class StarInfoActivity extends BaseSectionListActivity<WorksData> impleme
 
         @Override
         public void onBindViewHolder(int position) {
-            if(starBean!=null){
-                if(StringUtils.isNotBlank(starBean.pic))
-                loadImage(starBean.pic,ivHead);
-                if(StringUtils.isNotBlank(starBean.name))
-                tvName.setText(starBean.name);
-                if(StringUtils.isNotBlank(starBean.introduction))
-                tvIntro.setText(starBean.introduction);
-                if(StringUtils.isNotBlank(starBean.description))
-                tvDesc.setText(starBean.description);
-                if(StringUtils.isNotBlank(starBean.ability)) {
-                    String[] tags = starBean.ability.split(",");
+            if (starBean != null) {
+                if (StringUtils.isNotBlank(starBean.pic))
+                    ImageLoadUtil.loadImage(starBean.pic, ivHead, DensityUtil.dip2px(context,60),DensityUtil.dip2px(context,60));
+                if (StringUtils.isNotBlank(starBean.name))
+                    tvName.setText(starBean.name);
+                if (StringUtils.isNotBlank(starBean.introduction))
+                    tvIntro.setText(starBean.introduction);
+                if (StringUtils.isNotBlank(starBean.description))
+                    tvDesc.setText(starBean.description);
+                if (StringUtils.isNotBlank(starBean.ability)) {
+                    String[] tags = starBean.ability.split("/");
                     llTag.setVisibility(tags.length > 0 ? View.VISIBLE : View.GONE);
-                    if(tags.length==1){
+                    if (tags.length == 1) {
                         tvTag1.setVisibility(View.VISIBLE);
                         tvTag2.setVisibility(View.GONE);
                         tvTag3.setVisibility(View.GONE);
                         tvTag1.setText(tags[0]);
-                    }else if(tags.length==2){
+                    } else if (tags.length == 2) {
                         tvTag2.setText(tags[0]);
                         tvTag3.setText(tags[1]);
                         tvTag1.setVisibility(View.GONE);
                         tvTag2.setVisibility(View.VISIBLE);
                         tvTag3.setVisibility(View.VISIBLE);
-                    }else if(tags.length>=3){
+                    } else if (tags.length >= 3) {
                         tvTag1.setText("全能");
                         tvTag1.setVisibility(View.VISIBLE);
                         tvTag2.setVisibility(View.GONE);
                         tvTag3.setVisibility(View.GONE);
                     }
 
-                }else{
+                } else {
                     llTag.setVisibility(View.GONE);
                 }
             }
         }
+
         @Override
         public void onItemClick(View view, int position) {
 
@@ -204,6 +216,7 @@ public class StarInfoActivity extends BaseSectionListActivity<WorksData> impleme
         TextView tvName;
         @Bind(R.id.tv_author)
         TextView tvAuthor;
+
         public SimpleViewHolder(View itemView) {
             super(itemView);
         }
@@ -211,29 +224,29 @@ public class StarInfoActivity extends BaseSectionListActivity<WorksData> impleme
         @Override
         public void onBindViewHolder(int position) {
             WorksData worksData = mDataList.get(position).t;
-            if(worksData!=null) {
+            if (worksData != null) {
                 if (StringUtils.isNotBlank(worksData.pic))
-                    loadImage(worksData.pic, ivCover);
+                    ImageLoadUtil.loadImage(worksData.pic, ivCover, DensityUtil.dip2px(context,80),DensityUtil.dip2px(context,80));
                 if (StringUtils.isNotBlank(worksData.title))
-                    tvName.setText(worksData.title);
+                    tvName.setText("歌曲名："+worksData.title);
                 if (StringUtils.isNotBlank(worksData.name))
-                    tvAuthor.setText(worksData.name);
+                    tvAuthor.setText("作者："+worksData.name);
                 ivPlay.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if (playPos >= 0 && playPos != position) {//切换伴奏 重置上一首的状态
                             MyApplication.mMainService.doRelease();
-                            MyApplication.mMainService.playOneMusic(mDataList.get(position).t.mp3,type);
+                            MyApplication.mMainService.playOneMusic(mDataList.get(position).t.mp3, type);
                             mDataList.get(position).t.isPlay = true;
                             ivPlay.setImageResource(R.drawable.ic_match_pause);
                             playPos = position;//重新赋值当前播放的位置
-                        }else if(playPos >= 0&&playPos==position){//播放当前
+                        } else if (playPos >= 0 && playPos == position) {//播放当前
                             mDataList.get(playPos).t.isPlay = !mDataList.get(playPos).t.isPlay;
                             ivPlay.setImageResource(mDataList.get(playPos).t.isPlay
                                     ? R.drawable.ic_match_pause : R.drawable.ic_match_play);
                             MyApplication.mMainService.doPP(mDataList.get(playPos).t.isPlay);
-                        }else{//初此播放
-                            MyApplication.mMainService.playOneMusic(mDataList.get(position).t.mp3,type);
+                        } else {//初此播放
+                            MyApplication.mMainService.playOneMusic(mDataList.get(position).t.mp3, type);
                             mDataList.get(position).t.isPlay = true;
                             ivPlay.setImageResource(R.drawable.ic_match_pause);
                             playPos = position;//重新赋值当前播放的位置
@@ -242,16 +255,18 @@ public class StarInfoActivity extends BaseSectionListActivity<WorksData> impleme
                 });
             }
         }
+
         @Override
         public void onItemClick(View view, int position) {
 
         }
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(Event.PPStatusEvent event) {
         String from = event.getFrom();
-        if(StringUtils.isBlank(from))return;
-        if(from.equals(type)) {
+        if (StringUtils.isBlank(from)) return;
+        if (from.equals(type)) {
             switch (event.getStatus()) {
                 case MyCommon.STARTED://开始
                     break;
@@ -269,16 +284,18 @@ public class StarInfoActivity extends BaseSectionListActivity<WorksData> impleme
             }
         }
     }
-    public void doStop(){
+
+    public void doStop() {
         if (playPos >= 0) {
             mDataList.get(playPos).t.isPlay = false;
             updateItem(playPos);
             playPos = -1;
         }
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().unregister(this);
+        MyApplication.mMainService.doRelease();
     }
 }

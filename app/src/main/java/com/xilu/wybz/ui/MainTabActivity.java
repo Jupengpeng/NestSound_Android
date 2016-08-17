@@ -14,6 +14,7 @@ import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.PushAgent;
 import com.xilu.wybz.R;
 import com.xilu.wybz.adapter.MyPagerAdapter;
+import com.xilu.wybz.bean.HotBean;
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.service.MainService;
@@ -86,20 +87,6 @@ public class MainTabActivity extends BaseActivity {
         initPagerViewer();
     }
 
-    private void setWifiNeverSleep(){
-        int wifiSleepPolicy=0;
-        wifiSleepPolicy= Settings.System.getInt(getContentResolver(),
-                android.provider.Settings.System.WIFI_SLEEP_POLICY,
-                Settings.System.WIFI_SLEEP_POLICY_DEFAULT);
-        System.out.println("---> 修改前的Wifi休眠策略值 WIFI_SLEEP_POLICY="+wifiSleepPolicy);
-        Settings.System.putInt(getContentResolver(),
-                android.provider.Settings.System.WIFI_SLEEP_POLICY,
-                Settings.System.WIFI_SLEEP_POLICY_NEVER);
-        wifiSleepPolicy=Settings.System.getInt(getContentResolver(),
-                android.provider.Settings.System.WIFI_SLEEP_POLICY,
-                Settings.System.WIFI_SLEEP_POLICY_DEFAULT);
-        System.out.println("---> 修改后的Wifi休眠策略值 WIFI_SLEEP_POLICY="+wifiSleepPolicy);
-    }
     //打开推送
     public void openPush() {
         if (PrefsUtil.getBoolean("isPushOpen", context) && !PushAgent.getInstance(context).isEnabled()) {
@@ -279,6 +266,7 @@ public class MainTabActivity extends BaseActivity {
                     }
                     PrefsUtil.putString(PrefsUtil.getString("playFrom", context), ids, context);
                 }
+                PrefsUtil.saveHotBean(context,null);
                 finish();
                 return true;
 

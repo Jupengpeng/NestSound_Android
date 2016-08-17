@@ -33,6 +33,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/tv_nickname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/main_text_color"
@@ -40,6 +41,7 @@
                 android:text="@string/app_name" />
 
             <TextView
+                android:id="@+id/tv_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
@@ -132,7 +134,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
-                    android:drawableLeft="@drawable/ic_item_zan"
+                    android:drawableLeft="@drawable/ic_lyrics_zan1"
                     android:drawablePadding="3dp"
                     android:textColor="@color/main_text_color3"
                     android:textSize="12sp"
@@ -143,7 +145,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
-                    android:drawableLeft="@drawable/ic_item_fav"
+                    android:drawableLeft="@drawable/ic_lyrics_fav1"
                     android:drawablePadding="3dp"
                     android:textColor="@color/main_text_color3"
                     android:textSize="12sp"

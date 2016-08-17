@@ -9,6 +9,8 @@ import java.util.Map;
  * Created by June on 2015/8/31.
  */
 public class MyCommon {
+    //定制歌曲
+    public static final String customization = "http://html.yinchao.cn/app-customization-index.html";
     //默认头像
     public static final String defult_head = "http://pic.yinchao.cn/uploadfiles/2015/09/14/201509141121211442200881.png";
     //播放的状态
@@ -26,9 +28,9 @@ public class MyCommon {
     public static final int ERROR = -2;//播放出错
     public static final int FAILED = -3;//获取数据失败
     //播放模式
-    public static final int PLAY_MODEL_ORDER = 1;//顺序播放
-    public static final int PLAY_MODEL_RANDOM = 2;//随机播放
-    public static final int PLAY_MODEL_LOOP = 3;//单曲循环
+    public static final int PLAY_MODEL_ORDER = 0;//顺序播放
+    public static final int PLAY_MODEL_RANDOM = 1;//随机播放
+    public static final int PLAY_MODEL_LOOP = 2;//单曲循环
     //系统选图
     public static final int requestCode_photo = 200;//系统相册
     public static final int requestCode_crop = 201;//系统裁切

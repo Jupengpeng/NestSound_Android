@@ -120,13 +120,19 @@ public class FolderTextView extends TextView {
      * @return
      */
     private SpannableString createUnFoldSpan(String text) {
-        String destStr = text + FOLD_TEXT;
-        int start = destStr.length() - FOLD_TEXT.length();
-        int end = destStr.length();
+        Layout layout = makeTextLayout(text);
+        //如果行数大于固定行数
+        if(layout.getLineCount() > getFoldLine()) {
+            String destStr = text + FOLD_TEXT;
+            int start = destStr.length() - FOLD_TEXT.length();
+            int end = destStr.length();
 
-        SpannableString spanStr = new SpannableString(destStr);
-        spanStr.setSpan(clickSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        return spanStr;
+            SpannableString spanStr = new SpannableString(destStr);
+            spanStr.setSpan(clickSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            return spanStr;
+        }else{
+            return new SpannableString(text);
+        }
     }
 
     /**
@@ -135,13 +141,19 @@ public class FolderTextView extends TextView {
      * @return
      */
     private SpannableString createFoldSpan(String text) {
-        String destStr = tailorText(text);
-        int start = destStr.length() - UNFOLD_TEXT.length();
-        int end = destStr.length();
+        Layout layout = makeTextLayout(text);
+        //如果行数大于固定行数
+        if(layout.getLineCount() > getFoldLine()){
+            String destStr = tailorText(text);
+            int start = destStr.length() - UNFOLD_TEXT.length();
+            int end = destStr.length();
 
-        SpannableString spanStr = new SpannableString(destStr);
-        spanStr.setSpan(clickSpan,start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        return spanStr;
+            SpannableString spanStr = new SpannableString(destStr);
+            spanStr.setSpan(clickSpan,start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            return spanStr;
+        }else{
+            return new SpannableString(text);
+        }
     }
 
     /**

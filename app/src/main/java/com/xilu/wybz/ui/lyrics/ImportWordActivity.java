@@ -31,7 +31,6 @@ public class ImportWordActivity extends BaseListActivity<WorksData> implements I
     private int page = 1;
     private int action = 0;
     String nodata = "暂无歌词";
-    int nodatares = R.drawable.ic_nozan;
     private ImportWordPresenter importWordPresenter;
 
 
@@ -51,7 +50,6 @@ public class ImportWordActivity extends BaseListActivity<WorksData> implements I
         setTitle("我的歌词");
         hideRight();
         tvNoData.setText(nodata);
-        ivNoData.setImageResource(nodatares);
     }
 
     @Override
@@ -63,7 +61,7 @@ public class ImportWordActivity extends BaseListActivity<WorksData> implements I
     @Override
     public void onRefresh(int action) {
         super.onRefresh(action);
-        importWordPresenter.loadData(page++);
+        importWordPresenter.loadData(page++,1);
     }
 
     @Override

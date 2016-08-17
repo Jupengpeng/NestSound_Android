@@ -22,6 +22,7 @@ public class MyHttpClient {
     public static String getQnToken() {
         return "common/uploadcallback/qiniutoken";
     }
+
     public static String getTokenCheck() {
         return "common/login/tokenCheck";
     }
@@ -141,6 +142,11 @@ public class MyHttpClient {
         return "common/lyrics/myLyrics";
     }
 
+    //用户歌词列表
+    public static String getUserMusicListUrl() {
+        return "musiopt/updateMusic";
+    }
+
     //点赞接口
     public static String getUpvoteUrl() {
         return "workzan/optZan";
@@ -180,10 +186,12 @@ public class MyHttpClient {
     public static String getSaveInspireUrl() {
         return "inspire/save";
     }
+
     //修改灵感记录
     public static String getUpdateInspireUrl() {
         return "inspire/update";
     }
+
     //个人主页
     public static String getUserCenter() {
         return "userCenter/index";
@@ -256,40 +264,66 @@ public class MyHttpClient {
 
 
     //删除我的作品
-    public static String getDeleteWorksUrl(){
+    public static String getDeleteWorksUrl() {
         return "userCenter/deleteWork";
     }
+
     //更新歌曲 歌词公开的状态
-    public static String getUpdateMusicUrl(){
+    public static String getUpdateMusicUrl() {
         return "musiopt/updateMusic";
     }
-    public static String getUpdateLyricsUrl(){
+
+    public static String getUpdateLyricsUrl() {
         return "musiopt/updateLyrics";
     }
+
     //伴奏分类
-    public static String getHotCatalogUrl(){
+    public static String getHotCatalogUrl() {
         return "common/accompanimentcategory/list";
     }
+
     //音乐人列表
-    public static String getMusicianListUrl(){
+    public static String getMusicianListUrl() {
         return "common/musician/list";
     }
+
     //音乐人详情
-    public static String getMusicianDetailUrl(){
+    public static String getMusicianDetailUrl() {
         return "common/musician/detail";
     }
 
-    public static String getLyricstemplateList(){
+    public static String getLyricstemplateList() {
         return "lyricstemplate/list";
     }
-    public static String getDraftList(){
+
+    public static String getDraftList() {
         return "draft/list";
     }
-    public static String getDraftSave(){
+
+    public static String getDraftSave() {
         return "draft/save";
     }
-    public static String getDraftDelete(){
+
+    public static String getDraftDelete() {
         return "draft/delete";
+    }
+
+    //专题活动
+    public static String getMatchInfo() {
+        return "common/activity/actdetail";
+    }
+    //专题活动
+    public static String getJoinUserList() {
+        return "common/activity/userlist";
+    }
+    //专题活动作品列表
+    public static String getMatchWorkList() {
+        return "common/activity/worklist";
+    }
+
+    //专题活动作品列表
+    public static String getAttendUrl() {
+        return "activity/attend";
     }
 }
 

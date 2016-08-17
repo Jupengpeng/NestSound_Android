@@ -121,7 +121,7 @@ public class StarListActivity extends BaseListActivity<StarBean> implements ISta
             if (StringUtils.isNotBlank(starBean.name))
                 tvName.setText(starBean.name);
             if (StringUtils.isNotBlank(starBean.ability)) {
-                String[] tags = starBean.ability.split(",");
+                String[] tags = starBean.ability.split("/");
                 llTag.setVisibility(tags.length > 0 ? View.VISIBLE : View.GONE);
                 if (tags.length == 1) {
                     tvTag1.setVisibility(View.VISIBLE);

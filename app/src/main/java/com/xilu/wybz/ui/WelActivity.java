@@ -37,7 +37,7 @@ public class WelActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         handler = new Handler();
         GetDomainUtil getDomainUtil = new GetDomainUtil(context);
-        String appLogo = PrefsUtil.getString("applogo", context);
+//        String appLogo = PrefsUtil.getString("applogo", context);
 //        String fileName = MD5Util.getMD5String(appLogo) + ".png";
 //        String filePath = FileDir.logoDir + fileName;
 //        if (StringUtils.isNotBlank(appLogo)) {
@@ -54,7 +54,7 @@ public class WelActivity extends BaseActivity {
 
 
         rlMain.setBackgroundResource(R.drawable.bg_wel);
-        getDomainUtil.getNewIp();
+//        getDomainUtil.getNewIp();
         if(PrefsUtil.getUserId(context)>0){
             getDomainUtil.getCheck();
         }

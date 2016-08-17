@@ -454,7 +454,8 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
                 startActivity(MusicTalkMoreActivity.class);
                 break;
             case R.id.iv_dz:
-                startActivity(MatchActivity.class);
+//                startActivity(MatchActivity.class);
+                BrowserActivity.toBrowserActivity(context,MyCommon.customization);
                 break;
         }
     }

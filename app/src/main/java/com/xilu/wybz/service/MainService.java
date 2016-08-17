@@ -437,7 +437,7 @@ public class MainService extends Service implements IMusicDetailView, AudioManag
         }
         changeState(MyCommon.COMPLETED);
         //切歌
-        playModel = PrefsUtil.getInt("playModel", MainService.this);
+        playModel = PrefsUtil.getInt("playmodel", MainService.this);
         if (playType == 1 || playModel == MyCommon.PLAY_MODEL_LOOP) {
             doStop();
             playMusic(playUrl);//播放当前歌曲

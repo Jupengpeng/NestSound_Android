@@ -25,6 +25,7 @@ import com.xilu.wybz.bean.CommentBean;
 import com.xilu.wybz.bean.MsgCommentBean;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.Event;
+import com.xilu.wybz.common.KeySet;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.CommentPresenter;
 import com.xilu.wybz.ui.IView.ICommentView;
@@ -56,8 +57,6 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
     private EditText etContent;
     private ImageView tvSend;
     private CommentPresenter commentPresenter;
-    private WorksData worksData;
-    private int type;
     private int commentType = 1;
     private int targetUid;
     private String targetName;
@@ -67,10 +66,12 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
     String[] actionTypes = new String[]{"del"};
     List<ActionBean> actionBeanList;
     ActionMoreDialog actionMoreDialog;
-
-    public static void ToCommentActivity(Context context, WorksData worksData) {
+    int workid;
+    int type;
+    public static void ToCommentActivity(Context context, int workid, int type) {
         Intent intent = new Intent(context, CommentActivity.class);
-        intent.putExtra("worksdata", worksData);
+        intent.putExtra(KeySet.KEY_ID, workid);
+        intent.putExtra(KeySet.KEY_TYPE, type);
         context.startActivity(intent);
     }
 
@@ -103,7 +104,8 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
     public void initData() {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            worksData = (WorksData) bundle.getSerializable("worksdata");
+            workid = bundle.getInt(KeySet.KEY_ID);
+            type = bundle.getInt(KeySet.KEY_TYPE);
         }
         actionBeanList = new ArrayList<>();
         for (int i = 0; i < actionTitles.length; i++) {
@@ -149,7 +151,7 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
 
     private void toSendComment() {
         showPd("正在评论中...");
-        commentPresenter.sendComment(worksData.itemid, commentType, type, targetUid, content);
+        commentPresenter.sendComment(workid, commentType, type, targetUid, content);
     }
 
     @Override
@@ -164,10 +166,7 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
     @Override
     public void onRefresh(int action) {
         super.onRefresh(action);
-        if (worksData != null) {
-            type = TextUtils.isEmpty(worksData.getPlayurl()) ? 2 : 1;
-            commentPresenter.getCommentList(worksData.getItemid(), type, page++);
-        }
+        commentPresenter.getCommentList(workid, type, page++);
     }
 
     @Override
