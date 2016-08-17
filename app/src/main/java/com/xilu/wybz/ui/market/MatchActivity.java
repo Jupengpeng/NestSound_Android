@@ -3,6 +3,8 @@ package com.xilu.wybz.ui.market;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -15,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.umeng.analytics.MobclickAgent;
 import com.xilu.wybz.R;
 import com.xilu.wybz.adapter.JoinUserAdapter;
 import com.xilu.wybz.bean.ActionBean;
@@ -22,23 +25,34 @@ import com.xilu.wybz.bean.ActivityDetail;
 import com.xilu.wybz.bean.JoinUserBean;
 import com.xilu.wybz.bean.MatchBean;
 import com.xilu.wybz.bean.UserBean;
+import com.xilu.wybz.bean.WorksData;
+import com.xilu.wybz.common.Event;
+import com.xilu.wybz.common.MyHttpClient;
+import com.xilu.wybz.http.HttpUtils;
+import com.xilu.wybz.http.callback.MyStringCallback;
 import com.xilu.wybz.presenter.MatchPresenter;
 import com.xilu.wybz.ui.IView.IMatchView;
 import com.xilu.wybz.ui.base.BasePlayMenuActivity;
 import com.xilu.wybz.ui.fragment.MacthFragment;
+import com.xilu.wybz.ui.lyrics.MakeWordActivity;
 import com.xilu.wybz.ui.main.MusicTalkMoreActivity;
 import com.xilu.wybz.ui.main.SongablumMoreActivity;
 import com.xilu.wybz.ui.mine.MyWorkActivity;
 import com.xilu.wybz.ui.mine.UserInfoActivity;
+import com.xilu.wybz.ui.song.HotCatalogActivity;
 import com.xilu.wybz.utils.DateTimeUtil;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.ImageLoadUtil;
 import com.xilu.wybz.utils.NumberUtil;
+import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.view.FolderTextView;
 import com.xilu.wybz.view.ScrollableLayout;
 import com.xilu.wybz.view.dialog.ActionMoreDialog;
+import com.xilu.wybz.view.materialdialogs.DialogAction;
+import com.xilu.wybz.view.materialdialogs.MaterialDialog;
 
+import org.greenrobot.eventbus.EventBus;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
@@ -279,17 +293,46 @@ public class MatchActivity extends BasePlayMenuActivity implements ViewPager.OnP
                     actionMoreDialog = new ActionMoreDialog(context, new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            String type = actionBeans.get(position).getType();
-                            if (type.equals("create")) {
+                            String itemtType = actionBeans.get(position).getType();
+                            actionMoreDialog.dismiss();
+                            if(isJoin==1){
+                                new MaterialDialog.Builder(context)
+                                        .title(getString(R.string.dialog_title))
+                                        .content("你已经参加过本次活动，再次提交会覆盖原来的作品，请确认是否继续操作？")
+                                        .positiveText("继续")
+                                        .positiveColor(getResources().getColor(R.color.red))
+                                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                            @Override
+                                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                                toNext(itemtType);
+                                            }
+                                        }).negativeText("返回")
+                                        .onNegative(new MaterialDialog.SingleButtonCallback() {
+                                            @Override
+                                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
 
-                            } else if (type.equals("submit")) {
-                                MyWorkActivity.toMyWorkActivity(context, 2);
+                                            }
+                                        }).show();
+                            }else{
+                                toNext(itemtType);
                             }
+
                         }
                     }, actionBeans);
                 }
                 actionMoreDialog.showDialog();
                 break;
+        }
+    }
+    public void toNext(String itemtType){
+        if (itemtType.equals("create")) {
+            if(type==0){
+                HotCatalogActivity.toHotCatalogActivity(context,false);
+            }else{
+                MakeWordActivity.toMakeWordActivity(context,new WorksData());
+            }
+        } else if (itemtType.equals("submit")) {
+            MyWorkActivity.toMyWorkActivity(context, 2);
         }
     }
 }

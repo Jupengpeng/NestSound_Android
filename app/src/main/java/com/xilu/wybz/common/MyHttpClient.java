@@ -320,5 +320,10 @@ public class MyHttpClient {
     public static String getMatchWorkList() {
         return "common/activity/worklist";
     }
+
+    //专题活动作品列表
+    public static String getAttendUrl() {
+        return "activity/attend";
+    }
 }
 

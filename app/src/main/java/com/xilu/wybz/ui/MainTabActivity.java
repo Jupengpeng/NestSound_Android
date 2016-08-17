@@ -14,6 +14,7 @@ import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.PushAgent;
 import com.xilu.wybz.R;
 import com.xilu.wybz.adapter.MyPagerAdapter;
+import com.xilu.wybz.bean.HotBean;
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.service.MainService;
@@ -265,6 +266,7 @@ public class MainTabActivity extends BaseActivity {
                     }
                     PrefsUtil.putString(PrefsUtil.getString("playFrom", context), ids, context);
                 }
+                PrefsUtil.saveHotBean(context,null);
                 finish();
                 return true;
 

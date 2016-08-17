@@ -24,8 +24,6 @@ import okhttp3.Call;
  * Created by hujunwei on 16/4/5.
  */
 public class MatchWorkPresenter extends BasePresenter<IMatchWorkView> {
-    String url;
-
     public MatchWorkPresenter(Context context, IMatchWorkView iView) {
         super(context, iView);
     }
@@ -36,7 +34,7 @@ public class MatchWorkPresenter extends BasePresenter<IMatchWorkView> {
         params.put("type", type+"");
         params.put("sort", sort);
         params.put("page", page + "");
-        httpUtils.get(MyHttpClient.getMatchWorkList(), params, new AppJsonCalback(context) {
+        httpUtils.post(MyHttpClient.getMatchWorkList(), params, new AppJsonCalback(context) {
             @Override
             public void onResult(JsonResponse<? extends Object> response) {
                 super.onResult(response);

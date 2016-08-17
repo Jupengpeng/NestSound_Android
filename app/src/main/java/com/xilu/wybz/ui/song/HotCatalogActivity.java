@@ -1,6 +1,7 @@
 package com.xilu.wybz.ui.song;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -37,14 +38,12 @@ import butterknife.Bind;
  */
 public class HotCatalogActivity extends BaseSectionListActivity<HotCatalog> implements IHotCatalogView{
     public static final String FLASH_TAG = "FLASH_TAG";
-    private int page = 1;
-    private int action = 0;
     private int column = 3;
     HotCatalogPresenter hotCatalogPresenter;
     TemplateBean templateBean;
     private boolean flash = false;
 
-    public static void toHotCatalogActivity(Activity context,boolean flash){
+    public static void toHotCatalogActivity(Context context, boolean flash){
         Intent intent = new Intent(context,HotCatalogActivity.class);
         intent.putExtra(FLASH_TAG,flash);
         context.startActivity(intent);
@@ -71,12 +70,13 @@ public class HotCatalogActivity extends BaseSectionListActivity<HotCatalog> impl
         setUpData();
         recycler.enablePullToRefresh(false);
         HotBean hotBean = PrefsUtil.getHotBean(context);
-        if(hotBean!=null){
+        if(hotBean!=null&&hotBean.simplesing!=null){
             templateBean = hotBean.simplesing;
             mDataList = new ArrayList<>();
             showHotCatalog(hotBean);
+        }else{
+            recycler.setRefreshing();
         }
-        recycler.setRefreshing();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -139,27 +139,18 @@ public class HotCatalogActivity extends BaseSectionListActivity<HotCatalog> impl
     @Override
     public void onRefresh(int action) {
         super.onRefresh(action);
-        hotCatalogPresenter.loadData(page++);
+        hotCatalogPresenter.loadData(page);
     }
 
     @Override
     public void showHotCatalog(HotBean hotBean) {
         if(isDestroy)return;
-        if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
-            mDataList.clear();
-        }
-        if(page==2){
-            PrefsUtil.saveHotBean(context,hotBean);
-        }
+        PrefsUtil.saveHotBean(context,hotBean);
         if(mDataList.size()==0) {
             templateBean = hotBean.simplesing;
             mDataList.add(new SectionData<>(true, 0, "清唱"));
         }
-        if(hotBean.list.size()<12){
-            recycler.enableLoadMore(false);
-        }else{
-            recycler.enableLoadMore(true);
-        }
+        recycler.enableLoadMore(false);
         for(HotCatalog hotCatalog:hotBean.list){
             mDataList.add(new SectionData<>(hotCatalog));
         }

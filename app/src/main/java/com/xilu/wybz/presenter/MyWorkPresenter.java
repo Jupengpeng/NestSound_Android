@@ -6,6 +6,7 @@ import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.callback.MyStringCallback;
 import com.xilu.wybz.ui.IView.IImportWordView;
+import com.xilu.wybz.ui.IView.IMyWorkView;
 import com.xilu.wybz.utils.ParseUtils;
 import com.xilu.wybz.utils.PrefsUtil;
 
@@ -17,21 +18,20 @@ import okhttp3.Call;
 /**
  * Created by June on 2016/4/28.
  */
-public class ImportWordPresenter extends BasePresenter<IImportWordView> {
-    public ImportWordPresenter(Context context, IImportWordView iView) {
+public class MyWorkPresenter extends BasePresenter<IMyWorkView> {
+    public MyWorkPresenter(Context context, IMyWorkView iView) {
         super(context, iView);
     }
 
-    public void loadData(int page, int type) {
+    public void loadData(int page,int type) {
         params = new HashMap<>();
         params.put("uid", PrefsUtil.getUserId(context) + "");
         params.put("page", page + "");
-        httpUtils.get(type == 0 ? MyHttpClient.getUserMusicListUrl() : MyHttpClient.getUserLyricsListUrl(), params, new MyStringCallback() {
+        httpUtils.post(type==0?MyHttpClient.getUserMusicListUrl():MyHttpClient.getUserLyricsListUrl(), params, new MyStringCallback() {
             @Override
             public void onError(Call call, Exception e) {
                 iView.loadFail();
             }
-
             @Override
             public void onResponse(String response) {
                 List<WorksData> mList = ParseUtils.getWorksData(context, response);
@@ -43,9 +43,25 @@ public class ImportWordPresenter extends BasePresenter<IImportWordView> {
                             iView.loadNoMore();
                         }
                     } else {
-                        iView.showLyricsData(mList);
+                        iView.showData(mList);
                     }
                 }
+            }
+        });
+    }
+    public void attend(int aid,int workid) {
+        params = new HashMap<>();
+        params.put("uid", PrefsUtil.getUserId(context) + "");
+        params.put("aid", aid + "");
+        params.put("workid", workid + "");
+        httpUtils.post(MyHttpClient.getAttendUrl(), params, new MyStringCallback() {
+            @Override
+            public void onError(Call call, Exception e) {
+                iView.loadFail();
+            }
+            @Override
+            public void onResponse(String response) {
+
             }
         });
     }

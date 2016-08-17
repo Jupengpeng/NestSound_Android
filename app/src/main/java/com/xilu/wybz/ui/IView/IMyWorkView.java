@@ -1,15 +1,14 @@
 package com.xilu.wybz.ui.IView;
 
 import com.xilu.wybz.bean.WorksData;
-import com.xilu.wybz.bean.ZambiaBean;
 
 import java.util.List;
 
 /**
  * Created by June on 16/4/5.
  */
-public interface IImportWordView extends IBaseView{
-    void showLyricsData(List<WorksData> worksDataList);
+public interface IMyWorkView extends IBaseView{
+    void showData(List<WorksData> worksDataList);
 
     void loadFail();
 
@@ -17,4 +16,7 @@ public interface IImportWordView extends IBaseView{
 
     void loadNoData();
 
+    void attendSuccess();
+
+    void attendFail();
 }
