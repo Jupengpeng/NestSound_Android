@@ -28,9 +28,9 @@ public class MyCommon {
     public static final int ERROR = -2;//播放出错
     public static final int FAILED = -3;//获取数据失败
     //播放模式
-    public static final int PLAY_MODEL_ORDER = 1;//顺序播放
-    public static final int PLAY_MODEL_RANDOM = 2;//随机播放
-    public static final int PLAY_MODEL_LOOP = 3;//单曲循环
+    public static final int PLAY_MODEL_ORDER = 0;//顺序播放
+    public static final int PLAY_MODEL_RANDOM = 1;//随机播放
+    public static final int PLAY_MODEL_LOOP = 2;//单曲循环
     //系统选图
     public static final int requestCode_photo = 200;//系统相册
     public static final int requestCode_crop = 201;//系统裁切
