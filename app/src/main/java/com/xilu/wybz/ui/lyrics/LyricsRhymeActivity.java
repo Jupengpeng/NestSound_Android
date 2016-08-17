@@ -59,7 +59,7 @@ public class LyricsRhymeActivity extends BaseListActivity<RhymeBean> {
         super.setUpData();
 
         try {
-            InputStreamReader inputReader = new InputStreamReader(getAssets().open("rhyme.json"));
+            InputStreamReader inputReader = new InputStreamReader(getAssets().open("rhyme-new.json"));
             list = new Gson().fromJson(inputReader,new TypeToken<List<RhymeBean>>(){}.getType());
         }catch (Exception e){
             list = new ArrayList<>();

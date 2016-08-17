@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.xilu.wybz.R;
@@ -108,9 +109,11 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView,I
             }
         });
         etWord.addTextChangedListener(new TextWatcher() {
+            String text;
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+                text = s.toString();
             }
 
             @Override
@@ -121,7 +124,23 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView,I
             @Override
             public void afterTextChanged(Editable s) {
                 worksData.lyrics = s.toString().trim();
+                if (!text.equals(s.toString())){
+                    etWord.setText(s.toString());
+                    etWord.setSelection(etWord.getText().length());
+                }
                 PrefsUtil.putString(KeySet.LOCAL_LYRICS, new Gson().toJson(worksData), context);
+            }
+        });
+        etWord.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (event.getAction() == KeyEvent.ACTION_DOWN){
+                    String text = etWord.getText().toString()+"\n";
+                    etWord.setText(text);
+                    etWord.setSelection(text.length());
+                    return true;
+                }
+                return false;
             }
         });
     }
@@ -184,6 +203,8 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView,I
     public void onSuccess(int id, String message) {
         cancelPd();
         ToastUtils.toast(this,message);
+        PrefsUtil.putString(KeySet.LOCAL_LYRICS, "", context);
+        finish();
     }
 
     @Override
@@ -276,7 +297,7 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView,I
                             LyricsDraftBean bean = new LyricsDraftBean();
                             bean.id = LyricsDraftUtils.getId();
                             bean.title = worksData.title;
-                            bean.draftdesc = worksData.title;
+                            bean.draftdesc = worksData.detail;
                             bean.content = worksData.lyrics.replaceAll("[\\t\\n\\r]","\n");
                             bean.createtime = String.valueOf(System.currentTimeMillis());
 
@@ -284,8 +305,8 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView,I
                             draftPresenter.saveDraft(bean);
                             showPd("正在保存中");
 
-                            PrefsUtil.putString(KeySet.LOCAL_LYRICS, "", context);
-                            finish();
+//                            PrefsUtil.putString(KeySet.LOCAL_LYRICS, "", context);
+//                            finish();
                         }
                     }).negativeText("放弃")
                     .onNegative(new MaterialDialog.SingleButtonCallback() {
