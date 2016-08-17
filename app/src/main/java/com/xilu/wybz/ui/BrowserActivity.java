@@ -20,6 +20,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
+
 import com.xilu.wybz.R;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.ui.base.ToolbarActivity;
@@ -34,8 +35,10 @@ import com.xilu.wybz.utils.StringUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.Bind;
 
 /**
@@ -54,6 +57,7 @@ public class BrowserActivity extends ToolbarActivity {
     private ValueCallback<Uri[]> mUploadCallbackAboveL;
     private String url = "";
     private List<String> titles;
+
     public static void toBrowserActivity(Context context, String url) {
         Intent intent = new Intent(context, BrowserActivity.class);
         intent.putExtra("url", url);
@@ -98,39 +102,55 @@ public class BrowserActivity extends ToolbarActivity {
         mWebView.setWebViewClient(new WebViewClient() {
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 // 重写此方法表明点击网页里面的链接还是在当前的webview里跳转，不跳到浏览器那边
-                Log.e("WebView Url",url);
+                Log.e("WebView Url", url);
                 String LOGIN = "yinchao://yinchao.cn/login";
-                if (url.startsWith(LOGIN)){
+                if (url.startsWith(LOGIN)) {
                     startActivity(LoginActivity.class);
                     return true;
                 }
                 String strs[] = url.split("/");
-                if(url.startsWith("yinchao://customization/tel/")){
-                    PhoneUtils.dial(context,strs[strs.length - 1]);
+                if (url.startsWith("yinchao://customization/tel/")) {
+                    PhoneUtils.dial(context, strs[strs.length - 1]);
                     return true;
-                }else if(url.startsWith("yinchao://customization/musician/uid/")){
-                    if(StringUtils.isInt(strs[strs.length - 1])) {
+                } else if (url.startsWith("yinchao://customization/musician/uid/")) {
+                    if (StringUtils.isInt(strs[strs.length - 1])) {
                         StarInfoActivity.toStarInfoActivity(context, Integer.valueOf(strs[strs.length - 1]));
                     }
                     return true;
-                }else if(url.startsWith("yinchao://customization/musician/list")){
+                } else if (url.startsWith("yinchao://customization/musician/list")) {
                     startActivity(StarListActivity.class);
                     return true;
-                }else if(url.startsWith("yinchao://customization/match/ing/")){
-                    if(StringUtils.isInt(strs[strs.length - 1])) {
-                        MatchActivity.toMatchActivity(context, Integer.valueOf(strs[strs.length - 1]), "ing");
+                } else if (url.startsWith("yinchao://customization/match/ing/")) {
+                    String maps = strs[strs.length - 1];
+                    String[] params = maps.split("&");
+                    String aid = "";
+                    String type = "";
+                    if (params.length == 2) {
+                        aid = params[0].split("=")[1];
+                        type = params[1].split("=")[1];
+                        if (StringUtils.isNotBlank(aid) && StringUtils.isNotBlank(type)) {
+                            MatchActivity.toMatchActivity(context, aid, Integer.valueOf(type), "ing");
+                        }
                     }
                     return true;
-                }else if(url.startsWith("yinchao://customization/match/end/")){
-                    if(StringUtils.isInt(strs[strs.length - 1])) {
-                        MatchActivity.toMatchActivity(context,Integer.valueOf(strs[strs.length - 1]),"end");
+                } else if (url.startsWith("yinchao://customization/match/end/")) {
+                    String maps = strs[strs.length - 1];
+                    String[] params = maps.split("&");
+                    String aid = "";
+                    String type = "";
+                    if (params.length == 2) {
+                        aid = params[0].split("=")[1];
+                        type = params[1].split("=")[1];
+                        if (StringUtils.isNotBlank(aid) && StringUtils.isNotBlank(type)) {
+                            MatchActivity.toMatchActivity(context, aid, Integer.valueOf(type), "end");
+                        }
                     }
                     return true;
                 }
                 int id = PrefsUtil.getUserId(context);
-                synCookies(context,url,"imei="+ PhoneUtils.getPhoneImei(context)+",ycua=APP_ANDROID,userId="+id);
+                synCookies(context, url, "imei=" + PhoneUtils.getPhoneImei(context) + ",ycua=APP_ANDROID,userId=" + id);
 
-                Log.e("cookies",getCookies(context,url));
+                Log.e("cookies", getCookies(context, url));
                 view.loadUrl(url);
                 return true;
             }
@@ -164,6 +184,7 @@ public class BrowserActivity extends ToolbarActivity {
         cookieManager.setCookie(url, cookies);
         CookieSyncManager.getInstance().sync();
     }
+
     public String getCookies(Context context, String url) {
         CookieSyncManager.createInstance(context);
         CookieManager cookieManager = CookieManager.getInstance();
@@ -176,7 +197,7 @@ public class BrowserActivity extends ToolbarActivity {
         // 监听网页加载进度
         public void onProgressChanged(WebView view, int newProgress) {
             // 设置进度条进度
-            if(mProgressBar!=null) {
+            if (mProgressBar != null) {
                 mProgressBar.setProgress(newProgress);
                 if (newProgress == 100) {
                     mProgressBar.setVisibility(View.GONE);
@@ -258,10 +279,11 @@ public class BrowserActivity extends ToolbarActivity {
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.LoginSuccessEvent event){
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(Event.LoginSuccessEvent event) {
         int id = PrefsUtil.getUserId(context);
-        synCookies(context,url,"imei="+ PhoneUtils.getPhoneImei(context)+",ycua=APP_ANDROID,userId="+id);
-        Log.e("cookies","LoginSuccessEvent:"+getCookies(context,url));
+        synCookies(context, url, "imei=" + PhoneUtils.getPhoneImei(context) + ",ycua=APP_ANDROID,userId=" + id);
+        Log.e("cookies", "LoginSuccessEvent:" + getCookies(context, url));
     }
 
 
@@ -272,8 +294,8 @@ public class BrowserActivity extends ToolbarActivity {
             url = bundle.getString("url");
         }
         int id = PrefsUtil.getUserId(context);
-        synCookies(context,url,"imei="+ PhoneUtils.getPhoneImei(context)+",ycua=APP_ANDROID,userId="+id);
-        Log.e("cookies",getCookies(context,url));
+        synCookies(context, url, "imei=" + PhoneUtils.getPhoneImei(context) + ",ycua=APP_ANDROID,userId=" + id);
+        Log.e("cookies", getCookies(context, url));
         mWebView.loadUrl(url);
     }
 
@@ -282,7 +304,7 @@ public class BrowserActivity extends ToolbarActivity {
         //判断是否可以返回操作
         if (mWebView.canGoBack() && event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
             mWebView.goBack();
-            if(titles.size()>1) {
+            if (titles.size() > 1) {
                 titles.remove(titles.size() - 1);
                 setTitle(titles.get(titles.size() - 1));
             }

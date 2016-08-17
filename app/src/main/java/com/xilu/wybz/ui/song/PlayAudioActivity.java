@@ -528,7 +528,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
 
     @Override
     public void toCommentActivity() {
-        CommentActivity.ToCommentActivity(context, worksData);
+        CommentActivity.ToCommentActivity(context, worksData.itemid,1);
     }
 
     @Override

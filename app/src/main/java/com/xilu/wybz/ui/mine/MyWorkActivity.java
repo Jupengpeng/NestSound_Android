@@ -2,11 +2,13 @@ package com.xilu.wybz.ui.mine;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -33,6 +35,7 @@ import butterknife.Bind;
 public class MyWorkActivity extends BaseListActivity<WorksData> implements IImportWordView {
     private int page = 1;
     private int action = 0;
+    private int type = 0;
     private String nodata = "暂无作品";
     private ImportWordPresenter importWordPresenter;
     // type 1 歌曲 2歌词
@@ -53,6 +56,8 @@ public class MyWorkActivity extends BaseListActivity<WorksData> implements IImpo
         setTitle("我的作品");
         hideRight();
         tvNoData.setText(nodata);
+        Bundle bundle = getIntent().getExtras();
+        if(bundle!=null)type=bundle.getInt(KeySet.KEY_TYPE);
     }
 
     @Override
@@ -70,7 +75,7 @@ public class MyWorkActivity extends BaseListActivity<WorksData> implements IImpo
     @Override
     public void onRefresh(int action) {
         super.onRefresh(action);
-        importWordPresenter.loadData(page++);
+        importWordPresenter.loadData(page++, type);
     }
 
     @Override
@@ -129,6 +134,8 @@ public class MyWorkActivity extends BaseListActivity<WorksData> implements IImpo
         TextView tvName;
         @Bind(R.id.tv_time)
         TextView tvTime;
+        @Bind(R.id.iv_status)
+        ImageView ivStatus;
         public SampleViewHolder(View itemView) {
             super(itemView);
         }
@@ -137,7 +144,8 @@ public class MyWorkActivity extends BaseListActivity<WorksData> implements IImpo
             WorksData worksData = mDataList.get(position);
             if(StringUtils.isNotBlank(worksData.title))
                 tvName.setText(worksData.title);
-            tvTime.setText(DateTimeUtil.timestamp2Date(worksData.createTime));
+            tvTime.setText(DateTimeUtil.timestamp2Date(worksData.createDate));
+            ivStatus.setVisibility(worksData.status==1?View.GONE:View.VISIBLE);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -145,9 +153,9 @@ public class MyWorkActivity extends BaseListActivity<WorksData> implements IImpo
                 }
             });
         }
-
         @Override
         public void onItemClick(View view, int position) {
+
         }
     }
 }

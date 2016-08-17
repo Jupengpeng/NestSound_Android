@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
+import com.xilu.wybz.bean.JoinUserBean;
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.ui.market.StarListActivity;
@@ -23,10 +24,10 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class JoinUserAdapter extends RecyclerView.Adapter<JoinUserAdapter.JoinUserViewHolder> {
-    private List<UserBean> mList;
+    private List<JoinUserBean> mList;
     private Context context;
     private int itemWidth;
-    public JoinUserAdapter(Context context, List<UserBean> worksDataList,int column) {
+    public JoinUserAdapter(Context context, List<JoinUserBean> worksDataList, int column) {
         this.context = context;
         this.mList = worksDataList;
         itemWidth = (DensityUtil.getScreenW(context)-DensityUtil.dip2px(context,(column+1)*10))/column;
@@ -50,8 +51,8 @@ public class JoinUserAdapter extends RecyclerView.Adapter<JoinUserAdapter.JoinUs
 
     @Override
     public void onBindViewHolder(final JoinUserViewHolder holder, final int position) {
-        UserBean userBean = mList.get(position);
-        if(position==mList.size()-1){
+        JoinUserBean userBean = mList.get(position);
+        if(userBean.isMore){
             holder.rlMore.setVisibility(View.VISIBLE);
         }else{
             holder.rlMore.setVisibility(View.GONE);

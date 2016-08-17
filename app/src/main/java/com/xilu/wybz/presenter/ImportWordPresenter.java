@@ -22,11 +22,11 @@ public class ImportWordPresenter extends BasePresenter<IImportWordView> {
         super(context, iView);
     }
 
-    public void loadData(int page) {
+    public void loadData(int page,int type) {
         params = new HashMap<>();
         params.put("uid", PrefsUtil.getUserId(context) + "");
         params.put("page", page + "");
-        httpUtils.get(MyHttpClient.getUserLyricsListUrl(), params, new MyStringCallback() {
+        httpUtils.get(type==0?MyHttpClient.getUserMusicListUrl():MyHttpClient.getUserLyricsListUrl(), params, new MyStringCallback() {
             @Override
             public void onError(Call call, Exception e) {
                 iView.loadFail();

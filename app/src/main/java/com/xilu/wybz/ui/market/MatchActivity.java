@@ -14,9 +14,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
 import com.xilu.wybz.adapter.JoinUserAdapter;
 import com.xilu.wybz.bean.ActionBean;
+import com.xilu.wybz.bean.ActivityDetail;
+import com.xilu.wybz.bean.JoinUserBean;
 import com.xilu.wybz.bean.MatchBean;
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.presenter.MatchPresenter;
@@ -26,10 +29,17 @@ import com.xilu.wybz.ui.fragment.MacthFragment;
 import com.xilu.wybz.ui.main.MusicTalkMoreActivity;
 import com.xilu.wybz.ui.main.SongablumMoreActivity;
 import com.xilu.wybz.ui.mine.MyWorkActivity;
+import com.xilu.wybz.ui.mine.UserInfoActivity;
+import com.xilu.wybz.utils.DateTimeUtil;
+import com.xilu.wybz.utils.DensityUtil;
+import com.xilu.wybz.utils.ImageLoadUtil;
+import com.xilu.wybz.utils.NumberUtil;
 import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.view.FolderTextView;
 import com.xilu.wybz.view.ScrollableLayout;
 import com.xilu.wybz.view.dialog.ActionMoreDialog;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,20 +62,34 @@ public class MatchActivity extends BasePlayMenuActivity implements ViewPager.OnP
     ViewPager vpScroll;
     @Bind(R.id.tab_layout)
     TabLayout tabLayout;
-    @Bind(R.id.tv_info)
-    FolderTextView tvInfo;
     @Bind(R.id.tv_join)
     TextView tvJoin;
     @Bind(R.id.recycler_user)
     RecyclerView recyclerUser;
-    List<UserBean> userBeenList;
+    @Bind(R.id.iv_cover)
+    SimpleDraweeView ivCover;
+    @Bind(R.id.tv_title)
+    TextView tvTitle;
+    @Bind(R.id.tv_date)
+    TextView tvDate;
+    @Bind(R.id.tv_work_num)
+    TextView tvWorkNum;
+    @Bind(R.id.tv_look_num)
+    TextView tvLookNum;
+    @Bind(R.id.tv_desc)
+    FolderTextView tvDesc;
+    @Bind(R.id.tv_join_num)
+    TextView tvJoinNum;
+    List<JoinUserBean> joinUserBeanList;
     JoinUserAdapter adapter;
     int column = 8;
     ActionMoreDialog actionMoreDialog;
     List<ActionBean> actionBeans;
     MatchPresenter matchPresenter;
-    int id;
+    String id;
+    int type;
     String status;
+    int isJoin;
     private final List<MacthFragment> fragmentList = new ArrayList<>();
 
     @Override
@@ -74,10 +98,11 @@ public class MatchActivity extends BasePlayMenuActivity implements ViewPager.OnP
     }
 
     // status: ing/end
-    public static void toMatchActivity(Context context, int id, String status) {
+    public static void toMatchActivity(Context context, String id,int type, String status) {
         Intent intent = new Intent(context, MatchActivity.class);
         intent.putExtra("id", id);
         intent.putExtra("status", status);
+        intent.putExtra("type", type);
         context.startActivity(intent);
     }
 
@@ -91,13 +116,22 @@ public class MatchActivity extends BasePlayMenuActivity implements ViewPager.OnP
 
     @Override
     public void initView() {
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            id = bundle.getString("id");
+            type = bundle.getInt("type");
+            status = bundle.getString("status", "");
+            if (status.equals("end")) {
+                tvJoin.setVisibility(View.GONE);
+            }
+        }
         pflRoot.setEnabledNextPtrAtOnce(true);
         pflRoot.setLastUpdateTimeRelateObject(this);
         pflRoot.setPtrHandler(this);
         pflRoot.setKeepHeaderWhenRefresh(true);
         CommonFragementPagerAdapter commonFragementPagerAdapter = new CommonFragementPagerAdapter(getSupportFragmentManager());
-        fragmentList.add(MacthFragment.newInstance(1));
-        fragmentList.add(MacthFragment.newInstance(2));
+        fragmentList.add(MacthFragment.newInstance(id,type,"0"));
+        fragmentList.add(MacthFragment.newInstance(id,type,"1"));
         vpScroll.setAdapter(commonFragementPagerAdapter);
         vpScroll.addOnPageChangeListener(this);
         slRoot.getHelper().setCurrentScrollableContainer(fragmentList.get(0));
@@ -105,26 +139,23 @@ public class MatchActivity extends BasePlayMenuActivity implements ViewPager.OnP
         tabLayout.setupWithViewPager(vpScroll);
         initJoinUserList();
 
-        Bundle bundle = getIntent().getExtras();
 
-        if(bundle!=null){
-            id = bundle.getInt("id");
-            status = bundle.getString("status","");
-            if(status.equals("end")){
-                tvJoin.setVisibility(View.GONE);
-            }
-        }
-
+        matchPresenter.getMatchInfo(id);
+        matchPresenter.getUserList(id, 1);
     }
 
     public void initJoinUserList() {
-        userBeenList = new ArrayList<>();
-        for (int i = 0; i < 8; i++) {
-            userBeenList.add(new UserBean());
-        }
+        joinUserBeanList = new ArrayList<>();
         recyclerUser.setOverScrollMode(View.OVER_SCROLL_NEVER);
         recyclerUser.setLayoutManager(new GridLayoutManager(context, column));
-        adapter = new JoinUserAdapter(context, userBeenList, column);
+        adapter = new JoinUserAdapter(context, joinUserBeanList, column);
+        adapter.setOnItemClickListener(new JoinUserAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                UserInfoActivity.ToNewUserInfoActivity(context, joinUserBeanList.get(position).id,
+                        joinUserBeanList.get(position).nickname);
+            }
+        });
         recyclerUser.setAdapter(adapter);
     }
 
@@ -158,12 +189,38 @@ public class MatchActivity extends BasePlayMenuActivity implements ViewPager.OnP
 
     @Override
     public void showMatchData(MatchBean matchBean) {
+        ActivityDetail activityDetail = matchBean.activityDetail;
+        isJoin = matchBean.isJoin;
+        if(activityDetail!=null) {
+            try {
+                tvJoinNum.setText("参加人数"+NumberUtil.format(activityDetail.joinnum)+"人");
+                tvWorkNum.setText(NumberUtil.format(activityDetail.worknum));
+                tvLookNum.setText(NumberUtil.format(activityDetail.looknum));
+                tvTitle.setText(activityDetail.title);
+                tvDate.setText(DateTimeUtil.timestamp2Date(activityDetail.begindate)
+                        + "-" + DateTimeUtil.timestamp2Date(activityDetail.enddate));
+                tvDesc.setText(activityDetail.description);
+                ImageLoadUtil.loadImage(context, activityDetail.pic, ivCover,
+                        DensityUtil.dip2px(context, 135), DensityUtil.dip2px(context, 86));
+            }catch(Exception e){
 
+            }
+        }
     }
 
     @Override
-    public void showJoinData(List<UserBean> userBeenList) {
-
+    public void showJoinData(List<JoinUserBean> joinUserBeanList) {
+        if (joinUserBeanList.size() <= 8) {
+            joinUserBeanList.addAll(joinUserBeanList);
+        } else {
+            for (int i = 0; i < 7; i++) {
+                joinUserBeanList.add(joinUserBeanList.get(i));
+            }
+            JoinUserBean joinUserBean = new JoinUserBean();
+            joinUserBean.isMore = true;
+            joinUserBeanList.add(joinUserBean);
+        }
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -175,7 +232,6 @@ public class MatchActivity extends BasePlayMenuActivity implements ViewPager.OnP
     public void loadFail() {
 
     }
-
 
 //
 //    public void refreshComplete() {
@@ -211,7 +267,7 @@ public class MatchActivity extends BasePlayMenuActivity implements ViewPager.OnP
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_join:
-                if(!SystemUtils.isLogin(context)){
+                if (!SystemUtils.isLogin(context)) {
                     return;
                 }
                 if (actionBeans == null) {
@@ -227,7 +283,7 @@ public class MatchActivity extends BasePlayMenuActivity implements ViewPager.OnP
                             if (type.equals("create")) {
 
                             } else if (type.equals("submit")) {
-                                MyWorkActivity.toMyWorkActivity(context,2);
+                                MyWorkActivity.toMyWorkActivity(context, 2);
                             }
                         }
                     }, actionBeans);

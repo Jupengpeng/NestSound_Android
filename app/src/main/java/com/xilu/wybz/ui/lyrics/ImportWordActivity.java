@@ -61,7 +61,7 @@ public class ImportWordActivity extends BaseListActivity<WorksData> implements I
     @Override
     public void onRefresh(int action) {
         super.onRefresh(action);
-        importWordPresenter.loadData(page++);
+        importWordPresenter.loadData(page++,1);
     }
 
     @Override
