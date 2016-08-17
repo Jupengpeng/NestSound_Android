@@ -1,5 +1,7 @@
 package com.xilu.wybz.ui.market;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -10,21 +12,28 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.TextView;
 
 import com.xilu.wybz.R;
 import com.xilu.wybz.adapter.JoinUserAdapter;
 import com.xilu.wybz.bean.ActionBean;
+import com.xilu.wybz.bean.MatchBean;
 import com.xilu.wybz.bean.UserBean;
+import com.xilu.wybz.presenter.MatchPresenter;
+import com.xilu.wybz.ui.IView.IMatchView;
 import com.xilu.wybz.ui.base.BasePlayMenuActivity;
 import com.xilu.wybz.ui.fragment.MacthFragment;
 import com.xilu.wybz.ui.main.MusicTalkMoreActivity;
 import com.xilu.wybz.ui.main.SongablumMoreActivity;
+import com.xilu.wybz.ui.mine.MyWorkActivity;
+import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.view.FolderTextView;
 import com.xilu.wybz.view.ScrollableLayout;
 import com.xilu.wybz.view.dialog.ActionMoreDialog;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.Bind;
 import butterknife.OnClick;
 import in.srain.cube.views.ptr.PtrClassicFrameLayout;
@@ -34,7 +43,7 @@ import in.srain.cube.views.ptr.PtrHandler;
 /**
  * Created by hujunwei on 16/8/12.
  */
-public class MatchActivity extends BasePlayMenuActivity implements ViewPager.OnPageChangeListener, PtrHandler{
+public class MatchActivity extends BasePlayMenuActivity implements ViewPager.OnPageChangeListener, PtrHandler, IMatchView {
     @Bind(R.id.pfl_root)
     PtrClassicFrameLayout pflRoot;
     @Bind(R.id.sl_root)
@@ -45,6 +54,8 @@ public class MatchActivity extends BasePlayMenuActivity implements ViewPager.OnP
     TabLayout tabLayout;
     @Bind(R.id.tv_info)
     FolderTextView tvInfo;
+    @Bind(R.id.tv_join)
+    TextView tvJoin;
     @Bind(R.id.recycler_user)
     RecyclerView recyclerUser;
     List<UserBean> userBeenList;
@@ -52,15 +63,34 @@ public class MatchActivity extends BasePlayMenuActivity implements ViewPager.OnP
     int column = 8;
     ActionMoreDialog actionMoreDialog;
     List<ActionBean> actionBeans;
+    MatchPresenter matchPresenter;
+    int id;
+    String status;
     private final List<MacthFragment> fragmentList = new ArrayList<>();
+
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_match;
     }
+
+    // status: ing/end
+    public static void toMatchActivity(Context context, int id, String status) {
+        Intent intent = new Intent(context, MatchActivity.class);
+        intent.putExtra("id", id);
+        intent.putExtra("status", status);
+        context.startActivity(intent);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle("专题活动");
+        matchPresenter = new MatchPresenter(context, this);
+        matchPresenter.init();
+    }
+
+    @Override
+    public void initView() {
         pflRoot.setEnabledNextPtrAtOnce(true);
         pflRoot.setLastUpdateTimeRelateObject(this);
         pflRoot.setPtrHandler(this);
@@ -74,18 +104,30 @@ public class MatchActivity extends BasePlayMenuActivity implements ViewPager.OnP
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
         tabLayout.setupWithViewPager(vpScroll);
         initJoinUserList();
+
+        Bundle bundle = getIntent().getExtras();
+
+        if(bundle!=null){
+            id = bundle.getInt("id");
+            status = bundle.getString("status","");
+            if(status.equals("end")){
+                tvJoin.setVisibility(View.GONE);
+            }
+        }
+
     }
-    public void initJoinUserList(){
+
+    public void initJoinUserList() {
         userBeenList = new ArrayList<>();
-        for(int i=0;i<8;i++){
+        for (int i = 0; i < 8; i++) {
             userBeenList.add(new UserBean());
         }
         recyclerUser.setOverScrollMode(View.OVER_SCROLL_NEVER);
-        recyclerUser.setLayoutManager(new GridLayoutManager(context,column));
-//        recyclerUser.addItemDecoration(new SpacesItemDecoration(DensityUtil.dip2px(context,10)));
-        adapter = new JoinUserAdapter(context,userBeenList,column);
+        recyclerUser.setLayoutManager(new GridLayoutManager(context, column));
+        adapter = new JoinUserAdapter(context, userBeenList, column);
         recyclerUser.setAdapter(adapter);
     }
+
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -113,6 +155,28 @@ public class MatchActivity extends BasePlayMenuActivity implements ViewPager.OnP
     public void onRefreshBegin(PtrFrameLayout frame) {
 
     }
+
+    @Override
+    public void showMatchData(MatchBean matchBean) {
+
+    }
+
+    @Override
+    public void showJoinData(List<UserBean> userBeenList) {
+
+    }
+
+    @Override
+    public void loadOver() {
+
+    }
+
+    @Override
+    public void loadFail() {
+
+    }
+
+
 //
 //    public void refreshComplete() {
 //        if (pflRoot != null) {
@@ -121,7 +185,8 @@ public class MatchActivity extends BasePlayMenuActivity implements ViewPager.OnP
 //    }
 
     public class CommonFragementPagerAdapter extends FragmentPagerAdapter {
-        String titles[] = new String[]{"最新","最热"};
+        String titles[] = new String[]{"最新", "最热"};
+
         public CommonFragementPagerAdapter(FragmentManager fm) {
             super(fm);
         }
@@ -146,23 +211,26 @@ public class MatchActivity extends BasePlayMenuActivity implements ViewPager.OnP
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_join:
-                if(actionBeans==null){
-                    actionBeans = new ArrayList<>();
-                    actionBeans.add(new ActionBean("去创作","create"));
-                    actionBeans.add(new ActionBean("去投稿","submit"));
+                if(!SystemUtils.isLogin(context)){
+                    return;
                 }
-                if(actionMoreDialog==null){
+                if (actionBeans == null) {
+                    actionBeans = new ArrayList<>();
+                    actionBeans.add(new ActionBean("去创作", "create"));
+                    actionBeans.add(new ActionBean("去投稿", "submit"));
+                }
+                if (actionMoreDialog == null) {
                     actionMoreDialog = new ActionMoreDialog(context, new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                             String type = actionBeans.get(position).getType();
-                            if(type.equals("create")){
+                            if (type.equals("create")) {
 
-                            }else if(type.equals("submit")){
-
+                            } else if (type.equals("submit")) {
+                                MyWorkActivity.toMyWorkActivity(context,2);
                             }
                         }
-                    },actionBeans);
+                    }, actionBeans);
                 }
                 actionMoreDialog.showDialog();
                 break;

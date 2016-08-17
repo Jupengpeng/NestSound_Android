@@ -9,6 +9,8 @@ import java.util.Map;
  * Created by June on 2015/8/31.
  */
 public class MyCommon {
+    //定制歌曲
+    public static final String customization = "http://html.yinchao.cn/app-customization-index.html";
     //默认头像
     public static final String defult_head = "http://pic.yinchao.cn/uploadfiles/2015/09/14/201509141121211442200881.png";
     //播放的状态

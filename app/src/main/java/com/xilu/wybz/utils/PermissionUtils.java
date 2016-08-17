@@ -20,20 +20,32 @@ public class PermissionUtils {
     public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 2;
     public static final int MY_PERMISSIONS_REQUEST_RECORD_AUDIO = 3;
     public static final int MY_PERMISSIONS_REQUEST_WRITE_SETTINGS = 4;
+    public static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 5;
     //读取手机imei
     public static boolean checkReadPhoneStatePermission(Context activity) {
         if (ContextCompat.checkSelfPermission(activity,
                 Manifest.permission.READ_PHONE_STATE)
-                != PackageManager.PERMISSION_GRANTED) {
+                == PackageManager.PERMISSION_GRANTED) {
             return true;
         } else {
-//            ActivityCompat.requestPermissions((Activity)activity,
-//                    new String[]{Manifest.permission.READ_PHONE_STATE},
-//                    MY_PERMISSIONS_REQUEST_READ_PHONE_STATE);
+            ActivityCompat.requestPermissions((Activity)activity,
+                    new String[]{Manifest.permission.READ_PHONE_STATE},
+                    MY_PERMISSIONS_REQUEST_READ_PHONE_STATE);
             return false;
         }
     }
-
+    public static boolean checkCallPhonePermission(Context activity) {
+        if (ContextCompat.checkSelfPermission(activity,
+                Manifest.permission.CALL_PHONE)
+                == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        } else {
+            ActivityCompat.requestPermissions((Activity)activity,
+                    new String[]{Manifest.permission.CALL_PHONE},
+                    MY_PERMISSIONS_REQUEST_CALL_PHONE);
+            return false;
+        }
+    }
     public static boolean checkSdcardPermission(Activity activity) {
         if (ContextCompat.checkSelfPermission(activity,
                 Manifest.permission.READ_EXTERNAL_STORAGE)

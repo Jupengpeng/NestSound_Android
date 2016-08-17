@@ -22,7 +22,7 @@ import com.umeng.socialize.PlatformConfig;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.service.MainService;
-import com.xilu.wybz.utils.PhoneInfoUtil;
+import com.xilu.wybz.utils.PhoneUtils;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtils;
 import java.lang.reflect.Constructor;
@@ -59,7 +59,7 @@ public class MyApplication extends Application implements ServiceConnection {
         if (PrefsUtil.getInt("versionCode", context) == 0) {
             PrefsUtil.clearData(context);
         }
-        PrefsUtil.putInt("versionCode", PhoneInfoUtil.getVersionCode(context), context);
+        PrefsUtil.putInt("versionCode", PhoneUtils.getVersionCode(context), context);
         String url = PrefsUtil.getString("domain", this);
         if (StringUtils.isNotBlank(url)) {
             MyHttpClient.ROOT_URL = url;

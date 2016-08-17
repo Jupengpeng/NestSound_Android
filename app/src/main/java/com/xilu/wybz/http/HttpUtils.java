@@ -10,7 +10,7 @@ import com.xilu.wybz.http.callback.Callback;
 import com.xilu.wybz.http.callback.FileCallBack;
 import com.xilu.wybz.http.request.RequestCall;
 import com.xilu.wybz.http.rsa.RSAUtils;
-import com.xilu.wybz.utils.PhoneInfoUtil;
+import com.xilu.wybz.utils.PhoneUtils;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtils;
 import com.xilu.wybz.utils.ToastUtils;
@@ -42,14 +42,14 @@ public class HttpUtils {
         headers = new HashMap<>();
         headers.put("User-Agent", "yinchao android");
         headers.put("charset", "UTF-8");
-        headers.put("machine", PhoneInfoUtil.getMachine(context));
+        headers.put("machine", PhoneUtils.getMachine(context));
     }
     //普通post提交
     public void post(String url, Map<String, String> params, Callback callback) {
         if(params==null){
             params = new HashMap<>();
         }
-        params.put("expiretime",System.currentTimeMillis()+ PhoneInfoUtil.getPhoneImei(context));
+        params.put("expiretime",System.currentTimeMillis()+ PhoneUtils.getPhoneImei(context));
         params.put("token", PrefsUtil.getUserInfo(context).loginToken);
 
         String paramString = new Gson().toJson(params);
@@ -71,7 +71,7 @@ public class HttpUtils {
         if(params==null){
             params = new HashMap<>();
         }
-        params.put("expiretime",System.currentTimeMillis()+ PhoneInfoUtil.getPhoneImei(context));
+        params.put("expiretime",System.currentTimeMillis()+ PhoneUtils.getPhoneImei(context));
         params.put("token", PrefsUtil.getUserInfo(context).loginToken);
 
         String paramString = new Gson().toJson(params);
@@ -98,7 +98,7 @@ public class HttpUtils {
         if(params==null){
             params = new HashMap<>();
         }
-        params.put("expiretime",System.currentTimeMillis()+ PhoneInfoUtil.getPhoneImei(context));
+        params.put("expiretime",System.currentTimeMillis()+ PhoneUtils.getPhoneImei(context));
         params.put("token", PrefsUtil.getUserInfo(context).loginToken);
 
         String paramString = new Gson().toJson(params);
@@ -158,7 +158,7 @@ public class HttpUtils {
         if(params==null){
             params = new HashMap<>();
         }
-        params.put("expiretime",System.currentTimeMillis()+ PhoneInfoUtil.getPhoneImei(context));
+        params.put("expiretime",System.currentTimeMillis()+ PhoneUtils.getPhoneImei(context));
         params.put("token",PrefsUtil.getUserInfo(context).loginToken);
 
         String paramString = new Gson().toJson(params);

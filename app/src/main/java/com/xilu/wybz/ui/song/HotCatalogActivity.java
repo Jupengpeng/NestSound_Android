@@ -28,6 +28,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
+
 import butterknife.Bind;
 
 /**
@@ -66,17 +68,14 @@ public class HotCatalogActivity extends BaseSectionListActivity<HotCatalog> impl
     public void initView() {
         setTitle("伴奏分类");
         hideRight();
+        setUpData();
         recycler.enablePullToRefresh(false);
         HotBean hotBean = PrefsUtil.getHotBean(context);
         if(hotBean!=null){
             templateBean = hotBean.simplesing;
+            mDataList = new ArrayList<>();
             showHotCatalog(hotBean);
         }
-    }
-
-    @Override
-    protected void setUpData() {
-        super.setUpData();
         recycler.setRefreshing();
     }
 

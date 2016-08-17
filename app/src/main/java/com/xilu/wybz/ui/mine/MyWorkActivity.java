@@ -1,39 +1,47 @@
-package com.xilu.wybz.ui.lyrics;
+package com.xilu.wybz.ui.mine;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.WorksData;
-import com.xilu.wybz.common.Event;
+import com.xilu.wybz.common.KeySet;
 import com.xilu.wybz.presenter.ImportWordPresenter;
 import com.xilu.wybz.ui.IView.IImportWordView;
 import com.xilu.wybz.ui.base.BaseListActivity;
-import com.xilu.wybz.view.SpacesItemDecoration;
+import com.xilu.wybz.ui.base.ToolbarActivity;
+import com.xilu.wybz.utils.DateTimeUtil;
+import com.xilu.wybz.utils.DensityUtil;
+import com.xilu.wybz.utils.StringUtils;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.PullRecycler;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
-import org.greenrobot.eventbus.EventBus;
 
 /**
- * Created by June on 16/5/13.
+ * Created by hujunwei on 16/8/16.
  */
-public class ImportWordActivity extends BaseListActivity<WorksData> implements IImportWordView {
+public class MyWorkActivity extends BaseListActivity<WorksData> implements IImportWordView {
     private int page = 1;
     private int action = 0;
-    String nodata = "暂无歌词";
+    private String nodata = "暂无作品";
     private ImportWordPresenter importWordPresenter;
-
-
+    // type 1 歌曲 2歌词
+    public static void toMyWorkActivity(Context context, int type) {
+        Intent intent = new Intent();
+        intent.setClass(context, MyWorkActivity.class);
+        intent.putExtra(KeySet.KEY_TYPE, type);
+        context.startActivity(intent);
+    }
     @Override
     protected void initPresenter() {
         importWordPresenter = new ImportWordPresenter(context, this);
@@ -41,16 +49,17 @@ public class ImportWordActivity extends BaseListActivity<WorksData> implements I
     }
 
     @Override
+    public void initView() {
+        setTitle("我的作品");
+        hideRight();
+        tvNoData.setText(nodata);
+    }
+
+    @Override
     public boolean hasPadding() {
         return false;
     }
 
-    @Override
-    public void initView() {
-        setTitle("我的歌词");
-        hideRight();
-        tvNoData.setText(nodata);
-    }
 
     @Override
     protected void setUpData() {
@@ -66,7 +75,6 @@ public class ImportWordActivity extends BaseListActivity<WorksData> implements I
 
     @Override
     public void showLyricsData(List<WorksData> worksDataList) {
-
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -82,7 +90,6 @@ public class ImportWordActivity extends BaseListActivity<WorksData> implements I
                 recycler.onRefreshCompleted();
             }
         },600);
-
     }
 
     @Override
@@ -111,29 +118,26 @@ public class ImportWordActivity extends BaseListActivity<WorksData> implements I
 
     @Override
     protected BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_importword_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_match_work, parent, false);
         return new SampleViewHolder(view);
     }
 
+
+
     class SampleViewHolder extends BaseViewHolder {
-        @Bind(R.id.iv_cover)
-        SimpleDraweeView ivCover;
         @Bind(R.id.tv_name)
         TextView tvName;
-        @Bind(R.id.tv_author)
-        TextView tvAuthor;
-
+        @Bind(R.id.tv_time)
+        TextView tvTime;
         public SampleViewHolder(View itemView) {
             super(itemView);
         }
-
         @Override
         public void onBindViewHolder(int position) {
             WorksData worksData = mDataList.get(position);
-            tvName.setText(worksData.title);
-            tvAuthor.setText(worksData.author);
-            String pic = worksData.getPic();
-            loadImage(pic, ivCover);
+            if(StringUtils.isNotBlank(worksData.title))
+                tvName.setText(worksData.title);
+            tvTime.setText(DateTimeUtil.timestamp2Date(worksData.createTime));
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -144,18 +148,6 @@ public class ImportWordActivity extends BaseListActivity<WorksData> implements I
 
         @Override
         public void onItemClick(View view, int position) {
-            if (position == -1) {
-                return;
-            }
-            EventBus.getDefault().post(new Event.ImportWordEvent(mDataList.get(position)));
-            finish();
         }
-    }
-
-
-    public void onDestroy() {
-        super.onDestroy();
-        if(importWordPresenter!=null)
-        importWordPresenter.cancelRequest();
     }
 }

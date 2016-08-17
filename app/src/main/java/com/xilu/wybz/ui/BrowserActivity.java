@@ -24,8 +24,14 @@ import com.xilu.wybz.R;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.ui.login.LoginActivity;
-import com.xilu.wybz.utils.PhoneInfoUtil;
+import com.xilu.wybz.ui.market.MatchActivity;
+import com.xilu.wybz.ui.market.StarInfoActivity;
+import com.xilu.wybz.ui.market.StarListActivity;
+import com.xilu.wybz.utils.PermissionUtils;
+import com.xilu.wybz.utils.PhoneUtils;
 import com.xilu.wybz.utils.PrefsUtil;
+import com.xilu.wybz.utils.StringUtils;
+
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
@@ -92,14 +98,37 @@ public class BrowserActivity extends ToolbarActivity {
         mWebView.setWebViewClient(new WebViewClient() {
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 // 重写此方法表明点击网页里面的链接还是在当前的webview里跳转，不跳到浏览器那边
+                Log.e("WebView Url",url);
                 String LOGIN = "yinchao://yinchao.cn/login";
                 if (url.startsWith(LOGIN)){
                     startActivity(LoginActivity.class);
                     return true;
                 }
-
+                String strs[] = url.split("/");
+                if(url.startsWith("yinchao://customization/tel/")){
+                    PhoneUtils.dial(context,strs[strs.length - 1]);
+                    return true;
+                }else if(url.startsWith("yinchao://customization/musician/uid/")){
+                    if(StringUtils.isInt(strs[strs.length - 1])) {
+                        StarInfoActivity.toStarInfoActivity(context, Integer.valueOf(strs[strs.length - 1]));
+                    }
+                    return true;
+                }else if(url.startsWith("yinchao://customization/musician/list")){
+                    startActivity(StarListActivity.class);
+                    return true;
+                }else if(url.startsWith("yinchao://customization/match/ing/")){
+                    if(StringUtils.isInt(strs[strs.length - 1])) {
+                        MatchActivity.toMatchActivity(context, Integer.valueOf(strs[strs.length - 1]), "ing");
+                    }
+                    return true;
+                }else if(url.startsWith("yinchao://customization/match/end/")){
+                    if(StringUtils.isInt(strs[strs.length - 1])) {
+                        MatchActivity.toMatchActivity(context,Integer.valueOf(strs[strs.length - 1]),"end");
+                    }
+                    return true;
+                }
                 int id = PrefsUtil.getUserId(context);
-                synCookies(context,url,"imei="+ PhoneInfoUtil.getPhoneImei(context)+",ycua=APP_ANDROID,userId="+id);
+                synCookies(context,url,"imei="+ PhoneUtils.getPhoneImei(context)+",ycua=APP_ANDROID,userId="+id);
 
                 Log.e("cookies",getCookies(context,url));
                 view.loadUrl(url);
@@ -231,7 +260,7 @@ public class BrowserActivity extends ToolbarActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.LoginSuccessEvent event){
         int id = PrefsUtil.getUserId(context);
-        synCookies(context,url,"imei="+ PhoneInfoUtil.getPhoneImei(context)+",ycua=APP_ANDROID,userId="+id);
+        synCookies(context,url,"imei="+ PhoneUtils.getPhoneImei(context)+",ycua=APP_ANDROID,userId="+id);
         Log.e("cookies","LoginSuccessEvent:"+getCookies(context,url));
     }
 
@@ -243,7 +272,7 @@ public class BrowserActivity extends ToolbarActivity {
             url = bundle.getString("url");
         }
         int id = PrefsUtil.getUserId(context);
-        synCookies(context,url,"imei="+ PhoneInfoUtil.getPhoneImei(context)+",ycua=APP_ANDROID,userId="+id);
+        synCookies(context,url,"imei="+ PhoneUtils.getPhoneImei(context)+",ycua=APP_ANDROID,userId="+id);
         Log.e("cookies",getCookies(context,url));
         mWebView.loadUrl(url);
     }
