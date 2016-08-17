@@ -2,7 +2,6 @@ package com.xilu.wybz.ui.lyrics;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -61,7 +60,7 @@ public class MakeWordByTempleateActivity extends BaseListActivity<TemplateLrcBea
 
         recycler.enablePullToRefresh(false);
         recycler.enableLoadMore(false);
-        recycler.getRecyclerView().setBackgroundColor(Color.parseColor("#fff8f8f8"));
+//        recycler.getRecyclerView().setBackgroundColor(Color.parseColor("#fff8f8f8"));
     }
 
 
@@ -197,7 +196,7 @@ public class MakeWordByTempleateActivity extends BaseListActivity<TemplateLrcBea
             final TemplateLrcBean template = mDataList.get(position);
             templateWord.setText(template.template);
             lrcWord.setText(template.lrcWord);
-            lrcWord.setHint(template.template);
+//            lrcWord.setHint(template.template);
             lrcWord.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {

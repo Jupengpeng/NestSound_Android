@@ -1,6 +1,5 @@
 package com.xilu.wybz.ui.lyrics;
 
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -40,7 +39,7 @@ public class LyricsTemplateListActivity extends BaseListActivity<LyricsDraftBean
 
         recycler.enablePullToRefresh(true);
         recycler.enableLoadMore(true);
-        recycler.getRecyclerView().setBackgroundColor(Color.parseColor("#fff8f8f8"));
+//        recycler.getRecyclerView().setBackgroundColor(Color.parseColor("#fff8f8f8"));
     }
 
     @Override

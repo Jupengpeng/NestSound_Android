@@ -1,7 +1,6 @@
 package com.xilu.wybz.ui.lyrics;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
@@ -74,7 +73,7 @@ public class DraftLyricsActivity extends BaseListActivity<LyricsDraftBean> imple
         recycler.enablePullToRefresh(true);
         recycler.enableLoadMore(true);
 
-        recycler.getRecyclerView().setBackgroundColor(Color.parseColor("#fff8f8f8"));
+//        recycler.getRecyclerView().setBackgroundColor(Color.parseColor("#fff8f8f8"));
     }
 
     @Override

@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ll_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,7 +10,7 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:gravity="center"
-        android:background="@color/main_bg"
+        android:background="@color/white"
         android:orientation="vertical"
         android:paddingLeft="21dp"
         android:paddingRight="21dp">
@@ -21,12 +22,13 @@
             android:background="@color/tran"
             android:gravity="center"
             android:hint="标题"
+            android:letterSpacing="0.1"
             android:paddingBottom="10dp"
             android:paddingTop="10dp"
             android:singleLine="true"
             android:textColor="#181818"
             android:textColorHint="@color/main_text_color2"
-            android:textSize="15sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:layout_width="match_parent"
@@ -48,12 +50,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/tran"
-                android:elegantTextHeight="true"
                 android:gravity="center_horizontal|top"
-                android:minHeight="260dp"
-                android:text=""
+                android:textScaleX="1.0"
+                android:letterSpacing="0.1"
+                android:lineSpacingMultiplier="1.4"
+                android:minLines="20"
+                tools:text="ASAS\nFASD"
                 android:textColor="@color/main_text_color"
-                android:textSize="15sp" />
+                android:textSize="16sp" />
         </ScrollView>
     </LinearLayout>
 
