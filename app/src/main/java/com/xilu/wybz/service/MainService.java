@@ -178,6 +178,7 @@ public class MainService extends Service implements IMusicDetailView, AudioManag
             mCurrentAudio = worksData;
             EventBus.getDefault().post(new Event.MusicDataEvent());
             PrefsUtil.saveMusicData(MainService.this, worksData);
+            PrefsUtil.putInt(CurrentMusic.PLAY_ID, worksData.itemid, this);
             downLoadMp3(worksData.playurl);
             changeState(MyCommon.SUCCESSED);
             doStop();

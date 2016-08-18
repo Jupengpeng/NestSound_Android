@@ -27,6 +27,7 @@ import com.xilu.wybz.bean.MatchBean;
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.Event;
+import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.HttpUtils;
 import com.xilu.wybz.http.callback.MyStringCallback;
@@ -53,6 +54,8 @@ import com.xilu.wybz.view.materialdialogs.DialogAction;
 import com.xilu.wybz.view.materialdialogs.MaterialDialog;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
@@ -100,7 +103,7 @@ public class MatchActivity extends BasePlayMenuActivity implements ViewPager.OnP
     ActionMoreDialog actionMoreDialog;
     List<ActionBean> actionBeans;
     MatchPresenter matchPresenter;
-    String id;
+    String aid;
     int type;
     String status;
     int isJoin;
@@ -132,7 +135,7 @@ public class MatchActivity extends BasePlayMenuActivity implements ViewPager.OnP
     public void initView() {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            id = bundle.getString("id");
+            aid = bundle.getString("id");
             type = bundle.getInt("type");
             status = bundle.getString("status", "");
             if (status.equals("end")) {
@@ -144,8 +147,8 @@ public class MatchActivity extends BasePlayMenuActivity implements ViewPager.OnP
         pflRoot.setPtrHandler(this);
         pflRoot.setKeepHeaderWhenRefresh(true);
         CommonFragementPagerAdapter commonFragementPagerAdapter = new CommonFragementPagerAdapter(getSupportFragmentManager());
-        fragmentList.add(MacthFragment.newInstance(id,type,"0"));
-        fragmentList.add(MacthFragment.newInstance(id,type,"1"));
+        fragmentList.add(MacthFragment.newInstance(aid,type,"0"));
+        fragmentList.add(MacthFragment.newInstance(aid,type,"1"));
         vpScroll.setAdapter(commonFragementPagerAdapter);
         vpScroll.addOnPageChangeListener(this);
         slRoot.getHelper().setCurrentScrollableContainer(fragmentList.get(0));
@@ -153,21 +156,22 @@ public class MatchActivity extends BasePlayMenuActivity implements ViewPager.OnP
         tabLayout.setupWithViewPager(vpScroll);
         initJoinUserList();
 
-
-        matchPresenter.getMatchInfo(id);
-        matchPresenter.getUserList(id, 1);
+        matchPresenter.getMatchInfo(aid);
+        matchPresenter.getUserList(aid, 1);
     }
 
     public void initJoinUserList() {
         joinUserBeanList = new ArrayList<>();
         recyclerUser.setOverScrollMode(View.OVER_SCROLL_NEVER);
         recyclerUser.setLayoutManager(new GridLayoutManager(context, column));
-        adapter = new JoinUserAdapter(context, joinUserBeanList, column);
+        adapter = new JoinUserAdapter(context, joinUserBeanList, column, aid);
         adapter.setOnItemClickListener(new JoinUserAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                UserInfoActivity.ToNewUserInfoActivity(context, joinUserBeanList.get(position).id,
-                        joinUserBeanList.get(position).nickname);
+                if(PrefsUtil.getUserId(context)!=joinUserBeanList.get(position).id){
+                    UserInfoActivity.ToNewUserInfoActivity(context, joinUserBeanList.get(position).id,
+                            joinUserBeanList.get(position).nickname);
+                }
             }
         });
         recyclerUser.setAdapter(adapter);
@@ -223,12 +227,13 @@ public class MatchActivity extends BasePlayMenuActivity implements ViewPager.OnP
     }
 
     @Override
-    public void showJoinData(List<JoinUserBean> joinUserBeanList) {
+    public void showJoinData(List<JoinUserBean> list) {
+        if(joinUserBeanList.size()>0)joinUserBeanList.clear();
         if (joinUserBeanList.size() <= 8) {
-            joinUserBeanList.addAll(joinUserBeanList);
+            joinUserBeanList.addAll(list);
         } else {
             for (int i = 0; i < 7; i++) {
-                joinUserBeanList.add(joinUserBeanList.get(i));
+                joinUserBeanList.add(list.get(i));
             }
             JoinUserBean joinUserBean = new JoinUserBean();
             joinUserBean.isMore = true;
@@ -246,13 +251,6 @@ public class MatchActivity extends BasePlayMenuActivity implements ViewPager.OnP
     public void loadFail() {
 
     }
-
-//
-//    public void refreshComplete() {
-//        if (pflRoot != null) {
-//            pflRoot.refreshComplete();
-//        }
-//    }
 
     public class CommonFragementPagerAdapter extends FragmentPagerAdapter {
         String titles[] = new String[]{"最新", "最热"};
@@ -300,7 +298,7 @@ public class MatchActivity extends BasePlayMenuActivity implements ViewPager.OnP
                                         .title(getString(R.string.dialog_title))
                                         .content("你已经参加过本次活动，再次提交会覆盖原来的作品，请确认是否继续操作？")
                                         .positiveText("继续")
-                                        .positiveColor(getResources().getColor(R.color.red))
+//                                        .positiveColor(getResources().getColor(R.color.lightblue))
                                         .onPositive(new MaterialDialog.SingleButtonCallback() {
                                             @Override
                                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
@@ -332,7 +330,23 @@ public class MatchActivity extends BasePlayMenuActivity implements ViewPager.OnP
                 MakeWordActivity.toMakeWordActivity(context,new WorksData());
             }
         } else if (itemtType.equals("submit")) {
-            MyWorkActivity.toMyWorkActivity(context, 2);
+            MyWorkActivity.toMyWorkActivity(context, aid, type);
+        }
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(Event.UpdataCommentListEvent event) {
+        if(isDestroy)return;
+        if(fragmentList!=null&&fragmentList.size()==2){
+            fragmentList.get(vpScroll.getCurrentItem()).updateCommentItem(event.getCommentList());
+        }
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(Event.AttendMatchSuccessEvent event) {
+        if(isDestroy)return;
+        matchPresenter.getMatchInfo(aid);//更新head信息
+        matchPresenter.getUserList(aid,1);//更新head信息.
+        if(fragmentList.size()>0&&fragmentList.get(0)!=null){
+            fragmentList.get(0).updateData();
         }
     }
 }

@@ -107,6 +107,7 @@
         <activity android:name=".ui.market.MatchActivity" android:screenOrientation="portrait"/>
         <activity android:name=".ui.market.StarInfoActivity" android:screenOrientation="portrait"/>
         <activity android:name=".ui.market.StarListActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.market.JoinUserListActivity" android:screenOrientation="portrait"/>
 
         <activity
             android:name=".ui.setting.SettingActivity"

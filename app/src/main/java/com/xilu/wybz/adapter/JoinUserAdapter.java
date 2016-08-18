@@ -13,6 +13,7 @@ import com.xilu.wybz.R;
 import com.xilu.wybz.bean.JoinUserBean;
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.common.MyCommon;
+import com.xilu.wybz.ui.market.JoinUserListActivity;
 import com.xilu.wybz.ui.market.StarListActivity;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.ImageLoadUtil;
@@ -27,7 +28,9 @@ public class JoinUserAdapter extends RecyclerView.Adapter<JoinUserAdapter.JoinUs
     private List<JoinUserBean> mList;
     private Context context;
     private int itemWidth;
-    public JoinUserAdapter(Context context, List<JoinUserBean> worksDataList, int column) {
+    private String aid;
+    public JoinUserAdapter(Context context, List<JoinUserBean> worksDataList, int column, String aid) {
+        this.aid = aid;
         this.context = context;
         this.mList = worksDataList;
         itemWidth = (DensityUtil.getScreenW(context)-DensityUtil.dip2px(context,(column+1)*10))/column;
@@ -74,7 +77,7 @@ public class JoinUserAdapter extends RecyclerView.Adapter<JoinUserAdapter.JoinUs
         holder.rlMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                StarListActivity.toStarListActivity(context);
+                JoinUserListActivity.toJoinUserListActivity(context,aid);
             }
         });
     }

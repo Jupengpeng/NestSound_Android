@@ -1,5 +1,6 @@
 package com.xilu.wybz.ui;
 
+import android.app.Activity;
 import android.app.LocalActivityManager;
 import android.content.Intent;
 import android.os.Bundle;
@@ -36,6 +37,8 @@ import com.xilu.wybz.view.MoreWindow;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import butterknife.Bind;
@@ -267,6 +270,15 @@ public class MainTabActivity extends BaseActivity {
                     PrefsUtil.putString(PrefsUtil.getString("playFrom", context), ids, context);
                 }
                 PrefsUtil.saveHotBean(context,null);
+                File file = getCacheDir();
+                if (file != null && file.exists() && file.isDirectory()) {
+                    for (File item : file.listFiles()) {
+                        item.delete();
+                    }
+                    file.delete();
+                }
+                context.deleteDatabase("webview.db");
+                context.deleteDatabase("webviewCache.db");
                 finish();
                 return true;
 

@@ -142,9 +142,9 @@ public class MyHttpClient {
         return "common/lyrics/myLyrics";
     }
 
-    //用户歌词列表
+    //用户歌曲列表
     public static String getUserMusicListUrl() {
-        return "musiopt/updateMusic";
+        return "common/music/worklist";
     }
 
     //点赞接口
@@ -312,7 +312,7 @@ public class MyHttpClient {
     public static String getMatchInfo() {
         return "common/activity/actdetail";
     }
-    //专题活动
+    //专题参与人列表
     public static String getJoinUserList() {
         return "common/activity/userlist";
     }

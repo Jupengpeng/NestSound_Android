@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/main_text_color"
                 android:textSize="15sp"
-                android:text="@string/app_name" />
+                tools:text="@string/app_name" />
 
             <TextView
                 android:id="@+id/tv_date"
@@ -47,7 +47,7 @@
                 android:layout_marginTop="3dp"
                 android:textColor="@color/main_text_color3"
                 android:textSize="12sp"
-                android:text="19分钟前" />
+                tools:text="19分钟前" />
         </LinearLayout>
 
     </LinearLayout>
@@ -103,7 +103,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/main_text_color2"
                 android:textSize="15sp"
-                android:text="洋葱" />
+                tools:text="洋葱" />
 
             <TextView
                 android:id="@+id/tv_music_author"
@@ -112,7 +112,7 @@
                 android:layout_marginTop="5dp"
                 android:textColor="@color/main_text_color2"
                 android:textSize="15sp"
-                android:text="杨宗纬" />
+                tools:text="杨宗纬" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -127,7 +127,7 @@
                     android:drawablePadding="3dp"
                     android:textColor="@color/main_text_color3"
                     android:textSize="12sp"
-                    android:text="1232" />
+                    tools:text="1232" />
 
                 <TextView
                     android:id="@+id/tv_zan_num"
@@ -138,7 +138,7 @@
                     android:drawablePadding="3dp"
                     android:textColor="@color/main_text_color3"
                     android:textSize="12sp"
-                    android:text="1232" />
+                    tools:text="1232" />
 
                 <TextView
                     android:id="@+id/tv_fav_num"
@@ -149,7 +149,7 @@
                     android:drawablePadding="3dp"
                     android:textColor="@color/main_text_color3"
                     android:textSize="12sp"
-                    android:text="1232" />
+                    tools:text="1232" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
@@ -162,16 +162,18 @@
         android:paddingRight="10dp"
         android:paddingTop="10dp"
         />
-
     <TextView
         android:id="@+id/tv_more_comment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:padding="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp"
+        android:paddingTop="5dp"
         android:textColor="@color/main_text_color3"
         android:textSize="12sp"
-        android:text="更多121条评论>>" />
+        tools:text="更多121条评论>>" />
 
     <EditText
         android:id="@+id/et_comment"

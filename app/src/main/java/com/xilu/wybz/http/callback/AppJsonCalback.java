@@ -87,7 +87,7 @@ public class AppJsonCalback extends JsonCallback {
         if (!NetWorkUtil.isNetworkAvailable(context)){
             ToastUtils.toast(context,"网络连接失败");
         } else {
-            ToastUtils.toast(context,"服务器错误"+e.getClass().getCanonicalName());
+            ToastUtils.toast(context,"服务器错误");
         }
     }
 

@@ -1,5 +1,6 @@
 package com.xilu.wybz.common;
 
+import com.xilu.wybz.bean.CommentBean;
 import com.xilu.wybz.bean.PhotoBean;
 import com.xilu.wybz.bean.TemplateBean;
 import com.xilu.wybz.bean.UserBean;
@@ -33,6 +34,7 @@ public class Event {
             return userBean;
         }
     }
+
     public static class UpdataUserInfoBean {
         UserInfoBean userBean;
         int type;
@@ -82,6 +84,7 @@ public class Event {
             return worksData;
         }
     }
+
     public static class UpdateWorkNum {
         WorksData worksData;
         int type;//1 喜欢 2 赞
@@ -103,6 +106,7 @@ public class Event {
             return worksData;
         }
     }
+
     public static class UpdataCommentNumEvent {
         int type;
         int num;
@@ -126,9 +130,24 @@ public class Event {
 
     }
 
+    public static class UpdataCommentListEvent {
+        List<CommentBean> commentBeenList;
+
+        public UpdataCommentListEvent(List<CommentBean> commentBeenList) {
+            this.commentBeenList = commentBeenList;
+        }
+
+
+        public List<CommentBean> getCommentList() {
+            return commentBeenList;
+        }
+
+    }
+
     public static class ShowSearchTabEvent {
         boolean hasData;
-        public ShowSearchTabEvent(boolean hasData){
+
+        public ShowSearchTabEvent(boolean hasData) {
             this.hasData = hasData;
         }
 
@@ -184,6 +203,7 @@ public class Event {
             this.worksData = worksData;
         }
     }
+
     public static class ImportHotEvent {
         TemplateBean templateBean;
 
@@ -232,6 +252,7 @@ public class Event {
     public static class PPStatusEvent {
         int status;
         String from;
+
         public PPStatusEvent(int type, String come) {
             status = type;
             from = come;
@@ -240,6 +261,7 @@ public class Event {
         public int getStatus() {
             return status;
         }
+
         public String getFrom() {
             return from;
         }
@@ -267,10 +289,12 @@ public class Event {
 
     public static class RemoveMySongEvent {
         int itemid;
-        public RemoveMySongEvent(int itemid){
+
+        public RemoveMySongEvent(int itemid) {
             this.itemid = itemid;
         }
-        public int getItemid(){
+
+        public int getItemid() {
             return itemid;
         }
     }
@@ -310,6 +334,10 @@ public class Event {
     }
 
     public static class SavePosterSuccessEvent {
+
+    }
+
+    public static class AttendMatchSuccessEvent {
 
     }
 }

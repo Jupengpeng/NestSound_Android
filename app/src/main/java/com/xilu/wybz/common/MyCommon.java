@@ -37,6 +37,8 @@ public class MyCommon {
     //播放歌曲的来源 From
     public static final String MSG_ZAN = "msg_zan";
     public static final String MSG_FOV = "msg_fov";
+    public static final String MATCH_NEW = "MATCH_NEW";
+    public static final String MATCH_HOT = "MATCH_HOT";
     public static final String MSG_COMMENT = "msg_comment";
     public static final String NEWS = "news";
     public static final String BANNER = "banner";
@@ -92,6 +94,8 @@ public class MyCommon {
         map.put(MSG_COMMENT, 1);//消息 评论
         map.put(MAKEHOT, 1);//消息 评论
 
+        map.put(MATCH_NEW, 2);//banner
+        map.put(MATCH_HOT, 2);//banner
         map.put(BANNER, 2);//banner
         map.put(MUSICTALK_MORE, 2);//乐说更多
         map.put(TUIJIAN, 2);//推荐作品

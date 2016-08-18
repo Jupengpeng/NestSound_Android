@@ -19,8 +19,9 @@
             android:background="@drawable/corner_f2f2f2"
             android:hint="来~说点什么"
             android:padding="@dimen/padding_ss"
-            android:textColor="#181818"
+            android:textColor="@color/main_text_color"
             android:singleLine="true"
+            android:textSize="15sp"
             android:textCursorDrawable="@drawable/cursor"
 
             />

@@ -528,7 +528,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
 
     @Override
     public void toCommentActivity() {
-        CommentActivity.ToCommentActivity(context, worksData.itemid,1);
+        CommentActivity.ToCommentActivity(context, worksData.itemid,1,false);
     }
 
     @Override
@@ -645,6 +645,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(Event.PPStatusEvent event) {
+        if(isDestroy)return;
         if(event.getFrom().equals(from)) {
             switch (event.getStatus()) {
                 case MyCommon.STARTED://开始
@@ -725,13 +726,12 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     @Override
     protected void onDestroy() {
         closeTimer();
-        if (!PlayMediaInstance.getInstance().isPlaying()) {
-            PlayMediaInstance.getInstance().release();
+        if (MyApplication.mMainService.status==1) {
+            MyApplication.mMainService.doRelease();
         }
         if (playPresenter != null)
             playPresenter.cancleRequest();
         PrefsUtil.saveMusicData(context, worksData);
-//        unbindService(serviceConnection);
         EventBus.getDefault().unregister(this);
 
         if (playPresenter != null) {
