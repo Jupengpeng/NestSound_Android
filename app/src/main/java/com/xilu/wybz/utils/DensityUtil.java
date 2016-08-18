@@ -11,6 +11,7 @@ import android.view.KeyEvent;
 import android.view.ViewConfiguration;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 /**
  * Created by Administrator on 2016/3/9.
@@ -129,16 +130,44 @@ public class DensityUtil {
     public static boolean checkDeviceHasNavigationBar(Context activity) {
 
         //通过判断设备是否有返回键、菜单键(不是虚拟键,是手机屏幕外的按键)来确定是否有navigation bar
-        boolean hasMenuKey = ViewConfiguration.get(activity)
-                .hasPermanentMenuKey();
-        boolean hasBackKey = KeyCharacterMap
-                .deviceHasKey(KeyEvent.KEYCODE_BACK);
+        boolean hasMenuKey = ViewConfiguration.get(activity).hasPermanentMenuKey();
+        boolean hasBackKey = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_BACK);
 
-        if (!hasMenuKey && !hasBackKey) {
+
+        if (hasMenuKey || hasBackKey ) {
+            boolean hasNavigationBar = checkHasNavigationBar(activity);
+            if (hasNavigationBar){
+                return true;
+            }
             // 做任何你需要做的,这个设备有一个导航栏
-            return true;
+            return false;
         }
-        return false;
+
+        return true;
+    }
+
+    private static boolean checkHasNavigationBar(Context context) {
+
+        boolean hasNavigationBar = false;
+        Resources rs = context.getResources();
+        int id = rs.getIdentifier("config_showNavigationBar", "bool", "android");
+        if (id > 0) {
+            hasNavigationBar = rs.getBoolean(id);
+        }
+        try {
+            Class systemPropertiesClass = Class.forName("android.os.SystemProperties");
+            Method m = systemPropertiesClass.getMethod("get", String.class);
+            String navBarOverride = (String) m.invoke(systemPropertiesClass, "qemu.hw.mainkeys");
+            if ("1".equals(navBarOverride)) {
+                hasNavigationBar = false;
+            } else if ("0".equals(navBarOverride)) {
+                hasNavigationBar = true;
+            }
+        } catch (Exception e) {
+        }
+
+
+        return hasNavigationBar;
     }
 
 }

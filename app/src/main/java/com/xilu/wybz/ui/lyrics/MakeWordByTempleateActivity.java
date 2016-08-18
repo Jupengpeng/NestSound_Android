@@ -118,6 +118,13 @@ public class MakeWordByTempleateActivity extends BaseListActivity<TemplateLrcBea
         WorksData worksData = event.getWorksData();
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(Event.SaveLyricsSuccessEvent event) {
+        if (event.getWhich() == 1) {
+            finish();
+        }
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
