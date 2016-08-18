@@ -10,6 +10,7 @@ import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.callback.AppJsonCalback;
 import com.xilu.wybz.http.callback.FileCallBack;
 import com.xilu.wybz.ui.IView.IMakeSongView;
+import com.xilu.wybz.utils.PrefsUtil;
 
 import java.io.File;
 import java.lang.reflect.Type;
@@ -114,15 +115,22 @@ public class MakeSongPresenter extends BasePresenter<IMakeSongView> {
 //    useheadset	否	int	人声大小，默认1
 //    musicurl
 
-    public void tuningMusic(String userId, WorksData worksData){
+    public int effect;
+
+    public void tuningMusic(WorksData worksData){
+        if (worksData.uid <= 0){
+            worksData.uid = PrefsUtil.getUserId(context);
+        }
+        effect = worksData.effect;
         params = new HashMap<>();
         params.put("createtype","HOT");
         params.put("hotid",""+worksData.hotid);
-        params.put("uid",userId);
+        params.put("uid",""+worksData.uid);
         params.put("recordingsize","1");
         params.put("bgmsize","1");
         params.put("useheadset",worksData.useheadset);
         params.put("musicurl",worksData.musicurl);
+        params.put("effect",""+worksData.effect);
 
         httpUtils.postLong(MyHttpClient.getTuningSongUrl(),params,new AppJsonCalback(context){
 
@@ -141,6 +149,7 @@ public class MakeSongPresenter extends BasePresenter<IMakeSongView> {
 
                 }
                 if (bean != null){
+                    bean.effect = effect;
                     iView.tuningMusicSuccess(bean);
                 } else {
                     iView.tuningMusicFailed();

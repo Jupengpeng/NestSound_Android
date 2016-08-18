@@ -3,7 +3,7 @@ package com.xilu.wybz.ui.song;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -15,11 +15,16 @@ import android.widget.TextView;
 
 import com.xilu.wybz.R;
 import com.xilu.wybz.adapter.TuningEffectAdapter;
+import com.xilu.wybz.bean.TruningMusicBean;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.MediaInstance;
+import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.common.interfaces.IMediaPlayerListener;
+import com.xilu.wybz.presenter.MakeSongPresenter;
+import com.xilu.wybz.ui.IView.IMakeSongView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.utils.FileUtils;
+import com.xilu.wybz.utils.ToastUtils;
 import com.xilu.wybz.view.GridSpacingItemDecoration;
 import com.xilu.wybz.view.WaveSurfaceView;
 
@@ -32,7 +37,7 @@ import butterknife.OnClick;
 /**
  * Created by Administrator on 2016/8/8.
  */
-public class SongTuningActivity extends ToolbarActivity {
+public class SongTuningActivity extends ToolbarActivity implements IMakeSongView {
 
 
     @Bind(R.id.tuning_header)
@@ -49,10 +54,16 @@ public class SongTuningActivity extends ToolbarActivity {
     TuningEffectAdapter adapter;
     WaveSurfaceHelper helper;
 
+    MakeSongPresenter makeSongPresenter;
 
     WorksData worksData;
     //0:未开始  1：录音中  2：暂停  3：完成
     private int status = 0;
+
+    private String[] musicurls = new String[5];
+    private String uploadMusicurl;
+
+    boolean tuning = false;
 
 
     public static void toSongTuningActivity(Context context, WorksData worksData){
@@ -65,6 +76,8 @@ public class SongTuningActivity extends ToolbarActivity {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             worksData = (WorksData) bundle.getSerializable("worksData");
+
+            uploadMusicurl = worksData.musicurl;
         }
     }
 
@@ -79,36 +92,90 @@ public class SongTuningActivity extends ToolbarActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+        makeSongPresenter = new MakeSongPresenter(context,this);
         initView();
 
     }
 
 
+    @Override
+    public void setLoadProgress(int progress) {
 
+    }
 
+    @Override
+    public void setLoadFailed() {
 
-    public void initView(){
+    }
 
-        wave.setEnableTouch();
+    @Override
+    public void uploadSuccess(String message) {
+
+    }
+
+    @Override
+    public void uploadFailed(String message) {
+
+    }
+
+    @Override
+    public void tuningMusicSuccess(TruningMusicBean bean) {
+        tuning = false;
+        worksData.musicurl = bean.newPath;
+        if (bean.effect>=0 && bean.effect < 5){
+            musicurls[bean.effect] = bean.newPath;
+        }
+    }
+
+    @Override
+    public void tuningMusicFailed() {
+        tuning = false;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         helper = wave.getWaveSurfaceHelper();
-//        helper.setTotalSize(1000);
+    }
 
-//        List<Short> data = new ArrayList<>();
-//        data.add((short)12);
-//        data.add((short)120);
-//        data.add((short)612);
+    @Override
+    protected void onPause() {
+        super.onPause();
+        helper = null;
+    }
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
+
+    @Override
+    public void finish() {
+        super.finish();
+
+        helper = null;
+
+        MediaInstance.getInstance().stopMediaPlay();
+    }
+
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
                 List<Short> data = WaveSurfaceHelper.dataCache;
                 if (data != null){
                     helper.onDrawWave(data, 0);
                     helper.caculateTotalSize();
                 }
 
-            }
-        },100);
+//            }
+//        },100);
+    }
+
+    public void initView(){
+
+        wave.setEnableTouch();
+        helper = wave.getWaveSurfaceHelper();
 
         tuningEffect.setNestedScrollingEnabled(true);
         tuningEffect.setLayoutManager(new GridLayoutManager(context, 4));
@@ -127,16 +194,51 @@ public class SongTuningActivity extends ToolbarActivity {
         initMediaPlayer();
     }
 
+
+
+    public void tuningMusic(){
+
+        int effect;
+        int position = adapter.getSelectedPosition();
+        if (position < 0){
+            ToastUtils.toast(this,"处理效果错误");
+            return;
+        } else {
+            effect = position;
+        }
+
+        worksData.effect = effect;
+        makeSongPresenter.tuningMusic(worksData);
+
+    }
+
+
+
+    public void playMusic(){
+
+
+        if (helper != null && helper.scroll){
+            MediaInstance.getInstance().seek = helper.getCurrentPosition()*50;
+        }else {
+            MediaInstance.getInstance().seek = -1;
+        }
+
+        if (status == 2){
+            MediaInstance.getInstance().resumeMediaPlay();
+        }else {
+            MediaInstance.getInstance().startMediaPlayAsync(MyHttpClient.ROOT_URL+worksData.musicurl);
+//            MediaInstance.getInstance().startMediaPlay(FileUtils.getTempRecordPath());
+        }
+    }
+
     @OnClick(R.id.tuning_control)
     public void onClickControl(){
 
         if (tuningControl.isSelected()){
             MediaInstance.getInstance().pauseMediaPlay();
-
+            tuningControl.setSelected(false);
         } else {
-
-            if (helper.scroll){
-
+            if (helper != null && helper.scroll){
                 MediaInstance.getInstance().seek = helper.getCurrentPosition()*50;
             }else {
                 MediaInstance.getInstance().seek = -1;
@@ -149,6 +251,12 @@ public class SongTuningActivity extends ToolbarActivity {
             }
         }
 
+    }
+
+    private void setScorll(boolean scorll){
+        if (wave != null){
+            wave.getWaveSurfaceHelper().scroll = scorll;
+        }
     }
 
     public void initMediaPlayer(){
@@ -175,7 +283,7 @@ public class SongTuningActivity extends ToolbarActivity {
                 wave.setEnableTouch();
                 tuningControl.setSelected(false);
                 status = 2;
-                helper.scroll = false;
+                setScorll(false);
             }
 
 
@@ -185,7 +293,7 @@ public class SongTuningActivity extends ToolbarActivity {
                 wave.setEnableTouch();
                 status = 3;
                 tuningControl.setSelected(false);
-                helper.scroll = false;
+                setScorll(false);
             }
 
             @Override
@@ -194,7 +302,7 @@ public class SongTuningActivity extends ToolbarActivity {
                 wave.setEnableTouch();
                 status = 3;
                 tuningControl.setSelected(false);
-                helper.scroll = false;
+                setScorll(false);
             }
 
             @Override
@@ -203,17 +311,20 @@ public class SongTuningActivity extends ToolbarActivity {
                 wave.setEnableTouch();
                 status = 3;
                 tuningControl.setSelected(false);
-                helper.scroll = false;
+                setScorll(false);
             }
         });
 
         MediaInstance.getInstance().setOnProgressLitsener(new MediaInstance.OnProgressLitsener() {
             @Override
             public void progress(int progress) {
-                helper.onDrawWave(progress / 50);
+                if (helper != null){
+                    helper.onDrawWave(progress / 50);
+                }
             }
         });
     }
+
 
 
 
@@ -227,6 +338,7 @@ public class SongTuningActivity extends ToolbarActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.menu.menu_next){
+            SaveSongActivity.toSaveSongActivity(context,worksData);
 
             return true;
         }

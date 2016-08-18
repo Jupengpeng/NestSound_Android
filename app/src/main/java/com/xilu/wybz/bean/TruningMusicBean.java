@@ -9,4 +9,7 @@ public class TruningMusicBean {
 
     public String newPath;
 
+
+    public int effect;
+
 }
