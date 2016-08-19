@@ -9,6 +9,7 @@ import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.callback.AppJsonCalback;
 import com.xilu.wybz.http.callback.FileCallBack;
+import com.xilu.wybz.http.request.RequestCall;
 import com.xilu.wybz.ui.IView.IMakeSongView;
 import com.xilu.wybz.utils.PrefsUtil;
 
@@ -117,10 +118,19 @@ public class MakeSongPresenter extends BasePresenter<IMakeSongView> {
 
     public int effect;
 
+    RequestCall call;
+
+    public void cancelTuning(){
+        if (call != null){
+            call.cancel();
+        }
+    }
+
     public void tuningMusic(WorksData worksData){
         if (worksData.uid <= 0){
             worksData.uid = PrefsUtil.getUserId(context);
         }
+        cancelTuning();
         effect = worksData.effect;
         params = new HashMap<>();
         params.put("createtype","HOT");
@@ -132,7 +142,7 @@ public class MakeSongPresenter extends BasePresenter<IMakeSongView> {
         params.put("musicurl",worksData.musicurl);
         params.put("effect",""+worksData.effect);
 
-        httpUtils.postLong(MyHttpClient.getTuningSongUrl(),params,new AppJsonCalback(context){
+        call =httpUtils.postLong(MyHttpClient.getTuningSongUrl(),params,new AppJsonCalback(context){
 
             @Override
             public Type getDataType() {
@@ -168,9 +178,7 @@ public class MakeSongPresenter extends BasePresenter<IMakeSongView> {
                 iView.tuningMusicFailed();
             }
 
-
         });
-
     }
 
 }

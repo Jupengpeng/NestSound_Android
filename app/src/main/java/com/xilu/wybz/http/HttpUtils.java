@@ -67,7 +67,7 @@ public class HttpUtils {
 
     }
     //普通post提交
-    public void postLong(String url, Map<String, String> params, Callback stringCallback) {
+    public RequestCall postLong(String url, Map<String, String> params, Callback stringCallback) {
         if(params==null){
             params = new HashMap<>();
         }
@@ -79,7 +79,7 @@ public class HttpUtils {
         Log.e("url","url:"+url+"params:"+paramString);
         String content = RSAUtils.encodeConvert(RSAUtils.encryptByPublicKey(paramString).getBytes());
         Log.e("url","encode:"+content);
-        OkHttpUtils.post()
+        RequestCall call = OkHttpUtils.post()
                 .url(MyHttpClient.BASE_URL + url)
                 .tag(httpTag)
                 .addParams("data", content)
@@ -87,9 +87,11 @@ public class HttpUtils {
                 .build()
                 .connTimeOut(60000)
                 .readTimeOut(60000)
-                .writeTimeOut(60000)
-                .execute(stringCallback);
+                .writeTimeOut(60000);
 
+                call.execute(stringCallback);
+
+        return call;
     }
 
     //普通post提交

@@ -256,7 +256,7 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
             SongTuningActivity.toSongTuningActivity(context,worksData);
             cancelPd();
         } else {
-            makeSongPresenter.tuningMusic("" + worksData.uid, worksData);
+            makeSongPresenter.tuningMusic(worksData);
         }
     }
 
@@ -727,7 +727,7 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
                 worksData.useheadset = useheadset == true ? "1" : "0";
                 UserBean user = PrefsUtil.getUserInfo(this);
 
-                worksData.effect = "0";
+                worksData.effect = 0;
                 worksData.uid = user.userid;
                 worksData.author = user.name;
 

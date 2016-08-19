@@ -142,6 +142,7 @@ public class ConsoleActivity extends ToolbarActivity {
     private void changeService(String host){
 
         MyHttpClient.ROOT_URL = host;
+        MyHttpClient.PRE_ROOT = host.substring(0,host.length()-1);
         MyHttpClient.BASE_URL = MyHttpClient.ROOT_URL+MyHttpClient.BASE_PATH;
 
         PrefsUtil.putString(PrefsUtil.DOMAIN,host,this);

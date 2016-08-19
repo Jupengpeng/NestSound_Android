@@ -13,6 +13,7 @@ public class MyHttpClient {
     public final static String BASE_PATH = "java/";
 
     public static String ROOT_URL = RELEASE_ROOT_URL;
+    public static String PRE_ROOT = ROOT_URL.substring(0,RELEASE_ROOT_URL.length()-1);
     public static String BASE_URL = ROOT_URL + BASE_PATH;
 
     public static String QINIU_AUDIO_URL = "http://audio.yinchao.cn/";
