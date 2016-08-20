@@ -396,7 +396,7 @@ public class MainService extends Service implements IMusicDetailView, AudioManag
             status = 1;
         }
         if (state != 0 && state != 1 && state != 2 && state != 3 && state != 9)
-            if (state == MyCommon.STOPPED || state == MyCommon.COMPLETED || state == MyCommon.END
+            if (state == MyCommon.STOPPED || state == MyCommon.COMPLETED
                     || state == MyCommon.FAILED
                     || state == MyCommon.ERROR) {
                 EventBus.getDefault().post(new Event.PPStatusEvent(MyCommon.STOPPED, playFrom));

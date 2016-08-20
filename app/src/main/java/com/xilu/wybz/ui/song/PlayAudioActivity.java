@@ -243,8 +243,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
             from = bundle.getString("from", "");
             gedanid = bundle.getString("gedanid", "");
             int playId = PrefsUtil.getInt("playId", context);
-            String playFrom = PrefsUtil.getString("playFrom", context);
-            isCurrentMusic = (id == playId) && from.equals(playFrom);
+            isCurrentMusic = (id == playId);
         }
         actionBeanList = new ArrayList<>();
         viewPager.setAdapter(new PlayPagerAdapter(viewList));
@@ -266,13 +265,13 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
                 }
             }else{
                 //停止或者尚未播放
-                isPlay = false;
-                if(worksData!=null) {
-                    if(MyApplication.getInstance().getMainService().mCurrentState==MyCommon.IDLE)
-                    MyApplication.getInstance().getMainService().playOneMusic(worksData.playurl,from);
-                }
+                ivPlay.setImageResource(R.drawable.ic_play_pause);
+                isPlay = true;
+                MyApplication.getInstance().getMainService().loadData(id, from, gedanid);
             }
         } else {//开启服务
+            ivPlay.setImageResource(R.drawable.ic_play_pause);
+            isPlay = true;
             MyApplication.getInstance().getMainService().loadData(id, from, gedanid);
         }
     }
@@ -654,12 +653,13 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
         if(event.getFrom().equals(from)) {
             switch (event.getStatus()) {
                 case MyCommon.STARTED://开始
-                    if (MyApplication.getInstance().getMainService() == null) {
-                        return;
-                    }
-                    playSeekBar.setMax(MyApplication.getInstance().getMainService().getDuration());
-                    tvAlltime.setText(FormatHelper.formatDuration(MyApplication.getInstance().getMainService().getDuration() / 1000));
+                    ivPlay.setImageResource(R.drawable.ic_play_pause);
                     startTimer();
+                    if (MyApplication.getInstance().getMainService() != null) {
+                        playSeekBar.setMax(MyApplication.getInstance().getMainService().getDuration());
+                        tvAlltime.setText(FormatHelper.formatDuration(((MyApplication.getInstance().getMainService().getDuration()) / 1000)));
+                    }
+
                     break;
                 case MyCommon.PLAYED://播放
                     startTimer();
@@ -669,14 +669,21 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
                     break;
                 case MyCommon.STOPPED://停止doPP
                     closeTimer();
+//                    ivPlay.setImageResource(R.drawable.ic_play_play);
+                    isPlay = true;
+                    playSeekBar.setProgress(0);
+                    tvTime.setText("00:00");
+                    break;
+                case MyCommon.END:
+                    closeTimer();
                     ivPlay.setImageResource(R.drawable.ic_play_play);
-                    isPlay = false;
                     playSeekBar.setProgress(0);
                     tvTime.setText("00:00");
                     break;
             }
         }
     }
+
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(Event.MusicDataEvent event) {
