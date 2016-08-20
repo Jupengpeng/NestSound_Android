@@ -47,7 +47,9 @@ public class MakeHotActivity extends ToolbarActivity {
         }
         if(hotCatalog==null)finish();
         EventBus.getDefault().register(this);
-        MyApplication.mMainService.doRelease();
+        if (MyApplication.mMainService != null){
+            MyApplication.mMainService.doRelease();
+        }
         if(StringUtils.isNotBlank(hotCatalog.categoryname))
             setTitle(hotCatalog.categoryname);
         else

@@ -59,7 +59,7 @@ public class SongTuningActivity extends ToolbarActivity implements IMakeSongView
     MakeSongPresenter makeSongPresenter;
 
     WorksData worksData;
-    //0:未开始  1：播放中  2：暂停  3：完成
+    //0:未开始  1：播放中  2：暂停  3：完成 4：准备中
     private int status = 0;
 
     private String[] musicurls = new String[5];
@@ -68,6 +68,8 @@ public class SongTuningActivity extends ToolbarActivity implements IMakeSongView
     boolean tuning = false;
     boolean needPlay = false;
     boolean needSave = false;
+
+    private String playurl;
 
 
     public static void toSongTuningActivity(Context context, WorksData worksData){
@@ -135,10 +137,10 @@ public class SongTuningActivity extends ToolbarActivity implements IMakeSongView
 
         List<TuningEffectAdapter.EffectBean> list = new ArrayList<>(10);
         list.add(new TuningEffectAdapter.EffectBean("原声",R.drawable.song_tuning_effect1,true));
-        list.add(new TuningEffectAdapter.EffectBean("唱将",R.drawable.song_tuning_effect2));
-        list.add(new TuningEffectAdapter.EffectBean("卡拉OK",R.drawable.song_tuning_effect3));
-        list.add(new TuningEffectAdapter.EffectBean("魔声",R.drawable.song_tuning_effect4));
         list.add(new TuningEffectAdapter.EffectBean("专业",R.drawable.song_tuning_effect5));
+        list.add(new TuningEffectAdapter.EffectBean("唱将",R.drawable.song_tuning_effect2));
+        list.add(new TuningEffectAdapter.EffectBean("魔音",R.drawable.song_tuning_effect4));
+        list.add(new TuningEffectAdapter.EffectBean("卡拉OK",R.drawable.song_tuning_effect3));
 
         adapter = new TuningEffectAdapter(this,list);
 
@@ -149,22 +151,33 @@ public class SongTuningActivity extends ToolbarActivity implements IMakeSongView
                     ToastUtils.toast(context,"正在合成中");
                     return;
                 }
+                String url  = musicurls[position];
 
-                if (StringUtils.isNotBlank(musicurls[position])){
-                    playMusic();
+                if (StringUtils.isNotBlank(url)){
+
+                    if (adapter.getSelectedPosition() == position){
+                        return;
+                    }
+                    if (status == 1){
+                        worksData.musicurl = url;
+                        playMusic();
+                    }
                     adapter.setSelected(position);
                     return;
                 }
 
-                if (status == 2){
-                    MediaInstance.getInstance().stopMediaPlay();
+                if (status == 1){
                     needPlay = true;
                 }else {
                     needPlay = false;
                 }
+
+                MediaInstance.getInstance().stopMediaPlay();
+                needSave = false;
                 adapter.setSelected(position);
                 worksData.effect = position;
                 worksData.musicurl = recordurl;
+                showPd("正在处理中...");
                 makeSongPresenter.tuningMusic(worksData);
             }
         });
@@ -192,6 +205,11 @@ public class SongTuningActivity extends ToolbarActivity implements IMakeSongView
     }
 
 
+    @Override
+    protected void cancelPd() {
+        if (materialDialog != null && materialDialog.isShowing())
+            materialDialog.dismiss();
+    }
 
     @Override
     public void setLoadProgress(int progress) {
@@ -256,34 +274,73 @@ public class SongTuningActivity extends ToolbarActivity implements IMakeSongView
 
     public void playMusic(){
 
+        helper = wave.getWaveSurfaceHelper();
+
         if (helper != null && helper.scroll){
             MediaInstance.getInstance().seek = helper.getCurrentPosition()*50;
         }else {
             MediaInstance.getInstance().seek = -1;
         }
 
-        if (status == 2){
+        String url = MyHttpClient.PRE_ROOT+worksData.musicurl;
+
+        if (status == 4 && url.equals(playurl)){
+            ToastUtils.toast(context,"正在准备中");
+            return;
+        }
+        if (status == 2 && url.equals(playurl)){
             MediaInstance.getInstance().resumeMediaPlay();
+
         }else {
-            String url = MyHttpClient.PRE_ROOT+worksData.musicurl;
+            playurl = url;
+            helper.onDrawWave(0);
+            MediaInstance.getInstance().stopMediaPlay();
 //            String url = MyHttpClient.PRE_ROOT+recordurl;
             MediaInstance.getInstance().startMediaPlayAsync(url);
 //            MediaInstance.getInstance().startMediaPlay(FileUtils.getTempRecordPath());
         }
+
+        status = 4;
     }
 
     @OnClick(R.id.tuning_control)
     public void onClickControl(){
 
+        if (tuningControl.isSelected()){
+
+            if (status == 1){
+                MediaInstance.getInstance().pauseMediaPlay();
+            } else {
+                MediaInstance.getInstance().stopMediaPlay();
+            }
+
+            tuningControl.setSelected(false);
+            return;
+        }
+
+        tuningControl.setSelected(true);
         int position = adapter.getSelectedPosition();
 
-        if (musicurls[position] == null){
+        String url = musicurls[position];
+        if (StringUtils.isBlank(url)){
             showPd("处理中...");
             needPlay = true;
+            needSave = false;
             tuningMusic();
         } else {
+            worksData.musicurl = url;
             playMusic();
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
     }
 
     private void setScorll(boolean scorll){
@@ -300,6 +357,7 @@ public class SongTuningActivity extends ToolbarActivity implements IMakeSongView
                 MediaInstance.getInstance().startTimerTask();
                 tuningControl.setSelected(true);
                 wave.setDisableTouch();
+                status = 1;
             }
 
             @Override
@@ -307,6 +365,7 @@ public class SongTuningActivity extends ToolbarActivity implements IMakeSongView
                 MediaInstance.getInstance().startTimerTask();
                 tuningControl.setSelected(true);
                 wave.setDisableTouch();
+                status = 1;
             }
 
             @Override
@@ -322,6 +381,7 @@ public class SongTuningActivity extends ToolbarActivity implements IMakeSongView
             @Override
             public void onStop() {
                 MediaInstance.getInstance().stopTimerTask();
+                resetWave();
                 wave.setEnableTouch();
                 status = 3;
                 tuningControl.setSelected(false);
@@ -330,6 +390,7 @@ public class SongTuningActivity extends ToolbarActivity implements IMakeSongView
 
             @Override
             public void onOver() {
+                resetWave();
                 MediaInstance.getInstance().stopTimerTask();
                 wave.setEnableTouch();
                 status = 3;
@@ -340,10 +401,12 @@ public class SongTuningActivity extends ToolbarActivity implements IMakeSongView
             @Override
             public void onError() {
                 MediaInstance.getInstance().stopTimerTask();
+                resetWave();
                 wave.setEnableTouch();
                 status = 3;
                 tuningControl.setSelected(false);
                 setScorll(false);
+                ToastUtils.toast(context,"播放出错啦");
             }
         });
 
@@ -355,6 +418,12 @@ public class SongTuningActivity extends ToolbarActivity implements IMakeSongView
                 }
             }
         });
+    }
+
+    private void resetWave(){
+        if (helper != null){
+            helper.onDrawWave(0);
+        }
     }
 
     private String getSelectedMusicUrl(){
