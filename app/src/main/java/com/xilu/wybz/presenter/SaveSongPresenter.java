@@ -38,6 +38,7 @@ public class SaveSongPresenter extends BasePresenter<ISaveSongView> {
             params.put("pic", worksData.pic);
             params.put("is_issue", "" + worksData.is_issue);
             params.put("mp3", worksData.musicurl);
+            params.put("effect", ""+worksData.effect);
             params.put("diyids", worksData.detail);
 
         } catch (Exception e) {

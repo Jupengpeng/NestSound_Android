@@ -63,18 +63,18 @@ public class MediaInstance {
 //            @Override
 //            public void run() {
 
-                if (!isPlay) {
-                    try {
-                        isPlay = true;
-                        if (mediaPlayer == null) {
-                            creatMediaPlayer(path);
-                        }
-                        mediaPlayer.prepareAsync();
-                        asynchronization = true;
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-               }
+        if (!isPlay) {
+            try {
+                isPlay = true;
+                if (mediaPlayer == null) {
+                    creatMediaPlayer(path);
+                }
+                mediaPlayer.prepareAsync();
+                asynchronization = true;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 //            }
 //        });
 
@@ -85,7 +85,7 @@ public class MediaInstance {
         if (mediaPlayer != null && isPlay) {
             isPlay = false;
             mediaPlayer.stop();
-            mediaPlayer.reset();
+            mediaPlayer.release();
             mediaPlayer = null;
             if (iml != null) {
                 iml.onStop();
@@ -214,16 +214,20 @@ public class MediaInstance {
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                if (mediaPlayer != null) {
-                    int current = mediaPlayer.getCurrentPosition();
-                    Log.d("timer", "createtime:" + current);
-                    if (onProgressLitsener != null && current != 1) {
-                        onProgressLitsener.progress(current);
+                try {
+                    if (mediaPlayer != null) {
+                        int current = mediaPlayer.getCurrentPosition();
+                        Log.d("timer", "createtime:" + current);
+                        if (onProgressLitsener != null && current != 1) {
+                            onProgressLitsener.progress(current);
+                        }
+                    } else {
+                        Log.d("timer", "cancel");
+                        timer.cancel();
+                        timer = null;
                     }
-                } else {
-                    Log.d("timer", "cancel");
-                    timer.cancel();
-                    timer = null;
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         };
@@ -238,8 +242,12 @@ public class MediaInstance {
      */
     public void stopTimerTask() {
         if (timer != null) {
-            timer.cancel();
-            timer = null;
+            try{
+                timer.cancel();
+                timer = null;
+            }catch (Exception e){
+
+            }
         }
     }
 
