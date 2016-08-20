@@ -16,7 +16,7 @@ import static org.junit.Assert.assertEquals;
 public class UnitTest {
 
     @Test
-    public void addition_isCorrect() throws Exception {
+    public void test() throws Exception {
         String time = "2014-04-05";
 
 
@@ -42,10 +42,11 @@ public class UnitTest {
 
     @Test
     public void testRect() throws Exception {
+        String ROOT = "12345/";
 
-//        Rect rect = new Rect(0,0,720,180);
+        String text = ROOT.substring(0,ROOT.length()-1);
 
-//        System.out.println("centerX:"+rect.centerX());
+        System.out.println(text);
 
         assertEquals(4, 2 + 2);
     }

@@ -251,7 +251,13 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
     @Override
     public void uploadSuccess(String musicurl) {
         worksData.musicurl = musicurl;
-        makeSongPresenter.tuningMusic("" + worksData.uid, worksData);
+
+        if ("1".equals(worksData.useheadset)){
+            SongTuningActivity.toSongTuningActivity(context,worksData);
+            cancelPd();
+        } else {
+            makeSongPresenter.tuningMusic(worksData);
+        }
     }
 
     @Override
@@ -693,19 +699,7 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
 
         switch (item.getItemId()) {
 
-//            case R.id.menu_import:
-//                if (status == 1) {
-//                    showMsg("请先停止录音");
-//                    return true;
-//                }
-//                startActivity(ImportWordActivity.class);
-//                break;
-
             case R.id.menu_next:
-                WaveSurfaceHelper.dataCache = helper.data;
-                startActivity(SongTuningActivity.class);
-
-
 
                 if (status == 1) {
                     showMsg("请先停止录音");
@@ -719,9 +713,13 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
                     showMsg("请填写标题");
                     return true;
                 }
+
+                WaveSurfaceHelper.dataCache = helper.data;
+
                 if (worksData == null) {
                     worksData = new WorksData();
                 }
+
                 worksData.hotid = Integer.valueOf(templateBean.id);
                 worksData.title = etTitle.getText().toString();
                 worksData.lyrics = etWord.getText().toString();
@@ -729,6 +727,7 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
                 worksData.useheadset = useheadset == true ? "1" : "0";
                 UserBean user = PrefsUtil.getUserInfo(this);
 
+                worksData.effect = 0;
                 worksData.uid = user.userid;
                 worksData.author = user.name;
 
@@ -743,7 +742,15 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
                     return true;
                 }
 
-                showPd("歌曲正在美化，请稍候...");
+                if (useheadset){
+//                    startActivity(SongTuningActivity.class);
+//                    return true;
+                    showPd("正在处理中，请稍候...");
+                } else {
+
+                    showPd("歌曲正在美化，请稍候...");
+                }
+
                 makeSongPresenter.uploadmp3File(FileUtils.getLocalRecordPath(MyCommon.TYPE_MAKE + templateBean.id));
 
                 return true;

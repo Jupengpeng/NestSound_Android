@@ -59,6 +59,8 @@ public class WorksData implements Serializable {
     public int is_issue = 1;//0不公开,1公开
     public boolean isPlay;//是否播放
 
+    public int effect;//音效
+
     public int getType() {
         return type;
     }
