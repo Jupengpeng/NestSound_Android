@@ -134,9 +134,6 @@ public abstract class BasePlayMenuActivity extends ToolbarActivity {
                     startAnimal();
                     break;
                 case MyCommon.STOPPED://停止
-                case MyCommon.END://停止
-                case MyCommon.COMPLETED://停止
-                case MyCommon.PAUSED://暂停
                     stopAnimal();
                     break;
             }

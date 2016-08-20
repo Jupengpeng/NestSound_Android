@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.google.gson.Gson;
 import com.xilu.wybz.R;
 import com.xilu.wybz.adapter.MatchCommentAdapter;
 import com.xilu.wybz.bean.CommentBean;
@@ -262,11 +264,11 @@ public class MacthFragment extends BaseListFragment<MatchWorkBean> implements Sc
             tvFavNum.setText(NumberUtil.format(worksData.fovnum));
             tvLookNum.setText(NumberUtil.format(worksData.looknum));
             tvZanNum.setText(NumberUtil.format(worksData.zannum));
-            if (worksData.listComment == null&&worksData.listComment.size()==0) {
+            tvMoreComment.setText("更多评论");
+            if (worksData.listComment == null||worksData.listComment.size()==0) {
                 tvMoreComment.setVisibility(View.GONE);
             } else {
                 tvMoreComment.setVisibility(View.VISIBLE);
-                tvMoreComment.setText("更多评论");
             }
             if (StringUtils.isNotBlank(worksData.headurl))
                 ImageLoadUtil.loadImage(worksData.headurl, ivHead, DensityUtil.dip2px(context, 45), DensityUtil.dip2px(context, 45));
@@ -294,38 +296,27 @@ public class MacthFragment extends BaseListFragment<MatchWorkBean> implements Sc
                 @Override
                 public void onClick(View v) {
                     if (MyApplication.getInstance().getMainService() != null) {
-                        if (playPos >= 0 && playPos != position) {//切换伴奏 重置上一首的状态
-                            MyApplication.getInstance().mMainService.doRelease();
-                            String playFrom = PrefsUtil.getString("playFrom", context);
-                            if (!playFrom.equals(from) || MainService.ids.size() == 0) {
-                                if (MainService.ids.size() > 0)
-                                    MainService.ids.clear();
-                                for (MatchWorkBean workData : mDataList) {
-                                    MainService.ids.add(workData.itemid);
-                                }
+                        String playFrom = PrefsUtil.getString("playFrom", context);
+                        if (!playFrom.equals(from) || MainService.ids.size() == 0) {
+                            if (MainService.ids.size() > 0)
+                                MainService.ids.clear();
+                            for (MatchWorkBean workData : mDataList) {
+                                MainService.ids.add(workData.itemid);
                             }
+                        }
+                        if (playPos >= 0 && playPos != position) {//切换伴奏 重置上一首的状态
                             MyApplication.getInstance().mMainService.loadData(worksData.itemid, from, "");
                             mDataList.get(position).isPlay = true;
                             ivPlay.setImageResource(R.drawable.ic_match_pause);
-                            playPos = position;//重新赋值当前播放的位置
                         } else if (playPos >= 0 && playPos == position) {//播放当前
                             mDataList.get(playPos).isPlay = !mDataList.get(playPos).isPlay;
                             ivPlay.setImageResource(mDataList.get(playPos).isPlay
                                     ? R.drawable.ic_match_pause : R.drawable.ic_match_play);
-                            String playFrom = PrefsUtil.getString("playFrom", context);
-                            if (!playFrom.equals(from) || MainService.ids.size() == 0) {
-                                if (MainService.ids.size() > 0)
-                                    MainService.ids.clear();
-                                for (MatchWorkBean workData : mDataList) {
-                                    MainService.ids.add(workData.itemid);
-                                }
-                            }
                             MyApplication.getInstance().mMainService.doPP(mDataList.get(playPos).isPlay);
                         } else {//初此播放
                             MyApplication.getInstance().mMainService.loadData(worksData.itemid, from, "");
                             mDataList.get(position).isPlay = true;
                             ivPlay.setImageResource(R.drawable.ic_match_pause);
-                            playPos = position;//重新赋值当前播放的位置
                         }
                     }
                 }
@@ -388,40 +379,35 @@ public class MacthFragment extends BaseListFragment<MatchWorkBean> implements Sc
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(Event.PPStatusEvent event) {
         if(isDestroy)return;
+        Log.e("status","PPStatusEvent__"+event.getStatus()+"");
             switch (event.getStatus()) {
                 case MyCommon.STARTED://开始
-                    if (MyApplication.getInstance().getMainService() != null) {
-                        int playId = PrefsUtil.getInt("playId",context);
-                        int pos = 0;
-                        for(MatchWorkBean matchWorkBean : mDataList){
-                            if(playId==matchWorkBean.itemid) {
-                                playPos = pos;
-                                matchWorkBean.isPlay = MainService.status==3;
-                            }else{
-                                matchWorkBean.isPlay = false;
-                            }
-                            pos++;
+                    int playId = PrefsUtil.getInt("playId",context);
+                    for(int i=0;i< mDataList.size();i++){
+                        if(playId==mDataList.get(i).itemid) {
+                            playPos = i;
+                            mDataList.get(i).isPlay = true;
+                        }else{
+                            mDataList.get(i).isPlay = false;
                         }
-                        adapter.notifyDataSetChanged();
                     }
+                    recycler.getRecyclerView().requestLayout();
+                    adapter.notifyDataSetChanged();
                     break;
                 case MyCommon.PLAYED://播放
                     if(playPos>-1){
                         if(!mDataList.get(playPos).isPlay) {
                             mDataList.get(playPos).isPlay = true;
+                            recycler.getRecyclerView().requestLayout();
                             adapter.notifyDataSetChanged();
                         }
                     }
                     break;
                 case MyCommon.PAUSED://暂停
-                case MyCommon.STOPPED://停止doPP
-                case MyCommon.COMPLETED://完成
-                case MyCommon.END://释放
-                case MyCommon.ERROR://出错
-                case MyCommon.FAILED://获取数据失败
                     if(playPos>-1){
                         if(mDataList.get(playPos).isPlay) {
                             mDataList.get(playPos).isPlay = false;
+                            recycler.getRecyclerView().requestLayout();
                             adapter.notifyDataSetChanged();
                         }
                     }

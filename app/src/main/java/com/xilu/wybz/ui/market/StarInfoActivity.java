@@ -280,10 +280,6 @@ public class StarInfoActivity extends BaseSectionListActivity<WorksData> impleme
                 case MyCommon.PAUSED://暂停
                     break;
                 case MyCommon.STOPPED://停止
-                case MyCommon.COMPLETED://完成
-                case MyCommon.END://释放
-                case MyCommon.ERROR://出错
-                case MyCommon.FAILED://获取数据失败
                     doStop();
                     break;
             }

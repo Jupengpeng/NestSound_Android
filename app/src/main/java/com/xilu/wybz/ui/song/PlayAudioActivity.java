@@ -668,13 +668,9 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
                     closeTimer();
                     break;
                 case MyCommon.STOPPED://停止doPP
-                case MyCommon.COMPLETED://完成
-                case MyCommon.END://释放
-                case MyCommon.ERROR://出错
-                case MyCommon.FAILED://获取数据失败
                     closeTimer();
-                    ivPlay.setImageResource(R.drawable.ic_play_pause);
-                    isPlay = true;
+                    ivPlay.setImageResource(R.drawable.ic_play_play);
+                    isPlay = false;
                     playSeekBar.setProgress(0);
                     tvTime.setText("00:00");
                     break;

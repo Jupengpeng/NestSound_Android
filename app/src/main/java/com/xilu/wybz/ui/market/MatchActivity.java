@@ -351,8 +351,13 @@ public class MatchActivity extends BasePlayMenuActivity implements ViewPager.OnP
         if (isDestroy) return;
         matchPresenter.getMatchInfo(aid);//更新head信息
         matchPresenter.getUserList(aid, 1);//更新head信息.
+
         if (fragmentList.size() > 0 && fragmentList.get(0) != null) {
+            if(vpScroll.getCurrentItem()==1){
+                vpScroll.setCurrentItem(0);
+            }
             fragmentList.get(0).updateData();
+            fragmentList.get(1).updateData();
         }
     }
 }

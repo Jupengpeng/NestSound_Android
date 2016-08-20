@@ -173,7 +173,7 @@
         android:paddingTop="5dp"
         android:textColor="@color/main_text_color3"
         android:textSize="12sp"
-        tools:text="更多121条评论>>" />
+        tools:text="更多评论>>" />
 
     <EditText
         android:id="@+id/et_comment"
