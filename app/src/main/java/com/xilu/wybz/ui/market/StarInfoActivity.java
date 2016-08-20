@@ -65,6 +65,9 @@ public class StarInfoActivity extends BaseSectionListActivity<WorksData> impleme
 
     @Override
     public void initView() {
+        if (MyApplication.getInstance().mMainService == null) {
+            MyApplication.getInstance().bindMainService();
+        }
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             uid = bundle.getInt("uid");
@@ -161,7 +164,7 @@ public class StarInfoActivity extends BaseSectionListActivity<WorksData> impleme
         public void onBindViewHolder(int position) {
             if (starBean != null) {
                 if (StringUtils.isNotBlank(starBean.pic))
-                    ImageLoadUtil.loadImage(starBean.pic, ivHead, DensityUtil.dip2px(context,60),DensityUtil.dip2px(context,60));
+                    ImageLoadUtil.loadImage(starBean.pic, ivHead, DensityUtil.dip2px(context, 60), DensityUtil.dip2px(context, 60));
                 if (StringUtils.isNotBlank(starBean.name))
                     tvName.setText(starBean.name);
                 if (StringUtils.isNotBlank(starBean.introduction))
@@ -226,30 +229,32 @@ public class StarInfoActivity extends BaseSectionListActivity<WorksData> impleme
             WorksData worksData = mDataList.get(position).t;
             if (worksData != null) {
                 if (StringUtils.isNotBlank(worksData.pic))
-                    ImageLoadUtil.loadImage(worksData.pic, ivCover, DensityUtil.dip2px(context,80),DensityUtil.dip2px(context,80));
+                    ImageLoadUtil.loadImage(worksData.pic, ivCover, DensityUtil.dip2px(context, 80), DensityUtil.dip2px(context, 80));
                 if (StringUtils.isNotBlank(worksData.title))
-                    tvName.setText("歌曲名："+worksData.title);
+                    tvName.setText("歌曲名：" + worksData.title);
                 if (StringUtils.isNotBlank(worksData.name))
-                    tvAuthor.setText("作者："+worksData.name);
+                    tvAuthor.setText("作者：" + worksData.name);
                 ivPlay.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (playPos >= 0 && playPos != position) {//切换伴奏 重置上一首的状态
-                            MyApplication.mMainService.doRelease();
-                            MyApplication.mMainService.playOneMusic(mDataList.get(position).t.mp3, type);
-                            mDataList.get(position).t.isPlay = true;
-                            ivPlay.setImageResource(R.drawable.ic_match_pause);
-                            playPos = position;//重新赋值当前播放的位置
-                        } else if (playPos >= 0 && playPos == position) {//播放当前
-                            mDataList.get(playPos).t.isPlay = !mDataList.get(playPos).t.isPlay;
-                            ivPlay.setImageResource(mDataList.get(playPos).t.isPlay
-                                    ? R.drawable.ic_match_pause : R.drawable.ic_match_play);
-                            MyApplication.mMainService.doPP(mDataList.get(playPos).t.isPlay);
-                        } else {//初此播放
-                            MyApplication.mMainService.playOneMusic(mDataList.get(position).t.mp3, type);
-                            mDataList.get(position).t.isPlay = true;
-                            ivPlay.setImageResource(R.drawable.ic_match_pause);
-                            playPos = position;//重新赋值当前播放的位置
+                        if (MyApplication.getInstance().getMainService() != null) {
+                            if (playPos >= 0 && playPos != position) {//切换伴奏 重置上一首的状态
+                                MyApplication.getInstance().mMainService.doRelease();
+                                MyApplication.getInstance().mMainService.playOneMusic(mDataList.get(position).t.mp3, type);
+                                mDataList.get(position).t.isPlay = true;
+                                ivPlay.setImageResource(R.drawable.ic_match_pause);
+                                playPos = position;//重新赋值当前播放的位置
+                            } else if (playPos >= 0 && playPos == position) {//播放当前
+                                mDataList.get(playPos).t.isPlay = !mDataList.get(playPos).t.isPlay;
+                                ivPlay.setImageResource(mDataList.get(playPos).t.isPlay
+                                        ? R.drawable.ic_match_pause : R.drawable.ic_match_play);
+                                MyApplication.getInstance().mMainService.doPP(mDataList.get(playPos).t.isPlay);
+                            } else {//初此播放
+                                MyApplication.getInstance().mMainService.playOneMusic(mDataList.get(position).t.mp3, type);
+                                mDataList.get(position).t.isPlay = true;
+                                ivPlay.setImageResource(R.drawable.ic_match_pause);
+                                playPos = position;//重新赋值当前播放的位置
+                            }
                         }
                     }
                 });
@@ -295,6 +300,7 @@ public class StarInfoActivity extends BaseSectionListActivity<WorksData> impleme
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        MyApplication.mMainService.doRelease();
+        if (MyApplication.getInstance().getMainService() != null)
+            MyApplication.getInstance().mMainService.doRelease();
     }
 }

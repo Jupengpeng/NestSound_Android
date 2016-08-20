@@ -6,7 +6,9 @@ import android.widget.RelativeLayout;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
+import com.xilu.wybz.bean.HotBean;
 import com.xilu.wybz.bean.HotCatalog;
+import com.xilu.wybz.bean.TemplateBean;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.ui.song.MakeHotActivity;
 import com.xilu.wybz.utils.DensityUtil;
@@ -27,10 +29,11 @@ public class HotCatalogViewHolder extends com.xilu.wybz.view.pull.BaseViewHolder
     @Bind(R.id.iv_cover)
     SimpleDraweeView ivCover;
     public boolean flash = false;
-
-    public HotCatalogViewHolder(View view, Context context, List<SectionData<HotCatalog>> sectionDatas, int column) {
+    String aid;
+    public HotCatalogViewHolder(View view, Context context, List<SectionData<HotCatalog>> sectionDatas, int column, String aid) {
         super(view);
         mContext = context;
+        this.aid = aid;
         mDataList = sectionDatas;
         itemWidth = (DensityUtil.getScreenW(context) - DensityUtil.dip2px(context, (column + 1) * 10)) / column;
         ivCover.setLayoutParams(new RelativeLayout.LayoutParams(itemWidth, itemWidth));
@@ -54,7 +57,7 @@ public class HotCatalogViewHolder extends com.xilu.wybz.view.pull.BaseViewHolder
 
     @Override
     public void onItemClick(View view, int position) {
-        MakeHotActivity.toMakeHotActivity(mContext, mDataList.get(position).t,flash);
+        MakeHotActivity.toMakeHotActivity(mContext, mDataList.get(position).t, flash,aid);
     }
 
 }

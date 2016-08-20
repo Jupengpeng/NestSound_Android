@@ -20,6 +20,7 @@ import android.widget.EditText;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
+import com.xilu.wybz.bean.TemplateBean;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.FileDir;
@@ -73,6 +74,20 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView {
         intent.putExtra(KeySet.WORKS_DATA, worksData);
         intent.putExtra(KeySet.KEY_ID, aid);
         context.startActivity(intent);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(KeySet.WORKS_DATA, worksData);
+        outState.putString(KeySet.KEY_ID, aid);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        worksData = (WorksData) savedInstanceState.getSerializable(KeySet.WORKS_DATA);
+        aid = savedInstanceState.getString(KeySet.KEY_ID, "");
     }
 
     @Override
@@ -150,7 +165,6 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView {
             case R.id.iv_cover:
                 SystemUtils.openGallery(this);
                 break;
-
         }
     }
 
@@ -182,7 +196,6 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView {
         getMenuInflater().inflate(R.menu.menu_makeword, menu);
         return true;
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

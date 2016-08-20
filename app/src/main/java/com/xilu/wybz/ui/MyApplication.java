@@ -22,9 +22,12 @@ import com.umeng.socialize.PlatformConfig;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.service.MainService;
+import com.xilu.wybz.utils.FileUtils;
 import com.xilu.wybz.utils.PhoneUtils;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtils;
+
+import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -35,8 +38,8 @@ import java.util.Map;
  * Created by June on 2016/3/1.
  */
 public class MyApplication extends Application implements ServiceConnection {
-    public static MainService mMainService;
-    public static Context context;
+    public MainService mMainService;
+    public static MyApplication context;
     public static String musicId = "";
     public static String from;
     public static String id;
@@ -51,11 +54,27 @@ public class MyApplication extends Application implements ServiceConnection {
         MultiDex.install(this);
     }
 
+    public static MyApplication getInstance(){
+        return context;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
         context = this;
         posMap = new HashMap<>();
+        File webviewCacheDir = new File(getCacheDir().getAbsolutePath()+"/webviewCache");
+        //删除webview 缓存目录
+        if(webviewCacheDir.exists()){
+            FileUtils.delFile(webviewCacheDir);
+        }
+        //清理Webview缓存数据库
+        try {
+            deleteDatabase("webview.db");
+            deleteDatabase("webviewCache.db");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         //检查版本
         if (PrefsUtil.getInt("versionCode", context) == 0) {
             PrefsUtil.clearData(context);
@@ -148,12 +167,16 @@ public class MyApplication extends Application implements ServiceConnection {
         if (service instanceof MainService.ServiceBinder) {
             MainService.ServiceBinder binder = (MainService.ServiceBinder) service;
             mMainService = binder.getService();
-            Log.e("mMainService","onServiceConnected");
         }
     }
-
     @Override
     public void onServiceDisconnected(ComponentName name) {
-        Log.e("mMainService","onServiceDisconnected");
+        bindMainService();
+    }
+
+    public MainService getMainService(){
+        if(mMainService==null)
+            bindMainService();
+        return mMainService;
     }
 }

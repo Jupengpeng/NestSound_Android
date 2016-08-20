@@ -270,15 +270,6 @@ public class MainTabActivity extends BaseActivity {
                     PrefsUtil.putString(PrefsUtil.getString("playFrom", context), ids, context);
                 }
                 PrefsUtil.saveHotBean(context,null);
-                File file = getCacheDir();
-                if (file != null && file.exists() && file.isDirectory()) {
-                    for (File item : file.listFiles()) {
-                        item.delete();
-                    }
-                    file.delete();
-                }
-                context.deleteDatabase("webview.db");
-                context.deleteDatabase("webviewCache.db");
                 finish();
                 return true;
 

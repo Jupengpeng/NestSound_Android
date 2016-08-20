@@ -79,8 +79,6 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
     TextView tvMusictalkMore;
     @Bind(R.id.tv_songablum_more)
     TextView tvSongablumMore;
-    @Bind(R.id.iv_dz)
-    SimpleDraweeView ivDz;
     private MainPresenter presenter;
     private WorksAdapter worksAdapter;
     private WorksAdapter newworksAdapter;

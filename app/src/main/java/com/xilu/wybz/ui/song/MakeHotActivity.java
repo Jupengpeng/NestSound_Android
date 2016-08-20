@@ -4,9 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.bumptech.glide.load.Key;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.HotCatalog;
 import com.xilu.wybz.common.Event;
+import com.xilu.wybz.common.KeySet;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.ui.base.ToolbarActivity;
@@ -22,13 +24,17 @@ public class MakeHotActivity extends ToolbarActivity {
     private HotCatalog hotCatalog;
     private HotFragment hotFragment;
     String type = "";
+    String aid;
     public boolean flash = false;
-    public static void toMakeHotActivity(Context context, HotCatalog hotCatalog,boolean flash){
-        Intent intent = new Intent(context,MakeHotActivity.class);
-        intent.putExtra("hotCatalog",hotCatalog);
-        intent.putExtra(FLASH_TAG,flash);
+
+    public static void toMakeHotActivity(Context context, HotCatalog hotCatalog, boolean flash,String aid) {
+        Intent intent = new Intent(context, MakeHotActivity.class);
+        intent.putExtra("hotCatalog", hotCatalog);
+        intent.putExtra(KeySet.KEY_ID, aid);
+        intent.putExtra(FLASH_TAG, flash);
         context.startActivity(intent);
     }
+
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_makehot;
@@ -37,29 +43,35 @@ public class MakeHotActivity extends ToolbarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (MyApplication.getInstance().mMainService == null) {
+            MyApplication.getInstance().bindMainService();
+        }
         initViews();
     }
+
     private void initViews() {
         Bundle bundle = getIntent().getExtras();
-        if(bundle!=null){
+        if (bundle != null) {
             hotCatalog = (HotCatalog) bundle.getSerializable("hotCatalog");
-            flash = bundle.getBoolean(FLASH_TAG,false);
+            flash = bundle.getBoolean(FLASH_TAG, false);
+            aid = bundle.getString(KeySet.KEY_ID);
         }
-        if(hotCatalog==null)finish();
+        if (hotCatalog == null) finish();
         EventBus.getDefault().register(this);
-        MyApplication.mMainService.doRelease();
-        if(StringUtils.isNotBlank(hotCatalog.categoryname))
+        if (MyApplication.getInstance().getMainService() != null)
+            MyApplication.getInstance().mMainService.doRelease();
+        if (StringUtils.isNotBlank(hotCatalog.categoryname))
             setTitle(hotCatalog.categoryname);
         else
             setTitle("原创伴奏");
 
-        if(hotCatalog.categoryname.contains("最新")){
+        if (hotCatalog.categoryname.contains("最新")) {
             type = "new";
 
-        }else if(hotCatalog.categoryname.contains("最热")){
+        } else if (hotCatalog.categoryname.contains("最热")) {
             type = "hot";
         }
-        hotFragment = HotFragment.newInstance(type,hotCatalog.id,flash);
+        hotFragment = HotFragment.newInstance(type, hotCatalog.id, flash, aid);
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, hotFragment).commit();
 
     }
@@ -67,8 +79,8 @@ public class MakeHotActivity extends ToolbarActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(Event.PPStatusEvent event) {
         String from = event.getFrom();
-        if(StringUtils.isBlank(from))return;
-        if(from.equals(type+"_hot")) {
+        if (StringUtils.isBlank(from)) return;
+        if (from.equals(type + "_hot")) {
             switch (event.getStatus()) {
                 case MyCommon.STARTED://开始
                     break;
@@ -81,19 +93,21 @@ public class MakeHotActivity extends ToolbarActivity {
                 case MyCommon.END://释放
                 case MyCommon.ERROR://出错
                 case MyCommon.FAILED://获取数据失败
-                    if(hotFragment!=null){
+                    if (hotFragment != null) {
                         hotFragment.doStop();
                     }
                     break;
             }
         }
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         //关闭播放
         EventBus.getDefault().unregister(this);
-        MyApplication.mMainService.doRelease();
+        if (MyApplication.getInstance().getMainService() != null)
+            MyApplication.getInstance().mMainService.doRelease();
     }
 
 }

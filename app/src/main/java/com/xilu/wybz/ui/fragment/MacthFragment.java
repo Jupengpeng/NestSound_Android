@@ -90,6 +90,9 @@ public class MacthFragment extends BaseListFragment<MatchWorkBean> implements Sc
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
+        if (MyApplication.getInstance().mMainService == null) {
+            MyApplication.getInstance().bindMainService();
+        }
         if (getArguments() != null) {
             type = getArguments().getInt(KeySet.KEY_TYPE);
             sort = getArguments().getString(KeySet.KEY_SORT);
@@ -290,38 +293,40 @@ public class MacthFragment extends BaseListFragment<MatchWorkBean> implements Sc
             ivPlay.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (playPos >= 0 && playPos != position) {//切换伴奏 重置上一首的状态
-                        MyApplication.mMainService.doRelease();
-                        String playFrom = PrefsUtil.getString("playFrom", context);
-                        if (!playFrom.equals(from) || MainService.ids.size() == 0) {
-                            if (MainService.ids.size() > 0)
-                                MainService.ids.clear();
-                            for (MatchWorkBean workData : mDataList) {
-                                MainService.ids.add(workData.itemid);
+                    if (MyApplication.getInstance().getMainService() != null) {
+                        if (playPos >= 0 && playPos != position) {//切换伴奏 重置上一首的状态
+                            MyApplication.getInstance().mMainService.doRelease();
+                            String playFrom = PrefsUtil.getString("playFrom", context);
+                            if (!playFrom.equals(from) || MainService.ids.size() == 0) {
+                                if (MainService.ids.size() > 0)
+                                    MainService.ids.clear();
+                                for (MatchWorkBean workData : mDataList) {
+                                    MainService.ids.add(workData.itemid);
+                                }
                             }
-                        }
-                        MyApplication.mMainService.loadData(worksData.itemid,from,"");
-                        mDataList.get(position).isPlay = true;
-                        ivPlay.setImageResource(R.drawable.ic_match_pause);
-                        playPos = position;//重新赋值当前播放的位置
-                    }else if(playPos >= 0&&playPos==position){//播放当前
-                        mDataList.get(playPos).isPlay = !mDataList.get(playPos).isPlay;
-                        ivPlay.setImageResource(mDataList.get(playPos).isPlay
-                                ? R.drawable.ic_match_pause : R.drawable.ic_match_play);
-                        String playFrom = PrefsUtil.getString("playFrom", context);
-                        if (!playFrom.equals(from) || MainService.ids.size() == 0) {
-                            if (MainService.ids.size() > 0)
-                                MainService.ids.clear();
-                            for (MatchWorkBean workData : mDataList) {
-                                MainService.ids.add(workData.itemid);
+                            MyApplication.getInstance().mMainService.loadData(worksData.itemid, from, "");
+                            mDataList.get(position).isPlay = true;
+                            ivPlay.setImageResource(R.drawable.ic_match_pause);
+                            playPos = position;//重新赋值当前播放的位置
+                        } else if (playPos >= 0 && playPos == position) {//播放当前
+                            mDataList.get(playPos).isPlay = !mDataList.get(playPos).isPlay;
+                            ivPlay.setImageResource(mDataList.get(playPos).isPlay
+                                    ? R.drawable.ic_match_pause : R.drawable.ic_match_play);
+                            String playFrom = PrefsUtil.getString("playFrom", context);
+                            if (!playFrom.equals(from) || MainService.ids.size() == 0) {
+                                if (MainService.ids.size() > 0)
+                                    MainService.ids.clear();
+                                for (MatchWorkBean workData : mDataList) {
+                                    MainService.ids.add(workData.itemid);
+                                }
                             }
+                            MyApplication.getInstance().mMainService.doPP(mDataList.get(playPos).isPlay);
+                        } else {//初此播放
+                            MyApplication.getInstance().mMainService.loadData(worksData.itemid, from, "");
+                            mDataList.get(position).isPlay = true;
+                            ivPlay.setImageResource(R.drawable.ic_match_pause);
+                            playPos = position;//重新赋值当前播放的位置
                         }
-                        MyApplication.mMainService.doPP(mDataList.get(playPos).isPlay);
-                    }else{//初此播放
-                        MyApplication.mMainService.loadData(worksData.itemid,from,"");
-                        mDataList.get(position).isPlay = true;
-                        ivPlay.setImageResource(R.drawable.ic_match_pause);
-                        playPos = position;//重新赋值当前播放的位置
                     }
                 }
             });
@@ -385,7 +390,7 @@ public class MacthFragment extends BaseListFragment<MatchWorkBean> implements Sc
         if(isDestroy)return;
             switch (event.getStatus()) {
                 case MyCommon.STARTED://开始
-                    if (MyApplication.mMainService != null) {
+                    if (MyApplication.getInstance().getMainService() != null) {
                         int playId = PrefsUtil.getInt("playId",context);
                         int pos = 0;
                         for(MatchWorkBean matchWorkBean : mDataList){

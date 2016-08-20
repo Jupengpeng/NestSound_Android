@@ -148,17 +148,6 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
         return R.layout.activity_playaudio;
     }
 
-//    public ServiceConnection serviceConnection = new ServiceConnection() {
-//        @Override
-//        public void onServiceConnected(ComponentName name, IBinder service) {
-//            musicBinder = (PlayService.MusicBinder) service;
-//        }
-//        @Override
-//        public void onServiceDisconnected(ComponentName name) {
-//
-//        }
-//    };
-
     public static void toPlayAudioActivity(Context context, int id, String gedanid, String from) {
         Intent intent = new Intent(context, PlayAudioActivity.class);
         intent.putExtra("id", id);
@@ -171,6 +160,9 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ExitApplication.getInstance().exit();
+        if(MyApplication.getInstance().mMainService==null){
+            MyApplication.getInstance().bindMainService();
+        }
         EventBus.getDefault().register(this);
         playPresenter = new PlayPresenter(this, this);
         downPicPresenter = new DownPicPresenter(this, this);
@@ -204,7 +196,8 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                MyApplication.mMainService.setCurrentPosition(progress);
+                if(MyApplication.getInstance().getMainService()!=null)
+                    MyApplication.getInstance().getMainService().setCurrentPosition(progress);
             }
 
             @Override
@@ -260,9 +253,9 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
             adapterData();
             if (MainService.status!=1) {
                 //播放或者是暂停状态 恢复位置
-                playSeekBar.setMax(MyApplication.mMainService.getDuration());
-                playSeekBar.setProgress(MyApplication.mMainService.getCurrentPosition());
-                tvTime.setText(FormatHelper.formatDuration(MyApplication.mMainService.getCurrentPosition() / 1000));
+                playSeekBar.setMax(MyApplication.getInstance().getMainService().getDuration());
+                playSeekBar.setProgress(MyApplication.getInstance().getMainService().getCurrentPosition());
+                tvTime.setText(FormatHelper.formatDuration(MyApplication.getInstance().getMainService().getCurrentPosition() / 1000));
                 if (MainService.status==2) {
                     ivPlay.setImageResource(R.drawable.ic_play_play);
                     isPlay = false;
@@ -275,12 +268,12 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
                 //停止或者尚未播放
                 isPlay = false;
                 if(worksData!=null) {
-                    if(MyApplication.mMainService.mCurrentState==MyCommon.IDLE)
-                    MyApplication.mMainService.playOneMusic(worksData.playurl,from);
+                    if(MyApplication.getInstance().getMainService().mCurrentState==MyCommon.IDLE)
+                    MyApplication.getInstance().getMainService().playOneMusic(worksData.playurl,from);
                 }
             }
         } else {//开启服务
-            MyApplication.mMainService.loadData(id, from, gedanid);
+            MyApplication.getInstance().getMainService().loadData(id, from, gedanid);
         }
     }
 
@@ -381,7 +374,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
                 @Override
                 public void run() {
                     try {
-                        if (MyApplication.mMainService == null) {
+                        if (MyApplication.getInstance().getMainService() == null) {
                             return;
                         }
                         handler.sendEmptyMessage(1);
@@ -401,8 +394,11 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
                     return;
                 }
                 if (worksData != null) {
-                    tvTime.setText(FormatHelper.formatDuration(MyApplication.mMainService.getCurrentPosition() / 1000));//播放的时间变化
-                    playSeekBar.setProgress(MyApplication.mMainService.getCurrentPosition());//进度条对时间
+                    if (MyApplication.getInstance().getMainService() == null) {
+                        return;
+                    }
+                    tvTime.setText(FormatHelper.formatDuration(MyApplication.getInstance().getMainService().getCurrentPosition() / 1000));//播放的时间变化
+                    playSeekBar.setProgress(MyApplication.getInstance().getMainService().getCurrentPosition());//进度条对时间
                 }
             }
         }
@@ -464,19 +460,28 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
                 }
                 break;
             case R.id.iv_pre:
-                MyApplication.mMainService.toPreMusic();
+                if (MyApplication.getInstance().getMainService() == null) {
+                    return;
+                }
+                MyApplication.getInstance().getMainService().toPreMusic();
                 break;
             case R.id.iv_play:
+                if (MyApplication.getInstance().getMainService() == null) {
+                    return;
+                }
                 isPlay = !isPlay;
                 if(isPlay){
                     ivPlay.setImageResource(R.drawable.ic_play_pause);
                 }else{
                     ivPlay.setImageResource(R.drawable.ic_play_play);
                 }
-                MyApplication.mMainService.doPP(isPlay);
+                MyApplication.getInstance().getMainService().doPP(isPlay);
                 break;
             case R.id.iv_next:
-                MyApplication.mMainService.toNextMusic();
+                if (MyApplication.getInstance().getMainService() == null) {
+                    return;
+                }
+                MyApplication.getInstance().getMainService().toNextMusic();
                 break;
 
             case R.id.iv_mode:
@@ -649,10 +654,11 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
         if(event.getFrom().equals(from)) {
             switch (event.getStatus()) {
                 case MyCommon.STARTED://开始
-                    if (MyApplication.mMainService != null) {
-                        playSeekBar.setMax(MyApplication.mMainService.getDuration());
-                        tvAlltime.setText(FormatHelper.formatDuration(MyApplication.mMainService.getDuration() / 1000));
+                    if (MyApplication.getInstance().getMainService() == null) {
+                        return;
                     }
+                    playSeekBar.setMax(MyApplication.getInstance().getMainService().getDuration());
+                    tvAlltime.setText(FormatHelper.formatDuration(MyApplication.getInstance().getMainService().getDuration() / 1000));
                     startTimer();
                     break;
                 case MyCommon.PLAYED://播放
@@ -678,7 +684,10 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(Event.MusicDataEvent event) {
-        worksData = MyApplication.mMainService.getCurrentAudio();
+        if (MyApplication.getInstance().getMainService() == null) {
+            return;
+        }
+        worksData = MyApplication.getInstance().getMainService().getCurrentAudio();
         worksData.type = 1;
         worksData.status = 1;
         adapterData();
@@ -726,8 +735,10 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     @Override
     protected void onDestroy() {
         closeTimer();
-        if (MyApplication.mMainService.status==1) {
-            MyApplication.mMainService.doRelease();
+        if(MyApplication.getInstance().getMainService()!=null) {
+            if (MyApplication.getInstance().getMainService().status == 1) {
+                MyApplication.getInstance().getMainService().doRelease();
+            }
         }
         if (playPresenter != null)
             playPresenter.cancleRequest();

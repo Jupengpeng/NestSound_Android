@@ -95,7 +95,13 @@ public class BrowserActivity extends ToolbarActivity {
         webSettings.setJavaScriptEnabled(true);// 设置支持JS脚本
         webSettings.setDisplayZoomControls(false);// 隐藏缩放按钮
         webSettings.setAllowFileAccess(true); // 设置允许访问文件数据
+
+        webSettings.setRenderPriority(WebSettings.RenderPriority.HIGH);
         webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+        webSettings.setDomStorageEnabled(true);
+        webSettings.setDatabaseEnabled(true);
+        String cacheDir = getFilesDir().getAbsolutePath()+"webviewCache";
+        webSettings.setDatabasePath(cacheDir);
 
         mWebView.setDownloadListener(new MyWebViewDownLoadListener());
         mWebView.setWebChromeClient(new MyWebViewChromeClient()); // 处理解析，渲染网页等浏览器做的事情

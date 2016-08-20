@@ -128,9 +128,14 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
 //            makeSongTipDialog.showDialog();
 //            PrefsUtil.putBoolean("isMakeSongTip",true,context);
 //        }
+        if (MyApplication.getInstance().mMainService == null) {
+            MyApplication.getInstance().bindMainService();
+        }else{
+            MyApplication.getInstance().mMainService.doRelease();
+        }
         makeSongPresenter = new MakeSongPresenter(context, this);
         makeSongPresenter.init();
-        MyApplication.mMainService.doRelease();
+
         EventBus.getDefault().register(this);
 
         upData();

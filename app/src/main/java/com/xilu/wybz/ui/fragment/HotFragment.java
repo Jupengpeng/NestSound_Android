@@ -14,6 +14,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.TemplateBean;
 import com.xilu.wybz.common.Event;
+import com.xilu.wybz.common.KeySet;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.HotPresenter;
 import com.xilu.wybz.ui.IView.IHotView;
@@ -44,14 +45,19 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
     private int itemHeight;
     private int playPos = -1;
     public boolean flash = false;
+    public String aid;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (MyApplication.getInstance().mMainService == null) {
+            MyApplication.getInstance().bindMainService();
+        }
         if (getArguments() != null) {
             type = getArguments().getString(TYPE);
             cid = getArguments().getInt(CID);
-            flash = getArguments().getBoolean(FLASH_TAG,false);
+            flash = getArguments().getBoolean(FLASH_TAG, false);
+            aid = getArguments().getString(KeySet.KEY_ID);
         }
     }
 
@@ -81,10 +87,11 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
 //        recycler.enablePullToRefresh(false);
     }
 
-    public static HotFragment newInstance(String type, int cid, boolean flash) {
+    public static HotFragment newInstance(String type, int cid, boolean flash, String aid) {
         HotFragment tabFragment = new HotFragment();
         Bundle bundle = new Bundle();
         bundle.putString(TYPE, type);
+        bundle.putString(KeySet.KEY_ID, aid);
         bundle.putInt(CID, cid);
         bundle.putBoolean(FLASH_TAG, flash);
         tabFragment.setArguments(bundle);
@@ -176,6 +183,7 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
         TextView tvCount;
         @Bind(R.id.tv_times)
         TextView tvTimes;
+
         public SampleViewHolder(View itemView) {
             super(itemView);
             itemWidth = (DensityUtil.getScreenW(context) - DensityUtil.dip2px(context, 40)) / 2;
@@ -190,8 +198,8 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
             itemView.setTag(templateBean);
             tvTitle.setText(templateBean.title);
             tvAuthor.setText(templateBean.author);
-            tvTimes.setText(" "+FormatHelper.formatDuration(templateBean.mp3times));
-            tvCount.setText("使用次数:"+ NumberUtil.format(templateBean.usenum));
+            tvTimes.setText(" " + FormatHelper.formatDuration(templateBean.mp3times));
+            tvCount.setText("使用次数:" + NumberUtil.format(templateBean.usenum));
             if (StringUtils.isNotBlank(templateBean.pic)) {
                 String imageUrl = MyCommon.getImageUrl(templateBean.pic, itemWidth, itemHeight);
                 loadImage(imageUrl, ivCover);
@@ -200,22 +208,24 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
             rlPlay.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (playPos >= 0 && playPos != position) {//切换伴奏 重置上一首的状态
-                        MyApplication.mMainService.doRelease();
-                        MyApplication.mMainService.playOneMusic(mDataList.get(position).mp3,type+"_hot");
-                        mDataList.get(position).isPlay = true;
-                        ivPlay.setImageResource(R.drawable.ic_bz_pause);
-                        playPos = position;//重新赋值当前播放的位置
-                    }else if(playPos >= 0&&playPos==position){//播放当前
-                        mDataList.get(playPos).isPlay = !mDataList.get(playPos).isPlay;
-                        ivPlay.setImageResource(mDataList.get(playPos).isPlay
-                                ? R.drawable.ic_bz_pause : R.drawable.ic_bz_play);
-                        MyApplication.mMainService.doPP(mDataList.get(playPos).isPlay);
-                    }else{//初此播放
-                        MyApplication.mMainService.playOneMusic(mDataList.get(position).mp3,type+"_hot");
-                        mDataList.get(position).isPlay = true;
-                        ivPlay.setImageResource(R.drawable.ic_bz_pause);
-                        playPos = position;//重新赋值当前播放的位置
+                    if (MyApplication.getInstance().getMainService() != null) {
+                        if (playPos >= 0 && playPos != position) {//切换伴奏 重置上一首的状态
+                            MyApplication.getInstance().mMainService.doRelease();
+                            MyApplication.getInstance().mMainService.playOneMusic(mDataList.get(position).mp3, type + "_hot");
+                            mDataList.get(position).isPlay = true;
+                            ivPlay.setImageResource(R.drawable.ic_bz_pause);
+                            playPos = position;//重新赋值当前播放的位置
+                        } else if (playPos >= 0 && playPos == position) {//播放当前
+                            mDataList.get(playPos).isPlay = !mDataList.get(playPos).isPlay;
+                            ivPlay.setImageResource(mDataList.get(playPos).isPlay
+                                    ? R.drawable.ic_bz_pause : R.drawable.ic_bz_play);
+                            MyApplication.getInstance().mMainService.doPP(mDataList.get(playPos).isPlay);
+                        } else {//初此播放
+                            MyApplication.getInstance().mMainService.playOneMusic(mDataList.get(position).mp3, type + "_hot");
+                            mDataList.get(position).isPlay = true;
+                            ivPlay.setImageResource(R.drawable.ic_bz_pause);
+                            playPos = position;//重新赋值当前播放的位置
+                        }
                     }
                 }
             });
@@ -231,20 +241,19 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
         public void onItemClick(View view, int position) {
             doStop();
             TemplateBean bean = mDataList.get(position);
-            if (flash){
+            bean.aid = aid;
+            if (flash) {
                 EventBus.getDefault().post(new Event.ImportHotEvent(bean));
-                if (getActivity() != null){
+                if (getActivity() != null) {
                     getActivity().finish();
                 }
             } else {
                 MakeSongActivity.toMakeSongActivity(context, bean);
             }
-
-
         }
-
     }
-    public void doStop(){
+
+    public void doStop() {
         if (playPos >= 0) {
             mDataList.get(playPos).isPlay = false;
             updateItem(playPos);

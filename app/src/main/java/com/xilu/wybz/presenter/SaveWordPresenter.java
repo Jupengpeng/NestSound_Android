@@ -28,7 +28,7 @@ public class SaveWordPresenter extends BasePresenter<ISaveWordView> {
         Map<String, String> map = new HashMap<>();
         try {
             if(StringUtils.isNotBlank(aid)){
-                map.put("aid", PrefsUtil.getUserId(context)+"");
+                map.put("aid", aid);
             }
             map.put("uid", PrefsUtil.getUserId(context)+"");
             map.put("title", worksData.title);

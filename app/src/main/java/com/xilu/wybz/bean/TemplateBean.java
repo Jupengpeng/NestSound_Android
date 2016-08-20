@@ -7,6 +7,7 @@ import java.io.Serializable;
  */
 public class TemplateBean implements Serializable{
     public String id;//模板的唯一标识ID
+    public String aid;//活动ID
     public int usenum;//使用次数
     public String pic;//模板的封面图片
     public String title;//模板的名字

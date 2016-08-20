@@ -43,6 +43,7 @@ public class HotCatalogActivity extends BaseSectionListActivity<HotCatalog> impl
     HotCatalogPresenter hotCatalogPresenter;
     TemplateBean templateBean;
     private boolean flash = false;
+    private String aid;
 
     public static void toHotCatalogActivity(Context context, boolean flash) {
         Intent intent = new Intent(context, HotCatalogActivity.class);
@@ -62,6 +63,7 @@ public class HotCatalogActivity extends BaseSectionListActivity<HotCatalog> impl
         Intent intent = getIntent();
         if (intent != null) {
             flash = intent.getBooleanExtra(FLASH_TAG, false);
+            aid = intent.getStringExtra(KeySet.KEY_ID);
         }
     }
 
@@ -97,7 +99,7 @@ public class HotCatalogActivity extends BaseSectionListActivity<HotCatalog> impl
     @Override
     protected BaseViewHolder onCreateSectionViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.hotcatalog_item, parent, false);
-        HotCatalogViewHolder holder = new HotCatalogViewHolder(view, context, mDataList, column);
+        HotCatalogViewHolder holder = new HotCatalogViewHolder(view, context, mDataList, column ,aid);
         holder.flash = flash;
         return holder;
     }
@@ -130,6 +132,7 @@ public class HotCatalogActivity extends BaseSectionListActivity<HotCatalog> impl
                             EventBus.getDefault().post(new Event.ImportHotEvent(templateBean));
                             finish();
                         } else {
+                            templateBean.aid = aid;
                             MakeSongActivity.toMakeSongActivity(context, templateBean);
                         }
                     }

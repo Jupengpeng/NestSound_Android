@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -80,6 +81,7 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView,I
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.e("flag","onCreate");
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             worksData = (WorksData) bundle.getSerializable(KeySet.WORKS_DATA);
@@ -350,6 +352,7 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView,I
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Log.e("flag","onDestroy");
         EventBus.getDefault().unregister(this);
         if (makeWordPresenter != null)
             makeWordPresenter.cancelRequest();
