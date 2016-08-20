@@ -56,7 +56,7 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView,I
     WorksData worksData;
     String oldWorksData;
     LyricsDialog lyricsDialog;
-
+    String aid;
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_makeword;
@@ -71,13 +71,19 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView,I
         intent.putExtra(KeySet.WORKS_DATA, worksData);
         context.startActivity(intent);
     }
-
+    public static void toMakeWordActivity(Context context, WorksData worksData,String aid) {
+        Intent intent = new Intent(context, MakeWordActivity.class);
+        intent.putExtra(KeySet.WORKS_DATA, worksData);
+        intent.putExtra(KeySet.KEY_ID, aid);
+        context.startActivity(intent);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             worksData = (WorksData) bundle.getSerializable(KeySet.WORKS_DATA);
+            aid =  bundle.getString(KeySet.KEY_ID,"");
         }
         draftPresenter  = new DraftPresenter(context,this);
         makeWordPresenter = new MakeWordPresenter(context, this);
@@ -167,7 +173,11 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView,I
                 }
                 worksData.setTitle(title);
                 worksData.setLyrics(lyrics);
-                SaveWordActivity.toSaveWordActivity(context, worksData);
+                if(StringUtils.isNotBlank(aid)){
+                    SaveWordActivity.toSaveWordActivity(context, worksData, aid);
+                }else{
+                    SaveWordActivity.toSaveWordActivity(context, worksData);
+                }
                 return true;
             case android.R.id.home:
                 tipSaveLocalData();

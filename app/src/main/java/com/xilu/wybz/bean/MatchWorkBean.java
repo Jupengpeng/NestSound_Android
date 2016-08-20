@@ -10,6 +10,7 @@ public class MatchWorkBean {
     public int userid;
     public String nickname;
     public String headurl;
+    public int itemid;
     public int workid;
     public String mp3;
     public String title;
@@ -18,4 +19,6 @@ public class MatchWorkBean {
     public int looknum;
     public int fovnum;
     public int zannum;
+    public int commentnum;
+    public boolean isPlay;
 }

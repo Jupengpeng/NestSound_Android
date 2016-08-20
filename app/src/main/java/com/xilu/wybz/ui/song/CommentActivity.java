@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -47,6 +48,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
+
 import org.greenrobot.eventbus.EventBus;
 
 /**
@@ -61,6 +63,7 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
     private int targetUid;
     private String targetName;
     private String content;
+    private boolean isOpen;
 
     String[] actionTitles = new String[]{"删除"};
     String[] actionTypes = new String[]{"del"};
@@ -68,10 +71,12 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
     ActionMoreDialog actionMoreDialog;
     int workid;
     int type;
-    public static void ToCommentActivity(Context context, int workid, int type) {
+
+    public static void ToCommentActivity(Context context, int workid, int type, boolean isOpen) {
         Intent intent = new Intent(context, CommentActivity.class);
         intent.putExtra(KeySet.KEY_ID, workid);
         intent.putExtra(KeySet.KEY_TYPE, type);
+        intent.putExtra(KeySet.KEY_OPEN, isOpen);
         context.startActivity(intent);
     }
 
@@ -106,6 +111,14 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
         if (bundle != null) {
             workid = bundle.getInt(KeySet.KEY_ID);
             type = bundle.getInt(KeySet.KEY_TYPE);
+            isOpen = bundle.getBoolean(KeySet.KEY_OPEN);
+        }
+        if (isOpen) {
+            //打开软键盘
+            KeyBoardUtil.openAndCloseKeybord(context);
+            // 获取编辑框焦点
+            etContent.setFocusable(true);
+            etContent.requestFocus();
         }
         actionBeanList = new ArrayList<>();
         for (int i = 0; i < actionTitles.length; i++) {
@@ -157,7 +170,7 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
     @Override
     protected void setUpData() {
         super.setUpData();
-        if (isDestroy){
+        if (isDestroy) {
             return;
         }
         recycler.setRefreshing();
@@ -177,7 +190,7 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
                 if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
                     mDataList.clear();
                 }
-                if (isDestroy){
+                if (isDestroy) {
                     return;
                 }
                 recycler.enableLoadMore(true);
@@ -195,7 +208,7 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
 
     @Override
     public void loadFail() {
-        if (recycler == null){
+        if (recycler == null) {
             return;
         }
         recycler.onRefreshCompleted();
@@ -203,7 +216,7 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
 
     @Override
     public void loadNoMore() {
-        if (isDestroy){
+        if (isDestroy) {
             return;
         }
         recycler.onRefreshCompleted();
@@ -212,7 +225,7 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
 
     @Override
     public void loadNoData() {
-        if (isDestroy){
+        if (isDestroy) {
             return;
         }
         llNoData.setVisibility(View.VISIBLE);
@@ -224,10 +237,9 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
     public void commentSuccess(int id) {
         cancelPd();
         EventBus.getDefault().post(new Event.UpdataCommentNumEvent(type, 1));
-        if (isDestroy){
+        if (isDestroy) {
             return;
         }
-        KeyBoardUtil.closeKeybord(etContent, context);
         CommentBean commentBean = new CommentBean();
         commentBean.setUid(PrefsUtil.getUserId(context));
         commentBean.setTarget_uid(targetUid);
@@ -242,20 +254,22 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
         commentBean.setCreatedate(System.currentTimeMillis());
         commentBean.setNickname(PrefsUtil.getUserInfo(context).name);
         addItem(commentBean);
+        EventBus.getDefault().post(new Event.UpdataCommentListEvent(mDataList));
         if (mDataList.size() == 1) {
             llNoData.setVisibility(View.GONE);
         }
         targetUid = 0;
         commentType = 1;
         etContent.setText("");
+//        KeyBoardUtil.openAndCloseKeybord(context);
     }
 
     @Override
     public void commentFail() {
         cancelPd();
-        if(NetWorkUtil.isNetworkAvailable(context)){
+        if (NetWorkUtil.isNetworkAvailable(context)) {
             showMsg("评论失败！");
-        }else{
+        } else {
             showMsg("网络无法连接！");
         }
     }
@@ -263,10 +277,11 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
     @Override
     public void delSuccess(int pos) {
         EventBus.getDefault().post(new Event.UpdataCommentNumEvent(type, -1));
-        if (isDestroy){
+        if (isDestroy) {
             return;
         }
         removeItem(pos);
+        EventBus.getDefault().post(new Event.UpdataCommentListEvent(mDataList));
         if (mDataList.size() == 0) {
             llNoData.setVisibility(View.VISIBLE);
         }
@@ -276,9 +291,9 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
 
     @Override
     public void delFail() {
-        if(NetWorkUtil.isNetworkAvailable(context)){
+        if (NetWorkUtil.isNetworkAvailable(context)) {
             showMsg("删除失败！");
-        }else{
+        } else {
             showMsg("网络无法连接！");
         }
         if (actionMoreDialog != null)
@@ -300,6 +315,7 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
         TextView tvDate;
         @Bind(R.id.tv_content)
         TextView tvContent;
+
         public CommentViewHolder(View itemView) {
             super(itemView);
         }
@@ -307,24 +323,24 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
         @Override
         public void onBindViewHolder(int position) {
             CommentBean bean = mDataList.get(position);
-            loadHeadImage(bean.headerurl.replace(MyCommon.defult_head,""), ivHead);
+            loadHeadImage(bean.headerurl.replace(MyCommon.defult_head, ""), ivHead);
             tvName.setText(bean.nickname);
             tvDate.setText(DateTimeUtil.timestamp2DateTime(bean.createdate));
-            SpannableString s = StringStyleUtil.getWorkCommentStyleStr(context,bean);
+            SpannableString s = StringStyleUtil.getWorkCommentStyleStr(context, bean);
             tvContent.setText(s);
             tvContent.setMovementMethod(LinkMovementMethod.getInstance());
 //            itemView.setOnClickListener(null);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onItemClick(v,position);
+                    onItemClick(v, position);
                 }
             });
             ivHead.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(bean.getUid()!=PrefsUtil.getUserId(context))
-                    UserInfoActivity.ToNewUserInfoActivity(context,bean.getUid(),bean.getNickname());
+                    if (bean.getUid() != PrefsUtil.getUserId(context))
+                        UserInfoActivity.ToNewUserInfoActivity(context, bean.getUid(), bean.getNickname());
                 }
             });
         }
@@ -362,7 +378,7 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
 
     @Override
     protected void onDestroy() {
-        if(commentPresenter!=null) {
+        if (commentPresenter != null) {
             commentPresenter.cancelRequest();
         }
         super.onDestroy();

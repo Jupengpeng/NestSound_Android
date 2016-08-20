@@ -42,6 +42,7 @@ public class WorksData implements Serializable {
     public String hotAuthor;//伴奏作者
     public String hotTitle;//伴奏标题
     public long createTime;//创建时间
+    public long createtime;//创建时间
     public long createdate;//创建时间
     public long createDate;//创建时间
     public int recordtimes;//录音时长

@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.WorksData;
+import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.KeySet;
 import com.xilu.wybz.presenter.ImportWordPresenter;
 import com.xilu.wybz.presenter.MyWorkPresenter;
@@ -30,6 +31,8 @@ import com.xilu.wybz.view.materialdialogs.MaterialDialog;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.PullRecycler;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.List;
 
 import butterknife.Bind;
@@ -38,16 +41,16 @@ import butterknife.Bind;
  * Created by hujunwei on 16/8/16.
  */
 public class MyWorkActivity extends BaseListActivity<WorksData> implements IMyWorkView {
-    private int page = 1;
-    private int action = 0;
     private int type = 0;
+    private String aid = "";
     private String nodata = "暂无作品";
     private MyWorkPresenter myWorkPresenter;
     // type 1 歌曲 2歌词
-    public static void toMyWorkActivity(Context context, int type) {
+    public static void toMyWorkActivity(Context context, String aid, int type) {
         Intent intent = new Intent();
         intent.setClass(context, MyWorkActivity.class);
         intent.putExtra(KeySet.KEY_TYPE, type);
+        intent.putExtra(KeySet.KEY_ID, aid);
         context.startActivity(intent);
     }
     @Override
@@ -62,7 +65,10 @@ public class MyWorkActivity extends BaseListActivity<WorksData> implements IMyWo
         hideRight();
         tvNoData.setText(nodata);
         Bundle bundle = getIntent().getExtras();
-        if(bundle!=null)type=bundle.getInt(KeySet.KEY_TYPE);
+        if(bundle!=null){
+            type=bundle.getInt(KeySet.KEY_TYPE);
+            aid=bundle.getString(KeySet.KEY_ID);
+        }
     }
 
     @Override
@@ -128,12 +134,15 @@ public class MyWorkActivity extends BaseListActivity<WorksData> implements IMyWo
 
     @Override
     public void attendSuccess() {
-
+        cancelPd();
+        EventBus.getDefault().post(new Event.AttendMatchSuccessEvent());
+        finish();
+        showMsg("发布成功！");
     }
 
     @Override
     public void attendFail() {
-
+        cancelPd();
     }
 
     @Override
@@ -159,7 +168,7 @@ public class MyWorkActivity extends BaseListActivity<WorksData> implements IMyWo
             WorksData worksData = mDataList.get(position);
             if(StringUtils.isNotBlank(worksData.title))
                 tvName.setText(worksData.title);
-            tvTime.setText(DateTimeUtil.timestamp2Date(worksData.createDate));
+            tvTime.setText(DateTimeUtil.timestamp2Date(worksData.createtime));
             ivStatus.setVisibility(worksData.status==1?View.GONE:View.VISIBLE);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -172,13 +181,14 @@ public class MyWorkActivity extends BaseListActivity<WorksData> implements IMyWo
         public void onItemClick(View view, int position) {
             new MaterialDialog.Builder(context)
                     .title(getString(R.string.dialog_title))
-                    .content("请确认是否继续操作？")
+                    .content("是否将该作品发布到活动页面？")
                     .positiveText("发布")
-                    .positiveColor(getResources().getColor(R.color.red))
+//                    .positiveColor(getResources().getColor(R.color.lightblue))
                     .onPositive(new MaterialDialog.SingleButtonCallback() {
                         @Override
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-
+                            showPd("正在发布中，请稍候...");
+                            myWorkPresenter.attend(aid, mDataList.get(position).itemid);
                         }
                     }).negativeText("取消")
                     .onNegative(new MaterialDialog.SingleButtonCallback() {

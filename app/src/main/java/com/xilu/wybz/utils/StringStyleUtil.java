@@ -55,6 +55,12 @@ public class StringStyleUtil {
         return spannableString;
     }
 
+    public static SpannableString getUserLink(Context context, String userName, int uid) {
+        SpannableString spannableString = new SpannableString(userName);
+        spannableString.setSpan(new UserNameLinkClickableSpan(context,userName,uid),0,userName.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        return spannableString;
+    }
+
     public static SpannableString getParentCommentStyleStr(CommentBean commentBean) {
         String comment ="我:" + commentBean.getComment();
         SpannableString spannableString = new SpannableString(comment);
@@ -74,7 +80,32 @@ public class StringStyleUtil {
         }
         return lyrics;
     }
+    public static class UserNameLinkClickableSpan extends ClickableSpan{
+        public Context context;
+        String name;
+        int uid;
+        public UserNameLinkClickableSpan(Context context,String name, int uid) {
+            this.context = context;
+            this.name = name;
+            this.uid = uid;
+        }
 
+        @Override
+        public void updateDrawState(TextPaint ds) {
+            super.updateDrawState(ds);
+            ds.setColor(Color.parseColor("#ff539ac2"));
+            ds.setUnderlineText(false);
+            ds.setAntiAlias(true);
+        }
+
+        @Override
+        public void onClick(View widget) {
+            if(PrefsUtil.getUserId(context)!=uid) {
+                UserInfoActivity.ToNewUserInfoActivity(context, uid, name);
+            }
+        }
+
+    }
 
     public static class UserNameClickableSpan extends ClickableSpan{
         public Context context;

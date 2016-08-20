@@ -6,6 +6,7 @@ package com.xilu.wybz.common;
 public class KeySet {
 
     public static final String KEY_TYPE = "yinchao_type";
+    public static final String KEY_OPEN = "type_open";
     public static final int TYPE_FOLLOW_ACT = 2;
     public static final int TYPE_FANS_ACT = 1;
     public static final String KEY_UID = "type_uid";

@@ -288,8 +288,7 @@ public class StarInfoActivity extends BaseSectionListActivity<WorksData> impleme
     public void doStop() {
         if (playPos >= 0) {
             mDataList.get(playPos).t.isPlay = false;
-            updateItem(playPos);
-            playPos = -1;
+            adapter.notifyDataSetChanged();
         }
     }
 

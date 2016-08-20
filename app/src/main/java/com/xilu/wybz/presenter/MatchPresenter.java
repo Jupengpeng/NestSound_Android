@@ -35,7 +35,7 @@ public class MatchPresenter extends BasePresenter<IMatchView> {
     public void getMatchInfo(String aid) {
         params = new HashMap<>();
         params.put("aid",aid+"");
-        params.put("uid", PrefsUtil.getInt("uid",context)+"");
+        params.put("uid", PrefsUtil.getUserId(context)+"");
         httpUtils.post(MyHttpClient.getMatchInfo(), params, new AppJsonCalback(context) {
             @Override
             public Type getDataType() {

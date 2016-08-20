@@ -380,7 +380,7 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
     }
 
     public void toCommentActivity() {
-        CommentActivity.ToCommentActivity(context, worksData.itemid,2);
+        CommentActivity.ToCommentActivity(context, worksData.itemid,2,false);
     }
 
 }
