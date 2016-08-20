@@ -15,6 +15,7 @@ import com.xilu.wybz.bean.HotBean;
 import com.xilu.wybz.bean.HotCatalog;
 import com.xilu.wybz.bean.TemplateBean;
 import com.xilu.wybz.common.Event;
+import com.xilu.wybz.common.KeySet;
 import com.xilu.wybz.presenter.HotCatalogPresenter;
 import com.xilu.wybz.ui.IView.IHotCatalogView;
 import com.xilu.wybz.ui.base.BaseSectionListActivity;
@@ -36,16 +37,22 @@ import butterknife.Bind;
 /**
  * Created by hujunwei on 16/8/8.
  */
-public class HotCatalogActivity extends BaseSectionListActivity<HotCatalog> implements IHotCatalogView{
+public class HotCatalogActivity extends BaseSectionListActivity<HotCatalog> implements IHotCatalogView {
     public static final String FLASH_TAG = "FLASH_TAG";
     private int column = 3;
     HotCatalogPresenter hotCatalogPresenter;
     TemplateBean templateBean;
     private boolean flash = false;
 
-    public static void toHotCatalogActivity(Context context, boolean flash){
-        Intent intent = new Intent(context,HotCatalogActivity.class);
-        intent.putExtra(FLASH_TAG,flash);
+    public static void toHotCatalogActivity(Context context, boolean flash) {
+        Intent intent = new Intent(context, HotCatalogActivity.class);
+        intent.putExtra(FLASH_TAG, flash);
+        context.startActivity(intent);
+    }
+
+    public static void toHotCatalogActivity(Context context, String aid) {
+        Intent intent = new Intent(context, HotCatalogActivity.class);
+        intent.putExtra(KeySet.KEY_ID, aid);
         context.startActivity(intent);
     }
 
@@ -53,16 +60,17 @@ public class HotCatalogActivity extends BaseSectionListActivity<HotCatalog> impl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
-        if (intent != null){
-            flash = intent.getBooleanExtra(FLASH_TAG,false);
+        if (intent != null) {
+            flash = intent.getBooleanExtra(FLASH_TAG, false);
         }
     }
 
     @Override
     protected void initPresenter() {
-        hotCatalogPresenter = new HotCatalogPresenter(this,this);
+        hotCatalogPresenter = new HotCatalogPresenter(this, this);
         hotCatalogPresenter.init();
     }
+
     @Override
     public void initView() {
         setTitle("伴奏分类");
@@ -70,18 +78,18 @@ public class HotCatalogActivity extends BaseSectionListActivity<HotCatalog> impl
         setUpData();
         recycler.enablePullToRefresh(false);
         HotBean hotBean = PrefsUtil.getHotBean(context);
-        if(hotBean!=null&&hotBean.simplesing!=null){
+        if (hotBean != null && hotBean.simplesing != null) {
             templateBean = hotBean.simplesing;
             mDataList = new ArrayList<>();
             showHotCatalog(hotBean);
-        }else{
+        } else {
             recycler.setRefreshing();
         }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(Event.ImportHotEvent event) {
-        if (flash){
+        if (flash) {
             finish();
         }
     }
@@ -90,7 +98,7 @@ public class HotCatalogActivity extends BaseSectionListActivity<HotCatalog> impl
     protected BaseViewHolder onCreateSectionViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.hotcatalog_item, parent, false);
         HotCatalogViewHolder holder = new HotCatalogViewHolder(view, context, mDataList, column);
-        holder.flash =flash;
+        holder.flash = flash;
         return holder;
     }
 
@@ -98,24 +106,27 @@ public class HotCatalogActivity extends BaseSectionListActivity<HotCatalog> impl
         View view = LayoutInflater.from(context).inflate(R.layout.hot_headview, parent, false);
         return new SectionHeaderViewHolder(view);
     }
+
     public class SectionHeaderViewHolder extends BaseViewHolder {
         @Bind(R.id.iv_qc)
         SimpleDraweeView ivQc;
+
         public SectionHeaderViewHolder(View view) {
             super(view);
         }
+
         @Override
         public void onBindViewHolder(int position) {
-            if(templateBean!=null){
-                loadImage(templateBean.pic,ivQc);
-            }else{
-                loadImage("res:///"+R.drawable.ic_qc_bg,ivQc);
+            if (templateBean != null) {
+                loadImage(templateBean.pic, ivQc);
+            } else {
+                loadImage("res:///" + R.drawable.ic_qc_bg, ivQc);
             }
             ivQc.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(templateBean!=null) {
-                        if (flash){
+                    if (templateBean != null) {
+                        if (flash) {
                             EventBus.getDefault().post(new Event.ImportHotEvent(templateBean));
                             finish();
                         } else {
@@ -136,6 +147,7 @@ public class HotCatalogActivity extends BaseSectionListActivity<HotCatalog> impl
         MyGridLayoutManager myGridLayoutManager = new MyGridLayoutManager(context, column);
         return myGridLayoutManager;
     }
+
     @Override
     public void onRefresh(int action) {
         super.onRefresh(action);
@@ -144,14 +156,14 @@ public class HotCatalogActivity extends BaseSectionListActivity<HotCatalog> impl
 
     @Override
     public void showHotCatalog(HotBean hotBean) {
-        if(isDestroy)return;
-        PrefsUtil.saveHotBean(context,hotBean);
-        if(mDataList.size()==0) {
+        if (isDestroy) return;
+        PrefsUtil.saveHotBean(context, hotBean);
+        if (mDataList.size() == 0) {
             templateBean = hotBean.simplesing;
             mDataList.add(new SectionData<>(true, 0, "清唱"));
         }
         recycler.enableLoadMore(false);
-        for(HotCatalog hotCatalog:hotBean.list){
+        for (HotCatalog hotCatalog : hotBean.list) {
             mDataList.add(new SectionData<>(hotCatalog));
         }
         adapter.notifyDataSetChanged();
@@ -160,20 +172,20 @@ public class HotCatalogActivity extends BaseSectionListActivity<HotCatalog> impl
 
     @Override
     public void loadFail() {
-        if(isDestroy)return;
+        if (isDestroy) return;
         recycler.onRefreshCompleted();
         showNetErrorMsg();
     }
 
     @Override
     public void loadNoMore() {
-        if(isDestroy)return;
+        if (isDestroy) return;
         recycler.enableLoadMore(false);
     }
 
     @Override
     public void loadNoData() {
-        if(isDestroy)return;
+        if (isDestroy) return;
         llNoData.setVisibility(View.VISIBLE);
     }
 }

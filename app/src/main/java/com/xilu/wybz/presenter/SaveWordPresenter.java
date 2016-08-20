@@ -9,6 +9,7 @@ import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.callback.AppStringCallback;
 import com.xilu.wybz.ui.IView.ISaveWordView;
 import com.xilu.wybz.utils.PrefsUtil;
+import com.xilu.wybz.utils.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,9 +24,12 @@ public class SaveWordPresenter extends BasePresenter<ISaveWordView> {
         super(context, iView);
     }
 
-    public void saveLyrics(WorksData worksData) {
+    public void saveLyrics(WorksData worksData, String aid) {
         Map<String, String> map = new HashMap<>();
         try {
+            if(StringUtils.isNotBlank(aid)){
+                map.put("aid", PrefsUtil.getUserId(context)+"");
+            }
             map.put("uid", PrefsUtil.getUserId(context)+"");
             map.put("title", worksData.title);
             map.put("lyrics", worksData.lyrics);
@@ -38,7 +42,7 @@ public class SaveWordPresenter extends BasePresenter<ISaveWordView> {
         } catch (Exception e) {
             Log.e("Exception", e.toString());
         }
-        httpUtils.post(MyHttpClient.getSaveLyricsUrl(), map, new AppStringCallback(context) {
+        httpUtils.post(StringUtils.isNotBlank(aid)?MyHttpClient.getSaveActivityLyricsUrl():MyHttpClient.getSaveLyricsUrl(), map, new AppStringCallback(context) {
                     @Override
                     public void onResponse(JsonResponse<? extends Object> response) {
                         super.onResponse(response);

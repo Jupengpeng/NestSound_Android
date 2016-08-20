@@ -25,7 +25,9 @@ import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.FileDir;
 import com.xilu.wybz.common.KeySet;
 import com.xilu.wybz.common.MyCommon;
+import com.xilu.wybz.presenter.MyWorkPresenter;
 import com.xilu.wybz.presenter.SaveWordPresenter;
+import com.xilu.wybz.ui.IView.IMyWorkView;
 import com.xilu.wybz.ui.IView.ISaveWordView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.utils.ImageUtils;
@@ -39,6 +41,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -56,11 +59,19 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView {
     WorksData worksData;
     String coverPath;
     boolean isAbleOnClick = true;
+    String aid;
     SaveWordPresenter saveWordPresenter;
 
     public static void toSaveWordActivity(Context context, WorksData worksData) {
         Intent intent = new Intent(context, SaveWordActivity.class);
         intent.putExtra(KeySet.WORKS_DATA, worksData);
+        context.startActivity(intent);
+    }
+
+    public static void toSaveWordActivity(Context context, WorksData worksData, String aid) {
+        Intent intent = new Intent(context, SaveWordActivity.class);
+        intent.putExtra(KeySet.WORKS_DATA, worksData);
+        intent.putExtra(KeySet.KEY_ID, aid);
         context.startActivity(intent);
     }
 
@@ -81,8 +92,9 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             worksData = (WorksData) bundle.getSerializable(KeySet.WORKS_DATA);
+            aid = bundle.getString(KeySet.KEY_ID, "");
         }
-        if(worksData.itemid==0)worksData.type=1;
+        if (worksData.itemid == 0) worksData.type = 1;
         initEvent();
         initData();
     }
@@ -151,10 +163,11 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView {
             public void onSuccess(String imageUrl) {
                 isAbleOnClick = true;
                 worksData.setPic(imageUrl);
-                if(materialDialog!=null&&materialDialog.isShowing()) {
-                    saveWordPresenter.saveLyrics(worksData);
+                if (materialDialog != null && materialDialog.isShowing()) {
+                    saveWordPresenter.saveLyrics(worksData, aid);
                 }
             }
+
             @Override
             public void onFail() {
                 isAbleOnClick = true;
@@ -175,23 +188,23 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView {
         switch (item.getItemId()) {
             case R.id.menu_save:
                 //先检查歌词的描述
-                if (StringUtils.isBlank(worksData.detail)) {
-                    showMsg("请先添加歌词描述！");
-                    return true;
-                }
+//                if (StringUtils.isBlank(worksData.detail)) {
+//                    showMsg("请先添加歌词描述！");
+//                    return true;
+//                }
                 if (StringUtils.isBlank(worksData.pic)) {
                     showMsg("请先选择歌词的封面！");
                     return true;
                 }
                 if (new File(worksData.pic).exists()) {
                     showPd("正在发布中，请稍候...");
-                    if(isAbleOnClick)
-                    uploadCoverPic();
+                    if (isAbleOnClick)
+                        uploadCoverPic();
                 } else {
                     showPd("正在修改中，请稍候...");
-                    saveWordPresenter.saveLyrics(worksData);
+                    saveWordPresenter.saveLyrics(worksData,aid);
                 }
-                if(materialDialog!=null){
+                if (materialDialog != null) {
                     materialDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
                         @Override
                         public void onCancel(DialogInterface dialog) {
@@ -209,24 +222,28 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView {
 
     @Override
     public void saveWordSuccess(String result) {
+        if(isDestroy)return;
         cancelPd();
-        worksData.createdate = System.currentTimeMillis();
-        //新增或者更新
-        EventBus.getDefault().post(new Event.UpdataWorksList(worksData, 2, worksData.itemid==0?0:2));
-        if(worksData.itemid==0) {
+        if (worksData.itemid == 0&&StringUtils.isBlank(aid)) {//aid 存在 服务端不返回这两个值
             try {
                 String shareurl = new JSONObject(result).getString("shareurl");
                 int itemid = new JSONObject(result).getInt("itemid");
                 worksData.setShareurl(shareurl + "?id=" + itemid);
                 worksData.setItemid(itemid);
-                ShareActivity.toShareActivity(context, worksData);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
+        worksData.createdate = System.currentTimeMillis();
+        //新增或者更新
+        if(StringUtils.isNotBlank(aid))
+            EventBus.getDefault().post(new Event.AttendMatchSuccessEvent());
+        EventBus.getDefault().post(new Event.UpdataWorksList(worksData, 2, worksData.itemid == 0 ? 0 : 2));
         PrefsUtil.putString(KeySet.LOCAL_LYRICS, "", context);
         EventBus.getDefault().post(new Event.SaveLyricsSuccessEvent(1, worksData));//新建歌词页面
         EventBus.getDefault().post(new Event.SaveLyricsSuccessEvent(2, worksData));//歌词展示页面
+        if(StringUtils.isBlank(aid))//参加活动的作品 由于服务端没有返回分享地址 故不能跳转
+            ShareActivity.toShareActivity(context, worksData);
         finish();
     }
 
@@ -289,10 +306,4 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView {
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if(saveWordPresenter!=null)
-            saveWordPresenter.cancelRequest();
-    }
 }

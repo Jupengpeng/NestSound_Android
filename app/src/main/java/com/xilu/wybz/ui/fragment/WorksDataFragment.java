@@ -299,7 +299,7 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
 
     //更新某个item
     public void updateData(WorksData worksData) {
-        if (mDataList.size() > 0) {
+        if (mDataList!=null&&mDataList.size() > 0) {
             int index = -1;
             for (int i = 0; i < mDataList.size(); i++) {
                 if (worksData.itemid == mDataList.get(i).itemid && worksData.status == mDataList.get(i).status) {

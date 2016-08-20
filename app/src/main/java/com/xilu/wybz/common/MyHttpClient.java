@@ -181,7 +181,10 @@ public class MyHttpClient {
     public static String getSaveLyricsUrl() {
         return "lyricsopt/optLyrics";
     }
-
+    //发布歌词(活动)
+    public static String getSaveActivityLyricsUrl() {
+        return "lyricsopt/activity";
+    }
     //保存灵感记录
     public static String getSaveInspireUrl() {
         return "inspire/save";

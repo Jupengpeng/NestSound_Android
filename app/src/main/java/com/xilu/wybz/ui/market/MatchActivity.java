@@ -115,7 +115,7 @@ public class MatchActivity extends BasePlayMenuActivity implements ViewPager.OnP
     }
 
     // status: ing/end
-    public static void toMatchActivity(Context context, String id,int type, String status) {
+    public static void toMatchActivity(Context context, String id, int type, String status) {
         Intent intent = new Intent(context, MatchActivity.class);
         intent.putExtra("id", id);
         intent.putExtra("status", status);
@@ -147,8 +147,8 @@ public class MatchActivity extends BasePlayMenuActivity implements ViewPager.OnP
         pflRoot.setPtrHandler(this);
         pflRoot.setKeepHeaderWhenRefresh(true);
         CommonFragementPagerAdapter commonFragementPagerAdapter = new CommonFragementPagerAdapter(getSupportFragmentManager());
-        fragmentList.add(MacthFragment.newInstance(aid,type,"0"));
-        fragmentList.add(MacthFragment.newInstance(aid,type,"1"));
+        fragmentList.add(MacthFragment.newInstance(aid, type, "0"));
+        fragmentList.add(MacthFragment.newInstance(aid, type, "1"));
         vpScroll.setAdapter(commonFragementPagerAdapter);
         vpScroll.addOnPageChangeListener(this);
         slRoot.getHelper().setCurrentScrollableContainer(fragmentList.get(0));
@@ -168,7 +168,7 @@ public class MatchActivity extends BasePlayMenuActivity implements ViewPager.OnP
         adapter.setOnItemClickListener(new JoinUserAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                if(PrefsUtil.getUserId(context)!=joinUserBeanList.get(position).id){
+                if (PrefsUtil.getUserId(context) != joinUserBeanList.get(position).id) {
                     UserInfoActivity.ToNewUserInfoActivity(context, joinUserBeanList.get(position).id,
                             joinUserBeanList.get(position).nickname);
                 }
@@ -209,9 +209,9 @@ public class MatchActivity extends BasePlayMenuActivity implements ViewPager.OnP
     public void showMatchData(MatchBean matchBean) {
         ActivityDetail activityDetail = matchBean.activityDetail;
         isJoin = matchBean.isJoin;
-        if(activityDetail!=null) {
+        if (activityDetail != null) {
             try {
-                tvJoinNum.setText("参加人数"+NumberUtil.format(activityDetail.joinnum)+"人");
+                tvJoinNum.setText("参加人数" + NumberUtil.format(activityDetail.joinnum) + "人");
                 tvWorkNum.setText(NumberUtil.format(activityDetail.worknum));
                 tvLookNum.setText(NumberUtil.format(activityDetail.looknum));
                 tvTitle.setText(activityDetail.title);
@@ -220,7 +220,7 @@ public class MatchActivity extends BasePlayMenuActivity implements ViewPager.OnP
                 tvDesc.setText(activityDetail.description);
                 ImageLoadUtil.loadImage(context, activityDetail.pic, ivCover,
                         DensityUtil.dip2px(context, 135), DensityUtil.dip2px(context, 86));
-            }catch(Exception e){
+            } catch (Exception e) {
 
             }
         }
@@ -228,7 +228,7 @@ public class MatchActivity extends BasePlayMenuActivity implements ViewPager.OnP
 
     @Override
     public void showJoinData(List<JoinUserBean> list) {
-        if(joinUserBeanList.size()>0)joinUserBeanList.clear();
+        if (joinUserBeanList.size() > 0) joinUserBeanList.clear();
         if (joinUserBeanList.size() <= 8) {
             joinUserBeanList.addAll(list);
         } else {
@@ -282,70 +282,76 @@ public class MatchActivity extends BasePlayMenuActivity implements ViewPager.OnP
                 if (!SystemUtils.isLogin(context)) {
                     return;
                 }
-                if (actionBeans == null) {
-                    actionBeans = new ArrayList<>();
-                    actionBeans.add(new ActionBean("去创作", "create"));
-                    actionBeans.add(new ActionBean("去投稿", "submit"));
-                }
-                if (actionMoreDialog == null) {
-                    actionMoreDialog = new ActionMoreDialog(context, new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            String itemtType = actionBeans.get(position).getType();
-                            actionMoreDialog.dismiss();
-                            if(isJoin==1){
-                                new MaterialDialog.Builder(context)
-                                        .title(getString(R.string.dialog_title))
-                                        .content("你已经参加过本次活动，再次提交会覆盖原来的作品，请确认是否继续操作？")
-                                        .positiveText("继续")
-//                                        .positiveColor(getResources().getColor(R.color.lightblue))
-                                        .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                            @Override
-                                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                                toNext(itemtType);
-                                            }
-                                        }).negativeText("返回")
-                                        .onNegative(new MaterialDialog.SingleButtonCallback() {
-                                            @Override
-                                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                if (isJoin == 1) {
+                    new MaterialDialog.Builder(context)
+                            .title(getString(R.string.dialog_title))
+                            .content("你已经参加过本次活动，再次提交会覆盖原来的作品，请确认是否继续操作？")
+                            .positiveText("继续")
+                            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                    attendMatch();
+                                }
+                            }).negativeText("返回")
+                            .onNegative(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
 
-                                            }
-                                        }).show();
-                            }else{
-                                toNext(itemtType);
-                            }
-
-                        }
-                    }, actionBeans);
+                                }
+                            }).show();
+                } else {
+                    attendMatch();
                 }
-                actionMoreDialog.showDialog();
                 break;
         }
     }
-    public void toNext(String itemtType){
+
+    public void attendMatch() {
+        if (actionBeans == null) {
+            actionBeans = new ArrayList<>();
+            actionBeans.add(new ActionBean("去创作", "create"));
+            actionBeans.add(new ActionBean("去投稿", "submit"));
+        }
+        if (actionMoreDialog == null) {
+            actionMoreDialog = new ActionMoreDialog(context, new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    actionMoreDialog.dismiss();
+                    toNext(position);
+
+                }
+            }, actionBeans);
+        }
+        actionMoreDialog.showDialog();
+    }
+
+    public void toNext(int position) {
+        String itemtType = actionBeans.get(position).getType();
         if (itemtType.equals("create")) {
-            if(type==0){
-                HotCatalogActivity.toHotCatalogActivity(context,false);
-            }else{
-                MakeWordActivity.toMakeWordActivity(context,new WorksData());
+            if (type == 0) {
+                HotCatalogActivity.toHotCatalogActivity(context, aid);
+            } else {
+                MakeWordActivity.toMakeWordActivity(context, new WorksData(), aid);
             }
         } else if (itemtType.equals("submit")) {
             MyWorkActivity.toMyWorkActivity(context, aid, type);
         }
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(Event.UpdataCommentListEvent event) {
-        if(isDestroy)return;
-        if(fragmentList!=null&&fragmentList.size()==2){
+        if (isDestroy) return;
+        if (fragmentList != null && fragmentList.size() == 2) {
             fragmentList.get(vpScroll.getCurrentItem()).updateCommentItem(event.getCommentList());
         }
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(Event.AttendMatchSuccessEvent event) {
-        if(isDestroy)return;
+        if (isDestroy) return;
         matchPresenter.getMatchInfo(aid);//更新head信息
-        matchPresenter.getUserList(aid,1);//更新head信息.
-        if(fragmentList.size()>0&&fragmentList.get(0)!=null){
+        matchPresenter.getUserList(aid, 1);//更新head信息.
+        if (fragmentList.size() > 0 && fragmentList.get(0) != null) {
             fragmentList.get(0).updateData();
         }
     }

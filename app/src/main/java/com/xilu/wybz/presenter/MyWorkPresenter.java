@@ -50,7 +50,7 @@ public class MyWorkPresenter extends BasePresenter<IMyWorkView> {
             }
         });
     }
-    public void attend(String aid,int workid) {
+    public void attend(String aid, int workid) {
         params = new HashMap<>();
         params.put("userid", PrefsUtil.getUserId(context) + "");
         params.put("activityid", aid + "");
