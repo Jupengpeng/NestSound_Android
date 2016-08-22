@@ -19,6 +19,7 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.qiniu.android.storage.UploadManager;
 import com.umeng.message.PushAgent;
 import com.umeng.socialize.PlatformConfig;
+import com.xilu.wybz.common.FileDir;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.service.MainService;
@@ -63,11 +64,7 @@ public class MyApplication extends Application implements ServiceConnection {
         super.onCreate();
         context = this;
         posMap = new HashMap<>();
-        File webviewCacheDir = new File(getCacheDir().getAbsolutePath()+"/webviewCache");
-        //删除webview 缓存目录
-        if(webviewCacheDir.exists()){
-            FileUtils.delFile(webviewCacheDir);
-        }
+        FileUtils.delFiles(context.getCacheDir());
         //清理Webview缓存数据库
         try {
             deleteDatabase("webview.db");

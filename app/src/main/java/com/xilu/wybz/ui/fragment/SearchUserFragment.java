@@ -155,7 +155,7 @@ public class SearchUserFragment extends BaseListFragment<FansBean> implements IS
         @Override
         public void onItemClick(View view, int position) {
             if (mDataList.get(position).uid>0&&mDataList.get(position).uid!= PrefsUtil.getUserId(context)) {
-                UserInfoActivity.ToNewUserInfoActivity(context,mDataList.get(position).uid,mDataList.get(position).fansname);
+                UserInfoActivity.toUserInfoActivity(context,mDataList.get(position).uid,mDataList.get(position).fansname);
             }
         }
     }

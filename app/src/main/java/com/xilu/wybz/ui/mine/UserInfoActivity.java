@@ -105,7 +105,7 @@ public class UserInfoActivity extends BaseActivity implements IOnlyFollowView {
     protected int getLayoutRes() {
         return R.layout.activity_new_mine;
     }
-    public static void ToNewUserInfoActivity(Context context, int userId, String userName) {
+    public static void toUserInfoActivity(Context context, int userId, String userName) {
         Intent intent = new Intent(context, UserInfoActivity.class);
         intent.putExtra("userId", userId);
         intent.putExtra("userName", userName);

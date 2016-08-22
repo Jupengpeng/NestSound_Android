@@ -142,7 +142,7 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
             case R.id.tv_author:
             case R.id.rl_head:
                 if (worksData.uid > 0 && worksData.uid != PrefsUtil.getUserId(context)) {
-                    UserInfoActivity.ToNewUserInfoActivity(context, worksData.uid, worksData.author);
+                    UserInfoActivity.toUserInfoActivity(context, worksData.uid, worksData.author);
                 }
                 break;
         }
@@ -306,7 +306,7 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
         worksData.fovnum = worksData.fovnum + (worksData.iscollect == 1 ? 1 : -1);
         updateZanFavNum();
         EventBus.getDefault().post(new Event.UpdateWorkNum(worksData, 1));
-        EventBus.getDefault().post(new Event.UpdataWorksList(worksData, 3, 1 - worksData.iscollect));
+        EventBus.getDefault().post(new Event.UpdataWorksList(worksData, 2, 1 - worksData.iscollect));
         ivFav.startAnimation(AnimationUtils.loadAnimation(context, R.anim.dianzan_anim));
         ivFav.setImageResource(worksData.iscollect == 0 ? R.drawable.ic_lyrics_fav1 : R.drawable.ic_lyrics_fav2);
     }
@@ -380,7 +380,7 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
     }
 
     public void toCommentActivity() {
-        CommentActivity.ToCommentActivity(context, worksData.itemid,2,false);
+        CommentActivity.toCommentActivity(context, worksData.itemid,2,false);
     }
 
 }

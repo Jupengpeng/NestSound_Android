@@ -50,9 +50,6 @@
             android:textColor="@color/main_text_color2"
             />
 
-
-
-
     </RelativeLayout>
 
     <TextView

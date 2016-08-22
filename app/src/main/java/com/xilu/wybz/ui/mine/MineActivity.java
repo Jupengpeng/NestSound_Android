@@ -265,26 +265,51 @@ public class MineActivity extends BaseActivity {
         mFollowNum.setText(NumberUtil.format(userInfoBean.gznum));
     }
 
-    //更新点赞数
-//    @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.UpdateWorkNum event){
-//        (pagerAdapter.getFragment(1)).updateNum(event.getWorksData(),event.getType());
-//    }
     //灵感记录 歌曲  歌词 发布成功 更新列表数据
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(Event.UpdataWorksList event) {
         int type = event.getType();
-        if (event.getChange() == 0)
+        if (event.getChange() == 0) {
             (pagerAdapter.getFragment(type)).updateList();
-        else if (event.getChange() == 1)
+        }else if (event.getChange() == 1) {
             (pagerAdapter.getFragment(type)).removeData(event.getWorksData());
-        else if (event.getChange() == 2)
+            updateNums(type,-1);
+        }else if (event.getChange() == 2) {
             (pagerAdapter.getFragment(type)).updateData(event.getWorksData());
+        }
     }
-
+    //灵感记录 歌曲  歌词 发布成功 更新列表数据
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(Event.UpdateWorksNum event) {
+        if(userInfoBean==null)return;
+        int type = event.getType();
+        int count = event.getCount();
+        updateNums(type,count);
+    }
+    public void updateNums(int type,int count){
+        switch (type){
+            case 1:
+                userInfoBean.worknum = userInfoBean.worknum+count;
+                tvSongNum.setText(NumberUtil.format(userInfoBean.worknum));
+                break;
+            case 2:
+                userInfoBean.lyricsnum = userInfoBean.lyricsnum+count;
+                tvLyricsNum.setText(NumberUtil.format(userInfoBean.lyricsnum));
+                break;
+            case 3:
+                userInfoBean.fovnum = userInfoBean.fovnum+count;
+                tvFovNum.setText(NumberUtil.format(userInfoBean.fovnum));
+                break;
+            case 4:
+                userInfoBean.inspirenum = userInfoBean.inspirenum+count;
+                tvRecordNum.setText(NumberUtil.format(userInfoBean.inspirenum));
+                break;
+        }
+    }
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(Event.RemoveMySongEvent event) {
         int itemid = event.getItemid();
-        (pagerAdapter.getFragment(1)).removeByItemid(itemid);
+        (pagerAdapter.getFragment(0)).removeByItemid(itemid);
     }
 
     @OnClick({R.id.user_fansnum, R.id.user_follownum, R.id.ll_myrecord, R.id.ll_mysong, R.id.ll_mylyrics, R.id.ll_myfav})

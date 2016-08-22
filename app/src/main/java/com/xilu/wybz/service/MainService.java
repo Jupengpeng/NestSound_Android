@@ -64,8 +64,9 @@ public class MainService extends Service implements IMusicDetailView, AudioManag
     boolean isPlay = true;
     private int playType;// 1单曲 2列表
     private int playModel;//循环模式
-//    private List<Integer> playIds;
+    //    private List<Integer> playIds;
     public static int status = 1;//1未播放 2 暂停 3 播放
+
     public int getCurrentPos() {
         if (ids == null) return currentPos;
         for (int i = 0; i < ids.size(); i++) {
@@ -106,6 +107,7 @@ public class MainService extends Service implements IMusicDetailView, AudioManag
             return mService;
         }
     }
+
     public int getCurrentPosition() {
         if (mPlayer != null) {
             return mPlayer.getCurrentPosition();
@@ -119,15 +121,18 @@ public class MainService extends Service implements IMusicDetailView, AudioManag
         }
         return 0;
     }
+
     public void setCurrentPosition(int position) {
         playProgress = position;
-        if (mPlayer != null&&status!=1) {
+        if (mPlayer != null && status != 1) {
             mPlayer.seekTo(position);
         }
     }
+
     public boolean isPlaying() {
-        return mCurrentState==MyCommon.STARTED||mCurrentState==MyCommon.PLAYED;
+        return mCurrentState == MyCommon.STARTED || mCurrentState == MyCommon.PLAYED;
     }
+
     @Override
     public IBinder onBind(Intent intent) {
         return new ServiceBinder(this);
@@ -164,6 +169,7 @@ public class MainService extends Service implements IMusicDetailView, AudioManag
         loadMusicDetailPresenter = new LoadMusicDetailPresenter(this, this);
         loadMusicDetailPresenter.init();
     }
+
     @Override
     public void initView() {
         ids = new ArrayList<>();
@@ -172,9 +178,10 @@ public class MainService extends Service implements IMusicDetailView, AudioManag
         initCallListener();
         initHeadSetListener();
     }
+
     @Override
     public void showMusicDetail(WorksData worksData) {
-        if(StringUtils.isNotBlank(worksData.playurl)){
+        if (StringUtils.isNotBlank(worksData.playurl)) {
             mCurrentAudio = worksData;
             EventBus.getDefault().post(new Event.MusicDataEvent());
             PrefsUtil.saveMusicData(MainService.this, worksData);
@@ -183,8 +190,8 @@ public class MainService extends Service implements IMusicDetailView, AudioManag
             changeState(MyCommon.SUCCESSED);
             doStop();
             start();
-        }else{
-            ToastUtils.toast(MainService.this,"播放地址不存在！");
+        } else {
+            ToastUtils.toast(MainService.this, "播放地址不存在！");
             changeState(MyCommon.FAILED);
         }
     }
@@ -246,12 +253,12 @@ public class MainService extends Service implements IMusicDetailView, AudioManag
     }
 
     //播放伴奏或者本地的音频文件 playUrl可以是网络或者本地的路径
-    public void playOneMusic(String playUrl,String from) {
-        if(StringUtils.isBlank(playUrl))return;
+    public void playOneMusic(String playUrl, String from) {
+        if (StringUtils.isBlank(playUrl)) return;
         isPlay = true;
         playType = 1;//单曲的标识
         playFrom = from;//单曲的标识
-        Log.e("playUrl",playUrl);
+        Log.e("playUrl", playUrl);
         playMusic(playUrl);
     }
 
@@ -268,13 +275,13 @@ public class MainService extends Service implements IMusicDetailView, AudioManag
             if (mCurrentState == MyCommon.IDLE) {
                 if (playUrl.startsWith("http")) {
                     String fileName = MD5Util.getMD5String(playUrl);
-                    if(playFrom.endsWith("_hot")){//伴奏
+                    if (playFrom.endsWith("_hot")) {//伴奏
                         if (new File(FileDir.hotDir).exists()) {
                             String filePath = FileDir.hotDir + fileName;
                             File file = new File(filePath);
                             if (file.exists()) playUrl = filePath;
                         }
-                    }else{
+                    } else {
                         if (new File(FileDir.songMp3Dir).exists()) {
                             String filePath = FileDir.songMp3Dir + fileName;
                             File file = new File(filePath);
@@ -299,17 +306,17 @@ public class MainService extends Service implements IMusicDetailView, AudioManag
 
     //开始播放歌曲
     public void start() {
-        if(mCurrentAudio==null){
-            playId = PrefsUtil.getInt(CurrentMusic.PLAY_ID,MainService.this);
+        if (mCurrentAudio == null) {
+            playId = PrefsUtil.getInt(CurrentMusic.PLAY_ID, MainService.this);
             mCurrentAudio = PrefsUtil.getMusicData(MainService.this, playId);
         }
-        if(mCurrentAudio!=null)
-        playMusic(mCurrentAudio.playurl);
+        if (mCurrentAudio != null)
+            playMusic(mCurrentAudio.playurl);
     }
 
     //播放
     public void doStart() {
-        if(mPlayer!=null) {
+        if (mPlayer != null) {
             mPlayer.start();
             mPlayer.seekTo(playProgress);
             changeState(MyCommon.STARTED);
@@ -318,7 +325,7 @@ public class MainService extends Service implements IMusicDetailView, AudioManag
 
     //播放
     public void doPlay() {
-        if(mPlayer!=null) {
+        if (mPlayer != null) {
             mPlayer.start();
             changeState(MyCommon.PLAYED);
         }
@@ -326,7 +333,7 @@ public class MainService extends Service implements IMusicDetailView, AudioManag
 
     //暂停
     public void doPause() {
-        if(mPlayer!=null) {
+        if (mPlayer != null) {
             mPlayer.pause();
             changeState(MyCommon.PAUSED);
         }
@@ -334,7 +341,7 @@ public class MainService extends Service implements IMusicDetailView, AudioManag
 
     //停止
     public void doStop() {
-        if(mPlayer!=null) {
+        if (mPlayer != null) {
             mPlayer.stop();
             changeState(MyCommon.STOPPED);
         }
@@ -343,17 +350,17 @@ public class MainService extends Service implements IMusicDetailView, AudioManag
     //播放暂停
     public void doPP(boolean isPlay) {
         this.isPlay = isPlay;
-        if (status==3) {
+        if (status == 3) {
             doPause();
-        } else if (status==2) {
+        } else if (status == 2) {
             doPlay();
-        } else if(status==1){
-            if(mCurrentState!=MyCommon.PREPARING){
-                if(mCurrentState==MyCommon.PREPARED){
-                    if(isPlay){
+        } else if (status == 1) {
+            if (mCurrentState != MyCommon.PREPARING) {
+                if (mCurrentState == MyCommon.PREPARED) {
+                    if (isPlay) {
                         doStart();
                     }
-                }else{
+                } else {
                     start();
                 }
             }
@@ -381,14 +388,22 @@ public class MainService extends Service implements IMusicDetailView, AudioManag
     //改变播放状态
     public void changeState(int state) {
         mCurrentState = state;
-        if(state==MyCommon.STARTED||state==MyCommon.PLAYED) {
+        if (state == MyCommon.STARTED || state == MyCommon.PLAYED) {
             status = 3;
-        }else if(state==MyCommon.PAUSED){
+        } else if (state == MyCommon.PAUSED) {
             status = 2;
-        }else{
+        } else {
             status = 1;
         }
-        EventBus.getDefault().post(new Event.PPStatusEvent(state,playFrom));
+        if (state != 0 && state != 1 && state != 2 && state != 3 && state != 9)
+            if (state == MyCommon.STOPPED || state == MyCommon.COMPLETED
+                    || state == MyCommon.FAILED
+                    || state == MyCommon.ERROR) {
+                EventBus.getDefault().post(new Event.PPStatusEvent(MyCommon.STOPPED, playFrom));
+            } else {
+                EventBus.getDefault().post(new Event.PPStatusEvent(state, playFrom));
+            }
+
         if (state == MyCommon.PAUSED || state == MyCommon.STOPPED || state == MyCommon.COMPLETED
                 || state == MyCommon.ERROR || state == MyCommon.IDLE || state == MyCommon.PREPARED) {
             stopNoisyListner();
@@ -456,7 +471,7 @@ public class MainService extends Service implements IMusicDetailView, AudioManag
     @Override
     public void onPrepared(MediaPlayer mp) {
         changeState(MyCommon.PREPARED);
-        if(isPlay) {
+        if (isPlay) {
             doStart();
         }
     }

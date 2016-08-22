@@ -37,6 +37,7 @@ import com.xilu.wybz.utils.KeyBoardUtil;
 import com.xilu.wybz.utils.NetWorkUtil;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringStyleUtil;
+import com.xilu.wybz.utils.StringUtils;
 import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.utils.ToastUtils;
 import com.xilu.wybz.view.CircleImageView;
@@ -64,7 +65,7 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
     private String targetName;
     private String content;
     private boolean isOpen;
-
+    CommentBean commentBean;
     String[] actionTitles = new String[]{"删除"};
     String[] actionTypes = new String[]{"del"};
     List<ActionBean> actionBeanList;
@@ -72,11 +73,20 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
     int workid;
     int type;
 
-    public static void ToCommentActivity(Context context, int workid, int type, boolean isOpen) {
+    public static void toCommentActivity(Context context, int workid, int type, boolean isOpen) {
         Intent intent = new Intent(context, CommentActivity.class);
         intent.putExtra(KeySet.KEY_ID, workid);
         intent.putExtra(KeySet.KEY_TYPE, type);
         intent.putExtra(KeySet.KEY_OPEN, isOpen);
+        context.startActivity(intent);
+    }
+
+    public static void toCommentActivity(Context context, int workid, int type, CommentBean commentBean) {
+        Intent intent = new Intent(context, CommentActivity.class);
+        intent.putExtra(KeySet.KEY_ID, workid);
+        intent.putExtra(KeySet.KEY_TYPE, type);
+        intent.putExtra(KeySet.KEY_OPEN, true);
+        intent.putExtra(KeySet.COMMENT, commentBean);
         context.startActivity(intent);
     }
 
@@ -112,13 +122,18 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
             workid = bundle.getInt(KeySet.KEY_ID);
             type = bundle.getInt(KeySet.KEY_TYPE);
             isOpen = bundle.getBoolean(KeySet.KEY_OPEN);
+            commentBean = (CommentBean) bundle.getSerializable(KeySet.COMMENT);
         }
         if (isOpen) {
             //打开软键盘
-            KeyBoardUtil.openAndCloseKeybord(context);
-            // 获取编辑框焦点
-            etContent.setFocusable(true);
+            if (commentBean != null) {
+                targetUid = commentBean.uid;
+                targetName = commentBean.nickname;
+                commentType = 2;//回复别人
+                etContent.setHint("回复" + commentBean.nickname);
+            }
             etContent.requestFocus();
+            KeyBoardUtil.showSoftInput(context, etContent);
         }
         actionBeanList = new ArrayList<>();
         for (int i = 0; i < actionTitles.length; i++) {
@@ -261,7 +276,7 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
         targetUid = 0;
         commentType = 1;
         etContent.setText("");
-//        KeyBoardUtil.openAndCloseKeybord(context);
+        KeyBoardUtil.hideSoftInput(this, etContent);
     }
 
     @Override
@@ -323,13 +338,15 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
         @Override
         public void onBindViewHolder(int position) {
             CommentBean bean = mDataList.get(position);
-            loadHeadImage(bean.headerurl.replace(MyCommon.defult_head, ""), ivHead);
-            tvName.setText(bean.nickname);
-            tvDate.setText(DateTimeUtil.timestamp2DateTime(bean.createdate));
+            if (StringUtils.isNotBlank(bean.headerurl))
+                loadHeadImage(bean.headerurl.replace(MyCommon.defult_head, ""), ivHead);
+            if (StringUtils.isNotBlank(bean.nickname))
+                tvName.setText(bean.nickname);
+            if (bean.createdate > 0)
+                tvDate.setText(DateTimeUtil.timestamp2DateTime(bean.createdate));
             SpannableString s = StringStyleUtil.getWorkCommentStyleStr(context, bean);
             tvContent.setText(s);
             tvContent.setMovementMethod(LinkMovementMethod.getInstance());
-//            itemView.setOnClickListener(null);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -340,7 +357,7 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
                 @Override
                 public void onClick(View v) {
                     if (bean.getUid() != PrefsUtil.getUserId(context))
-                        UserInfoActivity.ToNewUserInfoActivity(context, bean.getUid(), bean.getNickname());
+                        UserInfoActivity.toUserInfoActivity(context, bean.getUid(), bean.getNickname());
                 }
             });
         }
@@ -368,7 +385,7 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
                     commentType = 2;//回复别人
                     etContent.setHint("回复" + commentBean.nickname);
                     etContent.requestFocus();
-                    KeyBoardUtil.openKeybord(etContent, context);
+                    KeyBoardUtil.showSoftInput(context, etContent);
                 }
             } else {
                 ToastUtils.logingTip(context, "请登录后再进行回复！");

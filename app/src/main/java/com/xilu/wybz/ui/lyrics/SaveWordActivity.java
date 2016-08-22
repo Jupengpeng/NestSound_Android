@@ -237,6 +237,7 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView {
     public void saveWordSuccess(String result) {
         if(isDestroy)return;
         cancelPd();
+        EventBus.getDefault().post(new Event.UpdataWorksList(worksData, 1, worksData.itemid == 0 ? 0 : 2));
         if (worksData.itemid == 0&&StringUtils.isBlank(aid)) {//aid 存在 服务端不返回这两个值
             try {
                 String shareurl = new JSONObject(result).getString("shareurl");
@@ -249,9 +250,9 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView {
         }
         worksData.createdate = System.currentTimeMillis();
         //新增或者更新
-        if(StringUtils.isNotBlank(aid))
+        if(StringUtils.isNotBlank(aid)) {
             EventBus.getDefault().post(new Event.AttendMatchSuccessEvent());
-        EventBus.getDefault().post(new Event.UpdataWorksList(worksData, 2, worksData.itemid == 0 ? 0 : 2));
+        }
         PrefsUtil.putString(KeySet.LOCAL_LYRICS, "", context);
         EventBus.getDefault().post(new Event.SaveLyricsSuccessEvent(1, worksData));//新建歌词页面
         EventBus.getDefault().post(new Event.SaveLyricsSuccessEvent(2, worksData));//歌词展示页面

@@ -157,7 +157,7 @@ public class JoinUserListActivity extends BaseListActivity<JoinUserBean> impleme
         @Override
         public void onItemClick(View view, int position) {
             if (PrefsUtil.getUserId(context) != mDataList.get(position).id) {
-                UserInfoActivity.ToNewUserInfoActivity(context, mDataList.get(position).id,
+                UserInfoActivity.toUserInfoActivity(context, mDataList.get(position).id,
                         mDataList.get(position).nickname);
             }
         }

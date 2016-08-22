@@ -48,15 +48,18 @@ public class SearchWorksActivity extends ToolbarActivity {
     boolean isShowTab;
     String keyWord;
     SearchAdapter pagerAdapter;
+
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_search;
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initView();
     }
+
     public void initView() {
         EventBus.getDefault().register(this);
         pagerAdapter = new SearchAdapter(getSupportFragmentManager());
@@ -70,34 +73,35 @@ public class SearchWorksActivity extends ToolbarActivity {
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
             }
+
             @Override
             public void onPageSelected(int position) {
-                if(TextUtils.isEmpty(keyWord))return;
+                if (TextUtils.isEmpty(keyWord)) return;
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        switch (position){
+                        switch (position) {
                             case 0:
                                 SearchSongFragment searchSongFragment = (SearchSongFragment) pagerAdapter.getFragment(0);
-                                if(searchSongFragment!=null){
+                                if (searchSongFragment != null) {
                                     searchSongFragment.loadData(keyWord);
                                 }
                                 break;
                             case 1:
                                 SearchLyricsFragment searchLyricsFragment = (SearchLyricsFragment) pagerAdapter.getFragment(1);
-                                if(searchLyricsFragment!=null){
+                                if (searchLyricsFragment != null) {
                                     searchLyricsFragment.loadData(keyWord);
                                 }
                                 break;
                             case 2:
                                 SearchUserFragment searchUserFragment = (SearchUserFragment) pagerAdapter.getFragment(2);
-                                if(searchUserFragment!=null){
+                                if (searchUserFragment != null) {
                                     searchUserFragment.loadData(keyWord);
                                 }
                                 break;
                         }
                     }
-                },100);
+                }, 100);
             }
 
             @Override
@@ -119,12 +123,12 @@ public class SearchWorksActivity extends ToolbarActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 keyWord = s.toString().trim();
-                if(keyWord.equals("")){
+                if (keyWord.equals("")) {
                     clearContent();
                     etKeyword.requestFocus();
-                    KeyBoardUtil.openKeybord(etKeyword,context);
+                    KeyBoardUtil.showSoftInput(context, etKeyword);
                     ivCancle.setVisibility(View.GONE);
-                }else{
+                } else {
                     ivCancle.setVisibility(View.VISIBLE);
                 }
             }
@@ -132,20 +136,20 @@ public class SearchWorksActivity extends ToolbarActivity {
         etKeyword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if(actionId== EditorInfo.IME_ACTION_SEARCH){
-                    if(!TextUtils.isEmpty(keyWord)){
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    if (!TextUtils.isEmpty(keyWord)) {
                         clearContent();
-                        if(container.getCurrentItem()==0) {
+                        if (container.getCurrentItem() == 0) {
                             SearchSongFragment searchSongFragment = (SearchSongFragment) pagerAdapter.getFragment(0);
                             if (searchSongFragment != null) {
                                 searchSongFragment.loadData(keyWord);
                             }
-                        }else if(container.getCurrentItem()==1){
+                        } else if (container.getCurrentItem() == 1) {
                             SearchLyricsFragment searchLyricsFragment = (SearchLyricsFragment) pagerAdapter.getFragment(1);
                             if (searchLyricsFragment != null) {
                                 searchLyricsFragment.loadData(keyWord);
                             }
-                        }else if(container.getCurrentItem()==2) {
+                        } else if (container.getCurrentItem() == 2) {
                             SearchUserFragment searchUserFragment = (SearchUserFragment) pagerAdapter.getFragment(2);
                             if (searchUserFragment != null) {
                                 searchUserFragment.loadData(keyWord);
@@ -159,13 +163,14 @@ public class SearchWorksActivity extends ToolbarActivity {
         });
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.ShowSearchTabEvent event) {
-        if(!isShowTab) {
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(Event.ShowSearchTabEvent event) {
+        if (!isShowTab) {
             rlTab.setVisibility(View.VISIBLE);
             isShowTab = true;
         }
-        if(event.isHasData())
-        KeyBoardUtil.closeKeybord(etKeyword,context);
+        if (event.isHasData())
+            KeyBoardUtil.hideSoftInput(context, etKeyword);
     }
 
     @Override
@@ -176,9 +181,9 @@ public class SearchWorksActivity extends ToolbarActivity {
 
     @OnClick({R.id.rl_right, R.id.iv_cancle})
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.rl_right:
-                KeyBoardUtil.closeKeybord(etKeyword,context);
+                KeyBoardUtil.hideSoftInput(context, etKeyword);
                 finish();
                 break;
             case R.id.iv_cancle:
@@ -186,17 +191,18 @@ public class SearchWorksActivity extends ToolbarActivity {
                 break;
         }
     }
-    public void clearContent(){
+
+    public void clearContent() {
         SearchSongFragment searchSongFragment = (SearchSongFragment) pagerAdapter.getFragment(0);
-        if(searchSongFragment!=null){
+        if (searchSongFragment != null) {
             searchSongFragment.clearData();
         }
         SearchLyricsFragment searchLyricsFragment = (SearchLyricsFragment) pagerAdapter.getFragment(1);
-        if(searchLyricsFragment!=null){
+        if (searchLyricsFragment != null) {
             searchLyricsFragment.clearData();
         }
         SearchUserFragment searchUserFragment = (SearchUserFragment) pagerAdapter.getFragment(2);
-        if(searchUserFragment!=null){
+        if (searchUserFragment != null) {
             searchUserFragment.clearData();
         }
     }

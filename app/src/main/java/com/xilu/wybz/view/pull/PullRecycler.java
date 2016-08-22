@@ -53,7 +53,7 @@ public class PullRecycler extends FrameLayout implements SwipeRefreshLayout.OnRe
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mRecyclerView = (RecyclerView) findViewById(R.id.id_stickynavlayout_innerscrollview);
-        mRecyclerView.setItemAnimator(new NoAlphaItemAnimator());
+//        mRecyclerView.setItemAnimator(new NoAlphaItemAnimator());
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {

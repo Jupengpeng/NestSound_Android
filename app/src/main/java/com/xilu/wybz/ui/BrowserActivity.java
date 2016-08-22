@@ -10,6 +10,8 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
@@ -23,6 +25,7 @@ import android.widget.ProgressBar;
 
 import com.xilu.wybz.R;
 import com.xilu.wybz.common.Event;
+import com.xilu.wybz.common.FileDir;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.ui.login.LoginActivity;
 import com.xilu.wybz.ui.market.MatchActivity;
@@ -35,6 +38,7 @@ import com.xilu.wybz.utils.StringUtils;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -94,14 +98,8 @@ public class BrowserActivity extends ToolbarActivity {
         webSettings.setJavaScriptEnabled(true);// 设置支持JS脚本
         webSettings.setDisplayZoomControls(false);// 隐藏缩放按钮
         webSettings.setAllowFileAccess(true); // 设置允许访问文件数据
-
-        webSettings.setRenderPriority(WebSettings.RenderPriority.HIGH);
-        webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
-        webSettings.setDomStorageEnabled(true);
-        webSettings.setDatabaseEnabled(true);
-        String cacheDir = getFilesDir().getAbsolutePath()+"webviewCache";
-        webSettings.setDatabasePath(cacheDir);
-
+        webSettings.setCacheMode(WebSettings.LOAD_DEFAULT);//设置 缓存模式
+        webSettings.setDomStorageEnabled(true);// 开启 DOM storage API 功能
         mWebView.setDownloadListener(new MyWebViewDownLoadListener());
         mWebView.setWebChromeClient(new MyWebViewChromeClient()); // 处理解析，渲染网页等浏览器做的事情
         mWebView.setWebViewClient(new WebViewClient() {
@@ -342,6 +340,31 @@ public class BrowserActivity extends ToolbarActivity {
             startActivity(intent);
         }
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_close, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                if (mWebView.canGoBack()) {
+                    mWebView.goBack();
+                } else {
+                    finish();
+                }
+                return true;
+
+            case R.id.menu_close:
+                finish();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

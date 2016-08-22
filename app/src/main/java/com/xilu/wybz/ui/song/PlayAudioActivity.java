@@ -243,8 +243,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
             from = bundle.getString("from", "");
             gedanid = bundle.getString("gedanid", "");
             int playId = PrefsUtil.getInt("playId", context);
-            String playFrom = PrefsUtil.getString("playFrom", context);
-            isCurrentMusic = (id == playId) && from.equals(playFrom);
+            isCurrentMusic = (id == playId);
         }
         actionBeanList = new ArrayList<>();
         viewPager.setAdapter(new PlayPagerAdapter(viewList));
@@ -266,13 +265,13 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
                 }
             }else{
                 //停止或者尚未播放
-                isPlay = false;
-                if(worksData!=null) {
-                    if(MyApplication.getInstance().getMainService().mCurrentState==MyCommon.IDLE)
-                    MyApplication.getInstance().getMainService().playOneMusic(worksData.playurl,from);
-                }
+                ivPlay.setImageResource(R.drawable.ic_play_pause);
+                isPlay = true;
+                MyApplication.getInstance().getMainService().loadData(id, from, gedanid);
             }
         } else {//开启服务
+            ivPlay.setImageResource(R.drawable.ic_play_pause);
+            isPlay = true;
             MyApplication.getInstance().getMainService().loadData(id, from, gedanid);
         }
     }
@@ -516,7 +515,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     @Override
     public void toUserInfo() {
         if (worksData.uid > 0) {
-            UserInfoActivity.ToNewUserInfoActivity(context, worksData.uid, worksData.author);
+            UserInfoActivity.toUserInfoActivity(context, worksData.uid, worksData.author);
         }
     }
 
@@ -533,7 +532,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
 
     @Override
     public void toCommentActivity() {
-        CommentActivity.ToCommentActivity(context, worksData.itemid,1,false);
+        CommentActivity.toCommentActivity(context, worksData.itemid,1,false);
     }
 
     @Override
@@ -549,8 +548,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
         worksData.iscollect = 1 - worksData.iscollect;
         if (worksData.iscollect == 1) showMsg("收藏成功！");
         worksData.fovnum = worksData.fovnum + (worksData.iscollect == 1 ? 1 : -1);
-        EventBus.getDefault().post(new Event.UpdateWorkNum(worksData, 1));
-        EventBus.getDefault().post(new Event.UpdataWorksList(worksData, 3, 1 - worksData.iscollect));
+        EventBus.getDefault().post(new Event.UpdataWorksList(worksData, 2, 1 - worksData.iscollect));
         tvFav.setChecked(worksData.iscollect == 1);
         tvFav.startAnimation(AnimationUtils.loadAnimation(context, R.anim.dianzan_anim));
         updateFavNum();
@@ -654,12 +652,13 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
         if(event.getFrom().equals(from)) {
             switch (event.getStatus()) {
                 case MyCommon.STARTED://开始
-                    if (MyApplication.getInstance().getMainService() == null) {
-                        return;
-                    }
-                    playSeekBar.setMax(MyApplication.getInstance().getMainService().getDuration());
-                    tvAlltime.setText(FormatHelper.formatDuration(MyApplication.getInstance().getMainService().getDuration() / 1000));
+                    ivPlay.setImageResource(R.drawable.ic_play_pause);
                     startTimer();
+                    if (MyApplication.getInstance().getMainService() != null) {
+                        playSeekBar.setMax(MyApplication.getInstance().getMainService().getDuration());
+                        tvAlltime.setText(FormatHelper.formatDuration(((MyApplication.getInstance().getMainService().getDuration()) / 1000)));
+                    }
+
                     break;
                 case MyCommon.PLAYED://播放
                     startTimer();
@@ -668,19 +667,22 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
                     closeTimer();
                     break;
                 case MyCommon.STOPPED://停止doPP
-                case MyCommon.COMPLETED://完成
-                case MyCommon.END://释放
-                case MyCommon.ERROR://出错
-                case MyCommon.FAILED://获取数据失败
                     closeTimer();
-                    ivPlay.setImageResource(R.drawable.ic_play_pause);
+//                    ivPlay.setImageResource(R.drawable.ic_play_play);
                     isPlay = true;
+                    playSeekBar.setProgress(0);
+                    tvTime.setText("00:00");
+                    break;
+                case MyCommon.END:
+                    closeTimer();
+                    ivPlay.setImageResource(R.drawable.ic_play_play);
                     playSeekBar.setProgress(0);
                     tvTime.setText("00:00");
                     break;
             }
         }
     }
+
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(Event.MusicDataEvent event) {
@@ -692,7 +694,6 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
         worksData.status = 1;
         adapterData();
     }
-
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
