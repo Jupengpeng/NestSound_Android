@@ -12,11 +12,15 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.StarBean;
+import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.StarPresenter;
 import com.xilu.wybz.ui.IView.IStarView;
 import com.xilu.wybz.ui.base.BaseListActivity;
+import com.xilu.wybz.utils.DensityUtil;
+import com.xilu.wybz.utils.ImageLoadUtil;
 import com.xilu.wybz.utils.StringUtils;
 import com.xilu.wybz.view.pull.BaseViewHolder;
+import com.xilu.wybz.view.pull.PullRecycler;
 
 import java.util.List;
 
@@ -51,6 +55,7 @@ public class StarListActivity extends BaseListActivity<StarBean> implements ISta
     public void initView() {
         setTitle("明星音乐人");
         hideRight();
+        recycler.enablePullToRefresh(false);
     }
 
     @Override
@@ -66,6 +71,9 @@ public class StarListActivity extends BaseListActivity<StarBean> implements ISta
 
     @Override
     public void showData(List<StarBean> startBeanList) {
+        if(action== PullRecycler.ACTION_PULL_TO_REFRESH&&mDataList!=null){
+            mDataList.clear();
+        }
         recycler.onRefreshCompleted();
         recycler.enableLoadMore(true);
         mDataList.addAll(startBeanList);
@@ -117,7 +125,8 @@ public class StarListActivity extends BaseListActivity<StarBean> implements ISta
         public void onBindViewHolder(int position) {
             StarBean starBean = mDataList.get(position);
             if (StringUtils.isNotBlank(starBean.pic))
-                loadImage(starBean.pic, ivHead);
+                ImageLoadUtil.loadImage(MyCommon.getImageUrl(starBean.pic,
+                        DensityUtil.dip2px(context,50),DensityUtil.dip2px(context,50)), ivHead);
             if (StringUtils.isNotBlank(starBean.name))
                 tvName.setText(starBean.name);
             if (StringUtils.isNotBlank(starBean.ability)) {

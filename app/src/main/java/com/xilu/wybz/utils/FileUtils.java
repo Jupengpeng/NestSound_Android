@@ -294,7 +294,6 @@ public class FileUtils {
         }
 
     }
-
     public static boolean saveSqBmp(String savePath, Bitmap bitmap) {
         try {
             File picFile = new File(savePath);
@@ -388,6 +387,18 @@ public class FileUtils {
                 }
             }
             file.delete();
+        }
+    }
+    public static void delFiles(File file) {
+        if (file.exists()) {                    //判断文件是否存在
+            if (file.isFile()) {
+                file.delete();                       //delete()方法 你应该知道 是删除的意思;
+            } else if (file.isDirectory()) {
+                File files[] = file.listFiles(); //声明目录下所有的文件 files[];
+                for (int i = 0; i < files.length; i++) {         //遍历目录下所有的文件
+                    delFile(files[i].getAbsoluteFile());
+                }
+            }
         }
     }
     /**

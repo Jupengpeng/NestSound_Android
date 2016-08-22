@@ -77,11 +77,12 @@ public class MakeHotActivity extends ToolbarActivity {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(Event.PPStatusEvent event) {
+    public void onEventMainThread(Event.PPStatusEvent event) {
         String from = event.getFrom();
         if (StringUtils.isBlank(from)) return;
         if (from.equals(type + "_hot")) {
             switch (event.getStatus()) {
+                case MyCommon.END:
                 case MyCommon.STOPPED://停止
                     if (hotFragment != null) {
                         hotFragment.doStop();

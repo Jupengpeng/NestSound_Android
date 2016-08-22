@@ -235,7 +235,8 @@ public class MainTabActivity extends BaseActivity {
         MobclickAgent.onProfileSignIn(ub.userid+"");
         PushAgent.getInstance(context).setAlias(ub.userid+"", "yinchao");
     }
-    @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.LoginOutEvent event){
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(Event.LoginOutEvent event){
         if(viewpager.getCurrentItem()>1){
             viewpager.setCurrentItem(0);
             currentIndex = 0;
