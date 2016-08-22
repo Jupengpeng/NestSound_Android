@@ -31,7 +31,6 @@ import com.xilu.wybz.ui.login.LoginActivity;
 import com.xilu.wybz.ui.market.MatchActivity;
 import com.xilu.wybz.ui.market.StarInfoActivity;
 import com.xilu.wybz.ui.market.StarListActivity;
-import com.xilu.wybz.utils.PermissionUtils;
 import com.xilu.wybz.utils.PhoneUtils;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtils;
@@ -104,6 +103,20 @@ public class BrowserActivity extends ToolbarActivity {
         mWebView.setDownloadListener(new MyWebViewDownLoadListener());
         mWebView.setWebChromeClient(new MyWebViewChromeClient()); // 处理解析，渲染网页等浏览器做的事情
         mWebView.setWebViewClient(new WebViewClient() {
+
+
+            @Override
+            public void onLoadResource(WebView view, String url) {
+                super.onLoadResource(view, url);
+
+
+            }
+
+            @Override
+            public void onPageCommitVisible(WebView view, String url) {
+                super.onPageCommitVisible(view, url);
+            }
+
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 // 重写此方法表明点击网页里面的链接还是在当前的webview里跳转，不跳到浏览器那边
                 Log.e("WebView Url", url);
