@@ -821,10 +821,14 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
             if (intent.hasExtra("state")) {
                 if (intent.getIntExtra("state", 2) == 0) {
                     //拔出
-                    useheadset = false;
+                    if (status == 1){
+                        useheadset = false;
+                    }
                 } else if (intent.getIntExtra("state", 2) == 1) {
                     //插入
-//                    useheadset = true;
+                    if (status == 0){
+                        useheadset = true;
+                    }
                 }
             }
         }
