@@ -37,6 +37,7 @@ import com.xilu.wybz.utils.KeyBoardUtil;
 import com.xilu.wybz.utils.NetWorkUtil;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringStyleUtil;
+import com.xilu.wybz.utils.StringUtils;
 import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.utils.ToastUtils;
 import com.xilu.wybz.view.CircleImageView;
@@ -275,7 +276,7 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
         targetUid = 0;
         commentType = 1;
         etContent.setText("");
-        KeyBoardUtil.hideSoftInput(this,etContent);
+        KeyBoardUtil.hideSoftInput(this, etContent);
     }
 
     @Override
@@ -337,9 +338,12 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
         @Override
         public void onBindViewHolder(int position) {
             CommentBean bean = mDataList.get(position);
-            loadHeadImage(bean.headerurl.replace(MyCommon.defult_head, ""), ivHead);
-            tvName.setText(bean.nickname);
-            tvDate.setText(DateTimeUtil.timestamp2DateTime(bean.createdate));
+            if (StringUtils.isNotBlank(bean.headerurl))
+                loadHeadImage(bean.headerurl.replace(MyCommon.defult_head, ""), ivHead);
+            if (StringUtils.isNotBlank(bean.nickname))
+                tvName.setText(bean.nickname);
+            if (bean.createdate > 0)
+                tvDate.setText(DateTimeUtil.timestamp2DateTime(bean.createdate));
             SpannableString s = StringStyleUtil.getWorkCommentStyleStr(context, bean);
             tvContent.setText(s);
             tvContent.setMovementMethod(LinkMovementMethod.getInstance());

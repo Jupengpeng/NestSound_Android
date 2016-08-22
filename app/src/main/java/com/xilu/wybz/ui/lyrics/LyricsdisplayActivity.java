@@ -306,7 +306,7 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
         worksData.fovnum = worksData.fovnum + (worksData.iscollect == 1 ? 1 : -1);
         updateZanFavNum();
         EventBus.getDefault().post(new Event.UpdateWorkNum(worksData, 1));
-        EventBus.getDefault().post(new Event.UpdataWorksList(worksData, 3, 1 - worksData.iscollect));
+        EventBus.getDefault().post(new Event.UpdataWorksList(worksData, 2, 1 - worksData.iscollect));
         ivFav.startAnimation(AnimationUtils.loadAnimation(context, R.anim.dianzan_anim));
         ivFav.setImageResource(worksData.iscollect == 0 ? R.drawable.ic_lyrics_fav1 : R.drawable.ic_lyrics_fav2);
     }

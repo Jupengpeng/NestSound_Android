@@ -558,7 +558,7 @@ public class InspireRecordActivity extends ToolbarActivity implements IInspireRe
     public void pubSuccess() {
         cancelPd();
         showMsg("发布成功！");
-        EventBus.getDefault().post(new Event.UpdataWorksList(worksData, 0, 0));
+        EventBus.getDefault().post(new Event.UpdataWorksList(worksData, 3, 0));
         finish();
     }
 

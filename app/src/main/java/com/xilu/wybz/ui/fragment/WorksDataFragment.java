@@ -167,6 +167,7 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
                 if (isDestroy) return;
                 if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
                     mDataList.clear();
+                    page=1;
                 }
                 for (WorksData worksData : worksDataList) {
                     if (type < 3)
@@ -184,6 +185,7 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
                 }
                 llNoData.setVisibility(View.GONE);
                 recycler.enableLoadMore(true);
+                recycler.getRecyclerView().requestLayout();
                 adapter.notifyDataSetChanged();
                 recycler.onRefreshCompleted();
             }
@@ -211,7 +213,7 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
     }
 
     public void updateNum(WorksData worksData, int type) {
-        if (isDestroy) return;
+        if (isDestroy||mDataList==null) return;
         int index = -1;
         for (int i = 0; i < mDataList.size(); i++) {
             if (worksData.itemid == mDataList.get(i).itemid && worksData.status == mDataList.get(i).status) {
@@ -252,8 +254,8 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
                 PlayMediaInstance.getInstance().release();
             }
         }
-        EventBus.getDefault().post(new Event.UpdateWorksNum(type,-1));
         removeItem(selectPos);
+        EventBus.getDefault().post(new Event.UpdateWorksNum(type,-1));
     }
 
     @Override

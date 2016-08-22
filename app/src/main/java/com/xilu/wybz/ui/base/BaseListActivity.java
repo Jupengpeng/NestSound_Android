@@ -131,14 +131,23 @@ public abstract class BaseListActivity<T> extends BasePlayMenuActivity implement
     }
     public void removeItem(int position){
         mDataList.remove(position);
+        adapter.notifyItemRemoved(position);
         recycler.getRecyclerView().requestLayout();
-        adapter.notifyDataSetChanged();
+        if (position != mDataList.size()) {
+            adapter.notifyItemRangeChanged(position, mDataList.size() - position);
+        }
+        if (mDataList.size() == 0) llNoData.setVisibility(View.VISIBLE);
     }
     public void addItem(T t){
-        mDataList.add(0,t);
+        if (mDataList == null){
+            mDataList = new ArrayList<>();
+        }
+        mDataList.add(0, t);
         recycler.setSelection(0);
+        adapter.notifyItemInserted(0);
+        adapter.notifyItemRangeChanged(0, mDataList.size());
         recycler.getRecyclerView().requestLayout();
-        adapter.notifyDataSetChanged();
+        llNoData.setVisibility(View.GONE);
     }
     protected boolean isSectionHeader(int position) {
         return false;

@@ -228,7 +228,7 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView ,
         worksData.itemid = response.itemid;
 
         worksData.playurl = MyHttpClient.ROOT_URL+worksData.musicurl;
-        EventBus.getDefault().post(new Event.UpdataWorksList(worksData, 1, 0));
+        EventBus.getDefault().post(new Event.UpdataWorksList(worksData, 0, 0));
 
 
         cancelPd();

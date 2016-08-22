@@ -548,8 +548,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
         worksData.iscollect = 1 - worksData.iscollect;
         if (worksData.iscollect == 1) showMsg("收藏成功！");
         worksData.fovnum = worksData.fovnum + (worksData.iscollect == 1 ? 1 : -1);
-        EventBus.getDefault().post(new Event.UpdateWorkNum(worksData, 1));
-        EventBus.getDefault().post(new Event.UpdataWorksList(worksData, 3, 1 - worksData.iscollect));
+        EventBus.getDefault().post(new Event.UpdataWorksList(worksData, 2, 1 - worksData.iscollect));
         tvFav.setChecked(worksData.iscollect == 1);
         tvFav.startAnimation(AnimationUtils.loadAnimation(context, R.anim.dianzan_anim));
         updateFavNum();

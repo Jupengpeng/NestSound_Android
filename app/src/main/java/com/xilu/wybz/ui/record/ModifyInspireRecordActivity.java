@@ -661,7 +661,7 @@ public class ModifyInspireRecordActivity extends ToolbarActivity implements IIns
     public void pubSuccess() {
         cancelPd();
         showMsg("修改成功！");
-        EventBus.getDefault().post(new Event.UpdataWorksList(worksData, 0, 2));
+        EventBus.getDefault().post(new Event.UpdataWorksList(worksData, 3, 2));
         finish();
     }
 

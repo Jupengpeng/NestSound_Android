@@ -237,7 +237,7 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView {
     public void saveWordSuccess(String result) {
         if(isDestroy)return;
         cancelPd();
-        EventBus.getDefault().post(new Event.UpdataWorksList(worksData, 2, worksData.itemid == 0 ? 0 : 2));
+        EventBus.getDefault().post(new Event.UpdataWorksList(worksData, 1, worksData.itemid == 0 ? 0 : 2));
         if (worksData.itemid == 0&&StringUtils.isBlank(aid)) {//aid 存在 服务端不返回这两个值
             try {
                 String shareurl = new JSONObject(result).getString("shareurl");
