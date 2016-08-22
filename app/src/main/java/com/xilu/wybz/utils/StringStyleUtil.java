@@ -101,7 +101,7 @@ public class StringStyleUtil {
         @Override
         public void onClick(View widget) {
             if(PrefsUtil.getUserId(context)!=uid) {
-                UserInfoActivity.ToNewUserInfoActivity(context, uid, name);
+                UserInfoActivity.toUserInfoActivity(context, uid, name);
             }
         }
 
@@ -126,7 +126,7 @@ public class StringStyleUtil {
         @Override
         public void onClick(View widget) {
             if(PrefsUtil.getUserId(context)!=comment.target_uid) {
-                UserInfoActivity.ToNewUserInfoActivity(context, comment.target_uid, comment.target_nickname);
+                UserInfoActivity.toUserInfoActivity(context, comment.target_uid, comment.target_nickname);
             }
         }
 

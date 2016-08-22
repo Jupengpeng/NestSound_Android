@@ -142,7 +142,7 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
             case R.id.tv_author:
             case R.id.rl_head:
                 if (worksData.uid > 0 && worksData.uid != PrefsUtil.getUserId(context)) {
-                    UserInfoActivity.ToNewUserInfoActivity(context, worksData.uid, worksData.author);
+                    UserInfoActivity.toUserInfoActivity(context, worksData.uid, worksData.author);
                 }
                 break;
         }
@@ -380,7 +380,7 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
     }
 
     public void toCommentActivity() {
-        CommentActivity.ToCommentActivity(context, worksData.itemid,2,false);
+        CommentActivity.toCommentActivity(context, worksData.itemid,2,false);
     }
 
 }

@@ -252,6 +252,7 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
                 PlayMediaInstance.getInstance().release();
             }
         }
+        EventBus.getDefault().post(new Event.UpdateWorksNum(type,-1));
         removeItem(selectPos);
     }
 

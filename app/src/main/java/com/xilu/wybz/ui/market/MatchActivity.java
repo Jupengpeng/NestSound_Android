@@ -169,7 +169,7 @@ public class MatchActivity extends BasePlayMenuActivity implements ViewPager.OnP
             @Override
             public void onItemClick(View view, int position) {
                 if (PrefsUtil.getUserId(context) != joinUserBeanList.get(position).id) {
-                    UserInfoActivity.ToNewUserInfoActivity(context, joinUserBeanList.get(position).id,
+                    UserInfoActivity.toUserInfoActivity(context, joinUserBeanList.get(position).id,
                             joinUserBeanList.get(position).nickname);
                 }
             }

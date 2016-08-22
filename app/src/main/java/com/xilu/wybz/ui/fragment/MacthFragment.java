@@ -14,23 +14,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.google.gson.Gson;
 import com.xilu.wybz.R;
 import com.xilu.wybz.adapter.MatchCommentAdapter;
 import com.xilu.wybz.bean.CommentBean;
 import com.xilu.wybz.bean.MatchWorkBean;
-import com.xilu.wybz.bean.MsgCommentBean;
-import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.KeySet;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.common.MyHttpClient;
-import com.xilu.wybz.presenter.CommentPresenter;
-import com.xilu.wybz.presenter.FindMoreWorkPresenter;
 import com.xilu.wybz.presenter.MatchWorkPresenter;
 import com.xilu.wybz.service.MainService;
-import com.xilu.wybz.ui.IView.ICommentView;
-import com.xilu.wybz.ui.IView.IFindMoreWorkView;
 import com.xilu.wybz.ui.IView.IMatchWorkView;
 import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.ui.lyrics.LyricsdisplayActivity;
@@ -39,28 +32,23 @@ import com.xilu.wybz.ui.song.CommentActivity;
 import com.xilu.wybz.ui.song.PlayAudioActivity;
 import com.xilu.wybz.utils.DateTimeUtil;
 import com.xilu.wybz.utils.DensityUtil;
-import com.xilu.wybz.utils.FormatHelper;
 import com.xilu.wybz.utils.ImageLoadUtil;
 import com.xilu.wybz.utils.NumberUtil;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtils;
-import com.xilu.wybz.utils.ToastUtils;
 import com.xilu.wybz.view.FullyLinearLayoutManager;
 import com.xilu.wybz.view.ScrollableHelper;
-import com.xilu.wybz.view.dialog.CommentDialog;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.PullRecycler;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.w3c.dom.Comment;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 
 /**
  * Created by hujunwei on 16/8/12.
@@ -73,6 +61,7 @@ public class MacthFragment extends BaseListFragment<MatchWorkBean> implements Sc
     private String from;
     private int playPos = -1;
     private int commentPos = -1;
+
     public static MacthFragment newInstance() {
         MacthFragment fragment = new MacthFragment();
         return fragment;
@@ -157,14 +146,14 @@ public class MacthFragment extends BaseListFragment<MatchWorkBean> implements Sc
                 if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
                     mDataList.clear();
                 }
-                for(MatchWorkBean matchWorkBean:worksDataList){
-                    int playId = PrefsUtil.getInt("playId",context);
+                for (MatchWorkBean matchWorkBean : worksDataList) {
+                    int playId = PrefsUtil.getInt("playId", context);
 
-                    if(playId==matchWorkBean.itemid) {
-                        if(MainService.status!=1)
-                        playPos = mDataList.size();
-                        matchWorkBean.isPlay = MainService.status==3;
-                    }else{
+                    if (playId == matchWorkBean.itemid) {
+                        if (MainService.status != 1)
+                            playPos = mDataList.size();
+                        matchWorkBean.isPlay = MainService.status == 3;
+                    } else {
                         matchWorkBean.isPlay = false;
                     }
                     mDataList.add(matchWorkBean);
@@ -265,7 +254,7 @@ public class MacthFragment extends BaseListFragment<MatchWorkBean> implements Sc
             tvLookNum.setText(NumberUtil.format(worksData.looknum));
             tvZanNum.setText(NumberUtil.format(worksData.zannum));
             tvMoreComment.setText("更多评论");
-            if (worksData.listComment == null||worksData.listComment.size()==0) {
+            if (worksData.listComment == null || worksData.listComment.size() == 0) {
                 tvMoreComment.setVisibility(View.GONE);
             } else {
                 tvMoreComment.setVisibility(View.VISIBLE);
@@ -280,18 +269,18 @@ public class MacthFragment extends BaseListFragment<MatchWorkBean> implements Sc
                 @Override
                 public void onClick(View v) {
                     commentPos = position;
-                    CommentActivity.ToCommentActivity(context, worksData.itemid, type + 1,true);
+                    CommentActivity.toCommentActivity(context, worksData.itemid, type + 1, true);
                 }
             });
             ivHead.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (PrefsUtil.getUserId(context) != worksData.userid) {
-                        UserInfoActivity.ToNewUserInfoActivity(context, worksData.userid, worksData.nickname);
+                        UserInfoActivity.toUserInfoActivity(context, worksData.userid, worksData.nickname);
                     }
                 }
             });
-            ivPlay.setImageResource(worksData.isPlay?R.drawable.ic_match_pause:R.drawable.ic_match_play);
+            ivPlay.setImageResource(worksData.isPlay ? R.drawable.ic_match_pause : R.drawable.ic_match_play);
             ivPlay.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -325,7 +314,7 @@ public class MacthFragment extends BaseListFragment<MatchWorkBean> implements Sc
                 @Override
                 public void onClick(View v) {
                     commentPos = position;
-                    CommentActivity.ToCommentActivity(context, worksData.itemid, type + 1,false);
+                    CommentActivity.toCommentActivity(context, worksData.itemid, type + 1, false);
                 }
             });
             commentBeanList = new ArrayList<>();
@@ -340,6 +329,15 @@ public class MacthFragment extends BaseListFragment<MatchWorkBean> implements Sc
             }
             recyclerViewComment.setLayoutManager(new FullyLinearLayoutManager(context, 0));
             adapter = new MatchCommentAdapter(context, commentBeanList, 1);
+            adapter.setOnItemClickListener(new MatchCommentAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, int position) {
+                    CommentBean commentBean = commentBeanList.get(position);
+                    if (commentBean.uid != PrefsUtil.getUserId(context)) {
+                        CommentActivity.toCommentActivity(context, worksData.itemid, type + 1, commentBean);
+                    }
+                }
+            });
             recyclerViewComment.setAdapter(adapter);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -369,49 +367,50 @@ public class MacthFragment extends BaseListFragment<MatchWorkBean> implements Sc
 
     }
 
-    public void updateCommentItem(List<CommentBean> list){
-        if(mDataList!=null&&commentPos>=0&&commentPos<mDataList.size()){
+    public void updateCommentItem(List<CommentBean> list) {
+        if (mDataList != null && commentPos >= 0 && commentPos < mDataList.size()) {
             mDataList.get(commentPos).listComment = list;
+            recycler.getRecyclerView().requestLayout();
             adapter.notifyDataSetChanged();
         }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(Event.PPStatusEvent event) {
-        if(isDestroy)return;
-        Log.e("status","PPStatusEvent__"+event.getStatus()+"");
-            switch (event.getStatus()) {
-                case MyCommon.STARTED://开始
-                    int playId = PrefsUtil.getInt("playId",context);
-                    for(int i=0;i< mDataList.size();i++){
-                        if(playId==mDataList.get(i).itemid) {
-                            playPos = i;
-                            mDataList.get(i).isPlay = true;
-                        }else{
-                            mDataList.get(i).isPlay = false;
-                        }
+        if (isDestroy) return;
+        Log.e("status", "PPStatusEvent__" + event.getStatus() + "");
+        switch (event.getStatus()) {
+            case MyCommon.STARTED://开始
+                int playId = PrefsUtil.getInt("playId", context);
+                for (int i = 0; i < mDataList.size(); i++) {
+                    if (playId == mDataList.get(i).itemid) {
+                        playPos = i;
+                        mDataList.get(i).isPlay = true;
+                    } else {
+                        mDataList.get(i).isPlay = false;
                     }
-                    recycler.getRecyclerView().requestLayout();
-                    adapter.notifyDataSetChanged();
-                    break;
-                case MyCommon.PLAYED://播放
-                    if(playPos>-1){
-                        if(!mDataList.get(playPos).isPlay) {
-                            mDataList.get(playPos).isPlay = true;
-                            recycler.getRecyclerView().requestLayout();
-                            adapter.notifyDataSetChanged();
-                        }
+                }
+                recycler.getRecyclerView().requestLayout();
+                adapter.notifyDataSetChanged();
+                break;
+            case MyCommon.PLAYED://播放
+                if (playPos > -1) {
+                    if (!mDataList.get(playPos).isPlay) {
+                        mDataList.get(playPos).isPlay = true;
+                        recycler.getRecyclerView().requestLayout();
+                        adapter.notifyDataSetChanged();
                     }
-                    break;
-                case MyCommon.PAUSED://暂停
-                    if(playPos>-1){
-                        if(mDataList.get(playPos).isPlay) {
-                            mDataList.get(playPos).isPlay = false;
-                            recycler.getRecyclerView().requestLayout();
-                            adapter.notifyDataSetChanged();
-                        }
+                }
+                break;
+            case MyCommon.PAUSED://暂停
+                if (playPos > -1) {
+                    if (mDataList.get(playPos).isPlay) {
+                        mDataList.get(playPos).isPlay = false;
+                        recycler.getRecyclerView().requestLayout();
+                        adapter.notifyDataSetChanged();
                     }
-                    break;
+                }
+                break;
         }
     }
 }

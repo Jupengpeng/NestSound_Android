@@ -56,7 +56,7 @@ public class MatchCommentAdapter extends RecyclerView.Adapter<MatchCommentAdapte
             @Override
             public void onClick(View v) {
                 if(PrefsUtil.getUserId(context)!=commentBean.uid) {
-                    UserInfoActivity.ToNewUserInfoActivity(context, commentBean.uid, commentBean.nickname);
+                    UserInfoActivity.toUserInfoActivity(context, commentBean.uid, commentBean.nickname);
                 }
             }
         });
@@ -71,7 +71,7 @@ public class MatchCommentAdapter extends RecyclerView.Adapter<MatchCommentAdapte
             @Override
             public void onClick(View v) {
                 if(PrefsUtil.getUserId(context)!=commentBean.target_uid) {
-                    UserInfoActivity.ToNewUserInfoActivity(context, commentBean.target_uid, commentBean.target_nickname);
+                    UserInfoActivity.toUserInfoActivity(context, commentBean.target_uid, commentBean.target_nickname);
                 }
             }
         });

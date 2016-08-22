@@ -106,7 +106,21 @@ public class Event {
             return worksData;
         }
     }
+    public static class UpdateWorksNum {
+        int type;//1歌曲 2歌词 3收藏 4灵感记录
+        int count;//1加 -1减
+        public UpdateWorksNum(int type, int count) {
+            this.type = type;
+            this.count = count;
+        }
 
+        public int getType() {
+            return type;
+        }
+        public int getCount() {
+            return count;
+        }
+    }
     public static class UpdataCommentNumEvent {
         int type;
         int num;

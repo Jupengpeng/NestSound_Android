@@ -515,7 +515,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     @Override
     public void toUserInfo() {
         if (worksData.uid > 0) {
-            UserInfoActivity.ToNewUserInfoActivity(context, worksData.uid, worksData.author);
+            UserInfoActivity.toUserInfoActivity(context, worksData.uid, worksData.author);
         }
     }
 
@@ -532,7 +532,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
 
     @Override
     public void toCommentActivity() {
-        CommentActivity.ToCommentActivity(context, worksData.itemid,1,false);
+        CommentActivity.toCommentActivity(context, worksData.itemid,1,false);
     }
 
     @Override
@@ -695,7 +695,6 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
         worksData.status = 1;
         adapterData();
     }
-
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

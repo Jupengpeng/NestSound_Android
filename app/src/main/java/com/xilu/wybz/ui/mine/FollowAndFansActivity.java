@@ -251,7 +251,7 @@ public class FollowAndFansActivity extends BaseListActivity<FansBean> implements
             int authorid = fromType == 0 ? mDataList.get(position).userid : mDataList.get(position).fansid;
             boolean isMe = PrefsUtil.getUserId(context) != authorid;
             if (isMe) {
-                UserInfoActivity.ToNewUserInfoActivity(context, authorid, mDataList.get(position).fansname);
+                UserInfoActivity.toUserInfoActivity(context, authorid, mDataList.get(position).fansname);
             }
         }
     }

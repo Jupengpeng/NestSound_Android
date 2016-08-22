@@ -16,5 +16,6 @@ public class KeySet {
     public static final String LOCAL_LYRICS = "local_lyrics";
     public static final String WORKS_DATA = "works_data";
     public static final String CONTENT = "content";
+    public static final String COMMENT = "comment";
 
 }
