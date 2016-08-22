@@ -53,7 +53,6 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
     private String[] COMESs = new String[]{"usersong", "userlyrics", "userfav"};
     private boolean isFirst;
     private boolean isFirstTab;
-
     @Override
     protected void initPresenter() {
         EventBus.getDefault().register(this);
@@ -145,7 +144,7 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
             page = 1;
             mDataList.clear();
             adapter.notifyDataSetChanged();
-            recycler.requestLayout();
+            recycler.getRecyclerView().requestLayout();
         }
     }
 
@@ -167,7 +166,6 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
                 if (isDestroy) return;
                 if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
                     mDataList.clear();
-                    page=1;
                 }
                 for (WorksData worksData : worksDataList) {
                     if (type < 3)
