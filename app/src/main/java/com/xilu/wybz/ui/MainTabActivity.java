@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.CheckedTextView;
@@ -179,6 +180,7 @@ public class MainTabActivity extends BaseActivity {
                 currentIndex = 3;
                 break;
         }
+        Log.e("getUserId",PrefsUtil.getUserId(context)+"");
         if(PrefsUtil.getUserId(context)==0&&(currentIndex==2||currentIndex==3)){
             startActivity(LoginActivity.class);
             return;
