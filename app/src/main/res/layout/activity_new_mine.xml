@@ -21,10 +21,11 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <ImageView
+                android:id="@+id/iv_headpic"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
                 android:scaleType="centerCrop"
-                android:src="@mipmap/bg_top_mine"
+                android:src="@drawable/default_pic"
                 android:fitsSystemWindows="true"
                 app:layout_collapseParallaxMultiplier="0.7"
                 app:layout_collapseMode="pin" />

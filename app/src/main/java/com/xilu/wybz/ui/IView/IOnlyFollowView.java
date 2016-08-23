@@ -7,4 +7,5 @@ public interface IOnlyFollowView extends IBaseView{
 
     void followSuccess(String message);
     void followFailed(String message);
+
 }

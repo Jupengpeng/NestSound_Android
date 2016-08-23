@@ -38,7 +38,6 @@ public class SystemUtils {
         // aspectX aspectY 是宽高的比例
         intent.putExtra("aspectX", 1);
         intent.putExtra("aspectY", 1);
-        // outputX outputY 是裁剪图片宽高
         intent.putExtra("outputX", width);
         intent.putExtra("outputY", height);
         intent.putExtra("return-data", true);

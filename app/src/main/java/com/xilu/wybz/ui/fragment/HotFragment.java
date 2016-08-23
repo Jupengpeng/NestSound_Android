@@ -25,6 +25,7 @@ import com.xilu.wybz.utils.FormatHelper;
 import com.xilu.wybz.utils.NumberUtil;
 import com.xilu.wybz.utils.StringUtils;
 import com.xilu.wybz.view.pull.BaseViewHolder;
+import com.xilu.wybz.view.pull.PullRecycler;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -106,6 +107,7 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
 
     @Override
     public void onRefresh(int action) {
+        super.onRefresh(action);
         hotPresenter.loadHotData(cid, type, page++);
     }
 
@@ -115,14 +117,10 @@ public class HotFragment extends BaseListFragment<TemplateBean> implements IHotV
             @Override
             public void run() {
                 if (isDestroy) return;
-                if (mDataList == null)
-                    mDataList = new ArrayList<>();
-                if (mDataList.size() == 0) {
-                    EventBus.getDefault().post(new Event.HideKeyboardEvent());
+                if(action== PullRecycler.ACTION_PULL_TO_REFRESH){
+                    mDataList.clear();
                 }
-                if (recycler == null) {
-                    return;
-                }
+
                 llNoData.setVisibility(View.GONE);
                 recycler.enableLoadMore(true);
                 mDataList.addAll(templateBeens);

@@ -6,5 +6,5 @@ import android.graphics.Bitmap;
  * Created by hujunwei on 16/7/29.
  */
 public interface ILoadPicView extends IBaseView {
-    void setPic(String path, Bitmap bitmap);
+    void setPic(String path);
 }

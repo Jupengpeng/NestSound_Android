@@ -329,5 +329,8 @@ public class MyHttpClient {
     public static String getAttendUrl() {
         return "activity/attend";
     }
+    public static String getUpdateuserbgUrl() {
+        return "userCenter/updateuserbg";
+    }
 }
 
