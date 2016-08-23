@@ -223,6 +223,7 @@ public class MineActivity extends BaseActivity implements IModifyCoverView, ILoa
 
     public void setUserInfo(UserBean updateUserBean) {
         if (!firstLoadUserInfo) {
+            if(PrefsUtil.getUserId(context)==0)return;
             //更新本地数据
             if (updateUserBean.userid > 0) userBean.userid = updateUserBean.userid;
             if (StringUtils.isNotBlank(updateUserBean.nickname))
