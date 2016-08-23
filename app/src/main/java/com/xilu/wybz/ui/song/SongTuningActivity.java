@@ -19,6 +19,7 @@ import com.xilu.wybz.R;
 import com.xilu.wybz.adapter.TuningEffectAdapter;
 import com.xilu.wybz.bean.TruningMusicBean;
 import com.xilu.wybz.bean.WorksData;
+import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.MediaInstance;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.common.interfaces.IMediaPlayerListener;
@@ -29,6 +30,9 @@ import com.xilu.wybz.utils.StringUtils;
 import com.xilu.wybz.utils.ToastUtils;
 import com.xilu.wybz.view.GridSpacingItemDecoration;
 import com.xilu.wybz.view.WaveSurfaceView;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -247,6 +251,12 @@ public class SongTuningActivity extends ToolbarActivity implements IMakeSongView
             SaveSongActivity.toSaveSongActivity(context,worksData);
         }
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(Event.SaveSongSeccess event) {
+        finish();
+    }
+
 
     @Override
     public void tuningMusicFailed() {
