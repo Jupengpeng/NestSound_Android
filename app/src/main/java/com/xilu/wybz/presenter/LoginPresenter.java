@@ -8,6 +8,7 @@ import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.callback.AppJsonCalback;
 import com.xilu.wybz.ui.IView.ILoginView;
+import com.xilu.wybz.utils.PrefsUtil;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -44,7 +45,12 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
             @Override
             public void onResult(JsonResponse<? extends Object> response) {
                 UserBean userBean = response.getData();
+
+
                 if(userBean.userid>0) {
+                    userBean.nickname = userBean.name;
+                    userBean.signature = userBean.descr;
+                    PrefsUtil.saveUserInfo(context, userBean);
                     iView.loginSuccess(userBean);
                 }
             }

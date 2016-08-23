@@ -31,6 +31,7 @@ import com.xilu.wybz.utils.ToastUtils;
 import com.xilu.wybz.view.GridSpacingItemDecoration;
 import com.xilu.wybz.view.WaveSurfaceView;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -88,7 +89,7 @@ public class SongTuningActivity extends ToolbarActivity implements IMakeSongView
         helper = wave.getWaveSurfaceHelper();
         initMediaPlayer();
         status = 0 ;
-
+        EventBus.getDefault().register(context);
         List<Short> data = WaveSurfaceHelper.dataCache;
         if (data != null){
             helper.onDrawWave(data, 0);
@@ -487,6 +488,7 @@ public class SongTuningActivity extends ToolbarActivity implements IMakeSongView
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(context);
         makeSongPresenter.cancelTuning();
     }
 }
