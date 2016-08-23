@@ -265,7 +265,6 @@ public class MineActivity extends BaseActivity implements IModifyCoverView, ILoa
             ivBlurView.setImageBitmap(bmp);
         }
     }
-
     public void updateUserFansNum(UserInfoBean userBean) {
         userInfoBean = userBean;
         mFansNum.setText(NumberUtil.format(userBean.fansnum));
@@ -275,7 +274,6 @@ public class MineActivity extends BaseActivity implements IModifyCoverView, ILoa
         tvFovNum.setText(NumberUtil.format(userBean.fovnum));
         tvRecordNum.setText(NumberUtil.format(userBean.inspirenum));
     }
-
     //在修改个人资料页面发送过来的
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(Event.UpdateUserInfo event) {
