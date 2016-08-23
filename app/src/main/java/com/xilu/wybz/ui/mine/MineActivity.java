@@ -202,6 +202,7 @@ public class MineActivity extends BaseActivity implements IModifyCoverView, ILoa
     public void onEventMainThread(Event.LoginSuccessEvent event) {
         firstLoadUserInfo = false;
         mViewpager.setCurrentItem(0);
+        userBean = PrefsUtil.getUserInfo(context);
         WorksDataFragment worksDataFragment;
         worksDataFragment = pagerAdapter.getFragment(0);
         worksDataFragment.reSet();
@@ -231,7 +232,9 @@ public class MineActivity extends BaseActivity implements IModifyCoverView, ILoa
                 userBean.descr = updateUserBean.signature;
             if (StringUtils.isNotBlank(updateUserBean.headurl))
                 userBean.headurl = updateUserBean.headurl;
-            if (StringUtils.isNotBlank(updateUserBean.bgpic)) userBean.bgpic = updateUserBean.bgpic;
+            if (StringUtils.isNotBlank(updateUserBean.bgpic)) {
+                userBean.bgpic = updateUserBean.bgpic;
+            }
             PrefsUtil.saveUserInfo(context, userBean);
             //更新本地我的信息
             setLocalUserInfo();

@@ -660,9 +660,11 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
 
                     break;
                 case MyCommon.PLAYED://播放
+                    ivPlay.setImageResource(R.drawable.ic_play_pause);
                     startTimer();
                     break;
                 case MyCommon.PAUSED://暂停
+                    ivPlay.setImageResource(R.drawable.ic_play_play);
                     closeTimer();
                     break;
                 case MyCommon.STOPPED://停止doPP

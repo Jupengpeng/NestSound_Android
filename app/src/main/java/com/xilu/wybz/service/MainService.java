@@ -491,11 +491,11 @@ public class MainService extends Service implements IMusicDetailView, AudioManag
                 toNextMusic();
             }
         }
-
         @Override
         public void onClick() {
             // TODO Auto-generated method stub
-            doPP(isPlay);
+            if(status>1)
+                doPP(isPlay);
         }
     };
 
