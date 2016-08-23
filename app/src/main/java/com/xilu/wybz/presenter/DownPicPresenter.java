@@ -2,13 +2,17 @@ package com.xilu.wybz.presenter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import com.commit451.nativestackblur.NativeStackBlur;
 import com.xilu.wybz.http.callback.BitmapCallback;
+import com.xilu.wybz.http.callback.FileCallBack;
 import com.xilu.wybz.ui.IView.ILoadPicView;
 import com.xilu.wybz.utils.BitmapUtils;
 import com.xilu.wybz.utils.FileUtils;
 import com.xilu.wybz.utils.PermissionUtils;
+
+import java.io.File;
 
 import okhttp3.Call;
 
@@ -21,18 +25,23 @@ public class DownPicPresenter extends BasePresenter<ILoadPicView>{
     }
 
     public void downLoadPic(String imageUrl, String path){
-        httpUtils.getImage(imageUrl, new BitmapCallback() {
+        File file = new File(path);
+        if(!new File(file.getParent()).exists())new File(file.getParent()).mkdirs();
+        httpUtils.getFile(imageUrl, new FileCallBack(file.getParent(),file.getName()) {
+            @Override
+            public void inProgress(float progress, long total) {
+            }
+
             @Override
             public void onError(Call call, Exception e) {
-
             }
             @Override
-            public void onResponse(Bitmap response) {
-                if(response==null){
+            public void onResponse(File response) {
+                if (response != null && response.exists()){
+                    iView.setPic(path);
+                } else {
                     return;
                 }
-                Bitmap bmp = NativeStackBlur.process(BitmapUtils.zoomBitmap(response, 200), 30);
-                iView.setPic(path, bmp);
             }
         });
     }

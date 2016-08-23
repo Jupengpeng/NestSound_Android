@@ -27,6 +27,7 @@ import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.commit451.nativestackblur.NativeStackBlur;
 import com.xilu.wybz.R;
 import com.xilu.wybz.adapter.PlayLyricsAdapter;
 import com.xilu.wybz.adapter.PlayPagerAdapter;
@@ -345,15 +346,14 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     }
 
     public void loadPic(String imageUrl) {
-        File file = new File(FileDir.blurPic);
-        if (!file.exists()) file.mkdirs();
-
         String path = FileDir.blurPic + MD5Util.getMD5String(worksData.pic);
         if (new File(path).exists()) {//加载本地
             blurImageView.setImageBitmap(BitmapUtils.getSDCardImg(path));
         } else {//下载并保存到本地
             imageUrl = MyCommon.getImageUrl(imageUrl, 200, 200);
-            downPicPresenter.downLoadPic(imageUrl, path);
+            if(PermissionUtils.checkSdcardPermission(this)) {
+                downPicPresenter.downLoadPic(imageUrl, path);
+            }
         }
     }
 
@@ -590,12 +590,11 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     }
 
     @Override
-    public void setPic(String path,Bitmap bitmap) {
-        if(PermissionUtils.checkSdcardPermission(this)) {
-            FileUtils.saveBmp(path, bitmap);
+    public void setPic(String path) {
+        if (blurImageView != null) {
+            Bitmap bmp = NativeStackBlur.process(BitmapUtils.getSDCardImg(path), 200);
+            blurImageView.setImageBitmap(bmp);
         }
-        if (blurImageView != null)
-            blurImageView.setImageBitmap(bitmap);
     }
 
     @Override

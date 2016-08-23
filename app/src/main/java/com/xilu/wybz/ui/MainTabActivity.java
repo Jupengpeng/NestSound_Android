@@ -18,6 +18,7 @@ import com.xilu.wybz.adapter.MyPagerAdapter;
 import com.xilu.wybz.bean.HotBean;
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.common.Event;
+import com.xilu.wybz.common.interfaces.OnTabActivityResultListener;
 import com.xilu.wybz.service.MainService;
 import com.xilu.wybz.ui.base.BaseActivity;
 import com.xilu.wybz.ui.find.FindActivity;
@@ -243,6 +244,23 @@ public class MainTabActivity extends BaseActivity {
             changeTab();
         }
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // 获取当前活动的Activity实例
+        if(currentIndex==3) {
+            Activity subActivity = manager.getActivity("MINE");
+            //判断是否实现返回值接口
+            if (subActivity instanceof OnTabActivityResultListener) {
+                //获取返回值接口实例
+                OnTabActivityResultListener listener = (OnTabActivityResultListener) subActivity;
+                //转发请求到子Activity
+                listener.onTabActivityResult(requestCode, resultCode, data);
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();

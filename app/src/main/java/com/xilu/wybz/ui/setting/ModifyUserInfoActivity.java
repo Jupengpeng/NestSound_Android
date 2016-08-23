@@ -1,5 +1,6 @@
 package com.xilu.wybz.ui.setting;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -7,8 +8,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.xilu.wybz.R;
@@ -20,20 +23,26 @@ import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.presenter.ModifyUserInfoPresenter;
 import com.xilu.wybz.ui.IView.IModifyUserInfoView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
+import com.xilu.wybz.utils.AppConstant;
+import com.xilu.wybz.utils.GalleryUtils;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtils;
 import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.utils.UploadFileUtil;
 import com.xilu.wybz.view.materialdialogs.MaterialDialog;
+
 import java.io.File;
 import java.io.FileOutputStream;
+
 import butterknife.Bind;
 import butterknife.OnClick;
+
 import org.greenrobot.eventbus.EventBus;
+
 /**
  * Created by June on 16/5/13.
  */
-public class ModifyUserInfoActivity extends ToolbarActivity implements IModifyUserInfoView{
+public class ModifyUserInfoActivity extends ToolbarActivity implements IModifyUserInfoView {
     @Bind(R.id.tv_username)
     TextView tv_username;
     @Bind(R.id.iv_head)
@@ -49,11 +58,12 @@ public class ModifyUserInfoActivity extends ToolbarActivity implements IModifyUs
     DatePickerDialog datePickerDialog;
     int type;//0 修改昵称 1 修改签名
     String titles[] = new String[]{"修改昵称", "修改签名", "修改性别", "修改生日"};
-    String genders[] = new String[]{"未知","女", "男"};
+    String genders[] = new String[]{"未知", "女", "男"};
     int maxLengths[] = new int[]{16, 30};
     String headPath;
-
+    UploadFileUtil uploadPicUtil;
     ModifyUserInfoPresenter modifyUserInfoPresenter;
+
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_modify_info;
@@ -62,20 +72,20 @@ public class ModifyUserInfoActivity extends ToolbarActivity implements IModifyUs
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        modifyUserInfoPresenter = new ModifyUserInfoPresenter(this,this);
+        modifyUserInfoPresenter = new ModifyUserInfoPresenter(this, this);
         modifyUserInfoPresenter.init();
     }
 
     @Override
     public void modifyUserInfoSuccess() {
+        cancelPd();
         showMsg("修改成功");
         initUserInfo();
-
     }
 
     @Override
     public void modifyUserInfoFail() {
-
+        cancelPd();
     }
 
     @Override
@@ -84,19 +94,20 @@ public class ModifyUserInfoActivity extends ToolbarActivity implements IModifyUs
         userBean = PrefsUtil.getUserInfo(context);
         initUserInfo();
     }
+
     public void initUserInfo() {
         tv_username.setText(userBean.nickname);
         tv_usersign.setText(userBean.signature);
         tv_birthday.setText(userBean.birthday);
         tv_gender.setText(genders[userBean.sex]);
-        if(StringUtils.isNotBlank(userBean.headurl)){
-            if(!userBean.headurl.startsWith("http")){
-                userBean.headurl = MyHttpClient.QINIU_URL+userBean.headurl;
+        if (StringUtils.isNotBlank(userBean.headurl)) {
+            if (!userBean.headurl.startsWith("http")) {
+                userBean.headurl = MyHttpClient.QINIU_URL + userBean.headurl;
             }
             loadImage(userBean.headurl, iv_head);
         }
         //通知我的个人主页更新
-        PrefsUtil.saveUserInfo(context,userBean);
+        PrefsUtil.saveUserInfo(context, userBean);
         EventBus.getDefault().post(new Event.UpdateUserInfo());
     }
 
@@ -104,7 +115,7 @@ public class ModifyUserInfoActivity extends ToolbarActivity implements IModifyUs
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ll_userhead:
-                SystemUtils.openGallery(this);
+                GalleryUtils.getInstance().selectPicture(this);
                 break;
             case R.id.ll_username:
                 type = 0;
@@ -124,6 +135,7 @@ public class ModifyUserInfoActivity extends ToolbarActivity implements IModifyUs
                 break;
         }
     }
+
     //修改生日
     public void showModifyBirthdayDialog() {
         String birthday = userBean.birthday;
@@ -131,29 +143,29 @@ public class ModifyUserInfoActivity extends ToolbarActivity implements IModifyUs
             year = Integer.valueOf(birthday.substring(0, 4));
             month = Integer.valueOf(birthday.substring(5, 7));
             day = Integer.valueOf(birthday.substring(8, 10));
-        }else{
+        } else {
             year = 1990;
             month = 1;
             day = 1;
             userBean.birthday = "1990-01-01";
         }
-        datePickerDialog = DatePickerDialog.newInstance(new DatePickerDialog.OnDateSetListener(){
+        datePickerDialog = DatePickerDialog.newInstance(new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-                try{
+                try {
                     String month = (monthOfYear + 1) + "";
                     month = month.length() == 1 ? "0" + month : month;
                     String day = (dayOfMonth) + "";
                     day = day.length() == 1 ? "0" + day : day;
                     userBean.birthday = year + "-" + month + "-" + day;
                     UpdateUserInfo();
-                }catch (Exception e){
+                } catch (Exception e) {
                 }
             }
         }, year, month - 1, day);
-        datePickerDialog.setYearRange(1900,2006);
+        datePickerDialog.setYearRange(1900, 2006);
         datePickerDialog.setAccentColor(getResources().getColor(R.color.main_theme_color));
-        datePickerDialog.show(getFragmentManager(),"Datepickerdialog");
+        datePickerDialog.show(getFragmentManager(), "Datepickerdialog");
 
     }
 
@@ -197,48 +209,13 @@ public class ModifyUserInfoActivity extends ToolbarActivity implements IModifyUs
                 }).show();
     }
 
-    public void UpdateUserInfo(){
-        modifyUserInfoPresenter.modifyUserInfo(userBean);
-    }
 
-    public void selectImage(Intent data, int requestCode) {
-        if (requestCode == MyCommon.requestCode_photo) {
-            // 取得返回的Uri,基本上选择照片的时候返回的是以Uri形式，但是在拍照中有得机子呢Uri是空的，所以要特别注意
-            Uri mImageCaptureUri = data.getData();
-            // 返回的Uri不为空时，那么图片信息数据都会在Uri中获得。如果为空，那么我们就进行下面的方式获取
-            if (mImageCaptureUri != null) {
-                try {
-                    // 这个方法是根据Uri获取Bitmap图片的静态方法
-                    SystemUtils.startPhotoZoom(this, mImageCaptureUri, 200, 200);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        } else {
-            showMsg("图片选择失败");
-        }
-    }
-    // 保存裁剪后的图片
-    public void saveBitmap(Bitmap bitmap) {
-        File file = new File(FileDir.picDir);
-        if (!file.exists())
-            file.mkdirs();
-        try {
-            headPath = FileDir.picDir + System.currentTimeMillis() + ".jpg";
-            FileOutputStream b = new FileOutputStream(headPath);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, b);
-            b.flush();
-            b.close();
-            bitmap.recycle();
-            uploadUserHead();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
     //上传头像到服务器
     public void uploadUserHead() {
-        UploadFileUtil uploadPicUtil = new UploadFileUtil(context);
-        uploadPicUtil.uploadFile(headPath, MyCommon.fixxs[4],new UploadFileUtil.UploadResult() {
+        showPd("正在上传头像...");
+        if(uploadPicUtil==null)
+            uploadPicUtil = new UploadFileUtil(context);
+        uploadPicUtil.uploadFile(headPath, MyCommon.fixxs[4], new UploadFileUtil.UploadResult() {
             @Override
             public void onSuccess(String imageUrl) {
                 if (!TextUtils.isEmpty(headPath) && new File(headPath).exists()) {
@@ -250,6 +227,7 @@ public class ModifyUserInfoActivity extends ToolbarActivity implements IModifyUs
 
             @Override
             public void onFail() {
+                cancelPd();
                 if (!TextUtils.isEmpty(headPath) && new File(headPath).exists()) {
                     new File(headPath).delete();
                 }
@@ -257,16 +235,41 @@ public class ModifyUserInfoActivity extends ToolbarActivity implements IModifyUs
             }
         });
     }
-
+    public void UpdateUserInfo() {
+        modifyUserInfoPresenter.modifyUserInfo(userBean);
+    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == MyCommon.requestCode_photo && data != null) {
-            selectImage(data, requestCode);
-        } else if (requestCode == MyCommon.requestCode_crop && data != null) {
-            Bundle extras = data.getExtras();
-            if (extras != null) {
-                Bitmap bitmap = extras.getParcelable("data");
-                saveBitmap(bitmap);
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
+        if (null == data) {
+            return;
+        }
+        Uri uri = null;
+        if (requestCode == AppConstant.KITKAT_LESS) {
+            uri = data.getData();
+            Log.d("tag", "uri=" + uri);
+            // 调用裁剪方法
+            if(!new File(FileDir.headPic).exists())new File(FileDir.headPic).mkdirs();
+            headPath = FileDir.headPic + System.currentTimeMillis() + ".jpg";
+            Uri imgUri = Uri.fromFile(new File(headPath));
+            GalleryUtils.getInstance().cropPicture(this, uri, imgUri, 1, 1, 200, 200);
+        } else if (requestCode == AppConstant.KITKAT_ABOVE) {
+            uri = data.getData();
+            Log.d("tag", "uri=" + uri);
+            // 先将这个uri转换为path，然后再转换为uri
+            String thePath = GalleryUtils.getInstance().getPath(this, uri);
+            if(!new File(FileDir.headPic).exists())new File(FileDir.headPic).mkdirs();
+            headPath = FileDir.headPic + System.currentTimeMillis() + ".jpg";
+            Uri imgUri = Uri.fromFile(new File(headPath));
+            GalleryUtils.getInstance().cropPicture(this,
+                    Uri.fromFile(new File(thePath)),imgUri, 1, 1, 200, 200);
+        } else if (requestCode == AppConstant.INTENT_CROP) {
+            if(new File(headPath).exists()){
+                uploadUserHead();
+            }else{
+                showMsg("裁切失败");
             }
         }
     }
@@ -274,7 +277,7 @@ public class ModifyUserInfoActivity extends ToolbarActivity implements IModifyUs
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (modifyUserInfoPresenter != null){
+        if (modifyUserInfoPresenter != null) {
             modifyUserInfoPresenter.cancelRequest();
         }
     }
