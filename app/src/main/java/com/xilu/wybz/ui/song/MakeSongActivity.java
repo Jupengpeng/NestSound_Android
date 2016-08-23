@@ -706,6 +706,10 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
 
             case R.id.menu_next:
 
+                if (MediaInstance.getInstance().isPlay()){
+                    MediaInstance.getInstance().pauseMediaPlay();
+                }
+
                 if (status == 1) {
                     showMsg("请先停止录音");
                     return true;

@@ -59,9 +59,9 @@ public class MediaInstance {
 
     public void startMediaPlayAsync(final String path) {
 
-//        MyThreadPool.getInstance().doTask(new Runnable() {
-//            @Override
-//            public void run() {
+        MyThreadPool.getInstance().doTask(new Runnable() {
+            @Override
+            public void run() {
 
         if (!isPlay) {
             try {
@@ -75,14 +75,14 @@ public class MediaInstance {
                 e.printStackTrace();
             }
         }
-//            }
-//        });
+            }
+        });
 
     }
 
 
     public void stopMediaPlay() {
-        if (mediaPlayer != null && isPlay) {
+        if (mediaPlayer != null) {
             isPlay = false;
             mediaPlayer.stop();
             mediaPlayer.release();
@@ -91,6 +91,7 @@ public class MediaInstance {
                 iml.onStop();
             }
         }
+        isPlay = false;
     }
 
     public void pauseMediaPlay() {

@@ -305,6 +305,9 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView ,
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home){
+            needDestroy = false;
+        }
         if (item.getItemId() == R.id.menu_publish) {
             //先检查歌词的描述
 //            if(StringUtils.isBlank(worksData.detail)){
@@ -315,7 +318,7 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView ,
                 showMsg("请先选择歌曲的封面！");
                 return true;
             }
-
+            needDestroy = true;
             worksData.is_issue = cbIsopen.isChecked() ? 1:0;
             showPd("正在发布中，请稍候...");
             if(materialDialog!=null){
@@ -388,12 +391,15 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView ,
         showbuttonPlay();
     }
 
+    boolean needDestroy = false;
     @Override
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
-        MediaInstance.getInstance().stopMediaPlay();
-        MediaInstance.getInstance().destroy();
+        if(needDestroy){
+            MediaInstance.getInstance().stopMediaPlay();
+            MediaInstance.getInstance().destroy();
+        }
         if (saveSongPresenter != null){
             saveSongPresenter.cancelRequest();
         }
