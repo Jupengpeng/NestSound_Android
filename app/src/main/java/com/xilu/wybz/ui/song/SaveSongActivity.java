@@ -307,10 +307,10 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView ,
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_publish) {
             //先检查歌词的描述
-            if(StringUtils.isBlank(worksData.detail)){
-                showMsg("请先添加歌曲描述！");
-                return true;
-            }
+//            if(StringUtils.isBlank(worksData.detail)){
+//                showMsg("请先添加歌曲描述！");
+//                return true;
+//            }
             if(StringUtils.isBlank(worksData.pic)){
                 showMsg("请先选择歌曲的封面！");
                 return true;
