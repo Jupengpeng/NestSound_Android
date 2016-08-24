@@ -34,7 +34,9 @@ import com.xilu.wybz.ui.IView.IMyWorkView;
 import com.xilu.wybz.ui.IView.ISaveWordView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.utils.AppConstant;
+import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.GalleryUtils;
+import com.xilu.wybz.utils.ImageLoadUtil;
 import com.xilu.wybz.utils.ImageUtils;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtils;
@@ -58,13 +60,14 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView {
     @Bind(R.id.cb_isopen)
     CheckBox cb_isopen;
     @Bind(R.id.et_content)
-    EditText et_content;
+    EditText etContent;
     @Bind(R.id.iv_cover)
-    SimpleDraweeView iv_cover;
+    SimpleDraweeView ivCover;
     WorksData worksData;
     String coverPath;
     boolean isAbleOnClick = true;
     String aid;
+    int width;
     SaveWordPresenter saveWordPresenter;
 
     public static void toSaveWordActivity(Context context, WorksData worksData) {
@@ -113,6 +116,7 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView {
             worksData = (WorksData) bundle.getSerializable(KeySet.WORKS_DATA);
             aid = bundle.getString(KeySet.KEY_ID, "");
         }
+        width = DensityUtil.dip2px(context, 60);
         if (StringUtils.isBlank(worksData.itemid)) worksData.type = 1;
         initEvent();
         initData();
@@ -123,20 +127,20 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView {
         if (worksData != null) {
             cb_isopen.setChecked(worksData.type == 1 ? true : false);
             if (StringUtils.isNotBlank(worksData.detail)) {
-                et_content.setText(worksData.detail);
+                etContent.setText(worksData.detail);
             }
             if (!TextUtils.isEmpty(worksData.pic)) {
                 if (worksData.pic.startsWith("http"))
-                    loadImage(worksData.pic, iv_cover);
+                    ImageLoadUtil.loadImage(worksData.pic, ivCover, width, width);
                 else if (new File(worksData.pic).exists()) {
-                    loadImage("file:///" + worksData.pic, iv_cover);
+                    ImageLoadUtil.loadImage("file:///" + worksData.pic, ivCover, width, width);
                 }
             }
         }
     }
 
     private void initEvent() {
-        et_content.addTextChangedListener(new TextWatcher() {
+        etContent.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -319,7 +323,7 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView {
                     Uri.fromFile(new File(thePath)), imgUri, 1, 1, 750, 750);
         } else if (requestCode == AppConstant.INTENT_CROP) {
             if (new File(coverPath).exists()) {
-                loadImage("file://" + coverPath, iv_cover);
+                ImageLoadUtil.loadImage(context, new File(coverPath), ivCover, width, width);
                 worksData.setPic(coverPath);
             } else {
                 showMsg("裁切失败");

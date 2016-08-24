@@ -1,5 +1,6 @@
 package com.xilu.wybz.ui.song;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,6 +11,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.CheckBox;
@@ -32,6 +34,10 @@ import com.xilu.wybz.ui.IView.IDownloadMusicView;
 import com.xilu.wybz.ui.IView.ISaveSongView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.ui.lyrics.ShareActivity;
+import com.xilu.wybz.utils.AppConstant;
+import com.xilu.wybz.utils.DensityUtil;
+import com.xilu.wybz.utils.GalleryUtils;
+import com.xilu.wybz.utils.ImageLoadUtil;
 import com.xilu.wybz.utils.ImageUtils;
 import com.xilu.wybz.utils.StringUtils;
 import com.xilu.wybz.utils.SystemUtils;
@@ -248,7 +254,7 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView, 
 
     @OnClick(R.id.iv_cover)
     public void onClickCover() {
-        SystemUtils.openGallery(this);
+        GalleryUtils.getInstance().selectPicture(this);
     }
 
     @OnClick(R.id.iv_play)
@@ -340,35 +346,38 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView, 
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == MyCommon.requestCode_photo && data != null) {
-            Uri uri = data.getData();
-            if (uri != null) {
-                String thePath = ImageUtils.getAbsolutePathFromNoStandardUri(uri);
-                if (TextUtils.isEmpty(thePath)) {
-                    coverPath = ImageUtils.getPath(this, uri);
-                } else {
-                    coverPath = thePath;
-                }
-                if (TextUtils.isEmpty(coverPath)) {
-                    showMsg("图片读取失败~");
-                    return;
-                }
-                File picture = new File(coverPath);
-                BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
-                //获取图片的旋转角度
-                int degree = ImageUtils.readPictureDegree(picture.getAbsolutePath());
-                if (degree > 0) {//大于0的时候需要调整角度
-                    String imagePath = FileDir.coverPic + System.currentTimeMillis() + ".jpg";
-                    Bitmap cameraBitmap = BitmapFactory.decodeFile(coverPath, bitmapOptions);
-                    Bitmap bitmap = ImageUtils.rotaingImageView(degree, cameraBitmap);
-                    ImageUtils.saveBitmap(bitmap, imagePath);
-                    coverPath = imagePath;
-
-                }
-                loadImage("file://" + coverPath, ivCover);
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
+        if (null == data) {
+            return;
+        }
+        Uri uri = null;
+        if (requestCode == AppConstant.KITKAT_LESS) {
+            uri = data.getData();
+            Log.d("tag", "uri=" + uri);
+            // 调用裁剪方法
+            if (!new File(FileDir.coverPic).exists()) new File(FileDir.coverPic).mkdirs();
+            coverPath = FileDir.coverPic + System.currentTimeMillis() + ".jpg";
+            Uri imgUri = Uri.fromFile(new File(coverPath));
+            GalleryUtils.getInstance().cropPicture(this, uri, imgUri, 1, 1, 750, 750);
+        } else if (requestCode == AppConstant.KITKAT_ABOVE) {
+            uri = data.getData();
+            Log.d("tag", "uri=" + uri);
+            // 先将这个uri转换为path，然后再转换为uri
+            String thePath = GalleryUtils.getInstance().getPath(this, uri);
+            if (!new File(FileDir.coverPic).exists()) new File(FileDir.coverPic).mkdirs();
+            coverPath = FileDir.coverPic + System.currentTimeMillis() + ".jpg";
+            Uri imgUri = Uri.fromFile(new File(coverPath));
+            GalleryUtils.getInstance().cropPicture(this,
+                    Uri.fromFile(new File(thePath)), imgUri, 1, 1, 750, 750);
+        } else if (requestCode == AppConstant.INTENT_CROP) {
+            if (new File(coverPath).exists()) {
+                int width = DensityUtil.dip2px(context,60);
+                ImageLoadUtil.loadImage(context, new File(coverPath), ivCover, width, width);
                 worksData.setPic(coverPath);
             } else {
-                showMsg("图片读取失败！");
+                showMsg("裁切失败");
             }
         }
     }
