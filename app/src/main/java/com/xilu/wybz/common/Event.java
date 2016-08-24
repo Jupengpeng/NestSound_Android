@@ -302,13 +302,13 @@ public class Event {
     }
 
     public static class RemoveMySongEvent {
-        int itemid;
+        String itemid;
 
-        public RemoveMySongEvent(int itemid) {
+        public RemoveMySongEvent(String itemid) {
             this.itemid = itemid;
         }
 
-        public int getItemid() {
+        public String getItemid() {
             return itemid;
         }
     }

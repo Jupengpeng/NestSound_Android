@@ -12,10 +12,9 @@ import java.io.Serializable;
  */
 public class ZambiaBean implements Serializable {
 
-    public int id;
+    public String id;
     public int target_uid; //发布作品的用户id
-    public int itemid;//收藏的作品id
-    public int user_id;//收藏者的ID
+    public String itemid;//收藏的作品id
     public String author;//作者名称
     public String title;//作品标题
     public String headerurl;//收藏者头像

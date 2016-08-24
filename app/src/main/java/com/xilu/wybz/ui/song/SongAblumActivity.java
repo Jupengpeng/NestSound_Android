@@ -40,6 +40,7 @@ import com.xilu.wybz.view.YcScrollView;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.Bind;
 import butterknife.OnClick;
 import okhttp3.Call;
@@ -77,6 +78,7 @@ public class SongAblumActivity extends ToolbarActivity implements IRecSongView {
     private SongAlbum songAlbum;
     private int baseScrollHeight;
     int coverPicWith;
+
     public static void toSongAblumActivity(Context from, SongAlbum songAlbum) {
         Intent intent = new Intent(from, SongAblumActivity.class);
         intent.putExtra(YinChaoConfig.RECOMMENTSONG, songAlbum);
@@ -101,11 +103,11 @@ public class SongAblumActivity extends ToolbarActivity implements IRecSongView {
         myScrollView.setOnScrollListener(new YcScrollView.OnScrollListener() {
             @Override
             public void onScroll(int scrollY) {
-                if(scrollY>baseScrollHeight){
+                if (scrollY > baseScrollHeight) {
                     scrollY = baseScrollHeight;
                 }
-                ivToolbarBg.setAlpha((float)(scrollY/(baseScrollHeight*1.0)));
-                topbarBgCover.setAlpha((float)(scrollY/(baseScrollHeight*1.0)));
+                ivToolbarBg.setAlpha((float) (scrollY / (baseScrollHeight * 1.0)));
+                topbarBgCover.setAlpha((float) (scrollY / (baseScrollHeight * 1.0)));
             }
         });
     }
@@ -113,18 +115,18 @@ public class SongAblumActivity extends ToolbarActivity implements IRecSongView {
     public void getIntentData() {
         songAlbum = (SongAlbum) getIntent().getSerializableExtra(YinChaoConfig.RECOMMENTSONG);
         updateHeaderView();
-        recSongPresenter.getMusicList(songAlbum.getId(),1);
+        recSongPresenter.getMusicList(songAlbum.getId(), 1);
         initMusicView();
     }
 
     public void initMusicView() {
         int statusbarHeight = 0;
-        if(isChenjin) {
+        if (isChenjin) {
             statusbarHeight = DensityUtil.getStatusBarHeight(context);
         }
-        coverPicWith = DensityUtil.getScreenW(context)/3;
-        ivCover.setLayoutParams(new LinearLayout.LayoutParams(coverPicWith,coverPicWith));
-        ll_detail.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,coverPicWith));
+        coverPicWith = DensityUtil.getScreenW(context) / 3;
+        ivCover.setLayoutParams(new LinearLayout.LayoutParams(coverPicWith, coverPicWith));
+        ll_detail.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, coverPicWith));
         baseScrollHeight = DensityUtil.dip2px(context, 25) + coverPicWith;
         rlTop.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, statusbarHeight + DensityUtil.dip2px(context, 48 + 25) + coverPicWith));
         mToolbar.setTitleTextColor(Color.WHITE);
@@ -139,6 +141,7 @@ public class SongAblumActivity extends ToolbarActivity implements IRecSongView {
             public void onItemClick(View view, int position) {
                 toPlayPos(position);
             }
+
             @Override
             public void onItemLongClick(View view, int position) {
 
@@ -146,33 +149,36 @@ public class SongAblumActivity extends ToolbarActivity implements IRecSongView {
         });
         recyclerViewSong.setAdapter(songListAdapter);
     }
-    private void loadPic(){
-        String url = MyCommon.getImageUrl(songAlbum.getPic(),coverPicWith,coverPicWith);
-        loadImage(url,ivCover);
+
+    private void loadPic() {
+        String url = MyCommon.getImageUrl(songAlbum.getPic(), coverPicWith, coverPicWith);
+        loadImage(url, ivCover);
         File file = new File(FileDir.blurPic);
-        if(!file.exists())file.mkdirs();
-        String path = FileDir.blurPic+ MD5Util.getMD5String(url);
-        if(new File(path).exists()){//加载本地
+        if (!file.exists()) file.mkdirs();
+        String path = FileDir.blurPic + MD5Util.getMD5String(url);
+        if (new File(path).exists()) {//加载本地
             ivToolbarBg.setImageBitmap(BitmapUtils.getSDCardImg(path));
             ivTopBg.setImageBitmap(BitmapUtils.getSDCardImg(path));
-        }else{//下载并保存到本地
+        } else {//下载并保存到本地
             HttpUtils httpUtils = new HttpUtils(context);
             httpUtils.getImage(url, new BitmapCallback() {
                 @Override
                 public void onError(Call call, Exception e) {
 
                 }
+
                 @Override
                 public void onResponse(Bitmap response) {
-                    if(isDestroy)return;
+                    if (isDestroy) return;
                     Bitmap bmp = NativeStackBlur.process(BitmapUtils.zoomBitmap(response, 100), 80);
-                    FileUtils.saveBmp(path,bmp);
+                    FileUtils.saveBmp(path, bmp);
                     ivToolbarBg.setImageBitmap(bmp);
                     ivTopBg.setImageBitmap(bmp);
                 }
             });
         }
     }
+
     @OnClick({R.id.iv_play_all})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -181,11 +187,12 @@ public class SongAblumActivity extends ToolbarActivity implements IRecSongView {
                 break;
         }
     }
-    public void toPlayPos(int position){
+
+    public void toPlayPos(int position) {
         if (musicBeans.size() > 0) {
-            String playFrom = PrefsUtil.getString("playFrom",context);
-            String playGedanId = PrefsUtil.getString("playGedanId",context);
-            if(!playFrom.equals(MyCommon.GEDAN)||MainService.ids.size()==0||!playGedanId.equals(songAlbum.id)){
+            String playFrom = PrefsUtil.getString("playFrom", context);
+            String playGedanId = PrefsUtil.getString("playGedanId", context);
+            if (!playFrom.equals(MyCommon.GEDAN) || MainService.ids.size() == 0 || !playGedanId.equals(songAlbum.id)) {
                 if (MainService.ids.size() > 0)
                     MainService.ids.clear();
                 for (WorksData worksData : musicBeans) {
@@ -200,12 +207,14 @@ public class SongAblumActivity extends ToolbarActivity implements IRecSongView {
     @Override
     protected void onRestart() {
         super.onRestart();
-        for(WorksData worksData:musicBeans){
-            int playId = PrefsUtil.getInt("playId", context);
-            if(playId==worksData.itemid){
-                worksData.isPlay = true;
-            }else{
-                worksData.isPlay = false;
+        String playId = PrefsUtil.getString(MainService.CurrentMusic.PLAY_ID, context);
+        if (StringUtils.isNotBlank(playId)) {
+            for (WorksData worksData : musicBeans) {
+                if (playId.equals(worksData.itemid)) {
+                    worksData.isPlay = true;
+                } else {
+                    worksData.isPlay = false;
+                }
             }
         }
         songListAdapter.notifyDataSetChanged();
@@ -213,28 +222,30 @@ public class SongAblumActivity extends ToolbarActivity implements IRecSongView {
 
     @Override
     public void showSongDetail(GleeDetailBean gleeDetailBean) {
-        if (tvCount == null){
+        if (tvCount == null) {
             return;
         }
-        for(WorksData worksData:gleeDetailBean.workList){
-            int playId = PrefsUtil.getInt("playId", context);
-            if(playId==worksData.itemid){
+        for (WorksData worksData : gleeDetailBean.workList) {
+            String playId = PrefsUtil.getString(MainService.CurrentMusic.PLAY_ID, context);
+            if (StringUtils.isNotBlank(playId) && playId.equals(worksData.itemid)) {
                 worksData.isPlay = true;
             }
             musicBeans.add(worksData);
         }
-        tvCount.setText("(共"+gleeDetailBean.workCount+"首)");
-        if(gleeDetailBean.recommedSong!=null)
-        songAlbum = gleeDetailBean.recommedSong;
+        tvCount.setText("(共" + gleeDetailBean.workCount + "首)");
+        if (gleeDetailBean.recommedSong != null)
+            songAlbum = gleeDetailBean.recommedSong;
         updateHeaderView();
         songListAdapter.notifyDataSetChanged();
     }
-    public void updateHeaderView(){
-        if(StringUtils.isNotBlank(songAlbum.name))
+
+    public void updateHeaderView() {
+        if (StringUtils.isNotBlank(songAlbum.name))
             tvTitle.setText(songAlbum.name);
-        if(StringUtils.isNotBlank(songAlbum.detail))
+        if (StringUtils.isNotBlank(songAlbum.detail))
             tvDesc.setText(songAlbum.detail);
     }
+
     @Override
     public void showProgressBar() {
 
@@ -252,7 +263,7 @@ public class SongAblumActivity extends ToolbarActivity implements IRecSongView {
 
     @Override
     protected void onDestroy() {
-        if (recSongPresenter != null){
+        if (recSongPresenter != null) {
             recSongPresenter.cancelRequest();
         }
         super.onDestroy();

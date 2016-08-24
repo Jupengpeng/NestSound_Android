@@ -129,7 +129,7 @@ public class PrefsUtil {
     }
     //
     //保存正在播放的音乐
-    public static void clearMusicData(Context context, int id){
+    public static void clearMusicData(Context context, String id){
         putString("musicData_"+id,null,context);
         putInt("playId",0,context);
         putString("playGedanId","",context);
@@ -137,7 +137,7 @@ public class PrefsUtil {
         PrefsUtil.putInt("playPos", -1, context);
     }
     //
-    public static WorksData getMusicData(Context context,int id){
+    public static WorksData getMusicData(Context context,String id){
         WorksData worksData = null;
         String data = getString("musicData_"+id,context);
         if(StringUtils.isNotBlank(data)){

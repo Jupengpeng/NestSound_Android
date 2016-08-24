@@ -8,8 +8,8 @@ import java.io.Serializable;
  * 这是消息 评论
  */
 public class MsgCommentBean implements Serializable {
-    public int id;//评论ID
-    public int itemid;//作品ID
+    public String id;//评论ID
+    public String itemid;//作品ID
     public int uid;//发评论者的ID
     public int type;//1=歌曲，2=歌词
     public int comment_type; //1=默认，2=跟帖
@@ -31,19 +31,19 @@ public class MsgCommentBean implements Serializable {
     }
 
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public int getItemid() {
+    public String getItemid() {
         return itemid;
     }
 
-    public void setItemid(int itemid) {
+    public void setItemid(String itemid) {
         this.itemid = itemid;
     }
 

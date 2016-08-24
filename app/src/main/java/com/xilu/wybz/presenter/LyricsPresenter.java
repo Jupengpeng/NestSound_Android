@@ -33,7 +33,7 @@ public class LyricsPresenter extends BasePresenter<ILyricsView> {
         super(context, iView);
     }
 
-    public void getLyric(int id) {
+    public void getLyric(String id) {
         params = new HashMap<>();
         params.put("uid", PrefsUtil.getUserId(context)+"");
         params.put("id",id+"");
@@ -73,7 +73,7 @@ public class LyricsPresenter extends BasePresenter<ILyricsView> {
             }
         });
     }
-    public void setCollectionState(int music_id, int target_uid) {
+    public void setCollectionState(String music_id, int target_uid) {
         params = new HashMap<>();
         params.put("user_id",PrefsUtil.getUserId(context)+"");;
         params.put("work_id", music_id+"");
@@ -95,7 +95,7 @@ public class LyricsPresenter extends BasePresenter<ILyricsView> {
             }
         });
     }
-    public void zan(int id, int target_uid) {
+    public void zan(String id, int target_uid) {
         params = new HashMap<>();
         params.put("target_uid", target_uid+"");//作者id
         params.put("user_id", PrefsUtil.getUserId(context)+"");

@@ -147,9 +147,8 @@ public class MacthFragment extends BaseListFragment<MatchWorkBean> implements Sc
                     mDataList.clear();
                 }
                 for (MatchWorkBean matchWorkBean : worksDataList) {
-                    int playId = PrefsUtil.getInt("playId", context);
-
-                    if (playId == matchWorkBean.itemid) {
+                    String playId = PrefsUtil.getString(MainService.CurrentMusic.PLAY_ID, context);
+                    if (playId.equals(matchWorkBean.itemid)) {
                         if (MainService.status != 1)
                             playPos = mDataList.size();
                         matchWorkBean.isPlay = MainService.status == 3;
@@ -381,9 +380,9 @@ public class MacthFragment extends BaseListFragment<MatchWorkBean> implements Sc
         Log.e("status", "PPStatusEvent__" + event.getStatus() + "");
         switch (event.getStatus()) {
             case MyCommon.STARTED://开始
-                int playId = PrefsUtil.getInt("playId", context);
+                String playId = PrefsUtil.getString(MainService.CurrentMusic.PLAY_ID, context);
                 for (int i = 0; i < mDataList.size(); i++) {
-                    if (playId == mDataList.get(i).itemid) {
+                    if (playId.equals(mDataList.get(i).itemid)) {
                         playPos = i;
                         mDataList.get(i).isPlay = true;
                     } else {

@@ -55,10 +55,10 @@ public class MainService extends Service implements IMusicDetailView, AudioManag
     private WorksData mCurrentAudio;
     public MediaPlayer mPlayer;
     public int mCurrentState;
-    private int playId;
+    private String playId;
     private String playFrom;
     private int playProgress;
-    public static List<Integer> ids;
+    public static List<String> ids;
     private String playUrl;
     private int currentPos;
     boolean isPlay = true;
@@ -70,7 +70,7 @@ public class MainService extends Service implements IMusicDetailView, AudioManag
     public int getCurrentPos() {
         if (ids == null) return currentPos;
         for (int i = 0; i < ids.size(); i++) {
-            if (ids.get(i) == playId) {
+            if (ids.get(i).equals(playId)) {
                 //遍历当前播放音乐的位置 用来切歌
                 currentPos = i;
                 break;
@@ -144,20 +144,20 @@ public class MainService extends Service implements IMusicDetailView, AudioManag
     }
 
     //播放歌曲 首次播放 或者 切入进来的 需要定位
-    public void loadData(int playId, String playFrom, String PlayGedanId) {
+    public void loadData(String playId, String playFrom, String PlayGedanId) {
         isPlay = true;
         this.playId = playId;
         this.playFrom = playFrom;
         playType = MyCommon.getFromMusicType(playFrom);
         getCurrentPos();
         PrefsUtil.putString(CurrentMusic.PLAY_FROM, playFrom, this);
-        PrefsUtil.putInt(CurrentMusic.PLAY_ID, playId, this);
+        PrefsUtil.putString(CurrentMusic.PLAY_ID, playId, this);
         PrefsUtil.putString(CurrentMusic.PLAY_GEDAN_ID, PlayGedanId, this);
         loadMusicDetailPresenter.loadMusicDetail(playId);
     }
 
     //列表里面切歌 position顺延
-    public void loadNowListData(int playId) {
+    public void loadNowListData(String playId) {
         isPlay = true;
         this.playId = playId;
         loadMusicDetailPresenter.loadMusicDetail(playId);
@@ -185,7 +185,7 @@ public class MainService extends Service implements IMusicDetailView, AudioManag
             mCurrentAudio = worksData;
             EventBus.getDefault().post(new Event.MusicDataEvent());
             PrefsUtil.saveMusicData(MainService.this, worksData);
-            PrefsUtil.putInt(CurrentMusic.PLAY_ID, worksData.itemid, this);
+            PrefsUtil.putString(CurrentMusic.PLAY_ID, worksData.itemid, this);
             downLoadMp3(worksData.playurl);
             changeState(MyCommon.SUCCESSED);
             doStop();
@@ -307,7 +307,7 @@ public class MainService extends Service implements IMusicDetailView, AudioManag
     //开始播放歌曲
     public void start() {
         if (mCurrentAudio == null) {
-            playId = PrefsUtil.getInt(CurrentMusic.PLAY_ID, MainService.this);
+            playId = PrefsUtil.getString(CurrentMusic.PLAY_ID, MainService.this);
             mCurrentAudio = PrefsUtil.getMusicData(MainService.this, playId);
         }
         if (mCurrentAudio != null)

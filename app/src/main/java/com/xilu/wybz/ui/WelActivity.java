@@ -51,22 +51,17 @@ public class WelActivity extends BaseActivity {
 //            rlMain.setBackgroundResource(R.drawable.bg_wel);
 //        }
 
-
-
         rlMain.setBackgroundResource(R.drawable.bg_wel);
 //        getDomainUtil.getNewIp();
         if(PrefsUtil.getUserId(context)>0){
             getDomainUtil.getCheck();
         }
         if (BuildConfig.DEBUG){
-            Log.e("welcom_yinchao","BuildConfig.DEBUG");
             rlMain.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.e("welcom_yinchao","onClick.DEBUG");
                     isConsole = true;
                     Intent intent = new Intent(WelActivity.this, ConsoleActivity.class);
-//                    Intent intent = new Intent(WelActivity.this, SongTuningActivity.class);
                     startActivityForResult(intent,CODE);
                 }
             });
@@ -96,17 +91,13 @@ public class WelActivity extends BaseActivity {
 
 
     private void startMainActivity(){
-        Log.e("welcom_yinchao","startMainActivity.DEBUG");
         if (isConsole){
-            Log.e("welcom_yinchao","isConsole.DEBUG");
             return;
         }
         Intent intent = new Intent(WelActivity.this, MainTabActivity.class);
-//        Intent intent = new Intent(WelActivity.this, ConsoleActivity.class);
         startActivity(intent);
-        Log.e("welcom_yinchao","startActivity.DEBUG");
         finish();
-        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+//        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
     @Override

@@ -152,7 +152,6 @@ public class WorksViewHolder extends com.xilu.wybz.view.pull.BaseViewHolder {
                     MainService.ids.clear();
                 for (WorksData worksData : mDataList) {
                     if (worksData.status == 1) {
-                        MyApplication.posMap.put(worksData.getItemid(), position);
                         MainService.ids.add(worksData.getItemid());
                     }
                 }

@@ -5,7 +5,7 @@ package com.xilu.wybz.bean;
  * 乐说
  */
 public class MusicTalk {
-    public int itemid;
+    public String itemid;
     public String pic;
     public String name;
     public String detail;

@@ -358,7 +358,7 @@ public class MineActivity extends BaseActivity implements IModifyCoverView, ILoa
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(Event.RemoveMySongEvent event) {
-        int itemid = event.getItemid();
+        String itemid = event.getItemid();
         (pagerAdapter.getFragment(0)).removeByItemid(itemid);
     }
 

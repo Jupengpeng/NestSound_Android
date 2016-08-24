@@ -11,7 +11,7 @@ import java.io.Serializable;
  */
 //@Table("workdata")
 public class WorksData implements Serializable {
-    public int itemid;//歌曲id
+    public String itemid;//歌曲id
     public String pic;//歌曲封面
     public String title;//标题
     public String name;//标题
@@ -44,7 +44,6 @@ public class WorksData implements Serializable {
     public long createTime;//创建时间
     public long createtime;//创建时间
     public long createdate;//创建时间
-    public long createDate;//创建时间
     public int recordtimes;//录音时长
     public String recordPath;//录歌时人声或者灵感记录的音频
     public String audio;//录歌时人声或者灵感记录的音频
@@ -213,11 +212,11 @@ public class WorksData implements Serializable {
         this.commentnum = commentnum;
     }
 
-    public int getItemid() {
+    public String getItemid() {
         return itemid;
     }
 
-    public void setItemid(int itemid) {
+    public void setItemid(String itemid) {
         this.itemid = itemid;
     }
 

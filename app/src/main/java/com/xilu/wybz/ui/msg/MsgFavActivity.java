@@ -151,12 +151,12 @@ public class MsgFavActivity extends BaseListActivity<CollectionBean> implements 
             llWorks.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(collectionBean.type==1){
-                        if(collectionBean.itemid>0)
+                    if(StringUtils.isNotBlank(collectionBean.itemid)&&!collectionBean.itemid.equals("0")) {
+                        if (collectionBean.type == 1) {
                             PlayAudioActivity.toPlayAudioActivity(context, collectionBean.itemid, "", MyCommon.MSG_COMMENT);
-                    }else{
-                        if(collectionBean.itemid>0)
+                        } else {
                             LyricsdisplayActivity.toLyricsdisplayActivity(context, collectionBean.itemid, collectionBean.title);
+                        }
                     }
                 }
             });

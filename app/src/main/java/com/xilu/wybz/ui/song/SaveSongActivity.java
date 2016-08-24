@@ -243,10 +243,6 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView ,
     }
 
 
-    @OnClick(R.id.cb_isopen)
-    public void onClickOpen() {
-
-    }
 
     @OnClick(R.id.iv_cover)
     public void onClickCover() {

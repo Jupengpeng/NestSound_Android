@@ -46,4 +46,25 @@ public class DownPicPresenter extends BasePresenter<ILoadPicView>{
             }
         });
     }
+
+    public void downLoadBitmap(String imageUrl, String path){
+        File file = new File(path);
+        if(!new File(file.getParent()).exists())new File(file.getParent()).mkdirs();
+        httpUtils.getImage(imageUrl, new BitmapCallback() {
+            @Override
+            public void onError(Call call, Exception e) {
+
+            }
+            @Override
+            public void onResponse(Bitmap response) {
+                if(response==null){
+                    return;
+                }
+                Bitmap bmp = NativeStackBlur.process(BitmapUtils.zoomBitmap(response, 200), 30);
+                BitmapUtils.toSaveFile(path,bmp);
+                bmp.recycle();
+                iView.setPic(path);
+            }
+        });
+    }
 }

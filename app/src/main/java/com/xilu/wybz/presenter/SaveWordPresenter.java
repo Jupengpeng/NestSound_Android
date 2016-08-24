@@ -35,7 +35,7 @@ public class SaveWordPresenter extends BasePresenter<ISaveWordView> {
             map.put("lyrics", worksData.lyrics);
             map.put("pic", worksData.pic);
             map.put("detail", worksData.detail);
-            if(worksData.itemid>0) {
+            if(StringUtils.isNotBlank(worksData.itemid)) {
                 map.put("id", worksData.itemid + "");
             }
             map.put("status", worksData.type + "");

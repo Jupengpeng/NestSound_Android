@@ -70,10 +70,10 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
     String[] actionTypes = new String[]{"del"};
     List<ActionBean> actionBeanList;
     ActionMoreDialog actionMoreDialog;
-    int workid;
+    String workid;
     int type;
 
-    public static void toCommentActivity(Context context, int workid, int type, boolean isOpen) {
+    public static void toCommentActivity(Context context, String workid, int type, boolean isOpen) {
         Intent intent = new Intent(context, CommentActivity.class);
         intent.putExtra(KeySet.KEY_ID, workid);
         intent.putExtra(KeySet.KEY_TYPE, type);
@@ -81,7 +81,7 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
         context.startActivity(intent);
     }
 
-    public static void toCommentActivity(Context context, int workid, int type, CommentBean commentBean) {
+    public static void toCommentActivity(Context context, String workid, int type, CommentBean commentBean) {
         Intent intent = new Intent(context, CommentActivity.class);
         intent.putExtra(KeySet.KEY_ID, workid);
         intent.putExtra(KeySet.KEY_TYPE, type);
@@ -119,7 +119,7 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
     public void initData() {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            workid = bundle.getInt(KeySet.KEY_ID);
+            workid = bundle.getString(KeySet.KEY_ID);
             type = bundle.getInt(KeySet.KEY_TYPE);
             isOpen = bundle.getBoolean(KeySet.KEY_OPEN);
             commentBean = (CommentBean) bundle.getSerializable(KeySet.COMMENT);
