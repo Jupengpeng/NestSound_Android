@@ -2,7 +2,6 @@ package com.xilu.wybz.ui.setting;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,8 +15,8 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.UserBean;
-import com.xilu.wybz.common.FileDir;
 import com.xilu.wybz.common.Event;
+import com.xilu.wybz.common.FileDir;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.presenter.ModifyUserInfoPresenter;
@@ -27,17 +26,15 @@ import com.xilu.wybz.utils.AppConstant;
 import com.xilu.wybz.utils.GalleryUtils;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtils;
-import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.utils.UploadFileUtil;
 import com.xilu.wybz.view.materialdialogs.MaterialDialog;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.File;
-import java.io.FileOutputStream;
 
 import butterknife.Bind;
 import butterknife.OnClick;
-
-import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by June on 16/5/13.
@@ -107,7 +104,9 @@ public class ModifyUserInfoActivity extends ToolbarActivity implements IModifyUs
             loadImage(userBean.headurl, iv_head);
         }
         //通知我的个人主页更新
-        PrefsUtil.saveUserInfo(context, userBean);
+        UserBean bean = PrefsUtil.getUserInfo(context);
+        bean.headurl = userBean.headurl;
+        PrefsUtil.saveUserInfo(context, bean);
         EventBus.getDefault().post(new Event.UpdateUserInfo());
     }
 

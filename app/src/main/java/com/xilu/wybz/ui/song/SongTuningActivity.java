@@ -31,6 +31,7 @@ import com.xilu.wybz.utils.ToastUtils;
 import com.xilu.wybz.view.GridSpacingItemDecoration;
 import com.xilu.wybz.view.WaveSurfaceView;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -86,6 +87,14 @@ public class SongTuningActivity extends ToolbarActivity implements IMakeSongView
     protected void onResume() {
         super.onResume();
         helper = wave.getWaveSurfaceHelper();
+        initMediaPlayer();
+        status = 0 ;
+        EventBus.getDefault().register(context);
+        List<Short> data = WaveSurfaceHelper.dataCache;
+        if (data != null){
+            helper.onDrawWave(data, 0);
+            helper.caculateTotalSize();
+        }
     }
 
     @Override
@@ -300,6 +309,7 @@ public class SongTuningActivity extends ToolbarActivity implements IMakeSongView
         }
         if (status == 2 && url.equals(playurl)){
             MediaInstance.getInstance().resumeMediaPlay();
+            return;
 
         }else {
             playurl = url;
@@ -308,9 +318,9 @@ public class SongTuningActivity extends ToolbarActivity implements IMakeSongView
 //            String url = MyHttpClient.PRE_ROOT+recordurl;
             MediaInstance.getInstance().startMediaPlayAsync(url);
 //            MediaInstance.getInstance().startMediaPlay(FileUtils.getTempRecordPath());
+            status = 4;
         }
 
-        status = 4;
     }
 
     @OnClick(R.id.tuning_control)
@@ -324,11 +334,11 @@ public class SongTuningActivity extends ToolbarActivity implements IMakeSongView
                 MediaInstance.getInstance().stopMediaPlay();
             }
 
-            tuningControl.setSelected(false);
+//            tuningControl.setSelected(false);
             return;
         }
 
-        tuningControl.setSelected(true);
+//        tuningControl.setSelected(true);
         int position = adapter.getSelectedPosition();
 
         String url = musicurls[position];
@@ -459,6 +469,7 @@ public class SongTuningActivity extends ToolbarActivity implements IMakeSongView
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_next){
+            MediaInstance.getInstance().stopMediaPlay();
             String musicUrl = getSelectedMusicUrl();
             if (musicUrl == null){
                 needPlay = false;
@@ -477,6 +488,7 @@ public class SongTuningActivity extends ToolbarActivity implements IMakeSongView
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(context);
         makeSongPresenter.cancelTuning();
     }
 }

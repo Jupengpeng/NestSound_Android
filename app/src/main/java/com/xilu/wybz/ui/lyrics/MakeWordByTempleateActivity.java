@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,11 +22,14 @@ import com.xilu.wybz.bean.TemplateLrcBean;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.KeySet;
-import com.xilu.wybz.ui.IView.ITempleateMakeLrcView;
+import com.xilu.wybz.presenter.DraftPresenter;
+import com.xilu.wybz.ui.IView.ISimpleView;
 import com.xilu.wybz.ui.base.BaseListActivity;
 import com.xilu.wybz.utils.StringUtils;
 import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.utils.ToastUtils;
+import com.xilu.wybz.view.materialdialogs.DialogAction;
+import com.xilu.wybz.view.materialdialogs.MaterialDialog;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.PullRecycler;
 
@@ -36,9 +41,9 @@ import java.util.ArrayList;
 /**
  * Created by Administrator on 2016/8/3.
  */
-public class MakeWordByTempleateActivity extends BaseListActivity<TemplateLrcBean> implements ITempleateMakeLrcView {
+public class MakeWordByTempleateActivity extends BaseListActivity<TemplateLrcBean> implements ISimpleView {
 
-
+    DraftPresenter draftPresenter;
     LyricsDraftBean lyricsDraftBean;
 
     public static void toMakeWordByTempleateActivity(Activity context,LyricsDraftBean bean){
@@ -49,6 +54,7 @@ public class MakeWordByTempleateActivity extends BaseListActivity<TemplateLrcBea
 
     @Override
     protected void initPresenter() {
+        draftPresenter = new DraftPresenter(context,this);
         initView();
     }
 
@@ -83,6 +89,8 @@ public class MakeWordByTempleateActivity extends BaseListActivity<TemplateLrcBea
         }
 
     }
+
+
 
     @Override
     public void onRefresh(int action) {
@@ -125,6 +133,18 @@ public class MakeWordByTempleateActivity extends BaseListActivity<TemplateLrcBea
         }
     }
 
+    @Override
+    public void onSuccess(int id, String message) {
+        cancelPd();
+        ToastUtils.toast(this,message);
+        finish();
+    }
+
+    @Override
+    public void onError(int id, String error) {
+        cancelPd();
+        ToastUtils.toast(this,error);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -133,11 +153,13 @@ public class MakeWordByTempleateActivity extends BaseListActivity<TemplateLrcBea
     }
 
 
-
-
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home){
+            saveToDraft();
+            return true;
+        }
+
         if (item.getItemId() == R.id.menu_save){
             WorksData worksData = new WorksData();
 
@@ -161,6 +183,51 @@ public class MakeWordByTempleateActivity extends BaseListActivity<TemplateLrcBea
         return super.onOptionsItemSelected(item);
     }
 
+    public void saveToDraft(){
+
+        LyricsDraftBean bean = new LyricsDraftBean();
+
+        bean.title = getFormatTitle();
+        bean.content = getFormatLyrics();
+
+        if (StringUtils.isBlank(bean.title) && StringUtils.isBlank(bean.content)){
+            finish();
+        }
+
+        bean.createtime = String.valueOf(System.currentTimeMillis());
+
+        new MaterialDialog.Builder(context)
+                .content("是否保存到草稿箱？")
+                .positiveText("保存")
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+
+                        draftPresenter.saveDraft(bean);
+                        showPd("正在保存中");
+                    }
+                }).negativeText("放弃")
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        finish();
+                    }
+                })
+                .show();
+
+    }
+
+
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            saveToDraft();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
     /**
      *
      * @return
@@ -173,6 +240,7 @@ public class MakeWordByTempleateActivity extends BaseListActivity<TemplateLrcBea
      *
      * @return
      */
+
     private String getFormatLyrics(){
         int size = mDataList.size();
         StringBuffer buffer = new StringBuffer();

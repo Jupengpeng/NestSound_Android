@@ -706,6 +706,10 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
 
             case R.id.menu_next:
 
+                if (MediaInstance.getInstance().isPlay()){
+                    MediaInstance.getInstance().pauseMediaPlay();
+                }
+
                 if (status == 1) {
                     showMsg("请先停止录音");
                     return true;
@@ -750,10 +754,10 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
                 if (useheadset){
 //                    startActivity(SongTuningActivity.class);
 //                    return true;
-                    showPd("正在处理中，请稍候...");
+                    showPd("歌曲正在上传，请稍候...");
                 } else {
-
                     showPd("歌曲正在美化，请稍候...");
+
                 }
 
                 makeSongPresenter.uploadmp3File(FileUtils.getLocalRecordPath(MyCommon.TYPE_MAKE + templateBean.id));
