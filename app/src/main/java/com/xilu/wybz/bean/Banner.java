@@ -6,7 +6,7 @@ package com.xilu.wybz.bean;
  */
 public class Banner {
     public int type;//0 音乐 1网页
-    public int itemid;
+    public String itemid;
     public String pic;
     public String name;
     public String author;
@@ -33,11 +33,11 @@ public class Banner {
         this.type = type;
     }
 
-    public int getItemid() {
+    public String getItemid() {
         return itemid;
     }
 
-    public void setItemid(int itemid) {
+    public void setItemid(String itemid) {
         this.itemid = itemid;
     }
 

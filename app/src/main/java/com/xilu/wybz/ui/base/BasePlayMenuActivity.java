@@ -79,21 +79,20 @@ public abstract class BasePlayMenuActivity extends ToolbarActivity {
     }
 
     public void onPlayMenuClick() {
-        int playId = PrefsUtil.getInt("playId", context);
-        String playFrom = PrefsUtil.getString("playFrom", context);
+        String playId = PrefsUtil.getString(MainService.CurrentMusic.PLAY_ID, context);
+        String playFrom = PrefsUtil.getString(MainService.CurrentMusic.PLAY_FROM, context);
+        String playGedanId = PrefsUtil.getString(MainService.CurrentMusic.PLAY_GEDAN_ID, context);
         String idData = PrefsUtil.getString(playFrom,context);
         if(StringUtils.isNotBlank(idData)){
             String ids[] = idData.split(",");
             for(int i=0;i<ids.length;i++){
-                MainService.ids.add(Integer.valueOf(ids[i]));
+                MainService.ids.add(ids[i]);
             }
         }else{
             MainService.ids.add(playId);
         }
-        if (playId>0) {
-            PlayAudioActivity.toPlayAudioActivity(context, PrefsUtil.getInt("playId", context),
-                    PrefsUtil.getString("playGedanId", context),
-                    playFrom);
+        if (StringUtils.isNotBlank(playId)&&!playId.equals("0")) {
+            PlayAudioActivity.toPlayAudioActivity(context, playId,playGedanId,playFrom);
         }
     }
     protected void hideRight(){

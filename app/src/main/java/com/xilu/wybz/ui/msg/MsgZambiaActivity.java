@@ -79,7 +79,7 @@ public class MsgZambiaActivity extends BaseListActivity<ZambiaBean> implements I
 
     @Override
     public void loadFail() {
-        if (recycler == null){
+        if (recycler == null) {
             return;
         }
         recycler.onRefreshCompleted();
@@ -87,7 +87,7 @@ public class MsgZambiaActivity extends BaseListActivity<ZambiaBean> implements I
 
     @Override
     public void loadNoMore() {
-        if (recycler == null){
+        if (recycler == null) {
             return;
         }
         recycler.onRefreshCompleted();
@@ -96,7 +96,7 @@ public class MsgZambiaActivity extends BaseListActivity<ZambiaBean> implements I
 
     @Override
     public void loadNoData() {
-        if (recycler == null){
+        if (recycler == null) {
             return;
         }
         llNoData.setVisibility(View.VISIBLE);
@@ -127,12 +127,12 @@ public class MsgZambiaActivity extends BaseListActivity<ZambiaBean> implements I
         @OnClick(R.id.ll_works)
         void toWorks() {
             ZambiaBean zambiaBean = (ZambiaBean) itemView.getTag();
-            if (zambiaBean.type == 1) {
-                if (zambiaBean.itemid > 0)
+            if (StringUtils.isNotBlank(zambiaBean.itemid)) {
+                if (zambiaBean.type == 1) {
                     PlayAudioActivity.toPlayAudioActivity(context, zambiaBean.itemid, "", MyCommon.MSG_COMMENT);
-            } else {
-                if (zambiaBean.itemid > 0)
+                } else {
                     LyricsdisplayActivity.toLyricsdisplayActivity(context, zambiaBean.itemid, zambiaBean.title);
+                }
             }
         }
 
@@ -154,10 +154,11 @@ public class MsgZambiaActivity extends BaseListActivity<ZambiaBean> implements I
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onItemClick(v,position);
+                    onItemClick(v, position);
                 }
             });
         }
+
         @Override
         public void onItemClick(View view, int position) {
 
@@ -167,7 +168,7 @@ public class MsgZambiaActivity extends BaseListActivity<ZambiaBean> implements I
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(zanPresenter!=null)
+        if (zanPresenter != null)
             zanPresenter.cancelRequest();
     }
 }

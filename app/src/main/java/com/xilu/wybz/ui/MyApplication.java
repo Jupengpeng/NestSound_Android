@@ -44,7 +44,6 @@ public class MyApplication extends Application implements ServiceConnection {
     public static String musicId = "";
     public static String from;
     public static String id;
-    public static Map<Integer, Integer> posMap;
     public static boolean isPlay;
     public static UploadManager uploadManager;
     public int userid;
@@ -63,7 +62,6 @@ public class MyApplication extends Application implements ServiceConnection {
     public void onCreate() {
         super.onCreate();
         context = this;
-        posMap = new HashMap<>();
         FileUtils.delFiles(context.getCacheDir());
         //清理Webview缓存数据库
         try {
@@ -73,8 +71,18 @@ public class MyApplication extends Application implements ServiceConnection {
             e.printStackTrace();
         }
         //检查版本
-        if (PrefsUtil.getInt("versionCode", context) == 0) {
+        int versionCode = PrefsUtil.getInt("versionCode", context);
+        if (versionCode == 0) {
             PrefsUtil.clearData(context);
+        }
+        if(versionCode<18){
+            try {
+                int playId = PrefsUtil.getInt(MainService.CurrentMusic.PLAY_ID, context);
+                if (playId > 0) {
+                    PrefsUtil.putString(MainService.CurrentMusic.PLAY_ID, playId + "", this);
+                }
+            }catch (Exception e){
+            }
         }
         PrefsUtil.putInt("versionCode", PhoneUtils.getVersionCode(context), context);
         String url = PrefsUtil.getString("domain", this);

@@ -38,15 +38,18 @@ public class MsgCommentActivity extends BaseListActivity<MsgCommentBean> impleme
     int nodatares = R.drawable.ic_nocomment;
     private MsgCommentPresenter commentPresenter;
     private CommentDialog commentDialog;
+
     @Override
     protected void initPresenter() {
         commentPresenter = new MsgCommentPresenter(this, this);
         commentPresenter.init();
     }
+
     @Override
     public boolean hasPadding() {
         return false;
     }
+
     @Override
     public void initView() {
         setTitle("评论");
@@ -78,15 +81,16 @@ public class MsgCommentActivity extends BaseListActivity<MsgCommentBean> impleme
             mDataList.clear();
         }
         recycler.enableLoadMore(true);
-        for(MsgCommentBean commentBean:commentBeans){
+        for (MsgCommentBean commentBean : commentBeans) {
             mDataList.add(commentBean);
         }
         adapter.notifyDataSetChanged();
         recycler.onRefreshCompleted();
     }
+
     @Override
     public void loadFail() {
-        if (recycler == null){
+        if (recycler == null) {
             return;
         }
         recycler.onRefreshCompleted();
@@ -94,7 +98,7 @@ public class MsgCommentActivity extends BaseListActivity<MsgCommentBean> impleme
 
     @Override
     public void loadNoMore() {
-        if (recycler == null){
+        if (recycler == null) {
             return;
         }
         recycler.onRefreshCompleted();
@@ -103,7 +107,7 @@ public class MsgCommentActivity extends BaseListActivity<MsgCommentBean> impleme
 
     @Override
     public void loadNoData() {
-        if (recycler == null){
+        if (recycler == null) {
             return;
         }
         llNoData.setVisibility(View.VISIBLE);
@@ -155,24 +159,28 @@ public class MsgCommentActivity extends BaseListActivity<MsgCommentBean> impleme
         TextView tvMusicName;
         @Bind(R.id.tv_content)
         TextView tvContent;
+
         @OnClick(R.id.tv_reply)
         void replyClick() {
             showCommentDialog((MsgCommentBean) itemView.getTag());
         }
+
         @OnClick(R.id.ll_works)
-        void toWorks(){
-            MsgCommentBean msgCommentBean = (MsgCommentBean)itemView.getTag();
-            if(msgCommentBean.type==1){
-                if(msgCommentBean.itemid>0)
+        void toWorks() {
+            MsgCommentBean msgCommentBean = (MsgCommentBean) itemView.getTag();
+            if (StringUtils.isNotBlank(msgCommentBean.itemid)) {
+                if (msgCommentBean.type == 1) {
                     PlayAudioActivity.toPlayAudioActivity(context, msgCommentBean.itemid, "", MyCommon.MSG_COMMENT);
-            }else{
-                if(msgCommentBean.itemid>0)
+                } else {
                     LyricsdisplayActivity.toLyricsdisplayActivity(context, msgCommentBean.itemid, msgCommentBean.title);
+                }
             }
         }
+
         public SampleViewHolder(View itemView) {
             super(itemView);
         }
+
         @Override
         public void onBindViewHolder(int position) {
             MsgCommentBean commentBean = mDataList.get(position);
@@ -180,25 +188,29 @@ public class MsgCommentActivity extends BaseListActivity<MsgCommentBean> impleme
 
             tvContent.setText(StringStyleUtil.getCommentStyleStr(commentBean));
 
-            if(commentBean.createdate>0)tvTime.setText(DateTimeUtil.timestamp2Date(commentBean.createdate));
-            if (StringUtils.isNotBlank(commentBean.nickname))tvUserName.setText(commentBean.nickname);
-            if (StringUtils.isNotBlank(commentBean.headerurl)) loadImage(commentBean.headerurl, ivHead);
+            if (commentBean.createdate > 0)
+                tvTime.setText(DateTimeUtil.timestamp2Date(commentBean.createdate));
+            if (StringUtils.isNotBlank(commentBean.nickname))
+                tvUserName.setText(commentBean.nickname);
+            if (StringUtils.isNotBlank(commentBean.headerurl))
+                loadImage(commentBean.headerurl, ivHead);
 
-            if(commentBean.itemid>0) {
+            if (StringUtils.isNotBlank(commentBean.itemid)) {
                 tvMusicName.setVisibility(View.VISIBLE);
-                if (StringUtils.isNotBlank(commentBean.author)) tvAuthor.setText(commentBean.author);
-                if (StringUtils.isBlank(commentBean.title))commentBean.title = "未命名";
+                if (StringUtils.isNotBlank(commentBean.author))
+                    tvAuthor.setText(commentBean.author);
+                if (StringUtils.isBlank(commentBean.title)) commentBean.title = "未命名";
                 tvMusicName.setText(commentBean.title);
                 if (StringUtils.isNotBlank(commentBean.pic)) loadImage(commentBean.pic, ivCover);
-            }else{
+            } else {
                 tvMusicName.setVisibility(View.GONE);
-                loadImage("res:///"+R.drawable.ic_nodata_pic,ivCover);
+                loadImage("res:///" + R.drawable.ic_nodata_pic, ivCover);
                 tvAuthor.setText("抱歉，此作品已被删除！");
             }
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onItemClick(v,position);
+                    onItemClick(v, position);
                 }
             });
         }
@@ -209,6 +221,7 @@ public class MsgCommentActivity extends BaseListActivity<MsgCommentBean> impleme
         }
 
     }
+
     public void showCommentDialog(MsgCommentBean inforCommentBean) {
         if (commentDialog == null) {
             commentDialog = new CommentDialog(context, new CommentDialog.ICommentListener() {
@@ -222,18 +235,19 @@ public class MsgCommentActivity extends BaseListActivity<MsgCommentBean> impleme
             commentDialog.showDialog();
         }
     }
-    public void toSendComment(String content,MsgCommentBean inforCommentBean) {
+
+    public void toSendComment(String content, MsgCommentBean inforCommentBean) {
         if (content.trim().equals("")) {
             showMsg("评论不能为空！");
             return;
         }
-        commentPresenter.sendComment(inforCommentBean.itemid, 2, inforCommentBean.type,inforCommentBean.target_uid,content);
+        commentPresenter.sendComment(inforCommentBean.itemid, 2, inforCommentBean.type, inforCommentBean.target_uid, content);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(commentPresenter!=null)
+        if (commentPresenter != null)
             commentPresenter.cancelRequest();
     }
 }

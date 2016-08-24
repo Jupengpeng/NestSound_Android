@@ -124,7 +124,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     String author;
     String headurl;
     String name;
-    int id;
+    String id;
     String from;
     String gedanid;
     ActionMoreDialog actionMoreDialog;
@@ -149,7 +149,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
         return R.layout.activity_playaudio;
     }
 
-    public static void toPlayAudioActivity(Context context, int id, String gedanid, String from) {
+    public static void toPlayAudioActivity(Context context, String id, String gedanid, String from) {
         Intent intent = new Intent(context, PlayAudioActivity.class);
         intent.putExtra("id", id);
         intent.putExtra("from", from);
@@ -240,11 +240,11 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     public void initData() {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            id = bundle.getInt("id");
+            id = bundle.getString("id");
             from = bundle.getString("from", "");
             gedanid = bundle.getString("gedanid", "");
-            int playId = PrefsUtil.getInt("playId", context);
-            isCurrentMusic = (id == playId);
+            String playId = PrefsUtil.getString(MainService.CurrentMusic.PLAY_ID, context);
+            isCurrentMusic = (id.equals(playId));
         }
         actionBeanList = new ArrayList<>();
         viewPager.setAdapter(new PlayPagerAdapter(viewList));
@@ -352,7 +352,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
         } else {//下载并保存到本地
             imageUrl = MyCommon.getImageUrl(imageUrl, 200, 200);
             if(PermissionUtils.checkSdcardPermission(this)) {
-                downPicPresenter.downLoadPic(imageUrl, path);
+                downPicPresenter.downLoadBitmap(imageUrl, path);
             }
         }
     }
@@ -416,7 +416,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_more:
-                if (worksData != null && worksData.itemid > 0) {
+                if (worksData != null && StringUtils.isNotBlank(worksData.itemid)) {
                     if (shareDialog == null) {
                         shareDialog = new ShareDialog(PlayAudioActivity.this, worksData, 0);
                     }

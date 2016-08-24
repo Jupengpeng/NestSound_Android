@@ -50,11 +50,11 @@ public class MyWorkPresenter extends BasePresenter<IMyWorkView> {
             }
         });
     }
-    public void attend(String aid, int workid) {
+    public void attend(String aid, String workid) {
         params = new HashMap<>();
         params.put("userid", PrefsUtil.getUserId(context) + "");
         params.put("activityid", aid + "");
-        params.put("workid", workid + "");
+        params.put("workid", workid);
         httpUtils.post(MyHttpClient.getAttendUrl(), params, new MyStringCallback() {
             @Override
             public void onError(Call call, Exception e) {

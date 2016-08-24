@@ -14,7 +14,7 @@ import java.io.Serializable;
  */
 public class CommentBean implements Serializable {
     public int id;//评论ID
-    public int itemid;//作品ID
+    public String itemid;//作品ID
     public int type;//1=歌曲，2=歌词
     public int comment_type; //1=默认，2=跟帖
     public long createdate;//发布时间
@@ -36,11 +36,11 @@ public class CommentBean implements Serializable {
         this.id = id;
     }
 
-    public int getItemid() {
+    public String getItemid() {
         return itemid;
     }
 
-    public void setItemid(int itemid) {
+    public void setItemid(String itemid) {
         this.itemid = itemid;
     }
 

@@ -109,7 +109,7 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView {
             worksData = (WorksData) bundle.getSerializable(KeySet.WORKS_DATA);
             aid = bundle.getString(KeySet.KEY_ID, "");
         }
-        if (worksData.itemid == 0) worksData.type = 1;
+        if (StringUtils.isBlank(worksData.itemid)) worksData.type = 1;
         initEvent();
         initData();
     }
@@ -237,11 +237,11 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView {
     public void saveWordSuccess(String result) {
         if(isDestroy)return;
         cancelPd();
-        EventBus.getDefault().post(new Event.UpdataWorksList(worksData, 1, worksData.itemid == 0 ? 0 : 2));
-        if (worksData.itemid == 0&&StringUtils.isBlank(aid)) {//aid 存在 服务端不返回这两个值
+        EventBus.getDefault().post(new Event.UpdataWorksList(worksData, 1, StringUtils.isBlank(worksData.itemid) ? 0 : 2));
+        if (StringUtils.isBlank(worksData.itemid)&&StringUtils.isBlank(aid)) {//aid 存在 服务端不返回这两个值
             try {
                 String shareurl = new JSONObject(result).getString("shareurl");
-                int itemid = new JSONObject(result).getInt("itemid");
+                String itemid = new JSONObject(result).getString("itemid");
                 worksData.setShareurl(shareurl + "?id=" + itemid);
                 worksData.setItemid(itemid);
             } catch (JSONException e) {

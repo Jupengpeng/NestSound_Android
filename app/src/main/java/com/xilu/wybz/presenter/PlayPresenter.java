@@ -22,7 +22,7 @@ public class PlayPresenter extends BasePresenter<IPlayView> {
         super(context, iView);
     }
 
-    public void setCollectionState(int music_id, int target_uid) {
+    public void setCollectionState(String music_id, int target_uid) {
         params = new HashMap<>();
         params.put("user_id",PrefsUtil.getUserId(context)+"");;
         params.put("work_id", music_id+"");
@@ -44,10 +44,10 @@ public class PlayPresenter extends BasePresenter<IPlayView> {
             }
         });
     }
-    public void setZambiaState(int music_id, int target_uid) {
+    public void setZambiaState(String music_id, int target_uid) {
         params = new HashMap<>();
         params.put("user_id",PrefsUtil.getUserId(context)+"");;
-        params.put("work_id", music_id+"");
+        params.put("work_id", music_id);
         params.put("target_uid", target_uid+"");
         params.put("wtype", "1");
         httpUtils.post(MyHttpClient.getUpvoteUrl(), params, new MyStringCallback() {
@@ -65,9 +65,9 @@ public class PlayPresenter extends BasePresenter<IPlayView> {
         });
     }
     //删除作品
-    public void delete(int id) {
+    public void delete(String id) {
         params = new HashMap<>();
-        params.put("id",id+"");
+        params.put("id",id);
         params.put("type","1");//歌曲
         httpUtils.post(MyHttpClient.getDeleteWorksUrl(), params, new MyStringCallback() {
             @Override

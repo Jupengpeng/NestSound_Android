@@ -21,9 +21,9 @@ public class CommentPresenter extends BasePresenter<ICommentView>{
     public CommentPresenter(Context context, ICommentView iView) {
         super(context, iView);
     }
-    public void getCommentList(int itemid,int type,int page){
+    public void getCommentList(String itemid,int type,int page){
         params = new HashMap<>();
-        params.put("itemid",itemid+"");
+        params.put("itemid",itemid);
         params.put("type",type+"");
         params.put("page",page+"");
         httpUtils.get(MyHttpClient.getCommentListUrl(), params, new MyStringCallback(){
@@ -54,10 +54,10 @@ public class CommentPresenter extends BasePresenter<ICommentView>{
     * type 1=歌曲，2=歌词
     * comment_type 1=默认，发帖，2=跟帖，回复
      */
-    public void sendComment(int itemid,int comment_type,int type,int target_uid, String comment){
+    public void sendComment(String itemid,int comment_type,int type,int target_uid, String comment){
         params = new HashMap<>();
         params.put("uid", PrefsUtil.getUserId(context)+"");
-        params.put("itemid", itemid+"");
+        params.put("itemid", itemid);
         params.put("comment_type", comment_type+"");
         params.put("type", type+"");
         params.put("target_uid", target_uid+"");
@@ -80,10 +80,10 @@ public class CommentPresenter extends BasePresenter<ICommentView>{
         });
     }
     //删除评论
-    public void delComment(int id, int itemid, int pos, int type){
+    public void delComment(int id, String itemid, int pos, int type){
         params = new HashMap<>();
         params.put("id", id+"");
-        params.put("itemid", itemid+"");
+        params.put("itemid", itemid);
         params.put("type", type+"");
         httpUtils.post(MyHttpClient.getDelCommentUrl(), params, new MyStringCallback(){
             @Override

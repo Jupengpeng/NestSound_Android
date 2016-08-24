@@ -10,8 +10,7 @@ public class MatchWorkBean {
     public int userid;
     public String nickname;
     public String headurl;
-    public int itemid;
-    public int workid;
+    public String itemid;
     public String mp3;
     public String title;
     public String pic;

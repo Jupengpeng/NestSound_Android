@@ -143,7 +143,7 @@ public class MusicTalkMoreActivity extends BaseListActivity<MusicTalk> implement
     public void toPlayPos(int position){
         if (mDataList.size() > 0) {
             MusicTalk musicTalk = mDataList.get(position);
-            if(StringUtils.isBlank(musicTalk.url)&&musicTalk.itemid>0) {
+            if(StringUtils.isBlank(musicTalk.url)&&StringUtils.isNotBlank(musicTalk.itemid)) {
                 String playFrom = PrefsUtil.getString("playFrom", context);
                 if (!playFrom.equals(MyCommon.MUSICTALK) || MainService.ids.size() == 0) {
                     if (MainService.ids.size() > 0)

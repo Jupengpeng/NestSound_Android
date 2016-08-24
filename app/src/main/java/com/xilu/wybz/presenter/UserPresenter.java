@@ -79,7 +79,7 @@ public class UserPresenter extends BasePresenter<IUserView> {
     }
 
     //删除作品
-    public void delete(int id, int type) {
+    public void delete(String id, int type) {
         params = new HashMap<>();
         params.put("id", id + "");
         params.put("type", type + "");
@@ -104,10 +104,10 @@ public class UserPresenter extends BasePresenter<IUserView> {
     }
 
     //取消收藏
-    public void unfav(int music_id, int target_uid, int wtype) {
+    public void unfav(String itemid, int target_uid, int wtype) {
         params = new HashMap<>();
         params.put("user_id", PrefsUtil.getUserId(context) + "");
-        params.put("work_id", music_id + "");
+        params.put("work_id", itemid);
         params.put("target_uid", target_uid + "");
         params.put("wtype", "" + wtype);
         httpUtils.post(MyHttpClient.getWorkFovUrl(), params, new MyStringCallback() {
@@ -131,10 +131,10 @@ public class UserPresenter extends BasePresenter<IUserView> {
      * type 1歌曲 2歌词
      * status 0不公开 1公开
     */
-    public void updateWorksState(int id, int type, int status) {
+    public void updateWorksState(String id, int type, int status) {
         params = new HashMap<>();
         params.put("uid", PrefsUtil.getUserId(context) + "");
-        params.put("id", id + "");
+        params.put("id", id );
         params.put(type==1?"is_issue":"status", status + "");
         httpUtils.post(type==1?MyHttpClient.getUpdateMusicUrl():MyHttpClient.getUpdateLyricsUrl(), params, new MyStringCallback() {
             @Override

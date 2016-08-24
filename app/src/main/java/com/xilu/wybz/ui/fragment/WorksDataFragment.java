@@ -285,10 +285,10 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
     }
 
     //移除某个item
-    public void removeByItemid(int itemid) {
+    public void removeByItemid(String itemid) {
         int index = -1;
         for (int i = 0; i < mDataList.size(); i++) {
-            if (itemid == mDataList.get(i).itemid) {
+            if (itemid.equals(mDataList.get(i).itemid)) {
                 index = i;
                 break;
             }

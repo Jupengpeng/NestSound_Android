@@ -228,7 +228,7 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
             public void onItemClick(View view, int position) {
                 if (musicTalkList.size() > 0) {
                     MusicTalk musicTalk = musicTalkList.get(position);
-                    if (StringUtils.isBlank(musicTalk.url) && musicTalk.itemid > 0) {
+                    if (StringUtils.isBlank(musicTalk.url) && StringUtils.isNotBlank(musicTalk.itemid)) {
                         String playFrom = PrefsUtil.getString("playFrom", context);
                         if (!playFrom.equals(MyCommon.MUSICTALK) || MainService.ids.size() == 0) {
                             if (MainService.ids.size() > 0)
@@ -337,8 +337,8 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
                         if (MainService.ids.size() > 0)
                             MainService.ids.clear();
                         for (Banner bannerListBean : bannerList) {
-                            if (bannerListBean.getType() == 0 && bannerListBean.getItemid() > 0)
-                                MainService.ids.add(bannerListBean.getItemid());
+                            if (bannerListBean.getType() == 0 && StringUtils.isNotBlank(bannerListBean.itemid))
+                                MainService.ids.add(bannerListBean.itemid);
                         }
                     }
                     PlayAudioActivity.toPlayAudioActivity(context, bannerList.get(pos).getItemid(), "", MyCommon.BANNER);

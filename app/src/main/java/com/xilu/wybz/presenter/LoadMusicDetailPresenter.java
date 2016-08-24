@@ -26,10 +26,10 @@ public class LoadMusicDetailPresenter extends BasePresenter<IMusicDetailView> {
         super(context, iView);
     }
 
-    public void loadMusicDetail(int id) {
+    public void loadMusicDetail(String id) {
         params = new HashMap<>();
         params.put("uid", PrefsUtil.getUserId(context) + "");
-        params.put("id", id + "");
+        params.put("id", id);
         httpUtils.get(MyHttpClient.getMusicWorkUrl(), params, new MyStringCallback() {
             @Override
             public void onError(Call call, Exception e) {
@@ -49,7 +49,7 @@ public class LoadMusicDetailPresenter extends BasePresenter<IMusicDetailView> {
             @Override
             public void onResponse(String response) {
                 WorksData currMdb = ParseUtils.getWorkData(context, response);
-                if (currMdb != null && currMdb.itemid > 0) {
+                if (currMdb != null) {
                     iView.showMusicDetail(currMdb);
                 }else{
                     iView.loadFail();
