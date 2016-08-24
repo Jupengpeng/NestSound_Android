@@ -1,5 +1,6 @@
 package com.xilu.wybz.ui.lyrics;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,6 +11,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,6 +33,8 @@ import com.xilu.wybz.presenter.SaveWordPresenter;
 import com.xilu.wybz.ui.IView.IMyWorkView;
 import com.xilu.wybz.ui.IView.ISaveWordView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
+import com.xilu.wybz.utils.AppConstant;
+import com.xilu.wybz.utils.GalleryUtils;
 import com.xilu.wybz.utils.ImageUtils;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtils;
@@ -163,7 +167,7 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_cover:
-                SystemUtils.openGallery(this);
+                GalleryUtils.getInstance().selectPicture(this);
                 break;
         }
     }
@@ -196,6 +200,7 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView {
         getMenuInflater().inflate(R.menu.menu_makeword, menu);
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -215,7 +220,7 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView {
                         uploadCoverPic();
                 } else {
                     showPd("正在修改中，请稍候...");
-                    saveWordPresenter.saveLyrics(worksData,aid);
+                    saveWordPresenter.saveLyrics(worksData, aid);
                 }
                 if (materialDialog != null) {
                     materialDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
@@ -235,10 +240,10 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView {
 
     @Override
     public void saveWordSuccess(String result) {
-        if(isDestroy)return;
+        if (isDestroy) return;
         cancelPd();
         EventBus.getDefault().post(new Event.UpdataWorksList(worksData, 1, StringUtils.isBlank(worksData.itemid) ? 0 : 2));
-        if (StringUtils.isBlank(worksData.itemid)&&StringUtils.isBlank(aid)) {//aid 存在 服务端不返回这两个值
+        if (StringUtils.isBlank(worksData.itemid) && StringUtils.isBlank(aid)) {//aid 存在 服务端不返回这两个值
             try {
                 String shareurl = new JSONObject(result).getString("shareurl");
                 String itemid = new JSONObject(result).getString("itemid");
@@ -250,13 +255,13 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView {
         }
         worksData.createdate = System.currentTimeMillis();
         //新增或者更新
-        if(StringUtils.isNotBlank(aid)) {
+        if (StringUtils.isNotBlank(aid)) {
             EventBus.getDefault().post(new Event.AttendMatchSuccessEvent());
         }
         PrefsUtil.putString(KeySet.LOCAL_LYRICS, "", context);
         EventBus.getDefault().post(new Event.SaveLyricsSuccessEvent(1, worksData));//新建歌词页面
         EventBus.getDefault().post(new Event.SaveLyricsSuccessEvent(2, worksData));//歌词展示页面
-        if(StringUtils.isBlank(aid))//参加活动的作品 由于服务端没有返回分享地址 故不能跳转
+        if (StringUtils.isBlank(aid))//参加活动的作品 由于服务端没有返回分享地址 故不能跳转
             ShareActivity.toShareActivity(context, worksData);
         finish();
     }
@@ -287,35 +292,37 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == MyCommon.requestCode_photo && data != null) {
-            Uri uri = data.getData();
-            if (uri != null) {
-                String thePath = ImageUtils.getAbsolutePathFromNoStandardUri(uri);
-                if (TextUtils.isEmpty(thePath)) {
-                    coverPath = ImageUtils.getPath(this, uri);
-                } else {
-                    coverPath = thePath;
-                }
-                if (TextUtils.isEmpty(coverPath)) {
-                    showMsg("图片读取失败~");
-                    return;
-                }
-                File picture = new File(coverPath);
-                BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
-                //获取图片的旋转角度
-                int degree = ImageUtils.readPictureDegree(picture.getAbsolutePath());
-                if (degree > 0) {//大于0的时候需要调整角度
-                    String imagePath = FileDir.coverPic + System.currentTimeMillis() + ".jpg";
-                    Bitmap cameraBitmap = BitmapFactory.decodeFile(coverPath, bitmapOptions);
-                    Bitmap bitmap = ImageUtils.rotaingImageView(degree, cameraBitmap);
-                    ImageUtils.saveBitmap(bitmap, imagePath);
-                    coverPath = imagePath;
-
-                }
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
+        if (null == data) {
+            return;
+        }
+        Uri uri = null;
+        if (requestCode == AppConstant.KITKAT_LESS) {
+            uri = data.getData();
+            Log.d("tag", "uri=" + uri);
+            // 调用裁剪方法
+            if (!new File(FileDir.coverPic).exists()) new File(FileDir.coverPic).mkdirs();
+            coverPath = FileDir.coverPic + System.currentTimeMillis() + ".jpg";
+            Uri imgUri = Uri.fromFile(new File(coverPath));
+            GalleryUtils.getInstance().cropPicture(this, uri, imgUri, 1, 1, 750, 750);
+        } else if (requestCode == AppConstant.KITKAT_ABOVE) {
+            uri = data.getData();
+            Log.d("tag", "uri=" + uri);
+            // 先将这个uri转换为path，然后再转换为uri
+            String thePath = GalleryUtils.getInstance().getPath(this, uri);
+            if (!new File(FileDir.coverPic).exists()) new File(FileDir.coverPic).mkdirs();
+            coverPath = FileDir.coverPic + System.currentTimeMillis() + ".jpg";
+            Uri imgUri = Uri.fromFile(new File(coverPath));
+            GalleryUtils.getInstance().cropPicture(this,
+                    Uri.fromFile(new File(thePath)), imgUri, 1, 1, 750, 750);
+        } else if (requestCode == AppConstant.INTENT_CROP) {
+            if (new File(coverPath).exists()) {
                 loadImage("file://" + coverPath, iv_cover);
                 worksData.setPic(coverPath);
             } else {
-                showMsg("图片读取失败！");
+                showMsg("裁切失败");
             }
         }
     }

@@ -298,7 +298,6 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView,I
             return;
         }
         String newWorksData = new Gson().toJson(worksData);
-
         if (!newWorksData.equals(oldWorksData)) {
             new MaterialDialog.Builder(context)
                     .content("是否保存到草稿箱？")
@@ -312,11 +311,9 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView,I
                             bean.draftdesc = worksData.detail;
                             bean.content = worksData.lyrics.replaceAll("[\\t\\n\\r]","\n");
                             bean.createtime = String.valueOf(System.currentTimeMillis());
-
 //                            LyricsDraftUtils.save(bean);
                             draftPresenter.saveDraft(bean);
                             showPd("正在保存中");
-
 //                            PrefsUtil.putString(KeySet.LOCAL_LYRICS, "", context);
 //                            finish();
                         }
