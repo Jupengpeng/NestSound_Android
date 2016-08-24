@@ -598,6 +598,11 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     }
 
     @Override
+    public void downPicFail() {
+
+    }
+
+    @Override
     public void deleteSuccess() {
         cancelPd();
         //关闭音乐

@@ -137,7 +137,6 @@ public class MineActivity extends BaseActivity implements IModifyCoverView, ILoa
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-//        SystemBarHelper.immersiveStatusBar(this, 0);
         userBean = PrefsUtil.getUserInfo(context);
         setLocalUserInfo();
         mAppbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
@@ -222,6 +221,7 @@ public class MineActivity extends BaseActivity implements IModifyCoverView, ILoa
 
     public void setUserInfo(UserBean updateUserBean) {
         if (!firstLoadUserInfo) {
+            if(PrefsUtil.getUserId(context)==0)return;
             //更新本地数据
             userBean =PrefsUtil.getUserInfo(context);
             if (userBean.userid == 0){
@@ -255,12 +255,13 @@ public class MineActivity extends BaseActivity implements IModifyCoverView, ILoa
         if (StringUtils.isNotBlank(userBean.bgpic)) {
             String path = FileDir.mineBgPic + MD5Util.getMD5String(userBean.bgpic) + ".jpg";
             if (new File(path).exists()) {
-                loadHeadPic(path);
-            } else {//需要先下载图片
-                if (downPicPresenter == null) {
-                    downPicPresenter = new DownPicPresenter(context, MineActivity.this);
-                    downPicPresenter.downLoadPic(userBean.bgpic, path);
+                if(loadHeadPic(path)){
+                    return;
                 }
+            }
+            if (downPicPresenter == null) {
+                downPicPresenter = new DownPicPresenter(context, MineActivity.this);
+                downPicPresenter.downLoadPic(userBean.bgpic, path);
             }
         } else {
             ivHeadPic.setImageResource(R.mipmap.bg_top_mine);
@@ -268,7 +269,6 @@ public class MineActivity extends BaseActivity implements IModifyCoverView, ILoa
             ivBlurView.setImageBitmap(bmp);
         }
     }
-
     public void updateUserFansNum(UserInfoBean userBean) {
         userInfoBean = userBean;
         mFansNum.setText(NumberUtil.format(userBean.fansnum));
@@ -278,7 +278,6 @@ public class MineActivity extends BaseActivity implements IModifyCoverView, ILoa
         tvFovNum.setText(NumberUtil.format(userBean.fovnum));
         tvRecordNum.setText(NumberUtil.format(userBean.inspirenum));
     }
-
     //在修改个人资料页面发送过来的
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(Event.UpdateUserInfo event) {
@@ -479,11 +478,13 @@ public class MineActivity extends BaseActivity implements IModifyCoverView, ILoa
         loadHeadPic(newPath);
     }
 
-    public void loadHeadPic(String bgPicPath) {
+    public boolean loadHeadPic(String bgPicPath) {
         Bitmap bitmap = BitmapUtils.getSDCardImg(bgPicPath);
+        if (bitmap == null) return false;
         ivHeadPic.setImageBitmap(bitmap);
         Bitmap bmp = NativeStackBlur.process(bitmap, 200);
         ivBlurView.setImageBitmap(bmp);
+        return true;
     }
 
     @Override
@@ -500,6 +501,14 @@ public class MineActivity extends BaseActivity implements IModifyCoverView, ILoa
     public void setPic(String path) {
         loadHeadPic(path);
     }
+
+    @Override
+    public void downPicFail() {
+        ivHeadPic.setImageResource(R.mipmap.bg_top_mine);
+        Bitmap bmp = NativeStackBlur.process(BitmapUtils.ReadBitmapById(this, R.mipmap.bg_top_mine), 200);
+        ivBlurView.setImageBitmap(bmp);
+    }
+
     // 保存裁剪后的图片
     public void saveBitmap(Bitmap bitmap) {
         File file = new File(FileDir.mineBgPic);
@@ -517,6 +526,7 @@ public class MineActivity extends BaseActivity implements IModifyCoverView, ILoa
             e.printStackTrace();
         }
     }
+
     @Override
     public void onTabActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode != Activity.RESULT_OK) {
@@ -533,13 +543,13 @@ public class MineActivity extends BaseActivity implements IModifyCoverView, ILoa
         if (requestCode == AppConstant.KITKAT_LESS) {
             uri = data.getData();
             // 调用裁剪方法
-            if(!new File(FileDir.mineBgPic).exists())new File(FileDir.mineBgPic).mkdirs();
+            if (!new File(FileDir.mineBgPic).exists()) new File(FileDir.mineBgPic).mkdirs();
             bgPic = FileDir.mineBgPic + System.currentTimeMillis() + ".jpg";
             Uri imgUri = Uri.fromFile(new File(bgPic));
             GalleryUtils.getInstance().cropPicture(getParent(), uri, imgUri, 10, 7, 1080, 756);
         } else if (requestCode == AppConstant.KITKAT_ABOVE) {
             uri = data.getData();
-            if(!new File(FileDir.mineBgPic).exists())new File(FileDir.mineBgPic).mkdirs();
+            if (!new File(FileDir.mineBgPic).exists()) new File(FileDir.mineBgPic).mkdirs();
             bgPic = FileDir.mineBgPic + System.currentTimeMillis() + ".jpg";
             Uri imgUri = Uri.fromFile(new File(bgPic));
             // 先将这个uri转换为path，然后再转换为uri
@@ -547,9 +557,9 @@ public class MineActivity extends BaseActivity implements IModifyCoverView, ILoa
             GalleryUtils.getInstance().cropPicture(getParent(),
                     Uri.fromFile(new File(thePath)), imgUri, 10, 7, 1080, 756);
         } else if (requestCode == AppConstant.INTENT_CROP) {
-            if(new File(bgPic).exists()){
+            if (new File(bgPic).exists()) {
                 uploadCoverBg();
-            }else{
+            } else {
                 showMsg("裁切失败");
             }
         }

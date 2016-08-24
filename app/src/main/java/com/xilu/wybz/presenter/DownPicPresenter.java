@@ -34,13 +34,14 @@ public class DownPicPresenter extends BasePresenter<ILoadPicView>{
 
             @Override
             public void onError(Call call, Exception e) {
+                iView.downPicFail();
             }
             @Override
             public void onResponse(File response) {
                 if (response != null && response.exists()){
                     iView.setPic(path);
                 } else {
-                    return;
+                    iView.downPicFail();
                 }
             }
         });

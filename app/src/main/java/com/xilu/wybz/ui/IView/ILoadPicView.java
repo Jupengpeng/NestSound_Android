@@ -7,4 +7,5 @@ import android.graphics.Bitmap;
  */
 public interface ILoadPicView extends IBaseView {
     void setPic(String path);
+    void downPicFail();
 }
