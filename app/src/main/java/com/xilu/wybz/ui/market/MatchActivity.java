@@ -14,6 +14,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -98,6 +99,8 @@ public class MatchActivity extends BasePlayMenuActivity implements ViewPager.OnP
     @Bind(R.id.tv_join_num)
     TextView tvJoinNum;
     List<JoinUserBean> joinUserBeanList;
+    @Bind(R.id.ll_tab)
+    LinearLayout llTab;
     JoinUserAdapter adapter;
     int column = 8;
     ActionMoreDialog actionMoreDialog;
@@ -147,8 +150,14 @@ public class MatchActivity extends BasePlayMenuActivity implements ViewPager.OnP
         pflRoot.setPtrHandler(this);
         pflRoot.setKeepHeaderWhenRefresh(true);
         CommonFragementPagerAdapter commonFragementPagerAdapter = new CommonFragementPagerAdapter(getSupportFragmentManager());
-        fragmentList.add(MacthFragment.newInstance(aid, type, "0"));
-        fragmentList.add(MacthFragment.newInstance(aid, type, "1"));
+        if (status.equals("end")) {
+            fragmentList.add(MacthFragment.newInstance(aid, -1, "2"));
+            llTab.setVisibility(View.GONE);
+        }else{
+            fragmentList.add(MacthFragment.newInstance(aid, type, "0"));
+            fragmentList.add(MacthFragment.newInstance(aid, type, "1"));
+            llTab.setVisibility(View.VISIBLE);
+        }
         vpScroll.setAdapter(commonFragementPagerAdapter);
         vpScroll.addOnPageChangeListener(this);
         slRoot.getHelper().setCurrentScrollableContainer(fragmentList.get(0));

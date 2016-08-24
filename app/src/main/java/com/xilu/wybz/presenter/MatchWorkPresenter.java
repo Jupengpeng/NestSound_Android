@@ -23,8 +23,10 @@ public class MatchWorkPresenter extends BasePresenter<IMatchWorkView> {
     public void loadMatchWorkData(String aid, int type, String sort, int page) {
         params = new HashMap<>();
         params.put("aid", aid);
-        params.put("type", (type+1)+"");
-        params.put("sort", sort);
+        if(type!=-1) {
+            params.put("type", (type + 1) + "");
+            params.put("sort", sort);
+        }
         params.put("page", page + "");
         httpUtils.post(MyHttpClient.getMatchWorkList(), params, new AppJsonCalback(context) {
             @Override
@@ -45,7 +47,6 @@ public class MatchWorkPresenter extends BasePresenter<IMatchWorkView> {
                     iView.loadFail();
                 }
             }
-
             @Override
             public void onResultError(JsonResponse<? extends Object> response) {
                 super.onResultError(response);
