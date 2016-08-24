@@ -123,11 +123,11 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         initData();
-//        if(!PrefsUtil.getBoolean("isMakeSongTip",context)){
-//            makeSongTipDialog = new MakeSongTipDialog(context);
-//            makeSongTipDialog.showDialog();
-//            PrefsUtil.putBoolean("isMakeSongTip",true,context);
-//        }
+        if(!PrefsUtil.getBoolean("isMakeSongTip",context)){
+            makeSongTipDialog = new MakeSongTipDialog(context);
+            makeSongTipDialog.showDialog();
+            PrefsUtil.putBoolean("isMakeSongTip",true,context);
+        }
         if (MyApplication.getInstance().mMainService == null) {
             MyApplication.getInstance().bindMainService();
         }else{
