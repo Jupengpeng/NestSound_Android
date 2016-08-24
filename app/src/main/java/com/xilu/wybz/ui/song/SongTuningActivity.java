@@ -87,9 +87,9 @@ public class SongTuningActivity extends ToolbarActivity implements IMakeSongView
     protected void onResume() {
         super.onResume();
         helper = wave.getWaveSurfaceHelper();
+        MediaInstance.getInstance().destroy();
         initMediaPlayer();
         status = 0 ;
-        EventBus.getDefault().register(context);
         List<Short> data = WaveSurfaceHelper.dataCache;
         if (data != null){
             helper.onDrawWave(data, 0);
@@ -121,6 +121,7 @@ public class SongTuningActivity extends ToolbarActivity implements IMakeSongView
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(context);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         initData();
         makeSongPresenter = new MakeSongPresenter(context,this);
@@ -475,6 +476,7 @@ public class SongTuningActivity extends ToolbarActivity implements IMakeSongView
                 needPlay = false;
                 needSave = true;
                 tuningMusic();
+                showPd("歌曲正在美化..");
             } else {
                 worksData.recordurl = recordurl;
                 worksData.musicurl = musicUrl;

@@ -50,7 +50,7 @@ import butterknife.OnClick;
 /**
  * Created by Administrator on 2016/6/1.
  */
-public class SaveSongActivity extends ToolbarActivity implements ISaveSongView ,IDownloadMusicView{
+public class SaveSongActivity extends ToolbarActivity implements ISaveSongView, IDownloadMusicView {
 
 
     @Bind(R.id.et_content)
@@ -110,16 +110,18 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView ,
         initEvent();
     }
 
-    private void initEvent(){
+    private void initEvent() {
         etContent.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
             }
+
             @Override
             public void afterTextChanged(Editable s) {
                 worksData.setDetail(s.toString().trim());
@@ -182,7 +184,8 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView ,
     }
 
 
-    @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.SaveSongSeccess event) {
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(Event.SaveSongSeccess event) {
     }
 
 
@@ -193,7 +196,7 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView ,
             @Override
             public void onSuccess(String imageUrl) {
                 worksData.setPic(imageUrl);
-                if(materialDialog!=null&&materialDialog.isShowing())
+                if (materialDialog != null && materialDialog.isShowing())
                     saveSongPresenter.saveSong(worksData);
             }
 
@@ -227,12 +230,12 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView ,
         worksData.shareurl = response.getCompleteShareUrl();
         worksData.itemid = response.itemid;
 
-        worksData.playurl = MyHttpClient.ROOT_URL+worksData.musicurl;
+        worksData.playurl = MyHttpClient.ROOT_URL + worksData.musicurl;
         EventBus.getDefault().post(new Event.UpdataWorksList(worksData, 0, 0));
 
 
         cancelPd();
-        ShareActivity.toShareActivity(this,worksData);
+        ShareActivity.toShareActivity(this, worksData);
 
         finish();
     }
@@ -243,7 +246,6 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView ,
     }
 
 
-
     @OnClick(R.id.iv_cover)
     public void onClickCover() {
         SystemUtils.openGallery(this);
@@ -252,21 +254,21 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView ,
     @OnClick(R.id.iv_play)
     public void onClickPlay() {
 
-        if (StringUtils.isBlank(worksData.musicurl)){
+        if (StringUtils.isBlank(worksData.musicurl)) {
             showMsg("没有找到合成mp3文件");
             return;
         }
 
-        if(status == 0 || status == 6){
+        if (status == 0 || status == 6) {
 //            MediaInstance.getInstance().startMediaPlayAsync(worksData.musicurl);
-            MediaInstance.getInstance().startMediaPlayAsync(MyHttpClient.ROOT_URL+worksData.musicurl);
+            MediaInstance.getInstance().startMediaPlayAsync(MyHttpClient.ROOT_URL + worksData.musicurl);
 
             showWait();
 
             showbuttonPause();
             return;
         }
-        if ( MediaInstance.getInstance().isPlay()){
+        if (MediaInstance.getInstance().isPlay()) {
             MediaInstance.getInstance().pauseMediaPlay();
             showbuttonPlay();
         } else {
@@ -276,7 +278,8 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView ,
     }
 
     MaterialDialog wait;
-    private void showWait(){
+
+    private void showWait() {
         wait = new MaterialDialog.Builder(this)
                 .content("正在准备歌曲")
                 .progress(true, 0)
@@ -285,8 +288,8 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView ,
                 .show();
     }
 
-    private void cancelWait(){
-        if (wait != null){
+    private void cancelWait() {
+        if (wait != null) {
             wait.cancel();
             wait = null;
         }
@@ -301,36 +304,36 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView ,
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home){
-            needDestroy = false;
-        }
-        if (item.getItemId() == R.id.menu_publish) {
-            //先检查歌词的描述
-//            if(StringUtils.isBlank(worksData.detail)){
-//                showMsg("请先添加歌曲描述！");
-//                return true;
-//            }
-            if(StringUtils.isBlank(worksData.pic)){
-                showMsg("请先选择歌曲的封面！");
+
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                needDestroy = false;
+                finish();
                 return true;
-            }
-            needDestroy = true;
-            worksData.is_issue = cbIsopen.isChecked() ? 1:0;
-            showPd("正在发布中，请稍候...");
-            if(materialDialog!=null){
-                materialDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface dialog) {
-                        saveSongPresenter.cancelRequest();
-                    }
-                });
-            }
-            if(new File(worksData.pic).exists()){
-                uploadCoverPic();
-            }else{
-                saveSongPresenter.saveSong(worksData);
-            }
-            return true;
+            case R.id.menu_publish:
+
+                if (StringUtils.isBlank(worksData.pic)) {
+                    showMsg("请先选择歌曲的封面！");
+                    return true;
+                }
+                needDestroy = true;
+                worksData.is_issue = cbIsopen.isChecked() ? 1 : 0;
+                showPd("正在发布中，请稍候...");
+                if (materialDialog != null) {
+                    materialDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+                            saveSongPresenter.cancelRequest();
+                        }
+                    });
+                }
+                if (new File(worksData.pic).exists()) {
+                    uploadCoverPic();
+                } else {
+                    saveSongPresenter.saveSong(worksData);
+                }
+                return true;
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -371,32 +374,33 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView ,
     }
 
 
-    public void showbuttonPlay(){
+    public void showbuttonPlay() {
 
         ivPlay.setImageResource(R.drawable.ic_replay_play);
     }
 
-    public void showbuttonPause(){
+    public void showbuttonPause() {
         ivPlay.setImageResource(R.drawable.ic_replay_pause);
     }
 
     @Override
-    protected void onPause(){
+    protected void onPause() {
         super.onPause();
         MediaInstance.getInstance().pauseMediaPlay();
         showbuttonPlay();
     }
 
     boolean needDestroy = false;
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
-        if(needDestroy){
+        if (needDestroy) {
             MediaInstance.getInstance().stopMediaPlay();
             MediaInstance.getInstance().destroy();
         }
-        if (saveSongPresenter != null){
+        if (saveSongPresenter != null) {
             saveSongPresenter.cancelRequest();
         }
     }

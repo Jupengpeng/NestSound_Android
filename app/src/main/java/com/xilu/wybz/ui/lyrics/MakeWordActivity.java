@@ -34,6 +34,7 @@ import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtils;
 import com.xilu.wybz.utils.ToastUtils;
 import com.xilu.wybz.view.dialog.LyricsDialog;
+import com.xilu.wybz.view.dialog.MakeWordTipDialog;
 import com.xilu.wybz.view.materialdialogs.DialogAction;
 import com.xilu.wybz.view.materialdialogs.MaterialDialog;
 
@@ -90,6 +91,12 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView,I
         draftPresenter  = new DraftPresenter(context,this);
         makeWordPresenter = new MakeWordPresenter(context, this);
         makeWordPresenter.init();
+
+        if(!PrefsUtil.getBoolean("isMakeWordTip",context)){
+            MakeWordTipDialog wordTipDialog = new MakeWordTipDialog(context);
+            wordTipDialog.showDialog();
+            PrefsUtil.putBoolean("isMakeWordTip",true,context);
+        }
     }
 
     public void initData() {
