@@ -45,10 +45,8 @@ import com.xilu.wybz.utils.FileUtils;
 import com.xilu.wybz.utils.GalleryUtils;
 import com.xilu.wybz.utils.MD5Util;
 import com.xilu.wybz.utils.NumberUtil;
-import com.xilu.wybz.utils.PermissionUtils;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtils;
-import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.utils.UploadFileUtil;
 import com.xilu.wybz.view.CircleImageView;
 import com.xilu.wybz.view.IndexViewPager;
@@ -225,6 +223,10 @@ public class MineActivity extends BaseActivity implements IModifyCoverView, ILoa
     public void setUserInfo(UserBean updateUserBean) {
         if (!firstLoadUserInfo) {
             //更新本地数据
+            userBean =PrefsUtil.getUserInfo(context);
+            if (userBean.userid == 0){
+                return;
+            }
             if (updateUserBean.userid > 0) userBean.userid = updateUserBean.userid;
             if (StringUtils.isNotBlank(updateUserBean.nickname))
                 userBean.name = updateUserBean.nickname;
@@ -235,6 +237,7 @@ public class MineActivity extends BaseActivity implements IModifyCoverView, ILoa
             if (StringUtils.isNotBlank(updateUserBean.bgpic)) {
                 userBean.bgpic = updateUserBean.bgpic;
             }
+
             PrefsUtil.saveUserInfo(context, userBean);
             //更新本地我的信息
             setLocalUserInfo();

@@ -281,7 +281,7 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView,I
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(Event.UpdateLyricsData event) {
         worksData = event.getWorksData();
-        oldWorksData = new Gson().toJson(worksData);
+//        oldWorksData = new Gson().toJson(worksData);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -301,7 +301,7 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView,I
 
         if (!newWorksData.equals(oldWorksData)) {
             new MaterialDialog.Builder(context)
-                    .content("是否保存到本地？")
+                    .content("是否保存到草稿箱？")
                     .positiveText("保存")
                     .onPositive(new MaterialDialog.SingleButtonCallback() {
                         @Override
@@ -335,6 +335,7 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView,I
         }
     }
 
+    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             tipSaveLocalData();
