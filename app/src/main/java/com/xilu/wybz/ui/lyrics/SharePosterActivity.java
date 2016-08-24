@@ -1,5 +1,6 @@
 package com.xilu.wybz.ui.lyrics;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -7,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -20,8 +22,10 @@ import com.xilu.wybz.common.FileDir;
 import com.xilu.wybz.common.KeySet;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.ui.base.ToolbarActivity;
+import com.xilu.wybz.utils.AppConstant;
 import com.xilu.wybz.utils.BitmapUtils;
 import com.xilu.wybz.utils.DensityUtil;
+import com.xilu.wybz.utils.GalleryUtils;
 import com.xilu.wybz.utils.ImageLoadUtil;
 import com.xilu.wybz.utils.ImageUtils;
 import com.xilu.wybz.utils.PermissionUtils;
@@ -32,6 +36,7 @@ import com.xilu.wybz.view.dialog.ShareDialog;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
+
 import butterknife.Bind;
 import butterknife.OnClick;
 
@@ -54,6 +59,7 @@ public class SharePosterActivity extends ToolbarActivity {
     private String coverPath;
     private String savePath;
     private ShareDialog shareDialog;
+
     public static void toSharePosterActivity(Context context, WorksData worksData, String content) {
         Intent intent = new Intent(context, SharePosterActivity.class);
         intent.putExtra(KeySet.WORKS_DATA, worksData);
@@ -79,18 +85,17 @@ public class SharePosterActivity extends ToolbarActivity {
             worksData = (WorksData) bundle.getSerializable(KeySet.WORKS_DATA);
             content = bundle.getString(KeySet.CONTENT);
             tvContent.setText(content);
-            tvTitle.setText("『" + worksData.title.replace("\n","") + "』\n作词：" + worksData.author);
+            tvTitle.setText("『" + worksData.title.replace("\n", "") + "』\n作词：" + worksData.author);
             int width = DensityUtil.getScreenW(context);
-            int height = width * 2 / 3;
-            rlCover.setLayoutParams(new LinearLayout.LayoutParams(width, height));
-            if(StringUtils.isNotBlank(worksData.pic))
-            ImageLoadUtil.loadImage(context, worksData.pic, ivCover, width, height);
+            rlCover.setLayoutParams(new LinearLayout.LayoutParams(width, width));
+            if (StringUtils.isNotBlank(worksData.pic))
+                ImageLoadUtil.loadImage(context, worksData.pic, ivCover, width, width);
             ivCover.setDrawingCacheEnabled(true);
             llContent.setDrawingCacheEnabled(true);
         }
     }
 
-    @OnClick({R.id.rl_share, R.id.rl_save, R.id.iv_coice})
+    @OnClick({R.id.rl_share, R.id.rl_save, R.id.iv_choice})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.rl_share:
@@ -105,8 +110,8 @@ public class SharePosterActivity extends ToolbarActivity {
                     }
                 }
                 break;
-            case R.id.iv_coice:
-                SystemUtils.openGallery(this);
+            case R.id.iv_choice:
+                GalleryUtils.getInstance().selectPicture(this);
                 break;
             case R.id.rl_save:
                 savePic();
@@ -135,36 +140,38 @@ public class SharePosterActivity extends ToolbarActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == MyCommon.requestCode_photo && data != null) {
-            Uri uri = data.getData();
-            if (uri != null) {
-                String thePath = ImageUtils.getAbsolutePathFromNoStandardUri(uri);
-                if (TextUtils.isEmpty(thePath)) {
-                    coverPath = ImageUtils.getPath(this, uri);
-                } else {
-                    coverPath = thePath;
-                }
-                if (TextUtils.isEmpty(coverPath)) {
-                    showMsg("图片读取失败~");
-                    return;
-                }
-                File picture = new File(coverPath);
-                BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
-                //获取图片的旋转角度
-                int degree = ImageUtils.readPictureDegree(picture.getAbsolutePath());
-                if (degree > 0) {//大于0的时候需要调整角度
-                    String imagePath = FileDir.coverPic + System.currentTimeMillis() + ".jpg";
-                    Bitmap cameraBitmap = BitmapFactory.decodeFile(coverPath, bitmapOptions);
-                    Bitmap bitmap = ImageUtils.rotaingImageView(degree, cameraBitmap);
-                    ImageUtils.saveBitmap(bitmap, imagePath);
-                    coverPath = imagePath;
-                }
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
+        if (null == data) {
+            return;
+        }
+        Uri uri = null;
+        if (requestCode == AppConstant.KITKAT_LESS) {
+            uri = data.getData();
+            Log.d("tag", "uri=" + uri);
+            // 调用裁剪方法
+            if (!new File(FileDir.coverPic).exists()) new File(FileDir.coverPic).mkdirs();
+            coverPath = FileDir.coverPic + System.currentTimeMillis() + ".jpg";
+            Uri imgUri = Uri.fromFile(new File(coverPath));
+            GalleryUtils.getInstance().cropPicture(this, uri, imgUri, 1, 1, 750, 750);
+        } else if (requestCode == AppConstant.KITKAT_ABOVE) {
+            uri = data.getData();
+            Log.d("tag", "uri=" + uri);
+            // 先将这个uri转换为path，然后再转换为uri
+            String thePath = GalleryUtils.getInstance().getPath(this, uri);
+            if (!new File(FileDir.coverPic).exists()) new File(FileDir.coverPic).mkdirs();
+            coverPath = FileDir.coverPic + System.currentTimeMillis() + ".jpg";
+            Uri imgUri = Uri.fromFile(new File(coverPath));
+            GalleryUtils.getInstance().cropPicture(this,
+                    Uri.fromFile(new File(thePath)), imgUri, 1, 1, 750, 750);
+        } else if (requestCode == AppConstant.INTENT_CROP) {
+            if (new File(coverPath).exists()) {
                 int width = DensityUtil.getScreenW(context);
-                int height = width * 2 / 3;
-                ImageLoadUtil.loadImage(context, new File(coverPath) , ivCover, width, height);
+                ImageLoadUtil.loadImage(context, new File(coverPath), ivCover, width, width);
                 worksData.setPic(coverPath);
             } else {
-                showMsg("图片读取失败！");
+                showMsg("裁切失败");
             }
         }
     }
