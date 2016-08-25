@@ -103,6 +103,7 @@ public abstract class BaseListActivity<T> extends BasePlayMenuActivity implement
     public class ListAdapter extends BaseListAdapter {
 
         @Override
+
         protected BaseViewHolder onCreateNormalViewHolder(ViewGroup parent, int viewType) {
             return getViewHolder(parent, viewType);
         }
