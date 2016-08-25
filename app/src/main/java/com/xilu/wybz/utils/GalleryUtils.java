@@ -37,22 +37,24 @@ public class GalleryUtils {
      */
     @SuppressLint("InlinedApi")
     public void selectPicture(Activity activity) {
-        if (Build.VERSION.SDK_INT < 19) {
-            Intent intent = new Intent();
-            intent.setType("image/*");
-            intent.setAction(Intent.ACTION_GET_CONTENT);
-            //由于startActivityForResult()的第二个参数"requestCode"为常量，
-            //个人喜好把常量用一个类全部装起来，不知道各位大神对这种做法有异议没？
-            activity.startActivityForResult(intent, AppConstant.KITKAT_LESS);
-        } else {
-            Intent intent = new Intent();
-            intent.setType("image/*");
-            //由于Intent.ACTION_OPEN_DOCUMENT的版本是4.4以上的内容
-            //所以注意这个方法的最上面添加了@SuppressLint("InlinedApi")
-            //如果客户使用的不是4.4以上的版本，因为前面有判断，所以根本不会走else，
-            //也就不会出现任何因为这句代码引发的错误
-            intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
-            activity.startActivityForResult(intent, AppConstant.KITKAT_ABOVE);
+        if(PermissionUtils.checkSdcardPermission(activity)) {
+            if (Build.VERSION.SDK_INT < 19) {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                //由于startActivityForResult()的第二个参数"requestCode"为常量，
+                //个人喜好把常量用一个类全部装起来，不知道各位大神对这种做法有异议没？
+                activity.startActivityForResult(intent, AppConstant.KITKAT_LESS);
+            } else {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                //由于Intent.ACTION_OPEN_DOCUMENT的版本是4.4以上的内容
+                //所以注意这个方法的最上面添加了@SuppressLint("InlinedApi")
+                //如果客户使用的不是4.4以上的版本，因为前面有判断，所以根本不会走else，
+                //也就不会出现任何因为这句代码引发的错误
+                intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
+                activity.startActivityForResult(intent, AppConstant.KITKAT_ABOVE);
+            }
         }
     }
 
