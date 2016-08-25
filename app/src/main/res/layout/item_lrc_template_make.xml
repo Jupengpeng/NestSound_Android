@@ -48,5 +48,10 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:background="@drawable/template_word_line" />
+    <Space
+        android:id="@+id/space"
+        android:layout_width="match_parent"
+        android:layout_height="24dp"
+        android:visibility="gone"/>
 
 </LinearLayout>

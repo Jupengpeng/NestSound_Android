@@ -17,6 +17,8 @@ public class LyricsDraftBean implements Serializable{
     public String workname = "";
     public String draftdesc = "";
     public String createtime = "";
+    public int mp3time = 0;
+    public String mp3 = "";
 
     transient public String file = null;
 
