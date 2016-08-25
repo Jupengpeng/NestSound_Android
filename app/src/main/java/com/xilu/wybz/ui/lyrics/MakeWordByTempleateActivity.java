@@ -113,7 +113,7 @@ public class MakeWordByTempleateActivity extends BaseListActivity<TemplateLrcBea
             mp3time = lyricsDraftBean.mp3time;
             loadFootBar();
         }
-
+//        loadFootBar();
         mDataList = new ArrayList<>();
         mDataList.add(new TemplateLrcBean("歌名："+lyricsDraftBean.title,""));
         String content = lyricsDraftBean.content;
@@ -202,6 +202,9 @@ public class MakeWordByTempleateActivity extends BaseListActivity<TemplateLrcBea
                 seekBar.setEnabled(true);
                 playControl.setSelected(true);
                 status = 1;
+
+                int format =MediaInstance.getFormat(duration);
+                totalTime.setText(DateFormatUtils.formatTime(format));
             }
 
             @Override
@@ -212,6 +215,9 @@ public class MakeWordByTempleateActivity extends BaseListActivity<TemplateLrcBea
                 seekBar.setEnabled(true);
                 playControl.setSelected(true);
                 status = 1;
+
+                int format =MediaInstance.getFormat(duration);
+                totalTime.setText(DateFormatUtils.formatTime(format));
             }
 
             @Override
