@@ -202,6 +202,9 @@ public class MakeWordByTempleateActivity extends BaseListActivity<TemplateLrcBea
                 seekBar.setEnabled(true);
                 playControl.setSelected(true);
                 status = 1;
+
+                int format =MediaInstance.getFormat(duration);
+                totalTime.setText(DateFormatUtils.formatTime(format));
             }
 
             @Override
@@ -212,6 +215,9 @@ public class MakeWordByTempleateActivity extends BaseListActivity<TemplateLrcBea
                 seekBar.setEnabled(true);
                 playControl.setSelected(true);
                 status = 1;
+
+                int format =MediaInstance.getFormat(duration);
+                totalTime.setText(DateFormatUtils.formatTime(format));
             }
 
             @Override

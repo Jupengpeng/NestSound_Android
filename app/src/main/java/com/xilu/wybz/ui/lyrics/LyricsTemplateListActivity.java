@@ -5,6 +5,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.xilu.wybz.R;
@@ -12,6 +14,7 @@ import com.xilu.wybz.bean.LyricsDraftBean;
 import com.xilu.wybz.presenter.TemplateLrcListPresenter;
 import com.xilu.wybz.ui.IView.ITempleateListLrcView;
 import com.xilu.wybz.ui.base.BaseListActivity;
+import com.xilu.wybz.utils.StringUtils;
 import com.xilu.wybz.utils.ToastUtils;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.PullRecycler;
@@ -103,23 +106,32 @@ public class LyricsTemplateListActivity extends BaseListActivity<LyricsDraftBean
 
     class SampleViewHolder extends BaseViewHolder {
 
+        LinearLayout root;
         TextView text;
+        ImageView icon;
         public SampleViewHolder(View itemView) {
             super(itemView);
+            root = (LinearLayout)itemView.findViewById(R.id.lrc_template_root);
             text = (TextView)itemView.findViewById(R.id.lrc_template_name);
+            icon = (ImageView)itemView.findViewById(R.id.lrc_template_icon);
         }
 
         @Override
         public void onBindViewHolder(int position) {
             LyricsDraftBean bean = mDataList.get(position);
             text.setText(bean.title);
-            text.setOnClickListener(new View.OnClickListener() {
+            root.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     LyricsDraftBean bean = mDataList.get(position);
                     MakeWordByTempleateActivity.toMakeWordByTempleateActivity(LyricsTemplateListActivity.this,bean);
                 }
             });
+            if (StringUtils.isNotBlank(bean.mp3)){
+                icon.setVisibility(View.VISIBLE);
+            }else {
+                icon.setVisibility(View.GONE);
+            }
         }
 
         @Override
