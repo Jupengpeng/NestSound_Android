@@ -51,9 +51,11 @@ public class MediaInstance {
     }
 
     public void seekTo(int msec) {
-
+        if (!isPlay){
+            seek = msec;
+            return;
+        }
         int d = mediaPlayer.getDuration();
-
         mediaPlayer.seekTo(Math.min(d, msec));
     }
 
@@ -142,6 +144,7 @@ public class MediaInstance {
             mediaPlayer.setOnSeekCompleteListener(new MediaPlayer.OnSeekCompleteListener() {
                 @Override
                 public void onSeekComplete(MediaPlayer mp) {
+                    if (iml!= null) iml.onPlay();
                     mediaPlayer.start();
                 }
             });
@@ -166,15 +169,14 @@ public class MediaInstance {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
                     isPlay = false;
-                    mp.reset();
-                    mp.release();
+//                    mp.reset();
+//                    mp.release();
                     mediaPlayer = null;
                     if (iml != null) {
                         iml.onOver();
                     }
                 }
             });
-
             mediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
                 @Override
                 public boolean onError(MediaPlayer mp, int what, int extra) {
@@ -235,6 +237,15 @@ public class MediaInstance {
 
         timer.schedule(task, 50, 50);
 
+    }
+
+    public static int getFormat(int duration){
+        int time = duration/1000;
+        int space = duration%1000;
+        if (space > 300){
+            time++;
+        }
+        return time;
     }
 
 

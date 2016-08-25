@@ -13,7 +13,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.SeekBar;
+import android.widget.Space;
 import android.widget.TextView;
 
 import com.xilu.wybz.R;
@@ -22,9 +27,13 @@ import com.xilu.wybz.bean.TemplateLrcBean;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.KeySet;
+import com.xilu.wybz.common.MediaInstance;
+import com.xilu.wybz.common.interfaces.IMediaPlayerListener;
 import com.xilu.wybz.presenter.DraftPresenter;
 import com.xilu.wybz.ui.IView.ISimpleView;
+import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.ui.base.BaseListActivity;
+import com.xilu.wybz.utils.DateFormatUtils;
 import com.xilu.wybz.utils.StringUtils;
 import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.utils.ToastUtils;
@@ -47,7 +56,16 @@ public class MakeWordByTempleateActivity extends BaseListActivity<TemplateLrcBea
     LyricsDraftBean lyricsDraftBean;
 
 
+    //0:未开始  1：播放中  2：暂停  3：完成 4：准备中
+    private int status = 0;
 
+    private SeekBar seekBar;
+    private ImageView playControl;
+    private TextView curentTime;
+    private TextView totalTime;
+
+    String playurl = "http://audio.yinchao.cn/uploadfiles/2016/03/10/201603101650181457599818.mp3";
+    int mp3time = 0;
 
     public static void toMakeWordByTempleateActivity(Activity context,LyricsDraftBean bean){
         Intent intent = new Intent(context,MakeWordByTempleateActivity.class);
@@ -62,6 +80,14 @@ public class MakeWordByTempleateActivity extends BaseListActivity<TemplateLrcBea
     }
 
     @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        if (MyApplication.getInstance().mMainService != null) {
+            MyApplication.getInstance().mMainService.doRelease();
+        }
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
     public void initView() {
         setTitle("模板");
         hideRight();
@@ -70,8 +96,8 @@ public class MakeWordByTempleateActivity extends BaseListActivity<TemplateLrcBea
         recycler.enablePullToRefresh(false);
         recycler.enableLoadMore(false);
 //        recycler.getRecyclerView().setBackgroundColor(Color.parseColor("#fff8f8f8"));
-    }
 
+    }
 
     @Override
     protected void setUpData() {
@@ -80,6 +106,12 @@ public class MakeWordByTempleateActivity extends BaseListActivity<TemplateLrcBea
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             lyricsDraftBean = (LyricsDraftBean) bundle.getSerializable(KeySet.WORKS_DATA);
+        }
+
+        if (StringUtils.isNotBlank(lyricsDraftBean.mp3)){
+            playurl = lyricsDraftBean.mp3;
+            mp3time = lyricsDraftBean.mp3time;
+            loadFootBar();
         }
 
         mDataList = new ArrayList<>();
@@ -93,6 +125,136 @@ public class MakeWordByTempleateActivity extends BaseListActivity<TemplateLrcBea
 
     }
 
+    public void loadFootBar() {
+
+        ViewStub stub = (ViewStub) findViewById(R.id.view_footbar_send);
+        stub.setLayoutResource(R.layout.view_footbar_player);
+        LinearLayout llFootBar = (LinearLayout) stub.inflate();
+
+        seekBar = (SeekBar) llFootBar.findViewById(R.id.playSeekBar);
+        playControl = (ImageView) llFootBar.findViewById(R.id.iv_play);
+        curentTime = (TextView) llFootBar.findViewById(R.id.tv_time);
+        totalTime = (TextView) llFootBar.findViewById(R.id.tv_alltime);
+
+        curentTime.setText(DateFormatUtils.formatTime(0));
+        totalTime.setText(DateFormatUtils.formatTime(mp3time));
+
+        seekBar.setMax(mp3time);
+
+        seekBar.setEnabled(false);
+
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                MediaInstance.getInstance().seekTo(seekBar.getProgress());
+            }
+        });
+        playControl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickPlayControl();
+            }
+        });
+
+        initMediaPlayer();
+    }
+
+    public void onClickPlayControl(){
+
+
+
+        if (status == 2 && !playControl.isSelected()){
+            MediaInstance.getInstance().resumeMediaPlay();
+            return;
+        }
+        if (status == 1 && playControl.isSelected()){
+            MediaInstance.getInstance().pauseMediaPlay();
+            return;
+        }
+        if (status == 0){
+            MediaInstance.getInstance().startMediaPlayAsync(playurl);
+            return;
+        }
+        MediaInstance.getInstance().stopMediaPlay();
+        MediaInstance.getInstance().startMediaPlayAsync(playurl);
+
+    }
+
+
+    public void initMediaPlayer(){
+
+        MediaInstance.getInstance().setIMediaPlayerListener(new IMediaPlayerListener() {
+            @Override
+            public void onStart() {
+                MediaInstance.getInstance().startTimerTask();
+                int duration = MediaInstance.getInstance().mediaPlayer.getDuration();
+                seekBar.setMax(duration);
+                seekBar.setEnabled(true);
+                playControl.setSelected(true);
+                status = 1;
+            }
+
+            @Override
+            public void onPlay() {
+                MediaInstance.getInstance().startTimerTask();
+                int duration = MediaInstance.getInstance().mediaPlayer.getDuration();
+                seekBar.setMax(duration);
+                seekBar.setEnabled(true);
+                playControl.setSelected(true);
+                status = 1;
+            }
+
+            @Override
+            public void onPause() {
+                MediaInstance.getInstance().stopTimerTask();
+                playControl.setSelected(false);
+                seekBar.setEnabled(true);
+                status = 2;
+            }
+
+
+            @Override
+            public void onStop() {
+                MediaInstance.getInstance().stopTimerTask();
+                playControl.setSelected(false);
+                status = 3;
+            }
+
+            @Override
+            public void onOver() {
+                MediaInstance.getInstance().stopTimerTask();
+                playControl.setSelected(false);
+                status = 3;
+            }
+
+            @Override
+            public void onError() {
+                MediaInstance.getInstance().stopTimerTask();
+                playControl.setSelected(false);
+                status = 3;
+                ToastUtils.toast(context,"播放出错啦");
+            }
+        });
+
+        MediaInstance.getInstance().setOnProgressLitsener(new MediaInstance.OnProgressLitsener() {
+            @Override
+            public void progress(int progress) {
+                int format =MediaInstance.getFormat(progress);
+                seekBar.setProgress(progress);
+                curentTime.setText(DateFormatUtils.formatTime(format));
+            }
+        });
+    }
 
 
     @Override
@@ -195,6 +357,7 @@ public class MakeWordByTempleateActivity extends BaseListActivity<TemplateLrcBea
 
         if (StringUtils.isBlank(bean.title) && StringUtils.isBlank(bean.content)){
             finish();
+            return;
         }
 
         bean.createtime = String.valueOf(System.currentTimeMillis());
@@ -263,15 +426,23 @@ public class MakeWordByTempleateActivity extends BaseListActivity<TemplateLrcBea
 
         TextView templateWord;
         EditText lrcWord;
+        Space space;
         public SampleViewHolder(View itemView) {
             super(itemView);
             templateWord = (TextView) itemView.findViewById(R.id.lrc_template_temp);
             lrcWord = (EditText) itemView.findViewById(R.id.lrc_template_make);
+            space = (Space) itemView.findViewById(R.id.space);
         }
 
         @Override
         public void onBindViewHolder(int position) {
             final TemplateLrcBean template = mDataList.get(position);
+
+            if (position == mDataList.size()-1){
+                space.setVisibility(View.VISIBLE);
+            }else {
+                space.setVisibility(View.GONE);
+            }
             templateWord.setText(template.template);
             lrcWord.setText(template.lrcWord);
 //            lrcWord.setHint(template.template);
@@ -297,5 +468,11 @@ public class MakeWordByTempleateActivity extends BaseListActivity<TemplateLrcBea
         public void onItemClick(View view, int position) {
 
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        MediaInstance.getInstance().destroy();
     }
 }

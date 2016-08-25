@@ -6,14 +6,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.SpannableString;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -24,7 +22,6 @@ import com.xilu.wybz.R;
 import com.xilu.wybz.bean.ActionBean;
 import com.xilu.wybz.bean.CommentBean;
 import com.xilu.wybz.bean.MsgCommentBean;
-import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.KeySet;
 import com.xilu.wybz.common.MyCommon;
@@ -45,12 +42,12 @@ import com.xilu.wybz.view.dialog.ActionMoreDialog;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.PullRecycler;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
-
-import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by Administrator on 2016/5/25.
