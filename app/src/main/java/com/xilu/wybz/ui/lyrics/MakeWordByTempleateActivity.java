@@ -113,7 +113,7 @@ public class MakeWordByTempleateActivity extends BaseListActivity<TemplateLrcBea
             mp3time = lyricsDraftBean.mp3time;
             loadFootBar();
         }
-
+//        loadFootBar();
         mDataList = new ArrayList<>();
         mDataList.add(new TemplateLrcBean("歌名："+lyricsDraftBean.title,""));
         String content = lyricsDraftBean.content;
