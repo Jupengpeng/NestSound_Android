@@ -34,7 +34,7 @@ import butterknife.Bind;
 public class MusicTalkMoreActivity extends BaseListActivity<MusicTalk> implements IMusicTalkMoreView {
     private int page = 1;
     private int action = 0;
-    private String nodata = "暂无歌单";
+    private String nodata = "暂无更多乐说";
     private MusicTalkMorePresenter musicTalkMorePresenter;
 
     @Override

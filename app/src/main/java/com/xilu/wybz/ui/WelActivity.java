@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.xilu.wybz.BuildConfig;
@@ -21,12 +23,12 @@ import butterknife.ButterKnife;
 public class WelActivity extends BaseActivity {
     public static final int CODE = 1;
 
-    @Bind(R.id.rl_main)
-    RelativeLayout rlMain;
-
+    @Bind(R.id.iv_logo)
+    ImageView ivLogo;
+    @Bind(R.id.ll_main)
+    LinearLayout llMain;
     private boolean isConsole = false;
     private Handler handler;
-    private Runnable runnable;
 
     @Override
     protected int getLayoutRes() {
@@ -51,13 +53,12 @@ public class WelActivity extends BaseActivity {
 //            rlMain.setBackgroundResource(R.drawable.bg_wel);
 //        }
 
-        rlMain.setBackgroundResource(R.drawable.bg_wel);
 //        getDomainUtil.getNewIp();
         if(PrefsUtil.getUserId(context)>0){
             getDomainUtil.getCheck();
         }
         if (BuildConfig.DEBUG){
-            rlMain.setOnClickListener(new View.OnClickListener() {
+            llMain.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     isConsole = true;
@@ -97,17 +98,7 @@ public class WelActivity extends BaseActivity {
         Intent intent = new Intent(WelActivity.this, MainTabActivity.class);
         startActivity(intent);
         finish();
-//        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-    }
-
-    @Override
-    public void onBackPressed() {
-//        super.onBackPressed();
-    }
-
-    @Override
-    public void finish() {
-        super.finish();
+        overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
     }
 
     @Override
