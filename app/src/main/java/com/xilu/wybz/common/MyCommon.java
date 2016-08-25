@@ -39,6 +39,7 @@ public class MyCommon {
     public static final String MSG_FOV = "msg_fov";
     public static final String MATCH_NEW = "MATCH_NEW";
     public static final String MATCH_HOT = "MATCH_HOT";
+    public static final String MATCH_END = "MATCH_END";
     public static final String MSG_COMMENT = "msg_comment";
     public static final String NEWS = "news";
     public static final String BANNER = "banner";
@@ -95,6 +96,7 @@ public class MyCommon {
 
         map.put(MATCH_NEW, 2);//banner
         map.put(MATCH_HOT, 2);//banner
+        map.put(MATCH_END, 2);//banner
         map.put(BANNER, 2);//banner
         map.put(MUSICTALK_MORE, 2);//乐说更多
         map.put(TUIJIAN, 2);//推荐作品

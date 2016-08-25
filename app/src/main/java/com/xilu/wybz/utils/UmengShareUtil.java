@@ -97,40 +97,29 @@ public class UmengShareUtil {
                     break;
             }
         } else {
-            SHARE_MEDIA share_media = null;
-            switch (type) {
-                case 1:
-                    share_media = SHARE_MEDIA.SINA;
-                    break;
-                case 2:
-                    share_media = SHARE_MEDIA.WEIXIN;
-                    break;
-                case 3:
-                    share_media = SHARE_MEDIA.WEIXIN_CIRCLE;
-                    break;
-                case 4:
-                    share_media = SHARE_MEDIA.QQ;
-                    break;
-                case 5:
-                    share_media = SHARE_MEDIA.QZONE;
-                    break;
+            SHARE_MEDIA share_media=null;
+            switch (type){
+                case 1:share_media = SHARE_MEDIA.SINA;break;
+                case 2:share_media = SHARE_MEDIA.WEIXIN;break;
+                case 3:share_media = SHARE_MEDIA.WEIXIN_CIRCLE;break;
+                case 4:share_media = SHARE_MEDIA.QQ;break;
+                case 5:share_media = SHARE_MEDIA.QZONE;break;
             }
-            ShareAction action = new ShareAction(activity);
+            ShareAction action =  new ShareAction(activity);
             action.setPlatform(share_media).setCallback(umShareListener);
-            if (type > 1) {
+            if(type>1){
                 action.withTitle(shareBean.title);
                 action.withTargetUrl(shareBean.link);
             }
-            if (music != null && type > 1) {
+            if(music!=null&&type>1){
                 action.withMedia(music);
                 action.withText(shareBean.author);
-            } else {
-                if (image != null)
+            }else{
+                if(image!=null)
                     action.withMedia(image);
                 action.withText(shareBean.content);
             }
             action.share();
-
         }
     }
 

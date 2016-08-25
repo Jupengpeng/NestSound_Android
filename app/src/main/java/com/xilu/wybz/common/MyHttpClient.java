@@ -278,7 +278,7 @@ public class MyHttpClient {
     }
 
     public static String getUpdateLyricsUrl() {
-        return "musiopt/updateLyrics";
+        return "lyricsopt/updateLyrics";
     }
 
     //伴奏分类
@@ -323,6 +323,10 @@ public class MyHttpClient {
     //专题活动作品列表
     public static String getMatchWorkList() {
         return "common/activity/worklist";
+    }
+    //专题活动作品列表
+    public static String getOverMatchWorkList() {
+        return "common/activity/overlist";
     }
 
     //专题活动作品列表

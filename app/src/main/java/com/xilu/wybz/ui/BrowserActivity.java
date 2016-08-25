@@ -98,7 +98,7 @@ public class BrowserActivity extends ToolbarActivity {
         webSettings.setJavaScriptEnabled(true);// 设置支持JS脚本
         webSettings.setDisplayZoomControls(false);// 隐藏缩放按钮
         webSettings.setAllowFileAccess(true); // 设置允许访问文件数据
-        webSettings.setCacheMode(WebSettings.LOAD_DEFAULT);//设置 缓存模式
+        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);//设置 缓存模式
         webSettings.setDomStorageEnabled(true);// 开启 DOM storage API 功能
         mWebView.setDownloadListener(new MyWebViewDownLoadListener());
         mWebView.setWebChromeClient(new MyWebViewChromeClient()); // 处理解析，渲染网页等浏览器做的事情

@@ -15,6 +15,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -99,8 +100,10 @@ public class MatchActivity extends BasePlayMenuActivity implements ViewPager.OnP
     @Bind(R.id.tv_join_num)
     TextView tvJoinNum;
     List<JoinUserBean> joinUserBeanList;
-    @Bind(R.id.ll_tab)
-    LinearLayout llTab;
+    @Bind(R.id.rl_tab)
+    RelativeLayout rlTab;
+    @Bind(R.id.tv_head)
+    TextView tvHead;
     JoinUserAdapter adapter;
     int column = 8;
     ActionMoreDialog actionMoreDialog;
@@ -151,12 +154,14 @@ public class MatchActivity extends BasePlayMenuActivity implements ViewPager.OnP
         pflRoot.setKeepHeaderWhenRefresh(true);
         CommonFragementPagerAdapter commonFragementPagerAdapter = new CommonFragementPagerAdapter(getSupportFragmentManager());
         if (status.equals("end")) {
-            fragmentList.add(MacthFragment.newInstance(aid, -1, "2"));
-            llTab.setVisibility(View.GONE);
-        }else{
+            fragmentList.add(MacthFragment.newInstance(aid, type, "2"));
+            rlTab.setVisibility(View.GONE);
+            tvHead.setVisibility(View.VISIBLE);
+        } else {
             fragmentList.add(MacthFragment.newInstance(aid, type, "0"));
             fragmentList.add(MacthFragment.newInstance(aid, type, "1"));
-            llTab.setVisibility(View.VISIBLE);
+            rlTab.setVisibility(View.VISIBLE);
+            tvHead.setVisibility(View.GONE);
         }
         vpScroll.setAdapter(commonFragementPagerAdapter);
         vpScroll.addOnPageChangeListener(this);
@@ -350,7 +355,7 @@ public class MatchActivity extends BasePlayMenuActivity implements ViewPager.OnP
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(Event.UpdataCommentListEvent event) {
         if (isDestroy) return;
-        if (fragmentList != null && fragmentList.size() == 2) {
+        if (fragmentList != null && fragmentList.size() > 0) {
             fragmentList.get(vpScroll.getCurrentItem()).updateCommentItem(event.getCommentList());
         }
     }
@@ -361,12 +366,14 @@ public class MatchActivity extends BasePlayMenuActivity implements ViewPager.OnP
         matchPresenter.getMatchInfo(aid);//更新head信息
         matchPresenter.getUserList(aid, 1);//更新head信息.
 
-        if (fragmentList.size() > 0 && fragmentList.get(0) != null) {
-            if(vpScroll.getCurrentItem()==1){
+        if (fragmentList.size() > 0) {
+            if (vpScroll.getCurrentItem() == 1) {
                 vpScroll.setCurrentItem(0);
             }
-            fragmentList.get(0).updateData();
-            fragmentList.get(1).updateData();
+            if (fragmentList.get(0) != null)
+                fragmentList.get(0).updateData();
+            if (fragmentList.get(1) != null)
+                fragmentList.get(1).updateData();
         }
     }
 }

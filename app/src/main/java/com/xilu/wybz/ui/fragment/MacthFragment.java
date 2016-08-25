@@ -89,7 +89,7 @@ public class MacthFragment extends BaseListFragment<MatchWorkBean> implements Sc
             sort = getArguments().getString(KeySet.KEY_SORT);
             aid = getArguments().getString(KeySet.KEY_ID);
         }
-        from = sort.equals("0") ? MyCommon.MATCH_NEW : MyCommon.MATCH_HOT;
+        from = sort.equals("0") ? MyCommon.MATCH_NEW : sort.equals("1")?MyCommon.MATCH_HOT:MyCommon.MATCH_HOT;
     }
 
     @Override

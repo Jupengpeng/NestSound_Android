@@ -77,7 +77,7 @@ public class ModifyUserInfoActivity extends ToolbarActivity implements IModifyUs
     public void modifyUserInfoSuccess() {
         cancelPd();
         showMsg("修改成功");
-        initUserInfo();
+        updateInfo();
     }
 
     @Override
@@ -88,11 +88,11 @@ public class ModifyUserInfoActivity extends ToolbarActivity implements IModifyUs
     @Override
     public void initView() {
         setTitle("完善个人信息");
-        userBean = PrefsUtil.getUserInfo(context);
         initUserInfo();
     }
 
     public void initUserInfo() {
+        userBean = PrefsUtil.getUserInfo(context);
         tv_username.setText(userBean.nickname);
         tv_usersign.setText(userBean.signature);
         tv_birthday.setText(userBean.birthday);
@@ -103,13 +103,18 @@ public class ModifyUserInfoActivity extends ToolbarActivity implements IModifyUs
             }
             loadImage(userBean.headurl, iv_head);
         }
-        //通知我的个人主页更新
+    }
+    public void updateInfo(){
         UserBean bean = PrefsUtil.getUserInfo(context);
         bean.headurl = userBean.headurl;
+        bean.nickname = userBean.nickname;
+        bean.signature = userBean.signature;
+        bean.birthday = userBean.birthday;
+        bean.sex = userBean.sex;
         PrefsUtil.saveUserInfo(context, bean);
         EventBus.getDefault().post(new Event.UpdateUserInfo());
+        initUserInfo();
     }
-
     @OnClick({R.id.ll_userhead, R.id.ll_username, R.id.ll_sign, R.id.ll_gender, R.id.ll_birthday})
     public void onClick(View view) {
         switch (view.getId()) {

@@ -62,14 +62,6 @@ public class MyApplication extends Application implements ServiceConnection {
     public void onCreate() {
         super.onCreate();
         context = this;
-        FileUtils.delFiles(context.getCacheDir());
-        //清理Webview缓存数据库
-        try {
-            deleteDatabase("webview.db");
-            deleteDatabase("webviewCache.db");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         //检查版本
         int versionCode = PrefsUtil.getInt("versionCode", context);
         if (versionCode == 0) {
