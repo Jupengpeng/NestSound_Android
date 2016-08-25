@@ -28,8 +28,8 @@ public class WorksData implements Serializable {
     public int mp3times;//mp3时长
     public String hotmp3;//伴奏播放地址
     public int hotmp3times;//伴奏时长 秒
-    public int status;//1歌曲 2歌词
-    public int type;//是否公开 0不公开 1公开
+    public int status;//是否公开 0不公开 1公开
+    public int type;//1歌曲 2歌词
     public String lyrics;//歌词
     public String detail;//歌词详情 灵感记录的内容
     public int prev;//上一首

@@ -182,6 +182,7 @@ public class MainService extends Service implements IMusicDetailView, AudioManag
     @Override
     public void showMusicDetail(WorksData worksData) {
         if (StringUtils.isNotBlank(worksData.playurl)) {
+            worksData.type=1;
             mCurrentAudio = worksData;
             EventBus.getDefault().post(new Event.MusicDataEvent());
             PrefsUtil.saveMusicData(MainService.this, worksData);

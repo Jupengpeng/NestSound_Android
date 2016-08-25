@@ -696,8 +696,6 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
             return;
         }
         worksData = MyApplication.getInstance().getMainService().getCurrentAudio();
-        worksData.type = 1;
-        worksData.status = 1;
         adapterData();
     }
 

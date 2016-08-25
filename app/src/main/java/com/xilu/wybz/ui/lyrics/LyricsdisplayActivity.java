@@ -242,8 +242,7 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
         }
         if(!isMe)actionBeanList.remove(actionBeanList.size()-1);//不是我的时候 不能编辑
         this.worksData = worksData;
-        worksData.type = worksData.status;//type表示是否公开
-        worksData.status = 2;//status=2歌词
+        worksData.type = 2;//表示是歌词
         ivZan.setImageResource(worksData.getIsZan() == 0 ? R.drawable.ic_lyrics_zan1 : R.drawable.ic_lyrics_zan2);
         ivFav.setImageResource(worksData.getIscollect() == 0 ? R.drawable.ic_lyrics_fav1 : R.drawable.ic_lyrics_fav2);
         loadTitleContent();

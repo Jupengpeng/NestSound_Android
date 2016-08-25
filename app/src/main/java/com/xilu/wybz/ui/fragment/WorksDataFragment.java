@@ -171,13 +171,11 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
                     if (type < 3)
                         worksData.setAuthor(author);
                     if (type == 0) {
-                        worksData.status = 4;
+                        worksData.type = 4;
                     } else if (type == 1) {
-                        worksData.status = 1;
+                        worksData.type = 1;
                     } else if (type == 2) {
-                        worksData.status = 2;
-                    } else if (type == 3) {
-                        worksData.status = worksData.type;
+                        worksData.type = 2;
                     }
                     mDataList.add(worksData);
                 }
@@ -214,7 +212,7 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
         if (isDestroy||mDataList==null) return;
         int index = -1;
         for (int i = 0; i < mDataList.size(); i++) {
-            if (worksData.itemid == mDataList.get(i).itemid && worksData.status == mDataList.get(i).status) {
+            if (worksData.itemid == mDataList.get(i).itemid && worksData.type == mDataList.get(i).type) {
                 index = i;
                 break;
             }

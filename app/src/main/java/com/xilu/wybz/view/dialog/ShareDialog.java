@@ -120,7 +120,7 @@ public class ShareDialog extends Dialog implements View.OnClickListener {
                 }
                 break;
             case R.id.ll_share_qzone:
-                if(AppInfoUtil.isAppInstalled(context, MyCommon.QZONE_PKG)) {
+                if(AppInfoUtil.isAppInstalled(context, MyCommon.QZONE_PKG)||type==0) {
                     shareUtil.toShareQzone();
                 }else {
                     ToastUtils.toast(context,"您尚未安装QQ空间！");

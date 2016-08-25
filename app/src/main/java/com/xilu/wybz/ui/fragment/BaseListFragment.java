@@ -149,6 +149,7 @@ public abstract class BaseListFragment<T> extends BaseFragment implements PullRe
     }
     public void updateItem(int position) {
         adapter.notifyItemChanged(position);
+        recycler.getRecyclerView().requestLayout();
     }
     public void addItem(T t) {
         if (mDataList == null){
