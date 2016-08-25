@@ -46,6 +46,9 @@ public class MakeWordByTempleateActivity extends BaseListActivity<TemplateLrcBea
     DraftPresenter draftPresenter;
     LyricsDraftBean lyricsDraftBean;
 
+
+
+
     public static void toMakeWordByTempleateActivity(Activity context,LyricsDraftBean bean){
         Intent intent = new Intent(context,MakeWordByTempleateActivity.class);
         intent.putExtra(KeySet.WORKS_DATA, bean);
