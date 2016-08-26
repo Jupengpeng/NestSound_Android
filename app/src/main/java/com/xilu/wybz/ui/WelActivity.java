@@ -3,11 +3,9 @@ package com.xilu.wybz.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import com.xilu.wybz.BuildConfig;
 import com.xilu.wybz.R;
@@ -25,10 +23,15 @@ public class WelActivity extends BaseActivity {
 
     @Bind(R.id.iv_logo)
     ImageView ivLogo;
+    @Bind(R.id.splash_ext)
+    ImageView ivSplashExt;
     @Bind(R.id.ll_main)
     LinearLayout llMain;
     private boolean isConsole = false;
     private Handler handler;
+
+    public static final String[] exts = {"_360","ppzs"};
+//    public static final String CHANNEL_KEY = "CHANNEL";
 
     @Override
     protected int getLayoutRes() {
@@ -38,6 +41,16 @@ public class WelActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         handler = new Handler();
+
+//        String channel = DeviceUtils.getMetaValue(context, CHANNEL_KEY);
+        String channel = BuildConfig.FLAVOR;
+        for(String ext:exts){
+
+            if(ext.equalsIgnoreCase(channel)){
+                ivSplashExt.setVisibility(View.VISIBLE);
+            }
+        }
+
         GetDomainUtil getDomainUtil = new GetDomainUtil(context);
 //        String appLogo = PrefsUtil.getString("applogo", context);
 //        String fileName = MD5Util.getMD5String(appLogo) + ".png";

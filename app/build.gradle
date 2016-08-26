@@ -74,7 +74,7 @@ android {
         release {
             // 不显示Log
             buildConfigField "boolean", "LOG_DEBUG", "false"
-
+//            buildConfigField "String", "CHANNEL", "debug"
             debuggable false
             shrinkResources true
 
@@ -86,7 +86,8 @@ android {
         }
 
         debug {
-
+            buildConfigField "boolean", "LOG_DEBUG", "true"
+//            buildConfigField "String", "CHANNEL", "\"debug\""
             debuggable true
             shrinkResources true
 

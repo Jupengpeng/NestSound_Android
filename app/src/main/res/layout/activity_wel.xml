@@ -36,9 +36,11 @@
             android:src="@drawable/ic_splash_app" />
 
         <ImageView
+            android:id="@+id/splash_ext"
             android:paddingLeft="50dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_splash_360" />
+            android:visibility="gone"
+            android:src="@drawable/ic_splash_ext" />
     </LinearLayout>
 </LinearLayout>
