@@ -341,7 +341,7 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
         selectPos = pos;
         if (pos >= 0 && pos < mDataList.size()) {
             WorksData worksData = mDataList.get(pos);
-            userPresenter.unfav(worksData.itemid, worksData.uid, worksData.status);
+            userPresenter.unfav(worksData.itemid, worksData.uid, worksData.type);
         }
     }
 

@@ -129,7 +129,7 @@ public class SongFragment extends BaseSectionListFragment<WorksData> implements 
         }
         @Override
         public void onBindViewHolder(int position) {
-            tvSong.setText(position==0?"热门歌曲":"最新歌曲");
+            tvSong.setText(mDataList.get(position).header);
             tvMore.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
