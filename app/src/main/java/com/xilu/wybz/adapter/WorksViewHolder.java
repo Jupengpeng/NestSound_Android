@@ -12,7 +12,6 @@ import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.service.MainService;
-import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.ui.lyrics.LyricsdisplayActivity;
 import com.xilu.wybz.ui.song.PlayAudioActivity;
 import com.xilu.wybz.utils.DensityUtil;
@@ -136,9 +135,9 @@ public class WorksViewHolder extends com.xilu.wybz.view.pull.BaseViewHolder {
     @Override
     public void onItemClick(View view, int position) {
         if (position >= 0 && position < mDataList.size()) {
-            if (mDataList.get(position).status == 1 || mDataList.get(position).status == 0) {
+            if (mDataList.get(position).type == 1 || mDataList.get(position).type == 0) {
                 toPlayPos(position);
-            } else if (mDataList.get(position).status == 2) {
+            } else if (mDataList.get(position).type == 2) {
                 LyricsdisplayActivity.toLyricsdisplayActivity(mContext, mDataList.get(position).getItemid(), mDataList.get(position).name);
             }
         }
