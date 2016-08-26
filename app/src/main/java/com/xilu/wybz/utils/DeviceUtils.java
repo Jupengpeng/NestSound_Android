@@ -1,6 +1,8 @@
 package com.xilu.wybz.utils;
 
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 
@@ -46,6 +48,21 @@ public class DeviceUtils {
     public static String getAndroidId() {
         String androidId = Settings.Secure.getString(context.getContentResolver(),Settings.Secure.ANDROID_ID);
         return "";
+    }
+
+
+    public static String getMetaValue(Context context, String key) {
+        String metaValue = "";
+        try {
+            ApplicationInfo appInfo = context.getPackageManager()
+                    .getApplicationInfo(context.getPackageName(),
+                            PackageManager.GET_META_DATA);
+            metaValue = appInfo.metaData.getString(key);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return metaValue;
     }
 
 
