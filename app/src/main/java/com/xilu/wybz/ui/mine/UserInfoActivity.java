@@ -34,7 +34,6 @@ import com.xilu.wybz.ui.base.BaseActivity;
 import com.xilu.wybz.ui.fragment.WorksDataFragment;
 import com.xilu.wybz.utils.BitmapUtils;
 import com.xilu.wybz.utils.DensityUtil;
-import com.xilu.wybz.utils.ImageLoadUtil;
 import com.xilu.wybz.utils.MD5Util;
 import com.xilu.wybz.utils.NumberUtil;
 import com.xilu.wybz.utils.PrefsUtil;
