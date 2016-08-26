@@ -23,14 +23,19 @@ import com.xilu.wybz.adapter.MineAdapter;
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.bean.UserInfoBean;
 import com.xilu.wybz.common.Event;
+import com.xilu.wybz.common.FileDir;
 import com.xilu.wybz.common.KeySet;
 import com.xilu.wybz.common.MyCommon;
+import com.xilu.wybz.presenter.DownPicPresenter;
 import com.xilu.wybz.presenter.OnlyFollowPresenter;
+import com.xilu.wybz.ui.IView.ILoadPicView;
 import com.xilu.wybz.ui.IView.IOnlyFollowView;
 import com.xilu.wybz.ui.base.BaseActivity;
 import com.xilu.wybz.ui.fragment.WorksDataFragment;
 import com.xilu.wybz.utils.BitmapUtils;
 import com.xilu.wybz.utils.DensityUtil;
+import com.xilu.wybz.utils.ImageLoadUtil;
+import com.xilu.wybz.utils.MD5Util;
 import com.xilu.wybz.utils.NumberUtil;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtils;
@@ -42,6 +47,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,7 +57,7 @@ import butterknife.OnClick;
 /**
  * Created by hujunwei on 16/6/2.
  */
-public class UserInfoActivity extends BaseActivity implements IOnlyFollowView {
+public class UserInfoActivity extends BaseActivity implements IOnlyFollowView,ILoadPicView {
     @Bind(R.id.iv_blur_view)
     ImageView ivBlurView;
     @Bind((R.id.ll_mine_info))
@@ -90,6 +96,8 @@ public class UserInfoActivity extends BaseActivity implements IOnlyFollowView {
     TextView tvFovNum;
     @Bind(R.id.tv_record_num)
     TextView tvRecordNum;
+    @Bind(R.id.iv_headpic)
+    ImageView ivHeadPic;
     private int currentIndex;
     private MineAdapter pagerAdapter;
     private List<LinearLayout> tabs;
@@ -101,6 +109,7 @@ public class UserInfoActivity extends BaseActivity implements IOnlyFollowView {
     String userName;
     UserInfoBean userInfoBean;
     boolean isFirst;
+    DownPicPresenter downPicPresenter;
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_new_mine;
@@ -151,8 +160,6 @@ public class UserInfoActivity extends BaseActivity implements IOnlyFollowView {
         if(userData!=null){
             setUserData(userData);
         }
-        Bitmap bmp = NativeStackBlur.process(BitmapUtils.ReadBitmapById(this,R.mipmap.bg_top_mine), 200);
-        ivBlurView.setImageBitmap(bmp);
         mAppbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
@@ -210,9 +217,37 @@ public class UserInfoActivity extends BaseActivity implements IOnlyFollowView {
             int headWidth = DensityUtil.dip2px(context,92);
             loadImage(MyCommon.getImageUrl(userBean.headurl,headWidth,headWidth), ivHead);
         }
+        if (StringUtils.isNotBlank(userBean.bgpic)) {
+            String path = FileDir.mineBgPic + MD5Util.getMD5String(userBean.bgpic) + ".jpg";
+            if (new File(path).exists()) {
+                if(loadHeadPic(path)){
+                    return;
+                }
+            }
+            if (downPicPresenter == null) {
+                downPicPresenter = new DownPicPresenter(context, UserInfoActivity.this);
+                downPicPresenter.downLoadPic(userBean.bgpic, path);
+            }
+        } else {
+            loadDefaultPic();
+        }
         if (StringUtils.isNotBlank(userBean.nickname)) mNickname.setText(userBean.nickname);
         if (StringUtils.isNotBlank(userBean.signature))mDesc.setText(userBean.signature);
 
+    }
+
+    public boolean loadHeadPic(String bgPicPath) {
+        Bitmap bitmap = BitmapUtils.getSDCardImg(bgPicPath);
+        if (bitmap == null) return false;
+        ivHeadPic.setImageBitmap(bitmap);
+        Bitmap bmp = NativeStackBlur.process(bitmap, 200);
+        ivBlurView.setImageBitmap(bmp);
+        return true;
+    }
+    public void loadDefaultPic() {
+        ivHeadPic.setImageResource(R.mipmap.bg_top_mine);
+        Bitmap bmp = NativeStackBlur.process(BitmapUtils.ReadBitmapById(this, R.mipmap.bg_top_mine), 200);
+        ivBlurView.setImageBitmap(bmp);
     }
     public void updateUserFansNum(UserInfoBean userBean) {
         userInfoBean = userBean;
@@ -343,5 +378,15 @@ public class UserInfoActivity extends BaseActivity implements IOnlyFollowView {
         cancelPd();
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void setPic(String path) {
+        loadHeadPic(path);
+    }
+
+    @Override
+    public void downPicFail() {
+        loadDefaultPic();
     }
 }

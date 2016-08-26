@@ -264,9 +264,7 @@ public class MineActivity extends BaseActivity implements IModifyCoverView, ILoa
                 downPicPresenter.downLoadPic(userBean.bgpic, path);
             }
         } else {
-            ivHeadPic.setImageResource(R.mipmap.bg_top_mine);
-            Bitmap bmp = NativeStackBlur.process(BitmapUtils.ReadBitmapById(this, R.mipmap.bg_top_mine), 200);
-            ivBlurView.setImageBitmap(bmp);
+            loadDefaultPic();
         }
     }
     public void updateUserFansNum(UserInfoBean userBean) {
@@ -486,7 +484,11 @@ public class MineActivity extends BaseActivity implements IModifyCoverView, ILoa
         ivBlurView.setImageBitmap(bmp);
         return true;
     }
-
+    public void loadDefaultPic() {
+        ivHeadPic.setImageResource(R.mipmap.bg_top_mine);
+        Bitmap bmp = NativeStackBlur.process(BitmapUtils.ReadBitmapById(this, R.mipmap.bg_top_mine), 200);
+        ivBlurView.setImageBitmap(bmp);
+    }
     @Override
     public void onFail() {
         cancelPd();
@@ -504,9 +506,7 @@ public class MineActivity extends BaseActivity implements IModifyCoverView, ILoa
 
     @Override
     public void downPicFail() {
-        ivHeadPic.setImageResource(R.mipmap.bg_top_mine);
-        Bitmap bmp = NativeStackBlur.process(BitmapUtils.ReadBitmapById(this, R.mipmap.bg_top_mine), 200);
-        ivBlurView.setImageBitmap(bmp);
+        loadDefaultPic();
     }
 
     // 保存裁剪后的图片
