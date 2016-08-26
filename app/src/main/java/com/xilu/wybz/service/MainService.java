@@ -434,13 +434,15 @@ public class MainService extends Service implements IMusicDetailView, AudioManag
 
     public void toNextMusic() {
         doStop();
-        if (ids == null) {
+        if (ids == null|| ids.size()== 0) {
             start();
         } else {
             if (currentPos == ids.size() - 1) {
                 currentPos = 0;
-            } else {
+            } else if (currentPos < ids.size() - 1){
                 currentPos++;
+            } else if (currentPos < 0 || currentPos >= ids.size()){
+                return;
             }
             loadNowListData(ids.get(currentPos));
         }
