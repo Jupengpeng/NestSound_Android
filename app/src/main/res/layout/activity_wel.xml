@@ -39,7 +39,6 @@
             android:paddingLeft="50dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
             android:src="@drawable/ic_splash_360" />
     </LinearLayout>
 </LinearLayout>

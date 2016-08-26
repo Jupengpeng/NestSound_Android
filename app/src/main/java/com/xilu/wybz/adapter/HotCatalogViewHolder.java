@@ -54,10 +54,17 @@ public class HotCatalogViewHolder extends com.xilu.wybz.view.pull.BaseViewHolder
         }
     }
 
-
     @Override
     public void onItemClick(View view, int position) {
-        MakeHotActivity.toMakeHotActivity(mContext, mDataList.get(position).t, flash,aid);
+        String type = "";
+        if (position==1) {
+            type = "new";
+        } else if (position==2) {
+            type = "hot";
+        } else {
+            type = "";
+        }
+        MakeHotActivity.toMakeHotActivity(mContext, mDataList.get(position).t, flash, aid, type);
     }
 
 }

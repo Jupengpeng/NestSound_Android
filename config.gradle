@@ -6,7 +6,7 @@ ext {
                applicationId    : "com.xilu.wybz",
                minSdkVersion    : 16,
                targetSdkVersion : 23,
-               versionCode      : 18,
+               versionCode      : 19,
                versionName      : "2.1.0"]
 			   
 

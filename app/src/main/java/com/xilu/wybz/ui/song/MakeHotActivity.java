@@ -27,10 +27,11 @@ public class MakeHotActivity extends ToolbarActivity {
     String aid;
     public boolean flash = false;
 
-    public static void toMakeHotActivity(Context context, HotCatalog hotCatalog, boolean flash,String aid) {
+    public static void toMakeHotActivity(Context context, HotCatalog hotCatalog, boolean flash, String aid, String type) {
         Intent intent = new Intent(context, MakeHotActivity.class);
         intent.putExtra("hotCatalog", hotCatalog);
         intent.putExtra(KeySet.KEY_ID, aid);
+        intent.putExtra(KeySet.KEY_TYPE, type);
         intent.putExtra(FLASH_TAG, flash);
         context.startActivity(intent);
     }
@@ -55,6 +56,7 @@ public class MakeHotActivity extends ToolbarActivity {
             hotCatalog = (HotCatalog) bundle.getSerializable("hotCatalog");
             flash = bundle.getBoolean(FLASH_TAG, false);
             aid = bundle.getString(KeySet.KEY_ID);
+            type = bundle.getString(KeySet.KEY_TYPE);
         }
         if (hotCatalog == null) finish();
         EventBus.getDefault().register(this);
@@ -65,12 +67,6 @@ public class MakeHotActivity extends ToolbarActivity {
         else
             setTitle("原创伴奏");
 
-        if (hotCatalog.categoryname.contains("最新")) {
-            type = "new";
-
-        } else if (hotCatalog.categoryname.contains("最热")) {
-            type = "hot";
-        }
         hotFragment = HotFragment.newInstance(type, hotCatalog.id, flash, aid);
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, hotFragment).commit();
 
