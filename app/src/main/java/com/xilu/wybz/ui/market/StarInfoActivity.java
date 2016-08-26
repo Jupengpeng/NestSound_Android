@@ -75,6 +75,7 @@ public class StarInfoActivity extends BaseSectionListActivity<WorksData> impleme
             finish();
         }
         recycler.enablePullToRefresh(false);
+        setTitle("");
         hideRight();
     }
 
@@ -275,6 +276,13 @@ public class StarInfoActivity extends BaseSectionListActivity<WorksData> impleme
         if (StringUtils.isBlank(from)) return;
         if (from.equals(type)) {
             switch (event.getStatus()) {
+                case MyCommon.STARTED:
+                    if(!mDataList.get(playPos).t.isPlay) {
+                        mDataList.get(playPos).t.isPlay = true;
+                        adapter.notifyItemChanged(playPos);
+                        recycler.getRecyclerView().requestLayout();
+                    }
+                    break;
                 case MyCommon.END:
                 case MyCommon.STOPPED://停止
                     doStop();

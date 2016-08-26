@@ -91,7 +91,7 @@ public class MainService extends Service implements IMusicDetailView, AudioManag
 
     public static class CurrentMusic {
         public static final String
-                PLAY_ID = "playId",
+                PLAY_ID = "playIds",
                 PLAY_FROM = "playFrom",
                 PLAY_GEDAN_ID = "playGedanId";
     }

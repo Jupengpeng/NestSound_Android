@@ -42,15 +42,15 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
     public static String TYPE = "type";
     public static String UID = "uid";
     public static String AUTHOR = "author";
-    private int type;
+    private int type;//1=歌曲，2=歌词，3=收藏,4=灵感记录（加载）
     private int userId;
     private int selectPos;
     private String COME;
     private String author;
     private boolean isMe;
-    private int workType;
-    private String[] COMES = new String[]{"mysong", "mylyrics", "myfav", "myrecord"};
-    private String[] COMESs = new String[]{"usersong", "userlyrics", "userfav"};
+    private int workType;//type 1=歌曲，2=歌词，3=灵感记录（删除作品的type）
+    private String[] MYCOMES = new String[]{"mysong", "mylyrics", "myfav", "myrecord"};
+    private String[] OTHERCOMES = new String[]{"usersong", "userlyrics", "userfav"};//他人主页
     private boolean isFirst;
     private boolean isFirstTab;
     @Override
@@ -80,13 +80,16 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
             isMe = (userId == PrefsUtil.getUserId(context));
             if (type == 0) isFirstTab = true;
             if (!isMe) {
-                COME = COMESs[type];
-                type = type + 1;
+                COME = OTHERCOMES[type];
             } else {
-                COME = COMES[type];
-                workType = type;
-                type = type + 1;
+                COME = MYCOMES[type];
+                if(type==0||type==1){//歌曲歌词 需要+1
+                    workType = type+1;
+                }else if(type==3){//灵感记录
+                    workType = type;
+                }
             }
+            type = type + 1;
             author = getArguments().getString(AUTHOR);
         }
 
