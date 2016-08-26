@@ -74,7 +74,7 @@
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
                     android:singleLine="true"
-                    android:text="堇色流年"
+                    android:text="@string/app_name"
                     android:textColor="#ffffff"
                     android:textSize="16sp" />
 
