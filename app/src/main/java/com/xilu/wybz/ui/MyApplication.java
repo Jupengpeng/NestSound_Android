@@ -67,13 +67,12 @@ public class MyApplication extends Application implements ServiceConnection {
         if (versionCode == 0) {
             PrefsUtil.clearData(context);
         }
-        if(versionCode<18){
+        if(versionCode<19){
             try {
-                int playId = PrefsUtil.getInt(MainService.CurrentMusic.PLAY_ID, context);
-                if (playId > 0) {
-                    PrefsUtil.putString(MainService.CurrentMusic.PLAY_ID, playId + "", this);
-                }
+                int playId = PrefsUtil.getInt("playId", context);
+                PrefsUtil.putString(MainService.CurrentMusic.PLAY_ID, playId + "", this);
             }catch (Exception e){
+
             }
         }
         PrefsUtil.putInt("versionCode", PhoneUtils.getVersionCode(context), context);
