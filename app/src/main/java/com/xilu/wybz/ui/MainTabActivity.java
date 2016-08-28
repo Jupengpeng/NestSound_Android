@@ -36,6 +36,7 @@ import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.utils.VersionUtil;
 import com.xilu.wybz.view.IndexViewPager;
 import com.xilu.wybz.view.MoreWindow;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -43,6 +44,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.Bind;
 import butterknife.OnClick;
 
@@ -69,17 +71,19 @@ public class MainTabActivity extends BaseActivity {
     Intent intent;
     MyPagerAdapter adapter;
     LocalActivityManager manager = null;
+
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_maintab;
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
         openPush();
         checkAppVersion();
-        if(PermissionUtils.checkSdcardPermission(this)){
+        if (PermissionUtils.checkSdcardPermission(this)) {
 
         }
         manager = new LocalActivityManager(this, true);
@@ -98,10 +102,12 @@ public class MainTabActivity extends BaseActivity {
             PushAgent.getInstance(context).enable();
         }
     }
+
     //检测升级
     public void checkAppVersion() {
         new VersionUtil().checkUpdateInfo(this);
     }
+
     private void initPagerViewer() {
         viewpager.setScanScroll(false);
         list = new ArrayList<>();
@@ -119,14 +125,16 @@ public class MainTabActivity extends BaseActivity {
         viewpager.setOffscreenPageLimit(4);
         viewpager.setOnPageChangeListener(new MyOnPageChangeListener());
     }
+
     @Override
     protected void onResume() {
         super.onResume();
-        if(manager!=null) {
+        if (manager != null) {
             ((MainActivity) manager.getActivity("MAIN")).onResume();
             ((FindActivity) manager.getActivity("FIND")).onResume();
         }
     }
+
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
@@ -135,19 +143,22 @@ public class MainTabActivity extends BaseActivity {
     private View getView(String id, Intent intent) {
         return manager.startActivity(id, intent).getDecorView();
     }
+
     public class MyOnPageChangeListener implements ViewPager.OnPageChangeListener {
         @Override
         public void onPageSelected(int arg0) {
-            if(arg0==1){
-                ((FindActivity)manager.getActivity("FIND")).initView();
-            }else if(arg0==3){
-                ((MineActivity)manager.getActivity("MINE")).initData();
+            if (arg0 == 1) {
+                ((FindActivity) manager.getActivity("FIND")).initView();
+            } else if (arg0 == 3) {
+                ((MineActivity) manager.getActivity("MINE")).initData();
             }
         }
+
         @Override
         public void onPageScrollStateChanged(int arg0) {
 
         }
+
         @Override
         public void onPageScrolled(int arg0, float arg1, int arg2) {
 
@@ -164,14 +175,12 @@ public class MainTabActivity extends BaseActivity {
                 currentIndex = 1;
                 break;
             case R.id.rl_main_publish:
-                if(SystemUtils.isLogin(context)){
-                    if (null == mMoreWindow) {
-                        mMoreWindow = new MoreWindow();
-                        RelativeLayout parent = (RelativeLayout)findViewById(R.id.window);
-                        mMoreWindow.init(this,parent, onClickListener);
-                    }
-                    mMoreWindow.showByAnimation();
+                if (null == mMoreWindow) {
+                    mMoreWindow = new MoreWindow();
+                    RelativeLayout parent = (RelativeLayout) findViewById(R.id.window);
+                    mMoreWindow.init(this, parent, onClickListener);
                 }
+                mMoreWindow.showByAnimation();
                 return;
             case R.id.rl_main_msg:
                 currentIndex = 2;
@@ -180,26 +189,27 @@ public class MainTabActivity extends BaseActivity {
                 currentIndex = 3;
                 break;
         }
-        Log.e("getUserId",PrefsUtil.getUserId(context)+"");
-        if(PrefsUtil.getUserId(context)==0&&(currentIndex==2||currentIndex==3)){
+        Log.e("getUserId", PrefsUtil.getUserId(context) + "");
+        if (PrefsUtil.getUserId(context) == 0 && (currentIndex == 2 || currentIndex == 3)) {
             startActivity(LoginActivity.class);
             return;
         }
         changeTab();
     }
-    public void changeTab(){
-        if(oldIndex!=currentIndex) {
+
+    public void changeTab() {
+        if (oldIndex != currentIndex) {
             checkedTextViewList.get(oldIndex).setChecked(false);
             checkedTextViewList.get(currentIndex).setChecked(true);
-            if(currentIndex==0) {
+            if (currentIndex == 0) {
                 MainActivity mainActivity = ((MainActivity) manager.getActivity("MAIN"));
                 if (mainActivity != null)
                     mainActivity.onResume();//刷新MainActivity播放状态
-            }else if(currentIndex==1){
+            } else if (currentIndex == 1) {
                 FindActivity findActivity = ((FindActivity) manager.getActivity("FIND"));
                 if (findActivity != null)
                     findActivity.onResume();
-            }else if(currentIndex==2){
+            } else if (currentIndex == 2) {
                 MsgActivity msgActivity = ((MsgActivity) manager.getActivity("MSG"));
                 if (msgActivity != null)
                     msgActivity.onResume();
@@ -208,39 +218,43 @@ public class MainTabActivity extends BaseActivity {
             oldIndex = currentIndex;
         }
     }
+
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            switch (v.getId()){
-                case R.id.tv_zuoci:
-                    MakeWordActivity.toMakeWordActivity(context,PrefsUtil.getLocalLyrics(context));
-//                    MakeWordActivity.toMakeWordActivity(context);
-                    mMoreWindow.closeByAnimation();
-                    break;
-                case R.id.tv_record:
-                    startActivity(InspireRecordActivity.class);
-                    mMoreWindow.closeByAnimation();
-                    break;
-                case R.id.tv_zuoqu:
-                    startActivity(HotCatalogActivity.class);
-                    mMoreWindow.closeByAnimation();
-                    break;
+            if(SystemUtils.isLogin(context)) {
+                switch (v.getId()) {
+                    case R.id.tv_zuoci:
+                        MakeWordActivity.toMakeWordActivity(context, PrefsUtil.getLocalLyrics(context));
+                        mMoreWindow.closeByAnimation();
+                        break;
+                    case R.id.tv_record:
+                        startActivity(InspireRecordActivity.class);
+                        mMoreWindow.closeByAnimation();
+                        break;
+                    case R.id.tv_zuoqu:
+                        startActivity(HotCatalogActivity.class);
+                        mMoreWindow.closeByAnimation();
+                        break;
+                }
             }
         }
     };
+
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(Event.LoginSuccessEvent event){
+    public void onEventMainThread(Event.LoginSuccessEvent event) {
         showMsg("登陆成功！");
         UserBean ub = event.getUserBean();
         ub.nickname = ub.name;
         ub.signature = ub.descr;
         PrefsUtil.saveUserInfo(context, ub);
-        MobclickAgent.onProfileSignIn(ub.userid+"");
-        PushAgent.getInstance(context).setAlias(ub.userid+"", "yinchao");
+        MobclickAgent.onProfileSignIn(ub.userid + "");
+        PushAgent.getInstance(context).setAlias(ub.userid + "", "yinchao");
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(Event.LoginOutEvent event){
-        if(viewpager.getCurrentItem()>1){
+    public void onEventMainThread(Event.LoginOutEvent event) {
+        if (viewpager.getCurrentItem() > 1) {
             viewpager.setCurrentItem(0);
             currentIndex = 0;
             changeTab();
@@ -250,7 +264,7 @@ public class MainTabActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // 获取当前活动的Activity实例
-        if(currentIndex==3) {
+        if (currentIndex == 3) {
             Activity subActivity = manager.getActivity("MINE");
             //判断是否实现返回值接口
             if (subActivity instanceof OnTabActivityResultListener) {
@@ -266,11 +280,11 @@ public class MainTabActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(mMoreWindow!=null){
+        if (mMoreWindow != null) {
             mMoreWindow.destroy();
         }
-        if(manager!=null) {
-            ((MineActivity)manager.getActivity("MINE")).onDestroy();
+        if (manager != null) {
+            ((MineActivity) manager.getActivity("MINE")).onDestroy();
         }
         EventBus.getDefault().unregister(this);
     }
@@ -290,7 +304,7 @@ public class MainTabActivity extends BaseActivity {
                     }
                     PrefsUtil.putString(PrefsUtil.getString("playFrom", context), ids, context);
                 }
-                PrefsUtil.saveHotBean(context,null);
+                PrefsUtil.saveHotBean(context, null);
                 finish();
                 return true;
 

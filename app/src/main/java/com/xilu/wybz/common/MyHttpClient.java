@@ -132,7 +132,10 @@ public class MyHttpClient {
     public static String getPasswordUrl() {
         return "userCenter/updateuserpass";
     }
-
+    //重置密码
+    public static String getResetPwdUrl() {
+        return "common/login/resetPassword";
+    }
     //注册验证码发送
     public static String getSmsCodeUrl() {
         return "common/send/code";

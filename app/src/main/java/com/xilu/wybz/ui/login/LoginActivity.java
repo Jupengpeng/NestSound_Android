@@ -36,7 +36,7 @@ import butterknife.OnClick;
 /**
  * Created by hujunwei on 16/8/5.
  */
-public class LoginActivity extends BaseActivity implements ILoginView,IRegisterView, TextWatcher {
+public class LoginActivity extends BaseActivity implements ILoginView, IRegisterView, TextWatcher {
     @Bind(R.id.iv_flag1)
     ImageView ivFlag1;
     @Bind(R.id.iv_flag2)
@@ -71,8 +71,11 @@ public class LoginActivity extends BaseActivity implements ILoginView,IRegisterV
     TextView tvChoiceReg;
     @Bind(R.id.tv_regcode)
     TextView tvRegcode;
+    @Bind(R.id.ll_agreement)
+    LinearLayout llAgreement;
     LoginPresenter loginPresenter;
     RegisterPresenter registerPresenter;
+
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_login;
@@ -81,8 +84,8 @@ public class LoginActivity extends BaseActivity implements ILoginView,IRegisterV
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        loginPresenter = new LoginPresenter(this,this);
-        registerPresenter = new RegisterPresenter(this,this);
+        loginPresenter = new LoginPresenter(this, this);
+        registerPresenter = new RegisterPresenter(this, this);
         loginPresenter.init();
     }
 
@@ -165,6 +168,7 @@ public class LoginActivity extends BaseActivity implements ILoginView,IRegisterV
                 break;
         }
     }
+
     public void toLoin() {
         String mobile = etPhone.getText().toString();
         String password = MD5Util.getMD5String(etPassword.getText().toString());
@@ -173,15 +177,16 @@ public class LoginActivity extends BaseActivity implements ILoginView,IRegisterV
         } else if (password.trim().equals("")) {
             showMsg("请输入密码");
         }
-        loginPresenter.login(mobile,password);
+        loginPresenter.login(mobile, password);
     }
+
     public void toReg() {
         String phone = etRegPhone.getText().toString().trim();
         String nickname = etNickname.getText().toString().trim();
         String code = etRegCode.getText().toString().trim();
         String password = MD5Util.getMD5String(etRegPwd.getText().toString().trim());
         String repassword = MD5Util.getMD5String((etRegPwd2.getText().toString().trim()));
-        if(!cbAgreement.isChecked()){
+        if (!cbAgreement.isChecked()) {
             showMsg("请先同意使用协议");
             return;
         }
@@ -207,7 +212,7 @@ public class LoginActivity extends BaseActivity implements ILoginView,IRegisterV
             showMsg("两次密码要输入一致");
             return;
         }
-        registerPresenter.register(nickname,phone,code,password,repassword);
+        registerPresenter.register(nickname, phone, code, password, repassword);
     }
 
     public void getSmsCode() {
@@ -218,22 +223,24 @@ public class LoginActivity extends BaseActivity implements ILoginView,IRegisterV
             registerPresenter.getSmsCode(phone, "1");
         }
     }
+
     //切换注册和登录 flag 0 登录 1注册
-    public void toLoginOrReg(int flag){
-        llLogin.setVisibility(flag==0?View.VISIBLE:View.GONE);
-        llRegister.setVisibility(flag==1?View.VISIBLE:View.GONE);
-        tvLogin.setVisibility(flag==0?View.VISIBLE:View.GONE);
-        tvReg.setVisibility(flag==1?View.VISIBLE:View.GONE);
-        ivFlag1.setVisibility(flag==0?View.VISIBLE:View.GONE);
-        ivFlag2.setVisibility(flag==1?View.VISIBLE:View.GONE);
-        tvChoiceLogin.setSelected(flag==0);
-        tvChoiceReg.setSelected(flag==1);
+    public void toLoginOrReg(int flag) {
+        llLogin.setVisibility(flag == 0 ? View.VISIBLE : View.GONE);
+        llAgreement.setVisibility(flag == 1 ? View.VISIBLE : View.GONE);
+        llRegister.setVisibility(flag == 1 ? View.VISIBLE : View.GONE);
+        tvLogin.setVisibility(flag == 0 ? View.VISIBLE : View.GONE);
+        tvReg.setVisibility(flag == 1 ? View.VISIBLE : View.GONE);
+        ivFlag1.setVisibility(flag == 0 ? View.VISIBLE : View.GONE);
+        ivFlag2.setVisibility(flag == 1 ? View.VISIBLE : View.GONE);
+        tvChoiceLogin.setSelected(flag == 0);
+        tvChoiceReg.setSelected(flag == 1);
     }
 
     @Override
     public void loginStart() {
         showPd("正在登陆中...");
-        if (isDestroy){
+        if (isDestroy) {
             return;
         }
         tvLogin.setEnabled(false);
@@ -252,7 +259,7 @@ public class LoginActivity extends BaseActivity implements ILoginView,IRegisterV
     @Override
     public void loginFinish() {
         cancelPd();
-        if (isDestroy){
+        if (isDestroy) {
             return;
         }
         tvLogin.setEnabled(true);
@@ -261,13 +268,13 @@ public class LoginActivity extends BaseActivity implements ILoginView,IRegisterV
     @Override
     public void registerStart() {
         showPd("正在注册中...");
-        if(isDestroy)return;
+        if (isDestroy) return;
         tvReg.setEnabled(false);
     }
 
     @Override
     public void registerSuccess(UserBean userBean) {
-        if(isDestroy)return;
+        if (isDestroy) return;
         if (userBean != null) {
             showMsg("注册成功");
             EventBus.getDefault().post(new Event.LoginSuccessEvent(userBean));
@@ -283,7 +290,7 @@ public class LoginActivity extends BaseActivity implements ILoginView,IRegisterV
     @Override
     public void registerFinish() {
         cancelPd();
-        if (isDestroy){
+        if (isDestroy) {
             return;
         }
         tvReg.setEnabled(true);
@@ -291,7 +298,7 @@ public class LoginActivity extends BaseActivity implements ILoginView,IRegisterV
 
     @Override
     public void SmsCodeStart() {
-        if (isDestroy){
+        if (isDestroy) {
             return;
         }
         tvRegcode.setEnabled(false);
@@ -299,13 +306,13 @@ public class LoginActivity extends BaseActivity implements ILoginView,IRegisterV
 
     @Override
     public void SmsCodeSuccess(String result) {
-        if(isDestroy)return;
-        DataBean mb = ParseUtils.getDataBean(context,result);
+        if (isDestroy) return;
+        DataBean mb = ParseUtils.getDataBean(context, result);
         if (mb != null) {
-            if (mb.code==200) {
+            if (mb.code == 200) {
                 MyCountTimer timeCount = new MyCountTimer(tvRegcode);
                 timeCount.start();
-                if (isDestroy){
+                if (isDestroy) {
                     return;
                 }
                 tvRegcode.setFocusable(true);
@@ -325,21 +332,23 @@ public class LoginActivity extends BaseActivity implements ILoginView,IRegisterV
 
     @Override
     public void SmsCodeFinish() {
-        if(isDestroy)return;
+        if (isDestroy) return;
         tvRegcode.setEnabled(true);
     }
 
 
-    @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.LoginSuccessEvent event){
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(Event.LoginSuccessEvent event) {
         finish();
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
-        if(loginPresenter!=null)
-        loginPresenter.cancelRequest();
-        if(registerPresenter!=null)
-        registerPresenter.cancelRequest();
+        if (loginPresenter != null)
+            loginPresenter.cancelRequest();
+        if (registerPresenter != null)
+            registerPresenter.cancelRequest();
     }
 }

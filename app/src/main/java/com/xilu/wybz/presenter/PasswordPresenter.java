@@ -26,7 +26,7 @@ public class PasswordPresenter extends BasePresenter<IPasswordView>{
         params.put("mobile",phone);
         params.put("code",code);
         params.put("password",password);
-        httpUtils.post(MyHttpClient.getPasswordUrl(), params, new MyStringCallback(){
+        httpUtils.post(MyHttpClient.getResetPwdUrl(), params, new MyStringCallback(){
             @Override
             public void onBefore(Request request) {
                 super.onBefore(request);
