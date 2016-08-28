@@ -82,9 +82,9 @@ public class HomeWorksViewHolder extends com.xilu.wybz.view.pull.BaseViewHolder 
     @Override
     public void onItemClick(View view, int position) {
         if(position>=0&&position<mDataList.size()) {
-            if (mDataList.get(position).t.status == 1 || mDataList.get(position).t.status == 0) {
+            if (mDataList.get(position).t.type == 1 || mDataList.get(position).t.type == 0) {
                 toPlayPos(position);
-            } else if (mDataList.get(position).t.status == 2) {
+            } else if (mDataList.get(position).t.type == 2) {
                 LyricsdisplayActivity.toLyricsdisplayActivity(mContext, mDataList.get(position).t.itemid, mDataList.get(position).t.name);
             }
         }
