@@ -1,7 +1,5 @@
 package com.xilu.wybz.ui.fragment;
 
-import android.os.Handler;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,22 +13,14 @@ import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.presenter.SongPresenter;
 import com.xilu.wybz.ui.IView.ISongView;
 import com.xilu.wybz.ui.find.MoreWorkActivity;
-import com.xilu.wybz.utils.DensityUtil;
-import com.xilu.wybz.view.GridSpacingItemDecoration;
-import com.xilu.wybz.view.SpacesItemDecoration;
 import com.xilu.wybz.view.pull.BaseViewHolder;
-import com.xilu.wybz.view.pull.DividerItemDecoration;
-import com.xilu.wybz.view.pull.PullRecycler;
 import com.xilu.wybz.view.pull.layoutmanager.ILayoutManager;
 import com.xilu.wybz.view.pull.layoutmanager.MyGridLayoutManager;
-import com.xilu.wybz.view.pull.layoutmanager.MyLinearLayoutManager;
 import com.xilu.wybz.view.pull.section.SectionData;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.Bind;
-import butterknife.OnClick;
 
 /**
  * Created by June on 16/5/7.

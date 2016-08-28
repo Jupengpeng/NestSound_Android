@@ -1,7 +1,6 @@
 package com.xilu.wybz.ui.lyrics;
 
 import android.os.Handler;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,15 +13,14 @@ import com.xilu.wybz.common.Event;
 import com.xilu.wybz.presenter.ImportWordPresenter;
 import com.xilu.wybz.ui.IView.IImportWordView;
 import com.xilu.wybz.ui.base.BaseListActivity;
-import com.xilu.wybz.view.SpacesItemDecoration;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.PullRecycler;
 
-import java.util.ArrayList;
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.List;
 
 import butterknife.Bind;
-import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by June on 16/5/13.

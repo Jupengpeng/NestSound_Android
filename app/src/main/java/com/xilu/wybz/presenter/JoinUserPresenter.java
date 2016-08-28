@@ -5,23 +5,14 @@ import android.content.Context;
 import com.google.gson.reflect.TypeToken;
 import com.xilu.wybz.bean.JoinUserBean;
 import com.xilu.wybz.bean.JsonResponse;
-import com.xilu.wybz.bean.TemplateBean;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.callback.AppJsonCalback;
-import com.xilu.wybz.http.callback.FileCallBack;
-import com.xilu.wybz.http.callback.MyStringCallback;
-import com.xilu.wybz.ui.IView.IHotView;
 import com.xilu.wybz.ui.IView.IJoinUserView;
-import com.xilu.wybz.utils.FileUtils;
-import com.xilu.wybz.utils.ParseUtils;
 
-import java.io.File;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import okhttp3.Call;
 
 /**
  * Created by hujunwei on 16/4/5.

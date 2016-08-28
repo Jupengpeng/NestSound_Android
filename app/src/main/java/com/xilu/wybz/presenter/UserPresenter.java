@@ -10,7 +10,6 @@ import com.xilu.wybz.http.callback.MyStringCallback;
 import com.xilu.wybz.ui.IView.IUserView;
 import com.xilu.wybz.utils.ParseUtils;
 import com.xilu.wybz.utils.PrefsUtil;
-import com.xilu.wybz.utils.ToastUtils;
 
 import java.util.HashMap;
 

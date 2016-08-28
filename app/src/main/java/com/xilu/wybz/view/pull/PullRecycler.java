@@ -6,10 +6,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 
 import com.xilu.wybz.R;
-import com.xilu.wybz.view.NoAlphaItemAnimator;
 import com.xilu.wybz.view.pull.layoutmanager.ILayoutManager;
 
 /**

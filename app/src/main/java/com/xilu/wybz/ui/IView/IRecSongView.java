@@ -1,10 +1,6 @@
 package com.xilu.wybz.ui.IView;
 
 import com.xilu.wybz.bean.GleeDetailBean;
-import com.xilu.wybz.bean.MusicBean;
-import com.xilu.wybz.bean.WorksData;
-
-import java.util.List;
 
 /**
  * 基础View接口

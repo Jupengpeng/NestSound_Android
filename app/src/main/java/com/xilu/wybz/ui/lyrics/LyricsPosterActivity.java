@@ -1,4 +1,5 @@
 package com.xilu.wybz.ui.lyrics;
+
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -24,6 +25,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.Bind;
 
 /**

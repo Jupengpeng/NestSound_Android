@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.LocalActivityManager;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -16,7 +15,6 @@ import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.PushAgent;
 import com.xilu.wybz.R;
 import com.xilu.wybz.adapter.MyPagerAdapter;
-import com.xilu.wybz.bean.HotBean;
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.interfaces.OnTabActivityResultListener;
@@ -30,6 +28,7 @@ import com.xilu.wybz.ui.mine.MineActivity;
 import com.xilu.wybz.ui.msg.MsgActivity;
 import com.xilu.wybz.ui.record.InspireRecordActivity;
 import com.xilu.wybz.ui.song.HotCatalogActivity;
+import com.xilu.wybz.utils.GetDomainUtil;
 import com.xilu.wybz.utils.PermissionUtils;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.SystemUtils;
@@ -41,7 +40,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -84,7 +82,6 @@ public class MainTabActivity extends BaseActivity {
         openPush();
         checkAppVersion();
         if (PermissionUtils.checkSdcardPermission(this)) {
-
         }
         manager = new LocalActivityManager(this, true);
         manager.dispatchCreate(savedInstanceState);

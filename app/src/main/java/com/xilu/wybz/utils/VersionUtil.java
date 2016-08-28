@@ -1,10 +1,12 @@
 package com.xilu.wybz.utils;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
+
 import com.sina.weibo.sdk.utils.LogUtil;
 import com.umeng.update.UmengUpdateAgent;
 import com.umeng.update.UmengUpdateListener;
@@ -15,6 +17,7 @@ import com.xilu.wybz.common.FileDir;
 import com.xilu.wybz.view.materialdialogs.DialogAction;
 import com.xilu.wybz.view.materialdialogs.GravityEnum;
 import com.xilu.wybz.view.materialdialogs.MaterialDialog;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;

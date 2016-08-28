@@ -1,21 +1,18 @@
 package com.xilu.wybz.presenter;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.xilu.wybz.bean.GleeDetailBean;
-import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.callback.MyStringCallback;
 import com.xilu.wybz.ui.IView.IRecSongView;
-import com.xilu.wybz.utils.NetWorkUtil;
 import com.xilu.wybz.utils.ParseUtils;
+
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.List;
+
 import okhttp3.Call;
 import okhttp3.Request;
 

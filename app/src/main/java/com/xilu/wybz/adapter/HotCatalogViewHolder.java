@@ -6,9 +6,7 @@ import android.widget.RelativeLayout;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
-import com.xilu.wybz.bean.HotBean;
 import com.xilu.wybz.bean.HotCatalog;
-import com.xilu.wybz.bean.TemplateBean;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.ui.song.MakeHotActivity;
 import com.xilu.wybz.utils.DensityUtil;

@@ -12,15 +12,14 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.SystemBean;
 import com.xilu.wybz.presenter.MsgSystemPresenter;
+import com.xilu.wybz.ui.BrowserActivity;
 import com.xilu.wybz.ui.IView.ISystemMsgView;
 import com.xilu.wybz.ui.base.BaseListActivity;
-import com.xilu.wybz.ui.BrowserActivity;
 import com.xilu.wybz.utils.DateTimeUtil;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.PullRecycler;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;

@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import com.xilu.wybz.R;
 import com.xilu.wybz.adapter.ViewPagerAdapter;
 import com.xilu.wybz.ui.base.ToolbarActivity;
+
 import java.util.ArrayList;
 
 import butterknife.Bind;

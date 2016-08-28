@@ -29,7 +29,6 @@ import com.xilu.wybz.view.pull.PullRecycler;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;

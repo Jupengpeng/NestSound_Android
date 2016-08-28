@@ -10,7 +10,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.xilu.wybz.R;
-import com.xilu.wybz.utils.DensityUtil;
 
 
 public class ToastDialog extends Dialog {

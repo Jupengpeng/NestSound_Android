@@ -21,9 +21,10 @@ import com.xilu.wybz.utils.MyCountTimer;
 import com.xilu.wybz.utils.ParseUtils;
 import com.xilu.wybz.utils.StringUtils;
 
+import org.greenrobot.eventbus.EventBus;
+
 import butterknife.Bind;
 import butterknife.OnClick;
-import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by June on 2016/5/4.

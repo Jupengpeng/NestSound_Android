@@ -1,7 +1,5 @@
 package com.xilu.wybz.bean;
 
-import com.xilu.wybz.ui.IView.IBaseView;
-
 import java.io.Serializable;
 
 /**

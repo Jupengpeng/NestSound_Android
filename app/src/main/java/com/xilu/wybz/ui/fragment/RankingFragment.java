@@ -1,13 +1,10 @@
 package com.xilu.wybz.ui.fragment;
 
-import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -18,12 +15,9 @@ import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.RankingPresenter;
 import com.xilu.wybz.service.MainService;
 import com.xilu.wybz.ui.IView.IRankingView;
-import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.ui.lyrics.LyricsdisplayActivity;
 import com.xilu.wybz.ui.song.PlayAudioActivity;
-import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.PrefsUtil;
-import com.xilu.wybz.view.SpacesItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;

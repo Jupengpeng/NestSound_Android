@@ -34,8 +34,10 @@ import com.xilu.wybz.utils.ToastUtils;
 import com.xilu.wybz.view.AnimImageView;
 import com.xilu.wybz.view.SystemBarHelper;
 import com.xilu.wybz.view.materialdialogs.MaterialDialog;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.ButterKnife;
 /**
  * Created by June on 8/9/15.

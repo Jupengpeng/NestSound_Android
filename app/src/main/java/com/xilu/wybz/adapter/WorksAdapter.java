@@ -19,7 +19,9 @@ import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.ImageLoadUtil;
 import com.xilu.wybz.utils.NumberUtil;
 import com.xilu.wybz.utils.StringUtils;
+
 import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 

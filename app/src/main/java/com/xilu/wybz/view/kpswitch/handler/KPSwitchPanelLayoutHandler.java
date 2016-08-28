@@ -15,7 +15,6 @@
  */
 package com.xilu.wybz.view.kpswitch.handler;
 
-import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.View;

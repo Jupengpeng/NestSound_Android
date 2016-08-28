@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +15,9 @@ import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.FindMoreWorkPresenter;
 import com.xilu.wybz.ui.IView.IFindMoreWorkView;
 import com.xilu.wybz.ui.base.BaseListActivity;
-import com.xilu.wybz.view.SpacesItemDecoration;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.PullRecycler;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

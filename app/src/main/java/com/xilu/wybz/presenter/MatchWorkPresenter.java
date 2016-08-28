@@ -5,7 +5,6 @@ import android.content.Context;
 import com.google.gson.reflect.TypeToken;
 import com.xilu.wybz.bean.JsonResponse;
 import com.xilu.wybz.bean.MatchWorkBean;
-import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.callback.AppJsonCalback;
 import com.xilu.wybz.ui.IView.IMatchWorkView;

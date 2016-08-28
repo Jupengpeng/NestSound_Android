@@ -2,15 +2,13 @@ package com.xilu.wybz.presenter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.util.Log;
 
 import com.commit451.nativestackblur.NativeStackBlur;
+import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.callback.BitmapCallback;
 import com.xilu.wybz.http.callback.FileCallBack;
 import com.xilu.wybz.ui.IView.ILoadPicView;
 import com.xilu.wybz.utils.BitmapUtils;
-import com.xilu.wybz.utils.FileUtils;
-import com.xilu.wybz.utils.PermissionUtils;
 
 import java.io.File;
 
@@ -25,6 +23,7 @@ public class DownPicPresenter extends BasePresenter<ILoadPicView>{
     }
 
     public void downLoadPic(String imageUrl, String path){
+        if(!imageUrl.startsWith("http"))imageUrl = MyHttpClient.QINIU_URL+imageUrl;
         File file = new File(path);
         if(!new File(file.getParent()).exists())new File(file.getParent()).mkdirs();
         httpUtils.getFile(imageUrl, new FileCallBack(file.getParent(),file.getName()) {
@@ -48,6 +47,7 @@ public class DownPicPresenter extends BasePresenter<ILoadPicView>{
     }
 
     public void downLoadBitmap(String imageUrl, String path){
+        if(!imageUrl.startsWith("http"))imageUrl = MyHttpClient.QINIU_URL+imageUrl;
         File file = new File(path);
         if(!new File(file.getParent()).exists())new File(file.getParent()).mkdirs();
         httpUtils.getImage(imageUrl, new BitmapCallback() {

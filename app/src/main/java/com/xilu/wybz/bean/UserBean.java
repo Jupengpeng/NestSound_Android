@@ -1,10 +1,5 @@
 package com.xilu.wybz.bean;
 
-import android.text.TextUtils;
-
-import com.xilu.wybz.common.MyHttpClient;
-import com.xilu.wybz.common.YinChaoConfig;
-
 /**
  * Created by June on 2015/9/2.
  */

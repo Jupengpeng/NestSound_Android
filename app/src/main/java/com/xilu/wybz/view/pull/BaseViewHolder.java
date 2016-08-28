@@ -3,10 +3,8 @@ package com.xilu.wybz.view.pull;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.LinearLayout;
 
 import com.xilu.wybz.bean.WorksData;
-import com.xilu.wybz.utils.DensityUtil;
 
 import java.util.List;
 

@@ -1,7 +1,6 @@
 package com.xilu.wybz.ui.IView;
 
 import com.xilu.wybz.bean.MusicTalk;
-import com.xilu.wybz.bean.SongAlbum;
 
 import java.util.List;
 

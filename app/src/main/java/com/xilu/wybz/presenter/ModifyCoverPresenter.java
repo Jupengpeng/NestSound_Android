@@ -2,17 +2,14 @@ package com.xilu.wybz.presenter;
 
 import android.content.Context;
 
-import com.xilu.wybz.bean.CommentBean;
 import com.xilu.wybz.bean.DataBean;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.callback.MyStringCallback;
-import com.xilu.wybz.ui.IView.ICommentView;
 import com.xilu.wybz.ui.IView.IModifyCoverView;
 import com.xilu.wybz.utils.ParseUtils;
 import com.xilu.wybz.utils.PrefsUtil;
 
 import java.util.HashMap;
-import java.util.List;
 
 import okhttp3.Call;
 

@@ -1,8 +1,10 @@
 package com.xilu.wybz.utils;
+
 import android.view.View;
 import android.view.View.MeasureSpec;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+
 import java.util.regex.Pattern;
 
 public class GeneralUtil {

@@ -28,12 +28,10 @@ import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.PullRecycler;
 import com.xilu.wybz.view.pull.section.SectionData;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 
 /**
  * Created by hujunwei on 16/8/12.

@@ -3,9 +3,7 @@ package com.xilu.wybz.presenter;
 import android.content.Context;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.xilu.wybz.bean.FindSongBean;
-import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.callback.MyStringCallback;
 import com.xilu.wybz.ui.IView.ISongView;
@@ -16,7 +14,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.List;
 
 import okhttp3.Call;
 

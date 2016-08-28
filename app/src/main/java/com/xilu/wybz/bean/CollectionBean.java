@@ -1,9 +1,5 @@
 package com.xilu.wybz.bean;
 
-import android.text.TextUtils;
-
-import com.xilu.wybz.common.YinChaoConfig;
-
 import java.io.Serializable;
 
 /**

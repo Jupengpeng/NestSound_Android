@@ -1,14 +1,5 @@
 package com.xilu.wybz.http.callback;
 
-import android.text.TextUtils;
-import android.util.Log;
-
-import com.xilu.wybz.http.rsa.RSAUtils;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.w3c.dom.Text;
-
 import java.io.IOException;
 
 import okhttp3.Call;

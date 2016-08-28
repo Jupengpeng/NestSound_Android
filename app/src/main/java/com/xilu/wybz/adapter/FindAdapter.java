@@ -1,7 +1,9 @@
 package com.xilu.wybz.adapter;
+
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+
 import com.xilu.wybz.ui.fragment.ActFragment;
 import com.xilu.wybz.ui.fragment.LyricsFragment;
 import com.xilu.wybz.ui.fragment.RankingFragment;

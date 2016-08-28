@@ -25,7 +25,6 @@ import android.widget.ProgressBar;
 
 import com.xilu.wybz.R;
 import com.xilu.wybz.common.Event;
-import com.xilu.wybz.common.FileDir;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.ui.login.LoginActivity;
 import com.xilu.wybz.ui.market.MatchActivity;
@@ -38,7 +37,6 @@ import com.xilu.wybz.utils.StringUtils;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 

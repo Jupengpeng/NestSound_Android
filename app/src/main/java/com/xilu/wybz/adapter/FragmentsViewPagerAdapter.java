@@ -5,7 +5,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.view.ViewGroup;
 
-
 import com.xilu.wybz.ui.fragment.BaseFragment;
 
 import java.util.List;

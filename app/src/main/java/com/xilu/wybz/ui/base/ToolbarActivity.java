@@ -7,16 +7,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.RelativeLayout;
+
 import com.xilu.wybz.R;
 import com.xilu.wybz.ui.find.FindActivity;
 import com.xilu.wybz.ui.lyrics.LyricsPosterActivity;
 import com.xilu.wybz.ui.lyrics.ShareActivity;
 import com.xilu.wybz.ui.main.MainActivity;
-import com.xilu.wybz.ui.mine.UserInfoActivity;
 import com.xilu.wybz.ui.msg.MsgActivity;
 import com.xilu.wybz.ui.song.PlayAudioActivity;
 import com.xilu.wybz.ui.song.SongAblumActivity;
 import com.xilu.wybz.view.SystemBarHelper;
+
 import butterknife.ButterKnife;
 
 public abstract class ToolbarActivity extends BaseActivity {

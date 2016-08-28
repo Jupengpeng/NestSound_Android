@@ -7,12 +7,19 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.squareup.picasso.Picasso;
 import com.xilu.wybz.BuildConfig;
 import com.xilu.wybz.R;
+import com.xilu.wybz.common.FileDir;
 import com.xilu.wybz.ui.base.BaseActivity;
 import com.xilu.wybz.ui.manager.ConsoleActivity;
 import com.xilu.wybz.utils.GetDomainUtil;
+import com.xilu.wybz.utils.MD5Util;
+import com.xilu.wybz.utils.PermissionUtils;
 import com.xilu.wybz.utils.PrefsUtil;
+import com.xilu.wybz.utils.StringUtils;
+
+import java.io.File;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -30,8 +37,7 @@ public class WelActivity extends BaseActivity {
     private boolean isConsole = false;
     private Handler handler;
 
-    public static final String[] exts = {"_360","ppzs"};
-//    public static final String CHANNEL_KEY = "CHANNEL";
+    public static final String[] exts = {"_360", "ppzs"};
 
     @Override
     protected int getLayoutRes() {
@@ -42,41 +48,35 @@ public class WelActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         handler = new Handler();
 
-//        String channel = DeviceUtils.getMetaValue(context, CHANNEL_KEY);
         String channel = BuildConfig.FLAVOR;
-        for(String ext:exts){
+        for (String ext : exts) {
 
-            if(ext.equalsIgnoreCase(channel)){
+            if (ext.equalsIgnoreCase(channel)) {
                 ivSplashExt.setVisibility(View.VISIBLE);
             }
         }
-
-        GetDomainUtil getDomainUtil = new GetDomainUtil(context);
-//        String appLogo = PrefsUtil.getString("applogo", context);
-//        String fileName = MD5Util.getMD5String(appLogo) + ".png";
-//        String filePath = FileDir.logoDir + fileName;
-//        if (StringUtils.isNotBlank(appLogo)) {
-//            if (new File(filePath).exists()) {
-//                rlMain.setBackground(new BitmapDrawable(BitmapUtils.getSDCardImg(filePath)));
-//            }else{
-//                rlMain.setBackgroundResource(R.drawable.bg_wel);
-//                getDomainUtil.downLoadLogo(appLogo);
-//            }
-//        }else{
-//            rlMain.setBackgroundResource(R.drawable.bg_wel);
-//        }
-
-//        getDomainUtil.getNewIp();
-        if(PrefsUtil.getUserId(context)>0){
-            getDomainUtil.getCheck();
+        String appLogo = PrefsUtil.getString("applogo", context);
+        if (StringUtils.isNotBlank(appLogo)) {
+            String fileName = MD5Util.getMD5String(appLogo) + ".jpg";
+            String filePath = FileDir.logoDir + fileName;
+            if (new File(filePath).exists()) {
+                Picasso.with(context).load(new File(filePath)).into(ivLogo);
+            } else {
+                Picasso.with(context).load(appLogo).into(ivLogo);
+            }
         }
-        if (BuildConfig.DEBUG){
+        GetDomainUtil getDomain = new GetDomainUtil(this);
+        getDomain.getBootPic();
+        if (PrefsUtil.getUserId(context) > 0) {
+            getDomain.getCheck();
+        }
+        if (BuildConfig.DEBUG) {
             llMain.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     isConsole = true;
                     Intent intent = new Intent(WelActivity.this, ConsoleActivity.class);
-                    startActivityForResult(intent,CODE);
+                    startActivityForResult(intent, CODE);
                 }
             });
         }
@@ -86,11 +86,11 @@ public class WelActivity extends BaseActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == CODE && resultCode == RESULT_OK){
-        isConsole = false;
-        delayToHome();
+        if (requestCode == CODE && resultCode == RESULT_OK) {
+            isConsole = false;
+            delayToHome();
+        }
     }
-}
 
     // 跳转到首页
     public void delayToHome() {
@@ -104,14 +104,14 @@ public class WelActivity extends BaseActivity {
     }
 
 
-    private void startMainActivity(){
-        if (isConsole){
+    private void startMainActivity() {
+        if (isConsole) {
             return;
         }
         Intent intent = new Intent(WelActivity.this, MainTabActivity.class);
         startActivity(intent);
         finish();
-        overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
     @Override

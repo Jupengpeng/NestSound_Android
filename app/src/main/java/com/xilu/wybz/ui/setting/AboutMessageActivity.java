@@ -3,7 +3,6 @@ package com.xilu.wybz.ui.setting;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.xilu.wybz.R;

@@ -14,7 +14,9 @@ import android.text.style.ClickableSpan;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
+
 import com.xilu.wybz.R;
+
 import java.util.LinkedList;
 /**
  * 固定行数展开收缩控件

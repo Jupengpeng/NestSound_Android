@@ -3,7 +3,6 @@ package com.xilu.wybz.bean;
 import android.text.TextUtils;
 
 import com.xilu.wybz.common.MyCommon;
-import com.xilu.wybz.common.YinChaoConfig;
 import com.xilu.wybz.utils.StringStyleUtil;
 
 import java.io.Serializable;

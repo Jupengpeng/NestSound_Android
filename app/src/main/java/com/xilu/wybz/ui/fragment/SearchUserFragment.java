@@ -25,10 +25,11 @@ import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.layoutmanager.ILayoutManager;
 import com.xilu.wybz.view.pull.layoutmanager.MyGridLayoutManager;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.List;
 
 import butterknife.Bind;
-import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by hujunwei on 16/5/22.

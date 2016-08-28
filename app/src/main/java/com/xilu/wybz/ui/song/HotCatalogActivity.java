@@ -1,6 +1,5 @@
 package com.xilu.wybz.ui.song;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,7 +20,6 @@ import com.xilu.wybz.ui.IView.IHotCatalogView;
 import com.xilu.wybz.ui.base.BaseSectionListActivity;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.view.pull.BaseViewHolder;
-import com.xilu.wybz.view.pull.PullRecycler;
 import com.xilu.wybz.view.pull.layoutmanager.ILayoutManager;
 import com.xilu.wybz.view.pull.layoutmanager.MyGridLayoutManager;
 import com.xilu.wybz.view.pull.section.SectionData;

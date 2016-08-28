@@ -16,7 +16,6 @@
 package com.xilu.wybz.view.kpswitch.widget;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.util.AttributeSet;

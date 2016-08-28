@@ -515,11 +515,7 @@ public class ModifyInspireRecordActivity extends ToolbarActivity implements IIns
         onKeyBack();
     }
     public void onKeyBack(){
-        if(recordStatus==0&& StringUtils.isBlank(recordPath)
-                && StringUtils.isBlank(etContent.getText().toString().trim())
-                &&list.size()==0){
-            finish();
-        }else {
+        try {
             if (backDialog == null) {
                 backDialog = new MaterialDialog.Builder(this)
                         .title("请确认操作")
@@ -535,6 +531,8 @@ public class ModifyInspireRecordActivity extends ToolbarActivity implements IIns
                         .canceledOnTouchOutside(true).build();
             }
             backDialog.show();
+        }catch (Exception e){
+            finish();
         }
     }
     @Override

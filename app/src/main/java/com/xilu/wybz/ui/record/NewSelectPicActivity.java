@@ -19,24 +19,22 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.PhotoBean;
 import com.xilu.wybz.common.Event;
-import com.xilu.wybz.common.MyCommon;
-import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.ui.base.BaseListActivity;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.ImageLoadUtil;
 import com.xilu.wybz.view.GridSpacingItemDecoration;
-import com.xilu.wybz.view.SpacesItemDecoration;
 import com.xilu.wybz.view.menuitem.SelectPicProvider;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.layoutmanager.ILayoutManager;
 import com.xilu.wybz.view.pull.layoutmanager.MyGridLayoutManager;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
-import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by hujunwei on 16/6/30.

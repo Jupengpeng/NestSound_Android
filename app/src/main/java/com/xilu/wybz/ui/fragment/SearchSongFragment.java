@@ -1,7 +1,6 @@
 package com.xilu.wybz.ui.fragment;
 
 import android.os.Handler;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,20 +16,18 @@ import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.SearchPresenter;
 import com.xilu.wybz.service.MainService;
 import com.xilu.wybz.ui.IView.ISearchView;
-import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.ui.song.PlayAudioActivity;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.ImageLoadUtil;
 import com.xilu.wybz.utils.NumberUtil;
 import com.xilu.wybz.utils.PrefsUtil;
-import com.xilu.wybz.view.SpacesItemDecoration;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 
-import java.util.ArrayList;
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.List;
 
 import butterknife.Bind;
-import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by hujunwei on 16/5/22.

@@ -1,32 +1,15 @@
 package com.xilu.wybz.view.dialog;
 
-import android.animation.Animator;
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.app.Dialog;
 import android.content.Context;
-import android.media.Image;
-import android.os.Handler;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.xilu.wybz.R;
-import com.xilu.wybz.adapter.ActionAdapter;
-import com.xilu.wybz.bean.ActionBean;
 import com.xilu.wybz.utils.DensityUtil;
-import com.xilu.wybz.utils.KickBackAnimator;
-import com.xilu.wybz.utils.PrefsUtil;
-
-import java.util.List;
 
 
 public class MakeSongTipDialog extends Dialog{

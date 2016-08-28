@@ -1,7 +1,5 @@
 package com.xilu.wybz.bean;
 
-import android.app.Activity;
-
 /**
  * Created by hujunwei on 16/8/16.
  */

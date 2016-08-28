@@ -1,8 +1,8 @@
 package com.xilu.wybz.ui.IView;
 
 import com.xilu.wybz.bean.FansBean;
-import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.bean.WorksData;
+
 import java.util.List;
 
 /**

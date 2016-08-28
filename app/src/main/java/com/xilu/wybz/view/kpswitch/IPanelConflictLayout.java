@@ -15,9 +15,6 @@
  */
 package com.xilu.wybz.view.kpswitch;
 
-import android.content.Context;
-import android.view.View;
-
 /**
  * Created by Jacksgong on 3/30/16.
  */

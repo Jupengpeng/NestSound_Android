@@ -17,7 +17,6 @@ import com.xilu.wybz.view.pull.PullRecycler;
 import com.xilu.wybz.view.pull.layoutmanager.ILayoutManager;
 import com.xilu.wybz.view.pull.layoutmanager.MyGridLayoutManager;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

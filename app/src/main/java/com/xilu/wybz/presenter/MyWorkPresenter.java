@@ -6,7 +6,6 @@ import com.xilu.wybz.bean.DataBean;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.callback.MyStringCallback;
-import com.xilu.wybz.ui.IView.IImportWordView;
 import com.xilu.wybz.ui.IView.IMyWorkView;
 import com.xilu.wybz.utils.ParseUtils;
 import com.xilu.wybz.utils.PrefsUtil;

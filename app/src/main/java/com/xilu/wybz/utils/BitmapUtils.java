@@ -12,7 +12,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
 import android.os.Build;
-import android.os.Environment;
 import android.view.View;
 
 import java.io.ByteArrayInputStream;

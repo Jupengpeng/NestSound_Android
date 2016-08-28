@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.widget.TextView;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;

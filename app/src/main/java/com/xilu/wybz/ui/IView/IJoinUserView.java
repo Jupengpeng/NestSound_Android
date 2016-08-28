@@ -1,7 +1,6 @@
 package com.xilu.wybz.ui.IView;
 
 import com.xilu.wybz.bean.JoinUserBean;
-import com.xilu.wybz.bean.LyricsDraftBean;
 
 import java.util.List;
 

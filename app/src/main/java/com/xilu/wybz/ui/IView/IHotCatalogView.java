@@ -1,9 +1,6 @@
 package com.xilu.wybz.ui.IView;
 
 import com.xilu.wybz.bean.HotBean;
-import com.xilu.wybz.bean.HotCatalog;
-
-import java.util.List;
 
 /**
  * Created by hujunwei on 16/8/8.

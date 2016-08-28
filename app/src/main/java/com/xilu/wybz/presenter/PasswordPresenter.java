@@ -6,7 +6,6 @@ import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.callback.MyStringCallback;
 import com.xilu.wybz.ui.IView.IPasswordView;
-import com.xilu.wybz.ui.IView.IRegisterView;
 import com.xilu.wybz.utils.ParseUtils;
 
 import java.util.HashMap;

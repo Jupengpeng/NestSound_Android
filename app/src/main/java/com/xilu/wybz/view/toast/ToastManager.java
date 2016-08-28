@@ -2,7 +2,9 @@ package com.xilu.wybz.view.toast;
 
 import android.app.Activity;
 import android.view.ViewGroup;
+
 import com.xilu.wybz.R;
+
 import static android.view.Gravity.BOTTOM;
 import static com.xilu.wybz.view.toast.AppMsg.LENGTH_SHORT;
 

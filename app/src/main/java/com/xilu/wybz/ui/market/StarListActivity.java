@@ -2,7 +2,6 @@ package com.xilu.wybz.ui.market;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +24,6 @@ import com.xilu.wybz.view.pull.PullRecycler;
 import java.util.List;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 
 /**
  * Created by hujunwei on 16/8/12.

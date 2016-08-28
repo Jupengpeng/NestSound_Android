@@ -1,20 +1,17 @@
 package com.xilu.wybz.ui.setting;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.xilu.wybz.R;
 import com.xilu.wybz.presenter.FeedbackPresenter;
 import com.xilu.wybz.ui.IView.IFeedbackView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
-import com.xilu.wybz.utils.ToastUtils;
 
 import butterknife.Bind;
 

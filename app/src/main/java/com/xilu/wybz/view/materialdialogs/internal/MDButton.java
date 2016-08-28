@@ -8,6 +8,7 @@ import android.support.v7.text.AllCapsTransformationMethod;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.widget.TextView;
+
 import com.xilu.wybz.R;
 import com.xilu.wybz.view.materialdialogs.GravityEnum;
 import com.xilu.wybz.view.materialdialogs.util.DialogUtils;

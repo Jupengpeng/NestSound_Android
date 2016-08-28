@@ -1,6 +1,7 @@
 package com.xilu.wybz.view.pull.layoutmanager;
 
 import android.support.v7.widget.RecyclerView;
+
 import com.xilu.wybz.view.pull.BaseListAdapter;
 
 

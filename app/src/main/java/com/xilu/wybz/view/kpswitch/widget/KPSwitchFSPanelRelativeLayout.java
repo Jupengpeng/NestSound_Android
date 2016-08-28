@@ -16,12 +16,12 @@
 package com.xilu.wybz.view.kpswitch.widget;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.Window;
 import android.widget.RelativeLayout;
+
 import com.xilu.wybz.view.kpswitch.IFSPanelConflictLayout;
 import com.xilu.wybz.view.kpswitch.IPanelHeightTarget;
 import com.xilu.wybz.view.kpswitch.handler.KPSwitchFSPanelLayoutHandler;

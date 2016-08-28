@@ -1,9 +1,6 @@
 package com.xilu.wybz.utils;
 
-import java.util.LinkedList;
-
 import android.content.Context;
-import android.content.Intent;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextPaint;
@@ -12,7 +9,10 @@ import android.text.style.ClickableSpan;
 import android.text.style.URLSpan;
 import android.view.View;
 import android.widget.TextView;
+
 import com.xilu.wybz.ui.BrowserActivity;
+
+import java.util.LinkedList;
 /**
  * TextView 超链接处理类
  * Created by June on 2016/8/12.

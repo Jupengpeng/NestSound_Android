@@ -78,7 +78,7 @@ public class WorksViewHolder extends com.xilu.wybz.view.pull.BaseViewHolder {
         String url = MyCommon.getImageUrl(worksData.getPic(), itemWidth, itemWidth);
         ImageLoadUtil.loadImage(url, ivCover);
         if (COME.equals(MyCommon.MYSONG)) {
-            ivLock.setVisibility(worksData.is_issue == 1 ? View.GONE : View.VISIBLE);
+            ivLock.setVisibility(worksData.status == 1 ? View.GONE : View.VISIBLE);
         } else if (COME.equals(MyCommon.MYLYRICS)) {
             ivLock.setVisibility(worksData.status == 1 ? View.GONE : View.VISIBLE);
         } else {
@@ -107,10 +107,7 @@ public class WorksViewHolder extends com.xilu.wybz.view.pull.BaseViewHolder {
     public void onItemLongClick(View view, int position) {
         if (OnItemClickListener == null) return;
         List<String> itemNames = new ArrayList<>();
-        if (COME.equals("mysong")) {
-            itemNames.add(mDataList.get(position).is_issue == 0 ? "设为公开" : "设为私密");
-            itemNames.add("删除");
-        } else if (COME.equals("mylyrics")) {
+        if (COME.equals("mysong")||COME.equals("mylyrics")) {
             itemNames.add(mDataList.get(position).status == 0 ? "设为公开" : "设为私密");
             itemNames.add("删除");
         } else if (COME.equals("myfav")) {

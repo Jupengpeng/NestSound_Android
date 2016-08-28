@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
@@ -22,25 +20,20 @@ import android.widget.EditText;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
-import com.xilu.wybz.bean.TemplateBean;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.FileDir;
 import com.xilu.wybz.common.KeySet;
 import com.xilu.wybz.common.MyCommon;
-import com.xilu.wybz.presenter.MyWorkPresenter;
 import com.xilu.wybz.presenter.SaveWordPresenter;
-import com.xilu.wybz.ui.IView.IMyWorkView;
 import com.xilu.wybz.ui.IView.ISaveWordView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.utils.AppConstant;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.GalleryUtils;
 import com.xilu.wybz.utils.ImageLoadUtil;
-import com.xilu.wybz.utils.ImageUtils;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtils;
-import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.utils.UploadFileUtil;
 
 import org.greenrobot.eventbus.EventBus;
@@ -48,7 +41,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;

@@ -1,7 +1,5 @@
 package com.xilu.wybz.ui.IView;
 
-import android.graphics.Bitmap;
-
 /**
  * Created by hujunwei on 16/7/29.
  */

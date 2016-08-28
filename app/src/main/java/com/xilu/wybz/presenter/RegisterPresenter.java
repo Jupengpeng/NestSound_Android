@@ -5,12 +5,10 @@ import android.content.Context;
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.callback.MyStringCallback;
-import com.xilu.wybz.ui.IView.ILoginView;
 import com.xilu.wybz.ui.IView.IRegisterView;
 import com.xilu.wybz.utils.ParseUtils;
 
 import java.util.HashMap;
-import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Request;

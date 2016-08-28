@@ -1,4 +1,5 @@
 package com.xilu.wybz.view.toast;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
@@ -11,6 +12,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+
 import com.xilu.wybz.R;
 
 public class AppMsg {

@@ -263,11 +263,7 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
 
     @Override
     public void updateSuccess() {
-        if (type == 1) {
-            mDataList.get(selectPos).is_issue = 1 - mDataList.get(selectPos).is_issue;
-        } else if (type == 2) {
-            mDataList.get(selectPos).status = 1 - mDataList.get(selectPos).status;
-        }
+        mDataList.get(selectPos).status = 1 - mDataList.get(selectPos).status;
         updateItem(selectPos);
         ToastUtils.toast(context,"设置成功！");
     }
@@ -350,12 +346,7 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
         selectPos = pos;
         if (pos >= 0 && pos < mDataList.size()) {
             WorksData worksData = mDataList.get(pos);
-            int status;
-            if (type == 1) {
-                status = 1 - worksData.is_issue;
-            } else {
-                status = 1 - worksData.status;
-            }
+            int status = 1 - worksData.status;
             userPresenter.updateWorksState(worksData.itemid, type, status);
         }
     }
@@ -366,6 +357,7 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
                 .title(getString(R.string.dialog_title))
                 .content("确认删除该作品吗?")
                 .positiveText("删除")
+                .negativeText("取消")
                 .positiveColor(getResources().getColor(R.color.red))
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
@@ -373,7 +365,12 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
                         selectPos = pos;
                         deleteWorksData(pos);
                     }
-                }).show();
+                }).onNegative(new MaterialDialog.SingleButtonCallback() {
+            @Override
+            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+
+            }
+        }).show();
     }
 
     @Override

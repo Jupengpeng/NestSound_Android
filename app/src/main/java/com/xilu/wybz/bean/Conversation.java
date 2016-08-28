@@ -1,6 +1,7 @@
 package com.xilu.wybz.bean;
 
 import com.litesuits.orm.db.annotation.Table;
+
 import java.util.List;
 
 @Table("Conversation") //指定表名，可任意写

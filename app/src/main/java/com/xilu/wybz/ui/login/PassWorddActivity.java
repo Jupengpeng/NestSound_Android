@@ -6,6 +6,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.DataBean;
 import com.xilu.wybz.bean.UserBean;
@@ -17,7 +18,9 @@ import com.xilu.wybz.utils.MD5Util;
 import com.xilu.wybz.utils.MyCountTimer;
 import com.xilu.wybz.utils.ParseUtils;
 import com.xilu.wybz.utils.StringUtils;
+
 import org.greenrobot.eventbus.EventBus;
+
 import butterknife.Bind;
 import butterknife.OnClick;
 /**

@@ -2,18 +2,14 @@ package com.xilu.wybz.presenter;
 
 import android.content.Context;
 
-import com.google.gson.reflect.TypeToken;
 import com.xilu.wybz.bean.JsonResponse;
-import com.xilu.wybz.bean.StarBean;
 import com.xilu.wybz.bean.StarInfoBean;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.callback.AppJsonCalback;
 import com.xilu.wybz.ui.IView.IStarInfoView;
-import com.xilu.wybz.ui.IView.IStarView;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * Created by June on 16/5/4.

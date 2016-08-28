@@ -6,7 +6,7 @@ package com.xilu.wybz.common;
 public class MyHttpClient {
 
 
-    public final static String RELEASE_ROOT_URL = "http://121.196.236.189/";
+    public final static String RELEASE_ROOT_URL = "http://api.yinchao.cn/";
     public final static String TEST_ROOT_URL = "http://112.124.125.2/";
     public final static String TEMP_ROOT_URL = "http://112.124.125.2/";
 
@@ -201,12 +201,12 @@ public class MyHttpClient {
 
     //个人主页
     public static String getUserCenter() {
-        return "userCenter/index";
+        return "userCenter/index21";
     }
 
     //他人主页
     public static String getOtherCenter() {
-        return "common/otherCenter/index";
+        return "common/otherCenter/index21";
     }
 
     //歌词
@@ -230,8 +230,8 @@ public class MyHttpClient {
     }
 
     //更新IP
-    public static String getDomain() {
-        return "http://7xtj7f.com1.z0.glb.clouddn.com/app_config.txt";
+    public static String getBootPic() {
+        return "common/boot/pic";
     }
 
     //粉丝列表

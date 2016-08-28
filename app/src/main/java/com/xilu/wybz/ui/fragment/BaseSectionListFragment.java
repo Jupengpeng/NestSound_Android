@@ -1,10 +1,7 @@
 package com.xilu.wybz.ui.fragment;
 
-import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import com.xilu.wybz.R;
+
 import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.section.SectionData;
 /**

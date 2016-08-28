@@ -17,6 +17,7 @@ package com.xilu.wybz.view.kpswitch.handler;
 
 import android.view.View;
 import android.view.Window;
+
 import com.xilu.wybz.view.kpswitch.IFSPanelConflictLayout;
 import com.xilu.wybz.view.kpswitch.util.KeyboardUtil;
 

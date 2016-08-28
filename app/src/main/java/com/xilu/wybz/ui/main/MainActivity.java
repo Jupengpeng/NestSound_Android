@@ -17,7 +17,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.gson.Gson;
 import com.xilu.wybz.R;
 import com.xilu.wybz.adapter.ImageAdapter;
@@ -36,7 +35,6 @@ import com.xilu.wybz.ui.BrowserActivity;
 import com.xilu.wybz.ui.IView.IHomeView;
 import com.xilu.wybz.ui.base.BasePlayMenuActivity;
 import com.xilu.wybz.ui.lyrics.LyricsdisplayActivity;
-import com.xilu.wybz.ui.market.MatchActivity;
 import com.xilu.wybz.ui.song.PlayAudioActivity;
 import com.xilu.wybz.ui.song.SongAblumActivity;
 import com.xilu.wybz.utils.DensityUtil;

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+
 import java.util.List;
 
 public abstract class AutoRVAdapter extends RecyclerView.Adapter<RVHolder> {

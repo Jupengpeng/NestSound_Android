@@ -2,8 +2,6 @@ package com.xilu.wybz.utils;
 
 import android.content.Context;
 
-import com.xilu.wybz.common.MyHttpClient;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 /**

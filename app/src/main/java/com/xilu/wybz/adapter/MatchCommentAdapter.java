@@ -2,7 +2,6 @@ package com.xilu.wybz.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +12,6 @@ import com.xilu.wybz.R;
 import com.xilu.wybz.bean.CommentBean;
 import com.xilu.wybz.ui.mine.UserInfoActivity;
 import com.xilu.wybz.utils.PrefsUtil;
-import com.xilu.wybz.utils.StringStyleUtil;
 import com.xilu.wybz.utils.StringUtils;
 
 import java.util.List;

@@ -3,6 +3,7 @@ package com.xilu.wybz.utils;
 import android.content.Context;
 import android.net.Uri;
 import android.widget.ImageView;
+
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.backends.pipeline.PipelineDraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -11,6 +12,7 @@ import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.squareup.picasso.Picasso;
 import com.xilu.wybz.R;
+
 import java.io.File;
 /**
  * Created by June on 16/5/3.

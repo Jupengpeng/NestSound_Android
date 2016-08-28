@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.bumptech.glide.load.Key;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.HotCatalog;
 import com.xilu.wybz.common.Event;

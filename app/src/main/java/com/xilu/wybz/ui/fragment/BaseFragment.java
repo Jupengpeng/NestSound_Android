@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.xilu.wybz.R;
-import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.ToastUtils;
 import com.xilu.wybz.view.AnimImageView;
 import com.xilu.wybz.view.materialdialogs.MaterialDialog;

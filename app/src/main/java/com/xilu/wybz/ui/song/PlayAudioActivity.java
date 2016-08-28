@@ -49,7 +49,6 @@ import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.ui.mine.UserInfoActivity;
 import com.xilu.wybz.ui.setting.SettingFeedActivity;
 import com.xilu.wybz.utils.BitmapUtils;
-import com.xilu.wybz.utils.FileUtils;
 import com.xilu.wybz.utils.FormatHelper;
 import com.xilu.wybz.utils.MD5Util;
 import com.xilu.wybz.utils.NumberUtil;

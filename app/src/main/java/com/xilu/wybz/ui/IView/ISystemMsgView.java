@@ -1,7 +1,6 @@
 package com.xilu.wybz.ui.IView;
 
 import com.xilu.wybz.bean.SystemBean;
-import com.xilu.wybz.bean.ZambiaBean;
 
 import java.util.List;
 

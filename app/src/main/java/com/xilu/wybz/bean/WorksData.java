@@ -3,6 +3,7 @@ package com.xilu.wybz.bean;
 
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.utils.StringUtils;
+
 import java.io.Serializable;
 
 /**
@@ -29,6 +30,7 @@ public class WorksData implements Serializable {
     public String hotmp3;//伴奏播放地址
     public int hotmp3times;//伴奏时长 秒
     public int status;//是否公开 0不公开 1公开
+    public int is_issue;//是否公开 0不公开 1公开
     public int type;//1歌曲 2歌词
     public String lyrics;//歌词
     public String detail;//歌词详情 灵感记录的内容
@@ -55,7 +57,6 @@ public class WorksData implements Serializable {
     public String recordurl;
     public String musicurl;
     public String diyids;//歌词详情页返回的描述
-    public int is_issue = 1;//0不公开,1公开
     public boolean isPlay;//是否播放
 
     public int effect;//音效
@@ -140,13 +141,6 @@ public class WorksData implements Serializable {
         this.diyids = diyids;
     }
 
-    public int getIs_issue() {
-        return is_issue;
-    }
-
-    public void setIs_issue(int is_issue) {
-        this.is_issue = is_issue;
-    }
 
     public String getPics() {
         return pics;

@@ -10,7 +10,7 @@ import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.multidex.MultiDex;
-import android.util.Log;
+
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -19,21 +19,16 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.qiniu.android.storage.UploadManager;
 import com.umeng.message.PushAgent;
 import com.umeng.socialize.PlatformConfig;
-import com.xilu.wybz.common.FileDir;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.service.MainService;
-import com.xilu.wybz.utils.FileUtils;
 import com.xilu.wybz.utils.PhoneUtils;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtils;
 
-import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by June on 2016/3/1.

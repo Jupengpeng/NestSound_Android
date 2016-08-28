@@ -1,6 +1,5 @@
 package com.xilu.wybz.ui.IView;
 
-import com.xilu.wybz.bean.MusicTalk;
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.bean.UserInfoBean;
 import com.xilu.wybz.bean.WorksData;

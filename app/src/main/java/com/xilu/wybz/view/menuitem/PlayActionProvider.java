@@ -12,9 +12,6 @@ import com.xilu.wybz.view.AnimImageView;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
-
 /**
  * Created by June on 16/5/4.
  */

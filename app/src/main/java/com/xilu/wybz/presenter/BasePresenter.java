@@ -1,12 +1,10 @@
 package com.xilu.wybz.presenter;
 
 import android.content.Context;
-import android.text.TextUtils;
 
 import com.umeng.socialize.utils.Log;
 import com.xilu.wybz.http.HttpUtils;
 import com.xilu.wybz.ui.IView.IBaseView;
-import com.xilu.wybz.utils.ToastUtils;
 
 import java.util.Map;
 
