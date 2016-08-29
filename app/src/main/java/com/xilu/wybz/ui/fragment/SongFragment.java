@@ -41,6 +41,7 @@ public class SongFragment extends BaseSectionListFragment<WorksData> implements 
     LinearLayout ll_loading;
     private SongPresenter songPresenter;
     private int column = 3;
+    private int type = 1;
     private boolean isFirst;
     @Override
     protected void initPresenter() {
@@ -80,7 +81,7 @@ public class SongFragment extends BaseSectionListFragment<WorksData> implements 
         if(findSongBean.redList!=null) {
             mDataList.add(new SectionData(true, 1, "热门歌曲"));
             for (WorksData worksData : findSongBean.redList) {
-                worksData.status = 1;
+                worksData.type = 1;
                 worksData.come = MyCommon.RED;
                 mDataList.add(new SectionData(worksData));
             }
@@ -88,7 +89,7 @@ public class SongFragment extends BaseSectionListFragment<WorksData> implements 
         if(findSongBean.newList!=null) {
             mDataList.add(new SectionData(true, mDataList.size(), "最新歌曲"));
             for (WorksData worksData : findSongBean.newList) {
-                worksData.status = 1;
+                worksData.type = 1;
                 worksData.come = MyCommon.NEWS;
                 mDataList.add(new SectionData(worksData));
             }
@@ -134,9 +135,9 @@ public class SongFragment extends BaseSectionListFragment<WorksData> implements 
                 @Override
                 public void onClick(View v) {
                     if(position==0){
-                        MoreWorkActivity.toMoreSongActivity(context, 2, 1);
+                        MoreWorkActivity.toMoreSongActivity(context, 2, type);
                     }else{
-                        MoreWorkActivity.toMoreSongActivity(context, 1, 1);
+                        MoreWorkActivity.toMoreSongActivity(context, 1, type);
                     }
                 }
             });

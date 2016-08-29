@@ -84,14 +84,14 @@ public class LyricsFragment extends BaseSectionListFragment<WorksData> implement
         if(findSongBean.redList!=null) {
             mDataList.add(new SectionData(true, 1, "热门歌词"));
             for (WorksData worksData : findSongBean.redList) {
-                worksData.status = type;
+                worksData.type = type;
                 mDataList.add(new SectionData(worksData));
             }
         }
         if(findSongBean.newList!=null) {
             mDataList.add(new SectionData(true, mDataList.size(), "最新歌词"));
             for (WorksData worksData : findSongBean.newList) {
-                worksData.status = type;
+                worksData.type = type;
                 mDataList.add(new SectionData(worksData));
             }
         }
@@ -132,9 +132,9 @@ public class LyricsFragment extends BaseSectionListFragment<WorksData> implement
                 @Override
                 public void onClick(View v) {
                     if(position==0){
-                        MoreWorkActivity.toMoreSongActivity(context, 2, 1);
+                        MoreWorkActivity.toMoreSongActivity(context, 2, type);
                     }else{
-                        MoreWorkActivity.toMoreSongActivity(context, 1, 1);
+                        MoreWorkActivity.toMoreSongActivity(context, 1, type);
                     }
                 }
             });

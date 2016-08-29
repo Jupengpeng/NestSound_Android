@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -334,8 +335,10 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_agreement"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                tools:visibility="visible"
                 android:paddingRight="15dp"
                 android:paddingLeft="14dp"
                 >
