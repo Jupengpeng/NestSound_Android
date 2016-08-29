@@ -15,10 +15,13 @@ import com.xilu.wybz.presenter.MsgCommentPresenter;
 import com.xilu.wybz.ui.IView.ICommentView;
 import com.xilu.wybz.ui.base.BaseListActivity;
 import com.xilu.wybz.ui.lyrics.LyricsdisplayActivity;
+import com.xilu.wybz.ui.mine.UserInfoActivity;
 import com.xilu.wybz.ui.song.PlayAudioActivity;
 import com.xilu.wybz.utils.DateTimeUtil;
+import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringStyleUtil;
 import com.xilu.wybz.utils.StringUtils;
+import com.xilu.wybz.utils.ToastUtils;
 import com.xilu.wybz.view.dialog.CommentDialog;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.PullRecycler;
@@ -213,6 +216,20 @@ public class MsgCommentActivity extends BaseListActivity<MsgCommentBean> impleme
                     onItemClick(v, position);
                 }
             });
+
+            ivHead.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    MsgCommentBean bean = mDataList.get(position);
+                    if (PrefsUtil.getUserId(context) == bean.getUid()){
+                        ToastUtils.toast(context,"你自己");
+                        return;
+                    }
+                    UserInfoActivity.toUserInfoActivity(context,bean.getUid(),bean.getNickname());
+                }
+            });
+
+
         }
 
         @Override
