@@ -297,7 +297,13 @@ public class MainService extends Service implements IMusicDetailView, AudioManag
                 mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);   //Invalid States ERROR
             }
             if (mCurrentState == MyCommon.INITIALIZED || mCurrentState == MyCommon.STOPPED) {
-                mPlayer.prepareAsync();//Valid Sates{Initialized, Stopped}
+                try {
+
+                    mPlayer.prepareAsync();//Valid Sates{Initialized, Stopped}
+                } catch (Exception e){
+                    Log.e("service ","error:"+e.getMessage());
+                    e.printStackTrace();
+                }
                 changeState(MyCommon.PREPARING);
             }
         } catch (IOException e) {

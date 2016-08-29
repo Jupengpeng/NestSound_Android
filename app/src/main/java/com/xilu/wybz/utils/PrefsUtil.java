@@ -125,7 +125,9 @@ public class PrefsUtil {
     }
     //保存正在播放的音乐
     public static void saveMusicData(Context context, WorksData worksData){
-        putString("musicData_"+worksData.itemid,new Gson().toJson(worksData),context);
+        if (worksData != null){
+            putString("musicData_"+worksData.itemid,new Gson().toJson(worksData),context);
+        }
     }
     //
     //保存正在播放的音乐
