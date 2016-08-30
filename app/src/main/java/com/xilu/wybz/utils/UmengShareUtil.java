@@ -34,6 +34,12 @@ public class UmengShareUtil {
     public UmengShareUtil(Activity act, ShareBean shareBean) {
         activity = act;
         this.shareBean = shareBean;
+
+        if (!TextUtils.isEmpty(shareBean.pic) && shareBean.pic.contains("http://pic.yinchao.cn/")){
+            shareBean.pic += "?imageView2/0/w/200/h/200/q/40";
+//            shareBean.pic ="/storage/emulated/0/yinchao/image/cover/1472212194592.jpg";
+        }
+
         if (shareBean.type == 1) {//分享图片
             image = new UMImage(act, new File(shareBean.pic));
             return;
@@ -186,17 +192,17 @@ public class UmengShareUtil {
         @Override
         public void onResult(SHARE_MEDIA platform) {
             Log.d("plat", "platform" + platform);
-//            ToastUtils.toast(activity, platform + " 分享成功");
+            ToastUtils.toast(activity, platform + " 分享成功");
         }
 
         @Override
         public void onError(SHARE_MEDIA platform, Throwable t) {
-//            ToastUtils.toast(activity, platform + " 分享失败");
+            ToastUtils.toast(activity, platform + " 分享失败");
         }
 
         @Override
         public void onCancel(SHARE_MEDIA platform) {
-//            ToastUtils.toast(activity, platform + " 分享取消");
+            ToastUtils.toast(activity, platform + " 分享取消");
         }
     };
 }
