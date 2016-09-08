@@ -77,7 +77,7 @@ public class MyCommon {
     public static final String WECHAT_PKG = "com.tencent.mm";
     public static final String SINA_PKG = "com.sina.weibo";
     public static final String QQ_PKG = "com.tencent.mobileqq";
-    public static final String QZONE_PKG = "com.tencent.qzone";
+    public static final String QZONE_PKG = "com.qzone";
     //默认歌词图片
     public static List<String> getLyricsPic() {
         List<String> lyricsPics = new ArrayList<>();
