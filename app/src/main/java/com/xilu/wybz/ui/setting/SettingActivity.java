@@ -12,10 +12,11 @@ import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.umeng.analytics.MobclickAgent;
-import com.umeng.message.PushAgent;
+
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.common.Event;
+import com.xilu.wybz.common.KeySet;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.HttpUtils;
 import com.xilu.wybz.http.callback.MyStringCallback;
@@ -66,11 +67,11 @@ public class SettingActivity extends ToolbarActivity {
         cbNotice.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (!isChecked && PushAgent.getInstance(context).isEnabled()) {
-                    PushAgent.getInstance(context).disable();
-                    showMsg("关闭消息推送");
-                }
-                PrefsUtil.putBoolean("isPushOpen", isChecked, context);
+//                if (!isChecked && PushAgent.getInstance(context).isEnabled()) {
+//                    PushAgent.getInstance(context).disable();
+//                    showMsg("关闭消息推送");
+//                }
+                PrefsUtil.putBoolean(KeySet.KEY_PUSH_OPEN, isChecked, context);
             }
         });
         loadUserInfo();

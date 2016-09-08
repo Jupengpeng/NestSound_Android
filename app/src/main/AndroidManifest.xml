@@ -273,9 +273,6 @@
                 <action android:name="android.intent.action.MEDIA_BUTTON"></action>
             </intent-filter>
         </receiver>
-        <service
-            android:name=".service.MyPushIntentService"
-            android:process=":push" />
 
         <meta-data
             android:name="UMENG_CHANNEL"

@@ -10,9 +10,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.CheckedTextView;
 import android.widget.RelativeLayout;
-
 import com.umeng.analytics.MobclickAgent;
-import com.umeng.message.PushAgent;
 import com.xilu.wybz.R;
 import com.xilu.wybz.adapter.MyPagerAdapter;
 import com.xilu.wybz.bean.UserBean;
@@ -95,9 +93,9 @@ public class MainTabActivity extends BaseActivity {
 
     //打开推送
     public void openPush() {
-        if (PrefsUtil.getBoolean("isPushOpen", context) && !PushAgent.getInstance(context).isEnabled()) {
-            PushAgent.getInstance(context).enable();
-        }
+//        if (PrefsUtil.getBoolean(KeySet.KEY_PUSH_OPEN, context) && !PushAgent.getInstance(context).isEnabled()) {
+//
+//        }
     }
 
     //检测升级
@@ -246,7 +244,6 @@ public class MainTabActivity extends BaseActivity {
         ub.signature = ub.descr;
         PrefsUtil.saveUserInfo(context, ub);
         MobclickAgent.onProfileSignIn(ub.userid + "");
-        PushAgent.getInstance(context).setAlias(ub.userid + "", "yinchao");
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

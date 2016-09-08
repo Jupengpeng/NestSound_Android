@@ -17,7 +17,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.qiniu.android.storage.UploadManager;
-import com.umeng.message.PushAgent;
+
 import com.umeng.socialize.PlatformConfig;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.common.MyHttpClient;
@@ -29,6 +29,8 @@ import com.xilu.wybz.utils.StringUtils;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+
+import cn.jpush.android.api.JPushInterface;
 
 /**
  * Created by June on 2016/3/1.
@@ -88,7 +90,8 @@ public class MyApplication extends Application implements ServiceConnection {
         uploadManager = new UploadManager();
         Fresco.initialize(this);
         initImageLoader(getApplicationContext());
-        PushAgent.getInstance(context).setDebugMode(false);
+        JPushInterface.setDebugMode(true);
+        JPushInterface.init(this);
         startMainService();
         bindMainService();
     }

@@ -16,7 +16,7 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.umeng.analytics.MobclickAgent;
-import com.umeng.message.PushAgent;
+
 import com.xilu.wybz.R;
 import com.xilu.wybz.common.ZnImageLoader;
 import com.xilu.wybz.ui.MainTabActivity;
@@ -64,7 +64,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         isChenjin = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
         isHomeActivity = this instanceof MainActivity || this instanceof FindActivity
                 || this instanceof MsgActivity;
-        PushAgent.getInstance(context).onAppStart();
+
     }
 
     //开启透明状态栏目
