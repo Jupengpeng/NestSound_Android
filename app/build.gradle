@@ -22,8 +22,15 @@ android {
         versionName rootProject.ext.android.versionName
 
         multiDexEnabled true
-    }
 
+
+    }
+    sourceSets {
+        main {
+            jni.srcDirs = []
+            jniLibs.srcDirs = ['libs']
+        }
+    }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8

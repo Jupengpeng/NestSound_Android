@@ -29,7 +29,11 @@ public class PrefsUtil {
 
     public static boolean getBoolean(String key, Context context) {
         preferences = context.getSharedPreferences(SETTING, Context.MODE_PRIVATE);
-        return preferences.getBoolean(key, false);
+        if(key.equals(KeySet.KEY_PUSH_OPEN)){
+            return preferences.getBoolean(key, true);
+        }else{
+            return preferences.getBoolean(key, false);
+        }
     }
 
     public static void putInt(String key, int value, Context context) {

@@ -15,6 +15,7 @@ import com.xilu.wybz.R;
 import com.xilu.wybz.adapter.MyPagerAdapter;
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.common.Event;
+import com.xilu.wybz.common.KeySet;
 import com.xilu.wybz.common.interfaces.OnTabActivityResultListener;
 import com.xilu.wybz.service.MainService;
 import com.xilu.wybz.ui.base.BaseActivity;
@@ -40,9 +41,12 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+import cn.jpush.android.api.JPushInterface;
+import cn.jpush.android.api.TagAliasCallback;
 
 /**
  * Created by June on 16/4/28.
@@ -93,11 +97,36 @@ public class MainTabActivity extends BaseActivity {
 
     //打开推送
     public void openPush() {
-//        if (PrefsUtil.getBoolean(KeySet.KEY_PUSH_OPEN, context) && !PushAgent.getInstance(context).isEnabled()) {
-//
-//        }
+        if (PrefsUtil.getBoolean(KeySet.KEY_PUSH_OPEN, context)) {
+            JPushInterface.resumePush(getApplicationContext());
+        }
+        JPushInterface.requestPermission(context);
+        if(JPushInterface.getConnectionState(context)){
+            Log.e("RegistrationID",JPushInterface.getRegistrationID(getApplicationContext()));
+        }else{
+            Log.e("un RegistrationID",JPushInterface.getRegistrationID(getApplicationContext()));
+        }
+        JPushInterface.setAliasAndTags(getApplicationContext(), PrefsUtil.getUserId(context)+"", null, mAliasCallback);
     }
+    private final TagAliasCallback mAliasCallback = new TagAliasCallback() {
+        @Override
+        public void gotResult(int code, String alias, Set<String> tags) {
+            String logs ;
+            switch (code) {
+                case 0:
+                    logs = "Set tag and alias success";
+                    break;
+                case 6002:
+                    logs = "Failed to set alias and tags due to timeout. Try again after 60s.";
+                    break;
+                default:
+                    logs = "Failed with errorCode = " + code;
 
+            }
+            Log.e("TagAliasCallback", logs);
+        }
+
+    };
     //检测升级
     public void checkAppVersion() {
         new VersionUtil().checkUpdateInfo(this);

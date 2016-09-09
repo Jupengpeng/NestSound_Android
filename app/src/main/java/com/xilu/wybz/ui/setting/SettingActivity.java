@@ -33,6 +33,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+import cn.jpush.android.api.JPushInterface;
 
 /**
  * Created by June on 16/5/13.
@@ -64,13 +65,17 @@ public class SettingActivity extends ToolbarActivity {
     private void initView() {
         EventBus.getDefault().register(this);
         setTitle("设置");
+        cbNotice.setChecked(PrefsUtil.getBoolean(KeySet.KEY_PUSH_OPEN,getApplicationContext()));
         cbNotice.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                if (!isChecked && PushAgent.getInstance(context).isEnabled()) {
-//                    PushAgent.getInstance(context).disable();
-//                    showMsg("关闭消息推送");
-//                }
+                if (isChecked) {
+                    JPushInterface.resumePush(getApplicationContext());
+                    showMsg("打开消息推送");
+                }else{
+                    JPushInterface.stopPush(getApplicationContext());
+                    showMsg("关闭消息推送");
+                }
                 PrefsUtil.putBoolean(KeySet.KEY_PUSH_OPEN, isChecked, context);
             }
         });

@@ -190,7 +190,8 @@
 -dontwarn com.umeng.**
 -dontwarn org.apache.commons.**
 
-
+-dontwarn cn.jpush.**
+-keep class cn.jpush.** { *; }
 
 #log
 -assumenosideeffects class android.util.Log {
