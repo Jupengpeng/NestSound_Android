@@ -46,7 +46,14 @@
                 android:id="@+id/tv_comment"
                 android:layout_width="wrap_content"
                 android:gravity="center_vertical"
-                android:text=" "
+                android:text="12"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:textSize="10sp"
+                android:textColor="@color/white"
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"
+                android:background="@drawable/corner_red"
                 android:layout_height="wrap_content" />
         </LinearLayout>
 

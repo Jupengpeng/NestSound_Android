@@ -71,7 +71,7 @@ public class MainTabActivity extends BaseActivity {
     Intent intent;
     MyPagerAdapter adapter;
     LocalActivityManager manager = null;
-
+    public static boolean isForeground = false;
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_maintab;
@@ -106,7 +106,9 @@ public class MainTabActivity extends BaseActivity {
         }else{
             Log.e("un RegistrationID",JPushInterface.getRegistrationID(getApplicationContext()));
         }
-        JPushInterface.setAliasAndTags(getApplicationContext(), PrefsUtil.getUserId(context)+"", null, mAliasCallback);
+        if(PrefsUtil.getUserId(context)>0) {
+            JPushInterface.setAliasAndTags(getApplicationContext(), PrefsUtil.getUserId(context) + "", null, mAliasCallback);
+        }
     }
     private final TagAliasCallback mAliasCallback = new TagAliasCallback() {
         @Override
@@ -125,7 +127,6 @@ public class MainTabActivity extends BaseActivity {
             }
             Log.e("TagAliasCallback", logs);
         }
-
     };
     //检测升级
     public void checkAppVersion() {
@@ -152,13 +153,18 @@ public class MainTabActivity extends BaseActivity {
 
     @Override
     protected void onResume() {
+        isForeground = true;
         super.onResume();
         if (manager != null) {
             ((MainActivity) manager.getActivity("MAIN")).onResume();
             ((FindActivity) manager.getActivity("FIND")).onResume();
         }
     }
-
+    @Override
+    protected void onPause() {
+        isForeground = false;
+        super.onPause();
+    }
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
@@ -272,11 +278,12 @@ public class MainTabActivity extends BaseActivity {
         ub.nickname = ub.name;
         ub.signature = ub.descr;
         PrefsUtil.saveUserInfo(context, ub);
-        MobclickAgent.onProfileSignIn(ub.userid + "");
+        JPushInterface.setAliasAndTags(getApplicationContext(), PrefsUtil.getUserId(context) + "", null, mAliasCallback);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(Event.LoginOutEvent event) {
+        JPushInterface.setAliasAndTags(getApplicationContext(), "", null, mAliasCallback);
         if (viewpager.getCurrentItem() > 1) {
             viewpager.setCurrentItem(0);
             currentIndex = 0;
@@ -328,7 +335,9 @@ public class MainTabActivity extends BaseActivity {
                     PrefsUtil.putString(PrefsUtil.getString("playFrom", context), ids, context);
                 }
                 PrefsUtil.saveHotBean(context, null);
-                finish();
+                Intent home = new Intent(Intent.ACTION_MAIN);
+                home.addCategory(Intent.CATEGORY_HOME);
+                startActivity(home);
                 return true;
 
             } else {

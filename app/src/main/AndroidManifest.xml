@@ -82,15 +82,19 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.msg.MsgZambiaActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.msg.MsgCommentActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.msg.MsgFavActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.msg.MsgSystemActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
         <activity
@@ -242,7 +246,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".ui.wxapi.WXEntryActivity"
+            android:name=".wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:screenOrientation="portrait"

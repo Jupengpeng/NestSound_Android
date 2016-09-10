@@ -78,6 +78,20 @@ public class MyCommon {
     public static final String SINA_PKG = "com.sina.weibo";
     public static final String QQ_PKG = "com.tencent.mobileqq";
     public static final String QZONE_PKG = "com.qzone";
+
+    //推送类型
+
+    public final static String PUSH_TYPE_COMMENT="comment"; //对我的评论
+    public final static String PUSH_TYPE_ZAN="zan"; //对我的点赞
+    public final static String PUSH_TYPE_FOV="fov"; //对我的收藏
+    public final static String PUSH_TYPE_FOCUS="focus"; //对我的关注
+    public final static String PUSH_TYPE_RECOMENDTOINDEX="recommedToIndex"; //我的作品被推荐至首页
+    public final static String PUSH_TYPE_ADDTOSONGLIST="addToSonglist";  //我的作品被添加至歌单
+    public final static String PUSH_TYPE_SYSTEMMSG="systemmsg";  //我的作品被添加至歌单
+    public final static String PUSH_TYPE_NEWACTIVITY="newActivity"; //最新活动上线推送
+    public final static String PUSH_TYPE_ACTIVITYFINISH="activityFinish";  //活动最终获奖推送
+    public final static String PUSH_TYPE_COPYRIGHSUCCESS="copyrighSuccess"; //保权成功
+    public final static String PUSH_TYPE_COPYRIGHFAIL="copyrighFail";  //保权失败
     //默认歌词图片
     public static List<String> getLyricsPic() {
         List<String> lyricsPics = new ArrayList<>();

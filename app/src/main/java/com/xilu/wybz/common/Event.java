@@ -354,4 +354,25 @@ public class Event {
     public static class AttendMatchSuccessEvent {
 
     }
+
+    public static class NoticeMsgEvent {
+        String type;
+        public NoticeMsgEvent(String type){
+            this.type = type;
+        }
+
+        public String getType() {
+            return type;
+        }
+    }
+    public static class ClearMsgEvent {
+        String type;
+        public ClearMsgEvent(String type){
+            this.type = type;
+        }
+
+        public String getType() {
+            return type;
+        }
+    }
 }
