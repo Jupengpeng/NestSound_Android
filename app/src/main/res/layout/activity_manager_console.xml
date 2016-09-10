@@ -130,6 +130,21 @@
     </LinearLayout>
 
     <ImageView style="@style/ViewSpitLine" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/main_bg"
+        />
+
+    <TextView
+        android:id="@+id/tv_ext"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:gravity="center"
+        android:text="ext"
+        />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="match_parent"
