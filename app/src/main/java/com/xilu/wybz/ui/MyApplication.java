@@ -17,7 +17,6 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.qiniu.android.storage.UploadManager;
-
 import com.umeng.socialize.PlatformConfig;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.common.MyHttpClient;
@@ -94,6 +93,7 @@ public class MyApplication extends Application implements ServiceConnection {
         JPushInterface.init(this);
         startMainService();
         bindMainService();
+//        WeChatPayUtils.register(this);
     }
 
     public static void initImageLoader(Context context) {

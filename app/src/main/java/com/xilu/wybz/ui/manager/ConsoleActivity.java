@@ -3,6 +3,7 @@ package com.xilu.wybz.ui.manager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -13,6 +14,7 @@ import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtils;
+import com.xilu.wybz.utils.WeChatPayUtils;
 
 import butterknife.Bind;
 
@@ -107,6 +109,19 @@ public class ConsoleActivity extends ToolbarActivity {
                     selectedService(TEMP_SERVICE);
                 }
                 PrefsUtil.putString("temp_host",etTemp.getText().toString(),getBaseContext());
+            }
+        });
+
+
+
+        TextView ext = (TextView) findViewById(R.id.tv_ext);
+        ext.setText("WeChatPayUtils");
+        ext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                WeChatPayUtils.register(context);
+                WeChatPayUtils.pay();
             }
         });
     }
