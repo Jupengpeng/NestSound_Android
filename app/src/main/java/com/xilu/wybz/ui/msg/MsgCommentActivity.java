@@ -1,6 +1,7 @@
 package com.xilu.wybz.ui.msg;
 
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +11,10 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.CommentBean;
 import com.xilu.wybz.bean.MsgCommentBean;
+import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.MsgCommentPresenter;
+import com.xilu.wybz.service.MyReceiver;
 import com.xilu.wybz.ui.IView.ICommentView;
 import com.xilu.wybz.ui.base.BaseListActivity;
 import com.xilu.wybz.ui.lyrics.LyricsdisplayActivity;
@@ -26,6 +29,8 @@ import com.xilu.wybz.view.dialog.CommentDialog;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.PullRecycler;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.List;
 
 import butterknife.Bind;
@@ -35,8 +40,6 @@ import butterknife.OnClick;
  * Created by Administrator on 2016/1/27.
  */
 public class MsgCommentActivity extends BaseListActivity<MsgCommentBean> implements ICommentView {
-    private int page = 1;
-    private int action = 0;
     String nodata = "暂无评论";
     int nodatares = R.drawable.ic_nocomment;
     private MsgCommentPresenter commentPresenter;
@@ -49,6 +52,13 @@ public class MsgCommentActivity extends BaseListActivity<MsgCommentBean> impleme
     }
 
     @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        MyReceiver.cancleNoticeByType(MyCommon.PUSH_TYPE_COMMENT);
+        onRefresh(PullRecycler.ACTION_PULL_TO_REFRESH);
+    }
+
+    @Override
     public boolean hasPadding() {
         return false;
     }
@@ -57,6 +67,7 @@ public class MsgCommentActivity extends BaseListActivity<MsgCommentBean> impleme
     public void initView() {
         setTitle("评论");
         hideRight();
+        MyReceiver.cancleNoticeByType(MyCommon.PUSH_TYPE_COMMENT);
         tvNoData.setText(nodata);
         ivNoData.setImageResource(nodatares);
     }
@@ -263,8 +274,10 @@ public class MsgCommentActivity extends BaseListActivity<MsgCommentBean> impleme
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         if (commentPresenter != null)
             commentPresenter.cancelRequest();
+        EventBus.getDefault().post(new Event.ClearMsgEvent(MyCommon.PUSH_TYPE_COMMENT));
+        super.onDestroy();
+
     }
 }

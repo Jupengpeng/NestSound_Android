@@ -1,6 +1,7 @@
 package com.xilu.wybz.ui.msg;
 
 
+import android.content.Intent;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +12,10 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.SystemBean;
+import com.xilu.wybz.common.Event;
+import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.MsgSystemPresenter;
+import com.xilu.wybz.service.MyReceiver;
 import com.xilu.wybz.ui.BrowserActivity;
 import com.xilu.wybz.ui.IView.ISystemMsgView;
 import com.xilu.wybz.ui.base.BaseListActivity;
@@ -19,6 +23,8 @@ import com.xilu.wybz.utils.DateTimeUtil;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.PullRecycler;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -29,8 +35,6 @@ import butterknife.OnClick;
  * Created by Administrator on 2016/1/27.
  */
 public class MsgSystemActivity extends BaseListActivity<SystemBean> implements ISystemMsgView {
-    private int page = 1;
-    private int action = 0;
     String nodata = "暂无系统消息";
     private MsgSystemPresenter systemPresenter;
     @Override
@@ -42,11 +46,17 @@ public class MsgSystemActivity extends BaseListActivity<SystemBean> implements I
         systemPresenter = new MsgSystemPresenter(this, this);
         systemPresenter.init();
     }
-
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        MyReceiver.cancleNoticeByType(MyCommon.PUSH_TYPE_SYSTEMMSG);
+        onRefresh(PullRecycler.ACTION_PULL_TO_REFRESH);
+    }
     @Override
     public void initView() {
         setTitle("系统消息");
         hideRight();
+        MyReceiver.cancleNoticeByType(MyCommon.PUSH_TYPE_SYSTEMMSG);
         tvNoData.setText(nodata);
     }
 
@@ -174,8 +184,10 @@ public class MsgSystemActivity extends BaseListActivity<SystemBean> implements I
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         if(systemPresenter!=null)
             systemPresenter.cancelRequest();
+        EventBus.getDefault().post(new Event.ClearMsgEvent(MyCommon.PUSH_TYPE_SYSTEMMSG));
+        super.onDestroy();
+
     }
 }

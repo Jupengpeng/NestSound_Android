@@ -1,6 +1,7 @@
 package com.xilu.wybz.ui.msg;
 
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +11,10 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.CollectionBean;
+import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.MsgCollectionPresenter;
+import com.xilu.wybz.service.MyReceiver;
 import com.xilu.wybz.ui.IView.ICollectionView;
 import com.xilu.wybz.ui.base.BaseListActivity;
 import com.xilu.wybz.ui.lyrics.LyricsdisplayActivity;
@@ -21,6 +24,8 @@ import com.xilu.wybz.utils.StringUtils;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.PullRecycler;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.List;
 
 import butterknife.Bind;
@@ -29,8 +34,6 @@ import butterknife.Bind;
  * Created by Administrator on 2016/1/27.
  */
 public class MsgFavActivity extends BaseListActivity<CollectionBean> implements ICollectionView {
-    private int page = 1;
-    private int action = 0;
     String nodata = "暂无收藏";
     int nodatares = R.drawable.ic_nofav;
     private MsgCollectionPresenter collectionPresenter;
@@ -41,6 +44,12 @@ public class MsgFavActivity extends BaseListActivity<CollectionBean> implements 
         collectionPresenter.init();
     }
     @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        MyReceiver.cancleNoticeByType(MyCommon.PUSH_TYPE_FOV);
+        onRefresh(PullRecycler.ACTION_PULL_TO_REFRESH);
+    }
+    @Override
     public boolean hasPadding() {
         return false;
     }
@@ -48,6 +57,7 @@ public class MsgFavActivity extends BaseListActivity<CollectionBean> implements 
     public void initView() {
         setTitle("收藏");
         hideRight();
+        MyReceiver.cancleNoticeByType(MyCommon.PUSH_TYPE_FOV);
         tvNoData.setText(nodata);
         ivNoData.setImageResource(nodatares);
     }
@@ -172,6 +182,7 @@ public class MsgFavActivity extends BaseListActivity<CollectionBean> implements 
         if(collectionPresenter!=null) {
             collectionPresenter.cancelRequest();
         }
+        EventBus.getDefault().post(new Event.ClearMsgEvent(MyCommon.PUSH_TYPE_FOV));
         super.onDestroy();
     }
 }

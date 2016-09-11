@@ -192,17 +192,17 @@ public class UmengShareUtil {
         @Override
         public void onResult(SHARE_MEDIA platform) {
             Log.d("plat", "platform" + platform);
-            ToastUtils.toast(activity, platform + " 分享成功");
+            ToastUtils.toast(activity, "分享成功啦");
         }
 
         @Override
         public void onError(SHARE_MEDIA platform, Throwable t) {
-            ToastUtils.toast(activity, platform + " 分享失败");
+            ToastUtils.toast(activity, "分享失败啦");
         }
 
         @Override
         public void onCancel(SHARE_MEDIA platform) {
-            ToastUtils.toast(activity, platform + " 分享取消");
+            ToastUtils.toast(activity, "分享取消了");
         }
     };
 }

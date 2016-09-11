@@ -125,7 +125,8 @@ public abstract class BasePlayMenuActivity extends ToolbarActivity {
         EventBus.getDefault().unregister(this);
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.PPStatusEvent event) {
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(Event.PPStatusEvent event) {
         if(visible) {
             switch (event.getStatus()) {
                 case MyCommon.STARTED://开始

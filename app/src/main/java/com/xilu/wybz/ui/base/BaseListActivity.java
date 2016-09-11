@@ -39,7 +39,7 @@ public abstract class BaseListActivity<T> extends BasePlayMenuActivity implement
     @Bind(R.id.iv_nonet)
     ImageView ivNoNet;
     protected int action;
-    protected int page;
+    protected int page=1;
     protected int dip10;
     protected int dip5;
     @Override
@@ -63,7 +63,6 @@ public abstract class BaseListActivity<T> extends BasePlayMenuActivity implement
             }else{
                 recycler.setReclylerPaddiing(dip10, dip10, dip10, dip10);
             }
-
         }
         recycler.setOnRefreshListener(this);
         recycler.setLayoutManager(getLayoutManager());

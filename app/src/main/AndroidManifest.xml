@@ -82,15 +82,19 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.msg.MsgZambiaActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.msg.MsgCommentActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.msg.MsgFavActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.msg.MsgSystemActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
         <activity

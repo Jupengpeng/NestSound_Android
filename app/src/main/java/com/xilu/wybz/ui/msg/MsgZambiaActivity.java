@@ -1,6 +1,7 @@
 package com.xilu.wybz.ui.msg;
 
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,8 +10,10 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.ZambiaBean;
+import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.MsgZanPresenter;
+import com.xilu.wybz.service.MyReceiver;
 import com.xilu.wybz.ui.IView.IZanView;
 import com.xilu.wybz.ui.base.BaseListActivity;
 import com.xilu.wybz.ui.lyrics.LyricsdisplayActivity;
@@ -19,6 +22,8 @@ import com.xilu.wybz.utils.DateTimeUtil;
 import com.xilu.wybz.utils.StringUtils;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.PullRecycler;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -29,8 +34,6 @@ import butterknife.OnClick;
  * Created by Administrator on 2016/1/27.
  */
 public class MsgZambiaActivity extends BaseListActivity<ZambiaBean> implements IZanView {
-    private int page = 1;
-    private int action = 0;
     String nodata = "暂无点赞";
     int nodatares = R.drawable.ic_nozan;
     private MsgZanPresenter zanPresenter;
@@ -45,10 +48,16 @@ public class MsgZambiaActivity extends BaseListActivity<ZambiaBean> implements I
         zanPresenter = new MsgZanPresenter(this, this);
         zanPresenter.init();
     }
-
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        MyReceiver.cancleNoticeByType(MyCommon.PUSH_TYPE_ZAN);
+        onRefresh(PullRecycler.ACTION_PULL_TO_REFRESH);
+    }
     @Override
     public void initView() {
         setTitle("点赞");
+        MyReceiver.cancleNoticeByType(MyCommon.PUSH_TYPE_ZAN);
         hideRight();
         tvNoData.setText(nodata);
         ivNoData.setImageResource(nodatares);
@@ -167,8 +176,10 @@ public class MsgZambiaActivity extends BaseListActivity<ZambiaBean> implements I
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         if (zanPresenter != null)
             zanPresenter.cancelRequest();
+        EventBus.getDefault().post(new Event.ClearMsgEvent(MyCommon.PUSH_TYPE_ZAN));
+        super.onDestroy();
+
     }
 }

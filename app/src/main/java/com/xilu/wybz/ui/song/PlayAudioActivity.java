@@ -28,6 +28,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.commit451.nativestackblur.NativeStackBlur;
+import com.umeng.socialize.UMShareAPI;
 import com.xilu.wybz.R;
 import com.xilu.wybz.adapter.PlayLyricsAdapter;
 import com.xilu.wybz.adapter.PlayPagerAdapter;
@@ -735,6 +736,11 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
                 .show();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get( this ).onActivityResult( requestCode, resultCode, data);
+    }
 
     @Override
     protected void onDestroy() {
