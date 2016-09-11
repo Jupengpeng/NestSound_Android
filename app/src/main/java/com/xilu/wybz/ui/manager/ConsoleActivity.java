@@ -1,9 +1,16 @@
 package com.xilu.wybz.ui.manager;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.view.ViewCompat;
+import android.support.v4.widget.NestedScrollView;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewParent;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -14,7 +21,6 @@ import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtils;
-import com.xilu.wybz.utils.WeChatPayUtils;
 
 import butterknife.Bind;
 
@@ -112,7 +118,43 @@ public class ConsoleActivity extends ToolbarActivity {
             }
         });
 
+        CoordinatorLayout coordinatorLayout = (CoordinatorLayout)findViewById(R.id.root);
+//        coordinatorLayout.findViewById();
 
+
+
+        NestedScrollView scrollingView = (NestedScrollView) findViewById(R.id.nsv);
+
+        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(scrollingView);
+        bottomSheetBehavior.setPeekHeight(0); // 设置当关闭时 底部 的高度 app:behavior_peekHeight="50dp"
+        //这里为蓝色的部分
+        bottomSheetBehavior.setHideable(true);//设置当拉升到底部是否可以隐藏  app:behavior_hideable="true"
+        //bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);//设置状态
+
+        //回掉监听
+        bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            public boolean hasRequest = true;
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                /**
+                 *public static final int STATE_DRAGGING = 1;  //拖动
+                 public static final int STATE_SETTLING = 2;//沉降中
+                 public static final int STATE_EXPANDED = 3;//打开了
+                 public static final int STATE_COLLAPSED = 4;//关闭了
+                 public static final int STATE_HIDDEN = 5;//隐藏了
+                 */
+                Log.e("static", "---->state:" + newState);
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+                Log.e("static", "slideOffset:" + slideOffset);
+                if (!hasRequest && bottomSheetBehavior.getPeekHeight() == 0 && slideOffset > 0) {
+                    hasRequest = true;
+                    updateOffsets(bottomSheet);
+                }
+            }
+        });
 
         TextView ext = (TextView) findViewById(R.id.tv_ext);
         ext.setText("WeChatPayUtils");
@@ -120,8 +162,14 @@ public class ConsoleActivity extends ToolbarActivity {
             @Override
             public void onClick(View v) {
 
-                WeChatPayUtils.register(context);
-                WeChatPayUtils.pay();
+//                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context);
+//
+//                bottomSheetDialog.setContentView(R.layout.activity_manager_console);
+//                bottomSheetDialog.show();
+
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+//                WeChatPayUtils.register(context);
+//                WeChatPayUtils.pay();
             }
         });
     }
@@ -152,6 +200,24 @@ public class ConsoleActivity extends ToolbarActivity {
                 break;
         }
 
+    }
+
+    private void updateOffsets(View view) {
+
+        // Manually invalidate the view and parent to make sure we get drawn pre-M
+        if (Build.VERSION.SDK_INT < 23) {
+            tickleInvalidationFlag(view);
+            final ViewParent vp = view.getParent();
+            if (vp instanceof View) {
+                tickleInvalidationFlag((View) vp);
+            }
+        }
+    }
+
+    private static void tickleInvalidationFlag(View view) {
+        final float y = ViewCompat.getTranslationY(view);
+        ViewCompat.setTranslationY(view, y + 1);
+        ViewCompat.setTranslationY(view, y);
     }
 
     private void changeService(String host){
