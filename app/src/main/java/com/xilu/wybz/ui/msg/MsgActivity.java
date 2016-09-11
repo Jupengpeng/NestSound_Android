@@ -166,6 +166,6 @@ public class MsgActivity extends BaseListActivity<MsgBean> {
                 break;
         }
         mDataList.get(pos).count = 0;
-        adapter.notifyItemChanged(pos);
+        adapter.notifyDataSetChanged();
     }
 }
