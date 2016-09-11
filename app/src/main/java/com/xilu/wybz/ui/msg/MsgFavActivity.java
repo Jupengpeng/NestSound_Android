@@ -46,8 +46,14 @@ public class MsgFavActivity extends BaseListActivity<CollectionBean> implements 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        MyReceiver.cancleNoticeByType(MyCommon.PUSH_TYPE_FOV);
+        clearMsg();
         onRefresh(PullRecycler.ACTION_PULL_TO_REFRESH);
+    }
+    public void clearMsg(){
+        EventBus.getDefault().post(new Event.ClearMsgEvent(MyCommon.PUSH_TYPE_FOV));
+        Intent mIntent = new Intent("com.xilu.wybz.intent.CLEARNOTICE");
+        mIntent.putExtra("type", MyCommon.PUSH_TYPE_FOV);
+        sendBroadcast(mIntent);
     }
     @Override
     public boolean hasPadding() {
@@ -57,7 +63,7 @@ public class MsgFavActivity extends BaseListActivity<CollectionBean> implements 
     public void initView() {
         setTitle("收藏");
         hideRight();
-        MyReceiver.cancleNoticeByType(MyCommon.PUSH_TYPE_FOV);
+        clearMsg();
         tvNoData.setText(nodata);
         ivNoData.setImageResource(nodatares);
     }
@@ -182,7 +188,6 @@ public class MsgFavActivity extends BaseListActivity<CollectionBean> implements 
         if(collectionPresenter!=null) {
             collectionPresenter.cancelRequest();
         }
-        EventBus.getDefault().post(new Event.ClearMsgEvent(MyCommon.PUSH_TYPE_FOV));
         super.onDestroy();
     }
 }

@@ -15,7 +15,6 @@ import com.xilu.wybz.bean.SystemBean;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.MsgSystemPresenter;
-import com.xilu.wybz.service.MyReceiver;
 import com.xilu.wybz.ui.BrowserActivity;
 import com.xilu.wybz.ui.IView.ISystemMsgView;
 import com.xilu.wybz.ui.base.BaseListActivity;
@@ -49,14 +48,20 @@ public class MsgSystemActivity extends BaseListActivity<SystemBean> implements I
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        MyReceiver.cancleNoticeByType(MyCommon.PUSH_TYPE_SYSTEMMSG);
+        clearMsg();
         onRefresh(PullRecycler.ACTION_PULL_TO_REFRESH);
+    }
+    public void clearMsg(){
+        EventBus.getDefault().post(new Event.ClearMsgEvent(MyCommon.PUSH_TYPE_SYSTEMMSG));
+        Intent mIntent = new Intent("com.xilu.wybz.intent.CLEARNOTICE");
+        mIntent.putExtra("type", MyCommon.PUSH_TYPE_SYSTEMMSG);
+        sendBroadcast(mIntent);
     }
     @Override
     public void initView() {
         setTitle("系统消息");
         hideRight();
-        MyReceiver.cancleNoticeByType(MyCommon.PUSH_TYPE_SYSTEMMSG);
+        clearMsg();
         tvNoData.setText(nodata);
     }
 
@@ -186,7 +191,6 @@ public class MsgSystemActivity extends BaseListActivity<SystemBean> implements I
     protected void onDestroy() {
         if(systemPresenter!=null)
             systemPresenter.cancelRequest();
-        EventBus.getDefault().post(new Event.ClearMsgEvent(MyCommon.PUSH_TYPE_SYSTEMMSG));
         super.onDestroy();
 
     }
