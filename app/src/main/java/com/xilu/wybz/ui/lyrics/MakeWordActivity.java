@@ -138,23 +138,27 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView,I
 
             @Override
             public void afterTextChanged(Editable s) {
+
                 worksData.lyrics = s.toString().trim();
                 if (!text.equals(s.toString())){
-                    etWord.setText(s.toString());
-                    etWord.setSelection(etWord.getText().length());
+                    int end = etWord.getSelectionEnd();
+                    int start = etWord.getSelectionStart();
+                    etWord.setText(s);
+                    etWord.setSelection(end);
                 }
+
                 PrefsUtil.putString(KeySet.LOCAL_LYRICS, new Gson().toJson(worksData), context);
             }
         });
         etWord.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (event.getAction() == KeyEvent.ACTION_DOWN){
-                    String text = etWord.getText().toString()+"\n";
-                    etWord.setText(text);
-                    etWord.setSelection(text.length());
-                    return true;
-                }
+//                if (event.getAction() == KeyEvent.ACTION_DOWN){
+//                    String text = etWord.getText().toString()+"\n";
+//                    etWord.setText(text);
+//                    etWord.setSelection(text.length());
+//                    return true;
+//                }
                 return false;
             }
         });
