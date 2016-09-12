@@ -166,6 +166,8 @@ public class MyReceiver extends BroadcastReceiver {
                 type.equals(MyCommon.PUSH_TYPE_RECOMENDTOINDEX) || type.equals(MyCommon.PUSH_TYPE_ADDTOSONGLIST)
                 ) {
             type = MyCommon.PUSH_TYPE_SYSTEMMSG;
+        }else if(type.contains(MyCommon.PUSH_TYPE_COPYRIGH)){
+            type = MyCommon.PUSH_TYPE_COPYRIGH;
         }
 //        if (AppInfoUtil.isRunningForeground(context)) {//app在前台
             if (type.equals(MyCommon.PUSH_TYPE_COMMENT)) {

@@ -124,23 +124,26 @@ public class MsgActivity extends BaseListActivity<MsgBean> {
         switch (event.getType()) {
             case MyCommon.PUSH_TYPE_COMMENT:
                 pos = 0;
+                mDataList.get(pos).count = mDataList.get(pos).count+1;
                 break;
             case MyCommon.PUSH_TYPE_ZAN:
                 pos = 1;
+                mDataList.get(pos).count = mDataList.get(pos).count+1;
                 break;
             case MyCommon.PUSH_TYPE_FOV:
                 pos = 2;
+                mDataList.get(pos).count = mDataList.get(pos).count+1;
                 break;
-            case MyCommon.PUSH_TYPE_RECOMENDTOINDEX:
-            case MyCommon.PUSH_TYPE_ADDTOSONGLIST:
+            case MyCommon.PUSH_TYPE_SYSTEMMSG:
                 pos = 3;
+                mDataList.get(pos).count = mDataList.get(pos).count+1;
                 break;
-            case MyCommon.PUSH_TYPE_COPYRIGHSUCCESS:
-            case MyCommon.PUSH_TYPE_COPYRIGHFAIL:
+            case MyCommon.PUSH_TYPE_COPYRIGH:
                 pos = 4;
+                mDataList.get(pos).count = mDataList.get(pos).count+1;
                 break;
         }
-        mDataList.get(pos).count = mDataList.get(pos).count+1;
+
         adapter.notifyItemChanged(pos);
     }
 
@@ -150,22 +153,25 @@ public class MsgActivity extends BaseListActivity<MsgBean> {
         switch (event.getType()) {
             case MyCommon.PUSH_TYPE_COMMENT:
                 pos = 0;
+                mDataList.get(pos).count = 0;
                 break;
             case MyCommon.PUSH_TYPE_ZAN:
                 pos = 1;
+                mDataList.get(pos).count = 0;
                 break;
             case MyCommon.PUSH_TYPE_FOV:
                 pos = 2;
-                break;
-            case MyCommon.PUSH_TYPE_RECOMENDTOINDEX:
-            case MyCommon.PUSH_TYPE_ADDTOSONGLIST:
-                pos = 3;
+                mDataList.get(pos).count = 0;
                 break;
             case MyCommon.PUSH_TYPE_SYSTEMMSG:
+                pos = 3;
+                mDataList.get(pos).count = 0;
+                break;
+            case MyCommon.PUSH_TYPE_COPYRIGH:
                 pos = 4;
+                mDataList.get(pos).count = 0;
                 break;
         }
-        mDataList.get(pos).count = 0;
         adapter.notifyDataSetChanged();
     }
 }
