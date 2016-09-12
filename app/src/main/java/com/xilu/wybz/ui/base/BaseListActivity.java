@@ -26,8 +26,6 @@ import butterknife.Bind;
 public abstract class BaseListActivity<T> extends BasePlayMenuActivity implements PullRecycler.OnRecyclerRefreshListener {
     protected BaseListAdapter adapter;
     protected List<T> mDataList;
-    @Bind(R.id.ll_main)
-    protected LinearLayout llMain;
     @Bind(R.id.pullRecycler)
     protected PullRecycler recycler;
     @Bind(R.id.tv_nodata)

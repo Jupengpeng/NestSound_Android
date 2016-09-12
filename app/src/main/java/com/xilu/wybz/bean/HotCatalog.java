@@ -9,5 +9,5 @@ public class HotCatalog implements Serializable{
     public int id;
     public String categoryname;
     public String categorypic;
-    public String sort;
+    public boolean isCheck;
 }
