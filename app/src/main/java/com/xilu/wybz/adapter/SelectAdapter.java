@@ -71,7 +71,7 @@ public class SelectAdapter extends RecyclerView.Adapter<SelectAdapter.SelectView
         public SelectViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
-//            tvName.setLayoutParams(new LinearLayout.LayoutParams(itemWidth, DensityUtil.dip2px(context,40)));
+            tvName.setLayoutParams(new LinearLayout.LayoutParams(itemWidth, DensityUtil.dip2px(context,36)));
         }
     }
 }

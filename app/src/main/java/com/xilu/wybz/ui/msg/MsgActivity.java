@@ -31,7 +31,7 @@ import butterknife.OnClick;
  */
 public class MsgActivity extends BaseListActivity<MsgBean> {
     public int[] icons = new int[]{R.drawable.ic_msg_comment, R.drawable.ic_msg_zan,
-            R.drawable.ic_msg_fav, R.drawable.ic_msg_notice, R.drawable.ic_msg_notice};
+            R.drawable.ic_msg_fav, R.drawable.ic_msg_notice, R.drawable.ic_msg_bq};
     public String[] titles = new String[]{"评论", "点赞", "收藏", "系统消息", "保全消息"};
 
     public boolean canBack() {

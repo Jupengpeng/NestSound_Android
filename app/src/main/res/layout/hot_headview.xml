@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="5dp"
+    android:orientation="vertical"
     >
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/iv_qc"
@@ -15,5 +16,5 @@
         fresco:failureImageScaleType="centerCrop"
         fresco:placeholderImageScaleType="centerCrop"
         fresco:viewAspectRatio="2.46" />
-
-</RelativeLayout>
+    <include layout="@layout/view_spit_line" />
+</LinearLayout>

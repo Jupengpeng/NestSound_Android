@@ -76,9 +76,9 @@ public class HotCatalogActivity extends BaseSectionListActivity<TemplateBean> im
     private int column = 1;
     private int column2 = 4;
     private int cid = 0;
-    HotCatalogPresenter hotCatalogPresenter;
-    HotPresenter hotPresenter;
-    HotBean hotBean;
+    private HotCatalogPresenter hotCatalogPresenter;
+    private HotPresenter hotPresenter;
+    private HotBean hotBean;
     private boolean flash = false;
     private String aid;
     private String type = "new";
@@ -163,10 +163,19 @@ public class HotCatalogActivity extends BaseSectionListActivity<TemplateBean> im
     }
 
     @OnClick(R.id.flow_cover)
-    public void onClick() {
+    public void onCoverClick() {
         hideSelect();
     }
 
+    @OnClick(R.id.tv_submit)
+    public void onSubmitClick() {
+        hideSelect();
+        page = 1;
+        recycler.setRefreshing();
+    }
+    @OnClick(R.id.ll_select)
+    public void onSelectClick() {
+    }
     public class SectionHeaderViewHolder extends BaseViewHolder {
         @Bind(R.id.iv_qc)
         SimpleDraweeView ivQc;
@@ -231,7 +240,7 @@ public class HotCatalogActivity extends BaseSectionListActivity<TemplateBean> im
             typeBean.isCheck = true;
             hotCatalogs.add(typeBean);
             hotCatalogs.addAll(hotBean.list);
-            List<HotCatalog>  types = new ArrayList<>();
+            List<HotCatalog> types = new ArrayList<>();
             typeBean = new HotCatalog();
             typeBean.categoryname = "最新";
             typeBean.isCheck = true;
@@ -245,14 +254,11 @@ public class HotCatalogActivity extends BaseSectionListActivity<TemplateBean> im
             adapter1.setOnItemClickListener(new SelectAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, int position) {
-                    for(int i=0;i<hotCatalogs.size();i++){
-                        hotCatalogs.get(i).isCheck = (i==position);
+                    for (int i = 0; i < hotCatalogs.size(); i++) {
+                        hotCatalogs.get(i).isCheck = (i == position);
                     }
                     adapter1.notifyDataSetChanged();
-                    hideSelect();
-                    cid= hotCatalogs.get(position).id;
-                    page=1;
-                    recycler.setRefreshing();
+                    cid = hotCatalogs.get(position).id;
                 }
             });
             catalogRecyler.setAdapter(adapter1);
@@ -260,14 +266,11 @@ public class HotCatalogActivity extends BaseSectionListActivity<TemplateBean> im
             adapter2.setOnItemClickListener(new SelectAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, int position) {
-                    for(int i=0;i<types.size();i++){
-                        types.get(i).isCheck = (i==position);
+                    for (int i = 0; i < types.size(); i++) {
+                        types.get(i).isCheck = (i == position);
                     }
                     adapter2.notifyDataSetChanged();
-                    hideSelect();
-                    type= position==0?"new":"hot";
-                    page=1;
-                    recycler.setRefreshing();
+                    type = position == 0 ? "new" : "hot";
                 }
             });
             orderRecyler.setAdapter(adapter2);
