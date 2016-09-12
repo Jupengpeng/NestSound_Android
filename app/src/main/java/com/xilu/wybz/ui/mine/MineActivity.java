@@ -3,6 +3,7 @@ package com.xilu.wybz.ui.mine;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -128,6 +129,7 @@ public class MineActivity extends BaseActivity implements IModifyCoverView, ILoa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SystemBarHelper.setHeightAndPadding(this, mToolbar);
+        SystemBarHelper.immersiveStatusBar(this, 0);
     }
 
     public void initData() {
