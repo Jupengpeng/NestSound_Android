@@ -100,13 +100,22 @@
 
         <activity
             android:name=".ui.mine.FollowAndFansActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.mine.MineActivity"
             android:screenOrientation="portrait" />
 
         <activity
+            android:name=".ui.mine.NewMineActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name=".ui.mine.MyWorkActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.mine.NewMyWorkActivity"
             android:screenOrientation="portrait" />
 
         <activity

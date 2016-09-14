@@ -50,7 +50,7 @@ public class DateTimeUtil {
     }
 
     //Datetime转化为时间戳
-    public static long dteTime2Timestamp(String datetime) {
+    public static long dateTime2Timestamp(String datetime) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         try {
             Date date = format.parse(datetime);
@@ -117,8 +117,8 @@ public class DateTimeUtil {
     //比较时间的大小
     public static int compareDateTime(String datetime1, String datetime2) {
         try {
-            long time1 = dteTime2Timestamp(datetime1);
-            long time2 = dteTime2Timestamp(datetime2);
+            long time1 = dateTime2Timestamp(datetime1);
+            long time2 = dateTime2Timestamp(datetime2);
             if (time1 == time2)
                 return 0;
             else if (time1 < time2)

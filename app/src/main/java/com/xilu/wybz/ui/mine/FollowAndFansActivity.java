@@ -18,8 +18,10 @@ import com.xilu.wybz.R;
 import com.xilu.wybz.bean.FansBean;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.KeySet;
+import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.FollowPresenter;
 import com.xilu.wybz.presenter.OnlyFollowPresenter;
+import com.xilu.wybz.service.MyReceiver;
 import com.xilu.wybz.ui.IView.IFollowAndFansView;
 import com.xilu.wybz.ui.IView.IOnlyFollowView;
 import com.xilu.wybz.ui.base.BaseListActivity;
@@ -70,15 +72,27 @@ public class FollowAndFansActivity extends BaseListActivity<FansBean> implements
         mFollowPresenter = new FollowPresenter(context, this);
         mFollowPresenter.init();
     }
-
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if(fromType==1)
+            clearMsg();
+        onRefresh(PullRecycler.ACTION_PULL_TO_REFRESH);
+    }
+    public void clearMsg(){
+        EventBus.getDefault().post(new Event.ClearMsgEvent(MyCommon.PUSH_TYPE_FOCUS));
+        Intent mIntent = new Intent("com.xilu.wybz.intent.CLEARNOTICE");
+        mIntent.putExtra("type", MyCommon.PUSH_TYPE_FOCUS);
+        sendBroadcast(mIntent);
+    }
     @Override
     public void initView() {
         hideRight();
         getIntentData();
-
         if (KeySet.TYPE_FANS_ACT == type) {
             setTitle("粉丝");
             fromType = 1;
+            clearMsg();
         } else if (KeySet.TYPE_FOLLOW_ACT == type) {
             setTitle("关注");
             fromType = 0;
@@ -103,6 +117,13 @@ public class FollowAndFansActivity extends BaseListActivity<FansBean> implements
     @Override
     public void onRefresh(int action) {
         super.onRefresh(action);
+        if(fromType==1) {
+            if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
+                if (MyReceiver.getHasUnReadMsg(MyCommon.PUSH_TYPE_FOCUS)) {
+                    clearMsg();
+                }
+            }
+        }
         mFollowPresenter.loadData(uid, type, page++);
     }
 

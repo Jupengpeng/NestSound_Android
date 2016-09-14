@@ -41,7 +41,6 @@ public class MsgActivity extends BaseListActivity<MsgBean> {
     @Override
     protected void initPresenter() {
         setTitle("消息");
-//        hideRight();
         SystemBarHelper.tintStatusBar(this, Color.argb(255, 0xFF, 0xD7, 0x05));
         recycler.enablePullToRefresh(false);
     }

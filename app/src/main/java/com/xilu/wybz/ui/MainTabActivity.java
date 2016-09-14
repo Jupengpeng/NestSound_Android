@@ -23,26 +23,22 @@ import com.xilu.wybz.ui.find.FindActivity;
 import com.xilu.wybz.ui.login.LoginActivity;
 import com.xilu.wybz.ui.lyrics.MakeWordActivity;
 import com.xilu.wybz.ui.main.MainActivity;
-import com.xilu.wybz.ui.mine.MineActivity;
+import com.xilu.wybz.ui.mine.NewMineActivity;
 import com.xilu.wybz.ui.msg.MsgActivity;
 import com.xilu.wybz.ui.record.InspireRecordActivity;
 import com.xilu.wybz.ui.song.HotCatalogActivity;
-import com.xilu.wybz.utils.GetDomainUtil;
 import com.xilu.wybz.utils.PermissionUtils;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.utils.VersionUtil;
 import com.xilu.wybz.view.IndexViewPager;
 import com.xilu.wybz.view.MoreWindow;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
 import butterknife.Bind;
 import butterknife.OnClick;
 import cn.jpush.android.api.JPushInterface;
@@ -142,7 +138,7 @@ public class MainTabActivity extends BaseActivity {
         list.add(getView("FIND", intent));
         intent = new Intent(this, MsgActivity.class);
         list.add(getView("MSG", intent));
-        intent = new Intent(this, MineActivity.class);
+        intent = new Intent(this, NewMineActivity.class);
         list.add(getView("MINE", intent));
         adapter = new MyPagerAdapter(list);
         viewpager.setAdapter(adapter);
@@ -179,8 +175,6 @@ public class MainTabActivity extends BaseActivity {
         public void onPageSelected(int arg0) {
             if (arg0 == 1) {
                 ((FindActivity) manager.getActivity("FIND")).initView();
-            } else if (arg0 == 3) {
-                ((MineActivity) manager.getActivity("MINE")).initData();
             }
         }
 
@@ -312,9 +306,6 @@ public class MainTabActivity extends BaseActivity {
         super.onDestroy();
         if (mMoreWindow != null) {
             mMoreWindow.destroy();
-        }
-        if (manager != null) {
-            ((MineActivity) manager.getActivity("MINE")).onDestroy();
         }
         EventBus.getDefault().unregister(this);
     }

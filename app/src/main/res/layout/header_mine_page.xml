@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="54dp"
+    android:background="@color/white"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:id="@+id/ll_mysong"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_song_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textColor="@color/main_text_color2"
+            android:textSize="12sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:text="歌曲"
+            android:textColor="@color/main_text_color2"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="@dimen/spit_line_height"
+        android:layout_height="40dp"
+        android:layout_gravity="center_vertical"
+        android:background="@color/split_line" />
+
+    <LinearLayout
+        android:id="@+id/ll_mylyrics"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_lyrics_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="5dp"
+            android:text="0"
+            android:textColor="@color/main_text_color2"
+            android:textSize="12sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:text="歌词"
+            android:textColor="@color/main_text_color2"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="@dimen/spit_line_height"
+        android:layout_height="40dp"
+        android:layout_gravity="center_vertical"
+        android:background="@color/split_line" />
+
+    <LinearLayout
+        android:id="@+id/ll_follow"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_follow_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="2dp"
+            android:text="10"
+            android:textColor="@color/main_text_color2"
+            android:textSize="12sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:text="关注"
+            android:textColor="@color/main_text_color2"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="@dimen/spit_line_height"
+        android:layout_height="40dp"
+        android:layout_gravity="center_vertical"
+        android:background="@color/split_line" />
+
+    <LinearLayout
+        android:id="@+id/ll_fans"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_fans_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textColor="@color/main_text_color2"
+                android:textSize="12sp" />
+
+            <View
+                android:id="@+id/fans_msg"
+                android:layout_width="5dp"
+                android:layout_height="5dp"
+                android:layout_gravity="right"
+                android:visibility="gone"
+                android:background="@drawable/circle_red" />
+        </FrameLayout>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:text="粉丝"
+            android:textColor="@color/main_text_color2"
+            android:textSize="12sp" />
+    </LinearLayout>
+</LinearLayout>

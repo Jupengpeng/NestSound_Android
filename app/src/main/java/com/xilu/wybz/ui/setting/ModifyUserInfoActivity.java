@@ -87,7 +87,7 @@ public class ModifyUserInfoActivity extends ToolbarActivity implements IModifyUs
 
     @Override
     public void initView() {
-        setTitle("完善个人信息");
+        setTitle("编辑资料");
         initUserInfo();
     }
 
