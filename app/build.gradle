@@ -150,6 +150,7 @@ dependencies {
     compile rootProject.ext.dependencies["analytics"]
     compile rootProject.ext.dependencies["ultra"]
     testCompile 'junit:junit:4.12'
+    compile files('libs/alipaySdk-20160825.jar')
 }
 
 

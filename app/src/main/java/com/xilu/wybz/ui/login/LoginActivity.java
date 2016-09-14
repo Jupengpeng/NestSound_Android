@@ -1,15 +1,24 @@
 package com.xilu.wybz.ui.login;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.umeng.socialize.Config;
+import com.umeng.socialize.PlatformConfig;
+import com.umeng.socialize.UMAuthListener;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.DataBean;
 import com.xilu.wybz.bean.UserBean;
@@ -29,6 +38,8 @@ import com.xilu.wybz.utils.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -73,9 +84,11 @@ public class LoginActivity extends BaseActivity implements ILoginView, IRegister
     TextView tvRegcode;
     @Bind(R.id.ll_agreement)
     LinearLayout llAgreement;
+    @Bind(R.id.ll_other_login)
+    LinearLayout llOtherLogin;
     LoginPresenter loginPresenter;
     RegisterPresenter registerPresenter;
-
+    UMShareAPI mShareAPI;
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_login;
@@ -138,10 +151,20 @@ public class LoginActivity extends BaseActivity implements ILoginView, IRegister
         }
     }
 
-    @OnClick({R.id.iv_back, R.id.tv_forget_pwd, R.id.tv_agreement, R.id.tv_login, R.id.tv_reg,
+    @OnClick({R.id.iv_back, R.id.tv_qq_login, R.id.tv_wx_login,R.id.tv_wb_login,
+            R.id.tv_forget_pwd, R.id.tv_agreement,R.id.tv_login, R.id.tv_reg,
             R.id.tv_choice_login, R.id.tv_choice_reg, R.id.tv_regcode})
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.tv_qq_login:
+                otherLogin("qq");
+                break;
+            case R.id.tv_wx_login:
+                otherLogin("wx");
+                break;
+            case R.id.tv_wb_login:
+                otherLogin("wb");
+                break;
             case R.id.iv_back:
                 finish();
                 break;
@@ -168,7 +191,42 @@ public class LoginActivity extends BaseActivity implements ILoginView, IRegister
                 break;
         }
     }
+    public void otherLogin(String type){
+        SHARE_MEDIA platform = null;
+        if(type.equals("qq")){
+            platform = SHARE_MEDIA.QQ;
+        }else if(type.equals("wx")){
+            platform = SHARE_MEDIA.WEIXIN;
+        }else if(type.equals("wb")){
+            platform = SHARE_MEDIA.SINA;
+        }
+//        Config.REDIRECT_URL = "http://121.196.236.189/api/weiboin.php";
+        if(mShareAPI==null)mShareAPI = UMShareAPI.get(this);
+        mShareAPI.doOauthVerify(this, platform, umAuthListener);
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(mShareAPI==null)mShareAPI = UMShareAPI.get(this);
+        mShareAPI.onActivityResult(requestCode, resultCode, data);
+    }
+    private UMAuthListener umAuthListener = new UMAuthListener() {
+        @Override
+        public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
+            Toast.makeText( getApplicationContext(), "Authorize succeed", Toast.LENGTH_SHORT).show();
+            Log.e("Authorize",new Gson().toJson(data));
+        }
 
+        @Override
+        public void onError(SHARE_MEDIA platform, int action, Throwable t) {
+            Toast.makeText( getApplicationContext(), "Authorize fail", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA platform, int action) {
+            Toast.makeText( getApplicationContext(), "Authorize cancel", Toast.LENGTH_SHORT).show();
+        }
+    };
     public void toLoin() {
         String mobile = etPhone.getText().toString();
         String password = MD5Util.getMD5String(etPassword.getText().toString());
@@ -227,6 +285,7 @@ public class LoginActivity extends BaseActivity implements ILoginView, IRegister
     //切换注册和登录 flag 0 登录 1注册
     public void toLoginOrReg(int flag) {
         llLogin.setVisibility(flag == 0 ? View.VISIBLE : View.GONE);
+        llOtherLogin.setVisibility(flag == 0 ? View.VISIBLE : View.GONE);
         llAgreement.setVisibility(flag == 1 ? View.VISIBLE : View.GONE);
         llRegister.setVisibility(flag == 1 ? View.VISIBLE : View.GONE);
         tvLogin.setVisibility(flag == 0 ? View.VISIBLE : View.GONE);
