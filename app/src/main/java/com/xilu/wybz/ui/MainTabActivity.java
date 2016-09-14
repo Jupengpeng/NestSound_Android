@@ -10,7 +10,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.CheckedTextView;
 import android.widget.RelativeLayout;
-import com.umeng.analytics.MobclickAgent;
+
 import com.xilu.wybz.R;
 import com.xilu.wybz.adapter.MyPagerAdapter;
 import com.xilu.wybz.bean.UserBean;
@@ -27,7 +27,6 @@ import com.xilu.wybz.ui.mine.MineActivity;
 import com.xilu.wybz.ui.msg.MsgActivity;
 import com.xilu.wybz.ui.record.InspireRecordActivity;
 import com.xilu.wybz.ui.song.HotCatalogActivity;
-import com.xilu.wybz.utils.GetDomainUtil;
 import com.xilu.wybz.utils.PermissionUtils;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.SystemUtils;
@@ -337,7 +336,8 @@ public class MainTabActivity extends BaseActivity {
                 PrefsUtil.saveHotBean(context, null);
                 Intent home = new Intent(Intent.ACTION_MAIN);
                 home.addCategory(Intent.CATEGORY_HOME);
-                startActivity(home);
+//                startActivity(home);
+                finish();
                 return true;
 
             } else {

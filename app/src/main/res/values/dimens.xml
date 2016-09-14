@@ -92,4 +92,8 @@
     <dimen name="panel_height">200dp</dimen>
     <dimen name="more_window_item_margin">12dp</dimen>
 
+
+    <dimen name="preservation_margin">15dp</dimen>
+    <dimen name="preservation_split">3dp</dimen>
+
 </resources>

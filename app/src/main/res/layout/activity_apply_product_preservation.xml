@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <include layout="@layout/view_toolbar"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <include layout="@layout/view_product_info"/>
+
+            <include layout="@layout/view_preservation_user_info"/>
+            <include layout="@layout/view_preservation_pay"/>
+
+
+
+            <TextView
+                android:id="@+id/preservation_commit"
+                android:layout_marginTop="40dp"
+                android:layout_marginLeft="@dimen/preservation_margin"
+                android:layout_marginRight="@dimen/preservation_margin"
+                android:text="提交申请"
+                style="@style/SubmitButton"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp"
+                android:text="提交申请即表示认同《音巢音乐保全免责申明》"
+                android:textColor="@color/main_text_color3"
+                android:textSize="12sp"
+                android:layout_gravity="center_horizontal"
+                />
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
