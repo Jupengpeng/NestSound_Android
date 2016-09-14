@@ -292,7 +292,6 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView,I
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(Event.UpdateLyricsData event) {
         worksData = event.getWorksData();
-//        oldWorksData = new Gson().toJson(worksData);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -322,11 +321,8 @@ public class MakeWordActivity extends ToolbarActivity implements IMakeWordView,I
                             bean.draftdesc = worksData.detail;
                             bean.content = worksData.lyrics.replaceAll("[\\t\\n\\r]","\n");
                             bean.createtime = String.valueOf(System.currentTimeMillis());
-//                            LyricsDraftUtils.save(bean);
                             draftPresenter.saveDraft(bean);
                             showPd("正在保存中");
-//                            PrefsUtil.putString(KeySet.LOCAL_LYRICS, "", context);
-//                            finish();
                         }
                     }).negativeText("放弃")
                     .onNegative(new MaterialDialog.SingleButtonCallback() {

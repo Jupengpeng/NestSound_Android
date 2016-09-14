@@ -51,7 +51,7 @@ import cn.jpush.android.api.JPushInterface;
 public class MyReceiver extends BroadcastReceiver {
     private static final String TAG = "JPush";
     private int notifyId = 0;
-    public static NotificationManager mNotificationManager;
+    public NotificationManager mNotificationManager;
     public static List<Integer> ids;
     public static Map<String, List<Integer>> idTypes;
 
@@ -60,6 +60,9 @@ public class MyReceiver extends BroadcastReceiver {
         Bundle bundle = intent.getExtras();
         if (idTypes == null) {
             idTypes = new HashMap<>();
+        }
+        if (mNotificationManager == null) {
+            mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         }
         Log.e(TAG, "[MyReceiver] onReceive - " + intent.getAction() + ", extras: " + printBundle(bundle));
         if (JPushInterface.ACTION_REGISTRATION_ID.equals(intent.getAction())) {
@@ -86,6 +89,9 @@ public class MyReceiver extends BroadcastReceiver {
         } else if (JPushInterface.ACTION_CONNECTION_CHANGE.equals(intent.getAction())) {
             boolean connected = intent.getBooleanExtra(JPushInterface.EXTRA_CONNECTION_CHANGE, false);
             Log.e(TAG, "[MyReceiver]" + intent.getAction() + " connected state change to " + connected);
+        } else if ("com.xilu.wybz.intent.CLEARNOTICE".equals(intent.getAction())) {
+            String type = bundle.getString("type");
+            cancleNoticeByType(type);
         } else {
             Log.e(TAG, "[MyReceiver] Unhandled intent - " + intent.getAction());
         }
@@ -127,14 +133,7 @@ public class MyReceiver extends BroadcastReceiver {
 
     //send msg to MainActivity
     private void processCustomMessage(Context context, Bundle bundle) {
-//		if (MainTabActivity.isForeground) {
 //
-//			msgIntent.putExtra(MainActivity.KEY_MESSAGE, message);
-//			if (!StringUtils.isNotBlank(extras)) {
-//
-//			}
-//			context.sendBroadcast(msgIntent);
-//		}
         String message = bundle.getString(JPushInterface.EXTRA_MESSAGE);
         if (StringUtils.isNotBlank(message)) {
             notify(context, message);
@@ -155,8 +154,8 @@ public class MyReceiver extends BroadcastReceiver {
         if (StringUtils.isBlank(content) || StringUtils.isBlank(type)) return;
         if (PrefsUtil.getUserId(context) == 0) {//未登录
             if (type.equals(MyCommon.PUSH_TYPE_COMMENT) || type.equals(MyCommon.PUSH_TYPE_ZAN) ||
-                    type.equals(MyCommon.PUSH_TYPE_FOV) || type.equals(MyCommon.PUSH_TYPE_RECOMENDTOINDEX)||
-                    type.equals(MyCommon.PUSH_TYPE_FOCUS)|| type.equals(MyCommon.PUSH_TYPE_ADDTOSONGLIST)
+                    type.equals(MyCommon.PUSH_TYPE_FOV) || type.equals(MyCommon.PUSH_TYPE_RECOMENDTOINDEX) ||
+                    type.equals(MyCommon.PUSH_TYPE_FOCUS) || type.equals(MyCommon.PUSH_TYPE_ADDTOSONGLIST)
                     ) {
                 return;
             }
@@ -164,28 +163,30 @@ public class MyReceiver extends BroadcastReceiver {
         Intent openintent = null;
         //分组存储ID 用于清除消息
         if (type.equals(MyCommon.PUSH_TYPE_ACTIVITYFINISH) || type.equals(MyCommon.PUSH_TYPE_NEWACTIVITY) ||
-                type.equals(MyCommon.PUSH_TYPE_RECOMENDTOINDEX)|| type.equals(MyCommon.PUSH_TYPE_ADDTOSONGLIST)
+                type.equals(MyCommon.PUSH_TYPE_RECOMENDTOINDEX) || type.equals(MyCommon.PUSH_TYPE_ADDTOSONGLIST)
                 ) {
-            type= MyCommon.PUSH_TYPE_SYSTEMMSG;
+            type = MyCommon.PUSH_TYPE_SYSTEMMSG;
+        }else if(type.contains(MyCommon.PUSH_TYPE_COPYRIGH)){
+            type = MyCommon.PUSH_TYPE_COPYRIGH;
         }
-        if (AppInfoUtil.isRunningForeground(context)) {
+//        if (AppInfoUtil.isRunningForeground(context)) {//app在前台
             if (type.equals(MyCommon.PUSH_TYPE_COMMENT)) {
                 openintent = new Intent(context, MsgCommentActivity.class);
             } else if (type.equals(MyCommon.PUSH_TYPE_ZAN)) {
                 openintent = new Intent(context, MsgZambiaActivity.class);
             } else if (type.equals(MyCommon.PUSH_TYPE_FOV)) {
                 openintent = new Intent(context, MsgFavActivity.class);
-            } else if (type.equals(MyCommon.PUSH_TYPE_ADDTOSONGLIST)) {
+            } else if (type.equals(MyCommon.PUSH_TYPE_SYSTEMMSG)) {
                 openintent = new Intent(context, MsgSystemActivity.class);
             } else if (type.equals(MyCommon.PUSH_TYPE_FOCUS)) {
                 openintent = new Intent(context, FollowAndFansActivity.class);
                 openintent.putExtra(KeySet.KEY_TYPE, KeySet.TYPE_FANS_ACT);
                 openintent.putExtra(KeySet.KEY_UID, PrefsUtil.getUserId(context));
             }
-        } else {//app在后台 需要打开MainTabActivity 再进行跳转
-            openintent = new Intent(context, MainTabActivity.class);
-            openintent.putExtra("type", type);
-        }
+//        } else {//app在后台 需要打开MainTabActivity 再进行跳转
+//            openintent = new Intent(context, MainTabActivity.class);
+//            openintent.putExtra("type", type);
+//        }
         if (idTypes.get(type) == null) {
             ids = new ArrayList<>();
         } else {
@@ -206,23 +207,31 @@ public class MyReceiver extends BroadcastReceiver {
         mBuilder.setContentText(content);
         mBuilder.setAutoCancel(true);
         mBuilder.setDefaults(Notification.DEFAULT_SOUND);
-        String ns = Context.NOTIFICATION_SERVICE;
-        if (mNotificationManager == null) {
-            mNotificationManager = (NotificationManager) context.getSystemService(ns);
-        }
         mNotificationManager.notify(notifyId, mBuilder.build());
     }
 
-    public static void cancleNoticeByType(String type) {
-        if (mNotificationManager != null) {
+    public static boolean getHasUnReadMsg(String type) {
+        if (idTypes == null) {
+            return false;
+        } else {
             List<Integer> ids = idTypes.get(type);
             if (ids != null && ids.size() > 0) {
-                for (Integer id : ids) {
-                    mNotificationManager.cancel(id);
-                }
-                ids.clear();
-                idTypes.put(type, ids);
+                return true;
+            } else {
+                return false;
             }
+        }
+    }
+
+    public void cancleNoticeByType(String type) {
+        if (idTypes == null || mNotificationManager == null) return;
+        List<Integer> ids = idTypes.get(type);
+        if (ids != null && ids.size() > 0) {
+            for (Integer id : ids) {
+                mNotificationManager.cancel(id);
+            }
+            ids.clear();
+            idTypes.put(type, ids);
         }
     }
 }

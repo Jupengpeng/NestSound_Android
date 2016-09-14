@@ -54,10 +54,15 @@ public class MsgCommentActivity extends BaseListActivity<MsgCommentBean> impleme
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        MyReceiver.cancleNoticeByType(MyCommon.PUSH_TYPE_COMMENT);
+        clearMsg();
         onRefresh(PullRecycler.ACTION_PULL_TO_REFRESH);
     }
-
+    public void clearMsg(){
+        EventBus.getDefault().post(new Event.ClearMsgEvent(MyCommon.PUSH_TYPE_COMMENT));
+        Intent mIntent = new Intent("com.xilu.wybz.intent.CLEARNOTICE");
+        mIntent.putExtra("type", MyCommon.PUSH_TYPE_COMMENT);
+        sendBroadcast(mIntent);
+    }
     @Override
     public boolean hasPadding() {
         return false;
@@ -67,7 +72,7 @@ public class MsgCommentActivity extends BaseListActivity<MsgCommentBean> impleme
     public void initView() {
         setTitle("评论");
         hideRight();
-        MyReceiver.cancleNoticeByType(MyCommon.PUSH_TYPE_COMMENT);
+        clearMsg();
         tvNoData.setText(nodata);
         ivNoData.setImageResource(nodatares);
     }
@@ -81,6 +86,11 @@ public class MsgCommentActivity extends BaseListActivity<MsgCommentBean> impleme
     @Override
     public void onRefresh(int action) {
         super.onRefresh(action);
+        if(action==PullRecycler.ACTION_PULL_TO_REFRESH){
+            if(MyReceiver.getHasUnReadMsg(MyCommon.PUSH_TYPE_COMMENT)){
+                clearMsg();
+            }
+        }
         commentPresenter.loadData(page++);
     }
 
@@ -276,7 +286,6 @@ public class MsgCommentActivity extends BaseListActivity<MsgCommentBean> impleme
     protected void onDestroy() {
         if (commentPresenter != null)
             commentPresenter.cancelRequest();
-        EventBus.getDefault().post(new Event.ClearMsgEvent(MyCommon.PUSH_TYPE_COMMENT));
         super.onDestroy();
 
     }

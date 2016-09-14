@@ -2,8 +2,9 @@ package com.xilu.wybz.bean;
 
 public class TypeBean {
 
-    String title;
-
+    public String title;
+    public String type;
+    public boolean isCheck;
     public String getTitle() {
         return title;
     }

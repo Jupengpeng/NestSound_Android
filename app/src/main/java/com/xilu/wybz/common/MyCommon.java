@@ -91,6 +91,7 @@ public class MyCommon {
     public final static String PUSH_TYPE_NEWACTIVITY="newActivity"; //最新活动上线推送
     public final static String PUSH_TYPE_ACTIVITYFINISH="activityFinish";  //活动最终获奖推送
     public final static String PUSH_TYPE_COPYRIGHSUCCESS="copyrighSuccess"; //保权成功
+    public final static String PUSH_TYPE_COPYRIGH="copyright"; //保权成功
     public final static String PUSH_TYPE_COPYRIGHFAIL="copyrighFail";  //保权失败
     //默认歌词图片
     public static List<String> getLyricsPic() {

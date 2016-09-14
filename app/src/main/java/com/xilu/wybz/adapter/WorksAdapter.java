@@ -29,7 +29,7 @@ public class WorksAdapter extends RecyclerView.Adapter<WorksAdapter.WorksViewHol
     private List<WorksData> mList;
     private Context context;
     private int itemWidth;
-    public WorksAdapter(Context context, List<WorksData> worksDataList, int column, String come) {
+    public WorksAdapter(Context context, List<WorksData> worksDataList, int column) {
         this.context = context;
         this.mList = worksDataList;
         itemWidth = (DensityUtil.getScreenW(context) - DensityUtil.dip2px(context, (column + 1) * 10)) / column;

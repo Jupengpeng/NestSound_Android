@@ -51,13 +51,19 @@ public class MsgZambiaActivity extends BaseListActivity<ZambiaBean> implements I
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        MyReceiver.cancleNoticeByType(MyCommon.PUSH_TYPE_ZAN);
+        clearMsg();
         onRefresh(PullRecycler.ACTION_PULL_TO_REFRESH);
+    }
+    public void clearMsg(){
+        EventBus.getDefault().post(new Event.ClearMsgEvent(MyCommon.PUSH_TYPE_ZAN));
+        Intent mIntent = new Intent("com.xilu.wybz.intent.CLEARNOTICE");
+        mIntent.putExtra("type", MyCommon.PUSH_TYPE_ZAN);
+        sendBroadcast(mIntent);
     }
     @Override
     public void initView() {
         setTitle("点赞");
-        MyReceiver.cancleNoticeByType(MyCommon.PUSH_TYPE_ZAN);
+        clearMsg();
         hideRight();
         tvNoData.setText(nodata);
         ivNoData.setImageResource(nodatares);
@@ -178,8 +184,6 @@ public class MsgZambiaActivity extends BaseListActivity<ZambiaBean> implements I
     protected void onDestroy() {
         if (zanPresenter != null)
             zanPresenter.cancelRequest();
-        EventBus.getDefault().post(new Event.ClearMsgEvent(MyCommon.PUSH_TYPE_ZAN));
         super.onDestroy();
-
     }
 }

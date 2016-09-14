@@ -158,7 +158,7 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
         mViewPager.setLayoutParams(new LinearLayout.LayoutParams(DensityUtil.getScreenW(context),
                 DensityUtil.getScreenW(context) * 28 / 75));
         //推荐作品
-        worksAdapter = new WorksAdapter(context, recommendWorkList, column, MyCommon.TUIJIAN);
+        worksAdapter = new WorksAdapter(context, recommendWorkList, column);
         worksAdapter.setOnItemClickListener(new WorksAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
@@ -193,7 +193,7 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
         });
         recyclerViewSongalbum.setAdapter(songAlbumAdapter);
         //最新作品
-        newworksAdapter = new WorksAdapter(context, newWorkList, column, MyCommon.ZUIXIN);
+        newworksAdapter = new WorksAdapter(context, newWorkList, column);
         newworksAdapter.setOnItemClickListener(new WorksAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {

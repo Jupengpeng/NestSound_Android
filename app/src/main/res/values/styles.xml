@@ -158,6 +158,11 @@
         <item name="android:windowExitAnimation">@anim/bottom_out_anim</item>
     </style>
 
+    <style name="TopDialogAnim" mce_bogus="1" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/top_in_anim</item>
+        <item name="android:windowExitAnimation">@anim/top_out_anim</item>
+    </style>
+
     <style name="Panel">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/panel_height</item>
