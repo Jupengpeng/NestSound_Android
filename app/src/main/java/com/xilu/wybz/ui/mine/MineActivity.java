@@ -68,7 +68,7 @@ import butterknife.OnClick;
 /**
  * Created by hujunwei on 16/6/2.
  */
-public class MineActivity extends BaseActivity implements IModifyCoverView, ILoadPicView, OnTabActivityResultListener {
+public class MineActivity extends BaseActivity implements IModifyCoverView, ILoadPicView {
     @Bind(R.id.iv_blur_view)
     ImageView ivBlurView;
     @Bind((R.id.ll_mine_info))
@@ -113,7 +113,6 @@ public class MineActivity extends BaseActivity implements IModifyCoverView, ILoa
     private int currentIndex;
     private MineAdapter pagerAdapter;
     private List<LinearLayout> tabs;
-    public boolean isFirst;
     public UserInfoBean userInfoBean;
     public UserBean userBean;
     ModifyCoverPresenter modifyCoverPresenter;
@@ -130,11 +129,10 @@ public class MineActivity extends BaseActivity implements IModifyCoverView, ILoa
         super.onCreate(savedInstanceState);
         SystemBarHelper.setHeightAndPadding(this, mToolbar);
         SystemBarHelper.immersiveStatusBar(this, 0);
+        initData();
     }
 
     public void initData() {
-        if (isFirst) return;
-        else isFirst = true;
         EventBus.getDefault().register(this);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("");
@@ -369,7 +367,7 @@ public class MineActivity extends BaseActivity implements IModifyCoverView, ILoa
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_blur_view:
-                GalleryUtils.getInstance().selectPicture(getParent());
+                GalleryUtils.getInstance().selectPicture(this);
                 break;
             case R.id.user_follownum:
                 FollowAndFansActivity.toFollowAndFansActivity(context, KeySet.TYPE_FOLLOW_ACT, PrefsUtil.getUserId(context));
@@ -435,11 +433,6 @@ public class MineActivity extends BaseActivity implements IModifyCoverView, ILoa
     public void onDestroy() {
         EventBus.getDefault().unregister(this);
         super.onDestroy();
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        return false;
     }
 
     //上传头像到服务器
@@ -511,26 +504,9 @@ public class MineActivity extends BaseActivity implements IModifyCoverView, ILoa
         loadDefaultPic();
     }
 
-    // 保存裁剪后的图片
-    public void saveBitmap(Bitmap bitmap) {
-        File file = new File(FileDir.mineBgPic);
-        if (!file.exists())
-            file.mkdirs();
-        try {
-            bgPic = FileDir.mineBgPic + System.currentTimeMillis() + ".jpg";
-            FileOutputStream b = new FileOutputStream(bgPic);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, b);
-            b.flush();
-            b.close();
-            bitmap.recycle();
-            uploadCoverBg();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     @Override
-    public void onTabActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != Activity.RESULT_OK) {
             return;
         }
@@ -548,7 +524,7 @@ public class MineActivity extends BaseActivity implements IModifyCoverView, ILoa
             if (!new File(FileDir.mineBgPic).exists()) new File(FileDir.mineBgPic).mkdirs();
             bgPic = FileDir.mineBgPic + System.currentTimeMillis() + ".jpg";
             Uri imgUri = Uri.fromFile(new File(bgPic));
-            GalleryUtils.getInstance().cropPicture(getParent(), uri, imgUri, 10, 7, 1080, 756);
+            GalleryUtils.getInstance().cropPicture(this, uri, imgUri, 10, 7, 1080, 756);
         } else if (requestCode == AppConstant.KITKAT_ABOVE) {
             uri = data.getData();
             if (!new File(FileDir.mineBgPic).exists()) new File(FileDir.mineBgPic).mkdirs();
@@ -556,7 +532,7 @@ public class MineActivity extends BaseActivity implements IModifyCoverView, ILoa
             Uri imgUri = Uri.fromFile(new File(bgPic));
             // 先将这个uri转换为path，然后再转换为uri
             String thePath = GalleryUtils.getInstance().getPath(this, uri);
-            GalleryUtils.getInstance().cropPicture(getParent(),
+            GalleryUtils.getInstance().cropPicture(this,
                     Uri.fromFile(new File(thePath)), imgUri, 10, 7, 1080, 756);
         } else if (requestCode == AppConstant.INTENT_CROP) {
             if (new File(bgPic).exists()) {

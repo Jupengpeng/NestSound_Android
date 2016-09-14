@@ -72,7 +72,8 @@ public class NewMineActivity extends BasePlayMenuActivity {
     LinearLayout llShare;
     @Bind(R.id.ll_setting)
     LinearLayout llSetting;
-
+    @Bind(R.id.ll_mine_page)
+    LinearLayout llMinePage;
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_mine_page;
@@ -125,9 +126,12 @@ public class NewMineActivity extends BasePlayMenuActivity {
         }
     }
 
-    @OnClick({R.id.ll_mysong, R.id.ll_mylyrics, R.id.ll_follow, R.id.ll_fans, R.id.ll_fav, R.id.ll_record, R.id.ll_bq, R.id.ll_mine_info, R.id.ll_share, R.id.ll_setting})
+    @OnClick({R.id.ll_mine_page, R.id.ll_mysong, R.id.ll_mylyrics, R.id.ll_follow, R.id.ll_fans, R.id.ll_fav, R.id.ll_record, R.id.ll_bq, R.id.ll_mine_info, R.id.ll_share, R.id.ll_setting})
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.ll_mine_page:
+                startActivity(MineActivity.class);
+                break;
             case R.id.ll_mysong:
                 NewMyWorkActivity.toNewMyWorkActivity(context,1);
                 break;
