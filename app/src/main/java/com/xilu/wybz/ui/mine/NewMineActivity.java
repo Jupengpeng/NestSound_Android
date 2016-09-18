@@ -11,13 +11,18 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.tencent.connect.UserInfo;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.UserBean;
+import com.xilu.wybz.bean.UserInfoBean;
+import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.KeySet;
 import com.xilu.wybz.common.MyCommon;
+import com.xilu.wybz.presenter.UserPresenter;
+import com.xilu.wybz.ui.IView.IUserView;
 import com.xilu.wybz.ui.base.BasePlayMenuActivity;
 import com.xilu.wybz.ui.setting.ModifyUserInfoActivity;
 import com.xilu.wybz.ui.setting.SettingActivity;
 import com.xilu.wybz.utils.ImageLoadUtil;
+import com.xilu.wybz.utils.NumberUtil;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtils;
 import com.xilu.wybz.view.SystemBarHelper;
@@ -25,13 +30,16 @@ import com.xilu.wybz.view.SystemBarHelper;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.OnClick;
+import cn.jpush.android.api.JPushInterface;
 
 /**
  * Created by hujunwei on 16/9/14.
  */
-public class NewMineActivity extends BasePlayMenuActivity {
+public class NewMineActivity extends BasePlayMenuActivity implements IUserView {
     @Bind(R.id.iv_head)
     SimpleDraweeView ivHead;
     @Bind(R.id.tv_name)
@@ -74,6 +82,7 @@ public class NewMineActivity extends BasePlayMenuActivity {
     LinearLayout llSetting;
     @Bind(R.id.ll_mine_page)
     LinearLayout llMinePage;
+    private UserPresenter userPresenter;
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_mine_page;
@@ -89,7 +98,11 @@ public class NewMineActivity extends BasePlayMenuActivity {
         super.onCreate(savedInstanceState);
         setTitle("我");
         SystemBarHelper.tintStatusBar(this, Color.argb(255, 0xFF, 0xD7, 0x05));
+        UserInfoBean userInfoBean = PrefsUtil.getUserInfoNum(context);
+        setUserInfoBean(userInfoBean);
         initUserInfo();
+        userPresenter = new UserPresenter(this,this);
+        userPresenter.loadData(PrefsUtil.getUserId(context),1,1);
     }
     //在修改个人资料页面发送过来的
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -112,6 +125,13 @@ public class NewMineActivity extends BasePlayMenuActivity {
                 fansMsg.setVisibility(View.GONE);
                 break;
         }
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(Event.LoginSuccessEvent event) {
+        showMsg("登陆成功！");
+        UserBean ub = event.getUserBean();
+        PrefsUtil.saveUserInfo(context, ub);
+        initUserInfo();
     }
     public void initUserInfo() {
         UserBean userInfo = PrefsUtil.getUserInfo(context);
@@ -162,5 +182,64 @@ public class NewMineActivity extends BasePlayMenuActivity {
                 startActivity(SettingActivity.class);
                 break;
         }
+    }
+
+    @Override
+    public void setUserInfo(UserBean userBean) {
+
+    }
+
+    @Override
+    public void setUserInfoBean(UserInfoBean userInfoBean) {
+        if(userInfoBean!=null){
+            tvSongNum.setText(NumberUtil.format(userInfoBean.worknum));
+            tvLyricsNum.setText(NumberUtil.format(userInfoBean.lyricsnum));
+            tvFansNum.setText(NumberUtil.format(userInfoBean.fansnum));
+            tvFollowNum.setText(NumberUtil.format(userInfoBean.gznum));
+        }
+    }
+    @Override
+    public void showWorksData(List<WorksData> worksDataList) {
+
+    }
+
+    @Override
+    public void loadFail() {
+
+    }
+
+    @Override
+    public void loadNoData() {
+
+    }
+
+    @Override
+    public void loadNoMore() {
+
+    }
+
+    @Override
+    public void deleteSuccess() {
+
+    }
+
+    @Override
+    public void deleteFail() {
+
+    }
+
+    @Override
+    public void updateSuccess() {
+
+    }
+
+    @Override
+    public void updateFail() {
+
+    }
+
+    @Override
+    public void initView() {
+
     }
 }

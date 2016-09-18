@@ -206,8 +206,6 @@ public class LoginActivity extends BaseActivity implements ILoginView, IRegister
         }else if(type.equals("wb")){
             platform = SHARE_MEDIA.SINA;
         }
-        isFirstGetUserInfo = false;
-        userInfo = new LoginBean();
         if(mShareAPI==null) {
             mShareAPI = UMShareAPI.get(this);
         }
@@ -222,16 +220,26 @@ public class LoginActivity extends BaseActivity implements ILoginView, IRegister
     private UMAuthListener umAuthListener = new UMAuthListener() {
         @Override
         public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
-            if(!isFirstGetUserInfo){
-                isFirstGetUserInfo = true;
-                mShareAPI.getPlatformInfo(LoginActivity.this, platform, umAuthListener);
-            }
-            Log.e("Authorize"+platform.toString()+"-"+isFirstGetUserInfo,new Gson().toJson(data));
-            if(isFirstGetUserInfo){//返回的用户信息
+            mShareAPI.getPlatformInfo(LoginActivity.this, platform, umAuthListener2);
+        }
+        @Override
+        public void onError(SHARE_MEDIA platform, int action, Throwable t) {
+            Toast.makeText( getApplicationContext(), "授权失败", Toast.LENGTH_SHORT).show();
+        }
 
-            }else{
-                //返回的token或者id信息
-                if(platform.toString().equals("WEIXIN")) {
+        @Override
+        public void onCancel(SHARE_MEDIA platform, int action) {
+            Toast.makeText( getApplicationContext(), "取消授权", Toast.LENGTH_SHORT).show();
+        }
+    };
+    private UMAuthListener umAuthListener2 = new UMAuthListener() {
+        @Override
+        public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
+            userInfo = new LoginBean();
+            Log.e("Authorize"+platform.toString(),new Gson().toJson(data));
+            //返回的token或者id信息
+            if(platform.toString().equals("WEIXIN")) {
+                try {
                     String openid = data.get("openid");
                     String sex = data.get("sex");
                     String headimgurl = data.get("headimgurl");
@@ -241,24 +249,28 @@ public class LoginActivity extends BaseActivity implements ILoginView, IRegister
                     userInfo.signature = "";
                     userInfo.headurl = headimgurl;
                     userInfo.sex = sex;
-                }else if(platform.toString().equals("SINA")){
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+            }else if(platform.toString().equals("SINA")){
+                try {
                     String result = data.get("result");
-                    try {
-                        JSONObject jsonObject = new JSONObject(result);
-                        String id = jsonObject.getString("id");
-                        String name = jsonObject.getString("name");
-                        String description = jsonObject.getString("description");
-                        String avatar_large = jsonObject.getString("avatar_large");
-                        String gender = jsonObject.getString("gender");//"m"男 "f" 女
-                        userInfo.openid = id;
-                        userInfo.nickname = name;
-                        userInfo.headurl = avatar_large;
-                        userInfo.signature = description;
-                        userInfo.sex = gender.equals("m")?"2":(gender.equals("f")?"1":"0");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }else if(platform.toString().equals("QQ")){
+                    JSONObject jsonObject = new JSONObject(result);
+                    String id = jsonObject.getString("id");
+                    String name = jsonObject.getString("name");
+                    String description = jsonObject.getString("description");
+                    String avatar_large = jsonObject.getString("avatar_large");
+                    String gender = jsonObject.getString("gender");//"m"男 "f" 女
+                    userInfo.openid = id;
+                    userInfo.nickname = name;
+                    userInfo.headurl = avatar_large;
+                    userInfo.signature = description;
+                    userInfo.sex = gender.equals("m")?"2":(gender.equals("f")?"1":"0");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }else if(platform.toString().equals("QQ")){
+                try {
                     String profile_image_url = data.get("profile_image_url");
                     String screen_name = data.get("screen_name");
                     String gender = data.get("gender");//"男" ”女“
@@ -267,20 +279,21 @@ public class LoginActivity extends BaseActivity implements ILoginView, IRegister
                     userInfo.nickname = screen_name;
                     userInfo.headurl = profile_image_url;
                     userInfo.signature = "";
-                    userInfo.sex = gender.equals("男")?"2":(gender.equals("女")?"1":"0");
+                    userInfo.sex = gender.equals("男") ? "2" : (gender.equals("女") ? "1" : "0");
+                }catch(Exception e){
+                    e.printStackTrace();
                 }
-                Log.e("userInfo",new Gson().toJson(userInfo));
             }
+            Log.e("userInfo",new Gson().toJson(userInfo));
         }
-
         @Override
         public void onError(SHARE_MEDIA platform, int action, Throwable t) {
-            Toast.makeText( getApplicationContext(), "授权失败", Toast.LENGTH_SHORT).show();
+            Toast.makeText( getApplicationContext(), "登录失败", Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onCancel(SHARE_MEDIA platform, int action) {
-            Toast.makeText( getApplicationContext(), "取消授权", Toast.LENGTH_SHORT).show();
+            Toast.makeText( getApplicationContext(), "取消登录", Toast.LENGTH_SHORT).show();
         }
     };
     public void toLoin() {

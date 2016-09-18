@@ -34,8 +34,10 @@ import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.common.interfaces.OnTabActivityResultListener;
 import com.xilu.wybz.presenter.DownPicPresenter;
 import com.xilu.wybz.presenter.ModifyCoverPresenter;
+import com.xilu.wybz.presenter.UserPresenter;
 import com.xilu.wybz.ui.IView.ILoadPicView;
 import com.xilu.wybz.ui.IView.IModifyCoverView;
+import com.xilu.wybz.ui.IView.IUserView;
 import com.xilu.wybz.ui.base.BaseActivity;
 import com.xilu.wybz.ui.fragment.WorksDataFragment;
 import com.xilu.wybz.ui.setting.SettingActivity;
@@ -113,11 +115,12 @@ public class MineActivity extends BaseActivity implements IModifyCoverView, ILoa
     private int currentIndex;
     private MineAdapter pagerAdapter;
     private List<LinearLayout> tabs;
-    public UserInfoBean userInfoBean;
-    public UserBean userBean;
-    ModifyCoverPresenter modifyCoverPresenter;
-    String bgPic;
-    DownPicPresenter downPicPresenter;
+    private UserInfoBean userInfoBean;
+    private UserBean userBean;
+    private UserPresenter userPresenter;
+    private ModifyCoverPresenter modifyCoverPresenter;
+    private String bgPic;
+    private DownPicPresenter downPicPresenter;
 
     @Override
     protected int getLayoutRes() {
@@ -414,20 +417,20 @@ public class MineActivity extends BaseActivity implements IModifyCoverView, ILoa
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_setting, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.menu_setting) {
-            startActivity(SettingActivity.class);
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.menu_setting, menu);
+//        return super.onCreateOptionsMenu(menu);
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        if (item.getItemId() == R.id.menu_setting) {
+//            startActivity(SettingActivity.class);
+//            return true;
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 
     @Override
     public void onDestroy() {
