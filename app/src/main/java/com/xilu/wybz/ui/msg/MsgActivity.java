@@ -10,8 +10,11 @@ import android.widget.TextView;
 
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.MsgBean;
+import com.xilu.wybz.bean.MsgNumBean;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.MyCommon;
+import com.xilu.wybz.presenter.MsgNumPresenter;
+import com.xilu.wybz.ui.IView.IMsgNumView;
 import com.xilu.wybz.ui.base.BaseListActivity;
 import com.xilu.wybz.ui.base.BasePlayMenuActivity;
 import com.xilu.wybz.ui.find.MoreWorkActivity;
@@ -29,22 +32,21 @@ import butterknife.OnClick;
 /**
  * Created by June on 16/4/29.
  */
-public class MsgActivity extends BaseListActivity<MsgBean> {
+public class MsgActivity extends BaseListActivity<MsgBean> implements IMsgNumView{
     public int[] icons = new int[]{R.drawable.ic_msg_comment, R.drawable.ic_msg_zan,
             R.drawable.ic_msg_fav, R.drawable.ic_msg_notice, R.drawable.ic_msg_bq};
     public String[] titles = new String[]{"评论", "点赞", "收藏", "系统消息", "保全消息"};
-
+    public MsgNumPresenter msgNumPresenter;
     public boolean canBack() {
         return false;
     }
 
     @Override
     protected void initPresenter() {
-        setTitle("消息");
-        SystemBarHelper.tintStatusBar(this, Color.argb(255, 0xFF, 0xD7, 0x05));
-        recycler.enablePullToRefresh(false);
-    }
+        msgNumPresenter = new MsgNumPresenter(context,this);
+        msgNumPresenter.init();
 
+    }
     @Override
     protected void setUpData() {
         mDataList = new ArrayList<>();
@@ -67,6 +69,26 @@ public class MsgActivity extends BaseListActivity<MsgBean> {
     protected BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_msg, parent, false);
         return new MsgViewHolder(view);
+    }
+
+    @Override
+    public void showMsgNum(MsgNumBean msgBean) {
+        if(isDestroy||msgBean==null)return;
+        if(mDataList!=null&&mDataList.size()>0){
+            mDataList.get(0).count=msgBean.commentnum;
+            mDataList.get(1).count=msgBean.zannum;
+            mDataList.get(2).count=msgBean.fovnum;
+            mDataList.get(3).count=msgBean.sysmsg;
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void initView() {
+        setTitle("消息");
+        SystemBarHelper.tintStatusBar(this, Color.argb(255, 0xFF, 0xD7, 0x05));
+        recycler.enablePullToRefresh(false);
+        msgNumPresenter.loadData();
     }
 
     public class MsgViewHolder extends BaseViewHolder {

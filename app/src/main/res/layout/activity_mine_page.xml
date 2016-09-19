@@ -130,6 +130,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="我的收藏"
+                android:drawableLeft="@drawable/ic_myfav"
+                android:gravity="center_vertical"
+                android:drawablePadding="15dp"
                 android:textColor="@color/main_text_color"
                 android:textSize="15sp" />
 
@@ -156,6 +159,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="灵感记录"
+                android:drawableLeft="@drawable/ic_myrecord"
+                android:gravity="center_vertical"
+                android:drawablePadding="15dp"
                 android:textColor="@color/main_text_color"
                 android:textSize="15sp" />
 
@@ -182,6 +188,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="保全作品"
+                android:drawableLeft="@drawable/ic_mybq"
+                android:gravity="center_vertical"
+                android:drawablePadding="15dp"
                 android:textColor="@color/main_text_color"
                 android:textSize="15sp" />
 
@@ -215,6 +224,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="个人资料"
+                android:drawableLeft="@drawable/ic_myinfo"
+                android:gravity="center_vertical"
+                android:drawablePadding="15dp"
                 android:textColor="@color/main_text_color"
                 android:textSize="15sp" />
 
@@ -241,6 +253,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="推荐给好友"
+                android:drawableLeft="@drawable/ic_share_app"
+                android:gravity="center_vertical"
+                android:drawablePadding="15dp"
                 android:textColor="@color/main_text_color"
                 android:textSize="15sp" />
 
@@ -267,6 +282,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="设置"
+                android:drawableLeft="@drawable/ic_setting"
+                android:gravity="center_vertical"
+                android:drawablePadding="15dp"
                 android:textColor="@color/main_text_color"
                 android:textSize="15sp" />
 
