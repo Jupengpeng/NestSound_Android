@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/fl_topbar"
+    android:layout_width="match_parent"
+    android:layout_height="48.6dp"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/spit_line_height">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/actionbar_size"
+        android:background="@color/main_theme_color"
+        app:contentInsetEnd="0dp"
+        app:contentInsetLeft="0dp"
+        app:contentInsetRight="0dp"
+        app:contentInsetStart="0dp"
+        app:paddingEnd="0dp"
+        app:paddingStart="0dp"
+        app:titleMarginStart="0dp"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="@style/ToolBarStyle"
+        app:layout_scrollFlags="scroll|enterAlways"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        />
+    <include layout="@layout/view_spit_line" />
+</LinearLayout>

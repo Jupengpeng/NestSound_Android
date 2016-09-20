@@ -1,0 +1,40 @@
+<resources>
+    <string name="app_name">音巢音乐</string>
+    <string name="app_find">发现</string>
+    <string name="app_msg">消息</string>
+    <string name="app_mine">我的</string>
+
+    <string name="app_tab_home">主页</string>
+    <string name="app_tab_find">发现</string>
+    <string name="app_tab_msg">消息</string>
+    <string name="app_tab_mine">我的</string>
+
+
+    <string name="send_to_wx_title">发送到微信</string>
+    <string name="get_from_wx_title">从微信接收</string>
+    <string name="show_from_wx_title">显示微信请求的消息</string>
+
+    <string name="errcode_success">发送成功</string>
+    <string name="errcode_cancel">发送取消</string>
+    <string name="errcode_deny">发送被拒绝</string>
+    <string name="errcode_unknown">发送返回</string>
+
+    <string name="tab_1">推荐</string>
+    <string name="tab_2">全部</string>
+    <string name="tab_3">活动</string>
+
+    <string name="submit">提交</string>
+    <string name="del">删除</string>
+    <string name="luzhi">进入此伴奏进行录制</string>
+    <string name="jubao">举报</string>
+
+    <string name="progress_dialog">温馨提示</string>
+    <string name="dialog_title">操作</string>
+    <string name="please_wait">正在处理中，请稍候…</string>
+    <string name="please_wait_down">正在下载中，请稍候…</string>
+    <string name="please_wait_init">戴上耳机，效果更好哦</string>
+    <string name="init_ok">初始化完成</string>
+
+    <string name="et_digits">0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLIMNOPQRSTUVWXYZ</string>
+    <string name="et_digits_contact">._@0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLIMNOPQRSTUVWXYZ</string>
+</resources>

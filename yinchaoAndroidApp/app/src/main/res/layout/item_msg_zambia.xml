@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/ll_userinfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:paddingTop="10dp">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/iv_head"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            fresco:actualImageScaleType="centerCrop"
+            fresco:fadeDuration="300"
+            fresco:failureImage="@drawable/ic_default_head_252"
+            fresco:failureImageScaleType="centerCrop"
+            fresco:placeholderImage="@drawable/ic_default_head_252"
+            fresco:placeholderImageScaleType="centerCrop"
+            fresco:roundAsCircle="true" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:text="username"
+                android:textColor="@color/main_text_color"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/tv_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/yc_2"
+                android:gravity="right"
+                android:text="time"
+                android:textColor="@color/main_text_color2"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="赞了你的作品"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/main_text_color"
+        android:textSize="15sp" />
+
+    <LinearLayout
+        android:id="@+id/ll_works"
+        android:layout_width="match_parent"
+        android:layout_height="68dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/link_bg"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/iv_cover"
+            android:layout_width="68dp"
+            android:layout_height="68dp"
+            fresco:actualImageScaleType="centerCrop"
+            fresco:fadeDuration="300"
+            fresco:failureImage="@drawable/ic_default_pic"
+            fresco:failureImageScaleType="centerCrop"
+            fresco:placeholderImage="@drawable/ic_default_pic"
+            fresco:placeholderImageScaleType="centerCrop" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_music_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="music_name"
+                android:textColor="@color/main_text_color"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/tv_author"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/yc_6"
+                android:text="author"
+                android:textColor="@color/main_text_color2"
+                android:textSize="13sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <include layout="@layout/view_spit_line" />
+
+</LinearLayout>

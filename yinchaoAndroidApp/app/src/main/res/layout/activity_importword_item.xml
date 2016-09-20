@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    >
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/iv_cover"
+        android:layout_width="50dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        fresco:placeholderImageScaleType="centerCrop"
+        fresco:actualImageScaleType="centerCrop"
+        fresco:fadeDuration="300"
+        fresco:failureImage="@drawable/ic_default_pic"
+        fresco:failureImageScaleType="centerCrop"
+        fresco:placeholderImage="@drawable/ic_default_pic" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginRight="10dp"
+        android:layout_toRightOf="@+id/iv_cover"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:text="你好吗"
+            android:textColor="@color/main_text_color"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:singleLine="true"
+            android:text="阿超"
+            android:textColor="@color/main_text_color2"
+            android:textSize="14sp" />
+    </LinearLayout>
+    <View
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/spit_line_height"
+        android:background="@color/split_line"
+        android:layout_alignParentBottom="true"
+        />
+</RelativeLayout>

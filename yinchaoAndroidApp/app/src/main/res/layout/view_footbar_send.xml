@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <include layout="@layout/view_spit_line"/>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:gravity="center_vertical"
+        android:layout_height="55dp">
+
+        <EditText
+            android:id="@+id/et_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="35dp"
+            android:layout_marginLeft="15dp"
+            android:background="@drawable/corner_f2f2f2"
+            android:hint="来~说点什么"
+            android:padding="@dimen/padding_ss"
+            android:textColor="@color/main_text_color"
+            android:singleLine="true"
+            android:textSize="15sp"
+            android:textCursorDrawable="@drawable/cursor"
+
+            />
+
+        <ImageView
+            android:id="@+id/iv_send"
+            android:layout_width="70dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="15dp"
+            android:src="@drawable/ic_send_msg"
+            android:background="@drawable/btn_send"
+            android:scaleType="center"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>

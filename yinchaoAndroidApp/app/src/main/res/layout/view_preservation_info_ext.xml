@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/user_info_container"
+    android:layout_marginLeft="@dimen/preservation_margin"
+    android:layout_marginRight="@dimen/preservation_margin"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/preservation_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/preservation_split"
+        android:gravity="center_vertical"
+        android:text="保全时间：2016-09-18 16:46"
+        android:textSize="16sp"
+        android:textColor="@color/main_text_color"
+        />
+
+    <TextView
+        android:id="@+id/preservation_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="15dp"
+        android:text="保全编号：201609181646"
+        android:textSize="16sp"
+        android:textColor="@color/main_text_color"
+        />
+
+</LinearLayout>

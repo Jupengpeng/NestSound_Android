@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/pop_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:background="@color/main_bg"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:gravity="center"
+        android:text="想要分享给谁"
+        android:textColor="@color/main_text_color2"
+        android:textSize="15sp" />
+    <View
+        android:id="@+id/ll_split_line"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/split_line"
+        android:orientation="horizontal"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:paddingTop="15dp">
+
+        <LinearLayout
+            android:id="@+id/ll_share_weixin"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/selector"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingBottom="10dip"
+            android:paddingTop="10dip">
+
+            <ImageView
+                android:id="@+id/share_weixin"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/ic_share_wx" />
+
+            <TextView
+                android:id="@+id/tv_weixin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dip"
+                android:text="微信"
+                android:textColor="@color/main_text_color2"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_share_friend"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/selector"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingBottom="10dip"
+            android:paddingTop="10dip">
+
+            <ImageView
+                android:id="@+id/share_friend"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/ic_share_wx_friend" />
+
+            <TextView
+                android:id="@+id/tv_friend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dip"
+                android:text="朋友圈"
+                android:textColor="@color/main_text_color2"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_share_weibo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/selector"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingBottom="10dip"
+            android:paddingTop="10dip">
+
+            <ImageView
+                android:id="@+id/share_weibo"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/ic_share_wb" />
+
+            <TextView
+                android:id="@+id/tv_weibo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dip"
+                android:text="微博"
+                android:textColor="@color/main_text_color2"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_share_qq"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/selector"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingBottom="10dip"
+            android:paddingTop="10dip">
+
+            <ImageView
+                android:id="@+id/share_qq"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/ic_share_qq" />
+
+            <TextView
+                android:id="@+id/tv_qq"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dip"
+                android:text="QQ"
+                android:textColor="@color/main_text_color2"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="15dp"
+        >
+        <LinearLayout
+            android:id="@+id/ll_share_qzone"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/selector"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingBottom="10dip"
+            android:paddingTop="10dip">
+
+            <ImageView
+                android:id="@+id/share_qzone"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/ic_share_qzone" />
+
+            <TextView
+                android:id="@+id/tv_qzone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dip"
+                android:text="QQ空间"
+                android:textColor="@color/main_text_color2"
+                android:textSize="13sp" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/ll_share_copy"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingBottom="10dip"
+            android:paddingTop="10dip">
+
+            <ImageView
+                android:id="@+id/share_copy"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/ic_share_link" />
+
+            <TextView
+                android:id="@+id/tv_copy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dip"
+                android:text="复制链接"
+                android:textColor="@color/main_text_color2"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_poster"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingBottom="10dip"
+            android:paddingTop="10dip">
+            <ImageView
+                android:id="@+id/share_hb"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/ic_share_hb" />
+
+            <TextView
+                android:id="@+id/tv_hb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dip"
+                android:text="歌词海报"
+                android:textColor="@color/main_text_color2"
+                android:textSize="13sp" />
+            </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingBottom="10dip"
+            android:paddingTop="10dip"
+            android:visibility="invisible" />
+    </LinearLayout>
+
+</LinearLayout>
