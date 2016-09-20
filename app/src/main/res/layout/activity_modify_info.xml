@@ -182,5 +182,44 @@
         </LinearLayout>
 
         <include layout="@layout/view_spit_line" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="12dp"
+            android:background="@color/main_bg" />
+        <include layout="@layout/view_spit_line" />
+        <LinearLayout
+            android:id="@+id/ll_bq_info"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="个人保全信息"
+                android:textColor="@color/main_text_color"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/tv_bq_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLength="10"
+                android:text=""
+                android:textColor="@color/main_text_color2"
+                android:textSize="15sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:src="@drawable/ic_setting_arrow" />
+        </LinearLayout>
+
+        <include layout="@layout/view_spit_line" />
     </LinearLayout>
 </LinearLayout>

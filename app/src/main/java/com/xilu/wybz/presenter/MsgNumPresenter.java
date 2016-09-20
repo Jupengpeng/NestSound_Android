@@ -30,6 +30,7 @@ public class MsgNumPresenter extends BasePresenter<IMsgNumView> {
 
     public void loadData() {
         params = new HashMap<>();
+        params.put("uid",PrefsUtil.getUserId(context)+"");
         httpUtils.get(MyHttpClient.getMsgNumUrl(), params, new AppJsonCalback(context) {
             @Override
             public Type getDataType() {
@@ -37,9 +38,15 @@ public class MsgNumPresenter extends BasePresenter<IMsgNumView> {
             }
 
             @Override
+            public void onResultError(JsonResponse<? extends Object> response) {
+                super.onResultError(response);
+            }
+
+            @Override
             public void onResult(JsonResponse<? extends Object> response) {
                 super.onResult(response);
                 MsgNumBean msgNumBean = response.getData();
+                if(msgNumBean!=null)
                 iView.showMsgNum(msgNumBean);
             }
         });

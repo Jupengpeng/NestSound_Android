@@ -300,6 +300,16 @@ public class Event {
     public static class LoginOutEvent {
 
     }
+    public static class MsgTipEvent {
+        boolean isShow;
+        public MsgTipEvent(boolean isShow){
+            this.isShow = isShow;
+        }
+
+        public boolean isShow() {
+            return isShow;
+        }
+    }
 
     public static class RemoveMySongEvent {
         String itemid;

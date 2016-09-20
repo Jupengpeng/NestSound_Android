@@ -21,6 +21,7 @@ import com.xilu.wybz.ui.find.MoreWorkActivity;
 import com.xilu.wybz.view.SystemBarHelper;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -40,7 +41,7 @@ public class MsgActivity extends BaseListActivity<MsgBean> implements IMsgNumVie
     public boolean canBack() {
         return false;
     }
-
+    public int msgCount;
     @Override
     protected void initPresenter() {
         msgNumPresenter = new MsgNumPresenter(context,this);
@@ -74,6 +75,8 @@ public class MsgActivity extends BaseListActivity<MsgBean> implements IMsgNumVie
     @Override
     public void showMsgNum(MsgNumBean msgBean) {
         if(isDestroy||msgBean==null)return;
+        msgCount = msgBean.commentnum+msgBean.fovnum+msgBean.sysmsg+msgBean.zannum;
+        changeMsgStatus();
         if(mDataList!=null&&mDataList.size()>0){
             mDataList.get(0).count=msgBean.commentnum;
             mDataList.get(1).count=msgBean.zannum;
@@ -82,7 +85,10 @@ public class MsgActivity extends BaseListActivity<MsgBean> implements IMsgNumVie
             adapter.notifyDataSetChanged();
         }
     }
-
+    //通知首页更新消息提示红点显示的状态
+    public void changeMsgStatus(){
+        EventBus.getDefault().post(new Event.MsgTipEvent(msgCount>0));
+    }
     @Override
     public void initView() {
         setTitle("消息");
@@ -145,26 +151,23 @@ public class MsgActivity extends BaseListActivity<MsgBean> implements IMsgNumVie
         switch (event.getType()) {
             case MyCommon.PUSH_TYPE_COMMENT:
                 pos = 0;
-                mDataList.get(pos).count = mDataList.get(pos).count+1;
                 break;
             case MyCommon.PUSH_TYPE_ZAN:
                 pos = 1;
-                mDataList.get(pos).count = mDataList.get(pos).count+1;
                 break;
             case MyCommon.PUSH_TYPE_FOV:
                 pos = 2;
-                mDataList.get(pos).count = mDataList.get(pos).count+1;
                 break;
             case MyCommon.PUSH_TYPE_SYSTEMMSG:
                 pos = 3;
-                mDataList.get(pos).count = mDataList.get(pos).count+1;
                 break;
             case MyCommon.PUSH_TYPE_COPYRIGH:
                 pos = 4;
-                mDataList.get(pos).count = mDataList.get(pos).count+1;
                 break;
         }
-
+        mDataList.get(pos).count = mDataList.get(pos).count+1;
+        msgCount+=1;
+        changeMsgStatus();
         adapter.notifyItemChanged(pos);
     }
 
@@ -174,25 +177,25 @@ public class MsgActivity extends BaseListActivity<MsgBean> implements IMsgNumVie
         switch (event.getType()) {
             case MyCommon.PUSH_TYPE_COMMENT:
                 pos = 0;
-                mDataList.get(pos).count = 0;
                 break;
             case MyCommon.PUSH_TYPE_ZAN:
                 pos = 1;
-                mDataList.get(pos).count = 0;
                 break;
             case MyCommon.PUSH_TYPE_FOV:
                 pos = 2;
-                mDataList.get(pos).count = 0;
                 break;
             case MyCommon.PUSH_TYPE_SYSTEMMSG:
                 pos = 3;
-                mDataList.get(pos).count = 0;
                 break;
             case MyCommon.PUSH_TYPE_COPYRIGH:
                 pos = 4;
-                mDataList.get(pos).count = 0;
                 break;
         }
+        //清空消息之前 先把消息总个数减掉当前分类的消息个数
+        msgCount-=mDataList.get(pos).count;
+        changeMsgStatus();
+        //清空单个分类消息个数
+        mDataList.get(pos).count = 0;
         adapter.notifyDataSetChanged();
     }
 }

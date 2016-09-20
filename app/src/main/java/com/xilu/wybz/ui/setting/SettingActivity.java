@@ -41,13 +41,6 @@ import cn.jpush.android.api.JPushInterface;
 public class SettingActivity extends ToolbarActivity {
     @Bind(R.id.cb_notice)
     CheckBox cbNotice;
-    @Bind(R.id.iv_head)
-    SimpleDraweeView ivHead;
-    @Bind(R.id.tv_name)
-    TextView tvName;
-    @Bind(R.id.tv_sign)
-    TextView tvSign;
-
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_settings;
@@ -59,11 +52,7 @@ public class SettingActivity extends ToolbarActivity {
         mToolbar.setBackgroundResource(R.color.main_theme_color);
         initView();
     }
-    @Subscribe(threadMode = ThreadMode.MAIN) public void onEventMainThread(Event.UpdateUserInfo event){
-        loadUserInfo();
-    }
     private void initView() {
-        EventBus.getDefault().register(this);
         setTitle("设置");
         cbNotice.setChecked(PrefsUtil.getBoolean(KeySet.KEY_PUSH_OPEN,getApplicationContext()));
         cbNotice.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -79,19 +68,12 @@ public class SettingActivity extends ToolbarActivity {
                 PrefsUtil.putBoolean(KeySet.KEY_PUSH_OPEN, isChecked, context);
             }
         });
-        loadUserInfo();
     }
-    public void loadUserInfo(){
-        UserBean userInfo = PrefsUtil.getUserInfo(context);
-        if(!TextUtils.isEmpty(userInfo.headurl))loadImage(userInfo.headurl,ivHead);
-        if(!TextUtils.isEmpty(userInfo.nickname))tvName.setText(userInfo.nickname);
-        if(!TextUtils.isEmpty(userInfo.signature))tvSign.setText(userInfo.signature);
-    }
-    @OnClick({R.id.iv_modify, R.id.ll_clear_cache, R.id.ll_modify_pwd, R.id.ll_feedback, R.id.ll_loginout})
+    @OnClick({R.id.ll_other_account, R.id.ll_clear_cache, R.id.ll_modify_pwd, R.id.ll_feedback, R.id.ll_loginout})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.iv_modify:
-                startActivity(ModifyUserInfoActivity.class);
+            case R.id.ll_other_account:
+                startActivity(OtherAccountActivity.class);
                 break;
             case R.id.ll_clear_cache:
                 DelCache();
@@ -175,9 +157,4 @@ public class SettingActivity extends ToolbarActivity {
                 .show();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
-    }
 }

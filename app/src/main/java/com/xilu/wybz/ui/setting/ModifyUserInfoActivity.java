@@ -115,7 +115,7 @@ public class ModifyUserInfoActivity extends ToolbarActivity implements IModifyUs
         EventBus.getDefault().post(new Event.UpdateUserInfo());
         initUserInfo();
     }
-    @OnClick({R.id.ll_userhead, R.id.ll_username, R.id.ll_sign, R.id.ll_gender, R.id.ll_birthday})
+    @OnClick({R.id.ll_userhead, R.id.ll_username, R.id.ll_sign, R.id.ll_gender, R.id.ll_birthday, R.id.ll_bq_info})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ll_userhead:
@@ -136,6 +136,8 @@ public class ModifyUserInfoActivity extends ToolbarActivity implements IModifyUs
             case R.id.ll_birthday:
                 type = 3;
                 showModifyBirthdayDialog();
+                break;
+            case R.id.ll_bq_info:
                 break;
         }
     }

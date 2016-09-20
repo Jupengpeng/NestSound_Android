@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.CheckedTextView;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import com.umeng.analytics.MobclickAgent;
 import com.xilu.wybz.R;
@@ -58,6 +59,8 @@ public class MainTabActivity extends BaseActivity {
     CheckedTextView tvMsg;
     @Bind(R.id.tv_mine)
     CheckedTextView tvMine;
+    @Bind(R.id.iv_tip)
+    ImageView ivTip;
     List<CheckedTextView> checkedTextViewList;
     ArrayList<View> list;
     MoreWindow mMoreWindow;
@@ -274,7 +277,10 @@ public class MainTabActivity extends BaseActivity {
         PrefsUtil.saveUserInfo(context, ub);
         JPushInterface.setAliasAndTags(getApplicationContext(), PrefsUtil.getUserId(context) + "", null, mAliasCallback);
     }
-
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(Event.MsgTipEvent event) {
+        ivTip.setVisibility(event.isShow()?View.VISIBLE:View.GONE);
+    }
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(Event.LoginOutEvent event) {
         JPushInterface.setAliasAndTags(getApplicationContext(), "", null, mAliasCallback);

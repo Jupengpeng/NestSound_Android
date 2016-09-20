@@ -64,7 +64,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="打开个人主页"
+            android:text="个人主页"
             android:textColor="@color/main_text_color3"
             android:textSize="12sp" />
 

@@ -140,6 +140,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/MianTheme" />
         <activity
+            android:name=".ui.setting.OtherAccountActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name=".ui.setting.AboutMessageActivity"
             android:screenOrientation="portrait"
             android:theme="@style/MianTheme" />

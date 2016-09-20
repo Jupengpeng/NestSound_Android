@@ -28,11 +28,14 @@ public class MyHttpClient {
         return "common/login/tokenCheck";
     }
 
-    //伴奏列表
+    //伴奏分类列表
     public static String getHotUrl() {
         return "common/accompaniment/list/v22";
     }
-
+    //伴奏默认列表
+    public static String getDefaultHotListUrl() {
+        return "common/accompaniment/defaultlist/v22";
+    }
     //伴奏详情
     public static String getHotDetailUrl() {
         return "common/hot/detail";
@@ -153,32 +156,32 @@ public class MyHttpClient {
 
     //点赞接口
     public static String getUpvoteUrl() {
-        return "workzan/optZan";
+        return "workzan/optZan/v22";
     }
 
     //收藏接口
     public static String getWorkFovUrl() {
-        return "workfov/optZan";
+        return "workfov/optZan/v22";
     }
 
     //消息收藏列表
     public static String getMsgFovList() {
-        return "message/fovMyCenterList";
+        return "message/fovMyCenterList/v22";
     }
 
     //消息评论列表
     public static String getMsgCommentList() {
-        return "message/commentCenterList";
+        return "message/commentCenterList/v22";
     }
 
     //消息点赞列表
     public static String getMsgZanList() {
-        return "message/zanCenterList";
+        return "message/zanCenterList/v22";
     }
 
     //消息点赞列表
     public static String getMsgSystemList() {
-        return "message/sysNoteList";
+        return "message/sysNoteList/v22";
     }
 
     //发布歌词
@@ -221,7 +224,7 @@ public class MyHttpClient {
 
     //评论接口
     public static String getSaveCommentUrl() {
-        return "commentopt/save";
+        return "commentopt/save/v22";
     }
 
     //删除评论
@@ -236,7 +239,7 @@ public class MyHttpClient {
 
     //粉丝列表
     public static String getFansList() {
-        return "fanfocus/fanslist";
+        return "fanfocus/fanslist/v22";
     }
 
     //他人粉丝列表
@@ -251,7 +254,7 @@ public class MyHttpClient {
 
     //搜索接口
     public static String getFanFocusList() {
-        return "fanfocus/optFans";
+        return "fanfocus/optFans/v22";
     }
 
     //上传歌曲
