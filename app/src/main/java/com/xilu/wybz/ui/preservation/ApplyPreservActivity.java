@@ -1,5 +1,6 @@
 package com.xilu.wybz.ui.preservation;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.PersonInfo;
+import com.xilu.wybz.bean.ProductInfo;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.ui.BrowserActivity;
 import com.xilu.wybz.ui.base.ToolbarActivity;
@@ -24,6 +26,8 @@ import butterknife.OnClick;
  * Created by Administrator on 2016/9/14.
  */
 public class ApplyPreservActivity extends ToolbarActivity {
+
+    public static final String DATA = "data" ;
 
     private static String TEXT = "提交申请即表示认同《音巢音乐保全免责申明》";
 
@@ -72,19 +76,39 @@ public class ApplyPreservActivity extends ToolbarActivity {
     @Bind(R.id.preservation_protocol)
     TextView preservationProtocol;
 
+
+    ProductInfo productInfo;
+
+
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_apply_product_preservation;
     }
 
 
+    public static void startApplyPreservActivity(Context context,ProductInfo info){
+        Intent intent = new Intent(context,ApplyPreservActivity.class);
+        intent.putExtra(DATA,info);
+        context.startActivity(intent);
+    }
+
+    /**
+     *
+     */
+    public void initProductInfo(){
+        Intent intent = getIntent();
+        if (intent != null){
+            productInfo = intent.getParcelableExtra(DATA);
+        }
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setTitle("保全申请");
-
+        initProductInfo();
         initProtocol();
+        setTitle("保全申请");
     }
 
     @OnClick(R.id.user_info_add)

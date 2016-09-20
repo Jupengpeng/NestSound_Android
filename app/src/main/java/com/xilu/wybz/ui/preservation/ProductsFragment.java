@@ -1,5 +1,6 @@
 package com.xilu.wybz.ui.preservation;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
@@ -152,6 +153,13 @@ public class ProductsFragment extends BaseListFragment<ActBean> implements IActV
 
         public SampleViewHolder(View itemView) {
             super(itemView);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context,ApplyPreservActivity.class);
+                    startActivity(intent);
+                }
+            });
         }
 
         @Override

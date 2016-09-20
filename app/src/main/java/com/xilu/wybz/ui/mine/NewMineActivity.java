@@ -8,7 +8,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.tencent.connect.UserInfo;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.bean.UserInfoBean;
@@ -19,6 +18,7 @@ import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.UserPresenter;
 import com.xilu.wybz.ui.IView.IUserView;
 import com.xilu.wybz.ui.base.BasePlayMenuActivity;
+import com.xilu.wybz.ui.preservation.ProductPreservListActivity;
 import com.xilu.wybz.ui.setting.ModifyUserInfoActivity;
 import com.xilu.wybz.ui.setting.SettingActivity;
 import com.xilu.wybz.utils.ImageLoadUtil;
@@ -34,7 +34,6 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
-import cn.jpush.android.api.JPushInterface;
 
 /**
  * Created by hujunwei on 16/9/14.
@@ -171,7 +170,7 @@ public class NewMineActivity extends BasePlayMenuActivity implements IUserView {
                 NewMyWorkActivity.toNewMyWorkActivity(context,4);
                 break;
             case R.id.ll_bq:
-
+                startActivity(ProductPreservListActivity.class);
                 break;
             case R.id.ll_mine_info:
                 startActivity(ModifyUserInfoActivity.class);

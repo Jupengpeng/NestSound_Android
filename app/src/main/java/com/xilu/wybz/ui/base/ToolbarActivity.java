@@ -67,8 +67,9 @@ public abstract class ToolbarActivity extends BaseActivity {
 
     @Override
     public void setTitle(CharSequence title) {
-        TextView titleView = (TextView)mToolbar.findViewById(R.id.toolbar_title);
+        TextView titleView = (TextView)findViewById(R.id.toolbar_title);
         if (titleView != null){
+            super.setTitle("");
             titleView.setText(title);
         } else {
             super.setTitle(title);

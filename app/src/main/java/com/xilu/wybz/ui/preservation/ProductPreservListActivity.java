@@ -80,7 +80,8 @@ public class ProductPreservListActivity extends BaseListActivity<Object>{
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_add){
-
+            startActivity(ProductAllActivity.class);
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -98,15 +99,21 @@ public class ProductPreservListActivity extends BaseListActivity<Object>{
 
     class SampleViewHolder extends BaseViewHolder {
 
+        int position;
 
         public SampleViewHolder(View itemView) {
             super(itemView);
-
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(PreservInfoActivity.class);
+                }
+            });
         }
 
         @Override
         public void onBindViewHolder(int position) {
-
+            this.position = position;
 
         }
 
