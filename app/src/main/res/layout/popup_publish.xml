@@ -1,0 +1,75 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/windows_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#00000000"
+    android:gravity="center_horizontal|bottom" >
+
+    <ImageView
+        android:id="@+id/over_layer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="#40000000"
+        tools:src="@color/yellow"
+        />
+
+    <TextView
+        android:id="@+id/tv_zuoci"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/tv_zuoqu"
+        android:layout_marginRight="30dp"
+        android:drawablePadding="6dp"
+        android:drawableTop="@drawable/ic_zuoci"
+        android:layout_marginBottom="140dp"
+        android:gravity="center_horizontal"
+        android:textColor="@color/white"
+        android:paddingBottom="@dimen/more_window_item_margin"
+        android:text="作词" />
+
+    <TextView
+        android:id="@+id/tv_zuoqu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="140dp"
+        android:clickable="true"
+        android:drawablePadding="6dp"
+        android:layout_marginRight="30dp"
+        android:textColor="@color/white"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:drawableTop="@drawable/ic_zuoqu"
+        android:gravity="center_horizontal"
+        android:paddingBottom="@dimen/more_window_item_margin"
+        android:text="作曲"/>
+    <TextView
+        android:id="@+id/tv_record"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:drawablePadding="6dp"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/tv_zuoqu"
+        android:drawableTop="@drawable/ic_record"
+        android:layout_marginBottom="140dp"
+        android:gravity="center_horizontal"
+        android:textColor="@color/white"
+        android:paddingBottom="@dimen/more_window_item_margin"
+        android:text="灵感记录" />
+    <RelativeLayout
+        android:id="@+id/rl_bottom"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_height="48dp">
+        <ImageView
+            android:id="@+id/buttonFloat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_tab_main_w" />
+    </RelativeLayout>
+
+</RelativeLayout>

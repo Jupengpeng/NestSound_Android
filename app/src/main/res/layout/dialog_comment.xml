@@ -1,0 +1,38 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/main_bg"
+    android:gravity="bottom"
+    android:orientation="horizontal"
+    android:padding="@dimen/padding_s">
+
+    <EditText
+        android:id="@+id/comment_et_input"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        android:layout_weight="1"
+        android:background="@drawable/corner_f2f2f2"
+        android:hint="来~说点什么"
+        android:padding="@dimen/padding_ss"
+        android:textColor="#181818"
+        android:singleLine="true"
+        android:textSize="@dimen/title_size_s" />
+
+    <RelativeLayout
+        android:id="@+id/rl_send"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_marginLeft="10dp"
+        android:background="@drawable/btn_send2"
+        android:gravity="center"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
+
+        <ImageView
+            android:id="@+id/comment_iv_send"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_send_msg" />
+    </RelativeLayout>
+
+</LinearLayout>

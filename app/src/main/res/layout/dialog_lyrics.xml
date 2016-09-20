@@ -1,0 +1,23 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:orientation="vertical">
+    <com.xilu.wybz.view.HorizontalListView
+        android:id="@+id/lyrics_hlv_type"
+        android:layout_width="match_parent"
+        android:layout_height="45dip"
+        android:divider="@color/split_line"
+        android:background="@color/white"
+        android:dividerHeight="@dimen/spit_line_height"
+        android:layout_gravity="center" />
+    <include layout="@layout/view_spit_line" />
+    <ListView
+        android:id="@+id/lyrics_lv_lrc"
+        android:layout_width="match_parent"
+        android:layout_height="252dip"
+        android:background="@color/white"
+        android:cacheColorHint="#00000000"
+        android:divider="@color/split_line"
+        android:dividerHeight="@dimen/spit_line_height" />
+</LinearLayout>

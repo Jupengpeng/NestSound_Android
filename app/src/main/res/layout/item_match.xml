@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp"
+        >
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/iv_head"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            fresco:actualImageScaleType="centerCrop"
+            fresco:fadeDuration="300"
+            fresco:placeholderImage="@drawable/default_pic"
+            fresco:roundAsCircle="true" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_nickname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/main_text_color"
+                android:textSize="15sp"
+                tools:text="@string/app_name" />
+
+            <TextView
+                android:id="@+id/tv_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:textColor="@color/main_text_color3"
+                android:textSize="12sp"
+                tools:text="19分钟前" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp"
+        >
+
+        <RelativeLayout
+            android:layout_width="82dp"
+            android:layout_height="82dp">
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/iv_cover"
+                android:layout_width="82dp"
+                android:layout_height="82dp"
+                fresco:actualImageScaleType="centerCrop"
+                fresco:fadeDuration="300"
+                fresco:placeholderImage="@drawable/default_pic"
+                fresco:roundedCornerRadius="3dp" />
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:layout_width="82dp"
+                android:layout_height="82dp"
+                fresco:actualImageScaleType="centerCrop"
+                fresco:fadeDuration="300"
+                fresco:placeholderImage="@drawable/default_pressed"
+                fresco:roundedCornerRadius="3dp" />
+
+            <ImageView
+                android:id="@+id/iv_play"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_match_play" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_music_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/main_text_color2"
+                android:textSize="15sp"
+                tools:text="洋葱" />
+
+            <TextView
+                android:id="@+id/tv_music_author"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/main_text_color2"
+                android:textSize="15sp"
+                tools:text="杨宗纬" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp">
+
+                <TextView
+                    android:id="@+id/tv_look_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_item_show"
+                    android:drawablePadding="3dp"
+                    android:textColor="@color/main_text_color3"
+                    android:textSize="12sp"
+                    tools:text="1232" />
+
+                <TextView
+                    android:id="@+id/tv_zan_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:drawableLeft="@drawable/ic_lyrics_zan1"
+                    android:drawablePadding="3dp"
+                    android:textColor="@color/main_text_color3"
+                    android:textSize="12sp"
+                    tools:text="1232" />
+
+                <TextView
+                    android:id="@+id/tv_fav_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:drawableLeft="@drawable/ic_lyrics_fav1"
+                    android:drawablePadding="3dp"
+                    android:textColor="@color/main_text_color3"
+                    android:textSize="12sp"
+                    tools:text="1232" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view_comment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp"
+        />
+    <TextView
+        android:id="@+id/tv_more_comment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp"
+        android:paddingTop="5dp"
+        android:textColor="@color/main_text_color3"
+        android:textSize="12sp"
+        tools:text="更多评论>>" />
+
+    <EditText
+        android:id="@+id/et_comment"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:editable="false"
+        android:background="@drawable/corner_e5e5e53"
+        android:hint="评论..."
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:textColor="@color/main_text_color2"
+        android:textSize="12sp" />
+    <View
+        android:id="@+id/space"
+        android:layout_width="match_parent"
+        android:layout_height="10dp" />
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/main_bg" />
+</LinearLayout>
+

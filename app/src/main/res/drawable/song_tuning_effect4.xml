@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_selected="false">
+        <bitmap android:src="@drawable/ic_song_effect_moshen"></bitmap>
+
+    </item>
+    <item android:state_selected="true">
+
+        <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+            <item>
+                <bitmap
+                    android:gravity="center"
+                    android:tintMode="src_in"
+                    android:src="@drawable/ic_song_effect_moshen" />
+            </item>
+            <item>
+                <shape android:shape="oval" >
+                    <solid android:color="@color/tuning_effect_mask"></solid>
+                </shape>
+            </item>
+            <item >
+                <bitmap
+                    android:gravity="center"
+                    android:tintMode="src_over"
+                    android:src="@drawable/ic_song_w_selected" />
+            </item>
+
+        </layer-list>
+    </item>
+
+</selector>
+

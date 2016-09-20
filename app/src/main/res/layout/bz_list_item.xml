@@ -1,0 +1,106 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:descendantFocusability="blocksDescendants"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <RelativeLayout
+            android:id="@+id/rl_cover"
+            android:layout_width="163dp"
+            android:layout_height="86dp">
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/iv_cover"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                fresco:actualImageScaleType="centerCrop"
+                fresco:fadeDuration="300"
+                fresco:failureImage="@drawable/ic_default_pic"
+                fresco:failureImageScaleType="centerCrop"
+                fresco:placeholderImage="@drawable/ic_default_pic"
+                fresco:placeholderImageScaleType="centerCrop"
+                fresco:roundedCornerRadius="3dp" />
+
+            <RelativeLayout
+                android:id="@+id/rl_play"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
+                android:background="@drawable/selector"
+                android:padding="10dp">
+
+                <ImageView
+                    android:id="@+id/iv_play"
+                    android:layout_width="21dip"
+                    android:layout_height="21dip"
+                    android:src="@drawable/ic_bz_play" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:textColor="@color/main_text_color"
+                android:textSize="15sp"
+                tools:text="title" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp">
+
+                <TextView
+                    android:id="@+id/tv_author"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/main_text_color2"
+                    android:textSize="12sp"
+                    tools:text="author" />
+
+                <TextView
+                    android:id="@+id/tv_times"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/main_text_color2"
+                    android:textSize="12sp"
+                    tools:text=" 06:20" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:textColor="@color/main_text_color2"
+                android:textSize="12sp"
+                tools:text="使用次数:1212" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <include layout="@layout/view_spit_line" />
+</LinearLayout>
