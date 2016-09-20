@@ -1,5 +1,6 @@
 package com.xilu.wybz.ui.find;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.TabLayout;
@@ -13,6 +14,7 @@ import com.xilu.wybz.ui.base.BasePlayMenuActivity;
 import com.xilu.wybz.ui.fragment.LyricsFragment;
 import com.xilu.wybz.ui.fragment.RankingFragment;
 import com.xilu.wybz.ui.fragment.SongFragment;
+import com.xilu.wybz.view.SystemBarHelper;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -45,6 +47,7 @@ public class FindActivity extends BasePlayMenuActivity implements ViewPager.OnPa
         if(isFirst)return;
             else isFirst = true;
         setTitle("");
+        SystemBarHelper.tintStatusBar(this, Color.argb(255, 0xFF, 0xD7, 0x05));
         pagerAdapter = new FindAdapter(getSupportFragmentManager());
         container.setAdapter(pagerAdapter);
         container.setOffscreenPageLimit(4);
