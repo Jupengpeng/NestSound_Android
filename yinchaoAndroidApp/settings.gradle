@@ -1,3 +1,0 @@
-include ':app', ':library', ':music-service'
-
-rootProject.name = 'yinchaoapp'
