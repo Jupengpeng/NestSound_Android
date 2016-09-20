@@ -17,6 +17,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.qiniu.android.storage.UploadManager;
+import com.umeng.socialize.Config;
 import com.umeng.socialize.PlatformConfig;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.common.MyHttpClient;
@@ -81,6 +82,7 @@ public class MyApplication extends Application implements ServiceConnection {
         userid = PrefsUtil.getUserId(context);
         isLogin = userid > 0;
         Fresco.initialize(this);
+        Config.REDIRECT_URL = "http://www.yinchao.cn";
         //Umeng分享
         PlatformConfig.setWeixin(MyCommon.WECHAT_APP_ID, MyCommon.WECHAT_APP_SECRET);//微信
         PlatformConfig.setSinaWeibo(MyCommon.SINA_APP_KEY, MyCommon.SINA_APP_SECRET);//新浪微博

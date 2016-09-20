@@ -231,7 +231,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="退出登录"
-                android:textColor="@color/main_text_color"
+                android:textColor="@color/red"
                 android:textSize="15sp"
                 />
             <include layout="@layout/view_spit_line" />

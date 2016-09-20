@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import com.google.gson.Gson;
 import com.xilu.wybz.bean.HotBean;
 import com.xilu.wybz.bean.UserBean;
+import com.xilu.wybz.bean.UserInfoBean;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.KeySet;
 
@@ -84,7 +85,14 @@ public class PrefsUtil {
         }
         return ub;
     }
-
+    public static UserInfoBean getUserInfoNum(Context context) {
+        UserInfoBean ub = new UserInfoBean();
+        String userInfo = getString("userInfoNum",context);
+        if(!TextUtils.isEmpty(userInfo)){
+            ub = new Gson().fromJson(userInfo, UserInfoBean.class);
+        }
+        return ub;
+    }
     public static int getUserId(Context context) {
         UserBean ub = new UserBean();
         String userInfo = getString("userInfo",context);
@@ -97,7 +105,9 @@ public class PrefsUtil {
     public static void saveUserInfo(Context context, UserBean ub) {
         putString("userInfo",new Gson().toJson(ub),context);
     }
-
+    public static void saveUserInfoNum(Context context, UserInfoBean ub) {
+        putString("userInfoNum",new Gson().toJson(ub),context);
+    }
     //获取歌词
     public static WorksData getLyrics(String id, Context context){
         WorksData lyricsdisplayBean = new WorksData();

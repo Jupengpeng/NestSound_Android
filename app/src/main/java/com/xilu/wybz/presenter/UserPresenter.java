@@ -53,6 +53,7 @@ public class UserPresenter extends BasePresenter<IUserView> {
                     userInfoBean.fovnum = mineBean.fovnum;
                     iView.setUserInfo(mineBean.user);
                     iView.setUserInfoBean(userInfoBean);
+                    PrefsUtil.saveUserInfoNum(context,userInfoBean);
                     if (mineBean.list != null) {
                         if (mineBean.list.size() == 0) {
                             if (page == 1) {

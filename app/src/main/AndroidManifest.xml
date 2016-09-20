@@ -100,13 +100,22 @@
 
         <activity
             android:name=".ui.mine.FollowAndFansActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.mine.MineActivity"
             android:screenOrientation="portrait" />
 
         <activity
+            android:name=".ui.mine.NewMineActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name=".ui.mine.MyWorkActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.mine.NewMyWorkActivity"
             android:screenOrientation="portrait" />
 
         <activity
@@ -292,7 +301,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="1104841554" />
+                <data android:scheme="tencent1105011804" />
             </intent-filter>
         </activity>
         <activity

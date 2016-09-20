@@ -36,7 +36,7 @@ public class MyHttpClient {
 
     //伴奏列表
     public static String getHotUrl() {
-        return "common/accompaniment/list21";
+        return "common/accompaniment/list/v22";
     }
 
     //伴奏详情
@@ -292,7 +292,7 @@ public class MyHttpClient {
 
     //伴奏分类
     public static String getHotCatalogUrl() {
-        return "common/accompanimentcategory/list";
+        return "common/accompanimentcategory/list/v22";
     }
 
     //音乐人列表
@@ -344,6 +344,11 @@ public class MyHttpClient {
     }
     public static String getUpdateuserbgUrl() {
         return "userCenter/updateuserbg";
+    }
+
+    //未读消息
+    public static String getMsgNumUrl(){
+        return "message/center/v22";
     }
 }
 

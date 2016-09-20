@@ -100,7 +100,7 @@
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp"
                 android:paddingTop="6dp"
-                android:visibility="gone">
+                >
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -174,6 +174,7 @@
                 android:layout_height="wrap_content"
                 android:background="#f5f5f5"
                 android:orientation="vertical"
+                android:visibility="gone"
                 android:paddingBottom="6dp"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
@@ -386,7 +387,7 @@
                 android:text="登录"
                 android:textColor="#555"
                 android:textSize="16sp"
-                android:visibility="gone" />
+                 />
 
             <TextView
                 android:id="@+id/tv_reg"
@@ -396,6 +397,7 @@
                 android:layout_marginRight="35dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
+                android:visibility="gone"
                 android:background="@drawable/corner_login"
                 android:gravity="center"
                 android:text="注册"
@@ -403,4 +405,89 @@
                 android:textSize="16sp" />
         </LinearLayout>
     </ScrollView>
+    <LinearLayout
+        android:id="@+id/ll_other_login"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="bottom"
+        android:orientation="vertical"
+        >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:gravity="center_vertical"
+        >
+        <View
+            android:layout_width="0dp"
+            android:layout_height="2px"
+            android:layout_weight="1"
+            android:background="@color/split_line" />
+        <TextView
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="第三方登录"
+            />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="2px"
+            android:layout_weight="1"
+            android:background="@color/split_line" />
+    </LinearLayout>
+    <LinearLayout
+        android:paddingTop="20dp"
+        android:paddingBottom="35dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <View
+            android:layout_width="0dp"
+            android:layout_weight="1.5"
+            android:layout_height="10dp" />
+
+        <TextView
+            android:id="@+id/tv_wx_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="微信"
+            android:gravity="center"
+            android:drawablePadding="5dp"
+            android:drawableTop="@drawable/ic_share_wx"
+            />
+        <View
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="10dp" />
+        <TextView
+            android:id="@+id/tv_wb_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="微博"
+            android:gravity="center"
+            android:drawablePadding="5dp"
+            android:drawableTop="@drawable/ic_share_wb"
+            />
+        <View
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="10dp" />
+        <TextView
+            android:id="@+id/tv_qq_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="QQ"
+            android:gravity="center"
+            android:drawablePadding="5dp"
+            android:drawableTop="@drawable/ic_share_qq"
+            />
+        <View
+            android:layout_width="0dp"
+            android:layout_weight="1.5"
+            android:layout_height="10dp" />
+    </LinearLayout>
+
+    </LinearLayout>
 </LinearLayout>

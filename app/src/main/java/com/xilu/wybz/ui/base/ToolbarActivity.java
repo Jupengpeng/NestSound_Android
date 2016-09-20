@@ -14,6 +14,7 @@ import com.xilu.wybz.ui.find.FindActivity;
 import com.xilu.wybz.ui.lyrics.LyricsPosterActivity;
 import com.xilu.wybz.ui.lyrics.ShareActivity;
 import com.xilu.wybz.ui.main.MainActivity;
+import com.xilu.wybz.ui.mine.NewMineActivity;
 import com.xilu.wybz.ui.msg.MsgActivity;
 import com.xilu.wybz.ui.song.PlayAudioActivity;
 import com.xilu.wybz.ui.song.SongAblumActivity;
@@ -49,7 +50,8 @@ public abstract class ToolbarActivity extends BaseActivity {
         } else {
             mToolbar.setTitleTextAppearance(context, R.style.ToolbarTitleAppearance2);
         }
-        if (this instanceof FindActivity || this instanceof MsgActivity || this instanceof MainActivity) {
+        if (this instanceof FindActivity || this instanceof MsgActivity ||
+                this instanceof NewMineActivity|| this instanceof MainActivity) {
             mToolbar.setBackgroundColor(getResources().getColor(R.color.main_theme_color));
             view.setVisibility(View.GONE);
         } else {
