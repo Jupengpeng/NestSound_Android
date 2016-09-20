@@ -12,7 +12,7 @@
         <item name="android:actionBarSize">48dp</item>
     </style>
 
-    <style name="MianTheme" parent="BaseTheme">
+    <style name="MainTheme" parent="BaseTheme">
         <item name="colorPrimary">@color/main_theme_color</item>
         <item name="colorPrimaryDark">@color/main_theme_color</item>
         <item name="android:windowBackground">@color/main_theme_color</item>
@@ -33,7 +33,7 @@
         <item name="colorPrimaryDark">@color/tran</item>
         <item name="colorAccent">@color/main_theme_color</item>
         <item name="android:textColorPrimary">@color/white2</item>
-        <item name="android:windowBackground">@color/main_bg</item>
+        <item name="android:windowBackground">@color/white</item>
         <item name="android:windowAnimationStyle">@style/WindowAnimation</item>
         <item name="android:actionMenuTextAppearance">@style/MenuTextStyle</item>
         <item name="android:windowContentOverlay">@null</item>

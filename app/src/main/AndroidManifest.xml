@@ -70,6 +70,7 @@
 
         <activity
             android:name=".ui.find.FindActivity"
+            android:theme="@style/MainTheme"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.find.MoreWorkActivity"
@@ -130,15 +131,15 @@
         <activity
             android:name=".ui.setting.SettingActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/MianTheme" />
+            android:theme="@style/MainTheme" />
         <activity
             android:name=".ui.setting.SettingFeedActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/MianTheme" />
+            android:theme="@style/MainTheme" />
         <activity
             android:name=".ui.setting.ModifyUserInfoActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/MianTheme" />
+            android:theme="@style/MainTheme" />
         <activity
             android:name=".ui.setting.OtherAccountActivity"
             android:screenOrientation="portrait" />

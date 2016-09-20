@@ -28,6 +28,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="20dp"
+        android:background="@color/white"
         >
 
         <ImageView
