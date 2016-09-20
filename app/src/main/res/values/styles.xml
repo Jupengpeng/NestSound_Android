@@ -9,6 +9,7 @@
         <item name="android:windowAnimationStyle">@style/WindowAnimation</item>
         <item name="android:actionMenuTextAppearance">@style/MenuTextStyle</item>
         <item name="android:windowContentOverlay">@null</item>
+        <item name="android:actionBarSize">48dp</item>
     </style>
 
     <style name="MianTheme" parent="BaseTheme">

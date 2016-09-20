@@ -63,6 +63,9 @@ public class MyCommon {
     public static final String[] fixxs = new String[]{"inspire","lyrcover","muscover","music","headport"};
     //用户协议
     public static final String AGREEMENT = "http://api.yinchao.cn/html/xieyi.html";
+    public static final String PROTOCOL_1 = "http://api.yinchao.cn/html/xieyi.html";
+    public static final String PROTOCOL_2 = "http://api.yinchao.cn/html/xieyi.html";
+    public static final String PROTOCOL_3 = "http://api.yinchao.cn/html/xieyi.html";
 
     public static final String TAG_RECORD_IN = "tag_record_in";
     public static final String TYPE_MAKE = "make_";

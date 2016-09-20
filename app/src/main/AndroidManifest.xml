@@ -255,6 +255,30 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
 
+        <!--preservation-->
+
+        <activity
+            android:name=".ui.preservation.ApplyPreservActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.preservation.PreservPersonInfoActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.preservation.PreservPersonEditActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.preservation.PreservInfoActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.preservation.ProductPreservListActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.preservation.ProductAllActivity"
+            android:screenOrientation="portrait"/>
+
+
+        <!--MainService-->
+
         <service
             android:name=".service.MainService"
             android:screenOrientation="portrait" />
@@ -288,6 +312,10 @@
             android:name="com.tencent.connect.common.AssistActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <activity
+            android:name="com.xilu.yinchao.music.MusicControllerActivity"
+            />
 
         <!--支付宝支付-->
         <activity
@@ -408,6 +436,17 @@
                 <category android:name="com.xilu.wybz" />
             </intent-filter>
         </receiver>
+
+        <service android:name="com.xilu.yinchao.music.YinchaoMusicService"
+            android:exported="false"
+            tools:ignore="ExportedService"
+            >
+            <intent-filter>
+                <action android:name="android.media.browse.MediaBrowserService" />
+            </intent-filter>
+            <!--android:permission="cn.yinchao.android.music.SERVICE"-->
+            <!--android:process="yinchao-player"-->
+        </service>
         <meta-data
             android:name="UMENG_CHANNEL"
             android:value="${UMENG_CHANNEL_VALUE}" />

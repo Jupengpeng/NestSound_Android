@@ -1,6 +1,7 @@
 package com.xilu.wybz.utils;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -80,6 +81,55 @@ public class StringStyleUtil {
         }
         return lyrics;
     }
+
+
+    /**
+     * getLinkSpan.
+     * @param text
+     * @param cls
+     * @param url
+     * @return
+     */
+    public static SpannableString getLinkSpan(Context context, String text, Class cls, String url ) {
+        int index1 = text.indexOf("《");
+        int index2 = text.indexOf("》");
+
+        SpannableString spannableString = new SpannableString(text);
+        spannableString.setSpan(new LinkClickableSpan(context,cls,url),index1,index2+1, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        return spannableString;
+    }
+
+    public static class LinkClickableSpan extends ClickableSpan{
+
+        public Context context;
+        public Class cls;
+        public String url;
+
+        public LinkClickableSpan(Context context,Class cls, String url) {
+            this.context = context;
+            this.cls = cls;
+            this.url = url;
+        }
+
+        @Override
+        public void updateDrawState(TextPaint ds) {
+            super.updateDrawState(ds);
+            ds.setColor(Color.parseColor("#ff909090"));
+            ds.setUnderlineText(true);
+            ds.setAntiAlias(true);
+        }
+
+        @Override
+        public void onClick(View widget) {
+            Intent intent = new Intent(context,cls);
+            intent.putExtra("url",url);
+            context.startActivity(intent);
+        }
+
+    }
+
+
+
     public static class UserNameLinkClickableSpan extends ClickableSpan{
         public Context context;
         String name;

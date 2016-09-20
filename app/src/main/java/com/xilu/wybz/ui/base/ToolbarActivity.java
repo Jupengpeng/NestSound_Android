@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.xilu.wybz.R;
 import com.xilu.wybz.ui.find.FindActivity;
@@ -60,6 +61,17 @@ public abstract class ToolbarActivity extends BaseActivity {
         if (canBack()) {
             ActionBar actionBar = getSupportActionBar();
             if (actionBar != null) actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+
+    @Override
+    public void setTitle(CharSequence title) {
+        TextView titleView = (TextView)mToolbar.findViewById(R.id.toolbar_title);
+        if (titleView != null){
+            titleView.setText(title);
+        } else {
+            super.setTitle(title);
         }
     }
 

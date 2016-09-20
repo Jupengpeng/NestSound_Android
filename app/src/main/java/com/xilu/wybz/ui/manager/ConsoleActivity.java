@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.xilu.wybz.R;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.ui.base.ToolbarActivity;
+import com.xilu.wybz.ui.preservation.ApplyPreservActivity;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtils;
 
@@ -167,7 +168,12 @@ public class ConsoleActivity extends ToolbarActivity {
 //                bottomSheetDialog.setContentView(R.layout.activity_manager_console);
 //                bottomSheetDialog.show();
 
-                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+//                startActivity(MusicControllerActivity.class);
+//                startActivity(PreservPersonInfoActivity.class);
+                startActivity(ApplyPreservActivity.class);
+
+
+//                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 //                WeChatPayUtils.register(context);
 //                WeChatPayUtils.pay();
             }

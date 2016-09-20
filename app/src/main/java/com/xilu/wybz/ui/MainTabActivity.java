@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.CheckedTextView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import com.umeng.analytics.MobclickAgent;
+
 import com.xilu.wybz.R;
 import com.xilu.wybz.adapter.MyPagerAdapter;
 import com.xilu.wybz.bean.UserBean;
@@ -334,7 +334,8 @@ public class MainTabActivity extends BaseActivity {
                 PrefsUtil.saveHotBean(context, null);
                 Intent home = new Intent(Intent.ACTION_MAIN);
                 home.addCategory(Intent.CATEGORY_HOME);
-                startActivity(home);
+//                startActivity(home);
+                finish();
                 return true;
 
             } else {

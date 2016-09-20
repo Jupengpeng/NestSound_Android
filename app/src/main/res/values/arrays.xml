@@ -4,4 +4,11 @@
     <string-array name="states">
         <item>@string/del</item>
     </string-array>
+
+
+    <string-array name="author_type">
+        <item>词作者,曲作者</item>
+        <item>词作者</item>
+        <item>曲作者</item>
+    </string-array>
 </resources>
