@@ -94,6 +94,6 @@
 
 
     <dimen name="preservation_margin">15dp</dimen>
-    <dimen name="preservation_split">3dp</dimen>
+    <dimen name="preservation_split">2dp</dimen>
 
 </resources>

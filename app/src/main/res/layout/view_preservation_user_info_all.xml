@@ -3,7 +3,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:id="@+id/user_info_container"
     android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/user_info_title"
+        android:layout_width="wrap_content"
+        android:layout_height="42dp"
+        android:layout_marginLeft="@dimen/preservation_margin"
+        android:text="保全用户信息"
+        android:textColor="@color/main_text_color3"
+        android:textSize="16sp"
+        android:gravity="left|center_vertical"
+        />
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="@dimen/preservation_margin"
+        android:layout_marginRight="@dimen/preservation_margin"
+        android:src="@color/main_bg"
+        />
 
     <TableLayout
         android:layout_width="match_parent"
@@ -12,28 +31,25 @@
         android:layout_marginRight="@dimen/preservation_margin"
         android:orientation="horizontal">
 
-        <TableRow>
+        <TableRow  android:layout_height="30dp">
             <TextView
                 android:layout_gravity="center_vertical"
-                android:text="姓名"
-                android:layout_width="64dp"
-                android:layout_height="46dp"
+                android:text="保全人姓名"
+                android:layout_width="96dp"
+                android:layout_height="40dp"
+                android:gravity="center_vertical"
                 android:singleLine="true"
                 android:ellipsize="end"
-                android:gravity="center_vertical"
                 android:textSize="16sp"
                 android:textColor="@color/main_text_color"
                 />
-            <EditText
+            <TextView
                 android:id="@+id/preservation_name"
                 android:layout_width="300dp"
-                android:hint="请输入姓名"
-                tools:text="南方姑娘"
-                android:textColorHint="@color/main_text_color6"
                 android:layout_gravity="center_vertical"
                 android:textSize="16sp"
-                android:background="@null"
-                android:textColor="@color/main_text_color3"
+                android:text="南姑娘"
+                android:textColor="@color/main_text_color"
                 />
 
         </TableRow>
@@ -45,22 +61,20 @@
         <TableRow>
             <TextView
                 android:layout_gravity="center_vertical"
-                android:layout_height="46dp"
-                android:gravity="center_vertical"
                 android:text="身份证"
+                android:layout_height="40dp"
+                android:gravity="center_vertical"
                 android:singleLine="true"
                 android:ellipsize="end"
                 android:textSize="16sp"
                 android:textColor="@color/main_text_color"
                 />
-            <EditText
+            <TextView
                 android:id="@+id/preservation_card_id"
-                android:hint="请输入身份证号码"
-                android:textColorHint="@color/main_text_color6"
+                android:text="3112005492884452"
                 android:layout_gravity="center_vertical"
-                android:background="@null"
                 android:textSize="16sp"
-                android:textColor="@color/main_text_color3"
+                android:textColor="@color/main_text_color"
                 />
 
         </TableRow>
@@ -72,30 +86,48 @@
         <TableRow>
             <TextView
                 android:layout_gravity="center_vertical"
-                android:layout_height="46dp"
                 android:text="手机号"
+                android:layout_height="40dp"
                 android:gravity="center_vertical"
                 android:singleLine="true"
                 android:ellipsize="end"
                 android:textSize="16sp"
                 android:textColor="@color/main_text_color"
                 />
-            <EditText
+            <TextView
                 android:id="@+id/preservation_phone"
-                android:hint="请输入手机号码"
-                android:textColorHint="@color/main_text_color6"
+                android:text="13732231228"
                 android:layout_gravity="center_vertical"
-                android:background="@null"
                 android:textSize="16sp"
-                android:textColor="@color/main_text_color3"
+                android:textColor="@color/main_text_color"
+                />
+
+        </TableRow>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:src="@color/main_bg"
+            />
+        <TableRow>
+            <TextView
+                android:layout_gravity="center_vertical"
+                android:text="保全身份"
+                android:layout_height="40dp"
+                android:gravity="center_vertical"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:textSize="16sp"
+                android:textColor="@color/main_text_color"
+                />
+            <TextView
+                android:id="@+id/preservation_type"
+                android:text="曲作者"
+                android:layout_gravity="center_vertical"
+                android:textSize="16sp"
+                android:textColor="@color/main_text_color"
                 />
 
         </TableRow>
     </TableLayout>
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="15dp"
-        android:src="@color/main_bg"
-        />
 
 </LinearLayout>

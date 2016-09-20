@@ -8,8 +8,14 @@
     <include layout="@layout/view_preservation_user_info"/>
 
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="15dp"
+        android:src="@color/main_bg"
+        />
+
     <TextView
-        android:layout_marginTop="46dp"
+        android:layout_marginTop="24dp"
         android:text="删除"
         style="@style/SubmitButton.Delete"
         />

@@ -29,6 +29,7 @@
     <color name="main_text_color3">#999</color>
     <color name="main_text_color4">#bcffffff</color>
     <color name="main_text_color5">#ffaaaaaa</color>
+    <color name="main_text_color6">#ffe2e2e2</color>
     <color name="green">#00ff00</color>
     <color name="yellow">#ffd527</color>
     <color name="lightblue">#539ac2</color>
@@ -48,6 +49,7 @@
 
     <color name="tuning_effect_mask">#68ffd527</color>
 
+    <color name="type_link">#ff539af2</color>
 
     <color name="type_blue">#ff0598ff</color>
     <color name="type_green">#ff51d29d</color>

@@ -3,16 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:id="@+id/user_info_container"
+    android:visibility="gone"
+    tools:visibility="visible"
     android:orientation="vertical">
-
-
-    <TextView
-        android:id="@+id/info_title"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_marginLeft="@dimen/preservation_margin"
-        android:gravity="left|center_vertical"
-        tools:text="保全人信息" />
 
     <TableLayout
         android:layout_width="match_parent"
@@ -25,56 +19,70 @@
             <TextView
                 android:layout_gravity="center_vertical"
                 android:text="姓名"
-                android:layout_width="60dp"
+                android:layout_width="64dp"
+                android:layout_height="40dp"
+                android:gravity="center_vertical"
                 android:singleLine="true"
                 android:ellipsize="end"
-                android:textSize="14sp"
+                android:textSize="16sp"
                 android:textColor="@color/main_text_color"
                 />
             <TextView
                 android:id="@+id/preservation_name"
                 android:layout_width="300dp"
                 android:layout_gravity="center_vertical"
-                android:textSize="14sp"
+                android:textSize="16sp"
                 android:text="南姑娘"
                 android:textColor="@color/main_text_color"
                 />
 
         </TableRow>
-        <Space  android:layout_height="10dp"/>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:src="@color/main_bg"
+            />
         <TableRow>
             <TextView
                 android:layout_gravity="center_vertical"
                 android:text="身份证"
+                android:layout_height="40dp"
+                android:gravity="center_vertical"
                 android:singleLine="true"
                 android:ellipsize="end"
-                android:textSize="14sp"
+                android:textSize="16sp"
                 android:textColor="@color/main_text_color"
                 />
             <TextView
-                android:id="@+id/preservation_card"
+                android:id="@+id/preservation_card_id"
                 android:text="3112005492884452"
                 android:layout_gravity="center_vertical"
-                android:textSize="14sp"
+                android:textSize="16sp"
                 android:textColor="@color/main_text_color"
                 />
 
         </TableRow>
-        <Space  android:layout_height="10dp"/>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:src="@color/main_bg"
+            />
         <TableRow>
             <TextView
                 android:layout_gravity="center_vertical"
                 android:text="手机号"
+                android:layout_height="40dp"
+                android:gravity="center_vertical"
                 android:singleLine="true"
                 android:ellipsize="end"
-                android:textSize="14sp"
+                android:textSize="16sp"
                 android:textColor="@color/main_text_color"
                 />
             <TextView
                 android:id="@+id/preservation_phone"
                 android:text="13732231228"
                 android:layout_gravity="center_vertical"
-                android:textSize="14sp"
+                android:textSize="16sp"
                 android:textColor="@color/main_text_color"
                 />
 

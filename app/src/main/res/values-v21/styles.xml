@@ -5,6 +5,7 @@
         <item name="android:colorControlNormal">@color/main_theme_color</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:actionBarSize">48dp</item>
     </style>
 
     <style name="MianTheme" parent="BaseTheme">
@@ -13,6 +14,7 @@
         <item name="colorPrimary">@color/main_theme_color</item>
         <item name="colorPrimaryDark">@color/main_theme_color</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:actionBarSize">48dp</item>
     </style>
 
     <style name="LoginTheme" parent="@style/BaseTheme_Login">

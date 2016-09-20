@@ -47,10 +47,10 @@ public abstract class BaseListFragment<T> extends BaseFragment implements PullRe
     protected LinearLayout llNoData;
     @Bind(R.id.iv_nonet)
     ImageView ivNoNet;
-    int action;
-    int page = 1;
-    int dip10;
-    int dip5;
+    protected int action;
+    protected int page = 1;
+    protected int dip10;
+    protected int dip5;
     String keyWord;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

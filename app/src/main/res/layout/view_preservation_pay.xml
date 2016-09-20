@@ -6,33 +6,41 @@
 
 
     <TextView
-        android:id="@+id/info_title"
         android:layout_width="wrap_content"
-        android:layout_height="36dp"
+        android:layout_height="42dp"
         android:layout_marginLeft="@dimen/preservation_margin"
         android:text="支付信息"
+        android:textSize="16sp"
         android:textColor="@color/main_text_color3"
         android:gravity="left|center_vertical"
         />
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="@dimen/preservation_margin"
+        android:layout_marginRight="@dimen/preservation_margin"
+        android:src="@color/main_bg"/>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/preservation_margin"
         android:layout_marginRight="@dimen/preservation_margin"
+        android:layout_marginBottom="@dimen/preservation_margin"
         >
 
         <TextView
             android:id="@+id/price_mask"
             android:layout_width="wrap_content"
-            android:layout_height="24dp"
+            android:layout_height="42dp"
             android:gravity="center_vertical"
             android:text="总价:"
+            android:textSize="16sp"
             android:textColor="@color/main_text_color"
             />
         <TextView
             android:id="@+id/product_price"
             android:layout_width="wrap_content"
-            android:layout_height="24dp"
+            android:layout_height="42dp"
             android:gravity="center_vertical"
             android:layout_marginLeft="5dp"
             android:layout_toRightOf="@+id/price_mask"
@@ -62,7 +70,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="5dp"
                 android:text="微信支付"
-                android:textSize="14sp"
+                android:textSize="16sp"
                 android:textColor="@color/main_text_color"
                 />
             <Space
