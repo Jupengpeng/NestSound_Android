@@ -17,7 +17,7 @@ import com.xilu.wybz.common.KeySet;
 import com.xilu.wybz.presenter.JoinUserPresenter;
 import com.xilu.wybz.ui.IView.IJoinUserView;
 import com.xilu.wybz.ui.base.BaseListActivity;
-import com.xilu.wybz.ui.mine.UserInfoActivity;
+import com.xilu.wybz.ui.mine.OtherUserCenterActivity;
 import com.xilu.wybz.utils.ImageLoadUtil;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtils;
@@ -159,7 +159,7 @@ public class JoinUserListActivity extends BaseListActivity<JoinUserBean> impleme
         @Override
         public void onItemClick(View view, int position) {
             if (PrefsUtil.getUserId(context) != mDataList.get(position).id) {
-                UserInfoActivity.toUserInfoActivity(context, mDataList.get(position).id,
+                OtherUserCenterActivity.toUserInfoActivity(context, mDataList.get(position).id,
                         mDataList.get(position).nickname);
             }
         }

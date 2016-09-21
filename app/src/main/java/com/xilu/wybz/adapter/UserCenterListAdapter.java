@@ -16,12 +16,12 @@ import java.util.Map;
 /**
  * Created by hujunwei on 16/6/3.
  */
-public class MineAdapter extends FragmentStatePagerAdapter {
+public class UserCenterListAdapter extends FragmentStatePagerAdapter {
     int userId;
     String userName;
     private List<String> mTitles = new ArrayList<>();
     Map<Integer, WorksDataFragment> mPageReferenceMap = new HashMap<>();
-    public MineAdapter(Context context, FragmentManager fm, int userId, String userName) {
+    public UserCenterListAdapter(Context context, FragmentManager fm, int userId, String userName) {
         super(fm);
         this.userId = userId;
         this.userName = userName;

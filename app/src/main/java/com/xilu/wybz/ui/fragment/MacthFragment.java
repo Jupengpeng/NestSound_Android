@@ -27,7 +27,7 @@ import com.xilu.wybz.service.MainService;
 import com.xilu.wybz.ui.IView.IMatchWorkView;
 import com.xilu.wybz.ui.MyApplication;
 import com.xilu.wybz.ui.lyrics.LyricsdisplayActivity;
-import com.xilu.wybz.ui.mine.UserInfoActivity;
+import com.xilu.wybz.ui.mine.OtherUserCenterActivity;
 import com.xilu.wybz.ui.song.CommentActivity;
 import com.xilu.wybz.ui.song.PlayAudioActivity;
 import com.xilu.wybz.utils.DateTimeUtil;
@@ -275,7 +275,7 @@ public class MacthFragment extends BaseListFragment<MatchWorkBean> implements Sc
                 @Override
                 public void onClick(View v) {
                     if (PrefsUtil.getUserId(context) != worksData.userid) {
-                        UserInfoActivity.toUserInfoActivity(context, worksData.userid, worksData.nickname);
+                        OtherUserCenterActivity.toUserInfoActivity(context, worksData.userid, worksData.nickname);
                     }
                 }
             });

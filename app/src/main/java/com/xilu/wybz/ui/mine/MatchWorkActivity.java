@@ -34,7 +34,7 @@ import butterknife.Bind;
 /**
  * Created by hujunwei on 16/8/16.
  */
-public class MyWorkActivity extends BaseListActivity<WorksData> implements IMyWorkView {
+public class MatchWorkActivity extends BaseListActivity<WorksData> implements IMyWorkView {
     private int type = 0;
     private String aid = "";
     private String nodata = "暂无作品";
@@ -42,7 +42,7 @@ public class MyWorkActivity extends BaseListActivity<WorksData> implements IMyWo
     // type 1 歌曲 2歌词
     public static void toMyWorkActivity(Context context, String aid, int type) {
         Intent intent = new Intent();
-        intent.setClass(context, MyWorkActivity.class);
+        intent.setClass(context, MatchWorkActivity.class);
         intent.putExtra(KeySet.KEY_TYPE, type);
         intent.putExtra(KeySet.KEY_ID, aid);
         context.startActivity(intent);

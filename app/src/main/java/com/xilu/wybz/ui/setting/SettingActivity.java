@@ -125,6 +125,7 @@ public class SettingActivity extends ToolbarActivity {
         new Thread() {
             @Override
             public void run() {
+                PrefsUtil.clearUserData(context);
                 FileUtils.delAllFile();
                 try {
                     sleep(2000);

@@ -24,7 +24,7 @@ import com.xilu.wybz.ui.find.FindActivity;
 import com.xilu.wybz.ui.login.LoginActivity;
 import com.xilu.wybz.ui.lyrics.MakeWordActivity;
 import com.xilu.wybz.ui.main.MainActivity;
-import com.xilu.wybz.ui.mine.NewMineActivity;
+import com.xilu.wybz.ui.mine.MineActivity;
 import com.xilu.wybz.ui.msg.MsgActivity;
 import com.xilu.wybz.ui.record.InspireRecordActivity;
 import com.xilu.wybz.ui.song.HotCatalogActivity;
@@ -141,7 +141,7 @@ public class MainTabActivity extends BaseActivity {
         list.add(getView("FIND", intent));
         intent = new Intent(this, MsgActivity.class);
         list.add(getView("MSG", intent));
-        intent = new Intent(this, NewMineActivity.class);
+        intent = new Intent(this, MineActivity.class);
         list.add(getView("MINE", intent));
         adapter = new MyPagerAdapter(list);
         viewpager.setAdapter(adapter);

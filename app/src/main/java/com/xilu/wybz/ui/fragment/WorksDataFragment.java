@@ -16,8 +16,9 @@ import com.xilu.wybz.bean.UserInfoBean;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.PlayMediaInstance;
+import com.xilu.wybz.presenter.UserCenterListPresenter;
 import com.xilu.wybz.presenter.UserPresenter;
-import com.xilu.wybz.ui.IView.IUserView;
+import com.xilu.wybz.ui.IView.IUserCenterListView;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.ToastUtils;
 import com.xilu.wybz.view.materialdialogs.DialogAction;
@@ -37,8 +38,8 @@ import java.util.List;
 /**
  * Created by hujunwei on 16/6/3.
  */
-public class WorksDataFragment extends BaseListFragment<WorksData> implements IUserView {
-    UserPresenter userPresenter;
+public class WorksDataFragment extends BaseListFragment<WorksData> implements IUserCenterListView {
+    UserCenterListPresenter userPresenter;
     public static String TYPE = "type";
     public static String UID = "uid";
     public static String AUTHOR = "author";
@@ -56,7 +57,7 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
     @Override
     protected void initPresenter() {
         EventBus.getDefault().register(this);
-        userPresenter = new UserPresenter(context, this);
+        userPresenter = new UserCenterListPresenter(context, this);
         userPresenter.init();
     }
 
@@ -137,7 +138,7 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
     @Override
     public void onRefresh(int action) {
         super.onRefresh(action);
-        userPresenter.loadData(userId, type, page++);
+        userPresenter.loadData(type, page++);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -149,16 +150,6 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
             adapter.notifyDataSetChanged();
             recycler.getRecyclerView().requestLayout();
         }
-    }
-
-    @Override
-    public void setUserInfo(UserBean userBean) {
-        EventBus.getDefault().post(new Event.UpdataUserBean(userBean, isMe ? 1 : 2));
-    }
-
-    @Override
-    public void setUserInfoBean(UserInfoBean userBean) {
-        EventBus.getDefault().post(new Event.UpdataUserInfoBean(userBean, isMe ? 1 : 2));
     }
 
     @Override

@@ -210,12 +210,22 @@ public class MyHttpClient {
 
     //个人主页
     public static String getUserCenter() {
-        return "userCenter/index21";
+        return "userCenter/index/v22";
     }
 
     //他人主页
     public static String getOtherCenter() {
-        return "common/otherCenter/index21";
+        return "common/otherCenter/index/v22";
+    }
+
+    //个人主页
+    public static String getUserCenterList() {
+        return "userCenter/listdetails/v22";
+    }
+
+    //他人主页
+    public static String getOtherCenterList() {
+        return "common/otherCenter/listdetails/v22";
     }
 
     //歌词

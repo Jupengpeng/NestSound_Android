@@ -85,9 +85,9 @@ public class PrefsUtil {
         }
         return ub;
     }
-    public static UserInfoBean getUserInfoNum(Context context) {
+    public static UserInfoBean getUserInfoBean(Context context,int uid) {
         UserInfoBean ub = new UserInfoBean();
-        String userInfo = getString("userInfoNum",context);
+        String userInfo = getString("userInfoBean_"+uid,context);
         if(!TextUtils.isEmpty(userInfo)){
             ub = new Gson().fromJson(userInfo, UserInfoBean.class);
         }
@@ -105,8 +105,8 @@ public class PrefsUtil {
     public static void saveUserInfo(Context context, UserBean ub) {
         putString("userInfo",new Gson().toJson(ub),context);
     }
-    public static void saveUserInfoNum(Context context, UserInfoBean ub) {
-        putString("userInfoNum",new Gson().toJson(ub),context);
+    public static void saveUserInfoBean(Context context, UserInfoBean ub, int uid) {
+        putString("userInfoBean_"+uid,new Gson().toJson(ub),context);
     }
     //获取歌词
     public static WorksData getLyrics(String id, Context context){

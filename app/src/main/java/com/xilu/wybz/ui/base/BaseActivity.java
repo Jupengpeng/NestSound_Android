@@ -26,7 +26,7 @@ import com.xilu.wybz.ui.find.FindActivity;
 import com.xilu.wybz.ui.lyrics.LyricsPosterActivity;
 import com.xilu.wybz.ui.lyrics.ShareActivity;
 import com.xilu.wybz.ui.main.MainActivity;
-import com.xilu.wybz.ui.mine.NewMineActivity;
+import com.xilu.wybz.ui.mine.MineActivity;
 import com.xilu.wybz.ui.msg.MsgActivity;
 import com.xilu.wybz.ui.song.PlayAudioActivity;
 import com.xilu.wybz.ui.song.SongAblumActivity;
@@ -64,7 +64,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         isChenjin = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
         isHomeActivity = this instanceof MainActivity || this instanceof FindActivity
-                || this instanceof MsgActivity||this instanceof NewMineActivity;
+                || this instanceof MsgActivity||this instanceof MineActivity;
 
     }
 

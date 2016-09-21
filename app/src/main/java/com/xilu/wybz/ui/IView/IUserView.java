@@ -11,14 +11,6 @@ import java.util.List;
  * 用户主页 也可以是我的主页
  */
 public interface IUserView extends IBaseView {
-    void setUserInfo(UserBean userBean);
     void setUserInfoBean(UserInfoBean userInfoBean);
-    void showWorksData(List<WorksData> worksDataList);
-    void loadFail();
-    void loadNoData();
-    void loadNoMore();
-    void deleteSuccess();
-    void deleteFail();
-    void updateSuccess();
-    void updateFail();
+
 }

@@ -23,7 +23,7 @@ import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.LyricsPresenter;
 import com.xilu.wybz.ui.IView.ILyricsView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
-import com.xilu.wybz.ui.mine.UserInfoActivity;
+import com.xilu.wybz.ui.mine.OtherUserCenterActivity;
 import com.xilu.wybz.ui.setting.SettingFeedActivity;
 import com.xilu.wybz.ui.song.CommentActivity;
 import com.xilu.wybz.utils.BitmapUtils;
@@ -143,7 +143,7 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
             case R.id.tv_author:
             case R.id.rl_head:
                 if (worksData.uid > 0 && worksData.uid != PrefsUtil.getUserId(context)) {
-                    UserInfoActivity.toUserInfoActivity(context, worksData.uid, worksData.author);
+                    OtherUserCenterActivity.toUserInfoActivity(context, worksData.uid, worksData.author);
                 }
                 break;
         }

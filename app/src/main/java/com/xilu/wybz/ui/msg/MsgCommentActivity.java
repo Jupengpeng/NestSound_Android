@@ -18,7 +18,7 @@ import com.xilu.wybz.service.MyReceiver;
 import com.xilu.wybz.ui.IView.ICommentView;
 import com.xilu.wybz.ui.base.BaseListActivity;
 import com.xilu.wybz.ui.lyrics.LyricsdisplayActivity;
-import com.xilu.wybz.ui.mine.UserInfoActivity;
+import com.xilu.wybz.ui.mine.OtherUserCenterActivity;
 import com.xilu.wybz.ui.song.PlayAudioActivity;
 import com.xilu.wybz.utils.DateTimeUtil;
 import com.xilu.wybz.utils.PrefsUtil;
@@ -246,7 +246,7 @@ public class MsgCommentActivity extends BaseListActivity<MsgCommentBean> impleme
                         ToastUtils.toast(context,"你自己");
                         return;
                     }
-                    UserInfoActivity.toUserInfoActivity(context,bean.getUid(),bean.getNickname());
+                    OtherUserCenterActivity.toUserInfoActivity(context,bean.getUid(),bean.getNickname());
                 }
             });
 
