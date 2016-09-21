@@ -182,7 +182,6 @@ public class OtherUserCenterActivity extends BaseActivity implements IOnlyFollow
         pagerAdapter = new OtherCenterListAdapter(context, getSupportFragmentManager(), userId, userName);
         mViewpager.setAdapter(pagerAdapter);
         mViewpager.setOffscreenPageLimit(tabs.size());
-
         mViewpager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {

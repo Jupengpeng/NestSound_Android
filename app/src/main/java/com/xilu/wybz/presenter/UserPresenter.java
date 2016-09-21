@@ -2,24 +2,15 @@ package com.xilu.wybz.presenter;
 
 import android.content.Context;
 
-import com.google.gson.reflect.TypeToken;
-import com.xilu.wybz.bean.DataBean;
 import com.xilu.wybz.bean.JsonResponse;
-import com.xilu.wybz.bean.MineBean;
 import com.xilu.wybz.bean.UserInfoBean;
-import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.callback.AppJsonCalback;
-import com.xilu.wybz.http.callback.MyStringCallback;
 import com.xilu.wybz.ui.IView.IUserView;
-import com.xilu.wybz.utils.ParseUtils;
 import com.xilu.wybz.utils.PrefsUtil;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
-import java.util.List;
-
-import okhttp3.Call;
 
 /**
  * Created by hujunwei on 16/4/5.
