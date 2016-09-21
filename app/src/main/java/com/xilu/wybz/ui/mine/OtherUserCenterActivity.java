@@ -161,8 +161,6 @@ public class OtherUserCenterActivity extends BaseActivity implements IOnlyFollow
             finish();
         }
         userPresenter.getUserInfo(userId);
-        UserInfoBean userInfoBean = PrefsUtil.getUserInfoBean(context, userId);
-        setUserInfoBean(userInfoBean);
         mAppbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {

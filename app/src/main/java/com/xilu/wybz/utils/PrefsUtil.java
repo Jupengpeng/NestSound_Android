@@ -166,20 +166,4 @@ public class PrefsUtil {
         preferences.edit().clear().commit();
     }
 
-    public static void saveUserInfo(Context context, int uid, UserBean ub) {
-        preferences = context.getSharedPreferences(USERINFO, Context.MODE_PRIVATE);
-        preferences.edit().putString("uid_"+uid, new Gson().toJson(ub)).commit();
-    }
-    public static UserBean getUserInfo(Context context, int uid) {
-        preferences = context.getSharedPreferences(USERINFO, Context.MODE_PRIVATE);
-        String userData = preferences.getString("uid_"+uid,"");
-        if(StringUtils.isNotBlank(userData)){
-            return new Gson().fromJson(userData,UserBean.class);
-        }
-        return null;
-    }
-    public static void clearUserData(Context context) {
-        preferences = context.getSharedPreferences(USERINFO, Context.MODE_PRIVATE);
-        preferences.edit().clear().commit();
-    }
 }

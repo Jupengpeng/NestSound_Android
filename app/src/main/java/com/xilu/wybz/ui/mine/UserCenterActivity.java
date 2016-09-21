@@ -190,22 +190,6 @@ public class UserCenterActivity extends BaseActivity implements IModifyCoverView
         ivHead.setImageResource(R.drawable.ic_default_head_252);
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(Event.LoginSuccessEvent event) {
-        firstLoadUserInfo = false;
-        mViewpager.setCurrentItem(0);
-        userBean = PrefsUtil.getUserInfo(context);
-        WorksDataFragment worksDataFragment;
-        worksDataFragment = pagerAdapter.getFragment(0);
-        worksDataFragment.reSet();
-        worksDataFragment.loadData();
-        worksDataFragment = pagerAdapter.getFragment(1);
-        worksDataFragment.reSet();
-        worksDataFragment = pagerAdapter.getFragment(2);
-        worksDataFragment.reSet();
-        worksDataFragment = pagerAdapter.getFragment(3);
-        worksDataFragment.reSet();
-    }
 
     private void changeTabColor() {
         for (int i = 0; i < tabs.size(); i++) {

@@ -26,9 +26,9 @@ public class OtherCenterListAdapter extends FragmentStatePagerAdapter {
         super(fm);
         this.userId = userId;
         this.userName = userName;
-        mTitles.add("我的歌曲");
-        mTitles.add("我的歌词");
-        mTitles.add("我的收藏");
+        mTitles.add("歌曲");
+        mTitles.add("歌词");
+        mTitles.add("收藏");
     }
 
     @Override
