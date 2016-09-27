@@ -240,35 +240,6 @@
         <include layout="@layout/view_spit_line" />
 
         <LinearLayout
-            android:id="@+id/ll_share"
-            android:layout_width="match_parent"
-            android:layout_height="46dp"
-            android:background="?selectableItemBackground"
-            android:gravity="center_vertical"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="推荐给好友"
-                android:drawableLeft="@drawable/ic_share_app"
-                android:gravity="center_vertical"
-                android:drawablePadding="15dp"
-                android:textColor="@color/main_text_color"
-                android:textSize="15sp" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_setting_arrow" />
-            />
-        </LinearLayout>
-
-        <include layout="@layout/view_spit_line" />
-
-        <LinearLayout
             android:id="@+id/ll_setting"
             android:layout_width="match_parent"
             android:layout_height="46dp"

@@ -131,7 +131,7 @@ public class MineActivity extends BasePlayMenuActivity implements IUserView {
         tvFollowNum.setText(NumberUtil.format(userInfoBean.gznum));
         PrefsUtil.saveUserInfoBean(context,userInfoBean,PrefsUtil.getUserId(context));
     }
-    @OnClick({R.id.ll_mine_page, R.id.ll_mysong, R.id.ll_mylyrics, R.id.ll_follow, R.id.ll_fans, R.id.ll_fav, R.id.ll_record, R.id.ll_bq, R.id.ll_mine_info, R.id.ll_share, R.id.ll_setting})
+    @OnClick({R.id.ll_mine_page, R.id.ll_mysong, R.id.ll_mylyrics, R.id.ll_follow, R.id.ll_fans, R.id.ll_fav, R.id.ll_record, R.id.ll_bq, R.id.ll_mine_info, R.id.ll_setting})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ll_mine_page:
@@ -160,8 +160,6 @@ public class MineActivity extends BasePlayMenuActivity implements IUserView {
                 break;
             case R.id.ll_mine_info:
                 startActivity(ModifyUserInfoActivity.class);
-                break;
-            case R.id.ll_share:
                 break;
             case R.id.ll_setting:
                 startActivity(SettingActivity.class);
