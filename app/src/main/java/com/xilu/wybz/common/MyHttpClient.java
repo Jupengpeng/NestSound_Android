@@ -7,8 +7,8 @@ public class MyHttpClient {
 
 
     public final static String RELEASE_ROOT_URL = "http://api.yinchao.cn/";
-    public final static String TEST_ROOT_URL = "http://112.124.125.2/";
-    public final static String TEMP_ROOT_URL = "http://112.124.125.2/";
+    public final static String TEST_ROOT_URL = "http://test.yinchao.cn/";
+    public final static String TEMP_ROOT_URL = "http://test.yinchao.cn/";
 
     public final static String BASE_PATH = "java/";
 
@@ -233,7 +233,7 @@ public class MyHttpClient {
         return "lyricsopt/getLyriCats";
     }
 
-    //发表评论
+    //评论列表
     public static String getCommentListUrl() {
         return "common/comment/list";
     }
@@ -362,6 +362,16 @@ public class MyHttpClient {
     //未读消息
     public static String getMsgNumUrl(){
         return "message/center/v22";
+    }
+
+    //乐说详情
+    public static String getMusicTalkDetail(){
+        return "yueshuo/detail/v22";
+    }
+    //乐说点赞
+
+    public static String getMusicTalkZan(){
+        return "yueshuo/zan/save/v22";
     }
 }
 

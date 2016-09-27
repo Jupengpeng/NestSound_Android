@@ -238,7 +238,7 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
 
                         PlayAudioActivity.toPlayAudioActivity(context, musicTalk.itemid, "", MyCommon.MUSICTALK);
                     } else if (StringUtils.isNotBlank(musicTalk.url)) {
-                        BrowserActivity.toBrowserActivity(context, musicTalk.url);
+                        BrowserActivity.toBrowserActivity(context, musicTalk);
                     }
                 }
             }

@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="1"
     android:background="@color/main_bg"
     android:orientation="vertical" >
     <include layout="@layout/view_toolbar_theme" />
-
-
-    <!--android:progressDrawable="@android:drawable/progress_horizontal"-->
 
     <WebView
         android:id="@+id/webview"
@@ -25,5 +29,12 @@
         android:minHeight="2dp"
         android:maxHeight="2dp"
         android:max="100"/>
-
 </RelativeLayout>
+    <ViewStub
+        android:id="@+id/view_musictalk_footbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout="@layout/view_musictalk_footbar"
+        />
+</LinearLayout>
