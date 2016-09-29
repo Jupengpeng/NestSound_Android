@@ -114,6 +114,24 @@ public abstract class BaseListFragment<T> extends BaseFragment implements PullRe
         }
     }
 
+    protected void checkData(){
+        if (mDataList == null || mDataList.size() == 0){
+            showNoDataView();
+        }else {
+            showDataView();
+        }
+    }
+
+    protected void showNoDataView(){
+        llNoData.setVisibility(View.VISIBLE);
+    }
+
+    protected void showDataView(){
+        llNoData.setVisibility(View.GONE);
+    }
+
+
+
     protected void setUpAdapter() {
         adapter = new ListAdapter();
     }

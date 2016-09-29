@@ -61,7 +61,7 @@
                 android:layout_height="1dp"
                 android:layout_marginLeft="@dimen/preservation_margin"
                 android:layout_marginRight="@dimen/preservation_margin"
-                android:src="@color/main_bg"
+                android:src="@color/split_line"
                 />
             <TextView
                 android:id="@+id/user_info_add"
@@ -86,7 +86,7 @@
                 android:layout_height="1dp"
                 android:layout_marginLeft="@dimen/preservation_margin"
                 android:layout_marginRight="@dimen/preservation_margin"
-                android:src="@color/main_bg"
+                android:src="@color/split_line"
                 />
             <LinearLayout
                 android:layout_width="match_parent"

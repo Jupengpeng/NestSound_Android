@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
+
 /**
  * Created by June on 16/5/8.
  */
@@ -82,6 +83,15 @@ public abstract class BaseListActivity<T> extends BasePlayMenuActivity implement
         }
         if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
             page = 1;
+        }
+    }
+
+
+    protected void checkData(){
+        if (mDataList == null || mDataList.size() == 0){
+            showNoDataView();
+        } else {
+            showDataView();
         }
     }
     public boolean hasPadding() {return true;}
@@ -147,6 +157,15 @@ public abstract class BaseListActivity<T> extends BasePlayMenuActivity implement
         recycler.getRecyclerView().requestLayout();
         llNoData.setVisibility(View.GONE);
     }
+
+    protected void showNoDataView(){
+        llNoData.setVisibility(View.VISIBLE);
+    }
+
+    protected void showDataView(){
+        llNoData.setVisibility(View.GONE);
+    }
+
     protected boolean isSectionHeader(int position) {
         return false;
     }

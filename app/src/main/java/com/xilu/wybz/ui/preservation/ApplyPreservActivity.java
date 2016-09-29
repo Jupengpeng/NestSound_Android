@@ -113,7 +113,7 @@ public class ApplyPreservActivity extends ToolbarActivity {
 
     @OnClick(R.id.user_info_add)
     public void onClickAdd(){
-        startActivity(ProductPreservListActivity.class);
+        PreservPersonEditActivity.startPersonEditActivity(this,null);
     }
 
     @OnClick(R.id.user_info_right)

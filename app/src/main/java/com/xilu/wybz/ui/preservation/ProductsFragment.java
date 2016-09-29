@@ -121,6 +121,8 @@ public class ProductsFragment extends BaseListFragment<ActBean> implements IActV
             @Override
             public void run() {
                 add();
+
+                checkData();
             }
         },400);
     }
@@ -174,7 +176,7 @@ public class ProductsFragment extends BaseListFragment<ActBean> implements IActV
     protected RecyclerView.ItemDecoration getItemDecoration() {
 
         int split = DensityUtil.dp2px(context,0.6f);
-        return new DividerItemDecoration(context, DividerItemDecoration.VERTICAL_LIST,split,Color.parseColor("#f0f0f0"),0);
+        return new DividerItemDecoration(context, DividerItemDecoration.VERTICAL_LIST,split,Color.parseColor("#e5e5e5"),0);
     }
 
     @Override
