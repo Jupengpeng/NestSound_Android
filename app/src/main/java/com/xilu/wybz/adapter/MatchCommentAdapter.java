@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.CommentBean;
-import com.xilu.wybz.ui.mine.UserInfoActivity;
+import com.xilu.wybz.ui.mine.OtherUserCenterActivity;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtils;
 
@@ -54,7 +54,7 @@ public class MatchCommentAdapter extends RecyclerView.Adapter<MatchCommentAdapte
             @Override
             public void onClick(View v) {
                 if(PrefsUtil.getUserId(context)!=commentBean.uid) {
-                    UserInfoActivity.toUserInfoActivity(context, commentBean.uid, commentBean.nickname);
+                    OtherUserCenterActivity.toUserInfoActivity(context, commentBean.uid, commentBean.nickname);
                 }
             }
         });
@@ -69,7 +69,7 @@ public class MatchCommentAdapter extends RecyclerView.Adapter<MatchCommentAdapte
             @Override
             public void onClick(View v) {
                 if(PrefsUtil.getUserId(context)!=commentBean.target_uid) {
-                    UserInfoActivity.toUserInfoActivity(context, commentBean.target_uid, commentBean.target_nickname);
+                    OtherUserCenterActivity.toUserInfoActivity(context, commentBean.target_uid, commentBean.target_nickname);
                 }
             }
         });

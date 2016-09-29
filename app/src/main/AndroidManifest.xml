@@ -104,23 +104,23 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.mine.UserCenterActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name=".ui.mine.MineActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".ui.mine.NewMineActivity"
+            android:name=".ui.mine.MatchWorkActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".ui.mine.MyWorkActivity"
+            android:name=".ui.mine.MineWorkActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".ui.mine.NewMyWorkActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name=".ui.mine.UserInfoActivity"
+            android:name=".ui.mine.OtherUserCenterActivity"
             android:screenOrientation="portrait" />
 
         <activity android:name=".ui.market.MatchActivity" android:screenOrientation="portrait"/>

@@ -414,6 +414,7 @@ public class HotCatalogActivity extends BaseSectionListActivity<TemplateBean> im
     @Override
     public void loadNoData() {
         if (isDestroy) return;
+        recycler.onRefreshCompleted();
         llNoData.setVisibility(View.VISIBLE);
     }
 

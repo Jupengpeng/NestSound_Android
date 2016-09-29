@@ -11,4 +11,6 @@ public class UserInfoBean {
     public int inspirenum;
     public int fovnum;
     public int isFocus;
+    public int msgCount;
+    public UserBean user;
 }

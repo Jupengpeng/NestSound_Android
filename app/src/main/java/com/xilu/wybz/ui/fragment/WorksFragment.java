@@ -16,7 +16,9 @@ import com.xilu.wybz.bean.UserInfoBean;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.PlayMediaInstance;
+import com.xilu.wybz.presenter.UserCenterListPresenter;
 import com.xilu.wybz.presenter.UserPresenter;
+import com.xilu.wybz.ui.IView.IUserCenterListView;
 import com.xilu.wybz.ui.IView.IUserView;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.ToastUtils;
@@ -37,8 +39,8 @@ import java.util.List;
 /**
  * Created by hujunwei on 16/6/3.
  */
-public class WorksFragment extends BaseListFragment<WorksData> implements IUserView {
-    UserPresenter userPresenter;
+public class WorksFragment extends BaseListFragment<WorksData> implements IUserCenterListView {
+    UserCenterListPresenter userPresenter;
     public static String TYPE = "type";
     private int type;//1=歌曲，2=歌词，3=收藏,4=灵感记录（加载）
     private int selectPos;
@@ -49,7 +51,7 @@ public class WorksFragment extends BaseListFragment<WorksData> implements IUserV
     @Override
     protected void initPresenter() {
         EventBus.getDefault().register(this);
-        userPresenter = new UserPresenter(context, this);
+        userPresenter = new UserCenterListPresenter(context, this);
         userPresenter.init();
     }
 
@@ -104,17 +106,7 @@ public class WorksFragment extends BaseListFragment<WorksData> implements IUserV
     @Override
     public void onRefresh(int action) {
         super.onRefresh(action);
-        userPresenter.loadData(PrefsUtil.getUserId(context), type, page++);
-    }
-
-    @Override
-    public void setUserInfo(UserBean userBean) {
-
-    }
-
-    @Override
-    public void setUserInfoBean(UserInfoBean userInfoBean) {
-
+        userPresenter.loadData(type, page++);
     }
 
     @Override

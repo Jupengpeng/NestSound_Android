@@ -16,8 +16,9 @@ import com.xilu.wybz.bean.UserInfoBean;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.PlayMediaInstance;
+import com.xilu.wybz.presenter.UserCenterListPresenter;
 import com.xilu.wybz.presenter.UserPresenter;
-import com.xilu.wybz.ui.IView.IUserView;
+import com.xilu.wybz.ui.IView.IUserCenterListView;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.ToastUtils;
 import com.xilu.wybz.view.materialdialogs.DialogAction;
@@ -37,8 +38,8 @@ import java.util.List;
 /**
  * Created by hujunwei on 16/6/3.
  */
-public class WorksDataFragment extends BaseListFragment<WorksData> implements IUserView {
-    UserPresenter userPresenter;
+public class WorksDataFragment extends BaseListFragment<WorksData> implements IUserCenterListView {
+    UserCenterListPresenter userPresenter;
     public static String TYPE = "type";
     public static String UID = "uid";
     public static String AUTHOR = "author";
@@ -47,16 +48,14 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
     private int selectPos;
     private String COME;
     private String author;
-    private boolean isMe;
     private int workType;//type 1=歌曲，2=歌词，3=灵感记录（删除作品的type）
     private String[] MYCOMES = new String[]{"mysong", "mylyrics", "myfav", "myrecord"};
-    private String[] OTHERCOMES = new String[]{"usersong", "userlyrics", "userfav"};//他人主页
     private boolean isFirst;
     private boolean isFirstTab;
     @Override
     protected void initPresenter() {
         EventBus.getDefault().register(this);
-        userPresenter = new UserPresenter(context, this);
+        userPresenter = new UserCenterListPresenter(context, this);
         userPresenter.init();
     }
 
@@ -77,17 +76,12 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
         if (getArguments() != null) {
             type = getArguments().getInt(TYPE);
             userId = getArguments().getInt(UID);
-            isMe = (userId == PrefsUtil.getUserId(context));
             if (type == 0) isFirstTab = true;
-            if (!isMe) {
-                COME = OTHERCOMES[type];
-            } else {
-                COME = MYCOMES[type];
-                if(type==0||type==1){//歌曲歌词 需要+1
-                    workType = type+1;
-                }else if(type==3){//灵感记录
-                    workType = type;
-                }
+            COME = MYCOMES[type];
+            if(type==0||type==1){//歌曲歌词 需要+1
+                workType = type+1;
+            }else if(type==3){//灵感记录
+                workType = type;
             }
             type = type + 1;
             author = getArguments().getString(AUTHOR);
@@ -113,7 +107,6 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
 
     @Override
     public void initView() {
-//        recycler.enablePullToRefresh(false);
     }
 
     @Override
@@ -128,37 +121,10 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
         }
     }
 
-    public void reSet() {
-        userId = PrefsUtil.getUserId(context);
-        author = PrefsUtil.getUserInfo(context).name;
-        isMe = (userId == PrefsUtil.getUserId(context));
-    }
-
     @Override
     public void onRefresh(int action) {
         super.onRefresh(action);
-        userPresenter.loadData(userId, type, page++);
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(Event.LoginOutEvent event) {
-        isFirst = false;
-        if (mDataList != null && mDataList.size() != 0) {
-            page = 1;
-            mDataList.clear();
-            adapter.notifyDataSetChanged();
-            recycler.getRecyclerView().requestLayout();
-        }
-    }
-
-    @Override
-    public void setUserInfo(UserBean userBean) {
-        EventBus.getDefault().post(new Event.UpdataUserBean(userBean, isMe ? 1 : 2));
-    }
-
-    @Override
-    public void setUserInfoBean(UserInfoBean userBean) {
-        EventBus.getDefault().post(new Event.UpdataUserInfoBean(userBean, isMe ? 1 : 2));
+        userPresenter.loadData(type, page++);
     }
 
     @Override
@@ -378,7 +344,7 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
         if (type == 4) {//灵感记录
             View view = LayoutInflater.from(context).inflate(R.layout.fragment_inspirerecord_item, parent, false);
             InspireRecordViewHolder holder = new InspireRecordViewHolder(view, context, mDataList, COME,
-                    !isMe ? null : new InspireRecordViewHolder.OnItemClickListener() {
+                    new InspireRecordViewHolder.OnItemClickListener() {
                         @Override
                         public void onClick(int pos, int which) {
                             if (which == 0) {
@@ -390,7 +356,7 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
         } else {
             View view = LayoutInflater.from(context).inflate(R.layout.activity_work_list_item, parent, false);
             WorksViewHolder holder = new WorksViewHolder(view, context, mDataList, COME,
-                    !isMe ? null : new WorksViewHolder.OnItemClickListener() {
+                    new WorksViewHolder.OnItemClickListener() {
                         @Override
                         public void onClick(int pos, int which) {
                             if (type == 3) {//取消收藏的时候 不提示 直接取消

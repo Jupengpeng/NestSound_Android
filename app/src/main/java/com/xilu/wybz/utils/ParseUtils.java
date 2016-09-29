@@ -12,7 +12,6 @@ import com.xilu.wybz.bean.DataBean;
 import com.xilu.wybz.bean.FansBean;
 import com.xilu.wybz.bean.Lyricat;
 import com.xilu.wybz.bean.MainBean;
-import com.xilu.wybz.bean.MineBean;
 import com.xilu.wybz.bean.MsgCommentBean;
 import com.xilu.wybz.bean.MusicTalk;
 import com.xilu.wybz.bean.SongAlbum;
@@ -284,22 +283,7 @@ public class ParseUtils {
         }
         return dataBean;
     }
-    //我的主页数据
-    public static MineBean getMineBean(Context context, String response) {
-        MineBean dataBean = null;
-        try {
-            JSONObject jsonObject = new JSONObject(response);
-            int code = jsonObject.getInt("code");
-            if (code == 200) {
-                dataBean = new Gson().fromJson(jsonObject.getString("data"),MineBean.class);
-            } else {
-                showMsg(context, jsonObject.getString("message"));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return dataBean;
-    }
+
     public static DataBean getDataBean(Context context,String response) {
         DataBean dataBean = new DataBean();
         try {

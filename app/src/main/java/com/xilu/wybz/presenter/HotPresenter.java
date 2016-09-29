@@ -30,12 +30,10 @@ public class HotPresenter extends BasePresenter<IHotView> {
      */
     public void loadHotData(int cid, String type, int page) {
         Map<String, String> params = new HashMap<>();
-        if(cid>0) {
-            params.put("cid", cid + "");
-        }
+        params.put("cid", cid + "");
         params.put("type", type + "");
         params.put("page", page + "");
-        httpUtils.get(cid==0?MyHttpClient.getDefaultHotListUrl():MyHttpClient.getHotUrl(), params, new MyStringCallback() {
+        httpUtils.get(MyHttpClient.getHotUrl(), params, new MyStringCallback() {
             @Override
             public void onResponse(String response) {
                 List<TemplateBean> mList = ParseUtils.getTemplatesData(context, response);

@@ -120,10 +120,6 @@ public class MoreWorkActivity extends BaseListActivity<WorksData> implements IFi
         recycler.enableLoadMore(false);
     }
 
-//    protected RecyclerView.ItemDecoration getItemDecoration() {
-//        return new SpacesItemDecoration(dip10);
-//    }
-
     @Override
     protected BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.activity_work_list_item, parent, false);

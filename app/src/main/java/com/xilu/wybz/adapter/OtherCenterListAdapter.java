@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import com.xilu.wybz.ui.fragment.OtherWorksDataFragment;
 import com.xilu.wybz.ui.fragment.WorksDataFragment;
 import com.xilu.wybz.utils.PrefsUtil;
 
@@ -16,30 +17,27 @@ import java.util.Map;
 /**
  * Created by hujunwei on 16/6/3.
  */
-public class MineAdapter extends FragmentStatePagerAdapter {
+public class OtherCenterListAdapter extends FragmentStatePagerAdapter {
     int userId;
     String userName;
     private List<String> mTitles = new ArrayList<>();
-    Map<Integer, WorksDataFragment> mPageReferenceMap = new HashMap<>();
-    public MineAdapter(Context context, FragmentManager fm, int userId, String userName) {
+    Map<Integer, OtherWorksDataFragment> mPageReferenceMap = new HashMap<>();
+    public OtherCenterListAdapter(Context context, FragmentManager fm, int userId, String userName) {
         super(fm);
         this.userId = userId;
         this.userName = userName;
-        if(userId== PrefsUtil.getUserId(context)){
-            mTitles.add("灵感记录");
-        }
-        mTitles.add("我的歌曲");
-        mTitles.add("我的歌词");
-        mTitles.add("我的收藏");
+        mTitles.add("歌曲");
+        mTitles.add("歌词");
+        mTitles.add("收藏");
     }
 
     @Override
     public Fragment getItem(int position) {
-        WorksDataFragment worksDataFragment = WorksDataFragment.newInstance(position,userId,userName);
+        OtherWorksDataFragment worksDataFragment = OtherWorksDataFragment.newInstance(position,userId,userName);
         mPageReferenceMap.put(position,worksDataFragment);
         return worksDataFragment;
     }
-    public WorksDataFragment getFragment(int key) {
+    public OtherWorksDataFragment getFragment(int key) {
         return mPageReferenceMap.get(key);
     }
     @Override

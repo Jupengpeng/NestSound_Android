@@ -96,9 +96,7 @@ android {
             buildConfigField "boolean", "LOG_DEBUG", "true"
 //            buildConfigField "String", "CHANNEL", "\"debug\""
             debuggable true
-            shrinkResources true
-
-            minifyEnabled false
+//            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
 //            versionNameSuffix '_debug'

@@ -20,7 +20,8 @@ import android.widget.TextView;
 
 import com.commit451.nativestackblur.NativeStackBlur;
 import com.xilu.wybz.R;
-import com.xilu.wybz.adapter.MineAdapter;
+import com.xilu.wybz.adapter.OtherCenterListAdapter;
+import com.xilu.wybz.adapter.UserCenterListAdapter;
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.bean.UserInfoBean;
 import com.xilu.wybz.common.Event;
@@ -29,10 +30,13 @@ import com.xilu.wybz.common.KeySet;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.DownPicPresenter;
 import com.xilu.wybz.presenter.OnlyFollowPresenter;
+import com.xilu.wybz.presenter.OtherCenterListPresenter;
+import com.xilu.wybz.presenter.UserPresenter;
 import com.xilu.wybz.ui.IView.ILoadPicView;
 import com.xilu.wybz.ui.IView.IOnlyFollowView;
+import com.xilu.wybz.ui.IView.IUserView;
 import com.xilu.wybz.ui.base.BaseActivity;
-import com.xilu.wybz.ui.fragment.WorksDataFragment;
+import com.xilu.wybz.ui.fragment.OtherWorksDataFragment;
 import com.xilu.wybz.utils.BitmapUtils;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.MD5Util;
@@ -57,7 +61,7 @@ import butterknife.OnClick;
 /**
  * Created by hujunwei on 16/6/2.
  */
-public class UserInfoActivity extends BaseActivity implements IOnlyFollowView,ILoadPicView {
+public class OtherUserCenterActivity extends BaseActivity implements IOnlyFollowView,ILoadPicView,IUserView {
     @Bind(R.id.iv_blur_view)
     ImageView ivBlurView;
     @Bind((R.id.ll_mine_info))
@@ -99,7 +103,7 @@ public class UserInfoActivity extends BaseActivity implements IOnlyFollowView,IL
     @Bind(R.id.iv_headpic)
     ImageView ivHeadPic;
     private int currentIndex;
-    private MineAdapter pagerAdapter;
+    private OtherCenterListAdapter pagerAdapter;
     private List<LinearLayout> tabs;
     public OnlyFollowPresenter presenter;
     private int isFocus = -1;
@@ -108,14 +112,14 @@ public class UserInfoActivity extends BaseActivity implements IOnlyFollowView,IL
     int userId;
     String userName;
     UserInfoBean userInfoBean;
-    boolean isFirst;
     DownPicPresenter downPicPresenter;
+    UserPresenter userPresenter;
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_new_mine;
     }
     public static void toUserInfoActivity(Context context, int userId, String userName) {
-        Intent intent = new Intent(context, UserInfoActivity.class);
+        Intent intent = new Intent(context, OtherUserCenterActivity.class);
         intent.putExtra("userId", userId);
         intent.putExtra("userName", userName);
         context.startActivity(intent);
@@ -124,7 +128,7 @@ public class UserInfoActivity extends BaseActivity implements IOnlyFollowView,IL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         presenter = new OnlyFollowPresenter(context,this);
-
+        userPresenter = new UserPresenter(context,this);
         initData();
     }
 
@@ -142,7 +146,7 @@ public class UserInfoActivity extends BaseActivity implements IOnlyFollowView,IL
         userName = savedInstanceState.getString("userName");
     }
 
-    public void initData(){
+    public void initData() {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
@@ -156,18 +160,15 @@ public class UserInfoActivity extends BaseActivity implements IOnlyFollowView,IL
         } else {
             finish();
         }
-        UserBean userData = PrefsUtil.getUserInfo(context,userId);
-        if(userData!=null){
-            setUserData(userData);
-        }
+        userPresenter.getUserInfo(userId);
         mAppbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
                 boolean showTitle = mCollapsingToolbar.getHeight() + verticalOffset <= mToolbar.getHeight() * 2;
                 llMineInfo.setVisibility(showTitle ? View.GONE : View.VISIBLE);
-                int height = mCollapsingToolbar.getHeight()-mToolbar.getHeight();
-                float alpha = Math.abs(verticalOffset)/(height+0.0f);
-                Log.e("alpha",alpha+"");
+                int height = mCollapsingToolbar.getHeight() - mToolbar.getHeight();
+                float alpha = Math.abs(verticalOffset) / (height + 0.0f);
+                Log.e("alpha", alpha + "");
                 ivBlurView.setAlpha(alpha);
             }
         });
@@ -178,15 +179,15 @@ public class UserInfoActivity extends BaseActivity implements IOnlyFollowView,IL
         tabs.add(llMysong);
         tabs.add(llMylyrics);
         tabs.add(llMyfav);
-        pagerAdapter = new MineAdapter(context, getSupportFragmentManager(), userId, userName);
+        pagerAdapter = new OtherCenterListAdapter(context, getSupportFragmentManager(), userId, userName);
         mViewpager.setAdapter(pagerAdapter);
         mViewpager.setOffscreenPageLimit(tabs.size());
-
         mViewpager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
             }
+
             @Override
             public void onPageSelected(int position) {
                 currentIndex = position;
@@ -194,7 +195,7 @@ public class UserInfoActivity extends BaseActivity implements IOnlyFollowView,IL
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        WorksDataFragment worksDataFragment = pagerAdapter.getFragment(position);
+                        OtherWorksDataFragment worksDataFragment = pagerAdapter.getFragment(position);
                         worksDataFragment.loadData();
                     }
                 }, 120);
@@ -206,12 +207,21 @@ public class UserInfoActivity extends BaseActivity implements IOnlyFollowView,IL
             }
         });
     }
-    public void setUserInfo(UserBean userBean) {
-        if (isFirst) return;
-        isFirst = true;
-        PrefsUtil.saveUserInfo(context,userId,userBean);
-        setUserData(userBean);
+
+    @Override
+    public void setUserInfoBean(UserInfoBean userInfoBean) {
+        if(userInfoBean!=null){
+            mFansNum.setText(NumberUtil.format(userInfoBean.fansnum));
+            mFollowNum.setText(NumberUtil.format(userInfoBean.gznum));
+            tvSongNum.setText(NumberUtil.format(userInfoBean.worknum));
+            tvLyricsNum.setText(NumberUtil.format(userInfoBean.lyricsnum));
+            tvFovNum.setText(NumberUtil.format(userInfoBean.fovnum));
+            tvRecordNum.setText(NumberUtil.format(userInfoBean.inspirenum));
+            setUserData(userInfoBean.user);
+        }
     }
+
+
     public void setUserData(UserBean userBean){
         if(StringUtils.isNotBlank(userBean.headurl)&&!userBean.headurl.equals(MyCommon.defult_head)) {
             int headWidth = DensityUtil.dip2px(context,92);
@@ -225,7 +235,7 @@ public class UserInfoActivity extends BaseActivity implements IOnlyFollowView,IL
                 }
             }
             if (downPicPresenter == null) {
-                downPicPresenter = new DownPicPresenter(context, UserInfoActivity.this);
+                downPicPresenter = new DownPicPresenter(context, OtherUserCenterActivity.this);
                 downPicPresenter.downLoadPic(userBean.bgpic, path);
             }
         } else {
@@ -356,14 +366,6 @@ public class UserInfoActivity extends BaseActivity implements IOnlyFollowView,IL
     @Override
     public void initView() {
 
-    }
-
-    //在我的歌曲的列表 发送过来的
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(Event.UpdataUserBean event) {
-        if (event.getType() == 2) {
-            setUserInfo(event.getUserBean());
-        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

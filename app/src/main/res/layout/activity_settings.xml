@@ -22,6 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:gravity="center_vertical"
+            android:visibility="gone"
             android:background="?selectableItemBackground"
             android:paddingLeft="15dp"
             android:paddingRight="15dp">
@@ -40,7 +41,6 @@
                 android:src="@drawable/ic_setting_arrow" />
             />
         </LinearLayout>
-        <include layout="@layout/view_spit_line" />
         <LinearLayout
             android:id="@+id/ll_modify_pwd"
             android:layout_width="match_parent"
