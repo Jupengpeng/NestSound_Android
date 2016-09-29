@@ -42,12 +42,6 @@
       <sourceFolder url="file://$MODULE_DIR$/src/yinchaoDebug/jni" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/yinchaoDebug/rs" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/yinchaoDebug/shaders" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/r/androidTest/yinchao/debug" isTestSource="true" generated="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/aidl/androidTest/yinchao/debug" isTestSource="true" generated="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/buildConfig/androidTest/yinchao/debug" isTestSource="true" generated="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/rs/androidTest/yinchao/debug" isTestSource="true" generated="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/res/rs/androidTest/yinchao/debug" type="java-test-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/res/resValues/androidTest/yinchao/debug" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/testYinchaoDebug/res" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/testYinchaoDebug/resources" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/testYinchaoDebug/assets" type="java-test-resource" />
@@ -56,6 +50,12 @@
       <sourceFolder url="file://$MODULE_DIR$/src/testYinchaoDebug/jni" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/testYinchaoDebug/rs" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/testYinchaoDebug/shaders" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/r/androidTest/yinchao/debug" isTestSource="true" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/aidl/androidTest/yinchao/debug" isTestSource="true" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/buildConfig/androidTest/yinchao/debug" isTestSource="true" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/rs/androidTest/yinchao/debug" isTestSource="true" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/res/rs/androidTest/yinchao/debug" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/res/resValues/androidTest/yinchao/debug" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/yinchao/res" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/yinchao/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/yinchao/assets" type="java-resource" />
@@ -148,11 +148,9 @@
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/incremental-safeguard" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/instant-run-support" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/jniLibs" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/lint" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/manifests" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/multi-dex" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/pre-dexed" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/proguard-rules" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/res" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/rs" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/shaders" />

@@ -1,5 +1,6 @@
 package com.xilu.wybz.ui.preservation;
 
+import android.graphics.Color;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -8,20 +9,27 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.xilu.wybz.R;
+import com.xilu.wybz.bean.PreservationInfo;
+import com.xilu.wybz.ui.IView.IDefaultListView;
 import com.xilu.wybz.ui.base.BaseListActivity;
 import com.xilu.wybz.view.pull.BaseViewHolder;
+
+import java.util.List;
 
 /**
  * Created by Administrator on 2016/9/14.
  */
-public class ProductPreservListActivity extends BaseListActivity<Object>{
+public class ProductPreservListActivity extends BaseListActivity<PreservationInfo>
+        implements IDefaultListView<PreservationInfo> {
 
-    String nodata = "没有数据";
-    int nodatares = R.drawable.ic_nozan;
+    String nodata = "你还未保过全作品";
+    int nodatares = R.drawable.ic_nocomment;
 
 
     @Override
     protected void initPresenter() {
+
+
         initView();
     }
 
@@ -29,7 +37,7 @@ public class ProductPreservListActivity extends BaseListActivity<Object>{
     public void initView() {
         setTitle("保全列表");
         hideRight();
-
+        recycler.getRecyclerView().setBackgroundColor(Color.parseColor("#ffffffff"));
         recycler.enablePullToRefresh(true);
         recycler.enableLoadMore(true);
 
@@ -53,33 +61,43 @@ public class ProductPreservListActivity extends BaseListActivity<Object>{
             @Override
             public void run() {
                 add();
+                checkData();
             }
-        },400);
-
+        }, 400);
     }
 
-    public void add(){
+    public void add() {
 
         recycler.onRefreshCompleted();
 
-        mDataList.add("11");
-        mDataList.add("11");
-        mDataList.add("11");
-        mDataList.add("11");
-        mDataList.add("11");
+        mDataList.add(new PreservationInfo());
+        mDataList.add(new PreservationInfo());
+        mDataList.add(new PreservationInfo());
+        mDataList.add(new PreservationInfo());
+
 
         adapter.notifyDataSetChanged();
     }
 
     @Override
+    public void onSuccess(List<PreservationInfo> list) {
+
+    }
+
+    @Override
+    public void onError(String message) {
+
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_add,menu);
+        getMenuInflater().inflate(R.menu.menu_add, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.menu_add){
+        if (item.getItemId() == R.id.menu_add) {
             startActivity(ProductAllActivity.class);
             return true;
         }
