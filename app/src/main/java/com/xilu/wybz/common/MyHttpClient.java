@@ -369,9 +369,12 @@ public class MyHttpClient {
         return "yueshuo/detail/v22";
     }
     //乐说点赞
-
     public static String getMusicTalkZan(){
         return "yueshuo/zan/save/v22";
+    }
+    //乐说分享
+    public static String getMusicTalkShareCount(){
+        return "yueshuo/sharecount/v22";
     }
 }
 

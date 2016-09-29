@@ -258,7 +258,8 @@ public class Event {
 
     public static class UpdateUserInfo {
     }
-
+    public static class ShareSuccessEvent {
+    }
     public static class MusicDataEvent {
 
     }

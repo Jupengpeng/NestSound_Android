@@ -62,9 +62,6 @@ import butterknife.Bind;
  * Created by June on 2016/3/2.
  */
 public class BrowserActivity extends ToolbarActivity implements IMusicTalkDetailView {
-
-    public static final int FILECHOOSER_RESULTCODE = 200;
-
     @Bind(R.id.pb)
     ProgressBar mProgressBar;
     @Bind(R.id.webview)
@@ -85,6 +82,7 @@ public class BrowserActivity extends ToolbarActivity implements IMusicTalkDetail
     private int commentType=3;
     private ShareDialog shareDialog;
     private MusicTalk musicTalk;
+    public static final int FILECHOOSER_RESULTCODE = 200;
     private MusicTalkPresenter musicTalkPresenter;
     public static void toBrowserActivity(Context context, String url) {
         Intent intent = new Intent(context, BrowserActivity.class);
@@ -140,7 +138,7 @@ public class BrowserActivity extends ToolbarActivity implements IMusicTalkDetail
             @Override
             public void onClick(View v) {
                 if (SystemUtils.isLogin(context)) {
-
+                    musicTalkPresenter.Zan(musicTalk.itemid);
                 }
             }
         });
@@ -274,12 +272,15 @@ public class BrowserActivity extends ToolbarActivity implements IMusicTalkDetail
     }
 
     @Override
-    public void loadSuccess(MusicTalk musicTalk) {
+    public void loadSuccess(MusicTalk musicTalkNum) {
         isZan = musicTalk.isZan;
+        musicTalk.commentnum = musicTalkNum.commentnum;
+        musicTalk.sharenum = musicTalkNum.sharenum;
+        musicTalk.zannum = musicTalkNum.zannum;
         ivZanIcon.setImageResource(isZan==0?R.drawable.ic_musictalk_zan:R.drawable.ic_musictalk_zaned);
-        tvCommentNum.setText("("+musicTalk.commentnum+")");
-        tvShareNum.setText("("+musicTalk.sharenum+")");
-        tvZanNum.setText("("+musicTalk.zannum+")");
+        tvCommentNum.setText("("+musicTalkNum.commentnum+")");
+        tvShareNum.setText("("+musicTalkNum.sharenum+")");
+        tvZanNum.setText("("+musicTalkNum.zannum+")");
     }
 
     @Override
@@ -291,10 +292,32 @@ public class BrowserActivity extends ToolbarActivity implements IMusicTalkDetail
     public void zanSuccess() {
         isZan = 1-isZan;
         ivZanIcon.setImageResource(isZan==0?R.drawable.ic_musictalk_zan:R.drawable.ic_musictalk_zaned);
+        if(isZan==1){
+            musicTalk.commentnum += 1;
+        }else{
+            musicTalk.commentnum -= 1;
+        }
+        tvZanNum.setText("("+musicTalk.commentnum+")");
     }
 
     @Override
     public void zanFail() {
+
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(Event.ShareSuccessEvent event) {
+        if(musicTalk!=null){
+            musicTalkPresenter.shareCount(musicTalk.itemid);
+        }
+    }
+    @Override
+    public void shareSuccess() {
+        musicTalk.sharenum += 1;
+        tvShareNum.setText("("+musicTalk.sharenum+")");
+    }
+
+    @Override
+    public void shareFail() {
 
     }
 
@@ -396,7 +419,6 @@ public class BrowserActivity extends ToolbarActivity implements IMusicTalkDetail
         synCookies(context, url, "imei=" + PhoneUtils.getPhoneImei(context) + ",ycua=APP_ANDROID,userId=" + id);
         Log.e("cookies", "LoginSuccessEvent:" + getCookies(context, url));
     }
-
 
     // 内部类
     public void initData() {
