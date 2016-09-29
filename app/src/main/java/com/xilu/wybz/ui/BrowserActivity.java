@@ -34,6 +34,7 @@ import com.xilu.wybz.R;
 import com.xilu.wybz.bean.MusicTalk;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.KeySet;
+import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.MusicTalkPresenter;
 import com.xilu.wybz.ui.IView.IMusicTalkDetailView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
@@ -49,6 +50,7 @@ import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.utils.ToastUtils;
 import com.xilu.wybz.view.dialog.ShareDialog;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.w3c.dom.Text;
@@ -57,6 +59,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
+
+import static com.xilu.wybz.common.MyCommon.CommentType_MuiscTalk;
 
 /**
  * Created by June on 2016/3/2.
@@ -79,7 +83,6 @@ public class BrowserActivity extends ToolbarActivity implements IMusicTalkDetail
     private String url = "";
     private List<String> titles;
     private int isZan;
-    private int commentType=3;
     private ShareDialog shareDialog;
     private MusicTalk musicTalk;
     public static final int FILECHOOSER_RESULTCODE = 200;
@@ -103,6 +106,7 @@ public class BrowserActivity extends ToolbarActivity implements IMusicTalkDetail
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
         initViews();
         initData();
         mProgressBar.setProgress(20);
@@ -121,7 +125,7 @@ public class BrowserActivity extends ToolbarActivity implements IMusicTalkDetail
             @Override
             public void onClick(View v) {
                 if (SystemUtils.isLogin(context)) {
-                    CommentActivity.toCommentActivity(context,musicTalk.itemid,commentType,false);
+                    CommentActivity.toCommentActivity(context,musicTalk.itemid,CommentType_MuiscTalk,false);
                 }
             }
         });
@@ -273,7 +277,7 @@ public class BrowserActivity extends ToolbarActivity implements IMusicTalkDetail
 
     @Override
     public void loadSuccess(MusicTalk musicTalkNum) {
-        isZan = musicTalk.isZan;
+        isZan = musicTalkNum.isZan;
         musicTalk.commentnum = musicTalkNum.commentnum;
         musicTalk.sharenum = musicTalkNum.sharenum;
         musicTalk.zannum = musicTalkNum.zannum;
@@ -310,6 +314,16 @@ public class BrowserActivity extends ToolbarActivity implements IMusicTalkDetail
             musicTalkPresenter.shareCount(musicTalk.itemid);
         }
     }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(Event.UpdataCommentNumEvent event) {
+        if(event.getType()== CommentType_MuiscTalk){
+            int count = event.getNum();
+            musicTalk.commentnum+=count;
+            tvCommentNum.setText("("+musicTalk.commentnum+")");
+        }
+    }
+
+
     @Override
     public void shareSuccess() {
         musicTalk.sharenum += 1;
@@ -518,5 +532,6 @@ public class BrowserActivity extends ToolbarActivity implements IMusicTalkDetail
             mWebView = null;
         }
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }
