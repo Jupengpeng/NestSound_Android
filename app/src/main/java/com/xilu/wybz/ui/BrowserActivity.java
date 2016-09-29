@@ -297,11 +297,11 @@ public class BrowserActivity extends ToolbarActivity implements IMusicTalkDetail
         isZan = 1-isZan;
         ivZanIcon.setImageResource(isZan==0?R.drawable.ic_musictalk_zan:R.drawable.ic_musictalk_zaned);
         if(isZan==1){
-            musicTalk.commentnum += 1;
+            musicTalk.zannum += 1;
         }else{
-            musicTalk.commentnum -= 1;
+            musicTalk.zannum -= 1;
         }
-        tvZanNum.setText("("+musicTalk.commentnum+")");
+        tvZanNum.setText("("+musicTalk.zannum+")");
     }
 
     @Override
