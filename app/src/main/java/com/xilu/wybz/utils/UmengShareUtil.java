@@ -16,7 +16,10 @@ import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMusic;
 import com.umeng.socialize.utils.Log;
 import com.xilu.wybz.bean.ShareBean;
+import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.MyCommon;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -193,6 +196,7 @@ public class UmengShareUtil {
         public void onResult(SHARE_MEDIA platform) {
             Log.d("plat", "platform" + platform);
             ToastUtils.toast(activity, "分享成功啦");
+            EventBus.getDefault().post(new Event.ShareSuccessEvent());
         }
 
         @Override

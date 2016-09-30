@@ -53,9 +53,9 @@ public class MusicTalkPresenter extends BasePresenter<IMusicTalkDetailView> {
             }
         });
     }
-    public void Zan(int itemid) {
+    public void Zan(String itemid) {
         params = new HashMap<>();
-        params.put("itemid", itemid + "");
+        params.put("itemid", itemid);
         params.put("uid", PrefsUtil.getUserId(context) + "");
         httpUtils.post(MyHttpClient.getMusicTalkZan(), params, new AppJsonCalback(context) {
             @Override
@@ -67,6 +67,24 @@ public class MusicTalkPresenter extends BasePresenter<IMusicTalkDetailView> {
             public void onResultError(JsonResponse<? extends Object> response) {
                 super.onResultError(response);
                 iView.zanFail();
+            }
+        });
+    }
+
+    public void shareCount(String itemid) {
+        params = new HashMap<>();
+        params.put("itemid", itemid);
+        params.put("uid", PrefsUtil.getUserId(context) + "");
+        httpUtils.post(MyHttpClient.getMusicTalkShareCount(), params, new AppJsonCalback(context) {
+            @Override
+            public void onResult(JsonResponse<? extends Object> response) {
+                super.onResult(response);
+                iView.shareSuccess();
+            }
+            @Override
+            public void onResultError(JsonResponse<? extends Object> response) {
+                super.onResultError(response);
+                iView.shareFail();
             }
         });
     }

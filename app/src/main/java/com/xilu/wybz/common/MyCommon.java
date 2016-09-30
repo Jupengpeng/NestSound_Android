@@ -27,6 +27,9 @@ public class MyCommon {
     public static final int END = -1;//结束
     public static final int ERROR = -2;//播放出错
     public static final int FAILED = -3;//获取数据失败
+
+    public static final int CommentType_MuiscTalk = 3;//获取数据失败
+
     //播放模式
     public static final int PLAY_MODEL_ORDER = 0;//顺序播放
     public static final int PLAY_MODEL_RANDOM = 1;//随机播放

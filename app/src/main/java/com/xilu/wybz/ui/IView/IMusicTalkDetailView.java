@@ -13,4 +13,6 @@ public interface IMusicTalkDetailView extends IBaseView{
     void loadError();
     void zanSuccess();
     void zanFail();
+    void shareSuccess();
+    void shareFail();
 }
