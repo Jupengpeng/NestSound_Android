@@ -11,9 +11,35 @@ public class ProductInfo implements Parcelable {
 
     public String id;
 
-    public String name;
-    public long time;
-    public String typeId;
+    public String title;
+    public String lyricAuthor;
+    public String songAuthor;
+    public String accompaniment;
+    public long createTime;
+    public String image;
+    public int type;
+
+    public String preserveDate;
+    public String preserveID;
+
+    public ProductInfo() {
+    }
+
+
+    /*
+    productInfo:{
+        id:1,
+        title:name,
+        lyricAuthor:sd
+        songAuthor:sd,
+        accompaniment:yinchao,//伴奏
+        createTime：14265756856
+        image:http://pic.yinchao.cn/214124.png
+        type:1
+
+        preserveDate:
+        preserveID:
+    }*/
 
     /**
      *
@@ -21,9 +47,10 @@ public class ProductInfo implements Parcelable {
      * @param time
      */
     public ProductInfo(String name, long time) {
-        this.name = name;
-        this.time = time;
+        this.title = name;
+        this.createTime = time;
     }
+
 
     @Override
     public int describeContents() {
@@ -33,19 +60,28 @@ public class ProductInfo implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.id);
-        dest.writeString(this.name);
-        dest.writeLong(this.time);
-        dest.writeString(this.typeId);
-    }
-
-    public ProductInfo() {
+        dest.writeString(this.title);
+        dest.writeString(this.lyricAuthor);
+        dest.writeString(this.songAuthor);
+        dest.writeString(this.accompaniment);
+        dest.writeLong(this.createTime);
+        dest.writeString(this.image);
+        dest.writeInt(this.type);
+        dest.writeString(this.preserveDate);
+        dest.writeString(this.preserveID);
     }
 
     protected ProductInfo(Parcel in) {
         this.id = in.readString();
-        this.name = in.readString();
-        this.time = in.readLong();
-        this.typeId = in.readString();
+        this.title = in.readString();
+        this.lyricAuthor = in.readString();
+        this.songAuthor = in.readString();
+        this.accompaniment = in.readString();
+        this.createTime = in.readLong();
+        this.image = in.readString();
+        this.type = in.readInt();
+        this.preserveDate = in.readString();
+        this.preserveID = in.readString();
     }
 
     public static final Creator<ProductInfo> CREATOR = new Creator<ProductInfo>() {

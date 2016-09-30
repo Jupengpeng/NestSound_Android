@@ -11,15 +11,11 @@ import android.view.ViewGroup;
 import com.xilu.wybz.R;
 import com.xilu.wybz.adapter.InspireRecordViewHolder;
 import com.xilu.wybz.adapter.WorksViewHolder;
-import com.xilu.wybz.bean.UserBean;
-import com.xilu.wybz.bean.UserInfoBean;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.PlayMediaInstance;
 import com.xilu.wybz.presenter.UserCenterListPresenter;
-import com.xilu.wybz.presenter.UserPresenter;
 import com.xilu.wybz.ui.IView.IUserCenterListView;
-import com.xilu.wybz.ui.IView.IUserView;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.ToastUtils;
 import com.xilu.wybz.view.materialdialogs.DialogAction;
@@ -119,7 +115,9 @@ public class WorksFragment extends BaseListFragment<WorksData> implements IUserC
                     mDataList.clear();
                 }
                 for (WorksData worksData : worksDataList) {
-                    worksData.type = type;
+                    if (type != 3){
+                        worksData.type = type;
+                    }
                     mDataList.add(worksData);
                 }
                 llNoData.setVisibility(View.GONE);

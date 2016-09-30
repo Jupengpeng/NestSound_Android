@@ -418,7 +418,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
             case R.id.menu_more:
                 if (worksData != null && StringUtils.isNotBlank(worksData.itemid)) {
                     if (shareDialog == null) {
-                        shareDialog = new ShareDialog(PlayAudioActivity.this, worksData, 0);
+                        shareDialog = new ShareDialog(PlayAudioActivity.this, worksData, -1);
                     }
                     if (!shareDialog.isShowing()) {
                         shareDialog.showDialog();

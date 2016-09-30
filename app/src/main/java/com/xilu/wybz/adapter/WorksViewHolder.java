@@ -137,6 +137,7 @@ public class WorksViewHolder extends com.xilu.wybz.view.pull.BaseViewHolder {
             } else if (mDataList.get(position).type == 2) {
                 LyricsdisplayActivity.toLyricsdisplayActivity(mContext, mDataList.get(position).getItemid(), mDataList.get(position).name);
             }
+
         }
     }
 

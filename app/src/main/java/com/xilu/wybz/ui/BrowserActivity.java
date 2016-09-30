@@ -7,9 +7,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Message;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -24,7 +22,6 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -34,7 +31,6 @@ import com.xilu.wybz.R;
 import com.xilu.wybz.bean.MusicTalk;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.KeySet;
-import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.MusicTalkPresenter;
 import com.xilu.wybz.ui.IView.IMusicTalkDetailView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
@@ -47,13 +43,11 @@ import com.xilu.wybz.utils.PhoneUtils;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtils;
 import com.xilu.wybz.utils.SystemUtils;
-import com.xilu.wybz.utils.ToastUtils;
 import com.xilu.wybz.view.dialog.ShareDialog;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -444,6 +438,7 @@ public class BrowserActivity extends ToolbarActivity implements IMusicTalkDetail
             }else{
                 url = musicTalk.url;
             }
+            musicTalk.shareurl = musicTalk.url;
         }
         if(musicTalk!=null){
             loadFootBar();

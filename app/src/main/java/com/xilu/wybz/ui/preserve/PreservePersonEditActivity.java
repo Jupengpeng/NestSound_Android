@@ -110,7 +110,7 @@ public class PreservePersonEditActivity extends ToolbarActivity {
      * @param activity
      * @param info
      */
-    public static void startPersonEditActivity(Activity activity, PersonInfo info) {
+    public static void start(Activity activity, PersonInfo info) {
 
         Intent intent = new Intent(activity, PreservePersonEditActivity.class);
         if (info != null) {

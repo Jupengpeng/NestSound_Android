@@ -6,6 +6,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.xilu.wybz.bean.JsonResponse;
 import com.xilu.wybz.http.rsa.RSAUtils;
+import com.xilu.wybz.utils.LogUtils;
 
 import org.json.JSONObject;
 
@@ -50,7 +51,7 @@ public class JsonCallback extends Callback<JsonResponse>{
             if (!TextUtils.isEmpty(data)) {
                 decode = RSAUtils.decryptByPublicKey(new String(RSAUtils.decodeConvert(data), "UTF-8"));
 //                Log.d("url", decode);
-//                LogUtils.iJsonFormat("url",decode,true);
+                LogUtils.iJsonFormat("url",decode,true);
                 if (type == null){
                     jsonResponse.setData(decode);
                 } else {

@@ -85,8 +85,11 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
 
 
     ProductInfo productInfo;
+    PersonInfo personInfo;
 
     ApplyPreservePresenter presenter;
+
+    String [] prices = {"2.00","3.00","4.00"};
 
 
     @Override
@@ -95,7 +98,12 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
     }
 
 
-    public static void startApplyPreservActivity(Context context, ProductInfo info) {
+    /**
+     * 打开保全申请页面
+     * @param context
+     * @param info
+     */
+    public static void start(Context context, ProductInfo info) {
         Intent intent = new Intent(context, ApplyPreserveActivity.class);
         intent.putExtra(DATA, info);
         context.startActivity(intent);
@@ -119,8 +127,18 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
         initProtocol();
         setTitle("保全申请");
 
-        initView();
+        userInfoRight.setVisibility(View.GONE);
+
+        initPresenter();
+
     }
+
+    public void initPresenter(){
+        presenter = new ApplyPreservePresenter(context, this);
+    }
+
+
+
 
 
     @Override
@@ -128,7 +146,6 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
 
         presenter = new ApplyPreservePresenter(context, this);
 
-        initUserType();
 
     }
 
@@ -175,15 +192,13 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
 
     @OnClick(R.id.user_info_add)
     public void onClickAdd() {
-
-//        PreservPersonEditActivity.startPersonEditActivity(this, null);
+        PreservePersonEditActivity.start(this, null);
     }
 
     @OnClick(R.id.user_info_right)
     public void onClickRight() {
 
-        PersonInfo personInfo = getPersonInfo();
-        PreservePersonEditActivity.startPersonEditActivity(this, personInfo);
+        PreservePersonEditActivity.start(this, personInfo);
     }
 
     @OnClick(R.id.preservation_submit)
@@ -191,7 +206,7 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
 
         ProductInfo productInfo1 = new ProductInfo();
 
-        productInfo1.typeId ="1";
+        productInfo1.type =1;
         productInfo1.id="134245";
         PersonInfo personInfo1 = new PersonInfo();
         personInfo1.cCardId ="1321415";
@@ -216,22 +231,48 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
     }
 
 
-    public void initUserType() {
+    public void initProductType(int type) {
 
-        textSpinner.setSelection(1);
-        textSpinner.setEnabled(false);
-        textSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Log.e("XXX","xxx"+position);
-            }
+        switch (type){
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+            case 1:
+                textSpinner.setSelection(1);
+                textSpinner.setEnabled(false);
+                break;
+            case 2:
+                textSpinner.setSelection(2);
+                textSpinner.setEnabled(false);
+                break;
+            default:
+                textSpinner.setSelection(0);
+                textSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        setNeedPrice(position);
+                    }
 
-            }
-        });
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
+
+        }
+
     }
+
+
+    /**
+     * setNeedPrice.
+     * @param type
+     */
+    private void setNeedPrice(int type){
+
+        String unit = "￥";
+        productPrice.setText(unit + prices[type]);
+
+    }
+
 
     /**
      * @return
@@ -253,6 +294,8 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
         preservationName.setText(info.cUserName);
         preservationCardId.setText(info.cCardId);
         preservationPhone.setText(info.cPhone);
+
+        userInfoRight.setVisibility(View.VISIBLE);
     }
 
 
@@ -275,6 +318,7 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
 
                 String errorMsg = data.getExtras().getString("error_msg"); // 错误信息
                 String extraMsg = data.getExtras().getString("extra_msg"); // 错误信息
+
                 showMsg(result+errorMsg+extraMsg);
 
                 Log.e("pay",result+errorMsg+extraMsg);

@@ -48,8 +48,8 @@ public class ApplyPreservePresenter extends BasePresenter<IApplyPreservView>{
 
         params.put("uid",""+ PrefsUtil.getUserId(context));
         params.put("itemid",""+productInfo.id);
-        params.put("type",""+productInfo.typeId);
-        params.put("ctype",""+productInfo.typeId);
+        params.put("type",""+productInfo.type);
+        params.put("ctype",""+productInfo.type);
         params.put("cusername",personInfo.cUserName);
         params.put("ccard",personInfo.cCardId);
         params.put("cphone",personInfo.cPhone);

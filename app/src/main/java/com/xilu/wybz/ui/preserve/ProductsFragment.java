@@ -1,6 +1,5 @@
 package com.xilu.wybz.ui.preserve;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -135,8 +134,7 @@ public class ProductsFragment extends BaseListFragment<ProductInfo> implements I
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(context, ApplyPreserveActivity.class);
-                    startActivity(intent);
+                    ApplyPreserveActivity.start(context,info);
                 }
             });
         }
@@ -146,8 +144,8 @@ public class ProductsFragment extends BaseListFragment<ProductInfo> implements I
             this.position = position;
             this.info = mDataList.get(position);
 
-            name.setText(info.name);
-            time.setText(DateFormatUtils.formatX1(info.time));
+            name.setText(info.title);
+            time.setText(DateFormatUtils.formatX1(info.createTime));
         }
 
         @Override

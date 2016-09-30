@@ -362,7 +362,7 @@ public class LyricsdisplayActivity extends ToolbarActivity implements ILyricsVie
         if (actionBean.getType().equals("share")) {
             if (worksData != null && !worksData.getItemid().equals("")) {
                 if (shareDialog == null) {
-                    shareDialog = new ShareDialog(LyricsdisplayActivity.this, worksData, 0);
+                    shareDialog = new ShareDialog(LyricsdisplayActivity.this, worksData, -1);
                 }
                 if (!shareDialog.isShowing()) {
                     shareDialog.showDialog();

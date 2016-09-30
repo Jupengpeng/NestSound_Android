@@ -71,7 +71,8 @@ public class ShareDialog extends Dialog implements View.OnClickListener {
             String shareAuthor = musicTalk.detail==null?"":musicTalk.detail;
             String shareLink = musicTalk.shareurl;
             String sharePic = musicTalk.pic;
-            String shareContent = "我在音巢APP淘到一首好听的歌，快来看看有没有你喜欢的原创style 《" + shareTitle + "》 ▷" + shareLink + " (@音巢音乐)";
+            String shareContent = musicTalk.detail;
+//            String shareContent = "我在音巢APP淘到一首好听的歌，快来看看有没有你喜欢的原创style 《" + shareTitle + "》 ▷" + shareLink + " (@音巢音乐)";
             shareBean = new ShareBean(shareTitle, shareAuthor, shareContent, shareLink, sharePic, playurl, type);
             shareUtil = new UmengShareUtil(context, shareBean);
         }
@@ -100,6 +101,7 @@ public class ShareDialog extends Dialog implements View.OnClickListener {
         ll_qzone.setOnClickListener(this);
         ll_friend.setOnClickListener(this);
         ll_poster.setOnClickListener(this);
+
         if (type == 0 || StringUtils.isBlank(mWorksData.lyrics))
             ll_poster.setVisibility(View.INVISIBLE);
         if (type == 1) {
