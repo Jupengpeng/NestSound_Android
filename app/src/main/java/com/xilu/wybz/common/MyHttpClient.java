@@ -373,5 +373,30 @@ public class MyHttpClient {
     public static String getMusicTalkZan(){
         return "yueshuo/zan/save/v22";
     }
+   /**
+    *  保全相关接口
+    */
+
+   public static String getpreservationList(){
+       return "baoquan/getBaoquanListByid";
+   }
+
+   public static String getProductAllList(){
+       return "baoquan/getProductListByid";
+   }
+
+    public static String getPaypalOrder(){
+        return "paypal/order/save/v22";
+    }
+    public static String getPaypalPay(){
+        return "paypal/pay/save/v22";
+    }
+    public static String getPersonInfo(){
+        return "/baoquan/getBaoquanrenByid";
+    }
+    public static String getSavePersonInfo(){
+        return "/baoquan/addBaoquanren";
+    }
+
 }
 

@@ -200,6 +200,36 @@
 -dontwarn cn.jpush.**
 -keep class cn.jpush.** { *; }
 
+
+
+
+#ping++
+-dontwarn com.alipay.**
+-keep class com.alipay.** {*;}
+
+-dontwarn  com.ta.utdid2.**
+-keep class com.ta.utdid2.** {*;}
+
+-dontwarn  com.ut.device.**
+-keep class com.ut.device.** {*;}
+
+-dontwarn  com.tencent.**
+-keep class com.tencent.** {*;}
+
+-dontwarn  com.unionpay.**
+-keep class com.unionpay.** {*;}
+
+-dontwarn com.pingplusplus.**
+-keep class com.pingplusplus.** {*;}
+
+-dontwarn com.baidu.**
+-keep class com.baidu.** {*;}
+
+-keepclassmembers class * {
+    @android.webkit.JavascriptInterface <methods>;
+}
+
+
 #log
 -assumenosideeffects class android.util.Log {
     public static boolean isLoggable(java.lang.String, int);

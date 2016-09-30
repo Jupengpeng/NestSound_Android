@@ -83,6 +83,7 @@ public abstract class BaseListActivity<T> extends BasePlayMenuActivity implement
         }
         if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
             page = 1;
+            mDataList.clear();
         }
     }
 
@@ -98,6 +99,7 @@ public abstract class BaseListActivity<T> extends BasePlayMenuActivity implement
     protected void setUpAdapter() {
         adapter = new ListAdapter();
     }
+
 
     protected ILayoutManager getLayoutManager() {
         return new MyLinearLayoutManager(getApplicationContext());

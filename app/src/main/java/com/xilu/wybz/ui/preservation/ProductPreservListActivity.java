@@ -1,20 +1,29 @@
 package com.xilu.wybz.ui.preservation;
 
 import android.graphics.Color;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.PreservationInfo;
+import com.xilu.wybz.common.MyHttpClient;
+import com.xilu.wybz.presenter.DefaultListPresenter;
 import com.xilu.wybz.ui.IView.IDefaultListView;
 import com.xilu.wybz.ui.base.BaseListActivity;
+import com.xilu.wybz.utils.DateFormatUtils;
+import com.xilu.wybz.utils.ToastUtils;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import butterknife.Bind;
 
 /**
  * Created by Administrator on 2016/9/14.
@@ -25,15 +34,24 @@ public class ProductPreservListActivity extends BaseListActivity<PreservationInf
     String nodata = "你还未保过全作品";
     int nodatares = R.drawable.ic_nocomment;
 
+    DefaultListPresenter<PreservationInfo> defaultListPresenter;
+
+    Map<String, String> param = new HashMap<>();
+
 
     @Override
     protected void initPresenter() {
 
+        defaultListPresenter = new DefaultListPresenter<>(context, this);
+        defaultListPresenter.setUrl(MyHttpClient.getpreservationList());
 
-        initView();
+        param.put("uid", "12345");
+        defaultListPresenter.setParams(param);
+        defaultListPresenter.mockAble = true;
+        defaultListPresenter.init();
     }
 
-
+    @Override
     public void initView() {
         setTitle("保全列表");
         hideRight();
@@ -54,39 +72,29 @@ public class ProductPreservListActivity extends BaseListActivity<PreservationInf
     @Override
     public void onRefresh(int action) {
         super.onRefresh(action);
-//        collectionPresenter.loadData(page++);
 
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                add();
-                checkData();
-            }
-        }, 400);
+        defaultListPresenter.getData(page++);
+
     }
 
-    public void add() {
-
-        recycler.onRefreshCompleted();
-
-        mDataList.add(new PreservationInfo());
-        mDataList.add(new PreservationInfo());
-        mDataList.add(new PreservationInfo());
-        mDataList.add(new PreservationInfo());
-
-
-        adapter.notifyDataSetChanged();
-    }
 
     @Override
     public void onSuccess(List<PreservationInfo> list) {
+        recycler.onRefreshCompleted();
 
+        if (list != null && list.size() > 0) {
+            mDataList.addAll(list);
+            adapter.notifyDataSetChanged();
+        } else {
+
+            ToastUtils.toast(context, "没有更多数据");
+        }
     }
 
     @Override
     public void onError(String message) {
-
+        ToastUtils.toast(context, message);
     }
 
     @Override
@@ -118,13 +126,23 @@ public class ProductPreservListActivity extends BaseListActivity<PreservationInf
     class SampleViewHolder extends BaseViewHolder {
 
         int position;
+        PreservationInfo info;
+
+        @Bind(R.id.icon_type)
+        ImageView iconType;
+        @Bind(R.id.name)
+        TextView name;
+        @Bind(R.id.time)
+        TextView time;
+        @Bind(R.id.status)
+        TextView status;
 
         public SampleViewHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivity(PreservInfoActivity.class);
+                    PreservInfoActivity.start(context,info.id);
                 }
             });
         }
@@ -132,7 +150,44 @@ public class ProductPreservListActivity extends BaseListActivity<PreservationInf
         @Override
         public void onBindViewHolder(int position) {
             this.position = position;
+            info = mDataList.get(position);
 
+            name.setText(info.worksname);
+            time.setText(DateFormatUtils.formatX1(info.createtime));
+
+            setTypeIcon(iconType,info.sort_id);
+            setStatuText(status,info.statue);
+
+        }
+
+        private void setStatuText(TextView statuView, int statu){
+            switch (statu){
+                case 1:
+                    statuView.setText("保全中");
+                    break;
+                case 2:
+                    statuView.setText("保护中");
+                    break;
+                case 3:
+                    statuView.setText("支付失败");
+                default:
+            }
+        }
+
+        private void setTypeIcon(ImageView typeView, int type){
+            switch (type){
+                case 1:
+                    typeView.setImageResource(R.drawable.ic_preservation_song);
+                    break;
+                case 2:
+                    typeView.setImageResource(R.drawable.ic_preservation_lyric);
+                    break;
+                case 3:
+                    typeView.setImageResource(R.drawable.ic_preservation_total);
+                    break;
+
+                default:
+            }
         }
 
         @Override

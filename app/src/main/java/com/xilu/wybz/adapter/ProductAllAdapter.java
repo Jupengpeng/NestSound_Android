@@ -28,6 +28,7 @@ public class ProductAllAdapter extends FragmentStatePagerAdapter{
                 return lyricFragment;
             case 1:
                 ProductsFragment songFragment = new ProductsFragment();
+                songFragment.viewType = 2;
                 mPageReferenceMap.put(position,songFragment);
                 return songFragment;
 

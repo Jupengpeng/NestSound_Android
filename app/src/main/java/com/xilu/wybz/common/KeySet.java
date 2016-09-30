@@ -20,4 +20,13 @@ public class KeySet {
     public static final String CONTENT = "content";
     public static final String COMMENT = "comment";
 
+
+
+
+    public static class PING{
+
+        public static final String PING_APP_ID = "app_DyDa54avz5iT5C0q";
+
+    }
+
 }

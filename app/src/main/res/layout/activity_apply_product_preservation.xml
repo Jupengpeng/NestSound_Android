@@ -106,7 +106,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"/>
 
-                <Spinner
+                <android.support.v7.widget.AppCompatSpinner
                     android:id="@+id/text_spinner"
                     tools:layout_width="120dp"
                     android:layout_width="wrap_content"

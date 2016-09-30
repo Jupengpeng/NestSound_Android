@@ -1,10 +1,15 @@
 package com.xilu.wybz.presenter;
 
 import android.content.Context;
+import android.os.Handler;
 
 import com.google.gson.reflect.TypeToken;
 import com.xilu.wybz.bean.JsonResponse;
+import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.callback.AppJsonCalback;
+import com.xilu.wybz.mock.MockCallback;
+import com.xilu.wybz.mock.PreservationListMock;
+import com.xilu.wybz.mock.ProductAllListMock;
 import com.xilu.wybz.ui.IView.IDefaultListView;
 
 import java.lang.reflect.Type;
@@ -19,6 +24,7 @@ import okhttp3.Call;
  * Created by Administrator on 2016/8/13.
  */
 public class DefaultListPresenter<T> extends BasePresenter<IDefaultListView>{
+    public  boolean mockAble = false;
 
     private String url;
     /**
@@ -39,7 +45,7 @@ public class DefaultListPresenter<T> extends BasePresenter<IDefaultListView>{
         this.url = url;
     }
 
-    public void setUrl(Map<String,String> params){
+    public void setParams(Map<String,String> params){
         this.params = params;
     }
 
@@ -52,6 +58,11 @@ public class DefaultListPresenter<T> extends BasePresenter<IDefaultListView>{
     }
 
     public void getData(String url,Map<String,String> params){
+
+        if (mockAble){
+            mock(url);
+            return;
+        }
 
         httpUtils.post(url,params, new AppJsonCalback(context){
             @Override
@@ -84,5 +95,29 @@ public class DefaultListPresenter<T> extends BasePresenter<IDefaultListView>{
         });
 
     }
+
+    public void mock(String url){
+
+        MockCallback mockCallback = null;
+
+        if (url.equals(MyHttpClient.getpreservationList())){
+            mockCallback = new PreservationListMock();
+        } else if (url.equals(MyHttpClient.getProductAllList())){
+            mockCallback = new ProductAllListMock();
+        }
+
+        final MockCallback mock = mockCallback;
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                iView.onSuccess(mock.getMockList());
+            }
+        }, 400);
+
+    }
+
+
+
 
 }

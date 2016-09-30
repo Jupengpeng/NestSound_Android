@@ -56,24 +56,12 @@ public class ProductAllActivity extends ToolbarActivity implements ViewPager.OnP
             @Override
             public void run() {
                 switch (position){
-//                    case 1:
-//                        SongFragment songFragment = (SongFragment) pagerAdapter.getFragment(1);
-//                        if(songFragment!=null){
-//                            songFragment.loadData();
-//                        }
-//                        break;
-//                    case 2:
-//                        LyricsFragment lyricsFragment = (LyricsFragment) pagerAdapter.getFragment(2);
-//                        if(lyricsFragment!=null){
-//                            lyricsFragment.loadData();
-//                        }
-//                        break;
-//                    case 3:
-//                        RankingFragment rankingFragment = (RankingFragment) pagerAdapter.getFragment(3);
-//                        if(rankingFragment!=null){
-//                            rankingFragment.loadData();
-//                        }
-//                        break;
+                    case 1:
+                        ProductsFragment productsFragment = (ProductsFragment) pagerAdapter.getFragment(1);
+                        if(productsFragment!=null){
+                            productsFragment.loadData();
+                        }
+                        break;
                 }
             }
         },200);

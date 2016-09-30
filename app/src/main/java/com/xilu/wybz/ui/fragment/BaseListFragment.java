@@ -111,6 +111,7 @@ public abstract class BaseListFragment<T> extends BaseFragment implements PullRe
         }
         if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
             page = 1;
+            mDataList.clear();
         }
     }
 

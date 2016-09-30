@@ -9,7 +9,21 @@ import android.os.Parcelable;
 
 public class ProductInfo implements Parcelable {
 
-    String id;
+    public String id;
+
+    public String name;
+    public long time;
+    public String typeId;
+
+    /**
+     *
+     * @param name
+     * @param time
+     */
+    public ProductInfo(String name, long time) {
+        this.name = name;
+        this.time = time;
+    }
 
     @Override
     public int describeContents() {
@@ -19,6 +33,9 @@ public class ProductInfo implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.id);
+        dest.writeString(this.name);
+        dest.writeLong(this.time);
+        dest.writeString(this.typeId);
     }
 
     public ProductInfo() {
@@ -26,9 +43,12 @@ public class ProductInfo implements Parcelable {
 
     protected ProductInfo(Parcel in) {
         this.id = in.readString();
+        this.name = in.readString();
+        this.time = in.readLong();
+        this.typeId = in.readString();
     }
 
-    public static final Parcelable.Creator<ProductInfo> CREATOR = new Parcelable.Creator<ProductInfo>() {
+    public static final Creator<ProductInfo> CREATOR = new Creator<ProductInfo>() {
         @Override
         public ProductInfo createFromParcel(Parcel source) {
             return new ProductInfo(source);

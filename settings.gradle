@@ -1,3 +1,3 @@
-include ':app', ':library', ':music-service'
+include ':app', ':library', ':music-service', ':pingpp'
 
 rootProject.name = 'yinchaoapp'
