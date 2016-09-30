@@ -1,4 +1,4 @@
-package com.xilu.wybz.ui.preservation;
+package com.xilu.wybz.ui.preserve;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -23,7 +23,7 @@ import butterknife.OnClick;
 /**
  * Created by Administrator on 2016/9/14.
  */
-public class PreservPersonEditActivity extends ToolbarActivity {
+public class PreservePersonEditActivity extends ToolbarActivity {
 
     public static String INFO = "INFO";
 
@@ -57,9 +57,9 @@ public class PreservPersonEditActivity extends ToolbarActivity {
         personInfo = getInfo(getIntent());
 
         if (personInfo != null) {
-            preservationName.setText(personInfo.name);
-            preservationCardId.setText(personInfo.cardID);
-            preservationPhone.setText(personInfo.phone);
+            preservationName.setText(personInfo.cUserName);
+            preservationCardId.setText(personInfo.cCardId);
+            preservationPhone.setText(personInfo.cPhone);
         }
 
 
@@ -95,9 +95,9 @@ public class PreservPersonEditActivity extends ToolbarActivity {
             return;
         }
 
-        personInfo.name = preservationName.getText().toString();
-        personInfo.cardID = preservationCardId.getText().toString();
-        personInfo.phone = preservationPhone.getText().toString();
+        personInfo.cUserName = preservationName.getText().toString();
+        personInfo.cCardId = preservationCardId.getText().toString();
+        personInfo.cPhone = preservationPhone.getText().toString();
 
         Intent intent = new Intent();
         intent.putExtra(INFO, personInfo);
@@ -112,7 +112,7 @@ public class PreservPersonEditActivity extends ToolbarActivity {
      */
     public static void startPersonEditActivity(Activity activity, PersonInfo info) {
 
-        Intent intent = new Intent(activity, PreservPersonEditActivity.class);
+        Intent intent = new Intent(activity, PreservePersonEditActivity.class);
         if (info != null) {
             intent.putExtra(INFO, info);
         }

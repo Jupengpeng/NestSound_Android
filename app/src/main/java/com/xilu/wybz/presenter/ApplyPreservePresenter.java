@@ -20,7 +20,7 @@ import okhttp3.Call;
  * Created by Administrator on 2016/9/29.
  */
 
-public class ApplyPreservProsenter extends BasePresenter<IApplyPreservView>{
+public class ApplyPreservePresenter extends BasePresenter<IApplyPreservView>{
 
 
 
@@ -29,7 +29,7 @@ public class ApplyPreservProsenter extends BasePresenter<IApplyPreservView>{
 
 
 
-    public ApplyPreservProsenter(Context context, IApplyPreservView iView) {
+    public ApplyPreservePresenter(Context context, IApplyPreservView iView) {
         super(context, iView);
     }
 
@@ -50,9 +50,9 @@ public class ApplyPreservProsenter extends BasePresenter<IApplyPreservView>{
         params.put("itemid",""+productInfo.id);
         params.put("type",""+productInfo.typeId);
         params.put("ctype",""+productInfo.typeId);
-        params.put("cusername",personInfo.name);
-        params.put("ccard",personInfo.cardID);
-        params.put("cphone",personInfo.phone);
+        params.put("cusername",personInfo.cUserName);
+        params.put("ccard",personInfo.cCardId);
+        params.put("cphone",personInfo.cPhone);
 
         httpUtils.postHost(MyHttpClient.getPaypalOrder(),params,new AppJsonCalback(context){
 
@@ -208,10 +208,10 @@ public class ApplyPreservProsenter extends BasePresenter<IApplyPreservView>{
         params = new HashMap<>();
 
         params.put("uid",""+PrefsUtil.getUserId(context));
-        params.put("bq_username",personInfo.name);
+        params.put("bq_username",personInfo.cUserName);
         params.put("bq_email","");
-        params.put("bq_phone",personInfo.phone);
-        params.put("bq_creditID",personInfo.cardID);
+        params.put("bq_phone",personInfo.cPhone);
+        params.put("bq_creditID",personInfo.cCardId);
 
         httpUtils.post(MyHttpClient.getPaypalOrder(),params,new AppJsonCalback(context){
 

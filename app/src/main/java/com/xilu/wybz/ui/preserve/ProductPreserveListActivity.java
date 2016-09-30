@@ -1,4 +1,4 @@
-package com.xilu.wybz.ui.preservation;
+package com.xilu.wybz.ui.preserve;
 
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -28,7 +28,7 @@ import butterknife.Bind;
 /**
  * Created by Administrator on 2016/9/14.
  */
-public class ProductPreservListActivity extends BaseListActivity<PreservationInfo>
+public class ProductPreserveListActivity extends BaseListActivity<PreservationInfo>
         implements IDefaultListView<PreservationInfo> {
 
     String nodata = "你还未保过全作品";
@@ -142,7 +142,7 @@ public class ProductPreservListActivity extends BaseListActivity<PreservationInf
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    PreservInfoActivity.start(context,info.id);
+                    PreserveInfoActivity.start(context,info.id);
                 }
             });
         }

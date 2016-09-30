@@ -76,8 +76,8 @@ public class MyApplication extends Application implements ServiceConnection {
         String url = PrefsUtil.getString("domain", this);
         if (StringUtils.isNotBlank(url)) {
             MyHttpClient.ROOT_URL = url;
-            MyHttpClient.PRE_ROOT = url.substring(0,url.length()-1);
-            MyHttpClient.BASE_URL = MyHttpClient.ROOT_URL+MyHttpClient.BASE_PATH;
+            MyHttpClient.PRE_ROOT = url;
+            MyHttpClient.BASE_URL = MyHttpClient.ROOT_URL;
         }
         userid = PrefsUtil.getUserId(context);
         isLogin = userid > 0;

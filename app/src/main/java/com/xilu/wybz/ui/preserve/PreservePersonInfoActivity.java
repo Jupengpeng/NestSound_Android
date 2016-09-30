@@ -1,4 +1,4 @@
-package com.xilu.wybz.ui.preservation;
+package com.xilu.wybz.ui.preserve;
 
 import android.os.Bundle;
 import android.view.View;
@@ -13,7 +13,7 @@ import butterknife.Bind;
 /**
  * Created by Administrator on 2016/9/14.
  */
-public class PreservPersonInfoActivity extends ToolbarActivity {
+public class PreservePersonInfoActivity extends ToolbarActivity {
 
 
     @Bind(R.id.preservation_name)

@@ -275,22 +275,22 @@
         <!--preservation-->
 
         <activity
-            android:name=".ui.preservation.ApplyPreservActivity"
+            android:name=".ui.preserve.ApplyPreserveActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".ui.preservation.PreservPersonInfoActivity"
+            android:name=".ui.preserve.PreservePersonInfoActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".ui.preservation.PreservPersonEditActivity"
+            android:name=".ui.preserve.PreservePersonEditActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".ui.preservation.PreservInfoActivity"
+            android:name=".ui.preserve.PreserveInfoActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".ui.preservation.ProductPreservListActivity"
+            android:name=".ui.preserve.ProductPreserveListActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".ui.preservation.ProductAllActivity"
+            android:name=".ui.preserve.ProductAllActivity"
             android:screenOrientation="portrait"/>
 
 

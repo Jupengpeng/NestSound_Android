@@ -1,4 +1,4 @@
-package com.xilu.wybz.ui.preservation;
+package com.xilu.wybz.ui.preserve;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -135,7 +135,7 @@ public class ProductsFragment extends BaseListFragment<ProductInfo> implements I
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(context, ApplyPreservActivity.class);
+                    Intent intent = new Intent(context, ApplyPreserveActivity.class);
                     startActivity(intent);
                 }
             });

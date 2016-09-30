@@ -1,4 +1,4 @@
-package com.xilu.wybz.ui.preservation;
+package com.xilu.wybz.ui.preserve;
 
 import android.os.Bundle;
 import android.os.Handler;

@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.xilu.wybz.ui.preservation.ProductsFragment;
+import com.xilu.wybz.ui.preserve.ProductsFragment;
 
 import java.util.HashMap;
 import java.util.Map;

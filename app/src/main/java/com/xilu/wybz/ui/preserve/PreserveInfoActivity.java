@@ -1,4 +1,4 @@
-package com.xilu.wybz.ui.preservation;
+package com.xilu.wybz.ui.preserve;
 
 import android.content.Context;
 import android.content.Intent;
@@ -18,7 +18,7 @@ import butterknife.Bind;
 /**
  * Created by Administrator on 2016/9/14.
  */
-public class PreservInfoActivity extends ToolbarActivity {
+public class PreserveInfoActivity extends ToolbarActivity {
 
     public static final String DATA = "data";
 
@@ -67,7 +67,7 @@ public class PreservInfoActivity extends ToolbarActivity {
 
     public static void startPreservInfoActivity(Context context, NodeViewData data) {
 
-        Intent intent = new Intent(context, PreservInfoActivity.class);
+        Intent intent = new Intent(context, PreserveInfoActivity.class);
         intent.putExtra(DATA, data);
         context.startActivity(intent);
 

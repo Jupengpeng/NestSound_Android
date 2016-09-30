@@ -1,4 +1,4 @@
-package com.xilu.wybz.ui.preservation;
+package com.xilu.wybz.ui.preserve;
 
 import android.app.Activity;
 import android.content.Context;
@@ -19,7 +19,7 @@ import com.xilu.wybz.R;
 import com.xilu.wybz.bean.PersonInfo;
 import com.xilu.wybz.bean.ProductInfo;
 import com.xilu.wybz.common.MyCommon;
-import com.xilu.wybz.presenter.ApplyPreservProsenter;
+import com.xilu.wybz.presenter.ApplyPreservePresenter;
 import com.xilu.wybz.ui.BrowserActivity;
 import com.xilu.wybz.ui.IView.IApplyPreservView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
@@ -32,7 +32,7 @@ import butterknife.OnClick;
 /**
  * Created by Administrator on 2016/9/14.
  */
-public class ApplyPreservActivity extends ToolbarActivity implements IApplyPreservView {
+public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPreservView {
 
     public static final String DATA = "data";
 
@@ -86,7 +86,7 @@ public class ApplyPreservActivity extends ToolbarActivity implements IApplyPrese
 
     ProductInfo productInfo;
 
-    ApplyPreservProsenter prosenter;
+    ApplyPreservePresenter presenter;
 
 
     @Override
@@ -96,7 +96,7 @@ public class ApplyPreservActivity extends ToolbarActivity implements IApplyPrese
 
 
     public static void startApplyPreservActivity(Context context, ProductInfo info) {
-        Intent intent = new Intent(context, ApplyPreservActivity.class);
+        Intent intent = new Intent(context, ApplyPreserveActivity.class);
         intent.putExtra(DATA, info);
         context.startActivity(intent);
     }
@@ -126,7 +126,7 @@ public class ApplyPreservActivity extends ToolbarActivity implements IApplyPrese
     @Override
     public void initView() {
 
-        prosenter = new ApplyPreservProsenter(context, this);
+        presenter = new ApplyPreservePresenter(context, this);
 
         initUserType();
 
@@ -164,7 +164,7 @@ public class ApplyPreservActivity extends ToolbarActivity implements IApplyPrese
 //        new Handler().post(new Runnable() {
 //            @Override
 //            public void run() {
-                Pingpp.createPayment(ApplyPreservActivity.this, data);
+                Pingpp.createPayment(ApplyPreserveActivity.this, data);
 //            }
 //        });
 
@@ -183,7 +183,7 @@ public class ApplyPreservActivity extends ToolbarActivity implements IApplyPrese
     public void onClickRight() {
 
         PersonInfo personInfo = getPersonInfo();
-        PreservPersonEditActivity.startPersonEditActivity(this, personInfo);
+        PreservePersonEditActivity.startPersonEditActivity(this, personInfo);
     }
 
     @OnClick(R.id.preservation_submit)
@@ -194,11 +194,11 @@ public class ApplyPreservActivity extends ToolbarActivity implements IApplyPrese
         productInfo1.typeId ="1";
         productInfo1.id="134245";
         PersonInfo personInfo1 = new PersonInfo();
-        personInfo1.cardID="1321415";
-        personInfo1.name="name";
-        personInfo1.phone="1325354667";
+        personInfo1.cCardId ="1321415";
+        personInfo1.cUserName ="cUserName";
+        personInfo1.cPhone ="1325354667";
 
-        prosenter.applyOrder(productInfo1 , personInfo1);
+        presenter.applyOrder(productInfo1 , personInfo1);
 
 //        startActivity(PreservInfoActivity.class);
 //        startActivity(ProductAllActivity.class);
@@ -239,9 +239,9 @@ public class ApplyPreservActivity extends ToolbarActivity implements IApplyPrese
     public PersonInfo getPersonInfo() {
 
         PersonInfo personInfo = new PersonInfo();
-        personInfo.name = preservationName.getText().toString();
-        personInfo.cardID = preservationCardId.getText().toString();
-        personInfo.phone = preservationPhone.getText().toString();
+        personInfo.cUserName = preservationName.getText().toString();
+        personInfo.cCardId = preservationCardId.getText().toString();
+        personInfo.cPhone = preservationPhone.getText().toString();
         return personInfo;
     }
 
@@ -250,9 +250,9 @@ public class ApplyPreservActivity extends ToolbarActivity implements IApplyPrese
      */
     public void setPersonInfo(PersonInfo info) {
 
-        preservationName.setText(info.name);
-        preservationCardId.setText(info.cardID);
-        preservationPhone.setText(info.phone);
+        preservationName.setText(info.cUserName);
+        preservationCardId.setText(info.cCardId);
+        preservationPhone.setText(info.cPhone);
     }
 
 
@@ -284,7 +284,7 @@ public class ApplyPreservActivity extends ToolbarActivity implements IApplyPrese
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
 
-                PersonInfo info = PreservPersonEditActivity.getInfo(data);
+                PersonInfo info = PreservePersonEditActivity.getInfo(data);
                 if (info != null) {
                     userInfoAdd.setVisibility(View.GONE);
                     userInfoContainer.setVisibility(View.VISIBLE);
