@@ -393,19 +393,27 @@ public class MyHttpClient {
      */
 
     public static String getpreservationList() {
-        return "/java/baoquan/getBaoquanListByid";
+        return "/copyright/preserve/getPreserveListByid";
     }
 
     public static String getProductAllList() {
-        return "/java/baoquan/getProductListByid";
+        return "/copyright/preserve/getProductList";
+    }
+
+    public static String getPreserveOrderDetail() {
+        return "/copyright/preserve/getOrderDetail";
+    }
+
+    public static String getPreservePreserveInfo() {
+        return "/copyright/preserve/getPreserveInfo";
     }
 
     public static String getPersonInfo() {
-        return "/java/baoquan/getBaoquanrenByid";
+        return "/copyright/preserve/getBaoquanrenByid";
     }
 
     public static String getSavePersonInfo() {
-        return "/java/baoquan/addBaoquanren";
+        return "/copyright/preserve/addBaoquanren";
     }
 
     /**
@@ -418,6 +426,9 @@ public class MyHttpClient {
 
     public static String getPaypalPay() {
         return "/paypal/pay/save/v22";
+    }
+    public static String getPaypalStatus() {
+        return "/paypal/pay/status/v22";
     }
 
 }

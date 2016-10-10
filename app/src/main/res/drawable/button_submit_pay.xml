@@ -1,11 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item>
+    <item android:state_enabled="true" android:state_pressed="false">
         <shape>
             <corners
                 android:radius="21dp"
                 />
             <solid android:color="@color/main_theme_color"/>
+        </shape>
+    </item>
+    <item android:state_enabled="false" android:state_pressed="false">
+        <shape>
+            <corners
+                android:radius="21dp"
+                />
+            <solid android:color="@color/split_line"/>
+        </shape>
+    </item>
+    <item android:state_enabled="true" android:state_pressed="true">
+        <shape>
+            <corners
+                android:radius="21dp"
+                />
+            <solid android:color="@color/main_theme_color_dark"/>
         </shape>
     </item>
 

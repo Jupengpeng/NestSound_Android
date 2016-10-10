@@ -16,6 +16,7 @@ import com.xilu.wybz.presenter.DefaultListPresenter;
 import com.xilu.wybz.ui.IView.IDefaultListView;
 import com.xilu.wybz.ui.base.BaseListActivity;
 import com.xilu.wybz.utils.DateFormatUtils;
+import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.ToastUtils;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 
@@ -45,12 +46,15 @@ public class ProductPreserveListActivity extends BaseListActivity<PreservationIn
         defaultListPresenter = new DefaultListPresenter<>(context, this);
         defaultListPresenter.setUrl(MyHttpClient.getpreservationList());
 
-        param.put("uid", "12345");
+        param.put("id", ""+PrefsUtil.getUserId(context));
         defaultListPresenter.setParams(param);
-        defaultListPresenter.mockAble = true;
+        defaultListPresenter.mockAble = false;
         defaultListPresenter.init();
     }
 
+    /**
+     * initView.
+     */
     @Override
     public void initView() {
         setTitle("保全列表");
@@ -63,6 +67,9 @@ public class ProductPreserveListActivity extends BaseListActivity<PreservationIn
         ivNoData.setImageResource(nodatares);
     }
 
+    /**
+     * setUpData.
+     */
     @Override
     protected void setUpData() {
         super.setUpData();
@@ -90,15 +97,18 @@ public class ProductPreserveListActivity extends BaseListActivity<PreservationIn
 
             ToastUtils.toast(context, "没有更多数据");
         }
+        checkData();
     }
 
     @Override
     public void onError(String message) {
-        ToastUtils.toast(context, message);
+        recycler.onRefreshCompleted();
+        checkData();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        recycler.onRefreshCompleted();
         getMenuInflater().inflate(R.menu.menu_add, menu);
         return true;
     }

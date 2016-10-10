@@ -11,7 +11,9 @@ public class NodeViewData implements Parcelable {
 
 
     public int id;
-
+    public int type;
+    public int cType;
+    public int status;
 
 
     @Override
@@ -22,6 +24,9 @@ public class NodeViewData implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(this.id);
+        dest.writeInt(this.type);
+        dest.writeInt(this.cType);
+        dest.writeInt(this.status);
     }
 
     public NodeViewData() {
@@ -29,9 +34,12 @@ public class NodeViewData implements Parcelable {
 
     protected NodeViewData(Parcel in) {
         this.id = in.readInt();
+        this.type = in.readInt();
+        this.cType = in.readInt();
+        this.status = in.readInt();
     }
 
-    public static final Parcelable.Creator<NodeViewData> CREATOR = new Parcelable.Creator<NodeViewData>() {
+    public static final Creator<NodeViewData> CREATOR = new Creator<NodeViewData>() {
         @Override
         public NodeViewData createFromParcel(Parcel source) {
             return new NodeViewData(source);

@@ -64,6 +64,7 @@ public class BrowserActivity extends ToolbarActivity implements IMusicTalkDetail
     ProgressBar mProgressBar;
     @Bind(R.id.webview)
     WebView mWebView;
+
     private LinearLayout llFootBar;
     private LinearLayout llZan;
     private LinearLayout llComment;
@@ -81,6 +82,8 @@ public class BrowserActivity extends ToolbarActivity implements IMusicTalkDetail
     private MusicTalk musicTalk;
     public static final int FILECHOOSER_RESULTCODE = 200;
     private MusicTalkPresenter musicTalkPresenter;
+
+
     public static void toBrowserActivity(Context context, String url) {
         Intent intent = new Intent(context, BrowserActivity.class);
         intent.putExtra("url", url);
@@ -437,8 +440,8 @@ public class BrowserActivity extends ToolbarActivity implements IMusicTalkDetail
                 url = bundle.getString("url");
             }else{
                 url = musicTalk.url;
+                musicTalk.shareurl = musicTalk.url;
             }
-            musicTalk.shareurl = musicTalk.url;
         }
         if(musicTalk!=null){
             loadFootBar();
@@ -521,12 +524,12 @@ public class BrowserActivity extends ToolbarActivity implements IMusicTalkDetail
 
     @Override
     protected void onDestroy() {
+        super.onDestroy();
         if (mWebView != null) {
             mWebView.removeAllViews();
             mWebView.destroy();
             mWebView = null;
         }
-        super.onDestroy();
         EventBus.getDefault().unregister(this);
     }
 }

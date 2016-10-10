@@ -42,7 +42,6 @@ import com.xilu.wybz.common.PlayMediaInstance;
 import com.xilu.wybz.presenter.DownPicPresenter;
 import com.xilu.wybz.presenter.PlayPresenter;
 import com.xilu.wybz.service.MainService;
-import com.xilu.wybz.ui.ExitApplication;
 import com.xilu.wybz.ui.IView.ILoadPicView;
 import com.xilu.wybz.ui.IView.IPlayView;
 import com.xilu.wybz.ui.MyApplication;
@@ -160,7 +159,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ExitApplication.getInstance().exit();
+//        ExitApplication.getInstance().exit();
         if(MyApplication.getInstance().mMainService==null){
             MyApplication.getInstance().bindMainService();
         }
@@ -173,7 +172,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     }
 
     public void initView() {
-        ExitApplication.getInstance().addActivity(this);
+//        ExitApplication.getInstance().addActivity(this);
         toolbar.setTitleTextColor(Color.WHITE);
         worksData = new WorksData();
         LayoutInflater lf = getLayoutInflater().from(this);

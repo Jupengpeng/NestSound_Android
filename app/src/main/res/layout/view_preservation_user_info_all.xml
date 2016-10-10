@@ -48,6 +48,7 @@
                 android:layout_width="300dp"
                 android:layout_gravity="center_vertical"
                 android:textSize="16sp"
+                android:singleLine="true"
                 android:text="南姑娘"
                 android:textColor="@color/main_text_color"
                 />
@@ -73,6 +74,7 @@
                 android:id="@+id/preservation_card_id"
                 android:text="3112005492884452"
                 android:layout_gravity="center_vertical"
+                android:singleLine="true"
                 android:textSize="16sp"
                 android:textColor="@color/main_text_color"
                 />
@@ -98,6 +100,7 @@
                 android:id="@+id/preservation_phone"
                 android:text="13732231228"
                 android:layout_gravity="center_vertical"
+                android:singleLine="true"
                 android:textSize="16sp"
                 android:textColor="@color/main_text_color"
                 />
@@ -123,6 +126,7 @@
                 android:id="@+id/preservation_type"
                 android:text="曲作者"
                 android:layout_gravity="center_vertical"
+                android:singleLine="true"
                 android:textSize="16sp"
                 android:textColor="@color/main_text_color"
                 />

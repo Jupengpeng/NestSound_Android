@@ -46,7 +46,7 @@ public class MakeSongPresenter extends BasePresenter<IMakeSongView> {
             public void inProgress(float progress, long total) {
 
                 iView.setLoadProgress((int)(100*progress));
-                Log.d("url","loadFile progress:"+progress);
+//                Log.d("url","loadFile progress:"+progress);
 
                 if (progress == 1.0f){
                     Log.d("url","loadFile ok..");

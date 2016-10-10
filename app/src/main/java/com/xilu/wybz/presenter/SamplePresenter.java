@@ -19,7 +19,7 @@ import okhttp3.Call;
 public class SamplePresenter<T> extends BasePresenter<ISampleView<T>> {
 
     public boolean mockAble = false;
-    private String url;
+    public String url;
 
 
     /**

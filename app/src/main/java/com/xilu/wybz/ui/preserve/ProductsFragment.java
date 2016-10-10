@@ -16,6 +16,7 @@ import com.xilu.wybz.ui.IView.IDefaultListView;
 import com.xilu.wybz.ui.fragment.BaseListFragment;
 import com.xilu.wybz.utils.DateFormatUtils;
 import com.xilu.wybz.utils.DensityUtil;
+import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.ToastUtils;
 import com.xilu.wybz.view.DividerItemDecoration;
 import com.xilu.wybz.view.pull.BaseViewHolder;
@@ -28,11 +29,17 @@ import butterknife.Bind;
 
 /**
  * Created by June on 16/5/7.
+ *
+ *
+ *
  */
 public class ProductsFragment extends BaseListFragment<ProductInfo> implements IDefaultListView<ProductInfo> {
 
     @Bind(R.id.ll_loading)
     LinearLayout ll_loading;
+
+
+    int nodatares = R.drawable.ic_nocomment;
 
     private DefaultListPresenter<ProductInfo> defaultListPresenter;
 
@@ -47,18 +54,26 @@ public class ProductsFragment extends BaseListFragment<ProductInfo> implements I
         defaultListPresenter = new DefaultListPresenter<>(context, this);
         defaultListPresenter.setUrl(MyHttpClient.getProductAllList());
 
-        param.put("uid", "12345");
+        param.put("uid", ""+PrefsUtil.getUserId(context));
+        param.put("sort_id", ""+viewType);
+
         defaultListPresenter.setParams(param);
         defaultListPresenter.mockAble = true;
         defaultListPresenter.init();
 
     }
 
+    /**
+     *
+     */
     @Override
     public void initView() {
         recycler.getRecyclerView().setBackgroundColor(Color.parseColor("#ffffffff"));
         recycler.enableLoadMore(true);
         recycler.enablePullToRefresh(true);
+
+        tvNoData.setText("没有可以保全的作品！");
+        ivNoData.setImageResource(nodatares);
     }
 
     @Override
@@ -71,8 +86,9 @@ public class ProductsFragment extends BaseListFragment<ProductInfo> implements I
     }
 
     public void loadData(){
-        if (!loading){
+        if (!loading || mDataList.size()==0){
             loading = true;
+            showDataView();
             recycler.setRefreshing();
         }
     }
@@ -95,11 +111,13 @@ public class ProductsFragment extends BaseListFragment<ProductInfo> implements I
 
             ToastUtils.toast(context, "没有更多数据");
         }
+        checkData();
     }
 
     @Override
     public void onError(String message) {
-        ToastUtils.toast(context, message);
+        recycler.onRefreshCompleted();
+        checkData();
     }
 
     @Override

@@ -31,8 +31,9 @@
         <LinearLayout
             android:id="@+id/info_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/preservation_margin"
+            android:layout_gravity="center_vertical"
             android:orientation="vertical">
 
             <TextView

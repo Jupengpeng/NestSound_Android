@@ -56,10 +56,16 @@ public class ProductAllActivity extends ToolbarActivity implements ViewPager.OnP
             @Override
             public void run() {
                 switch (position){
+                    case 0:
+                        ProductsFragment productsFragment1 = (ProductsFragment) pagerAdapter.getFragment(0);
+                        if(productsFragment1!=null){
+                            productsFragment1.loadData();
+                        }
+                        break;
                     case 1:
-                        ProductsFragment productsFragment = (ProductsFragment) pagerAdapter.getFragment(1);
-                        if(productsFragment!=null){
-                            productsFragment.loadData();
+                        ProductsFragment productsFragment2 = (ProductsFragment) pagerAdapter.getFragment(1);
+                        if(productsFragment2!=null){
+                            productsFragment2.loadData();
                         }
                         break;
                 }

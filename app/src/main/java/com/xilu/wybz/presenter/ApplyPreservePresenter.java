@@ -3,8 +3,10 @@ package com.xilu.wybz.presenter;
 import android.content.Context;
 import android.util.Log;
 
+import com.google.gson.reflect.TypeToken;
 import com.xilu.wybz.bean.JsonResponse;
 import com.xilu.wybz.bean.PersonInfo;
+import com.xilu.wybz.bean.PreserveInfoBean;
 import com.xilu.wybz.bean.ProductInfo;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.callback.AppJsonCalback;
@@ -49,12 +51,12 @@ public class ApplyPreservePresenter extends BasePresenter<IApplyPreservView>{
         params.put("uid",""+ PrefsUtil.getUserId(context));
         params.put("itemid",""+productInfo.id);
         params.put("type",""+productInfo.type);
-        params.put("ctype",""+productInfo.type);
-        params.put("cusername",personInfo.cUserName);
-        params.put("ccard",personInfo.cCardId);
-        params.put("cphone",personInfo.cPhone);
+        params.put("cType",""+productInfo.type);
+        params.put("cUsername",personInfo.cUserName);
+        params.put("cCardId",personInfo.cCardId);
+        params.put("cPhone",personInfo.cPhone);
 
-        httpUtils.postHost(MyHttpClient.getPaypalOrder(),params,new AppJsonCalback(context){
+        httpUtils.post(MyHttpClient.getPaypalOrder(),params,new AppJsonCalback(context){
 
             @Override
             public void onResult(JsonResponse<? extends Object> response) {
@@ -69,19 +71,12 @@ public class ApplyPreservePresenter extends BasePresenter<IApplyPreservView>{
             @Override
             public void onResultError(JsonResponse<? extends Object> response) {
                 super.onResultError(response);
-                Log.e("pay",response.getData());
             }
 
             @Override
             public void onError(Call call, Exception e) {
                 super.onError(call, e);
-                Log.e("pay","onError");
             }
-
-//            @Override
-//            public Type getDataType() {
-//                return super.getDataType();
-//            }
 
         });
 
@@ -97,7 +92,7 @@ public class ApplyPreservePresenter extends BasePresenter<IApplyPreservView>{
 
         params.put("orderNo",orderNumber);
 
-        httpUtils.postHost(MyHttpClient.getPaypalPay(),params,new AppJsonCalback(context){
+        httpUtils.post(MyHttpClient.getPaypalPay(),params,new AppJsonCalback(context){
 
             @Override
             public void onResult(JsonResponse<? extends Object> response) {
@@ -127,13 +122,15 @@ public class ApplyPreservePresenter extends BasePresenter<IApplyPreservView>{
     }
 
 
-    public void applyProdutInfo(int id){
+    public void getApplyProdutInfo(int id,int type){
 
         params = new HashMap<>();
 
+        params.put("uid",""+PrefsUtil.getUserId(context));
         params.put("id",""+id);
+        params.put("sort_id",""+type);
 
-        httpUtils.post(MyHttpClient.getPaypalOrder(),params,new AppJsonCalback(context){
+        httpUtils.post(MyHttpClient.getPreservePreserveInfo(),params,new AppJsonCalback(context){
 
             @Override
             public void onResult(JsonResponse<? extends Object> response) {
@@ -152,7 +149,7 @@ public class ApplyPreservePresenter extends BasePresenter<IApplyPreservView>{
 
             @Override
             public Type getDataType() {
-                return super.getDataType();
+                return new TypeToken<PreserveInfoBean>(){}.getType();
             }
 
         });

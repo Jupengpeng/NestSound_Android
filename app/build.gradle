@@ -131,6 +131,11 @@ dependencies {
     compile project(':library')
     compile project(':pingpp')
     compile project(':music-service')
+
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
+    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
+
     compile rootProject.ext.dependencies["design"]
     compile rootProject.ext.dependencies["async"]
     compile rootProject.ext.dependencies["appcompat-v7"]

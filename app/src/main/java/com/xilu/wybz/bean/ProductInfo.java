@@ -9,7 +9,7 @@ import android.os.Parcelable;
 
 public class ProductInfo implements Parcelable {
 
-    public String id;
+    public int id;
 
     public String title;
     public String lyricAuthor;
@@ -19,7 +19,7 @@ public class ProductInfo implements Parcelable {
     public String image;
     public int type;
 
-    public String preserveDate;
+    public long preserveDate;
     public String preserveID;
 
     public ProductInfo() {
@@ -27,19 +27,20 @@ public class ProductInfo implements Parcelable {
 
 
     /*
-    productInfo:{
-        id:1,
-        title:name,
-        lyricAuthor:sd
-        songAuthor:sd,
-        accompaniment:yinchao,//伴奏
-        createTime：14265756856
-        image:http://pic.yinchao.cn/214124.png
-        type:1
+     productInfo:{
+            "id":1,
+            "title":"name",
+            "lyricAuthor":"sd"
+            "songAuthor":"sd",
+            "accompaniment":"yinchao",//伴奏
+            "createTime"："14265756856"
+            "image":"http://pic.yinchao.cn/214124.png"
+            "type":1
 
-        preserveDate:
-        preserveID:
-    }*/
+            "preserveDate":
+            "preserveID"://保全号
+        }
+    */
 
     /**
      *
@@ -59,7 +60,7 @@ public class ProductInfo implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.id);
+        dest.writeInt(this.id);
         dest.writeString(this.title);
         dest.writeString(this.lyricAuthor);
         dest.writeString(this.songAuthor);
@@ -67,12 +68,12 @@ public class ProductInfo implements Parcelable {
         dest.writeLong(this.createTime);
         dest.writeString(this.image);
         dest.writeInt(this.type);
-        dest.writeString(this.preserveDate);
+        dest.writeLong(this.preserveDate);
         dest.writeString(this.preserveID);
     }
 
     protected ProductInfo(Parcel in) {
-        this.id = in.readString();
+        this.id = in.readInt();
         this.title = in.readString();
         this.lyricAuthor = in.readString();
         this.songAuthor = in.readString();
@@ -80,7 +81,7 @@ public class ProductInfo implements Parcelable {
         this.createTime = in.readLong();
         this.image = in.readString();
         this.type = in.readInt();
-        this.preserveDate = in.readString();
+        this.preserveDate = in.readLong();
         this.preserveID = in.readString();
     }
 

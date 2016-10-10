@@ -9,14 +9,19 @@ import android.content.ServiceConnection;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.StrictMode;
 import android.support.multidex.MultiDex;
+import android.util.Log;
 
+import com.facebook.drawee.backends.pipeline.BuildConfig;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.qiniu.android.storage.UploadManager;
+import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
 import com.umeng.socialize.Config;
 import com.umeng.socialize.PlatformConfig;
 import com.xilu.wybz.common.MyCommon;
@@ -31,6 +36,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import cn.jpush.android.api.JPushInterface;
+
+import static android.os.Build.VERSION.SDK_INT;
+import static android.os.Build.VERSION_CODES.GINGERBREAD;
 
 /**
  * Created by June on 2016/3/1.
@@ -59,6 +67,8 @@ public class MyApplication extends Application implements ServiceConnection {
     public void onCreate() {
         super.onCreate();
         context = this;
+
+        initLeakCanary();
         //检查版本
         int versionCode = PrefsUtil.getInt("versionCode", context);
         if (versionCode == 0) {
@@ -96,6 +106,37 @@ public class MyApplication extends Application implements ServiceConnection {
         startMainService();
         bindMainService();
 //        WeChatPayUtils.register(this);
+    }
+
+
+    /**
+     * 初始化内存检测工具LeakCanary.
+     */
+    RefWatcher refWatcher;
+    protected void initLeakCanary(){
+
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            Log.e("StrictMode","isInAnalyzerProcess");
+//            return;
+        }
+        refWatcher = LeakCanary.install(this);
+
+        enabledStrictMode();
+    }
+
+    private void enabledStrictMode() {
+        if (!BuildConfig.DEBUG){
+            return;
+        }
+        if (SDK_INT >= GINGERBREAD) {
+            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder() //
+                    .detectAll() //
+                    .penaltyLog() //
+                    .penaltyDeath() //
+                    .build());
+        }
     }
 
     public static void initImageLoader(Context context) {

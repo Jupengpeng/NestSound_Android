@@ -25,7 +25,7 @@ public class ExitApplication extends Application {
 
     //添加Activity到容器中
     public void addActivity(Activity activity) {
-        activityList.add(activity);
+//        activityList.add(activity);
     }
     //遍历所有Activity并finish
 

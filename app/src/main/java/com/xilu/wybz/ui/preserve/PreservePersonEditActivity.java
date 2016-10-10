@@ -12,10 +12,16 @@ import android.widget.TextView;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.PersonInfo;
 import com.xilu.wybz.common.MyCommon;
+import com.xilu.wybz.common.MyHttpClient;
+import com.xilu.wybz.presenter.SamplePresenter;
 import com.xilu.wybz.ui.BrowserActivity;
+import com.xilu.wybz.ui.IView.ISampleView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.utils.StringStyleUtil;
 import com.xilu.wybz.utils.ToastUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -23,7 +29,7 @@ import butterknife.OnClick;
 /**
  * Created by Administrator on 2016/9/14.
  */
-public class PreservePersonEditActivity extends ToolbarActivity {
+public class PreservePersonEditActivity extends ToolbarActivity implements ISampleView<PersonInfo> {
 
     public static String INFO = "INFO";
 
@@ -41,6 +47,9 @@ public class PreservePersonEditActivity extends ToolbarActivity {
     PersonInfo personInfo;
 
     String desc = "《音巢音乐个人信息采集申明》";
+
+    SamplePresenter<PersonInfo> samplePresenter;
+    Map<String,String> params;
 
     @Override
     protected int getLayoutRes() {
@@ -62,13 +71,10 @@ public class PreservePersonEditActivity extends ToolbarActivity {
             preservationPhone.setText(personInfo.cPhone);
         }
 
-
-
-//        personInfoDesc.setText(StringStyleUtil.getLinkSpan(this,desc,PreservPersonEditActivity.class,""));
-//        personInfoDesc.setMovementMethod(LinkMovementMethod.getInstance());
-
         initProtocol();
+        initPresenter();
     }
+
 
     /**
      *
@@ -77,6 +83,17 @@ public class PreservePersonEditActivity extends ToolbarActivity {
         String text = personInfoDesc.getText().toString();
         personInfoDesc.setText(StringStyleUtil.getLinkSpan(this,text,BrowserActivity.class, MyCommon.PROTOCOL_2));
         personInfoDesc.setMovementMethod(LinkMovementMethod.getInstance());
+    }
+
+    /**
+     * initPresenter.
+     */
+    private void initPresenter(){
+
+        samplePresenter = new SamplePresenter<>(context,this);
+        samplePresenter.url = MyHttpClient.getSavePersonInfo();
+        params = new HashMap<>();
+
     }
 
     @OnClick(R.id.edit_submit)
@@ -95,14 +112,24 @@ public class PreservePersonEditActivity extends ToolbarActivity {
             return;
         }
 
+        if (personInfo == null){
+            personInfo = new PersonInfo();
+        }
+
         personInfo.cUserName = preservationName.getText().toString();
         personInfo.cCardId = preservationCardId.getText().toString();
         personInfo.cPhone = preservationPhone.getText().toString();
 
-        Intent intent = new Intent();
-        intent.putExtra(INFO, personInfo);
-        setResult(RESULT_OK, intent);
-        finish();
+        params.put("bq_uid","");
+        params.put("bq_username","");
+        params.put("bq_phone","");
+        params.put("bq_creditID","");
+        samplePresenter.getData(params);
+
+//        Intent intent = new Intent();
+//        intent.putExtra(INFO, personInfo);
+//        setResult(RESULT_OK, intent);
+//        finish();
     }
 
 
@@ -117,6 +144,22 @@ public class PreservePersonEditActivity extends ToolbarActivity {
             intent.putExtra(INFO, info);
         }
         activity.startActivityForResult(intent, 1);
+    }
+
+
+    @Override
+    public void onSuccess(PersonInfo info) {
+
+    }
+
+    @Override
+    public void onError(String message) {
+
+    }
+
+    @Override
+    public void initView() {
+
     }
 
     /**

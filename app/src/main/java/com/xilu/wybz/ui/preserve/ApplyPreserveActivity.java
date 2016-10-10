@@ -23,6 +23,7 @@ import com.xilu.wybz.presenter.ApplyPreservePresenter;
 import com.xilu.wybz.ui.BrowserActivity;
 import com.xilu.wybz.ui.IView.IApplyPreservView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
+import com.xilu.wybz.utils.DateFormatUtils;
 import com.xilu.wybz.utils.StringStyleUtil;
 import com.xilu.wybz.utils.ToastUtils;
 
@@ -135,6 +136,9 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
 
     public void initPresenter(){
         presenter = new ApplyPreservePresenter(context, this);
+
+        presenter.getApplyProdutInfo(productInfo.id,productInfo.type);
+//        presenter
     }
 
 
@@ -143,15 +147,13 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
 
     @Override
     public void initView() {
-
-        presenter = new ApplyPreservePresenter(context, this);
-
-
     }
+
+
 
     @Override
     public void updateProductInfo(ProductInfo info) {
-
+        setPreductInfo(info);
     }
 
     @Override
@@ -190,6 +192,25 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
 
     }
 
+    private void setPreductInfo(ProductInfo info){
+
+        if (info == null){
+            infoName.setText("歌曲名：/");
+            infoLyricAuthor.setText("词作者：/");
+            infoSongAuthor.setText("曲作者：/");
+            infoBanzou.setText("伴奏：/");
+            infoCreateTime.setText("创作时间：/");
+
+        } else {
+
+            infoName.setText("歌曲名："+info.title);
+            infoLyricAuthor.setText("词作者："+info.lyricAuthor);
+            infoSongAuthor.setText("曲作者："+info.songAuthor);
+            infoBanzou.setText("伴奏："+info.accompaniment);
+            infoCreateTime.setText("词创作时间："+ DateFormatUtils.formatX1(info.createTime));
+        }
+    }
+
     @OnClick(R.id.user_info_add)
     public void onClickAdd() {
         PreservePersonEditActivity.start(this, null);
@@ -207,7 +228,7 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
         ProductInfo productInfo1 = new ProductInfo();
 
         productInfo1.type =1;
-        productInfo1.id="134245";
+        productInfo1.id=134245;
         PersonInfo personInfo1 = new PersonInfo();
         personInfo1.cCardId ="1321415";
         personInfo1.cUserName ="cUserName";
@@ -333,6 +354,7 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
                     userInfoAdd.setVisibility(View.GONE);
                     userInfoContainer.setVisibility(View.VISIBLE);
 
+                    personInfo = info;
                     setPersonInfo(info);
                 }
 
