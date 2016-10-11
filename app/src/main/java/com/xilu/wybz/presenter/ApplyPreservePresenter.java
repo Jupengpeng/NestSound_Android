@@ -122,6 +122,44 @@ public class ApplyPreservePresenter extends BasePresenter<IApplyPreservView>{
     }
 
 
+    /**
+     * 回调支付状态.
+     * @param status
+     */
+    public void applyPayCallback(int status){
+
+        params = new HashMap<>();
+
+        params.put("orderNo",orderNumber);
+        params.put("status",""+status);
+
+        httpUtils.post(MyHttpClient.getPaypalStatus(),params,new AppJsonCalback(context){
+
+            @Override
+            public void onResult(JsonResponse<? extends Object> response) {
+                super.onResult(response);
+                Log.i("pay","applyPayCallback");
+
+            }
+
+
+
+
+
+            @Override
+            public void onResultError(JsonResponse<? extends Object> response) {
+                super.onResultError(response);
+            }
+
+            @Override
+            public void onError(Call call, Exception e) {
+                super.onError(call, e);
+            }
+
+        });
+    }
+
+
     public void getApplyProdutInfo(int id,int type){
 
         params = new HashMap<>();

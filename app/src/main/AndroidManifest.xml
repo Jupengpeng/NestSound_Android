@@ -95,6 +95,8 @@
             android:name=".ui.find.SearchWorksActivity"
             android:screenOrientation="portrait" />
 
+
+        <!--消息相关界面-->
         <activity
             android:name=".ui.msg.MsgActivity"
             android:screenOrientation="portrait" />
@@ -108,6 +110,10 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.msg.MsgFavActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.msg.MsgPreserveActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity

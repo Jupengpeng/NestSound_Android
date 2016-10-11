@@ -15,6 +15,8 @@ public class NodeViewData implements Parcelable {
     public int cType;
     public int status;
 
+    public String orderId;
+
 
     @Override
     public int describeContents() {
@@ -27,6 +29,7 @@ public class NodeViewData implements Parcelable {
         dest.writeInt(this.type);
         dest.writeInt(this.cType);
         dest.writeInt(this.status);
+        dest.writeString(this.orderId);
     }
 
     public NodeViewData() {
@@ -37,6 +40,7 @@ public class NodeViewData implements Parcelable {
         this.type = in.readInt();
         this.cType = in.readInt();
         this.status = in.readInt();
+        this.orderId = in.readString();
     }
 
     public static final Creator<NodeViewData> CREATOR = new Creator<NodeViewData>() {

@@ -79,9 +79,9 @@ public class PreserveInfoActivity extends ToolbarActivity implements ISampleView
 
     String certUrl;
 
-    public static void start(Context context, int orderId) {
+    public static void start(Context context, String orderId) {
         NodeViewData data = new NodeViewData();
-        data.id = orderId;
+        data.orderId = orderId;
         startPreservInfoActivity(context, data);
     }
 

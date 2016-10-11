@@ -7,6 +7,7 @@ public class MyHttpClient {
 
 
     public final static String RELEASE_ROOT_URL = "http://api.yinchao.cn";
+//    public final static String RELEASE_ROOT_URL = "http:192.168.0.99:8080";
     public final static String TEST_ROOT_URL = "http://test.yinchao.cn";
     public final static String TEMP_ROOT_URL = "http://test.yinchao.cn";
 
@@ -168,11 +169,16 @@ public class MyHttpClient {
         return "/java/workzan/optZan/v22";
     }
 
+
     //收藏接口
     public static String getWorkFovUrl() {
         return "/java/workfov/optZan/v22";
     }
 
+    /**
+     *  消息列表接口.
+     * @return
+     */
     //消息收藏列表
     public static String getMsgFovList() {
         return "/java/message/fovMyCenterList/v22";
@@ -188,11 +194,21 @@ public class MyHttpClient {
         return "/java/message/zanCenterList/v22";
     }
 
-    //消息点赞列表
+    //保全消息列表
+    public static String getMsgPreserveList() {
+        return "/java/message/copyrightList/v22";
+    }
+
+    //消息系统列表
     public static String getMsgSystemList() {
         return "/java/message/sysNoteList/v22";
     }
 
+
+    /**
+     *
+     * @return
+     */
     //发布歌词
     public static String getSaveLyricsUrl() {
         return "/java/lyricsopt/optLyrics";

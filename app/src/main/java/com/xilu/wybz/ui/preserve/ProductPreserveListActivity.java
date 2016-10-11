@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.gson.reflect.TypeToken;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.PreservationInfo;
 import com.xilu.wybz.common.MyHttpClient;
@@ -46,7 +47,9 @@ public class ProductPreserveListActivity extends BaseListActivity<PreservationIn
         defaultListPresenter = new DefaultListPresenter<>(context, this);
         defaultListPresenter.setUrl(MyHttpClient.getpreservationList());
 
-        param.put("id", ""+PrefsUtil.getUserId(context));
+        defaultListPresenter.resultType = new TypeToken<List<PreservationInfo>>(){}.getType();
+
+        param.put("uid", ""+PrefsUtil.getUserId(context));
         defaultListPresenter.setParams(param);
         defaultListPresenter.mockAble = false;
         defaultListPresenter.init();
@@ -164,7 +167,6 @@ public class ProductPreserveListActivity extends BaseListActivity<PreservationIn
 
             name.setText(info.worksname);
             time.setText(DateFormatUtils.formatX1(info.createtime));
-
             setTypeIcon(iconType,info.sort_id);
             setStatuText(status,info.statue);
 
@@ -173,13 +175,13 @@ public class ProductPreserveListActivity extends BaseListActivity<PreservationIn
         private void setStatuText(TextView statuView, int statu){
             switch (statu){
                 case 1:
-                    statuView.setText("保全中");
+                    statuView.setText("保全成功");
                     break;
                 case 2:
-                    statuView.setText("保护中");
+                    statuView.setText("保全中");
                     break;
                 case 3:
-                    statuView.setText("支付失败");
+                    statuView.setText("保全失败");
                 default:
             }
         }

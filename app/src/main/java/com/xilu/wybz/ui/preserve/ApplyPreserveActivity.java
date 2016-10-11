@@ -320,6 +320,27 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
     }
 
 
+    /**
+     * callback
+     * @param status
+     */
+    protected void payCallback(String status) {
+
+        int state = 0;
+
+        if ("success".equalsIgnoreCase(status)) {
+            state = 8;
+        } else if ("fail".equalsIgnoreCase(status)) {
+            state = 4;
+        } else if ("cancel".equalsIgnoreCase(status)) {
+            state = 0;
+        } else if ("invalid".equalsIgnoreCase(status)) {
+            state = 404;
+        }
+
+        presenter.applyPayCallback(state);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -330,6 +351,9 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
         if (requestCode == Pingpp.REQUEST_CODE_PAYMENT) {
             if (resultCode == Activity.RESULT_OK) {
                 String result = data.getExtras().getString("pay_result");
+
+
+                payCallback(result);
 
                 // 处理返回值
                 // "success" - 支付成功
@@ -342,7 +366,7 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
 
                 showMsg(result+errorMsg+extraMsg);
 
-                Log.e("pay",result+errorMsg+extraMsg);
+                Log.e("pay",result+":"+errorMsg+":"+extraMsg);
             }
         }
 

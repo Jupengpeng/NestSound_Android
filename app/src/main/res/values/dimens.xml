@@ -93,6 +93,8 @@
     <dimen name="more_window_item_margin">12dp</dimen>
 
 
+    <dimen name="margin_theme">15dp</dimen>
+
     <dimen name="preservation_margin">15dp</dimen>
     <dimen name="preservation_split">2dp</dimen>
 

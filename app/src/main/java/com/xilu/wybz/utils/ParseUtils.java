@@ -15,7 +15,7 @@ import com.xilu.wybz.bean.MainBean;
 import com.xilu.wybz.bean.MsgCommentBean;
 import com.xilu.wybz.bean.MusicTalk;
 import com.xilu.wybz.bean.SongAlbum;
-import com.xilu.wybz.bean.SystemBean;
+import com.xilu.wybz.bean.message.SystemMessageBean;
 import com.xilu.wybz.bean.TemplateBean;
 import com.xilu.wybz.bean.TokenBean;
 import com.xilu.wybz.bean.UserBean;
@@ -132,14 +132,14 @@ public class ParseUtils {
         return commentBeanList;
     }
     //消息收藏列表
-    public static List<SystemBean> getSystemsData(Context context, String response) {
-        List<SystemBean> commentBeanList = new ArrayList<>();
+    public static List<SystemMessageBean> getSystemsData(Context context, String response) {
+        List<SystemMessageBean> commentBeanList = new ArrayList<>();
         try {
             JSONObject jsonObject = new JSONObject(response);
             int code = jsonObject.getInt("code");
             if (code == 200) {
                 if(!TextUtils.isEmpty(jsonObject.getString("data")))
-                commentBeanList = new Gson().fromJson(jsonObject.getString("data"), new TypeToken<List<SystemBean>>() {}.getType());
+                commentBeanList = new Gson().fromJson(jsonObject.getString("data"), new TypeToken<List<SystemMessageBean>>() {}.getType());
             } else {
                 showMsg(context, jsonObject.getString("message"));
             }

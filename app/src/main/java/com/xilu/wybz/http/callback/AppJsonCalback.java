@@ -3,6 +3,7 @@ package com.xilu.wybz.http.callback;
 import android.content.Context;
 import android.util.Log;
 
+import com.facebook.drawee.backends.pipeline.BuildConfig;
 import com.xilu.wybz.bean.JsonResponse;
 import com.xilu.wybz.utils.NetWorkUtil;
 import com.xilu.wybz.utils.StringUtils;
@@ -32,7 +33,10 @@ public class AppJsonCalback extends JsonCallback {
         this.context = context;
     }
 
-
+    /**
+     * onResponse.
+     * @param response
+     */
     @Override
     public void onResponse(JsonResponse response) {
         if (response.getCode() == 200){
@@ -78,21 +82,28 @@ public class AppJsonCalback extends JsonCallback {
     @Override
     public void onError(Call call, Exception e) {
         super.onError(call, e);
-        e.printStackTrace();
-        if (e.getMessage().contains("timeout")){
-            Log.i("url",e.getMessage());
-            ToastUtils.toast(context,"链接超时");
+        if (BuildConfig.DEBUG){
+            e.printStackTrace();
+            Log.e("error",e.getMessage());
+        }
+
+        if (!NetWorkUtil.isNetworkAvailable(context)) {
+            ToastUtils.toast(context, "网络连接失败");
             return;
         }
-        if (!NetWorkUtil.isNetworkAvailable(context)){
-            ToastUtils.toast(context,"网络连接失败");
-        } else {
-            e.printStackTrace();
-            if (e.getMessage().contains("Socket closed")){
+        if (!StringUtils.isBlank(e.getMessage())) {
+            if (e.getMessage().contains("timeout")) {
+                Log.i("url", e.getMessage());
+                ToastUtils.toast(context, "链接超时");
+                return;
+            } else if (e.getMessage().contains("Socket closed")){
+                ToastUtils.toast(context,"服务器错误"+e.getClass().getCanonicalName());
                 return;
             }
+        } else {
             ToastUtils.toast(context,"服务器错误"+e.getClass().getCanonicalName());
         }
+
     }
 
 }

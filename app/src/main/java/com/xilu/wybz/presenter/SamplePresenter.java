@@ -2,7 +2,6 @@ package com.xilu.wybz.presenter;
 
 import android.content.Context;
 
-import com.google.gson.reflect.TypeToken;
 import com.xilu.wybz.bean.JsonResponse;
 import com.xilu.wybz.http.callback.AppJsonCalback;
 import com.xilu.wybz.ui.IView.ISampleView;
@@ -20,6 +19,7 @@ public class SamplePresenter<T> extends BasePresenter<ISampleView<T>> {
 
     public boolean mockAble = false;
     public String url;
+    public Type resultType = null;
 
 
     /**
@@ -66,7 +66,7 @@ public class SamplePresenter<T> extends BasePresenter<ISampleView<T>> {
 
             @Override
             public Type getDataType() {
-                return new TypeToken<T>() {}.getType();
+                return resultType;
             }
         });
 

@@ -6,7 +6,7 @@ package com.xilu.wybz.bean;
 
 public class PreservationInfo {
 
-    public int id;
+    public String id;
     public String worksname;
     public long createtime;
     public int statue;
@@ -16,6 +16,13 @@ public class PreservationInfo {
     public PreservationInfo() {
     }
 
+    /**
+     *
+     * @param worksname
+     * @param createtime
+     * @param statue
+     * @param sort_id
+     */
     public PreservationInfo(String worksname, long createtime, int statue, int sort_id) {
         this.worksname = worksname;
         this.createtime = createtime;

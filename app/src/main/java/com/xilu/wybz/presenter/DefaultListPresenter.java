@@ -3,7 +3,6 @@ package com.xilu.wybz.presenter;
 import android.content.Context;
 import android.os.Handler;
 
-import com.google.gson.reflect.TypeToken;
 import com.xilu.wybz.bean.JsonResponse;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.callback.AppJsonCalback;
@@ -24,8 +23,9 @@ import okhttp3.Call;
  * Created by Administrator on 2016/8/13.
  */
 public class DefaultListPresenter<T> extends BasePresenter<IDefaultListView>{
-    public  boolean mockAble = false;
 
+    public  boolean mockAble = false;
+    public Type resultType = null;
     private String url;
     /**
      *
@@ -90,7 +90,7 @@ public class DefaultListPresenter<T> extends BasePresenter<IDefaultListView>{
 
             @Override
             public Type getDataType() {
-                return new TypeToken<List<T>>(){}.getType();
+                return resultType;
             }
         });
 

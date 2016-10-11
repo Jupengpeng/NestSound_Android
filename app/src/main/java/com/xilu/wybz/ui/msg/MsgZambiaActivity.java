@@ -13,7 +13,6 @@ import com.xilu.wybz.bean.ZambiaBean;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.MsgZanPresenter;
-import com.xilu.wybz.service.MyReceiver;
 import com.xilu.wybz.ui.IView.IZanView;
 import com.xilu.wybz.ui.base.BaseListActivity;
 import com.xilu.wybz.ui.lyrics.LyricsdisplayActivity;
@@ -142,6 +141,8 @@ public class MsgZambiaActivity extends BaseListActivity<ZambiaBean> implements I
         @OnClick(R.id.ll_works)
         void toWorks() {
             ZambiaBean zambiaBean = (ZambiaBean) itemView.getTag();
+
+            if (zambiaBean == null) return;
             if (StringUtils.isNotBlank(zambiaBean.itemid)) {
                 if (zambiaBean.type == 1) {
                     PlayAudioActivity.toPlayAudioActivity(context, zambiaBean.itemid, "", MyCommon.MSG_COMMENT);

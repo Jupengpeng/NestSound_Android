@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.gson.reflect.TypeToken;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.PersonInfo;
 import com.xilu.wybz.common.MyCommon;
@@ -92,6 +93,7 @@ public class PreservePersonEditActivity extends ToolbarActivity implements ISamp
 
         samplePresenter = new SamplePresenter<>(context,this);
         samplePresenter.url = MyHttpClient.getSavePersonInfo();
+        samplePresenter.resultType = new TypeToken<PersonInfo>(){}.getType();
         params = new HashMap<>();
 
     }
@@ -124,12 +126,12 @@ public class PreservePersonEditActivity extends ToolbarActivity implements ISamp
         params.put("bq_username","");
         params.put("bq_phone","");
         params.put("bq_creditID","");
-        samplePresenter.getData(params);
+//        samplePresenter.getData(params);
 
-//        Intent intent = new Intent();
-//        intent.putExtra(INFO, personInfo);
-//        setResult(RESULT_OK, intent);
-//        finish();
+        Intent intent = new Intent();
+        intent.putExtra(INFO, personInfo);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 
 

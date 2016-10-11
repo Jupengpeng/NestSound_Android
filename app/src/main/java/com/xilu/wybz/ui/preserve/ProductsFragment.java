@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.reflect.TypeToken;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.ProductInfo;
 import com.xilu.wybz.common.MyHttpClient;
@@ -53,12 +54,12 @@ public class ProductsFragment extends BaseListFragment<ProductInfo> implements I
     protected void initPresenter() {
         defaultListPresenter = new DefaultListPresenter<>(context, this);
         defaultListPresenter.setUrl(MyHttpClient.getProductAllList());
-
+        defaultListPresenter.resultType = new TypeToken<List<ProductInfo>>(){}.getType();
         param.put("uid", ""+PrefsUtil.getUserId(context));
         param.put("sort_id", ""+viewType);
 
         defaultListPresenter.setParams(param);
-        defaultListPresenter.mockAble = true;
+        defaultListPresenter.mockAble = false;
         defaultListPresenter.init();
 
     }

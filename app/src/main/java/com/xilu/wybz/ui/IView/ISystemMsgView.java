@@ -1,6 +1,6 @@
 package com.xilu.wybz.ui.IView;
 
-import com.xilu.wybz.bean.SystemBean;
+import com.xilu.wybz.bean.message.SystemMessageBean;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ import java.util.List;
  */
 public interface ISystemMsgView extends IBaseView {
 
-    void showSystemData(List<SystemBean> systemBeans);
+    void showSystemData(List<SystemMessageBean> systemBeans);
 
     void loadFail();
 
