@@ -21,7 +21,6 @@ import com.xilu.wybz.ui.BrowserActivity;
 import com.xilu.wybz.ui.IView.ISampleView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.utils.DateFormatUtils;
-import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtils;
 import com.xilu.wybz.utils.ToastUtils;
 
@@ -38,7 +37,9 @@ public class PreserveInfoActivity extends ToolbarActivity implements ISampleView
 
     public static final String DATA = "data";
 
-
+    /**
+     *
+     */
     @Bind(R.id.preservation_name)
     TextView preservationName;
     @Bind(R.id.preservation_card_id)
@@ -71,7 +72,15 @@ public class PreserveInfoActivity extends ToolbarActivity implements ISampleView
     TextView preservationSubmit;
     @Bind(R.id.preservation_error)
     TextView preservationError;
-
+    /**
+     * 错误页面.
+     */
+    @Bind(R.id.iv_nodata)
+    ImageView ivNodata;
+    @Bind(R.id.tv_nodata)
+    TextView tvNodata;
+    @Bind(R.id.ll_nodata)
+    LinearLayout llNodata;
 
     SamplePresenter<PreserveInfoBean> samplePresenter;
 
@@ -79,6 +88,11 @@ public class PreserveInfoActivity extends ToolbarActivity implements ISampleView
 
     String certUrl;
 
+    /**
+     * start.
+     * @param context
+     * @param orderId
+     */
     public static void start(Context context, String orderId) {
         NodeViewData data = new NodeViewData();
         data.orderId = orderId;
@@ -103,10 +117,11 @@ public class PreserveInfoActivity extends ToolbarActivity implements ISampleView
 
     /**
      * setExtInfo.
+     *
      * @param bean
      */
-    private void setExtInfo(PreserveInfoBean bean){
-        if (bean == null){
+    private void setExtInfo(PreserveInfoBean bean) {
+        if (bean == null) {
             preservationSubmit.setEnabled(false);
             preservationSubmit.setText("保全失败");
             preservationError.setVisibility(View.VISIBLE);
@@ -114,11 +129,11 @@ public class PreserveInfoActivity extends ToolbarActivity implements ISampleView
         }
         certUrl = new String(bean.certUrl);
 
-        if (bean.statu == 1){
+        if (bean.statu == 1) {
             preservationSubmit.setEnabled(false);
             preservationSubmit.setText("保全中...");
 
-        } else if (bean.statu == 0){
+        } else if (bean.statu == 0) {
 
         } else {
             preservationSubmit.setEnabled(true);
@@ -142,9 +157,9 @@ public class PreserveInfoActivity extends ToolbarActivity implements ISampleView
         }
     }
 
-    private void setPreductInfo(ProductInfo info){
+    private void setPreductInfo(ProductInfo info) {
 
-        if (info == null){
+        if (info == null) {
             infoName.setText("歌曲名：");
             infoLyricAuthor.setText("词作者：");
             infoSongAuthor.setText("曲作者：");
@@ -155,13 +170,13 @@ public class PreserveInfoActivity extends ToolbarActivity implements ISampleView
 
         } else {
 
-            infoName.setText("歌曲名："+info.title);
-            infoLyricAuthor.setText("词作者："+info.lyricAuthor);
-            infoSongAuthor.setText("曲作者："+info.songAuthor);
-            infoBanzou.setText("伴奏："+info.accompaniment);
-            infoCreateTime.setText("词创作时间："+DateFormatUtils.formatX1(info.createTime));
-            preservationNumber.setText("保全编号："+info.preserveID);
-            preservationTime.setText("保全时间："+info.preserveDate);
+            infoName.setText("歌曲名：" + info.title);
+            infoLyricAuthor.setText("词作者：" + info.lyricAuthor);
+            infoSongAuthor.setText("曲作者：" + info.songAuthor);
+            infoBanzou.setText("伴奏：" + info.accompaniment);
+            infoCreateTime.setText("词创作时间：" + DateFormatUtils.formatX1(info.createTime));
+            preservationNumber.setText("保全编号：" + info.preserveID);
+            preservationTime.setText("保全时间：" + info.preserveDate);
         }
     }
 
@@ -173,10 +188,10 @@ public class PreserveInfoActivity extends ToolbarActivity implements ISampleView
 
 
     @OnClick(R.id.preservation_submit)
-    public void onclickSubmit(){
+    public void onclickSubmit() {
 
-        if (StringUtils.isBlank(certUrl)){
-            ToastUtils.toast(context,"证书获取失败！");
+        if (StringUtils.isBlank(certUrl)) {
+            ToastUtils.toast(context, "证书获取失败！");
             return;
         }
 
@@ -212,10 +227,10 @@ public class PreserveInfoActivity extends ToolbarActivity implements ISampleView
         samplePresenter = new SamplePresenter<>(context, this);
         samplePresenter.url = MyHttpClient.getPreserveOrderDetail();
 
-        Map<String,String> params = new HashMap<>();
-        params.put("id",""+nodeViewData.id);
-        params.put("uid",""+ PrefsUtil.getUserId(context));
-        params.put("sort_id",""+ nodeViewData.id);
+        Map<String, String> params = new HashMap<>();
+        params.put("id", "" + nodeViewData.orderId);
+//        params.put("uid", "" + PrefsUtil.getUserId(context));
+//        params.put("sort_id", "" + nodeViewData.id);
         samplePresenter.getData(params);
     }
 

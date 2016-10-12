@@ -86,6 +86,16 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
     TextView preservationProtocol;
 
     /**
+     *
+     */
+    @Bind(R.id.iv_nodata)
+    ImageView ivNodata;
+    @Bind(R.id.tv_nodata)
+    TextView tvNodata;
+    @Bind(R.id.ll_nodata)
+    LinearLayout llNodata;
+
+    /**
      * 请求页面时传过来的数据.
      */
     ProductInfo requestData;
@@ -100,6 +110,7 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
     String[] prices = {"2.00", "3.00", "4.00"};
 
     int selectType = 0;
+
 
 
     @Override
@@ -138,12 +149,15 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
         initData();
         initProtocol();
 
+//        llNodata.setVisibility(View.VISIBLE);
+
         userInfoRight.setVisibility(View.GONE);
 
         initPresenter();
 
 
         initProductType(3);
+
 
     }
 
@@ -154,7 +168,8 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
 
     /**
      * 不使用.
-     *  @Deprecated.
+     *
+     * @Deprecated.
      */
 
     @Override
@@ -164,12 +179,12 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
 
     @Override
     public void showError() {
-
+//        llNodata.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void showPage() {
-
+        llNodata.setVisibility(View.GONE);
     }
 
     @Override
@@ -197,6 +212,7 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
 
     /**
      * updateSubmitView.
+     *
      * @param type
      */
     @Override
@@ -207,6 +223,7 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
 
     /**
      * callback 启动sdk开始支付.
+     *
      * @param data
      */
     @Override
@@ -220,6 +237,7 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
 
     /**
      * 设置作品信息
+     *
      * @param info
      */
     private void setPreductInfo(ProductInfo info) {
@@ -233,8 +251,8 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
 
         } else {
 
-            if(!StringUtils.isBlank(info.image)){
-                loadImage(info.image,productImage);
+            if (!StringUtils.isBlank(info.image)) {
+                loadImage(info.image, productImage);
             } else {
 
             }
@@ -243,19 +261,19 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
             /**
              *
              */
-            if (StringUtils.isBlank(info.lyricAuthor)){
+            if (StringUtils.isBlank(info.lyricAuthor)) {
                 infoLyricAuthor.setVisibility(View.GONE);
             } else {
                 infoLyricAuthor.setVisibility(View.VISIBLE);
                 infoLyricAuthor.setText("词作者：" + info.lyricAuthor);
             }
-            if (StringUtils.isBlank(info.songAuthor)){
+            if (StringUtils.isBlank(info.songAuthor)) {
                 infoSongAuthor.setVisibility(View.GONE);
             } else {
                 infoSongAuthor.setVisibility(View.VISIBLE);
                 infoSongAuthor.setText("曲作者：" + info.songAuthor);
             }
-            if (StringUtils.isBlank(info.accompaniment)){
+            if (StringUtils.isBlank(info.accompaniment)) {
                 infoBanzou.setVisibility(View.GONE);
             } else {
                 infoBanzou.setVisibility(View.VISIBLE);
@@ -299,8 +317,8 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
 //            return;
 //        }
 
-        if (personInfo == null){
-            ToastUtils.toast(context,"请添加个人信息");
+        if (personInfo == null) {
+            ToastUtils.toast(context, "请添加个人信息");
             return;
         }
 
@@ -324,6 +342,7 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
 
     /**
      * initProductType.
+     *
      * @param type
      */
     boolean firstSelect = true;
@@ -349,7 +368,7 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                         String message = "保全歌曲和歌词";
-                        switch (position){
+                        switch (position) {
                             case 0:
                                 selectType = 3;
                                 message = "保全歌曲和歌词";
@@ -364,14 +383,14 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
                                 break;
                             default:
                                 selectType = 3;
-                                Log.d("Apply","textSpinner: select error? default=3");
+                                Log.d("Apply", "textSpinner: select error? default=3");
                         }
                         setNeedPrice(selectType);
-                        if (firstSelect){
+                        if (firstSelect) {
                             firstSelect = false;
                             return;
                         }
-                        ToastUtils.toast(context,message);
+                        ToastUtils.toast(context, message);
                     }
 
                     @Override
@@ -392,7 +411,7 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
      */
     private void setNeedPrice(int type) {
         String unit = "￥";
-        productPrice.setText(unit + prices[type-1]);
+        productPrice.setText(unit + prices[type - 1]);
     }
 
 
@@ -432,7 +451,7 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
 
         if ("success".equalsIgnoreCase(status)) {
             state = 8;
-            ToastUtils.toast(context,"保全作品成功");
+            ToastUtils.toast(context, "保全作品成功");
             finish();
 
         } else if ("fail".equalsIgnoreCase(status)) {
@@ -465,8 +484,8 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
                 // "cancel"  - 取消支付
                 // "invalid" - 支付插件未安装（一般是微信客户端未安装的情况）
 
-                String errorMsg = ":"+data.getExtras().getString("error_msg"); // 错误信息
-                String extraMsg = ":"+data.getExtras().getString("extra_msg"); // 错误信息
+                String errorMsg = ":" + data.getExtras().getString("error_msg"); // 错误信息
+                String extraMsg = ":" + data.getExtras().getString("extra_msg"); // 错误信息
 
                 showMsg(result + errorMsg + extraMsg);
 

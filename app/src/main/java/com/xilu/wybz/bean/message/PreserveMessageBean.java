@@ -13,5 +13,6 @@ public class PreserveMessageBean implements Serializable{
     public String pushtype;
     public String title;
     public String content;//消息内容
+    public String orderNo;
     public long createtime;
 }

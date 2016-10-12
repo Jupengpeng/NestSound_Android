@@ -18,6 +18,7 @@ import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.presenter.DefaultListPresenter;
 import com.xilu.wybz.ui.IView.IDefaultListView;
 import com.xilu.wybz.ui.base.BaseListActivity;
+import com.xilu.wybz.ui.preserve.PreserveInfoActivity;
 import com.xilu.wybz.utils.DateFormatUtils;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.view.pull.BaseViewHolder;
@@ -180,6 +181,12 @@ public class MsgPreserveActivity extends BaseListActivity<PreserveMessageBean> i
         public SampleViewHolder(View itemView) {
             super(itemView);
             root = itemView;
+            root.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    PreserveInfoActivity.start(context,bean.orderNo);
+                }
+            });
         }
 
         @Override

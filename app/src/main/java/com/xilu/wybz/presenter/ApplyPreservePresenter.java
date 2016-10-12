@@ -168,6 +168,7 @@ public class ApplyPreservePresenter extends BasePresenter<IApplyPreservView>{
 
                 PreserveInfoBean bean = response.getData();
                 if (bean == null){
+                    iView.showError();
                     return;
                 }
                 try{
