@@ -51,12 +51,12 @@ public class MyHttpClient {
 
     //首页数据
     public static String getHomeUrl() {
-        return "/java/common/index/app";
+        return "/java/common/index/app/v22";
     }
 
     //乐说列表
     public static String getMusicTalkUrl() {
-        return "/java/common/yueshuo/list";
+        return "/java/common/yueshuo/list/v22";
     }
 
     //歌曲详情
@@ -172,7 +172,7 @@ public class MyHttpClient {
 
     //收藏接口
     public static String getWorkFovUrl() {
-        return "/java/workfov/optZan/v22";
+        return "/java/workfov/optfov/v22";
     }
 
     /**
@@ -256,7 +256,7 @@ public class MyHttpClient {
 
     //评论列表
     public static String getCommentListUrl() {
-        return "/java/common/comment/list";
+        return "/java/common/comment/list/v22";
     }
 
     //评论接口
@@ -266,7 +266,7 @@ public class MyHttpClient {
 
     //删除评论
     public static String getDelCommentUrl() {
-        return "/java/commentopt/delete";
+        return "/java/commentopt/delete/v22";
     }
 
     //更新IP

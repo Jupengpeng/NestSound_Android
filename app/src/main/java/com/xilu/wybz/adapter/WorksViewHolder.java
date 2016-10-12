@@ -132,7 +132,8 @@ public class WorksViewHolder extends com.xilu.wybz.view.pull.BaseViewHolder {
     @Override
     public void onItemClick(View view, int position) {
         if (position >= 0 && position < mDataList.size()) {
-            if (mDataList.get(position).type == 1 || mDataList.get(position).type == 0) {
+            //ygs 他人页面收藏打不开  缺少type判断
+            if (mDataList.get(position).type == 1 || mDataList.get(position).type == 0 || mDataList.get(position).type == 3) {
                 toPlayPos(position);
             } else if (mDataList.get(position).type == 2) {
                 LyricsdisplayActivity.toLyricsdisplayActivity(mContext, mDataList.get(position).getItemid(), mDataList.get(position).name);
