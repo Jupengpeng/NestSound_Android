@@ -36,14 +36,11 @@ public class ApplyPreservePresenter extends BasePresenter<IApplyPreservView>{
     }
 
 
-//    uid	是	long	登录用户id
-//    itemid	是	long	需要保权的作品id
-//    type	是	int	作品类型 1歌曲 2歌词
-//    ctype	是	int	保权类型 1歌曲 2歌词 3歌曲+歌词
-//    cusername	是	String	保权用户名
-//    ccard	是	String	保权用户名对应身份证号
-//    cphone
-
+    /**
+     *
+     * @param productInfo
+     * @param personInfo
+     */
     public void applyOrder(ProductInfo productInfo, PersonInfo personInfo){
 
         params = new HashMap<>();
@@ -51,7 +48,7 @@ public class ApplyPreservePresenter extends BasePresenter<IApplyPreservView>{
         params.put("uid",""+ PrefsUtil.getUserId(context));
         params.put("itemid",""+productInfo.id);
         params.put("type",""+productInfo.type);
-        params.put("cType",""+productInfo.type);
+        params.put("cType",""+productInfo.cType);
         params.put("cUsername",personInfo.cUserName);
         params.put("cCardId",personInfo.cCardId);
         params.put("cPhone",personInfo.cPhone);
@@ -114,10 +111,6 @@ public class ApplyPreservePresenter extends BasePresenter<IApplyPreservView>{
                 super.onError(call, e);
             }
 
-//            @Override
-//            public Type getDataType() {
-//            }
-
         });
     }
 
@@ -172,17 +165,31 @@ public class ApplyPreservePresenter extends BasePresenter<IApplyPreservView>{
 
             @Override
             public void onResult(JsonResponse<? extends Object> response) {
-                super.onResult(response);
+
+                PreserveInfoBean bean = response.getData();
+                if (bean == null){
+                    return;
+                }
+                try{
+                    iView.showPage();
+                    iView.updateProductInfo(bean.productInfo);
+                    iView.updatePersonInfo(bean.personInfo);
+                    iView.updateUsePrice(bean.orderPrice,bean.productInfo.type);
+                } catch (Exception e){
+                    iView.showError();
+                }
             }
 
             @Override
             public void onResultError(JsonResponse<? extends Object> response) {
                 super.onResultError(response);
+                iView.showError();
             }
 
             @Override
             public void onError(Call call, Exception e) {
                 super.onError(call, e);
+                iView.showError();
             }
 
             @Override

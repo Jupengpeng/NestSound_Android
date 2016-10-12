@@ -73,12 +73,12 @@ public class FollowPresenter extends BasePresenter<IFollowAndFansView> {
 //    public void follow(int userId) {
 //        params = new HashMap<>();
 //        params.put("userid", userId + "");
-//        params.put("fansid", PrefsUtil.getUserId(context) + "");
+//        params.put("fansid", PrefsUtil.getUserId(content) + "");
 //        httpUtils.post(MyHttpClient.getFanFocusList(), params, new MyStringCallback() {
 //            @Override
 //            public void onResponse(String response) {
 //                super.onResponse(response);
-//                DataBean dataBean = ParseUtils.getDataBean(context, response);
+//                DataBean dataBean = ParseUtils.getDataBean(content, response);
 //                if (dataBean != null && dataBean.code == 200) {
 //                    iView.followSuccess();
 //                }

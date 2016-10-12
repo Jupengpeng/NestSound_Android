@@ -77,12 +77,13 @@ public class ProductPreserveListActivity extends BaseListActivity<PreservationIn
     protected void setUpData() {
         super.setUpData();
         recycler.setRefreshing();
+
+        recycler.enableLoadMore(false);
     }
 
     @Override
     public void onRefresh(int action) {
         super.onRefresh(action);
-
 
         defaultListPresenter.getData(page++);
 
@@ -176,16 +177,27 @@ public class ProductPreserveListActivity extends BaseListActivity<PreservationIn
             switch (statu){
                 case 1:
                     statuView.setText("保全成功");
+                    statuView.setTextColor(Color.parseColor("#eeffd705"));
                     break;
                 case 2:
-                    statuView.setText("保全中");
+                    statuView.setText("保全中..");
+                    statuView.setTextColor(Color.parseColor("#eeffd705"));
                     break;
                 case 3:
                     statuView.setText("保全失败");
+                    statuView.setTextColor(Color.parseColor("#ff4949"));
+
                 default:
+                    statuView.setText("处理中...");
+                    statuView.setTextColor(Color.parseColor("#ff4949"));
             }
         }
 
+        /**
+         *
+         * @param typeView
+         * @param type
+         */
         private void setTypeIcon(ImageView typeView, int type){
             switch (type){
                 case 1:

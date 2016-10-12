@@ -21,15 +21,15 @@
 //
 //
 //public class CatalogDialog extends Dialog{
-//    Context context;
+//    Context content;
 //    RecyclerView recyclerView;
 //    AdapterView.OnItemClickListener ipl2;
 //    AdapterView.OnItemClickListener ipl1;
 //    List<HotCatalog> mList;
 //    List<String> types;
-//    public CatalogDialog(Context context, AdapterView.OnItemClickListener ipl1,AdapterView.OnItemClickListener ipl2, List<HotCatalog> actionBeans,List<String> types) {
-//        super(context, R.style.ToastDialog);
-//        this.context = context;
+//    public CatalogDialog(Context content, AdapterView.OnItemClickListener ipl1,AdapterView.OnItemClickListener ipl2, List<HotCatalog> actionBeans,List<String> types) {
+//        super(content, R.style.ToastDialog);
+//        this.content = content;
 //        this.mList = actionBeans;
 //        this.types = types;
 //        this.ipl1 = ipl1;
@@ -41,7 +41,7 @@
 //    }
 //
 //    public View getDialogView() {
-//        View rootView = LayoutInflater.from(context).inflate(
+//        View rootView = LayoutInflater.from(content).inflate(
 //                R.layout.ll_catalog, null);
 //        recyclerView = (RecyclerView) rootView.findViewById(R.id.catalog_recyclerview);
 //        return rootView;
@@ -53,8 +53,8 @@
 //        WindowManager.LayoutParams params = getWindow().getAttributes();
 //        params.dimAmount=0.15f;
 //        params.x = 0; // 新位置X坐标
-//        params.y = DensityUtil.getStatusBarHeight(context)+DensityUtil.getActionBarHeight(context); // 新位置Y坐标
-//        params.width = DensityUtil.getScreenW(context);
+//        params.y = DensityUtil.getStatusBarHeight(content)+DensityUtil.getActionBarHeight(content); // 新位置Y坐标
+//        params.width = DensityUtil.getScreenW(content);
 //        getWindow().setAttributes(params);
 //        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
 //    }

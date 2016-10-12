@@ -13,10 +13,9 @@ import com.xilu.wybz.bean.message.SystemMessageBean;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.MsgSystemPresenter;
-import com.xilu.wybz.ui.BrowserActivity;
 import com.xilu.wybz.ui.IView.ISystemMsgView;
 import com.xilu.wybz.ui.base.BaseListActivity;
-import com.xilu.wybz.utils.DensityUtil;
+import com.xilu.wybz.utils.DateFormatUtils;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.PullRecycler;
 
@@ -115,17 +114,28 @@ public class MsgSystemActivity extends BaseListActivity<SystemMessageBean> imple
             return;
         }
 
-        mDataList.add(new SystemMessageBean());
-        mDataList.add(new SystemMessageBean());
-        mDataList.add(new SystemMessageBean());
-        mDataList.add(new SystemMessageBean());
+//        SystemMessageBean  bean = new SystemMessageBean();
+//        bean.pushtype = MyCommon.PUSH_TYPE_ACTIVITYFINISH;
+//        bean.content = "angudsuinvowie";
+//        bean.createtime = System.currentTimeMillis();
+//
+//        mDataList.add(bean);
+//        mDataList.add(bean);
+//
+//        bean = new SystemMessageBean();
+//        bean.pushtype = MyCommon.PUSH_TYPE_RECOMENDTOINDEX;
+//        bean.content = "angudsuinvowie";
+//        bean.createtime = System.currentTimeMillis();
+//
+//        mDataList.add(bean);
+//        mDataList.add(bean);
+//
+//        recycler.enableLoadMore(true);
+//        adapter.notifyDataSetChanged();
 
-        recycler.enableLoadMore(true);
-        adapter.notifyDataSetChanged();
-
-//        llNoData.setVisibility(View.VISIBLE);
+        llNoData.setVisibility(View.VISIBLE);
         recycler.onRefreshCompleted();
-//        recycler.enableLoadMore(false);
+        recycler.enableLoadMore(false);
     }
 
 
@@ -136,7 +146,6 @@ public class MsgSystemActivity extends BaseListActivity<SystemMessageBean> imple
     }
 
 
-
     /**
      * SampleViewHolder.
      */
@@ -144,6 +153,8 @@ public class MsgSystemActivity extends BaseListActivity<SystemMessageBean> imple
 
         @Bind(R.id.iv_type)
         ImageView ivType;
+        @Bind(R.id.tv_title)
+        TextView tvTitle;
         @Bind(R.id.tv_content)
         TextView tvContent;
         @Bind(R.id.tv_create_time)
@@ -151,31 +162,44 @@ public class MsgSystemActivity extends BaseListActivity<SystemMessageBean> imple
 
         View root;
 
+
+        SystemMessageBean bean;
+
         /**
-         *
          * @param itemView
          */
         public SampleViewHolder(View itemView) {
             super(itemView);
             root = itemView;
-            int itemWidth = DensityUtil.getScreenW(context) - DensityUtil.dip2px(context, 30);
-            int itemHeight = itemWidth * 101 / 330;
-
-//            tvCreateTime.set
-
         }
 
 
         @Override
         public void onBindViewHolder(int position) {
-//            SystemBean systemBean = mDataList.get(position);
-//            tvCreateTime.setText(DateTimeUtil.timestamp2DateTime(systemBean.createdate));
-//            itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    onItemClick(v, position);
-//                }
-//            });
+            bean = mDataList.get(position);
+
+            switch (bean.pushtype) {
+                case MyCommon.PUSH_TYPE_ACTIVITYFINISH:
+                    tvTitle.setText("活动通知");
+                    ivType.setImageResource(R.drawable.ic_message_ac);
+                    break;
+                case MyCommon.PUSH_TYPE_NEWACTIVITY:
+                    tvTitle.setText("活动通知");
+                    ivType.setImageResource(R.drawable.ic_message_ac);
+                    break;
+                case MyCommon.PUSH_TYPE_RECOMENDTOINDEX:
+                    tvTitle.setText("推荐通知");
+                    ivType.setImageResource(R.drawable.ic_message_tu);
+                    break;
+                case MyCommon.PUSH_TYPE_ADDTOSONGLIST:
+                    tvTitle.setText("推荐通知");
+                    ivType.setImageResource(R.drawable.ic_message_tu);
+                    break;
+            }
+
+            tvCreateTime.setText(DateFormatUtils.formatX1(bean.createtime));
+            tvContent.setText(bean.content);
+
         }
 
         @Override
@@ -183,10 +207,6 @@ public class MsgSystemActivity extends BaseListActivity<SystemMessageBean> imple
 
         }
 
-    }
-
-    void toWebView(SystemMessageBean systemBean) {
-        BrowserActivity.toBrowserActivity(context, systemBean.url);
     }
 
     @Override

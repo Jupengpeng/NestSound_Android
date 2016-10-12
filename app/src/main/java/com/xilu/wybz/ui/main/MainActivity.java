@@ -459,6 +459,10 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (mHandler != null){
+            mHandler.removeCallbacksAndMessages(null);
+            mHandler = null;
+        }
         if (presenter != null)
             presenter.cancelRequest();
     }

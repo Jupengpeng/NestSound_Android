@@ -281,6 +281,11 @@ public class MainTabActivity extends BaseActivity {
     public void onEventMainThread(Event.MsgTipEvent event) {
         ivTip.setVisibility(event.isShow()?View.VISIBLE:View.GONE);
     }
+
+    /**
+     * onEventMainThread.
+     * @param event
+     */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(Event.LoginOutEvent event) {
         JPushInterface.setAliasAndTags(getApplicationContext(), "", null, mAliasCallback);
@@ -291,6 +296,12 @@ public class MainTabActivity extends BaseActivity {
         }
     }
 
+    /**
+     * onActivityResult.
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // 获取当前活动的Activity实例
@@ -313,6 +324,13 @@ public class MainTabActivity extends BaseActivity {
         if (mMoreWindow != null) {
             mMoreWindow.destroy();
         }
+
+        manager.dispatchDestroy(true);
+        manager = null;
+        list = null;
+        adapter = null;
+
+
         EventBus.getDefault().unregister(this);
     }
 

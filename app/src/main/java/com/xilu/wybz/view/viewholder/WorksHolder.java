@@ -20,12 +20,12 @@
 // * Created by cfanr on 2015/12/5.
 // */
 //public class WorksHolder {
-//    Context context;
+//    Context content;
 //    RecyclerView mRecyclerView;
 //    WorksAdapter mAdapter;
 //
-//    public WorksHolder(Context context, View convertView) {
-//        this.context = context;
+//    public WorksHolder(Context content, View convertView) {
+//        this.content = content;
 //        if (convertView != null) {
 //            mRecyclerView = (RecyclerView) convertView.findViewById(R.id.recycler_view_works);
 //        }
@@ -33,11 +33,11 @@
 //
 //    public void initView(HomeItem homeItem, int type) {
 //        List<WorksData> workList = type == 0 ? homeItem.recommendWorkList : homeItem.newWorkList;
-//        mAdapter = new WorksAdapter(context, workList);
-//        LinearLayoutManager mLayoutManager = new GridLayoutManager(context, 3);
+//        mAdapter = new WorksAdapter(content, workList);
+//        LinearLayoutManager mLayoutManager = new GridLayoutManager(content, 3);
 //        mRecyclerView.setNestedScrollingEnabled(false);
 //        mRecyclerView.setLayoutManager(mLayoutManager);
-//        mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(3, DensityUtil.dip2px(context, 10), false));
+//        mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(3, DensityUtil.dip2px(content, 10), false));
 //        mRecyclerView.setAdapter(mAdapter);
 //        mAdapter.setOnItemClickListener(new WorksAdapter.OnItemClickListener() {
 //            @Override

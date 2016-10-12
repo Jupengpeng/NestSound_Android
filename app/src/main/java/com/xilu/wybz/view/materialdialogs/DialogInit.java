@@ -103,9 +103,9 @@ class DialogInit {
 //                // Only check for light/dark if color wasn't set to md_title_color
 //                if (DialogUtils.isColorDark(builder.titleColor)) {
 //                    if (builder.theme == Theme.DARK)
-//                        builder.titleColor = DialogUtils.resolveColor(builder.context, android.R.attr.textColorPrimaryInverse);
+//                        builder.titleColor = DialogUtils.resolveColor(builder.content, android.R.attr.textColorPrimaryInverse);
 //                } else if (builder.theme == Theme.LIGHT)
-//                    builder.titleColor = DialogUtils.resolveColor(builder.context, android.R.attr.textColorPrimaryInverse);
+//                    builder.titleColor = DialogUtils.resolveColor(builder.content, android.R.attr.textColorPrimaryInverse);
 //            }
         }
         if (!builder.contentColorSet) {
@@ -115,9 +115,9 @@ class DialogInit {
 //                // Only check for light/dark if color wasn't set to md_content_color
 //                if (DialogUtils.isColorDark(builder.contentColor)) {
 //                    if (builder.theme == Theme.DARK)
-//                        builder.contentColor = DialogUtils.resolveColor(builder.context, android.R.attr.textColorSecondaryInverse);
+//                        builder.contentColor = DialogUtils.resolveColor(builder.content, android.R.attr.textColorSecondaryInverse);
 //                } else if (builder.theme == Theme.LIGHT)
-//                    builder.contentColor = DialogUtils.resolveColor(builder.context, android.R.attr.textColorSecondaryInverse);
+//                    builder.contentColor = DialogUtils.resolveColor(builder.content, android.R.attr.textColorSecondaryInverse);
 //            }
         }
         if (!builder.itemColorSet)

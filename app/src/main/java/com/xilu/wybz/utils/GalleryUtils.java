@@ -114,7 +114,7 @@ public class GalleryUtils {
      * Framework Documents, as well as the _data field for the MediaStore and
      * other file-based ContentProviders.
      *
-     * @param context The context.
+     * @param context The content.
      * @param uri     The Uri to query.
      * @author paulburke
      */
@@ -191,7 +191,7 @@ public class GalleryUtils {
      * Get the value of the data column for this Uri. This is useful for
      * MediaStore Uris, and other file-based ContentProviders.
      *
-     * @param context       The context.
+     * @param context       The content.
      * @param uri           The Uri to query.
      * @param selection     (Optional) Filter used in the query.
      * @param selectionArgs (Optional) Selection arguments used in the query.

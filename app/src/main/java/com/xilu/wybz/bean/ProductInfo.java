@@ -18,6 +18,7 @@ public class ProductInfo implements Parcelable {
     public long createTime;
     public String image;
     public int type;
+    public int cType;
 
     public long preserveDate;
     public String preserveID;

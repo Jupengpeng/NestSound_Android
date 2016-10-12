@@ -18,7 +18,6 @@ import com.xilu.wybz.ui.fragment.BaseListFragment;
 import com.xilu.wybz.utils.DateFormatUtils;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.PrefsUtil;
-import com.xilu.wybz.utils.ToastUtils;
 import com.xilu.wybz.view.DividerItemDecoration;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 
@@ -61,7 +60,6 @@ public class ProductsFragment extends BaseListFragment<ProductInfo> implements I
         defaultListPresenter.setParams(param);
         defaultListPresenter.mockAble = false;
         defaultListPresenter.init();
-
     }
 
     /**
@@ -70,7 +68,7 @@ public class ProductsFragment extends BaseListFragment<ProductInfo> implements I
     @Override
     public void initView() {
         recycler.getRecyclerView().setBackgroundColor(Color.parseColor("#ffffffff"));
-        recycler.enableLoadMore(true);
+        recycler.enableLoadMore(false);
         recycler.enablePullToRefresh(true);
 
         tvNoData.setText("没有可以保全的作品！");
@@ -109,8 +107,7 @@ public class ProductsFragment extends BaseListFragment<ProductInfo> implements I
             mDataList.addAll(list);
             adapter.notifyDataSetChanged();
         } else {
-
-            ToastUtils.toast(context, "没有更多数据");
+//            ToastUtils.toast(context, "没有更多数据");
         }
         checkData();
     }
@@ -153,7 +150,9 @@ public class ProductsFragment extends BaseListFragment<ProductInfo> implements I
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    info.type = viewType;
                     ApplyPreserveActivity.start(context,info);
+                    getActivity().finish();
                 }
             });
         }

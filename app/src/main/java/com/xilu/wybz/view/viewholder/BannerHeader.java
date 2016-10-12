@@ -25,7 +25,7 @@
 // * Created by cfanr on 2015/12/5.
 // */
 //public class BannerHeader {
-//    Context context;
+//    Context content;
 //    public View view;
 //    List<Banner> bannerList;
 //    ViewPager mViewPager;
@@ -78,13 +78,13 @@
 //        }
 //    };
 //
-//    public BannerHeader(Context context, List<Banner> bannerList) {
-//        this.context = context;
+//    public BannerHeader(Context content, List<Banner> bannerList) {
+//        this.content = content;
 //        this.bannerList = bannerList;
 //        Log.e("bannerList",bannerList.size()+"");
-//        view = LayoutInflater.from(context).inflate(R.layout.view_home_banner, null);
+//        view = LayoutInflater.from(content).inflate(R.layout.view_home_banner, null);
 //        mViewPager = (ViewPager) view.findViewById(R.id.viewpager_ad);
-//        mViewPager.setLayoutParams(new RelativeLayout.LayoutParams(DensityUtil.getScreenW(context), DensityUtil.getScreenW(context) * 28 / 75));
+//        mViewPager.setLayoutParams(new RelativeLayout.LayoutParams(DensityUtil.getScreenW(content), DensityUtil.getScreenW(content) * 28 / 75));
 //        group = (ViewGroup) view.findViewById(R.id.linear_point);
 //        setViewPager();
 //    }
@@ -94,7 +94,7 @@
 //        group.removeAllViews();
 //        tips = new ImageView[bannerList.size()];
 //        for (int i = 0; i < bannerList.size(); i++) {
-//            ImageView imageView = new ImageView(context);
+//            ImageView imageView = new ImageView(content);
 //            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
 //                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 //            lp.setMargins(8, 8, 8, 8);// 间隔应该是20
@@ -108,7 +108,7 @@
 //            }
 //            group.addView(imageView);
 //        }
-//        imgAdapter = new ImageAdapter(context, bannerList);
+//        imgAdapter = new ImageAdapter(content, bannerList);
 //        imgAdapter.setOnItemClickListener(new ImageAdapter.OnItemClickListener() {
 //            @Override
 //            public void onItemClick(View view, int position) {
