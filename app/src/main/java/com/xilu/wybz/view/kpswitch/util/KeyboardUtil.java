@@ -72,7 +72,7 @@ public class KeyboardUtil {
     }
 
     /**
-     * @param context the keyboard height is stored by shared-preferences, so need context.
+     * @param context the keyboard height is stored by shared-preferences, so need content.
      * @return the stored keyboard height.
      * @see #getValidPanelHeight(Context)
      * <p/>
@@ -86,7 +86,7 @@ public class KeyboardUtil {
     }
 
     /**
-     * @param context the keyboard height is stored by shared-preferences, so need context.
+     * @param context the keyboard height is stored by shared-preferences, so need content.
      * @return the valid panel height refer the keyboard height
      * @see #getMaxPanelHeight(Resources)
      * @see #getMinPanelHeight(Resources)

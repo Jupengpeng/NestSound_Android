@@ -102,7 +102,7 @@ public class AppMsg {
     /**
      * Make a {@link AppMsg} that just contains a text view.
      *
-     * @param context The context to use. Usually your
+     * @param context The content to use. Usually your
      *                {@link android.app.Activity} object.
      * @param text    The text to show. Can be formatted text.
      * @param style   The style with a background and a duration.
@@ -115,7 +115,7 @@ public class AppMsg {
     /**
      * Make a {@link AppMsg} that just contains a text view.
      *
-     * @param context The context to use. Usually your
+     * @param context The content to use. Usually your
      *                {@link android.app.Activity} object.
      * @param text    The text to show. Can be formatted text.
      * @param style   The style with a background and a duration.
@@ -128,7 +128,7 @@ public class AppMsg {
      * @author mengguoqiang
      * Make a {@link AppMsg} that just contains a text view.
      *
-     * @param context The context to use. Usually your
+     * @param context The content to use. Usually your
      *                {@link android.app.Activity} object.
      * @param text    The text to show. Can be formatted text.
      * @param style   The style with a background and a duration.
@@ -142,7 +142,7 @@ public class AppMsg {
      * @author mengguoqiang
      * Make a {@link AppMsg} that just contains a text view.
      *
-     * @param context The context to use. Usually your
+     * @param context The content to use. Usually your
      *                {@link android.app.Activity} object.
      * @param text    The text to show. Can be formatted text.
      * @param style   The style with a background and a duration.
@@ -153,7 +153,7 @@ public class AppMsg {
 
     /**
      *
-     * @param context The context to use. Usually your
+     * @param context The content to use. Usually your
      *                {@link android.app.Activity} object.
      * @param text    The text to show. Can be formatted text.
      * @param style   The style with a background and a duration.
@@ -169,7 +169,7 @@ public class AppMsg {
 
     /**
      *
-     * @param context The context to use. Usually your
+     * @param context The content to use. Usually your
      *                {@link android.app.Activity} object.
      * @param text    The text to show. Can be formatted text.
      * @param style   The style with a background and a duration.
@@ -187,7 +187,7 @@ public class AppMsg {
     /**
      * @author mengguoqiang
      *
-     * @param context The context to use. Usually your
+     * @param context The content to use. Usually your
      *                {@link android.app.Activity} object.
      * @param text    The text to show. Can be formatted text.
      * @param style   The style with a background and a duration.
@@ -203,7 +203,7 @@ public class AppMsg {
     /**
      * @author mengguoqiang
      *
-     * @param context The context to use. Usually your
+     * @param context The content to use. Usually your
      *                {@link android.app.Activity} object.
      * @param text    The text to show. Can be formatted text.
      * @param style   The style with a background and a duration.
@@ -223,7 +223,7 @@ public class AppMsg {
      * Make a non-floating {@link AppMsg} with a custom view presented inside the layout.
      * It can be used to create non-floating notifications if floating is false.
      *
-     * @param context  The context to use. Usually your
+     * @param context  The content to use. Usually your
      *                 {@link android.app.Activity} object.
      * @param customView
      *                 View to be used.
@@ -240,7 +240,7 @@ public class AppMsg {
      * Make a non-floating {@link AppMsg} with a custom view presented inside the layout.
      * It can be used to create non-floating notifications if floating is false.
      *
-     * @param context  The context to use. Usually your
+     * @param context  The content to use. Usually your
      *                 {@link android.app.Activity} object.
      * @param customView
      *                 View to be used.
@@ -255,7 +255,7 @@ public class AppMsg {
     /**
      * Make a {@link AppMsg} with a custom view. It can be used to create non-floating notifications if floating is false.
      *
-     * @param context  The context to use. Usually your
+     * @param context  The content to use. Usually your
      *                 {@link android.app.Activity} object.
      * @param view
      *                 View to be used.
@@ -272,7 +272,7 @@ public class AppMsg {
     /**
      * Make a {@link AppMsg} with a custom view. It can be used to create non-floating notifications if floating is false.
      *
-     * @param context  The context to use. Usually your
+     * @param context  The content to use. Usually your
      *                 {@link android.app.Activity} object.
      * @param view
      *                 View to be used.
@@ -289,7 +289,7 @@ public class AppMsg {
      * @author mengguoqiang
      * Make a {@link AppMsg} with a custom view. It can be used to create non-floating notifications if floating is false.
      *
-     * @param context  The context to use. Usually your
+     * @param context  The content to use. Usually your
      *                 {@link android.app.Activity} object.
      * @param view
      *                 View to be used.
@@ -319,7 +319,7 @@ public class AppMsg {
 
      * Make a {@link AppMsg} with a custom view. It can be used to create non-floating notifications if floating is false.
      *
-     * @param context  The context to use. Usually your
+     * @param context  The content to use. Usually your
      *                 {@link android.app.Activity} object.
      * @param view
      *                 View to be used.
@@ -356,7 +356,7 @@ public class AppMsg {
     /**
      * Make a {@link AppMsg} with a custom view. It can be used to create non-floating notifications if floating is false.
      *
-     * @param context  The context to use. Usually your
+     * @param context  The content to use. Usually your
      *                 {@link android.app.Activity} object.
      * @param resId    The resource id of the string resource to use. Can be
      *                 formatted text.
@@ -371,7 +371,7 @@ public class AppMsg {
      * Make a {@link AppMsg} that just contains a text view with the text from a
      * resource.
      *
-     * @param context The context to use. Usually your
+     * @param context The content to use. Usually your
      *                {@link android.app.Activity} object.
      * @param resId   The resource id of the string resource to use. Can be
      *                formatted text.
@@ -386,7 +386,7 @@ public class AppMsg {
     /**
      * Make a {@link AppMsg} with a custom layout using the text from a
      *
-     * @param context The context to use. Usually your
+     * @param context The content to use. Usually your
      *                {@link android.app.Activity} object.
      * @param resId   The resource id of the string resource to use. Can be
      *                formatted text.

@@ -163,7 +163,7 @@ public class ConsoleActivity extends ToolbarActivity {
             @Override
             public void onClick(View v) {
 
-//                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context);
+//                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(content);
 //
 //                bottomSheetDialog.setContentView(R.layout.activity_manager_console);
 //                bottomSheetDialog.show();
@@ -174,7 +174,7 @@ public class ConsoleActivity extends ToolbarActivity {
 
 
 //                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-//                WeChatPayUtils.register(context);
+//                WeChatPayUtils.register(content);
 //                WeChatPayUtils.pay();
             }
         });

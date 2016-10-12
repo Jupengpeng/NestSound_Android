@@ -25,8 +25,8 @@ import com.xilu.wybz.view.materialdialogs.MaterialDialog;
 public class DialogUtils {
 
 //    @SuppressWarnings("ConstantConditions")
-//    public static float resolveFloat(Context context, int attr) {
-//        TypedArray a = context.obtainStyledAttributes(null, new int[]{attr});
+//    public static float resolveFloat(Context content, int attr) {
+//        TypedArray a = content.obtainStyledAttributes(null, new int[]{attr});
 //        try {
 //            return a.getFloat(0, 0);
 //        } finally {

@@ -44,6 +44,7 @@ public class PreserveInfoBean implements Serializable{
     public int id;
     public String certUrl;
     public int statu;
+    public String [] orderPrice;
 
 
 }

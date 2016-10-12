@@ -25,6 +25,7 @@ import com.xilu.wybz.ui.IView.IApplyPreservView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.utils.DateFormatUtils;
 import com.xilu.wybz.utils.StringStyleUtil;
+import com.xilu.wybz.utils.StringUtils;
 import com.xilu.wybz.utils.ToastUtils;
 
 import butterknife.Bind;
@@ -84,13 +85,21 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
     @Bind(R.id.preservation_protocol)
     TextView preservationProtocol;
 
-
+    /**
+     * 请求页面时传过来的数据.
+     */
+    ProductInfo requestData;
+    /**
+     *
+     */
     ProductInfo productInfo;
     PersonInfo personInfo;
 
     ApplyPreservePresenter presenter;
 
-    String [] prices = {"2.00","3.00","4.00"};
+    String[] prices = {"2.00", "3.00", "4.00"};
+
+    int selectType = 0;
 
 
     @Override
@@ -101,6 +110,7 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
 
     /**
      * 打开保全申请页面
+     *
      * @param context
      * @param info
      */
@@ -113,10 +123,10 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
     /**
      *
      */
-    public void initProductInfo() {
+    public void initData() {
         Intent intent = getIntent();
         if (intent != null) {
-            productInfo = intent.getParcelableExtra(DATA);
+            requestData = intent.getParcelableExtra(DATA);
         }
     }
 
@@ -124,90 +134,137 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initProductInfo();
-        initProtocol();
         setTitle("保全申请");
+        initData();
+        initProtocol();
 
         userInfoRight.setVisibility(View.GONE);
 
         initPresenter();
 
+
+        initProductType(3);
+
     }
 
-    public void initPresenter(){
+    public void initPresenter() {
         presenter = new ApplyPreservePresenter(context, this);
-
-        presenter.getApplyProdutInfo(productInfo.id,productInfo.type);
-//        presenter
+        presenter.getApplyProdutInfo(requestData.id, requestData.type);
     }
 
-
-
-
+    /**
+     * 不使用.
+     *  @Deprecated.
+     */
 
     @Override
     public void initView() {
+
     }
 
+    @Override
+    public void showError() {
 
+    }
+
+    @Override
+    public void showPage() {
+
+    }
+
+    @Override
+    public void showLoading() {
+
+    }
 
     @Override
     public void updateProductInfo(ProductInfo info) {
+        productInfo = info;
         setPreductInfo(info);
     }
 
     @Override
-    public void updateUsePrice(String price) {
-
+    public void updateUsePrice(String[] prices, int type) {
+        this.prices = prices;
+        initProductType(type);
     }
 
     @Override
     public void updatePersonInfo(PersonInfo personInfo) {
-
+        this.personInfo = personInfo;
+        setPersonInfo(personInfo);
     }
 
+    /**
+     * updateSubmitView.
+     * @param type
+     */
     @Override
     public void updateSubmitView(int type) {
 
     }
 
 
+    /**
+     * callback 启动sdk开始支付.
+     * @param data
+     */
     @Override
     public void startPay(String data) {
 
-        Log.e("pay","startPay");
-//        Log.e("pay","data:"+data);
+        Log.e("pay", "startPay");
 
         PingppLog.DEBUG = false;
-//
-//        new Handler().post(new Runnable() {
-//            @Override
-//            public void run() {
-                Pingpp.createPayment(ApplyPreserveActivity.this, data);
-//            }
-//        });
-
-
-
-
+        Pingpp.createPayment(ApplyPreserveActivity.this, data);
     }
 
-    private void setPreductInfo(ProductInfo info){
+    /**
+     * 设置作品信息
+     * @param info
+     */
+    private void setPreductInfo(ProductInfo info) {
 
-        if (info == null){
-            infoName.setText("歌曲名：/");
-            infoLyricAuthor.setText("词作者：/");
-            infoSongAuthor.setText("曲作者：/");
-            infoBanzou.setText("伴奏：/");
-            infoCreateTime.setText("创作时间：/");
+        if (info == null) {
+            infoName.setText("作品名：");
+            infoLyricAuthor.setText("词作者：");
+            infoSongAuthor.setText("曲作者：");
+            infoBanzou.setText("伴奏：");
+            infoCreateTime.setText("创作时间：");
 
         } else {
 
-            infoName.setText("歌曲名："+info.title);
-            infoLyricAuthor.setText("词作者："+info.lyricAuthor);
-            infoSongAuthor.setText("曲作者："+info.songAuthor);
-            infoBanzou.setText("伴奏："+info.accompaniment);
-            infoCreateTime.setText("词创作时间："+ DateFormatUtils.formatX1(info.createTime));
+            if(!StringUtils.isBlank(info.image)){
+                loadImage(info.image,productImage);
+            } else {
+
+            }
+
+            infoName.setText("作品名：" + info.title);
+            /**
+             *
+             */
+            if (StringUtils.isBlank(info.lyricAuthor)){
+                infoLyricAuthor.setVisibility(View.GONE);
+            } else {
+                infoLyricAuthor.setVisibility(View.VISIBLE);
+                infoLyricAuthor.setText("词作者：" + info.lyricAuthor);
+            }
+            if (StringUtils.isBlank(info.songAuthor)){
+                infoSongAuthor.setVisibility(View.GONE);
+            } else {
+                infoSongAuthor.setVisibility(View.VISIBLE);
+                infoSongAuthor.setText("曲作者：" + info.songAuthor);
+            }
+            if (StringUtils.isBlank(info.accompaniment)){
+                infoBanzou.setVisibility(View.GONE);
+            } else {
+                infoBanzou.setVisibility(View.VISIBLE);
+                infoBanzou.setText("伴奏：" + info.accompaniment);
+            }
+            /**
+             *
+             */
+            infoCreateTime.setText("词创作时间：" + DateFormatUtils.formatX1(info.createTime));
         }
     }
 
@@ -227,17 +284,31 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
 
         ProductInfo productInfo1 = new ProductInfo();
 
-        productInfo1.type =1;
-        productInfo1.id=134245;
-        PersonInfo personInfo1 = new PersonInfo();
-        personInfo1.cCardId ="1321415";
-        personInfo1.cUserName ="cUserName";
-        personInfo1.cPhone ="1325354667";
+        productInfo1.type = 1;
+        productInfo1.id = 134245;
 
-        presenter.applyOrder(productInfo1 , personInfo1);
+        productInfo = productInfo1;
+//        PersonInfo personInfo1 = new PersonInfo();
+//
+//        personInfo1.cCardId = "1321415";
+//        personInfo1.cUserName = "cUserName";
+//        personInfo1.cPhone = "1325354667";
 
-//        startActivity(PreservInfoActivity.class);
-//        startActivity(ProductAllActivity.class);
+//        if (productInfo == null){
+//            ToastUtils.toast(context,"没有作品信息");
+//            return;
+//        }
+
+        if (personInfo == null){
+            ToastUtils.toast(context,"请添加个人信息");
+            return;
+        }
+
+        productInfo.cType = selectType;
+        productInfo.id = requestData.id;
+        productInfo.type = requestData.type;
+
+        presenter.applyOrder(productInfo, personInfo);
 
     }
 
@@ -251,25 +322,56 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
         preservationProtocol.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
+    /**
+     * initProductType.
+     * @param type
+     */
+    boolean firstSelect = true;
 
     public void initProductType(int type) {
 
-        switch (type){
+        switch (type) {
 
             case 1:
                 textSpinner.setSelection(1);
                 textSpinner.setEnabled(false);
+                selectType = 1;
                 break;
             case 2:
                 textSpinner.setSelection(2);
                 textSpinner.setEnabled(false);
+                selectType = 2;
                 break;
             default:
                 textSpinner.setSelection(0);
+                selectType = 3;
                 textSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        setNeedPrice(position);
+                        String message = "保全歌曲和歌词";
+                        switch (position){
+                            case 0:
+                                selectType = 3;
+                                message = "保全歌曲和歌词";
+                                break;
+                            case 1:
+                                selectType = 1;
+                                message = "仅保全歌曲";
+                                break;
+                            case 2:
+                                selectType = 2;
+                                message = "仅保全歌词";
+                                break;
+                            default:
+                                selectType = 3;
+                                Log.d("Apply","textSpinner: select error? default=3");
+                        }
+                        setNeedPrice(selectType);
+                        if (firstSelect){
+                            firstSelect = false;
+                            return;
+                        }
+                        ToastUtils.toast(context,message);
                     }
 
                     @Override
@@ -277,21 +379,20 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
 
                     }
                 });
-
         }
+        setNeedPrice(selectType);
 
     }
 
 
     /**
      * setNeedPrice.
+     *
      * @param type
      */
-    private void setNeedPrice(int type){
-
+    private void setNeedPrice(int type) {
         String unit = "￥";
-        productPrice.setText(unit + prices[type]);
-
+        productPrice.setText(unit + prices[type-1]);
     }
 
 
@@ -322,6 +423,7 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
 
     /**
      * callback
+     *
      * @param status
      */
     protected void payCallback(String status) {
@@ -330,6 +432,9 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
 
         if ("success".equalsIgnoreCase(status)) {
             state = 8;
+            ToastUtils.toast(context,"保全作品成功");
+            finish();
+
         } else if ("fail".equalsIgnoreCase(status)) {
             state = 4;
         } else if ("cancel".equalsIgnoreCase(status)) {
@@ -345,13 +450,12 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        Log.e("pay","onActivityResult");
+        Log.e("pay", "onActivityResult");
 
         //支付页面返回处理
         if (requestCode == Pingpp.REQUEST_CODE_PAYMENT) {
             if (resultCode == Activity.RESULT_OK) {
                 String result = data.getExtras().getString("pay_result");
-
 
                 payCallback(result);
 
@@ -361,12 +465,12 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
                 // "cancel"  - 取消支付
                 // "invalid" - 支付插件未安装（一般是微信客户端未安装的情况）
 
-                String errorMsg = data.getExtras().getString("error_msg"); // 错误信息
-                String extraMsg = data.getExtras().getString("extra_msg"); // 错误信息
+                String errorMsg = ":"+data.getExtras().getString("error_msg"); // 错误信息
+                String extraMsg = ":"+data.getExtras().getString("extra_msg"); // 错误信息
 
-                showMsg(result+errorMsg+extraMsg);
+                showMsg(result + errorMsg + extraMsg);
 
-                Log.e("pay",result+":"+errorMsg+":"+extraMsg);
+                Log.e("pay", result + ":" + errorMsg + ":" + extraMsg);
             }
         }
 
@@ -383,7 +487,7 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
                 }
 
             }
-            ToastUtils.toast(this, "onActivityResult:" + requestCode + ":" + resultCode);
+//            ToastUtils.toast(this, "onActivityResult:" + requestCode + ":" + resultCode);
         }
     }
 }

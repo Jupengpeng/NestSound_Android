@@ -21,12 +21,12 @@
 // * Created by cfanr on 2015/12/5.
 // */
 //public class SongAblumHolder {
-//    Context context;
+//    Context content;
 //    RecyclerView mRecyclerView;
 //    SongAlbumAdapter mAdapter;
 //
-//    public SongAblumHolder(Context context, View convertView) {
-//        this.context = context;
+//    public SongAblumHolder(Context content, View convertView) {
+//        this.content = content;
 //        if (convertView != null) {
 //            mRecyclerView = (RecyclerView) convertView.findViewById(R.id.recycler_view_works);
 //        }
@@ -34,11 +34,11 @@
 //
 //    public void initView(HomeItem homeItem) {
 //        List<SongAlbum> songAlbums = homeItem.songAlbumList;
-//        mAdapter = new SongAlbumAdapter(context, songAlbums);
-//        LinearLayoutManager mLayoutManager = new GridLayoutManager(context, 2);
+//        mAdapter = new SongAlbumAdapter(content, songAlbums);
+//        LinearLayoutManager mLayoutManager = new GridLayoutManager(content, 2);
 //        mRecyclerView.setNestedScrollingEnabled(false);
 //        mRecyclerView.setLayoutManager(mLayoutManager);
-//        mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(2, DensityUtil.dip2px(context, 10), false));
+//        mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(2, DensityUtil.dip2px(content, 10), false));
 //        // 设置item动画
 //        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 //        mRecyclerView.setAdapter(mAdapter);

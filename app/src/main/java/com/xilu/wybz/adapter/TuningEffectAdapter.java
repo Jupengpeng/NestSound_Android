@@ -133,7 +133,7 @@ public class TuningEffectAdapter extends RecyclerView.Adapter<TuningEffectAdapte
 //                    anim.setRepeatMode(Animation.RESTART);
 //                    anim.start();
 
-//                    ainm = AnimationUtils.loadAnimation(context,R.anim.rotates);
+//                    ainm = AnimationUtils.loadAnimation(content,R.anim.rotates);
 //                    ainm.setRepeatCount(1000);
 //                    ainm.setRepeatMode(Animation.RESTART);
 //                    ainm.setRepeatMode(Animation.INFINITE);

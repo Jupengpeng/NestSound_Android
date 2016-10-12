@@ -26,6 +26,8 @@ public class DefaultListPresenter<T> extends BasePresenter<IDefaultListView>{
 
     public  boolean mockAble = false;
     public Type resultType = null;
+    public String method = "post";
+
     private String url;
     /**
      *
@@ -64,7 +66,7 @@ public class DefaultListPresenter<T> extends BasePresenter<IDefaultListView>{
             return;
         }
 
-        httpUtils.post(url,params, new AppJsonCalback(context){
+        httpUtils.postSupper(method,url,params, new AppJsonCalback(context){
             @Override
             public void onResult(JsonResponse<? extends Object> response) {
                 super.onResult(response);

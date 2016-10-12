@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -18,6 +19,7 @@ import com.xilu.wybz.presenter.SamplePresenter;
 import com.xilu.wybz.ui.BrowserActivity;
 import com.xilu.wybz.ui.IView.ISampleView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
+import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringStyleUtil;
 import com.xilu.wybz.utils.ToastUtils;
 
@@ -91,10 +93,15 @@ public class PreservePersonEditActivity extends ToolbarActivity implements ISamp
      */
     private void initPresenter(){
 
-        samplePresenter = new SamplePresenter<>(context,this);
+        ViewCallback callback = new ViewCallback();
+
+        samplePresenter = new SamplePresenter<>(context,callback);
+
         samplePresenter.url = MyHttpClient.getSavePersonInfo();
         samplePresenter.resultType = new TypeToken<PersonInfo>(){}.getType();
         params = new HashMap<>();
+
+        params.put("bq_uid",""+ PrefsUtil.getUserId(context));
 
     }
 
@@ -122,11 +129,12 @@ public class PreservePersonEditActivity extends ToolbarActivity implements ISamp
         personInfo.cCardId = preservationCardId.getText().toString();
         personInfo.cPhone = preservationPhone.getText().toString();
 
-        params.put("bq_uid","");
-        params.put("bq_username","");
-        params.put("bq_phone","");
-        params.put("bq_creditID","");
-//        samplePresenter.getData(params);
+
+        params.put("bq_username",personInfo.cUserName);
+        params.put("bq_phone",personInfo.cPhone);
+        params.put("bq_creditID",personInfo.cCardId);
+
+        samplePresenter.getData(params);
 
         Intent intent = new Intent();
         intent.putExtra(INFO, personInfo);
@@ -209,5 +217,28 @@ public class PreservePersonEditActivity extends ToolbarActivity implements ISamp
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+
+    /**
+     * ViewCallback.
+     */
+    public static class ViewCallback implements ISampleView<PersonInfo>{
+
+        static String TAG = "ViewCallback";
+        @Override
+        public void onSuccess(PersonInfo data) {
+            Log.d(TAG,"onSuccess");
+        }
+
+        @Override
+        public void onError(String message) {
+            Log.d(TAG,"onError:"+message);
+        }
+
+        @Override
+        public void initView() {
+            Log.d(TAG,"initView");
+        }
     }
 }

@@ -49,7 +49,8 @@ public class HttpUtils {
         if(params==null){
             params = new HashMap<>();
         }
-//        params.put("expiretime",System.currentTimeMillis()+ PhoneUtils.getPhoneImei(context));
+
+        params.put("expiretime",System.currentTimeMillis()+ PhoneUtils.getPhoneImei(context));
         params.put("token", PrefsUtil.getUserInfo(context).loginToken);
 
         String paramString = new Gson().toJson(params);
@@ -66,29 +67,6 @@ public class HttpUtils {
                 .execute(callback);
 
     }
-    //普通post提交
-  /*  public void postHost(String url, Map<String, String> params, Callback callback) {
-        if(params==null){
-            params = new HashMap<>();
-        }
-        params.put("expiretime",System.currentTimeMillis()+ PhoneUtils.getPhoneImei(context));
-        params.put("token", PrefsUtil.getUserInfo(context).loginToken);
-
-        String paramString = new Gson().toJson(params);
-
-        Log.e("url","url:"+url+":params:"+paramString);
-        String content = RSAUtils.encodeConvert(RSAUtils.encryptByPublicKey(paramString).getBytes());
-        Log.e("url","encode:"+content);
-        OkHttpUtils.post()
-                .url(MyHttpClient.BASE_URL + url)
-                .tag(httpTag)
-                .addParams("data", content)
-                .headers(headers)
-                .build()
-                .execute(callback);
-
-    }*/
-
 
     //普通post提交
     public RequestCall postLong(String url, Map<String, String> params, Callback stringCallback) {
@@ -117,6 +95,21 @@ public class HttpUtils {
 
         return call;
     }
+
+
+
+
+    //普通post提交
+    public void postSupper(String method, String url, Map<String, String> params, Callback callback) {
+
+        if ("post".equalsIgnoreCase(method)){
+            post(url,params,callback);
+            return;
+        }
+        get(url,params,callback);
+
+    }
+
 
     //普通post提交
     public RequestCall post(String tag, String url, Map<String, String> params, Callback stringCallback) {

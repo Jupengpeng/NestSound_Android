@@ -10,12 +10,15 @@ import com.xilu.wybz.bean.ProductInfo;
 public interface IApplyPreservView extends IBaseView{
 
     void updateProductInfo(ProductInfo info);
-    void updateUsePrice( String price);
-
+    void updateUsePrice( String[] prices, int type);
     void updatePersonInfo( PersonInfo personInfo);
+
     void updateSubmitView( int type);
 
-
     void startPay(String data);
+
+    void showError();
+    void showPage();
+    void showLoading();
 
 }

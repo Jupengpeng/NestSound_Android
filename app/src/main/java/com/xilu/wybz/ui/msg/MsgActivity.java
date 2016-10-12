@@ -72,16 +72,21 @@ public class MsgActivity extends BaseListActivity<MsgBean> implements IMsgNumVie
         return new MsgViewHolder(view);
     }
 
+    /**
+     * showMsgNum.
+     * @param msgBean
+     */
     @Override
     public void showMsgNum(MsgNumBean msgBean) {
         if (isDestroy || msgBean == null) return;
-        msgCount = msgBean.commentnum + msgBean.fovnum + msgBean.sysmsg + msgBean.zannum;
+        msgCount = msgBean.commentnum + msgBean.fovnum + msgBean.sysmsg + msgBean.zannum + msgBean.copyrightnum;
         changeMsgStatus();
         if (mDataList != null && mDataList.size() > 0) {
             mDataList.get(0).count = msgBean.commentnum;
             mDataList.get(1).count = msgBean.zannum;
             mDataList.get(2).count = msgBean.fovnum;
-            mDataList.get(3).count = msgBean.sysmsg;
+            mDataList.get(3).count = msgBean.copyrightnum;
+            mDataList.get(4).count = msgBean.sysmsg;
             adapter.notifyDataSetChanged();
         }
     }

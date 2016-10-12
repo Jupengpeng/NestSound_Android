@@ -12,6 +12,6 @@ public class PreserveMessageBean implements Serializable{
     public int status;//1=未读，0=已读
     public String pushtype;
     public String title;
-    public String context;//消息内容
+    public String content;//消息内容
     public long createtime;
 }

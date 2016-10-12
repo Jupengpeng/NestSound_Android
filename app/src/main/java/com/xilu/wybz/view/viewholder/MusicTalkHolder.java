@@ -23,20 +23,20 @@
 // * Created by cfanr on 2015/12/5.
 // */
 //public class MusicTalkHolder {
-//    Context context;
+//    Context content;
 //    RecyclerView mRecyclerView;
 //    MusicTalkAdapter mAdapter;
 //
-//    public MusicTalkHolder(Context context, View convertView){
-//        this.context=context;
+//    public MusicTalkHolder(Context content, View convertView){
+//        this.content=content;
 //        if(convertView!=null){
 //            mRecyclerView=(RecyclerView)convertView.findViewById(R.id.recycler_view_works);
 //        }
 //    }
 //    public void initView(HomeItem homeItem){
 //        List<MusicTalk> musicTalkList=homeItem.musicTalkList;
-//        mAdapter=new MusicTalkAdapter(context,musicTalkList);
-//        LinearLayoutManager mLayoutManager = new LinearLayoutManager(context);
+//        mAdapter=new MusicTalkAdapter(content,musicTalkList);
+//        LinearLayoutManager mLayoutManager = new LinearLayoutManager(content);
 //        mRecyclerView.setLayoutManager(mLayoutManager);
 //        mRecyclerView.setNestedScrollingEnabled(false);
 //        mRecyclerView.setAdapter(mAdapter);

@@ -26,7 +26,7 @@ public class MatchCommentAdapter extends RecyclerView.Adapter<MatchCommentAdapte
     public MatchCommentAdapter(Context context, List<CommentBean> worksDataList, int column) {
         this.context = context;
         this.mList = worksDataList;
-//        itemWidth = (DensityUtil.getScreenW(context)-DensityUtil.dip2px(context,(column+1)*10))/column;
+//        itemWidth = (DensityUtil.getScreenW(content)-DensityUtil.dip2px(content,(column+1)*10))/column;
     }
 
     public interface OnItemClickListener {
