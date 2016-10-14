@@ -235,7 +235,7 @@ public class PreserveInfoActivity extends ToolbarActivity implements ISampleView
 
     @Override
     public void onSuccess(PreserveInfoBean data) {
-
+        llNodata.setVisibility(View.GONE);
         setPersonInfo(data.personInfo);
         setProductInfo(data.productInfo);
         setExtInfo(data);
@@ -252,8 +252,8 @@ public class PreserveInfoActivity extends ToolbarActivity implements ISampleView
 
         setPersonInfo(null);
         setProductInfo(null);
-
         setExtInfo(null);
+        llNodata.setVisibility(View.VISIBLE);
     }
 
 

@@ -152,7 +152,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginBottom="20dp"
                     android:layout_marginTop="10dp"
-                    android:text="提交申请即表示认同《音巢音乐保全免责申明》"
+                    android:text="保全相关协议请参考《音巢用户使用协议》"
                     android:textColor="@color/main_text_color3"
                     android:textSize="12sp" />
 

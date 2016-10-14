@@ -25,7 +25,9 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="15dp"
         android:layout_gravity="center_horizontal"
-        android:text="《音巢音乐个人信息采集申明》"
+        android:text="你的个人信息将仅用于保全服务"
+        android:textSize="12sp"
+        android:textColor="@color/main_text_color3"
         />
 
 </LinearLayout>
