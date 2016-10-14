@@ -138,6 +138,7 @@ public class ModifyUserInfoActivity extends ToolbarActivity implements IModifyUs
                 showModifyBirthdayDialog();
                 break;
             case R.id.ll_bq_info:
+
                 break;
         }
     }

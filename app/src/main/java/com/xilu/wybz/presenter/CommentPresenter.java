@@ -1,7 +1,6 @@
 package com.xilu.wybz.presenter;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.xilu.wybz.bean.CommentBean;
 import com.xilu.wybz.common.MyHttpClient;

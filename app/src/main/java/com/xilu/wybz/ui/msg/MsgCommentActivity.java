@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.umeng.socialize.utils.Log;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.CommentBean;
 import com.xilu.wybz.bean.MsgCommentBean;
@@ -101,12 +102,16 @@ public class MsgCommentActivity extends BaseListActivity<MsgCommentBean> impleme
 
     @Override
     public void showMsgCommentData(List<MsgCommentBean> commentBeans) {
+
         if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
             mDataList.clear();
         }
         recycler.enableLoadMore(true);
         for (MsgCommentBean commentBean : commentBeans) {
             mDataList.add(commentBean);
+        }
+        for(int i =0;i<commentBeans.size();i++){
+            Log.e("AAA",commentBeans.get(i).getTarget_uid()+"");
         }
         adapter.notifyDataSetChanged();
         recycler.onRefreshCompleted();
@@ -209,8 +214,10 @@ public class MsgCommentActivity extends BaseListActivity<MsgCommentBean> impleme
         public void onBindViewHolder(int position) {
             MsgCommentBean commentBean = mDataList.get(position);
             itemView.setTag(commentBean);
+            if(commentBean.getComment_type()==1){
+                tvContent.setText(StringStyleUtil.getCommentStyleStr(commentBean));
+            }
 
-            tvContent.setText(StringStyleUtil.getCommentStyleStr(commentBean));
 
             if (commentBean.createdate > 0)
                 tvTime.setText(DateTimeUtil.timestamp2Date(commentBean.createdate));

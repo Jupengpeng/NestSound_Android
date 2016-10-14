@@ -14,9 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.tencent.connect.UserInfo;
-import com.umeng.socialize.Config;
-import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -354,7 +351,7 @@ public class LoginActivity extends BaseActivity implements ILoginView, IRegister
     //切换注册和登录 flag 0 登录 1注册
     public void toLoginOrReg(int flag) {
         llLogin.setVisibility(flag == 0 ? View.VISIBLE : View.GONE);
-        llOtherLogin.setVisibility(flag == 0 ? View.VISIBLE : View.GONE);
+//        llOtherLogin.setVisibility(flag == 0 ? View.VISIBLE : View.GONE);
         llAgreement.setVisibility(flag == 1 ? View.VISIBLE : View.GONE);
         llRegister.setVisibility(flag == 1 ? View.VISIBLE : View.GONE);
         tvLogin.setVisibility(flag == 0 ? View.VISIBLE : View.GONE);
