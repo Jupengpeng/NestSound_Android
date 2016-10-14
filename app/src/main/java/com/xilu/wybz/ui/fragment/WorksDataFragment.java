@@ -11,13 +11,10 @@ import android.view.ViewGroup;
 import com.xilu.wybz.R;
 import com.xilu.wybz.adapter.InspireRecordViewHolder;
 import com.xilu.wybz.adapter.WorksViewHolder;
-import com.xilu.wybz.bean.UserBean;
-import com.xilu.wybz.bean.UserInfoBean;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.PlayMediaInstance;
 import com.xilu.wybz.presenter.UserCenterListPresenter;
-import com.xilu.wybz.presenter.UserPresenter;
 import com.xilu.wybz.ui.IView.IUserCenterListView;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.ToastUtils;
@@ -220,6 +217,7 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
             }
         }
         removeItem(selectPos);
+        userPresenter.loadData(type, page++);
         EventBus.getDefault().post(new Event.UpdateWorksNum(type,-1));
     }
 

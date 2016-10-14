@@ -341,8 +341,15 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
                 tvName.setText(bean.nickname);
             if (bean.createdate > 0)
                 tvDate.setText(DateTimeUtil.timestamp2DateTime(bean.createdate));
-            SpannableString s = StringStyleUtil.getWorkCommentStyleStr(context, bean);
-            tvContent.setText(s);
+            //ygs  少判断
+            if(bean.getComment_type()==1){
+                SpannableString s = StringStyleUtil.getParentCommentStyleStr(bean);
+                tvContent.setText(s);
+            }else if(bean.comment_type==2){
+                SpannableString s = StringStyleUtil.getWorkCommentStyleStr(context, bean);
+                tvContent.setText(s);
+            }
+
             tvContent.setMovementMethod(LinkMovementMethod.getInstance());
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

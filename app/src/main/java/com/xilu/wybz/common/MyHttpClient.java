@@ -7,7 +7,7 @@ public class MyHttpClient {
 
 
     public final static String RELEASE_ROOT_URL = "http://api.yinchao.cn";
-//    public final static String RELEASE_ROOT_URL = "http:192.168.0.99:8080";
+    //    public final static String RELEASE_ROOT_URL = "http:192.168.0.99:8080";
     public final static String TEST_ROOT_URL = "http://test.yinchao.cn";
     public final static String TEMP_ROOT_URL = "http://test.yinchao.cn";
 
@@ -96,7 +96,7 @@ public class MyHttpClient {
 
     //发现里面歌曲
     public static String getFindSongList() {
-        return "/java/common/find/music";
+        return "/java/common/find/music/v22";
     }
 
     //发现里面更多歌曲
@@ -106,7 +106,7 @@ public class MyHttpClient {
 
     //发现里面歌词
     public static String getFindLyricsList() {
-        return "/java/common/find/lyrics";
+        return "/java/common/find/lyrics/v22";
     }
 
     //发现里面更多歌词
@@ -176,7 +176,8 @@ public class MyHttpClient {
     }
 
     /**
-     *  消息列表接口.
+     * 消息列表接口.
+     *
      * @return
      */
     //消息收藏列表
@@ -206,7 +207,6 @@ public class MyHttpClient {
 
 
     /**
-     *
      * @return
      */
     //发布歌词
@@ -407,15 +407,18 @@ public class MyHttpClient {
     /**
      * 保全相关接口
      */
-
+    //查询用户保全的作品列表
     public static String getpreservationList() {
         return "/copyright/preserve/getPreserveListByid";
     }
 
+    //未保全列表
     public static String getProductAllList() {
         return "/copyright/preserve/getProductList";
     }
 
+
+    //保全订单信息
     public static String getPreserveOrderDetail() {
         return "/copyright/preserve/getOrderDetail";
     }
@@ -434,6 +437,7 @@ public class MyHttpClient {
 
     /**
      * 支付相关接口
+     *
      * @return
      */
     public static String getPaypalOrder() {
@@ -443,6 +447,7 @@ public class MyHttpClient {
     public static String getPaypalPay() {
         return "/paypal/pay/save/v22";
     }
+
     public static String getPaypalStatus() {
         return "/paypal/pay/status/v22";
     }

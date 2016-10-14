@@ -131,6 +131,7 @@ public class BrowserActivity extends ToolbarActivity implements IMusicTalkDetail
             public void onClick(View v) {
                 if(shareDialog==null){
                     shareDialog = new ShareDialog(BrowserActivity.this,musicTalk);
+                    musicTalkPresenter.shareCount(musicTalk.itemid);
                 }
                 shareDialog.showDialog();
             }
@@ -278,6 +279,7 @@ public class BrowserActivity extends ToolbarActivity implements IMusicTalkDetail
         musicTalk.commentnum = musicTalkNum.commentnum;
         musicTalk.sharenum = musicTalkNum.sharenum;
         musicTalk.zannum = musicTalkNum.zannum;
+
         ivZanIcon.setImageResource(isZan==0?R.drawable.ic_musictalk_zan:R.drawable.ic_musictalk_zaned);
         tvCommentNum.setText("("+musicTalkNum.commentnum+")");
         tvShareNum.setText("("+musicTalkNum.sharenum+")");
@@ -308,7 +310,7 @@ public class BrowserActivity extends ToolbarActivity implements IMusicTalkDetail
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(Event.ShareSuccessEvent event) {
         if(musicTalk!=null){
-            musicTalkPresenter.shareCount(musicTalk.itemid);
+            Log.e("AAA","00000000");
         }
     }
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -323,6 +325,7 @@ public class BrowserActivity extends ToolbarActivity implements IMusicTalkDetail
 
     @Override
     public void shareSuccess() {
+        Log.e("AAA","11111111111");
         musicTalk.sharenum += 1;
         tvShareNum.setText("("+musicTalk.sharenum+")");
     }
@@ -355,9 +358,11 @@ public class BrowserActivity extends ToolbarActivity implements IMusicTalkDetail
         @Override
         public void onReceivedTitle(WebView view, String title) {
             titles.add(title);
-            if (!TextUtils.isEmpty(title)) {
-                setTitle(title);
+            //ygs  修改title为name
+            if (!TextUtils.isEmpty(musicTalk.name)) {
+                setTitle(musicTalk.name);
             }
+
             super.onReceivedTitle(view, title);
         }
 

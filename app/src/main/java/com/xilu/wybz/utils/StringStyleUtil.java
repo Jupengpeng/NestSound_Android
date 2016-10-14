@@ -63,9 +63,9 @@ public class StringStyleUtil {
     }
 
     public static SpannableString getParentCommentStyleStr(CommentBean commentBean) {
-        String comment ="我:" + commentBean.getComment();
+        String comment =commentBean.nickname+":" + commentBean.getComment();
         SpannableString spannableString = new SpannableString(comment);
-        spannableString.setSpan(new ForegroundColorSpan(0xff539ac2),0,1, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(new ForegroundColorSpan(0xff539ac2),0,commentBean.nickname.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         return spannableString;
     }
     //获取歌词内容
