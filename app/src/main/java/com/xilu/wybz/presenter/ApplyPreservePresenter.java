@@ -153,7 +153,7 @@ public class ApplyPreservePresenter extends BasePresenter<IApplyPreservView>{
     }
 
 
-    public void getApplyProdutInfo(int id,int type){
+    public void getApplyProdutInfo(String id,int type){
 
         params = new HashMap<>();
 

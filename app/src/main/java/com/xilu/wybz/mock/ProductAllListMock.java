@@ -18,16 +18,16 @@ public class ProductAllListMock implements MockCallback<ProductInfo>{
 
         long time = System.currentTimeMillis();
 
-        list.add(new ProductInfo("ProductInfo1",time));
-        list.add(new ProductInfo("ProductInfo1",time));
-        list.add(new ProductInfo("ProductInfo2",time));
-        list.add(new ProductInfo("ProductInfo1",time));
-        list.add(new ProductInfo("ProductInfo3",time));
-        list.add(new ProductInfo("ProductInfo4",time));
-        list.add(new ProductInfo("ProductInfo1",time));
-        list.add(new ProductInfo("ProductInfo1",time));
-        list.add(new ProductInfo("ProductInfo1",time));
-        list.add(new ProductInfo("ProductInfo10",time));
+//        list.add(new ProductInfo("ProductInfo1",time));
+//        list.add(new ProductInfo("ProductInfo1",time));
+//        list.add(new ProductInfo("ProductInfo2",time));
+//        list.add(new ProductInfo("ProductInfo1",time));
+//        list.add(new ProductInfo("ProductInfo3",time));
+//        list.add(new ProductInfo("ProductInfo4",time));
+//        list.add(new ProductInfo("ProductInfo1",time));
+//        list.add(new ProductInfo("ProductInfo1",time));
+//        list.add(new ProductInfo("ProductInfo1",time));
+//        list.add(new ProductInfo("ProductInfo10",time));
         return list;
     }
 

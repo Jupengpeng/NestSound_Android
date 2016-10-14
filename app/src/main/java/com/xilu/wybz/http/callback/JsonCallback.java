@@ -48,11 +48,12 @@ public class JsonCallback extends Callback<JsonResponse>{
             jsonResponse.setCode(code);
             jsonResponse.setMessage(message);
 
-            if (!TextUtils.isEmpty(data)) {
+            if (!TextUtils.isEmpty(data) && !"null".equalsIgnoreCase(data)) {
                 decode = RSAUtils.decryptByPublicKey(new String(RSAUtils.decodeConvert(data), "UTF-8"));
                 Log.d("url", decode);
                 LogUtils.iJsonFormat("url",decode,true);
-                if (type == null){
+
+                if (type == null && "null".equalsIgnoreCase(decode)){
                     jsonResponse.setData(decode);
                 } else {
                     jsonResponse.setData( new Gson().fromJson(decode,type));

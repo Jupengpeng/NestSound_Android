@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.reflect.TypeToken;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.PersonInfo;
 import com.xilu.wybz.bean.PreserveInfoBean;
@@ -123,23 +124,26 @@ public class PreserveInfoActivity extends ToolbarActivity implements ISampleView
     private void setExtInfo(PreserveInfoBean bean) {
         if (bean == null) {
             preservationSubmit.setEnabled(false);
-            preservationSubmit.setText("保全失败");
-            preservationError.setVisibility(View.VISIBLE);
+            preservationSubmit.setText("未知状态");
+            preservationError.setVisibility(View.GONE);
             return;
         }
         certUrl = new String(bean.certUrl);
 
-        if (bean.statu == 1) {
+        if (bean.statu == 2) {
             preservationSubmit.setEnabled(false);
             preservationSubmit.setText("保全中...");
+            preservationError.setVisibility(View.GONE);
 
-        } else if (bean.statu == 0) {
-
+        } else if (bean.statu == 3) {
+            preservationSubmit.setEnabled(false);
+            preservationSubmit.setText("保全失败");
+            preservationError.setVisibility(View.VISIBLE);
         } else {
             preservationSubmit.setEnabled(true);
             preservationSubmit.setText("查看保全证书");
+            preservationError.setVisibility(View.GONE);
         }
-
 
     }
 
@@ -157,7 +161,7 @@ public class PreserveInfoActivity extends ToolbarActivity implements ISampleView
         }
     }
 
-    private void setPreductInfo(ProductInfo info) {
+    private void setProductInfo(ProductInfo info) {
 
         if (info == null) {
             infoName.setText("歌曲名：");
@@ -170,13 +174,43 @@ public class PreserveInfoActivity extends ToolbarActivity implements ISampleView
 
         } else {
 
-            infoName.setText("歌曲名：" + info.title);
-            infoLyricAuthor.setText("词作者：" + info.lyricAuthor);
-            infoSongAuthor.setText("曲作者：" + info.songAuthor);
-            infoBanzou.setText("伴奏：" + info.accompaniment);
-            infoCreateTime.setText("词创作时间：" + DateFormatUtils.formatX1(info.createTime));
+            if (!StringUtils.isBlank(info.image)) {
+                loadImage(info.image, productImage);
+            } else {
+
+            }
+
+            infoName.setText("作品名：" + info.title);
             preservationNumber.setText("保全编号：" + info.preserveID);
             preservationTime.setText("保全时间：" + info.preserveDate);
+
+            if (StringUtils.isBlank(info.lyricAuthor)) {
+                infoLyricAuthor.setVisibility(View.GONE);
+            } else {
+                infoLyricAuthor.setVisibility(View.VISIBLE);
+                infoLyricAuthor.setText("词作者：" + info.lyricAuthor);
+            }
+            if (StringUtils.isBlank(info.songAuthor)) {
+                infoSongAuthor.setVisibility(View.GONE);
+            } else {
+                infoSongAuthor.setVisibility(View.VISIBLE);
+                infoSongAuthor.setText("曲作者：" + info.songAuthor);
+            }
+            if (StringUtils.isBlank(info.accompaniment)) {
+                infoBanzou.setVisibility(View.GONE);
+            } else {
+                infoBanzou.setVisibility(View.VISIBLE);
+                infoBanzou.setText("伴奏：" + info.accompaniment);
+            }
+            infoCreateTime.setText("词创作时间：" + DateFormatUtils.formatX1(info.createTime));
+
+//            infoName.setText("歌曲名：" + info.title);
+//            infoLyricAuthor.setText("词作者：" + info.lyricAuthor);
+//            infoSongAuthor.setText("曲作者：" + info.songAuthor);
+//            infoBanzou.setText("伴奏：" + info.accompaniment);
+//            infoCreateTime.setText("词创作时间：" + DateFormatUtils.formatX1(info.createTime));
+//            preservationNumber.setText("保全编号：" + info.preserveID);
+//            preservationTime.setText("保全时间：" + info.preserveDate);
         }
     }
 
@@ -203,29 +237,30 @@ public class PreserveInfoActivity extends ToolbarActivity implements ISampleView
     public void onSuccess(PreserveInfoBean data) {
 
         setPersonInfo(data.personInfo);
-        setPreductInfo(data.productInfo);
+        setProductInfo(data.productInfo);
         setExtInfo(data);
         cancelPd();
     }
 
     @Override
     public void onError(String message) {
-
+        llNodata.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void initView() {
 
         setPersonInfo(null);
-        setPreductInfo(null);
+        setProductInfo(null);
 
         setExtInfo(null);
     }
 
 
     public void initPresenter() {
-        samplePresenter = new SamplePresenter<>(context, this);
+        samplePresenter = new SamplePresenter<PreserveInfoBean>(context, this);
         samplePresenter.url = MyHttpClient.getPreserveOrderDetail();
+        samplePresenter.resultType = new TypeToken<PreserveInfoBean>(){}.getType();
 
         Map<String, String> params = new HashMap<>();
         params.put("id", "" + nodeViewData.orderId);

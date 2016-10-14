@@ -27,7 +27,7 @@ public class PreserveInfoMock implements MockCallback<PreserveInfoBean>{
 
         bean.productInfo = new ProductInfo();
         bean.personInfo = new PersonInfo();
-        bean.productInfo.id = 1;
+        bean.productInfo.id = ""+1;
 
 
         return bean;

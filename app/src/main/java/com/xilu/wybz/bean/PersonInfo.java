@@ -12,17 +12,17 @@ public class PersonInfo implements Parcelable {
     public String cCardId;
     public String cPhone;
     public String cEmail;
-    public int cType;
+    public int cType = 1;
 
 
     public String getTypeString(){
         String type = "/";
         if (cType == 1){
-            type = "词作者";
-        } else if (cType == 2){
             type = "曲作者";
+        } else if (cType == 2){
+            type = "词作者";
         } else if (cType == 3){
-            type = "词作者/曲作者";
+            type = "曲作者/词作者";
         }
         return type;
     }

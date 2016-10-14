@@ -195,7 +195,7 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
     @Override
     public void updateProductInfo(ProductInfo info) {
         productInfo = info;
-        setPreductInfo(info);
+        setProductInfo(info);
     }
 
     @Override
@@ -207,6 +207,8 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
     @Override
     public void updatePersonInfo(PersonInfo personInfo) {
         this.personInfo = personInfo;
+        userInfoAdd.setVisibility(View.GONE);
+        userInfoContainer.setVisibility(View.VISIBLE);
         setPersonInfo(personInfo);
     }
 
@@ -240,7 +242,7 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
      *
      * @param info
      */
-    private void setPreductInfo(ProductInfo info) {
+    private void setProductInfo(ProductInfo info) {
 
         if (info == null) {
             infoName.setText("作品名：");
@@ -303,9 +305,13 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
         ProductInfo productInfo1 = new ProductInfo();
 
         productInfo1.type = 1;
-        productInfo1.id = 134245;
+        productInfo1.id = ""+134245;
 
-        productInfo = productInfo1;
+        if (productInfo == null){
+
+            productInfo = productInfo1;
+        }
+
 //        PersonInfo personInfo1 = new PersonInfo();
 //
 //        personInfo1.cCardId = "1321415";

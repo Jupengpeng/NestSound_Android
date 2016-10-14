@@ -9,7 +9,7 @@ import android.os.Parcelable;
 
 public class ProductInfo implements Parcelable {
 
-    public int id;
+    public String id;
 
     public String title;
     public String lyricAuthor;
@@ -20,37 +20,10 @@ public class ProductInfo implements Parcelable {
     public int type;
     public int cType;
 
-    public long preserveDate;
+    public String preserveDate;
     public String preserveID;
 
     public ProductInfo() {
-    }
-
-
-    /*
-     productInfo:{
-            "id":1,
-            "title":"name",
-            "lyricAuthor":"sd"
-            "songAuthor":"sd",
-            "accompaniment":"yinchao",//伴奏
-            "createTime"："14265756856"
-            "image":"http://pic.yinchao.cn/214124.png"
-            "type":1
-
-            "preserveDate":
-            "preserveID"://保全号
-        }
-    */
-
-    /**
-     *
-     * @param name
-     * @param time
-     */
-    public ProductInfo(String name, long time) {
-        this.title = name;
-        this.createTime = time;
     }
 
 
@@ -61,7 +34,7 @@ public class ProductInfo implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(this.id);
+        dest.writeString(this.id);
         dest.writeString(this.title);
         dest.writeString(this.lyricAuthor);
         dest.writeString(this.songAuthor);
@@ -69,12 +42,13 @@ public class ProductInfo implements Parcelable {
         dest.writeLong(this.createTime);
         dest.writeString(this.image);
         dest.writeInt(this.type);
-        dest.writeLong(this.preserveDate);
+        dest.writeInt(this.cType);
+        dest.writeString(this.preserveDate);
         dest.writeString(this.preserveID);
     }
 
     protected ProductInfo(Parcel in) {
-        this.id = in.readInt();
+        this.id = in.readString();
         this.title = in.readString();
         this.lyricAuthor = in.readString();
         this.songAuthor = in.readString();
@@ -82,7 +56,8 @@ public class ProductInfo implements Parcelable {
         this.createTime = in.readLong();
         this.image = in.readString();
         this.type = in.readInt();
-        this.preserveDate = in.readLong();
+        this.cType = in.readInt();
+        this.preserveDate = in.readString();
         this.preserveID = in.readString();
     }
 
