@@ -214,8 +214,10 @@ public class MsgCommentActivity extends BaseListActivity<MsgCommentBean> impleme
         public void onBindViewHolder(int position) {
             MsgCommentBean commentBean = mDataList.get(position);
             itemView.setTag(commentBean);
-            if(commentBean.getComment_type()==1){
+            if(commentBean.getComment_type()==2){
                 tvContent.setText(StringStyleUtil.getCommentStyleStr(commentBean));
+                Log.e("AAA",StringStyleUtil.getCommentStyleStr(commentBean)+"");
+
             }
 
 
@@ -286,7 +288,7 @@ public class MsgCommentActivity extends BaseListActivity<MsgCommentBean> impleme
             showMsg("评论不能为空！");
             return;
         }
-        commentPresenter.sendComment(inforCommentBean.itemid, 2, inforCommentBean.type, inforCommentBean.target_uid, content);
+        commentPresenter.sendComment(inforCommentBean.itemid, 2, inforCommentBean.type, inforCommentBean.uid, content);
     }
 
     @Override
