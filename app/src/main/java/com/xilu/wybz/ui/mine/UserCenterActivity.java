@@ -129,9 +129,6 @@ public class UserCenterActivity extends BaseActivity implements IModifyCoverView
         EventBus.getDefault().register(this);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
 
         userBean = PrefsUtil.getUserInfo(context);
         userInfoBean = PrefsUtil.getUserInfoBean(context,PrefsUtil.getUserId(context));

@@ -60,8 +60,10 @@ public class CommentPresenter extends BasePresenter<ICommentView>{
         params.put("itemid", itemid);
         params.put("comment_type", comment_type+"");
         params.put("type", type+"");
-        params.put("target_uid", target_uid+"");
         params.put("comment", comment);
+        if(comment_type==2){
+            params.put("target_uid", target_uid+"");
+        }
         httpUtils.post(MyHttpClient.getSaveCommentUrl(), params, new MyStringCallback(){
             @Override
             public void onResponse(String response) {
