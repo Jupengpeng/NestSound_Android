@@ -40,6 +40,18 @@ public class StringStyleUtil {
 
         return spannableString;
     }
+    public static SpannableString getCommentStyleStrs(MsgCommentBean commentBean) {
+        String nickName = commentBean.nickname;
+        if (StringUtils.isBlank(nickName)){
+            return new SpannableString(commentBean.getComment());
+        }
+        String comment =nickName+"："+commentBean.getComment();
+        SpannableString spannableString = new SpannableString(comment);
+
+        spannableString.setSpan(new ForegroundColorSpan(0xff539ac2),0,nickName.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+
+        return spannableString;
+    }
 
 
     public static SpannableString getWorkCommentStyleStr(Context context, CommentBean commentBean) {
