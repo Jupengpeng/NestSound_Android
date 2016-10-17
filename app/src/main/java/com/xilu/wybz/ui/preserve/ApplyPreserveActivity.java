@@ -149,12 +149,11 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
         initData();
         initProtocol();
 
-//        llNodata.setVisibility(View.VISIBLE);
+        llNodata.setVisibility(View.VISIBLE);
 
         userInfoRight.setVisibility(View.GONE);
 
         initPresenter();
-
 
         initProductType(3);
 
@@ -284,7 +283,7 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
             /**
              *
              */
-            infoCreateTime.setText("词创作时间：" + DateFormatUtils.formatX1(info.createTime));
+            infoCreateTime.setText("词创作时间：" + DateFormatUtils.formatX1(info.updatetime));
         }
     }
 

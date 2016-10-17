@@ -96,6 +96,10 @@
     <dimen name="margin_theme">15dp</dimen>
 
     <dimen name="preservation_margin">15dp</dimen>
-    <dimen name="preservation_split">2dp</dimen>
+    <dimen name="preservation_split">1dp</dimen>
+
+    <dimen name="share_icon_padding">4dp</dimen>
+
+
 
 </resources>

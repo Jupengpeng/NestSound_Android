@@ -163,7 +163,7 @@ public class ProductsFragment extends BaseListFragment<ProductInfo> implements I
             this.info = mDataList.get(position);
 
             name.setText(info.title);
-            time.setText(DateFormatUtils.formatX1(info.createTime));
+            time.setText(DateFormatUtils.formatX1(info.updatetime));
         }
 
         @Override

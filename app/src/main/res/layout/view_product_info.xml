@@ -50,9 +50,10 @@
                 android:id="@+id/info_lyric_author"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="2dp"
                 android:text="作词：姑娘"
-                android:textSize="12sp"
+                android:singleLine="true"
+                android:textSize="13sp"
                 android:textColor="@color/main_text_color"
                 />
             <TextView
@@ -60,8 +61,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/preservation_split"
+                android:singleLine="true"
                 android:text="作曲：南方"
-                android:textSize="12sp"
+                android:textSize="13sp"
                 android:textColor="@color/main_text_color"
                 />
             <TextView
@@ -72,16 +74,15 @@
                 android:text="伴奏：南方的姑娘"
                 android:singleLine="true"
                 android:ellipsize="end"
-                android:textSize="12sp"
+                android:textSize="13sp"
                 android:textColor="@color/main_text_color3"
                 />
             <TextView
                 android:id="@+id/info_create_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/preservation_split"
                 android:text="创作时间：2016-09-18 16:46"
-                android:textSize="12sp"
+                android:textSize="13sp"
                 android:textColor="@color/main_text_color3"
                 />
 

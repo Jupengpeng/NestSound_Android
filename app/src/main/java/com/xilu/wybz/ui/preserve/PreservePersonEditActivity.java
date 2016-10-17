@@ -21,6 +21,7 @@ import com.xilu.wybz.ui.IView.ISampleView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringStyleUtil;
+import com.xilu.wybz.utils.StringUtils;
 import com.xilu.wybz.utils.ToastUtils;
 
 import java.util.HashMap;
@@ -51,8 +52,11 @@ public class PreservePersonEditActivity extends ToolbarActivity implements ISamp
 
     String desc = "《音巢音乐个人信息采集申明》";
 
+    SamplePresenter<PersonInfo> formPresenter;
     SamplePresenter<PersonInfo> samplePresenter;
-    Map<String,String> params;
+    Map<String, String> params;
+    int from = 1;
+
 
     @Override
     protected int getLayoutRes() {
@@ -68,41 +72,58 @@ public class PreservePersonEditActivity extends ToolbarActivity implements ISamp
 
         personInfo = getInfo(getIntent());
 
+        initPresenter();
+
         if (personInfo != null) {
-            preservationName.setText(personInfo.cUserName);
-            preservationCardId.setText(personInfo.cCardId);
-            preservationPhone.setText(personInfo.cPhone);
+            if (personInfo.from == 2) {
+                from = 2;
+                initForm();
+            } else {
+                setInfo(personInfo);
+            }
         }
 
-//        initProtocol();
-        initPresenter();
     }
-
 
     /**
      *
      */
-    public void initProtocol(){
+    public void initProtocol() {
         String text = personInfoDesc.getText().toString();
-        personInfoDesc.setText(StringStyleUtil.getLinkSpan(this,text,BrowserActivity.class, MyCommon.PROTOCOL_2));
+        personInfoDesc.setText(StringStyleUtil.getLinkSpan(this, text, BrowserActivity.class, MyCommon.PROTOCOL_2));
         personInfoDesc.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     /**
      * initPresenter.
      */
-    private void initPresenter(){
+    private void initPresenter() {
 
         ViewCallback callback = new ViewCallback();
 
-        samplePresenter = new SamplePresenter<>(context,callback);
+        samplePresenter = new SamplePresenter<>(context, callback);
 
         samplePresenter.url = MyHttpClient.getSavePersonInfo();
-        samplePresenter.resultType = new TypeToken<PersonInfo>(){}.getType();
+        samplePresenter.resultType = new TypeToken<PersonInfo>() {
+        }.getType();
         params = new HashMap<>();
 
-        params.put("bq_uid",""+ PrefsUtil.getUserId(context));
+        params.put("uid", "" + PrefsUtil.getUserId(context));
 
+    }
+
+
+    private void initForm() {
+
+        PersonCallback callback = new PersonCallback();
+
+        formPresenter = new SamplePresenter<>(context, callback);
+
+        formPresenter.url = MyHttpClient.getPersonInfo();
+        samplePresenter.resultType = new TypeToken<PersonInfo>() {
+        }.getType();
+
+        formPresenter.getData(params);
     }
 
     @OnClick(R.id.edit_submit)
@@ -121,24 +142,24 @@ public class PreservePersonEditActivity extends ToolbarActivity implements ISamp
             return;
         }
 
-        if (personInfo == null){
-            personInfo = new PersonInfo();
-        }
+        personInfo = new PersonInfo();
 
         personInfo.cUserName = preservationName.getText().toString();
         personInfo.cCardId = preservationCardId.getText().toString();
         personInfo.cPhone = preservationPhone.getText().toString();
 
 
-        params.put("bq_username",personInfo.cUserName);
-        params.put("bq_phone",personInfo.cPhone);
-        params.put("bq_creditID",personInfo.cCardId);
+        params.put("cUserName", personInfo.cUserName);
+        params.put("cPhone", personInfo.cPhone);
+        params.put("cCardId", personInfo.cCardId);
 
         samplePresenter.getData(params);
 
         Intent intent = new Intent();
         intent.putExtra(INFO, personInfo);
-        setResult(RESULT_OK, intent);
+        if (from != 2){
+            setResult(RESULT_OK, intent);
+        }
         finish();
     }
 
@@ -219,26 +240,66 @@ public class PreservePersonEditActivity extends ToolbarActivity implements ISamp
         return super.onOptionsItemSelected(item);
     }
 
+    private void setInfo(PersonInfo info) {
+        if (info == null) {
+            return;
+        }
+        if (!StringUtils.isBlank(info.cUserName)) {
+            preservationName.setText(info.cUserName);
+        }
+        if (!StringUtils.isBlank(info.cCardId)) {
+            preservationCardId.setText(info.cCardId);
+        }
+        if (!StringUtils.isBlank(info.cPhone)) {
+            preservationPhone.setText(info.cPhone);
+        }
+    }
 
     /**
      * ViewCallback.
      */
-    public static class ViewCallback implements ISampleView<PersonInfo>{
+    public class PersonCallback implements ISampleView<PersonInfo> {
 
-        static String TAG = "ViewCallback";
         @Override
         public void onSuccess(PersonInfo data) {
-            Log.d(TAG,"onSuccess");
+            if (data == null || data.cUserName == null) {
+                ToastUtils.toast(context, "没有个人信息");
+            }
+            personInfo = data;
+            setInfo(data);
         }
 
         @Override
         public void onError(String message) {
-            Log.d(TAG,"onError:"+message);
+            ToastUtils.toast(context, message);
         }
 
         @Override
         public void initView() {
-            Log.d(TAG,"initView");
+        }
+    }
+
+
+    /**
+     * ViewCallback.
+     */
+    public static class ViewCallback implements ISampleView<PersonInfo> {
+
+        static String TAG = "ViewCallback";
+
+        @Override
+        public void onSuccess(PersonInfo data) {
+            Log.d(TAG, "onSuccess");
+        }
+
+        @Override
+        public void onError(String message) {
+            Log.d(TAG, "onError:" + message);
+        }
+
+        @Override
+        public void initView() {
+            Log.d(TAG, "initView");
         }
     }
 }

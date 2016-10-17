@@ -202,13 +202,13 @@ public class PreserveInfoActivity extends ToolbarActivity implements ISampleView
                 infoBanzou.setVisibility(View.VISIBLE);
                 infoBanzou.setText("伴奏：" + info.accompaniment);
             }
-            infoCreateTime.setText("词创作时间：" + DateFormatUtils.formatX1(info.createTime));
+            infoCreateTime.setText("词创作时间：" + DateFormatUtils.formatX1(info.updatetime));
 
 //            infoName.setText("歌曲名：" + info.title);
 //            infoLyricAuthor.setText("词作者：" + info.lyricAuthor);
 //            infoSongAuthor.setText("曲作者：" + info.songAuthor);
 //            infoBanzou.setText("伴奏：" + info.accompaniment);
-//            infoCreateTime.setText("词创作时间：" + DateFormatUtils.formatX1(info.createTime));
+//            infoCreateTime.setText("词创作时间：" + DateFormatUtils.formatX1(info.updatetime));
 //            preservationNumber.setText("保全编号：" + info.preserveID);
 //            preservationTime.setText("保全时间：" + info.preserveDate);
         }

@@ -16,7 +16,7 @@ public class DateFormatUtils {
     public static final String PATTERN_A = "yyyy-MM-dd HH:mm:ss";
     public static final String PATTERN_B = "yyyy/MM/dd HH:mm:ss";
 
-    public static final String PATTERN_X1 = "yyyy/MM/dd HH:mm:ss";
+    public static final String PATTERN_X1 = "yyyy.MM.dd HH:mm";
 
     public static String formatX1(long dateValue){
         String result = null;

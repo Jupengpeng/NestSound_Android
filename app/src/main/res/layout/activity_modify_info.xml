@@ -146,13 +146,12 @@
                 android:src="@drawable/ic_setting_arrow" />
         </LinearLayout>
 
-        <include layout="@layout/view_spit_line" />
-
         <LinearLayout
             android:id="@+id/ll_sign"
             android:layout_width="match_parent"
             android:layout_height="46dp"
             android:gravity="center_vertical"
+            android:background="?selectableItemBackground"
             android:paddingLeft="15dp"
             android:paddingRight="15dp">
 
@@ -182,6 +181,8 @@
         </LinearLayout>
 
         <include layout="@layout/view_spit_line" />
+
+        <include layout="@layout/view_spit_line" />
         <View
             android:layout_width="match_parent"
             android:layout_height="12dp"
@@ -191,6 +192,7 @@
             android:id="@+id/ll_bq_info"
             android:layout_width="match_parent"
             android:layout_height="46dp"
+            android:background="?selectableItemBackground"
             android:gravity="center_vertical"
             android:paddingLeft="15dp"
             android:paddingRight="15dp">

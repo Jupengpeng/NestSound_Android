@@ -33,7 +33,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/preservation_margin"
-                    android:layout_marginRight="@dimen/preservation_margin"
                     android:orientation="horizontal">
 
                     <TextView
@@ -53,8 +52,10 @@
                     <TextView
                         android:id="@+id/user_info_right"
                         android:layout_width="wrap_content"
+                        android:background="?selectableItemBackground"
                         android:layout_height="42dp"
-                        android:layout_marginLeft="@dimen/preservation_margin"
+                        android:paddingLeft="@dimen/margin_theme"
+                        android:paddingRight="@dimen/margin_theme"
                         android:gravity="center_vertical"
                         android:text="编辑"
                         android:textColor="@color/main_text_color"
