@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.umeng.socialize.utils.Log;
 import com.xilu.wybz.bean.ActBean;
 import com.xilu.wybz.bean.CollectionBean;
 import com.xilu.wybz.bean.CommentBean;
@@ -333,19 +334,20 @@ public class ParseUtils {
     }
     //获取评论Id
     public static int getCommentId(Context context, String response){
-        int id = 0;
+        int code = 0;
         try {
             JSONObject jsonObject = new JSONObject(response);
-            int code = jsonObject.getInt("code");
+            code = jsonObject.getInt("code");
             if (code == 200) {
-                id = jsonObject.getInt("data");
+//                id = jsonObject.getInt("data");
             } else {
                 showMsg(context, jsonObject.getString("message"));
+                Log.e("AAA",jsonObject.getString("message"));
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return id;
+        return code;
     }
     public static boolean checkCode(String jsonData) {
         try {

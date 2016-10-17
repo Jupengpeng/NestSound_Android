@@ -20,7 +20,7 @@ import okhttp3.Call;
 /**
  * Created by June on 16/5/8.
  */
-public class SongPresenter extends BasePresenter<ISongView> {
+public class    SongPresenter extends BasePresenter<ISongView> {
     public SongPresenter(Context context, ISongView iView) {
         super(context, iView);
     }

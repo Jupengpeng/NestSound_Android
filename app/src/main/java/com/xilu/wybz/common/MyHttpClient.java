@@ -101,7 +101,7 @@ public class MyHttpClient {
 
     //发现里面更多歌曲
     public static String getFindMoreSongList() {
-        return "/java/common/find/moremusic";
+        return "/java/common/find/moremusic/v22";
     }
 
     //发现里面歌词
@@ -111,7 +111,7 @@ public class MyHttpClient {
 
     //发现里面更多歌词
     public static String getFindMoreLyricsList() {
-        return "/java/common/find/morelyrics";
+        return "/java/common/find/morelyrics/v22";
     }
 
     //发现里面歌曲

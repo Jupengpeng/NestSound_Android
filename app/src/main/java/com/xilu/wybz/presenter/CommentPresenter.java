@@ -67,7 +67,7 @@ public class CommentPresenter extends BasePresenter<ICommentView>{
             public void onResponse(String response) {
                 super.onResponse(response);
                 int commentId = ParseUtils.getCommentId(context,response);
-                if(commentId>0) {
+                if(commentId==200) {
                    iView.commentSuccess(commentId);
                 }
             }
