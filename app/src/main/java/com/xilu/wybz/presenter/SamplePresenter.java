@@ -47,8 +47,12 @@ public class SamplePresenter<T> extends BasePresenter<ISampleView<T>> {
             @Override
             public void onResult(JsonResponse<? extends Object> response) {
                 super.onResult(response);
-                T data = response.getData();
-                iView.onSuccess(data);
+                try {
+                    T data = response.getData();
+                    iView.onSuccess(data);
+                } catch (Exception e){
+                    iView.onError(response.getMessage());
+                }
             }
 
             @Override

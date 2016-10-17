@@ -236,6 +236,7 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView, 
 
 
         cancelPd();
+        worksData.type = 1;
         ShareActivity.toShareActivity(this, worksData);
 
         finish();

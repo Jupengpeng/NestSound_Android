@@ -13,6 +13,11 @@ public class PersonInfo implements Parcelable {
     public String cPhone;
     public String cEmail;
     public int cType = 1;
+    public int from = 1;
+
+
+
+
 
 
     public String getTypeString(){
@@ -27,7 +32,10 @@ public class PersonInfo implements Parcelable {
         return type;
     }
 
-
+    /**
+     *
+     * @return
+     */
     @Override
     public int describeContents() {
         return 0;
@@ -40,6 +48,7 @@ public class PersonInfo implements Parcelable {
         dest.writeString(this.cPhone);
         dest.writeString(this.cEmail);
         dest.writeInt(this.cType);
+        dest.writeInt(this.from);
     }
 
     public PersonInfo() {
@@ -51,6 +60,7 @@ public class PersonInfo implements Parcelable {
         this.cPhone = in.readString();
         this.cEmail = in.readString();
         this.cType = in.readInt();
+        this.from = in.readInt();
     }
 
     public static final Creator<PersonInfo> CREATOR = new Creator<PersonInfo>() {

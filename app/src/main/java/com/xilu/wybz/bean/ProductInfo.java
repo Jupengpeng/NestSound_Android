@@ -15,7 +15,7 @@ public class ProductInfo implements Parcelable {
     public String lyricAuthor;
     public String songAuthor;
     public String accompaniment;
-    public long createTime;
+    public long updatetime;
     public String image;
     public int type;
     public int cType;
@@ -39,7 +39,7 @@ public class ProductInfo implements Parcelable {
         dest.writeString(this.lyricAuthor);
         dest.writeString(this.songAuthor);
         dest.writeString(this.accompaniment);
-        dest.writeLong(this.createTime);
+        dest.writeLong(this.updatetime);
         dest.writeString(this.image);
         dest.writeInt(this.type);
         dest.writeInt(this.cType);
@@ -53,7 +53,7 @@ public class ProductInfo implements Parcelable {
         this.lyricAuthor = in.readString();
         this.songAuthor = in.readString();
         this.accompaniment = in.readString();
-        this.createTime = in.readLong();
+        this.updatetime = in.readLong();
         this.image = in.readString();
         this.type = in.readInt();
         this.cType = in.readInt();

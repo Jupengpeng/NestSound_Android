@@ -7,10 +7,12 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.xilu.wybz.R;
+import com.xilu.wybz.bean.ProductInfo;
 import com.xilu.wybz.bean.ShareBean;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.ui.base.ToolbarActivity;
+import com.xilu.wybz.ui.preserve.ApplyPreserveActivity;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.UmengShareUtil;
 
@@ -23,16 +25,31 @@ public class ShareActivity extends ToolbarActivity {
     WorksData worksData;
     UmengShareUtil shareUtil;
     private Bitmap overlay = null;
+
+    /**
+     *
+     * @param context
+     * @param worksData
+     */
     public static void toShareActivity(Context context, WorksData worksData) {
         Intent intent = new Intent(context, ShareActivity.class);
         intent.putExtra("worksData", worksData);
         context.startActivity(intent);
     }
+
+    /**
+     *
+     * @return
+     */
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_share;
     }
 
+    /**
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,13 +69,11 @@ public class ShareActivity extends ToolbarActivity {
         shareUtil = new UmengShareUtil(this,shareBean);
     }
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
-//    }
-
-    @OnClick({R.id.tv_weixin, R.id.tv_friend, R.id.tv_weibo, R.id.tv_qq, R.id.tv_qzone})
+    /**
+     *
+     * @param view
+     */
+    @OnClick({R.id.tv_weixin, R.id.tv_friend, R.id.tv_weibo, R.id.tv_qq, R.id.tv_qzone,R.id.share_submit})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_weixin:
@@ -76,6 +91,22 @@ public class ShareActivity extends ToolbarActivity {
             case R.id.tv_qzone:
                 shareUtil.toShareQzone();
                 break;
+            case R.id.share_submit:
+                startPreserve();
+                break;
         }
+    }
+
+    /**
+     *
+     */
+    private void startPreserve(){
+
+        ProductInfo info = new ProductInfo();
+
+        info.id = worksData.itemid;
+        info.type = worksData.type;
+
+        ApplyPreserveActivity.start(this,info);
     }
 }

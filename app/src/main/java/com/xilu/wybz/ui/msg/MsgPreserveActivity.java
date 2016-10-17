@@ -78,8 +78,9 @@ public class MsgPreserveActivity extends BaseListActivity<PreserveMessageBean> i
         super.onCreate(savedInstanceState);
         setTitle("保全消息");
         hideRight();
-
         clearMsg();
+
+        getSupportActionBar().setDisplayShowHomeEnabled(false);
     }
 
     public void clearMsg() {
