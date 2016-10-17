@@ -192,6 +192,7 @@ public class MsgCommentActivity extends BaseListActivity<MsgCommentBean> impleme
         @OnClick(R.id.tv_reply)
         void replyClick() {
             showCommentDialog((MsgCommentBean) itemView.getTag());
+
         }
 
         @OnClick(R.id.ll_works)
@@ -217,7 +218,8 @@ public class MsgCommentActivity extends BaseListActivity<MsgCommentBean> impleme
             if(commentBean.getComment_type()==2){
                 tvContent.setText(StringStyleUtil.getCommentStyleStr(commentBean));
                 Log.e("AAA",StringStyleUtil.getCommentStyleStr(commentBean)+"");
-
+            }else if(commentBean.getComment_type()==1   ){
+                tvContent.setText(commentBean.getComment());
             }
 
 
@@ -276,7 +278,7 @@ public class MsgCommentActivity extends BaseListActivity<MsgCommentBean> impleme
                 public void toSend(String comment) {
                     toSendComment(comment, inforCommentBean);
                 }
-            });
+            },inforCommentBean.nickname);
         }
         if (!commentDialog.isShowing()) {
             commentDialog.showDialog();

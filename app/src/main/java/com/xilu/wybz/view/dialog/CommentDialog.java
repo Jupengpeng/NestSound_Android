@@ -23,11 +23,12 @@ public class CommentDialog extends Dialog implements View.OnClickListener {
     RelativeLayout rl_send;
     ImageView sendIv;
     ICommentListener icl;
-
-    public CommentDialog(Context context, ICommentListener icl) {
+    String nickname;
+    public CommentDialog(Context context, ICommentListener icl,String nickname) {
         super(context, R.style.CommentDialog);
         this.context = context;
         this.icl = icl;
+        this.nickname=nickname;
         setCanceledOnTouchOutside(true);
         getWindow().setGravity(Gravity.BOTTOM);
 
@@ -42,7 +43,7 @@ public class CommentDialog extends Dialog implements View.OnClickListener {
         inputEt = (EditText) rootView.findViewById(R.id.comment_et_input);
         rl_send = (RelativeLayout) rootView.findViewById(R.id.rl_send);
         sendIv = (ImageView) rootView.findViewById(R.id.comment_iv_send);
-
+        inputEt.setHint("回复"+nickname);
         rl_send.setOnClickListener(this);
         inputEt.addTextChangedListener(new TextWatcher() {
             @Override

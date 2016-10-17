@@ -69,7 +69,7 @@ public class ShareDialog extends Dialog implements View.OnClickListener {
             String playurl = "";
             String shareTitle = musicTalk.name.replace("\n","");
             String shareAuthor = musicTalk.detail==null?"":musicTalk.detail;
-            String shareLink = musicTalk.shareurl;
+            String shareLink = musicTalk.url;
             String sharePic = musicTalk.pic;
             String shareContent = musicTalk.detail;
 //            String shareContent = "我在音巢APP淘到一首好听的歌，快来看看有没有你喜欢的原创style 《" + shareTitle + "》 ▷" + shareLink + " (@音巢音乐)";

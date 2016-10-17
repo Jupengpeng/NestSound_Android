@@ -440,7 +440,7 @@ public class BrowserActivity extends ToolbarActivity implements IMusicTalkDetail
                 url = bundle.getString("url");
             }else{
                 url = musicTalk.url;
-                musicTalk.shareurl = musicTalk.url;
+//                musicTalk.shareurl = musicTalk.url;
             }
         }
         if(musicTalk!=null){

@@ -41,7 +41,6 @@ public class StringStyleUtil {
         return spannableString;
     }
 
-
     public static SpannableString getWorkCommentStyleStr(Context context, CommentBean commentBean) {
         String nickName = commentBean.target_nickname;
         if (StringUtils.isBlank(nickName)){

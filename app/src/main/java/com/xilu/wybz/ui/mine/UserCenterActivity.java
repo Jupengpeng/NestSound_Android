@@ -129,11 +129,20 @@ public class UserCenterActivity extends BaseActivity implements IModifyCoverView
         EventBus.getDefault().register(this);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
         userBean = PrefsUtil.getUserInfo(context);
         userInfoBean = PrefsUtil.getUserInfoBean(context,PrefsUtil.getUserId(context));
         initUserInfoBean(userInfoBean);
         setLocalUserInfo();
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         mAppbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
