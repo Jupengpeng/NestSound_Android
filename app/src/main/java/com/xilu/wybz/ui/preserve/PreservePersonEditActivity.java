@@ -142,13 +142,15 @@ public class PreservePersonEditActivity extends ToolbarActivity implements ISamp
             return;
         }
 
-        personInfo = new PersonInfo();
+//        personInfo = new PersonInfo();
 
         personInfo.cUserName = preservationName.getText().toString();
         personInfo.cCardId = preservationCardId.getText().toString();
         personInfo.cPhone = preservationPhone.getText().toString();
 
-
+        if (personInfo.id > 0) {
+            params.put("id", "id" + personInfo.id);
+        }
         params.put("cUserName", personInfo.cUserName);
         params.put("cPhone", personInfo.cPhone);
         params.put("cCardId", personInfo.cCardId);
@@ -157,7 +159,7 @@ public class PreservePersonEditActivity extends ToolbarActivity implements ISamp
 
         Intent intent = new Intent();
         intent.putExtra(INFO, personInfo);
-        if (from != 2){
+        if (from != 2) {
             setResult(RESULT_OK, intent);
         }
         finish();

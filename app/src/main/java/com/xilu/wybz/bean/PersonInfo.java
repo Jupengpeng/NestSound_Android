@@ -12,6 +12,7 @@ public class PersonInfo implements Parcelable {
     public String cCardId;
     public String cPhone;
     public String cEmail;
+    public int id = -1;
     public int cType = 1;
     public int from = 1;
 
