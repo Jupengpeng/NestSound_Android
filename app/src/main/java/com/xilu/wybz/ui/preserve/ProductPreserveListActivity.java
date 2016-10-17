@@ -98,8 +98,9 @@ public class ProductPreserveListActivity extends BaseListActivity<PreservationIn
             mDataList.addAll(list);
             adapter.notifyDataSetChanged();
         } else {
-
-            ToastUtils.toast(context, "没有更多数据");
+            if (mDataList.size() > 0){
+                ToastUtils.toast(context, "没有更多数据");
+            }
         }
         checkData();
     }
