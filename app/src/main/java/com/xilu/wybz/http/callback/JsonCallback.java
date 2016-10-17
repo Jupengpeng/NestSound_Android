@@ -53,7 +53,7 @@ public class JsonCallback extends Callback<JsonResponse>{
                 Log.d("url", decode);
                 LogUtils.iJsonFormat("url",decode,true);
 
-                if (type == null && "null".equalsIgnoreCase(decode)){
+                if (type == null && !"null".equalsIgnoreCase(decode)){
                     jsonResponse.setData(decode);
                 } else {
                     jsonResponse.setData( new Gson().fromJson(decode,type));
