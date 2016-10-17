@@ -73,6 +73,8 @@ public class MineActivity extends BasePlayMenuActivity implements IUserView {
         userPresenter = new UserPresenter(this,this);
         userPresenter.getUserInfo(PrefsUtil.getUserId(context));
     }
+
+
     //在修改个人资料页面发送过来的
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(Event.UpdateUserInfo event) {

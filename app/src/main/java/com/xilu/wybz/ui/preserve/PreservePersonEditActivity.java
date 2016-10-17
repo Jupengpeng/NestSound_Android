@@ -74,7 +74,7 @@ public class PreservePersonEditActivity extends ToolbarActivity implements ISamp
             preservationPhone.setText(personInfo.cPhone);
         }
 
-        initProtocol();
+//        initProtocol();
         initPresenter();
     }
 

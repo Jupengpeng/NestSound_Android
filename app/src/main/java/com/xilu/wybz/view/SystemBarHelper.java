@@ -21,6 +21,7 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 
 import com.xilu.wybz.R;
+import com.xilu.wybz.utils.DensityUtil;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -91,10 +92,10 @@ public class SystemBarHelper {
 
         ViewGroup decorView = (ViewGroup) window.getDecorView();
         ViewGroup contentView = (ViewGroup) window.getDecorView().findViewById(Window.ID_ANDROID_CONTENT);
-        View rootView = contentView.getChildAt(0);
-        if (rootView != null) {
-            ViewCompat.setFitsSystemWindows(rootView, true);
-        }
+//        View rootView = contentView.getChildAt(0);
+//        if (rootView != null) {
+//            ViewCompat.setFitsSystemWindows(rootView, true);
+//        }
 
         setStatusBar(decorView, statusBarColor, true);
 //        setTranslucentView(decorView, alpha);
@@ -398,7 +399,7 @@ public class SystemBarHelper {
     public static void setHeightAndPadding(Context context, View view) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             ViewGroup.LayoutParams lp = view.getLayoutParams();
-            lp.height += getStatusBarHeight(context);//增高
+            lp.height = DensityUtil.getActionBarHeight(context) + getStatusBarHeight(context);//增高
             view.setPadding(view.getPaddingLeft(), view.getPaddingTop() + getStatusBarHeight(context),
                     view.getPaddingRight(), view.getPaddingBottom());
         }

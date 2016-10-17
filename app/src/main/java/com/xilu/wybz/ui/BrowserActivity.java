@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Message;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -357,13 +356,9 @@ public class BrowserActivity extends ToolbarActivity implements IMusicTalkDetail
 
         @Override
         public void onReceivedTitle(WebView view, String title) {
-            titles.add(title);
-            //ygs  修改title为name
-            if (!TextUtils.isEmpty(musicTalk.name)) {
-                setTitle(musicTalk.name);
-            }
-
             super.onReceivedTitle(view, title);
+            titles.add(title);
+            setTitle(title);
         }
 
         // For Android < 3.0

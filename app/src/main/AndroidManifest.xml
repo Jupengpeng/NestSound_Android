@@ -76,6 +76,7 @@
 
         <activity
             android:name=".ui.main.MainActivity"
+            android:theme="@style/MainTheme"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.main.SongablumMoreActivity"
@@ -99,6 +100,7 @@
         <!--消息相关界面-->
         <activity
             android:name=".ui.msg.MsgActivity"
+            android:theme="@style/MainTheme"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.msg.MsgZambiaActivity"
@@ -131,6 +133,7 @@
 
         <activity
             android:name=".ui.mine.MineActivity"
+            android:theme="@style/MainTheme"
             android:screenOrientation="portrait" />
 
         <activity

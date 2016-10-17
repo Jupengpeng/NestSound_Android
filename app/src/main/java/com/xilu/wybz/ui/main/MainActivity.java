@@ -1,5 +1,6 @@
 package com.xilu.wybz.ui.main;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -43,6 +44,7 @@ import com.xilu.wybz.utils.StringUtils;
 import com.xilu.wybz.view.GridSpacingItemDecoration;
 import com.xilu.wybz.view.SpacesItemDecoration;
 import com.xilu.wybz.view.SwipeRefreshLayoutCompat;
+import com.xilu.wybz.view.SystemBarHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -118,6 +120,7 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SystemBarHelper.tintStatusBar(this, Color.argb(255, 0xFF, 0xD7, 0x05));
         presenter = new MainPresenter(this, this);
         presenter.init();
     }

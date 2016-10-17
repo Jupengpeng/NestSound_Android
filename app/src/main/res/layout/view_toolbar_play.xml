@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/app_bar_layout"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/actionbar_size"
-    android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
+    android:layout_height="@dimen/actionbar_size">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -66,15 +65,15 @@
                 android:src="@drawable/ic_menu_play_4" />
         </RelativeLayout>
     </LinearLayout>
+
     <TextView
         android:id="@+id/toolbar_title"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:gravity="center"
-        tools:text="toolbar"
-        android:textSize="18sp"
         android:textColor="@color/main_text_color"
-        />
+        android:textSize="18sp"
+        tools:text="toolbar" />
 
     <View
         android:id="@+id/view"

@@ -64,7 +64,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         isChenjin = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
         isHomeActivity = this instanceof MainActivity || this instanceof FindActivity
-                || this instanceof MsgActivity||this instanceof MineActivity;
+                || this instanceof MsgActivity || this instanceof MineActivity;
 
     }
 
