@@ -98,7 +98,7 @@ public class SharePosterActivity extends ToolbarActivity {
                 if (StringUtils.isNotBlank(savePath)) {
                     if (shareDialog == null) {
                         worksData.pic = savePath;
-                        shareDialog = new ShareDialog(SharePosterActivity.this, worksData, 0);
+                        shareDialog = new ShareDialog(SharePosterActivity.this, worksData, 1,false);
                     }
                     if (!shareDialog.isShowing()) {
                         shareDialog.showDialog();

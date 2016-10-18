@@ -34,11 +34,21 @@ public class ShareDialog extends Dialog implements View.OnClickListener {
     UmengShareUtil shareUtil;
     ShareBean shareBean;
     WorksData mWorksData;
+
+
     int type;// 1分享歌词海报
+    boolean post = true;
+
 
     public ShareDialog(Activity context, WorksData worksData, int type) {
+        this(context,worksData,type,true);
+    }
+
+    public ShareDialog(Activity context, WorksData worksData, int type,boolean post) {
         super(context, R.style.CommentDialog);
         this.type = type;
+        this.post = post;
+
         if (shareUtil == null) {
             String shareContent = "";
             String playurl = "";
@@ -106,6 +116,10 @@ public class ShareDialog extends Dialog implements View.OnClickListener {
             ll_poster.setVisibility(View.INVISIBLE);
         if (type == 1) {
             ll_copylink.setVisibility(View.INVISIBLE);
+        }
+
+        if (!post){
+            ll_poster.setVisibility(View.INVISIBLE);
         }
         return rootView;
     }
