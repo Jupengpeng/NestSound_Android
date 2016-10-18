@@ -42,7 +42,6 @@ public class SamplePresenter<T> extends BasePresenter<ISampleView<T>> {
             mock(url);
             return;
         }
-
         httpUtils.post(url, params, new AppJsonCalback(context) {
             @Override
             public void onResult(JsonResponse<? extends Object> response) {
@@ -52,7 +51,7 @@ public class SamplePresenter<T> extends BasePresenter<ISampleView<T>> {
                     iView.onSuccess(data);
                 } catch (Exception e){
                     e.printStackTrace();
-                    iView.onError("Î´Öª´íÎó");
+                    iView.onError("æœªçŸ¥é”™è¯¯");
                 }
             }
 
