@@ -40,6 +40,7 @@ import com.xilu.wybz.utils.StringUtils;
 import com.xilu.wybz.utils.SystemUtils;
 import com.xilu.wybz.utils.ToastUtils;
 import com.xilu.wybz.view.WaveSurfaceView;
+import com.xilu.wybz.view.dialog.CountdownDialog;
 import com.xilu.wybz.view.dialog.MakeSongTipDialog;
 import com.xilu.wybz.view.materialdialogs.DialogAction;
 import com.xilu.wybz.view.materialdialogs.GravityEnum;
@@ -347,6 +348,7 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
         switch (view.getId()) {
 
             case R.id.iv_play:
+
                 if (status == 0){
                     showMsg("还未开始录音");
                     return;
@@ -418,6 +420,7 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
 
                 break;
             case R.id.iv_record:
+
                 if(!PermissionUtils.checkSdcardPermission(this)){
                     return;
                 }
@@ -661,28 +664,35 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
         ivPlay.setImageResource(R.drawable.ic_replay_pause);
     }
 
+    private CountdownDialog dialog;
 
     public void startRecord() {
 
         if (!FileUtils.fileExists(templateFileName)) {
-            ToastUtils.toast(this, "等待初始化");
+            ToastUtils.toast(context, "等待初始化");
             upData();
             return;
         }
-        if (status == 2) {
-            RecordInstance.getInstance().toReplay();
-//            RecordInstance.getInstance().destroy();
-//            RecordInstance.getInstance().setDataSource(templateFileName);
-//            RecordInstance.getInstance().toStart();
-
-            status = 1;
-        } else {
-            RecordInstance.getInstance().setDataSource(templateFileName);
-            RecordInstance.getInstance().toStart();
-            status = 1;
+        if (dialog == null){
+            dialog = new CountdownDialog(context);
         }
 
-        showRecordStart();
+        dialog.setListener(new CountdownDialog.OnOkListener() {
+            @Override
+            public void onOk() {
+
+                if (status == 2) {
+                    RecordInstance.getInstance().toReplay();
+                    status = 1;
+                } else {
+                    RecordInstance.getInstance().setDataSource(templateFileName);
+                    RecordInstance.getInstance().toStart();
+                    status = 1;
+                }
+                showRecordStart();
+            }
+        });
+        dialog.startCountDown();
     }
 
     public void stopRecord() {

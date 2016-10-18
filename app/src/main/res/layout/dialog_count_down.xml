@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#20ffff00"
+    >
+
+    <LinearLayout
+        android:id="@+id/root_view"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:background="@drawable/corner_loading"
+        >
+
+        <!--<ProgressBar-->
+            <!--android:id="@+id/loading_bar"-->
+            <!--style="?android:attr/progressBarStyleSmall"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="5dp"-->
+            <!--android:layout_gravity="center_horizontal"-->
+            <!--android:indeterminateDrawable="@drawable/loading_list"-->
+            <!--android:minHeight="42.6dp"-->
+            <!--android:maxHeight="42.6dp"-->
+            <!--android:minWidth="42.6dp"-->
+            <!--android:maxWidth="42.6dp"-->
+            <!--android:max="100"/>-->
+
+        <TextView
+            android:id="@+id/loading_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="loading"
+            android:textSize="10sp"
+            android:textColor="@color/main_theme_color"
+            />
+
+    </LinearLayout>
+
+
+</FrameLayout>
