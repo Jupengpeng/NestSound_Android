@@ -99,11 +99,12 @@ public class SongFragment extends BaseSectionListFragment<WorksData> implements 
     @Override
     public void showErrorView() {
         if (isDestroy) return;
-
+        disMissLoading(ll_loading);
     }
 
     @Override
     public void loadingFinish() {
+        disMissLoading(ll_loading);
         if (isDestroy) return;
         recycler.enableLoadMore(false);
         recycler.onRefreshCompleted();

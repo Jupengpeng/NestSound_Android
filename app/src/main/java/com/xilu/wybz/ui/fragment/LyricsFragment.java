@@ -96,12 +96,14 @@ public class LyricsFragment extends BaseSectionListFragment<WorksData> implement
 
     @Override
     public void showErrorView() {
+        disMissLoading(ll_loading);
         if (isDestroy) return;
 
     }
 
     @Override
     public void loadingFinish() {
+        disMissLoading(ll_loading);
         if (isDestroy) return;
         recycler.enableLoadMore(false);
         recycler.onRefreshCompleted();
