@@ -21,7 +21,6 @@ import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtils;
 import com.xilu.wybz.view.SpacesItemDecoration;
 import com.xilu.wybz.view.pull.BaseViewHolder;
-import com.xilu.wybz.view.pull.PullRecycler;
 import com.xilu.wybz.view.pull.layoutmanager.ILayoutManager;
 import com.xilu.wybz.view.pull.layoutmanager.MyLinearLayoutManager;
 
@@ -31,10 +30,11 @@ import butterknife.Bind;
 
 /**
  * Created by hujunwei on 16/5/20.
+ *
+ *
  */
 public class MusicTalkMoreActivity extends BaseListActivity<MusicTalk> implements IMusicTalkMoreView {
-    private int page = 1;
-    private int action = 0;
+
     private String nodata = "暂无更多乐说";
     private MusicTalkMorePresenter musicTalkMorePresenter;
 
@@ -72,9 +72,7 @@ public class MusicTalkMoreActivity extends BaseListActivity<MusicTalk> implement
 
     @Override
     public void showMusicTalkData(List<MusicTalk> songAlbumList) {
-        if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
-            mDataList.clear();
-        }
+
         recycler.enableLoadMore(true);
         mDataList.addAll(songAlbumList);
         adapter.notifyDataSetChanged();

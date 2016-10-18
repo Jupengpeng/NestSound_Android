@@ -138,7 +138,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     List<ActionBean> actionBeanList;
     String[] actionTitles = new String[]{"个人主页", "举报"};
     String[] actionTitles2 = new String[]{ "删除"};
-    String[] actionTypes = new String[]{"homepage", "status", "jubao"};
+    String[] actionTypes = new String[]{"homepage", "jubao"};
     String[] actionTypes2 = new String[]{ "del"};
     PlayLyricsAdapter playLyricsAdapter;
     List<String> lyricsList;

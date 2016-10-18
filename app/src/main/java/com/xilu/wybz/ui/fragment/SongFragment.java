@@ -32,15 +32,23 @@ public class SongFragment extends BaseSectionListFragment<WorksData> implements 
     private SongPresenter songPresenter;
     private int column = 3;
     private int type = 1;
-    private boolean isFirst;
+    private boolean isFirst = true;
     @Override
     protected void initPresenter() {
         songPresenter = new SongPresenter(context, this);
     }
 
-    public void loadData() {
-        if (isFirst) return;
-        else isFirst = true;
+    public void loadData(){
+//        if (!isFirst){
+//            return;
+//        }
+//        else {
+//            isFirst = false;
+//        }
+        if (mDataList != null && mDataList.size()>0){
+            disMissLoading(ll_loading);
+            return;
+        }
         showLoading(ll_loading);
         songPresenter.init();
     }

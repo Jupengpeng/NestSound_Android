@@ -32,6 +32,7 @@ public class SaveWordPresenter extends BasePresenter<ISaveWordView> {
             }
             map.put("uid", PrefsUtil.getUserId(context)+"");
             map.put("title", worksData.title);
+            params.put("author", worksData.author);
             map.put("lyrics", worksData.lyrics);
             map.put("pic", worksData.pic);
             map.put("detail", worksData.detail);
