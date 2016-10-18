@@ -51,7 +51,7 @@ public class SamplePresenter<T> extends BasePresenter<ISampleView<T>> {
                     iView.onSuccess(data);
                 } catch (Exception e){
                     e.printStackTrace();
-                    iView.onError("æœªçŸ¥é”™è¯¯");
+                    iView.onError("Î´Öª´íÎó");
                 }
             }
 
