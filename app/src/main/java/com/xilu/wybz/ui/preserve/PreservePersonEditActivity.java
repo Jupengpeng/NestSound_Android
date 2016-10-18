@@ -30,6 +30,8 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.OnClick;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * Created by Administrator on 2016/9/14.
  */
@@ -148,8 +150,11 @@ public class PreservePersonEditActivity extends ToolbarActivity implements ISamp
         personInfo.cCardId = preservationCardId.getText().toString();
         personInfo.cPhone = preservationPhone.getText().toString();
 
+        Map<String,String> params = new HashMap<>();
+        params.put("uid", "" + PrefsUtil.getUserId(context));
+
         if (personInfo.id > 0) {
-            params.put("id", "id" + personInfo.id);
+            params.put("id", ""+personInfo.id);
         }
         params.put("cUserName", personInfo.cUserName);
         params.put("cPhone", personInfo.cPhone);

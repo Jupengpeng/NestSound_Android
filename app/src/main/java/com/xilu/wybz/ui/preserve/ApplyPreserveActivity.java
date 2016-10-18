@@ -333,6 +333,8 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
 
         presenter.applyOrder(productInfo, personInfo);
 
+//        preservationCommit.setEnabled(false);
+
     }
 
 
