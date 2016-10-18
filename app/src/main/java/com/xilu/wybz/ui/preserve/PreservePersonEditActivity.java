@@ -115,12 +115,12 @@ public class PreservePersonEditActivity extends ToolbarActivity implements ISamp
 
     private void initForm() {
 
-        PersonCallback callback = new PersonCallback();
+        PersonCallback xcallback = new PersonCallback();
 
-        formPresenter = new SamplePresenter<>(context, callback);
+        formPresenter = new SamplePresenter<>(context, xcallback);
 
         formPresenter.url = MyHttpClient.getPersonInfo();
-        samplePresenter.resultType = new TypeToken<PersonInfo>() {
+        formPresenter.resultType = new TypeToken<PersonInfo>() {
         }.getType();
 
         formPresenter.getData(params);
