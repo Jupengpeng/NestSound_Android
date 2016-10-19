@@ -6,8 +6,7 @@ import android.os.Handler;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ProgressBar;
-import android.widget.TextView;
+import android.widget.ImageView;
 
 import com.xilu.wybz.R;
 
@@ -24,14 +23,15 @@ import static com.xilu.wybz.ui.MyApplication.context;
 public class CountdownDialog extends Dialog {
 
 
-    private ProgressBar bar;
-    private TextView text;
+    private ImageView imageView;
     private OnOkListener listener;
 
 
     private Handler mHandler;
     private ConutDownTask conutDownTask;
     private int count = 3;
+
+    private int icons[] = {R.drawable.ic_down_start,R.drawable.ic_down_1,R.drawable.ic_down_2,R.drawable.ic_down_3};
 
     /**
      * CountdownDialog.
@@ -59,8 +59,7 @@ public class CountdownDialog extends Dialog {
     private void init(){
         View view = LayoutInflater.from(context).inflate(R.layout.dialog_count_down,null);
 
-//        bar = (ProgressBar) view.findViewById(R.id.loading_bar);
-        text = (TextView) view.findViewById(R.id.loading_message);
+        imageView = (ImageView) view.findViewById(R.id.count_down_image);
 
         setContentView(view);
         setCanceledOnTouchOutside(false);
@@ -79,7 +78,7 @@ public class CountdownDialog extends Dialog {
             show();
         }
 
-        count = 4;
+        count = 3;
         mHandler.post(conutDownTask);
 
     }
@@ -98,7 +97,7 @@ public class CountdownDialog extends Dialog {
      * 每个计数周期回掉.
      */
     private void count(){
-        text.setText("count:"+count);
+        imageView.setImageResource(icons[count]);
     }
 
 
@@ -108,13 +107,14 @@ public class CountdownDialog extends Dialog {
     public class ConutDownTask implements Runnable{
         @Override
         public void run() {
-            --count ;
-            count();
-            if (count <= 0){
+            if (count < 0){
                 countDownOk();
+                return;
             } else {
                 mHandler.postDelayed(conutDownTask,1000);
             }
+            count();
+            --count ;
         }
     }
 
