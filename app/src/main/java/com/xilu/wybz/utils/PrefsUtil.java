@@ -30,7 +30,7 @@ public class PrefsUtil {
 
     public static boolean getBoolean(String key, Context context) {
         preferences = context.getSharedPreferences(SETTING, Context.MODE_PRIVATE);
-        if(key.equals(KeySet.KEY_PUSH_OPEN)){
+        if(key.equals(KeySet.KEY_PUSH_OPEN) || key.equals(KeySet.KEY_COUNTDOWN_OPEN)){
             return preferences.getBoolean(key, true);
         }else{
             return preferences.getBoolean(key, false);

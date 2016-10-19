@@ -225,7 +225,7 @@ public class MediaInstance {
                             onProgressLitsener.progress(current);
                         }
                     } else {
-                        Log.d("timer", "cancel");
+//                        Log.d("timer", "cancel");
                         timer.cancel();
                         timer = null;
                     }
@@ -273,6 +273,7 @@ public class MediaInstance {
 
 
     public void destroy() {
+        stopTimerTask();
         if (isPlay) {
             mediaPlayer.stop();
         }

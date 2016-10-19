@@ -23,6 +23,7 @@ import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.DoubleMediaInstance;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.FileDir;
+import com.xilu.wybz.common.KeySet;
 import com.xilu.wybz.common.MediaInstance;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.common.RecordInstance;
@@ -51,6 +52,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -108,6 +110,11 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
     protected MaterialDialog backDialog;
     protected MaterialDialog reStartDialog;
     private MakeSongTipDialog makeSongTipDialog;
+
+
+
+    private boolean useCountDown = false;
+
     public static void toMakeSongActivity(Context context, TemplateBean templateBean) {
         Intent intent = new Intent(context, MakeSongActivity.class);
         intent.putExtra("templateBean", templateBean);
@@ -121,8 +128,10 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        useCountDown = PrefsUtil.getBoolean(KeySet.KEY_COUNTDOWN_OPEN,getApplicationContext());
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
         initData();
         if(!PrefsUtil.getBoolean("isMakeSongTip",context)){
             makeSongTipDialog = new MakeSongTipDialog(context);
@@ -404,13 +413,18 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
                         .onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-
+                                if (helper != null){
+                                    helper.onDrawWave(new ArrayList<>(), 0);
+                                }
+                                /**
+                                 * reSetPlayer.
+                                 */
                                 reSetPlayer();
-                                if (RecordInstance.getInstance().toRestart()) {
-                                    status = 1;
-                                    showRecordStart();
+
+                                if (useCountDown){
+                                    countDownRestart();
                                 } else {
-                                    showMsg("录音出错");
+                                    functionReStart();
                                 }
                             }
                         })
@@ -441,7 +455,17 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
                 if (RecordInstance.getInstance().isStart()) {
                     stopRecord();
                 } else {
-                    startRecord();
+
+                    if (!FileUtils.fileExists(templateFileName)) {
+                        ToastUtils.toast(context, "等待初始化");
+                        upData();
+                        return;
+                    }
+                    if (useCountDown){
+                        countDownStartRecord();
+                    } else {
+                        startRecord();
+                    }
                 }
                 break;
 
@@ -460,6 +484,34 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
                 }
                 startActivity(ImportWordActivity.class);
                 break;
+        }
+    }
+
+    /**
+     * 倒计时，重新开始.
+     */
+    private void countDownRestart(){
+
+        if (dialog == null){
+            dialog = new CountdownDialog(context);
+        }
+
+        dialog.setListener(new CountdownDialog.OnOkListener() {
+            @Override
+            public void onOk() {
+                functionReStart();
+            }
+        });
+        dialog.startCountDown();
+    }
+
+    private void functionReStart(){
+
+        if (RecordInstance.getInstance().toRestart()) {
+            status = 1;
+            showRecordStart();
+        } else {
+            showMsg("录音出错");
         }
     }
 
@@ -666,13 +718,11 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
 
     private CountdownDialog dialog;
 
-    public void startRecord() {
+    /**
+     *  倒计时开始录音.
+     */
+    private void countDownStartRecord(){
 
-        if (!FileUtils.fileExists(templateFileName)) {
-            ToastUtils.toast(context, "等待初始化");
-            upData();
-            return;
-        }
         if (dialog == null){
             dialog = new CountdownDialog(context);
         }
@@ -680,19 +730,22 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
         dialog.setListener(new CountdownDialog.OnOkListener() {
             @Override
             public void onOk() {
-
-                if (status == 2) {
-                    RecordInstance.getInstance().toReplay();
-                    status = 1;
-                } else {
-                    RecordInstance.getInstance().setDataSource(templateFileName);
-                    RecordInstance.getInstance().toStart();
-                    status = 1;
-                }
-                showRecordStart();
+                startRecord();
             }
         });
         dialog.startCountDown();
+    }
+
+    public void startRecord() {
+        if (status == 2) {
+            RecordInstance.getInstance().toReplay();
+            status = 1;
+        } else {
+            RecordInstance.getInstance().setDataSource(templateFileName);
+            RecordInstance.getInstance().toStart();
+            status = 1;
+        }
+        showRecordStart();
     }
 
     public void stopRecord() {

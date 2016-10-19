@@ -457,7 +457,7 @@ public class WaveSurfaceHelper {
         if (h > configure.waveMAX){
             h = configure.waveMAX;
         }
-        Log.d("d","h:"+height+" h2:"+h);
+//        Log.d("d","h:"+height+" h2:"+h);
         return h;
     }
 
@@ -535,7 +535,7 @@ public class WaveSurfaceHelper {
 
     public void setOffX(int offx){
 
-        Log.d("sur","offx:" + offx);
+//        Log.d("sur","offx:" + offx);
         if (data == null || data.size() == 0){
             return;
         }

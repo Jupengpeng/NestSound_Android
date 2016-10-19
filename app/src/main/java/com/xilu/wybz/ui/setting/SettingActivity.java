@@ -4,15 +4,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.TextView;
 
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.umeng.analytics.MobclickAgent;
-
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.common.Event;
@@ -28,8 +24,6 @@ import com.xilu.wybz.view.materialdialogs.DialogAction;
 import com.xilu.wybz.view.materialdialogs.MaterialDialog;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -41,6 +35,8 @@ import cn.jpush.android.api.JPushInterface;
 public class SettingActivity extends ToolbarActivity {
     @Bind(R.id.cb_notice)
     CheckBox cbNotice;
+    @Bind(R.id.cb_countdown)
+    CheckBox cbCountdown;
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_settings;
@@ -68,6 +64,22 @@ public class SettingActivity extends ToolbarActivity {
                 PrefsUtil.putBoolean(KeySet.KEY_PUSH_OPEN, isChecked, context);
             }
         });
+        /** 倒计时开关*/
+        cbCountdown.setChecked(PrefsUtil.getBoolean(KeySet.KEY_COUNTDOWN_OPEN,getApplicationContext()));
+        cbCountdown.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    showMsg("打开倒计时");
+                }else{
+                    showMsg("关闭倒计时");
+                }
+                PrefsUtil.putBoolean(KeySet.KEY_COUNTDOWN_OPEN, isChecked, context);
+            }
+        });
+
+
+
     }
     @OnClick({R.id.ll_other_account, R.id.ll_clear_cache, R.id.ll_modify_pwd, R.id.ll_feedback, R.id.ll_loginout})
     public void onClick(View view) {
