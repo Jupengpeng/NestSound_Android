@@ -29,8 +29,6 @@ public class ApplyPreservePresenter extends BasePresenter<IApplyPreservView>{
 
     private String orderNumber ;
 
-
-
     public ApplyPreservePresenter(Context context, IApplyPreservView iView) {
         super(context, iView);
     }
@@ -53,6 +51,8 @@ public class ApplyPreservePresenter extends BasePresenter<IApplyPreservView>{
         params.put("cCardId",personInfo.cCardId);
         params.put("cPhone",personInfo.cPhone);
 
+        iView.updateSubmitView(2);
+
         httpUtils.post(MyHttpClient.getPaypalOrder(),params,new AppJsonCalback(context){
 
             @Override
@@ -61,18 +61,20 @@ public class ApplyPreservePresenter extends BasePresenter<IApplyPreservView>{
 
                 orderNumber = response.getData();
                 Log.e("pay","pay ok:data="+orderNumber);
-
+//                iView.showLoading(orderNumber);
                 applyPay(orderNumber);
             }
 
             @Override
             public void onResultError(JsonResponse<? extends Object> response) {
                 super.onResultError(response);
+                iView.updateSubmitView(1);
             }
 
             @Override
             public void onError(Call call, Exception e) {
                 super.onError(call, e);
+                iView.updateSubmitView(1);
             }
 
         });
@@ -104,11 +106,13 @@ public class ApplyPreservePresenter extends BasePresenter<IApplyPreservView>{
             @Override
             public void onResultError(JsonResponse<? extends Object> response) {
                 super.onResultError(response);
+                iView.updateSubmitView(1);
             }
 
             @Override
             public void onError(Call call, Exception e) {
                 super.onError(call, e);
+                iView.updateSubmitView(1);
             }
 
         });

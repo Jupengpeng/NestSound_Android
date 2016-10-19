@@ -178,7 +178,6 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
 
     @Override
     public void showError() {
-//        llNodata.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -187,8 +186,8 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
     }
 
     @Override
-    public void showLoading() {
-
+    public void showLoading( String message) {
+        ToastUtils.toast(context,message);
     }
 
     @Override
@@ -218,7 +217,13 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
      */
     @Override
     public void updateSubmitView(int type) {
-
+        if (type == 1){
+            preservationCommit.setText("提交申请");
+            preservationCommit.setEnabled(true);
+        } else if (type == 2) {
+            preservationCommit.setText("正在提交...");
+            preservationCommit.setEnabled(false);
+        }
     }
 
 
@@ -480,6 +485,7 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
 
         //支付页面返回处理
         if (requestCode == Pingpp.REQUEST_CODE_PAYMENT) {
+            updateSubmitView(1);
             if (resultCode == Activity.RESULT_OK) {
                 String result = data.getExtras().getString("pay_result");
 
@@ -494,8 +500,7 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
                 String errorMsg = ":" + data.getExtras().getString("error_msg"); // 错误信息
                 String extraMsg = ":" + data.getExtras().getString("extra_msg"); // 错误信息
 
-                showMsg(result + errorMsg + extraMsg);
-
+//                showMsg(result + errorMsg + extraMsg);
                 Log.e("pay", result + ":" + errorMsg + ":" + extraMsg);
             }
         }

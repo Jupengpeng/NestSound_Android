@@ -19,6 +19,6 @@ public interface IApplyPreservView extends IBaseView{
 
     void showError();
     void showPage();
-    void showLoading();
+    void showLoading(String message);
 
 }
