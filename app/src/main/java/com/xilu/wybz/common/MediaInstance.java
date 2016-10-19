@@ -284,6 +284,7 @@ public class MediaInstance {
 //            e.printStackTrace();
         }
         mInstance = null;
+        iml = null;
     }
 
 

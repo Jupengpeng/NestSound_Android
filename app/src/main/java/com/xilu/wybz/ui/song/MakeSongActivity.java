@@ -445,6 +445,10 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
                     showMsg("请先停止播放");
                     return;
                 }
+                if (status == 3){
+                    showMsg("已经录制完成");
+                    return;
+                }
 
                 reSetPlayer();
 

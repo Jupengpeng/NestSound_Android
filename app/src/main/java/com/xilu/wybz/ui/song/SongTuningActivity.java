@@ -490,6 +490,7 @@ public class SongTuningActivity extends ToolbarActivity implements IMakeSongView
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        MediaInstance.getInstance().destroy();
         EventBus.getDefault().unregister(context);
         makeSongPresenter.cancelTuning();
     }
