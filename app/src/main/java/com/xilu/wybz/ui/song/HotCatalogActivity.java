@@ -73,6 +73,7 @@ public class HotCatalogActivity extends BaseSectionListActivity<TemplateBean> im
     private int column = 1;
     private int column2 = 4;
     private int cid = 0;
+    private int tempCid = 0;
     private HotCatalogPresenter hotCatalogPresenter;
     private HotPresenter hotPresenter;
     private HotBean hotBean;
@@ -126,6 +127,7 @@ public class HotCatalogActivity extends BaseSectionListActivity<TemplateBean> im
 
 
         hotPresenter = new HotPresenter(context, this);
+        recycler.setRefreshing();
     }
 
     @Override
@@ -228,7 +230,9 @@ public class HotCatalogActivity extends BaseSectionListActivity<TemplateBean> im
     public void showHotCatalog(HotBean hotBean) {
         if (isDestroy) return;
         this.hotBean = hotBean;
+
         PrefsUtil.saveHotBean(context, hotBean);
+
         if (hotPresenter == null) {
             hotPresenter = new HotPresenter(context, this);
             recycler.setRefreshing();
@@ -385,12 +389,17 @@ public class HotCatalogActivity extends BaseSectionListActivity<TemplateBean> im
                     mDataList.add(new SectionData<>(true, 0, "清唱"));
                 }
                 llNoData.setVisibility(View.GONE);
-                recycler.enableLoadMore(true);
+                if (templateBeens == null || templateBeens.size() <20){
+                    recycler.enableLoadMore(false);
+                } else {
+
+                    recycler.enableLoadMore(true);
+                }
                 for (TemplateBean templateBean : templateBeens) {
                     mDataList.add(new SectionData(templateBean));
                 }
-                adapter.notifyDataSetChanged();
                 recycler.onRefreshCompleted();
+                adapter.notifyDataSetChanged();
             }
         }, 600);
     }
@@ -431,7 +440,11 @@ public class HotCatalogActivity extends BaseSectionListActivity<TemplateBean> im
         switch (item.getItemId()) {
             case R.id.menu_catalog:
                 if (llSelect.getVisibility() == View.GONE) {
+                    if (hotBean== null || hotBean.list.size() == 0){
+                        hotCatalogPresenter.loadData(1);
+                    }
                     showSelect();
+
                 } else {
                     hideSelect();
                 }
@@ -440,7 +453,10 @@ public class HotCatalogActivity extends BaseSectionListActivity<TemplateBean> im
         return super.onOptionsItemSelected(item);
     }
 
+    private boolean keyBack = false;
+
     private void showSelect() {
+        keyBack = true;
         llSelect.setVisibility(View.VISIBLE);
         llSelect.startAnimation(AnimationUtils.loadAnimation(context, R.anim.top_in_anim));
         flowCover.setVisibility(View.VISIBLE);
@@ -448,9 +464,19 @@ public class HotCatalogActivity extends BaseSectionListActivity<TemplateBean> im
     }
 
     private void hideSelect() {
+        keyBack =false;
         llSelect.setVisibility(View.GONE);
         llSelect.startAnimation(AnimationUtils.loadAnimation(context, R.anim.top_out_anim));
         flowCover.setVisibility(View.GONE);
         flowCover.startAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_out));
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (keyBack){
+            hideSelect();
+            return;
+        }
+        super.onBackPressed();
     }
 }
