@@ -420,18 +420,23 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
                                  * reSetPlayer.
                                  */
                                 reSetPlayer();
+                                status = 0;
 
-                                if (useCountDown){
-                                    countDownRestart();
-                                } else {
-                                    functionReStart();
+                                try {
+                                    RecordInstance.getInstance().toStop();
+                                    RecordInstance.getInstance().deleteCacheFile();
+                                } catch (RuntimeException e){
                                 }
+
+//                                if (useCountDown){
+//                                    countDownRestart();
+//                                } else {
+//                                    functionReStart();
+//                                }
                             }
                         })
                         .canceledOnTouchOutside(true).build();
                 reStartDialog.show();
-
-
                 break;
             case R.id.iv_record:
 
@@ -465,6 +470,7 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
                         upData();
                         return;
                     }
+                    showRecordStart();
                     if (useCountDown){
                         countDownStartRecord();
                     } else {
@@ -749,7 +755,6 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
             RecordInstance.getInstance().toStart();
             status = 1;
         }
-        showRecordStart();
     }
 
     public void stopRecord() {

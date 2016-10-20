@@ -261,7 +261,7 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView, 
             return;
         }
 
-        if (status == 0 || status == 6) {
+        if (status == 0 || status == 5 || status == 6) {
 //            MediaInstance.getInstance().startMediaPlayAsync(worksData.musicurl);
             MediaInstance.getInstance().startMediaPlayAsync(MyHttpClient.ROOT_URL + worksData.musicurl);
 
@@ -369,7 +369,7 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView, 
                     Uri.fromFile(new File(thePath)), imgUri, 1, 1, 750, 750);
         } else if (requestCode == AppConstant.INTENT_CROP) {
             if (new File(coverPath).exists()) {
-                int width = DensityUtil.dip2px(context,60);
+                int width = DensityUtil.dip2px(context, 60);
                 ImageLoadUtil.loadImage(context, new File(coverPath), ivCover, width, width);
                 worksData.setPic(coverPath);
             } else {
