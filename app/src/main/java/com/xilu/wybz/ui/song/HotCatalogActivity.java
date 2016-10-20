@@ -6,8 +6,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -39,7 +37,6 @@ import com.xilu.wybz.utils.FormatHelper;
 import com.xilu.wybz.utils.NumberUtil;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtils;
-import com.xilu.wybz.view.FlowLayout;
 import com.xilu.wybz.view.GridSpacingItemDecoration;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.PullRecycler;
@@ -235,10 +232,10 @@ public class HotCatalogActivity extends BaseSectionListActivity<TemplateBean> im
         }
         if (adapter1 == null) {
             List<HotCatalog> hotCatalogs = new ArrayList<>();
-            typeBean = new HotCatalog();
-            typeBean.categoryname = "全部";
-            typeBean.isCheck = true;
-            hotCatalogs.add(typeBean);
+//            typeBean = new HotCatalog();
+//            typeBean.categoryname = "全部";
+//            typeBean.isCheck = true;
+//            hotCatalogs.add(typeBean);
             hotCatalogs.addAll(hotBean.list);
             List<HotCatalog> types = new ArrayList<>();
             typeBean = new HotCatalog();
