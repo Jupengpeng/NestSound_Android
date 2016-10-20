@@ -187,7 +187,7 @@ public class ProductPreserveListActivity extends BaseListActivity<PreservationIn
                 case 3:
                     statuView.setText("保全失败");
                     statuView.setTextColor(Color.parseColor("#ff4949"));
-
+                    break;
                 default:
                     statuView.setText("处理中...");
                     statuView.setTextColor(Color.parseColor("#ff4949"));

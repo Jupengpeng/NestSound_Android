@@ -6,8 +6,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -39,7 +37,6 @@ import com.xilu.wybz.utils.FormatHelper;
 import com.xilu.wybz.utils.NumberUtil;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtils;
-import com.xilu.wybz.view.FlowLayout;
 import com.xilu.wybz.view.GridSpacingItemDecoration;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.PullRecycler;
@@ -126,6 +123,9 @@ public class HotCatalogActivity extends BaseSectionListActivity<TemplateBean> im
     protected void initPresenter() {
         hotCatalogPresenter = new HotCatalogPresenter(this, this);
         hotCatalogPresenter.init();
+
+
+        hotPresenter = new HotPresenter(context, this);
     }
 
     @Override
@@ -133,8 +133,8 @@ public class HotCatalogActivity extends BaseSectionListActivity<TemplateBean> im
         setTitle("原唱伴奏");
         hideRight();
         setUpData();
-        recycler.enablePullToRefresh(false);
-        hotBean = PrefsUtil.getHotBean(context);
+        recycler.enablePullToRefresh(true);
+//        hotBean = PrefsUtil.getHotBean(context);
         if (hotBean != null && hotBean.simplesing != null) {
             mDataList = new ArrayList<>();
             showHotCatalog(hotBean);
@@ -235,11 +235,13 @@ public class HotCatalogActivity extends BaseSectionListActivity<TemplateBean> im
         }
         if (adapter1 == null) {
             List<HotCatalog> hotCatalogs = new ArrayList<>();
-            typeBean = new HotCatalog();
-            typeBean.categoryname = "全部";
-            typeBean.isCheck = true;
-            hotCatalogs.add(typeBean);
             hotCatalogs.addAll(hotBean.list);
+            if (hotCatalogs.size()>0){
+                HotCatalog catalog = hotCatalogs.get(0);
+                catalog.isCheck = true;
+
+            }
+
             List<HotCatalog> types = new ArrayList<>();
             typeBean = new HotCatalog();
             typeBean.categoryname = "最新";

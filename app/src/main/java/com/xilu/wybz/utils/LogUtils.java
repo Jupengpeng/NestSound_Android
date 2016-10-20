@@ -44,8 +44,8 @@ public class LogUtils {
     public static void iJsonFormat(String tag, String message, boolean isOutputOriginalContent) {
         if (isDebug && !TextUtils.isEmpty(message)) {
             if(isOutputOriginalContent)
-//                android.util.Log.i(tag, AUTHOR + message);
-                android.util.Log.i(tag, AUTHOR +"\n" + JsonUtils.format(StringUtils.convertUnicode(message)));
+                android.util.Log.i(tag, AUTHOR + message);
+                android.util.Log.e(tag, AUTHOR +"\n" + JsonUtils.format(StringUtils.convertUnicode(message)));
         }
     }
 

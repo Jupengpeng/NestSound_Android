@@ -266,6 +266,7 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
     @Override
     public void uploadSuccess(String musicurl) {
         worksData.musicurl = musicurl;
+        isPause = false;
 
         if ("1".equals(worksData.useheadset)){
             SongTuningActivity.toSongTuningActivity(context,worksData);
@@ -484,12 +485,20 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
                     showMsg("请先停止录音");
                     return;
                 }
+                if (isPlay) {
+                    showMsg("请先停止播放");
+                    return;
+                }
                 HotCatalogActivity.toHotCatalogActivity(this,true);
                 break;
 
             case R.id.iv_import_lrc:
                 if (status == 1) {
                     showMsg("请先停止录音");
+                    return;
+                }
+                if (isPlay) {
+                    showMsg("请先停止播放");
                     return;
                 }
                 startActivity(ImportWordActivity.class);
@@ -537,8 +546,10 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
         if (isPause){
             if (playInstance == 1) {
                 MediaInstance.getInstance().resumeMediaPlay();
+                MediaInstance.getInstance().startTimerTask();
             } else {
                 DoubleMediaInstance.getInstance().resumeMediaPlay();
+                DoubleMediaInstance.getInstance().startTimerTask();
             }
 
             isPause = false;
@@ -778,8 +789,9 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
 
             case R.id.menu_next:
 
-                if (MediaInstance.getInstance().isPlay()){
-                    MediaInstance.getInstance().pauseMediaPlay();
+                if (isPlay) {
+                    showMsg("请先停止播放");
+                    return true;
                 }
 
                 if (status == 1) {
@@ -861,6 +873,9 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
 
     private void onKeyBack() {
 
+        if (isPlay){
+            MediaInstance.getInstance().stopMediaPlay();
+        }
         if (status == 0) {
             RecordInstance.getInstance().destroy();
             finish();

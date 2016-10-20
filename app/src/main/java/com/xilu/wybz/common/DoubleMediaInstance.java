@@ -351,6 +351,8 @@ public class DoubleMediaInstance {
 
 
     public void destroy(){
+        mInstance = null;
+        iml = null;
         stopTimerTask();
         if (isPlay()){
             mediaPlayer1.stop();
@@ -364,7 +366,6 @@ public class DoubleMediaInstance {
         }catch (Exception e){
 //            e.printStackTrace();
         }
-        mInstance = null;
     }
 
 
