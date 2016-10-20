@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.TextView;
 
 import com.umeng.analytics.MobclickAgent;
 import com.xilu.wybz.R;
@@ -25,9 +26,13 @@ import com.xilu.wybz.view.materialdialogs.MaterialDialog;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.File;
+
 import butterknife.Bind;
 import butterknife.OnClick;
 import cn.jpush.android.api.JPushInterface;
+
+import static com.xilu.wybz.common.FileDir.rootDir;
 
 /**
  * Created by June on 16/5/13.
@@ -37,6 +42,9 @@ public class SettingActivity extends ToolbarActivity {
     CheckBox cbNotice;
     @Bind(R.id.cb_countdown)
     CheckBox cbCountdown;
+    @Bind(R.id.tv_files_size)
+    TextView filesSize;
+
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_settings;
@@ -48,16 +56,17 @@ public class SettingActivity extends ToolbarActivity {
         mToolbar.setBackgroundResource(R.color.main_theme_color);
         initView();
     }
+
     private void initView() {
         setTitle("设置");
-        cbNotice.setChecked(PrefsUtil.getBoolean(KeySet.KEY_PUSH_OPEN,getApplicationContext()));
+        cbNotice.setChecked(PrefsUtil.getBoolean(KeySet.KEY_PUSH_OPEN, getApplicationContext()));
         cbNotice.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     JPushInterface.resumePush(getApplicationContext());
                     showMsg("打开消息推送");
-                }else{
+                } else {
                     JPushInterface.stopPush(getApplicationContext());
                     showMsg("关闭消息推送");
                 }
@@ -65,22 +74,33 @@ public class SettingActivity extends ToolbarActivity {
             }
         });
         /** 倒计时开关*/
-        cbCountdown.setChecked(PrefsUtil.getBoolean(KeySet.KEY_COUNTDOWN_OPEN,getApplicationContext()));
+        cbCountdown.setChecked(PrefsUtil.getBoolean(KeySet.KEY_COUNTDOWN_OPEN, getApplicationContext()));
         cbCountdown.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     showMsg("打开倒计时");
-                }else{
+                } else {
                     showMsg("关闭倒计时");
                 }
                 PrefsUtil.putBoolean(KeySet.KEY_COUNTDOWN_OPEN, isChecked, context);
             }
         });
-
-
+        calculateCacheSize();
 
     }
+
+
+    /**
+     *
+     */
+    private void calculateCacheSize(){
+
+        double size = FileUtils.getDirSize(new File(rootDir));
+        String sizeText = String.format("%.2f", size) + " M";
+        filesSize.setText(sizeText);
+    }
+
     @OnClick({R.id.ll_other_account, R.id.ll_clear_cache, R.id.ll_modify_pwd, R.id.ll_feedback, R.id.ll_loginout})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -101,7 +121,8 @@ public class SettingActivity extends ToolbarActivity {
                 break;
         }
     }
-    private void loginOut(){
+
+    private void loginOut() {
         new MaterialDialog.Builder(context)
                 .title(getString(R.string.dialog_title))
                 .content("请确认是否退出当前账号?")
@@ -111,7 +132,7 @@ public class SettingActivity extends ToolbarActivity {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         HttpUtils httpUtils = new HttpUtils(context);
-                        httpUtils.post(MyHttpClient.getLoginOut(),null,new MyStringCallback(){
+                        httpUtils.post(MyHttpClient.getLoginOut(), null, new MyStringCallback() {
                         });
                         PrefsUtil.saveUserInfo(context, new UserBean());
                         MobclickAgent.onProfileSignOff();
@@ -121,7 +142,7 @@ public class SettingActivity extends ToolbarActivity {
                             public void run() {
                                 finish();
                             }
-                        },300);
+                        }, 300);
                     }
                 }).negativeText("取消")
                 .onNegative(new MaterialDialog.SingleButtonCallback() {
@@ -131,6 +152,7 @@ public class SettingActivity extends ToolbarActivity {
                     }
                 }).show();
     }
+
     private void DelCache() {
         showIndeterminateProgressDialog(true);
         //删除图片缓存文件夹和本地音乐缓存文件夹
@@ -140,6 +162,7 @@ public class SettingActivity extends ToolbarActivity {
                 FileUtils.delAllFile();
                 try {
                     sleep(2000);
+                    calculateCacheSize();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

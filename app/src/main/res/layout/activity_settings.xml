@@ -78,12 +78,26 @@
             android:paddingRight="15dp">
 
             <TextView
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:text="清理缓存"
                 android:textColor="@color/main_text_color"
                 android:textSize="15sp" />
+
+            <android.support.v4.widget.Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:id="@+id/tv_files_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
+                android:text="0.0 M"
+                android:textColor="@color/main_text_color3"
+                android:textSize="14sp"
+                />
 
             <ImageView
                 android:layout_width="wrap_content"
