@@ -32,7 +32,6 @@ public class MyGridLayoutManager extends GridLayoutManager implements ILayoutMan
         return this;
     }
 
-    @Override
     public int findLastVisiblePosition() {
         return findLastVisibleItemPosition();
     }

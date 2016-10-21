@@ -28,6 +28,7 @@ public class MineWorkActivity extends BasePlayMenuActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        hideRight();
         initView();
     }
 

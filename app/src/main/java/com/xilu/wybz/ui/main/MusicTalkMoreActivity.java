@@ -21,8 +21,6 @@ import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtils;
 import com.xilu.wybz.view.SpacesItemDecoration;
 import com.xilu.wybz.view.pull.BaseViewHolder;
-import com.xilu.wybz.view.pull.layoutmanager.ILayoutManager;
-import com.xilu.wybz.view.pull.layoutmanager.MyLinearLayoutManager;
 
 import java.util.List;
 
@@ -62,9 +60,9 @@ public class MusicTalkMoreActivity extends BaseListActivity<MusicTalk> implement
         musicTalkMorePresenter.loadData(page++);
     }
 
-    protected ILayoutManager getLayoutManager() {
-        return new MyLinearLayoutManager(getApplicationContext());
-    }
+//    protected ILayoutManager getLayoutManager() {
+//        return new MyLinearLayoutManager(getApplicationContext());
+//    }
 
     protected RecyclerView.ItemDecoration getItemDecoration() {
         return new SpacesItemDecoration(dip10);

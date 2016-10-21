@@ -20,6 +20,7 @@ import com.xilu.wybz.utils.DateFormatUtils;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.ToastUtils;
 import com.xilu.wybz.view.pull.BaseViewHolder;
+import com.xilu.wybz.view.pull.PullRecycler;
 
 import java.util.HashMap;
 import java.util.List;
@@ -93,6 +94,9 @@ public class ProductPreserveListActivity extends BaseListActivity<PreservationIn
     @Override
     public void onSuccess(List<PreservationInfo> list) {
         recycler.onRefreshCompleted();
+        if(action == PullRecycler.ACTION_PULL_TO_REFRESH){
+            mDataList.clear();
+        }
 
         if (list != null && list.size() > 0) {
             mDataList.addAll(list);

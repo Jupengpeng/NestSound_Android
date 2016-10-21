@@ -268,6 +268,12 @@ public class WorksFragment extends BaseListFragment<WorksData> implements IUserC
         }).show();
     }
 
+    /**
+     * getViewHolder.
+     * @param parent
+     * @param viewType
+     * @return
+     */
     @Override
     protected BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
         if (type == 4) {//灵感记录
@@ -305,6 +311,9 @@ public class WorksFragment extends BaseListFragment<WorksData> implements IUserC
         }
     }
 
+    /**
+     * onDestroyView.
+     */
     @Override
     public void onDestroyView() {
         super.onDestroyView();

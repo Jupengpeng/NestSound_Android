@@ -22,6 +22,7 @@ import com.xilu.wybz.ui.preserve.PreserveInfoActivity;
 import com.xilu.wybz.utils.DateFormatUtils;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.view.pull.BaseViewHolder;
+import com.xilu.wybz.view.pull.PullRecycler;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -33,33 +34,28 @@ import butterknife.Bind;
 
 /**
  * Created by Administrator on 2016/10/10.
- *
- *
- *
- *
  */
 
-public class MsgPreserveActivity extends BaseListActivity<PreserveMessageBean> implements IDefaultListView<PreserveMessageBean>{
+public class MsgPreserveActivity extends BaseListActivity<PreserveMessageBean> implements IDefaultListView<PreserveMessageBean> {
 
 
     /**
      * defaultListPresenter.
-     *
-     *
-     *
      */
     DefaultListPresenter<PreserveMessageBean> defaultListPresenter;
 
-    Map<String,String> params;
+    Map<String, String> params;
+
     @Override
     protected void initPresenter() {
 
-        defaultListPresenter = new DefaultListPresenter<>(context,this);
+        defaultListPresenter = new DefaultListPresenter<>(context, this);
         defaultListPresenter.setUrl(MyHttpClient.getMsgPreserveList());
         defaultListPresenter.method = "get";
-        defaultListPresenter.resultType = new TypeToken<List<PreserveMessageBean>>(){}.getType();
+        defaultListPresenter.resultType = new TypeToken<List<PreserveMessageBean>>() {
+        }.getType();
         params = new HashMap<>();
-        params.put("uid", ""+PrefsUtil.getUserId(context));
+        params.put("uid", "" + PrefsUtil.getUserId(context));
         defaultListPresenter.setParams(params);
     }
 
@@ -104,7 +100,7 @@ public class MsgPreserveActivity extends BaseListActivity<PreserveMessageBean> i
 //        mock();
     }
 
-    private void mock(){
+    private void mock() {
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -119,7 +115,7 @@ public class MsgPreserveActivity extends BaseListActivity<PreserveMessageBean> i
                 mDataList.add(bean);
                 mDataList.add(bean);
 
-                 bean = new PreserveMessageBean();
+                bean = new PreserveMessageBean();
                 bean.pushtype = MyCommon.PUSH_TYPE_COPYRIGHFAIL;
                 bean.content = "PUSH_TYPE_COPYRIGHFAIL";
                 bean.createtime = System.currentTimeMillis();
@@ -130,12 +126,14 @@ public class MsgPreserveActivity extends BaseListActivity<PreserveMessageBean> i
                 mDataList.add(bean);
                 onSuccess(mDataList);
             }
-        },300);
+        }, 300);
     }
 
     @Override
     public void onSuccess(List<PreserveMessageBean> list) {
-
+        if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
+            mDataList.clear();
+        }
         mDataList.addAll(list);
         recycler.onRefreshCompleted();
         adapter.notifyDataSetChanged();
@@ -154,7 +152,6 @@ public class MsgPreserveActivity extends BaseListActivity<PreserveMessageBean> i
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_msg_system, parent, false);
         return new SampleViewHolder(view);
     }
-
 
 
     /**
@@ -176,7 +173,6 @@ public class MsgPreserveActivity extends BaseListActivity<PreserveMessageBean> i
         PreserveMessageBean bean;
 
         /**
-         *
          * @param itemView
          */
         public SampleViewHolder(View itemView) {
@@ -185,7 +181,7 @@ public class MsgPreserveActivity extends BaseListActivity<PreserveMessageBean> i
             root.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    PreserveInfoActivity.start(context,bean.orderNo);
+                    PreserveInfoActivity.start(context, bean.orderNo);
                 }
             });
         }

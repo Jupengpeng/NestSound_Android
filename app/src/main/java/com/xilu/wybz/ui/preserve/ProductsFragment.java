@@ -20,6 +20,7 @@ import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.view.DividerItemDecoration;
 import com.xilu.wybz.view.pull.BaseViewHolder;
+import com.xilu.wybz.view.pull.PullRecycler;
 
 import java.util.HashMap;
 import java.util.List;
@@ -102,6 +103,9 @@ public class ProductsFragment extends BaseListFragment<ProductInfo> implements I
     @Override
     public void onSuccess(List<ProductInfo> list) {
         recycler.onRefreshCompleted();
+        if (action == PullRecycler.ACTION_PULL_TO_REFRESH){
+            mDataList.clear();
+        }
 
         if (list != null && list.size() > 0) {
             mDataList.addAll(list);

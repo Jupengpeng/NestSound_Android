@@ -3,7 +3,6 @@ package com.xilu.wybz.ui.song;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -175,9 +174,11 @@ public class HotCatalogActivity extends BaseSectionListActivity<TemplateBean> im
         page = 1;
         recycler.setRefreshing();
     }
+
     @OnClick(R.id.ll_select)
     public void onSelectClick() {
     }
+
     public class SectionHeaderViewHolder extends BaseViewHolder {
         @Bind(R.id.iv_qc)
         SimpleDraweeView ivQc;
@@ -240,7 +241,7 @@ public class HotCatalogActivity extends BaseSectionListActivity<TemplateBean> im
         if (adapter1 == null) {
             List<HotCatalog> hotCatalogs = new ArrayList<>();
             hotCatalogs.addAll(hotBean.list);
-            if (hotCatalogs.size()>0){
+            if (hotCatalogs.size() > 0) {
                 HotCatalog catalog = hotCatalogs.get(0);
                 catalog.isCheck = true;
 
@@ -378,30 +379,25 @@ public class HotCatalogActivity extends BaseSectionListActivity<TemplateBean> im
 
     @Override
     public void showHotData(List<TemplateBean> templateBeens) {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (isDestroy) return;
-                if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
-                    mDataList.clear();
-                }
-                if (mDataList.size() == 0) {
-                    mDataList.add(new SectionData<>(true, 0, "清唱"));
-                }
-                llNoData.setVisibility(View.GONE);
-                if (templateBeens == null || templateBeens.size() <20){
-                    recycler.enableLoadMore(false);
-                } else {
+        if (isDestroy) return;
+        if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
+            mDataList.clear();
+        }
+        if (mDataList.size() == 0) {
+            mDataList.add(new SectionData<>(true, 0, "清唱"));
+        }
+        llNoData.setVisibility(View.GONE);
+        if (templateBeens == null || templateBeens.size() < 10) {
+            recycler.enableLoadMore(false);
+        } else {
 
-                    recycler.enableLoadMore(true);
-                }
-                for (TemplateBean templateBean : templateBeens) {
-                    mDataList.add(new SectionData(templateBean));
-                }
-                recycler.onRefreshCompleted();
-                adapter.notifyDataSetChanged();
-            }
-        }, 600);
+            recycler.enableLoadMore(true);
+        }
+        for (TemplateBean templateBean : templateBeens) {
+            mDataList.add(new SectionData(templateBean));
+        }
+        recycler.onRefreshCompleted();
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -440,7 +436,7 @@ public class HotCatalogActivity extends BaseSectionListActivity<TemplateBean> im
         switch (item.getItemId()) {
             case R.id.menu_catalog:
                 if (llSelect.getVisibility() == View.GONE) {
-                    if (hotBean== null || hotBean.list.size() == 0){
+                    if (hotBean == null || hotBean.list.size() == 0) {
                         hotCatalogPresenter.loadData(1);
                     }
                     showSelect();
@@ -464,7 +460,7 @@ public class HotCatalogActivity extends BaseSectionListActivity<TemplateBean> im
     }
 
     private void hideSelect() {
-        keyBack =false;
+        keyBack = false;
         llSelect.setVisibility(View.GONE);
         llSelect.startAnimation(AnimationUtils.loadAnimation(context, R.anim.top_out_anim));
         flowCover.setVisibility(View.GONE);
@@ -473,7 +469,7 @@ public class HotCatalogActivity extends BaseSectionListActivity<TemplateBean> im
 
     @Override
     public void onBackPressed() {
-        if (keyBack){
+        if (keyBack) {
             hideSelect();
             return;
         }

@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.widget.FrameLayout;
 
 import com.xilu.wybz.R;
+import com.xilu.wybz.view.NoAlphaItemAnimator;
 import com.xilu.wybz.view.pull.layoutmanager.ILayoutManager;
 
 /**
@@ -51,16 +52,15 @@ public class PullRecycler extends FrameLayout implements SwipeRefreshLayout.OnRe
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mRecyclerView = (RecyclerView) findViewById(R.id.id_stickynavlayout_innerscrollview);
-//        mRecyclerView.setItemAnimator(new NoAlphaItemAnimator());
+        mRecyclerView.setItemAnimator(new NoAlphaItemAnimator());
+        mRecyclerView.clearOnScrollListeners();
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
             }
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
                 if (mCurrentState == ACTION_IDLE && isLoadMoreEnabled && checkIfNeedLoadMore()) {
                     mCurrentState = ACTION_LOAD_MORE_REFRESH;
                     adapter.onLoadMoreStateChanged(true);

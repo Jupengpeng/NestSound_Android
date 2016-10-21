@@ -83,7 +83,6 @@ public abstract class BaseListActivity<T> extends BasePlayMenuActivity implement
         }
         if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
             page = 1;
-            mDataList.clear();
         }
     }
 
