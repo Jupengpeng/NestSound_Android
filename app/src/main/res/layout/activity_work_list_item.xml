@@ -79,9 +79,18 @@
                     android:text=""
                     android:textColor="@color/main_text_color3"
                     android:textSize="12sp" />
-
                 <TextView
                     android:id="@+id/tv_fov_num"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableLeft="@drawable/ic_lyrics_fav1"
+                    android:drawablePadding="3dp"
+                    android:text=""
+                    android:textColor="@color/main_text_color3"
+                    android:textSize="12sp" />
+                <TextView
+                    android:id="@+id/tv_zan_num"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -91,16 +100,7 @@
                     android:textColor="@color/main_text_color3"
                     android:textSize="12sp" />
 
-                <TextView
-                    android:id="@+id/tv_zan_num"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:drawableLeft="@drawable/ic_ranking_zan"
-                    android:drawablePadding="3dp"
-                    android:text=""
-                    android:textColor="@color/main_text_color3"
-                    android:textSize="12sp" />
+
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
