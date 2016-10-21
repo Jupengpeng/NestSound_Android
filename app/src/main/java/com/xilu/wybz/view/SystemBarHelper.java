@@ -92,13 +92,13 @@ public class SystemBarHelper {
 
         ViewGroup decorView = (ViewGroup) window.getDecorView();
         ViewGroup contentView = (ViewGroup) window.getDecorView().findViewById(Window.ID_ANDROID_CONTENT);
-//        View rootView = contentView.getChildAt(0);
-//        if (rootView != null) {
-//            ViewCompat.setFitsSystemWindows(rootView, true);
-//        }
+        View rootView = contentView.getChildAt(0);
+        if (rootView != null) {
+            ViewCompat.setFitsSystemWindows(rootView, true);
+        }
 
         setStatusBar(decorView, statusBarColor, true);
-//        setTranslucentView(decorView, alpha);
+        setTranslucentView(decorView, alpha);
     }
 
     /**
@@ -253,8 +253,13 @@ public class SystemBarHelper {
             setStatusBarDarkModeForFlyme4(window, true);
         } else if (isMIUI6Later()) {
             setStatusBarDarkModeForMIUI6(window, true);
+        } else if (isOppoLater()){
+
         }
     }
+
+
+
 
 
     //------------------------->
@@ -373,6 +378,12 @@ public class SystemBarHelper {
             result = context.getResources().getDimensionPixelSize(resId);
         }
         return result;
+    }
+
+    /** 判断是否Flyme4以上 */
+    public static boolean isOppoLater() {
+        return Pattern.compile("Flyme [4|5]", Pattern.CASE_INSENSITIVE).matcher(Build.DISPLAY).find()
+                || Pattern.compile("Flyme OS [4|5]", Pattern.CASE_INSENSITIVE).matcher(Build.DISPLAY).find();
     }
 
     /** 判断是否Flyme4以上 */

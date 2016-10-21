@@ -66,6 +66,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         isHomeActivity = this instanceof MainActivity || this instanceof FindActivity
                 || this instanceof MsgActivity || this instanceof MineActivity;
 
+
     }
 
     //开启透明状态栏目

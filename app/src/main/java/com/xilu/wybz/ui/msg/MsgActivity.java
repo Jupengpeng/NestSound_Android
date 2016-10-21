@@ -166,7 +166,8 @@ public class MsgActivity extends BaseListActivity<MsgBean> implements IMsgNumVie
             case MyCommon.PUSH_TYPE_FOV:
                 pos = 2;
                 break;
-            case MyCommon.PUSH_TYPE_COPYRIGH:
+            case MyCommon.PUSH_TYPE_COPYRIGHSUCCESS:
+            case MyCommon.PUSH_TYPE_COPYRIGHFAIL:
                 pos = 3;
                 break;
             case MyCommon.PUSH_TYPE_SYSTEMMSG:
@@ -192,7 +193,8 @@ public class MsgActivity extends BaseListActivity<MsgBean> implements IMsgNumVie
             case MyCommon.PUSH_TYPE_FOV:
                 pos = 2;
                 break;
-            case MyCommon.PUSH_TYPE_COPYRIGH:
+            case MyCommon.PUSH_TYPE_COPYRIGHSUCCESS:
+            case MyCommon.PUSH_TYPE_COPYRIGHFAIL:
                 pos = 3;
                 break;
             case MyCommon.PUSH_TYPE_SYSTEMMSG:
