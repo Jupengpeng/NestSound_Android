@@ -58,7 +58,7 @@ public class ShareDialog extends Dialog implements View.OnClickListener {
             String sharePic = worksData.pic;
             if (worksData.status == 1) {
                 playurl = worksData.playurl;
-                shareContent = "我在音巢APP淘到一首好听的歌，快来看看有没有你喜欢的原创style 《" + shareTitle + "》 ▷" + shareLink + " (@音巢音乐)";
+                shareContent = shareAuthor+"用音巢APP创作了一首歌词，快来看看吧 《" + shareTitle + "》 ▷" + shareLink + " (@音巢音乐)";
             } else {
                 String shareBody = PrefsUtil.getUserId(context) == worksData.uid ? "我用音巢app创作了一首歌词，快来看看吧!" : "我在音巢app上发现一首好歌词，太棒了~";
                 shareContent = shareBody + " 《" + shareTitle + "》 ▷" + shareLink + " (@音巢音乐)";

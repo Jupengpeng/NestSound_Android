@@ -82,7 +82,7 @@ public class MsgPreserveActivity extends BaseListActivity<PreserveMessageBean> i
     public void clearMsg() {
         EventBus.getDefault().post(new Event.ClearMsgEvent(MyCommon.PUSH_TYPE_COPYRIGH));
         Intent mIntent = new Intent("com.xilu.wybz.intent.CLEARNOTICE");
-        mIntent.putExtra("type", MyCommon.PUSH_TYPE_SYSTEMMSG);
+        mIntent.putExtra("type", MyCommon.PUSH_TYPE_COPYRIGH);
         sendBroadcast(mIntent);
     }
 
