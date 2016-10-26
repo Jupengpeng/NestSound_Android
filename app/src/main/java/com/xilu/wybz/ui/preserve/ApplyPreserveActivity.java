@@ -308,13 +308,13 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
 
         ProductInfo productInfo1 = new ProductInfo();
 
-        productInfo1.type = 1;
-        productInfo1.id = ""+134245;
-
-        if (productInfo == null){
-
-            productInfo = productInfo1;
-        }
+//        productInfo1.type = 1;
+//        productInfo1.id = ""+134245;
+//
+//        if (productInfo == null){
+//
+//            productInfo = productInfo1;
+//        }
 
 //        PersonInfo personInfo1 = new PersonInfo();
 //
@@ -327,7 +327,7 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
 //            return;
 //        }
 
-        if (personInfo == null) {
+        if (personInfo == null || StringUtils.isBlank(personInfo.cUserName)) {
             ToastUtils.toast(context, "请添加个人信息");
             return;
         }
@@ -443,6 +443,12 @@ public class ApplyPreserveActivity extends ToolbarActivity implements IApplyPres
      * @param info
      */
     public void setPersonInfo(PersonInfo info) {
+
+        if (info == null || StringUtils.isBlank(info.cUserName)){
+            userInfoAdd.setVisibility(View.VISIBLE);
+            userInfoContainer.setVisibility(View.GONE);
+            return;
+        }
 
         preservationName.setText(info.cUserName);
         preservationCardId.setText(info.cCardId);
