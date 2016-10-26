@@ -272,14 +272,14 @@ public class MsgCommentActivity extends BaseListActivity<MsgCommentBean> impleme
     }
 
     public void showCommentDialog(MsgCommentBean inforCommentBean) {
-        if (commentDialog == null) {
+
             commentDialog = new CommentDialog(context, new CommentDialog.ICommentListener() {
                 @Override
                 public void toSend(String comment) {
                     toSendComment(comment, inforCommentBean);
                 }
             },inforCommentBean.nickname);
-        }
+
         if (!commentDialog.isShowing()) {
             commentDialog.showDialog();
         }
