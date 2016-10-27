@@ -172,7 +172,7 @@
         <activity
             android:name=".ui.setting.AboutMessageActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/MianTheme" />
+            android:theme="@style/MainTheme" />
 
 
         <activity
