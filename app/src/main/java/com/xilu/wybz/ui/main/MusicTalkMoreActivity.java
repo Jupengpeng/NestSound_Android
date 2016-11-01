@@ -21,6 +21,7 @@ import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtils;
 import com.xilu.wybz.view.SpacesItemDecoration;
 import com.xilu.wybz.view.pull.BaseViewHolder;
+import com.xilu.wybz.view.pull.PullRecycler;
 
 import java.util.List;
 
@@ -70,11 +71,15 @@ public class MusicTalkMoreActivity extends BaseListActivity<MusicTalk> implement
 
     @Override
     public void showMusicTalkData(List<MusicTalk> songAlbumList) {
+        if (action == PullRecycler.ACTION_PULL_TO_REFRESH){
+            mDataList.clear();
+        }
 
         recycler.enableLoadMore(true);
         mDataList.addAll(songAlbumList);
         adapter.notifyDataSetChanged();
         recycler.onRefreshCompleted();
+        checkData();
     }
 
     @Override
