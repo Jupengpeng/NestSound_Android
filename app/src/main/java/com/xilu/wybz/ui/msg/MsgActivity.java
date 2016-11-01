@@ -99,7 +99,12 @@ public class MsgActivity extends BaseListActivity<MsgBean> implements IMsgNumVie
     @Override
     public void initView() {
         setTitle("消息");
+
         SystemBarHelper.tintStatusBar(this, Color.argb(255, 0xFF, 0xD7, 0x05));
+        mToolbar.setBackgroundColor(getResources().getColor(R.color.main_theme_color));
+        mAppBar.setBackgroundColor(getResources().getColor(R.color.main_theme_color));
+        SystemBarHelper.setHeightAndPadding(this, mAppBar);
+
         recycler.enablePullToRefresh(false);
         msgNumPresenter.loadData();
     }

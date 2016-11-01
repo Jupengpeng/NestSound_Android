@@ -65,8 +65,12 @@ public class MineActivity extends BasePlayMenuActivity implements IUserView {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitle("我");
         SystemBarHelper.tintStatusBar(this, Color.argb(255, 0xFF, 0xD7, 0x05));
+        mToolbar.setBackgroundColor(getResources().getColor(R.color.main_theme_color));
+        mAppBar.setBackgroundColor(getResources().getColor(R.color.main_theme_color));
+        SystemBarHelper.setHeightAndPadding(this, mAppBar);
+
+        setTitle("我");
         userInfoBean = PrefsUtil.getUserInfoBean(context,PrefsUtil.getUserId(context));
         setUserInfoBean(userInfoBean);
         initUserInfo();

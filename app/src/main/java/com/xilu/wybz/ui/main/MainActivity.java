@@ -121,6 +121,10 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SystemBarHelper.tintStatusBar(this, Color.argb(255, 0xFF, 0xD7, 0x05));
+        mToolbar.setBackgroundColor(getResources().getColor(R.color.main_theme_color));
+        mAppBar.setBackgroundColor(getResources().getColor(R.color.main_theme_color));
+        SystemBarHelper.setHeightAndPadding(this, mAppBar);
+
         presenter = new MainPresenter(this, this);
         presenter.init();
     }

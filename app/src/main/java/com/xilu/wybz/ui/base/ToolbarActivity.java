@@ -30,12 +30,13 @@ public abstract class ToolbarActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         mAppBar = (RelativeLayout) findViewById(R.id.app_bar_layout);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (isHomeActivity || this instanceof ShareActivity
+        if ( this instanceof ShareActivity
                 || this instanceof LyricsPosterActivity
                 || this instanceof PlayAudioActivity
                 || this instanceof SongAblumActivity) {
             SystemBarHelper.setHeightAndPadding(this, mAppBar);
         }
+
         View view = findViewById(R.id.view);
         if (mToolbar == null || mAppBar == null) {
             throw new IllegalStateException("No toolbar");
@@ -47,12 +48,13 @@ public abstract class ToolbarActivity extends BaseActivity {
             mToolbar.setTitleTextAppearance(context, R.style.ToolbarTitleAppearance2);
         }
 
-        if (isHomeActivity) {
-            mToolbar.setBackgroundColor(getResources().getColor(R.color.main_theme_color));
-            view.setVisibility(View.GONE);
-        } else {
-            setTitle("");
-        }
+//        if (isHomeActivity) {
+//            mToolbar.setBackgroundColor(getResources().getColor(R.color.main_theme_color));
+//            view.setVisibility(View.GONE);
+//        } else {
+//            setTitle("");
+//        }
+        setTitle("");
 
         setSupportActionBar(mToolbar);
         if (canBack()) {

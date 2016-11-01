@@ -72,7 +72,7 @@
         <activity
             android:name=".ui.BrowserActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/MianTheme" />
+            android:theme="@style/MainTheme" />
 
         <activity
             android:name=".ui.main.MainActivity"
