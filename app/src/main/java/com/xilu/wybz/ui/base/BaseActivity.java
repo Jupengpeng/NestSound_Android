@@ -21,6 +21,7 @@ import com.xilu.wybz.common.ZnImageLoader;
 import com.xilu.wybz.ui.MainTabActivity;
 import com.xilu.wybz.ui.SplashActivity;
 import com.xilu.wybz.ui.WelActivity;
+import com.xilu.wybz.ui.cooperation.CooperationActivity;
 import com.xilu.wybz.ui.lyrics.LyricsPosterActivity;
 import com.xilu.wybz.ui.lyrics.ShareActivity;
 import com.xilu.wybz.ui.song.PlayAudioActivity;
@@ -43,7 +44,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected boolean isChenjin;
     protected boolean isDestroy = false;
     protected Context context;
-    boolean isHomeActivity = false;
+    boolean isHomeActivity =false;
     protected AnimImageView animImageView;
     protected List<Integer> resourceIdList;
     protected ImageView ivLoading;
@@ -70,7 +71,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             }
             if (this instanceof WelActivity || this instanceof PlayAudioActivity || this instanceof LyricsPosterActivity
                     || this instanceof SongAblumActivity || this instanceof ShareActivity
-                    || this instanceof SplashActivity || this instanceof MainTabActivity) {
+                    || this instanceof SplashActivity || this instanceof MainTabActivity || this instanceof CooperationActivity) {
                 SystemBarHelper.immersiveStatusBar(this);
                 SystemBarHelper.tintStatusBar(this, Color.argb(0, 0xFF, 0xD7, 0x05));
             }

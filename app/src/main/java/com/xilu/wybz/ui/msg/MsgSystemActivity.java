@@ -84,7 +84,6 @@ public class MsgSystemActivity extends BaseListActivity<SystemMessageBean> imple
         if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
             mDataList.clear();
         }
-
         recycler.enableLoadMore(true);
         mDataList.addAll(systemBeans);
         adapter.notifyDataSetChanged();

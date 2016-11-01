@@ -1,5 +1,6 @@
 package com.xilu.wybz.ui.main;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -35,6 +36,7 @@ import com.xilu.wybz.service.MainService;
 import com.xilu.wybz.ui.BrowserActivity;
 import com.xilu.wybz.ui.IView.IHomeView;
 import com.xilu.wybz.ui.base.BasePlayMenuActivity;
+import com.xilu.wybz.ui.cooperation.CooperationActivity;
 import com.xilu.wybz.ui.lyrics.LyricsdisplayActivity;
 import com.xilu.wybz.ui.song.PlayAudioActivity;
 import com.xilu.wybz.ui.song.SongAblumActivity;
@@ -121,6 +123,7 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SystemBarHelper.tintStatusBar(this, Color.argb(255, 0xFF, 0xD7, 0x05));
+        setTitle("音巢音乐");
         mToolbar.setBackgroundColor(getResources().getColor(R.color.main_theme_color));
         mAppBar.setBackgroundColor(getResources().getColor(R.color.main_theme_color));
         SystemBarHelper.setHeightAndPadding(this, mAppBar);
@@ -458,7 +461,8 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
                 break;
             case R.id.iv_dz:
 //                startActivity(MatchActivity.class);
-                BrowserActivity.toBrowserActivity(context,MyCommon.customization);
+//                BrowserActivity.toBrowserActivity(context,MyCommon.customization);
+                startActivity(new Intent(MainActivity.this, CooperationActivity.class));
                 break;
         }
     }

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="63dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="61dp"
+
+        android:padding="10dp">
+
+        <RelativeLayout
+            android:layout_width="42dp"
+            android:layout_height="42dp">
+
+            <ImageView
+                android:id="@+id/invitation_head_iv"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:src="@drawable/ic_song_effect_caojiang" />
+
+            <ImageView
+                android:id="@+id/invitation_recommend"
+                android:layout_width="27dp"
+                android:layout_height="12dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="8dp"
+                android:src="@drawable/ic_tuijian" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/invitation_tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="今妃昔比"
+                android:textColor="@color/main_text_color"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/invitation_tv_signature"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:singleLine="true"
+                android:text="23分钟前"
+                android:textColor="@color/main_text_color2"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/invitation_bt"
+            android:layout_width="72dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/bt_bg"
+            android:focusable="false"
+            android:text="邀请"
+            android:textColor="@color/main_text_color"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/finishinvitation_bt"
+            android:layout_width="72dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/finishbt_bg"
+            android:focusable="false"
+            android:text="已邀请"
+            android:textColor="@color/main_text_color"
+            android:textSize="14sp"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/spit_line_height"
+        android:layout_marginLeft="10dp"
+        android:background="@color/split_line" />
+
+</LinearLayout>

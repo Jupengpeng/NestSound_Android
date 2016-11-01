@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.xilu.wybz.R;
+import com.xilu.wybz.adapter.CooperaworksViewHolder;
 import com.xilu.wybz.adapter.InspireRecordViewHolder;
 import com.xilu.wybz.adapter.WorksViewHolder;
 import com.xilu.wybz.bean.WorksData;
@@ -43,7 +44,8 @@ public class WorksFragment extends BaseListFragment<WorksData> implements IUserC
     private String COME;
     private boolean isMe = true;
     private int workType;//type 1=歌曲，2=歌词，3=灵感记录（删除作品的type）
-    private String[] MYCOMES = new String[]{"mysong", "mylyrics", "myfav", "myrecord"};
+    private String[] MYCOMES = new String[]{"mysong", "mylyrics", "myfav", "myrecord","mycoopera"};
+
     @Override
     protected void initPresenter() {
         EventBus.getDefault().register(this);
@@ -61,10 +63,10 @@ public class WorksFragment extends BaseListFragment<WorksData> implements IUserC
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             type = getArguments().getInt(TYPE);
-            COME = MYCOMES[type-1];
-            if(type==4){
+            COME = MYCOMES[type - 1];
+            if (type == 4) {
                 workType = 3;
-            }else{
+            } else {
                 workType = type;
             }
         }
@@ -115,7 +117,7 @@ public class WorksFragment extends BaseListFragment<WorksData> implements IUserC
                     mDataList.clear();
                 }
                 for (WorksData worksData : worksDataList) {
-                    if (type != 3){
+                    if (type != 3) {
                         worksData.type = type;
                     }
                     mDataList.add(worksData);
@@ -150,7 +152,7 @@ public class WorksFragment extends BaseListFragment<WorksData> implements IUserC
     }
 
     public void updateNum(WorksData worksData, int type) {
-        if (isDestroy||mDataList==null) return;
+        if (isDestroy || mDataList == null) return;
         int index = -1;
         for (int i = 0; i < mDataList.size(); i++) {
             if (worksData.itemid == mDataList.get(i).itemid && worksData.type == mDataList.get(i).type) {
@@ -192,7 +194,7 @@ public class WorksFragment extends BaseListFragment<WorksData> implements IUserC
             }
         }
         removeItem(selectPos);
-        EventBus.getDefault().post(new Event.UpdateWorksNum(type,-1));
+        EventBus.getDefault().post(new Event.UpdateWorksNum(type, -1));
     }
 
     @Override
@@ -203,7 +205,7 @@ public class WorksFragment extends BaseListFragment<WorksData> implements IUserC
     public void updateSuccess() {
         mDataList.get(selectPos).status = 1 - mDataList.get(selectPos).status;
         updateItem(selectPos);
-        ToastUtils.toast(context,"设置成功！");
+        ToastUtils.toast(context, "设置成功！");
     }
 
     @Override
@@ -270,6 +272,7 @@ public class WorksFragment extends BaseListFragment<WorksData> implements IUserC
 
     /**
      * getViewHolder.
+     *
      * @param parent
      * @param viewType
      * @return
@@ -287,6 +290,17 @@ public class WorksFragment extends BaseListFragment<WorksData> implements IUserC
                             }
                         }
                     });
+            return holder;
+        } else if (type == 5) {
+            View view = LayoutInflater.from(context).inflate(R.layout.usercenter_cooperaitem, parent, false);
+            CooperaworksViewHolder holder = new CooperaworksViewHolder(view, context, mDataList, COME, new CooperaworksViewHolder.OnItemClickListener() {
+                @Override
+                public void onClick(int pos, int which) {
+
+
+
+                }
+            });
             return holder;
         } else {
             View view = LayoutInflater.from(context).inflate(R.layout.activity_work_list_item, parent, false);

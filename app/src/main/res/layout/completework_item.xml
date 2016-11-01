@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="108dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="98dp">
+
+        <ImageView
+            android:id="@+id/complete_iv"
+            android:layout_width="76dp"
+            android:layout_height="76dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="11dp"
+            android:background="#000" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/complete_iv"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/complete_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="歌曲名：洋葱"
+                android:textColor="@color/main_text_color2"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/complete_wUsername"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="4dp"
+                android:text="作曲：洋葱"
+                android:textColor="@color/main_text_color2"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/complete_lUsername"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="作词：洋葱"
+                android:textColor="@color/main_text_color2"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/complete_createtime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="15dp"
+            android:text="2016.10.21 20:09"
+            android:textColor="@color/main_text_color3"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/complete_isaccess_bt"
+            android:layout_width="62dp"
+            android:layout_height="28dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="16dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/bt_bg"
+            android:text="采纳"
+            android:textColor="@color/main_text_color2"
+            android:textSize="13sp" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_alignParentBottom="true"
+        android:background="#40CBCBCB" />
+</RelativeLayout>
