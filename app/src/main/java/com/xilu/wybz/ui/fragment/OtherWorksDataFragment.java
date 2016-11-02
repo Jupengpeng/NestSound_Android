@@ -2,37 +2,20 @@ package com.xilu.wybz.ui.fragment;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.OrientationHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.xilu.wybz.R;
-import com.xilu.wybz.adapter.InspireRecordViewHolder;
 import com.xilu.wybz.adapter.WorksViewHolder;
-import com.xilu.wybz.bean.UserBean;
-import com.xilu.wybz.bean.UserInfoBean;
 import com.xilu.wybz.bean.WorksData;
-import com.xilu.wybz.common.Event;
-import com.xilu.wybz.common.PlayMediaInstance;
 import com.xilu.wybz.presenter.OtherCenterListPresenter;
-import com.xilu.wybz.presenter.UserCenterListPresenter;
-import com.xilu.wybz.presenter.UserPresenter;
 import com.xilu.wybz.ui.IView.IOtherCenterListView;
-import com.xilu.wybz.ui.IView.IUserCenterListView;
-import com.xilu.wybz.utils.PrefsUtil;
-import com.xilu.wybz.utils.ToastUtils;
-import com.xilu.wybz.view.materialdialogs.DialogAction;
-import com.xilu.wybz.view.materialdialogs.MaterialDialog;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.PullRecycler;
 import com.xilu.wybz.view.pull.layoutmanager.ILayoutManager;
 import com.xilu.wybz.view.pull.layoutmanager.MyLinearLayoutManager;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
