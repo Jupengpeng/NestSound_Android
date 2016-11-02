@@ -6,8 +6,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.xilu.wybz.ui.fragment.OtherWorksDataFragment;
-import com.xilu.wybz.ui.fragment.WorksDataFragment;
-import com.xilu.wybz.utils.PrefsUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,6 +27,7 @@ public class OtherCenterListAdapter extends FragmentStatePagerAdapter {
         mTitles.add("歌曲");
         mTitles.add("歌词");
         mTitles.add("收藏");
+        mTitles.add("合作作品");
     }
 
     @Override
