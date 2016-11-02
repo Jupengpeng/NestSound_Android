@@ -61,6 +61,34 @@ public class WorksData implements Serializable {
 
     public int effect;//音效
 
+    /**
+     * 合作
+     *"wUid":作曲人id,
+     "wUsername:"作曲人姓名",
+     "lUid":作词人id,
+     "lUsername:"作词人姓名",
+     */
+    public String wUid;
+    public String wUsername ="test1";
+    public String lUid;
+    public String lUsername = "test2";
+
+    /**
+     *
+     * @return
+     */
+    public String getComAuthor(){
+        String result="作曲人姓名:";
+        if(StringUtils.isNotBlank(wUsername)){
+            result += wUsername;
+        }
+        result += "\n作词人姓名:";
+        if(StringUtils.isNotBlank(lUsername)){
+            result += lUsername;
+        }
+        return result;
+    }
+
     public int getType() {
         return type;
     }

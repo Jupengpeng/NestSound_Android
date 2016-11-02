@@ -53,13 +53,17 @@ public class OtherWorksDataFragment extends BaseListFragment<WorksData> implemen
 
             type = getArguments().getInt(TYPE);
             userId = getArguments().getInt(UID);
-            COME = OTHERCOMES[type];
+            COME = OTHERCOMES[type-1];
             if (type == 0) isFirstTab = true;
             author = getArguments().getString(AUTHOR);
         }
 
     }
 
+    /**
+     *
+     * @return
+     */
     protected ILayoutManager getLayoutManager() {
         MyLinearLayoutManager myLinearLayoutManager = new MyLinearLayoutManager(getActivity().getApplicationContext(), OrientationHelper.VERTICAL, false);
         return myLinearLayoutManager;
@@ -99,7 +103,11 @@ public class OtherWorksDataFragment extends BaseListFragment<WorksData> implemen
     @Override
     public void onRefresh(int action) {
         super.onRefresh(action);
-        userPresenter.loadData(userId, type, page++);
+        int questType = type;
+        if (type == 4){
+            questType = 5;
+        }
+        userPresenter.loadData(userId, questType, page++);
     }
 
     @Override
@@ -113,9 +121,14 @@ public class OtherWorksDataFragment extends BaseListFragment<WorksData> implemen
                     mDataList.clear();
                 }
                 for (WorksData worksData : worksDataList) {
-                    if (type < 3)
+                    if (type < 3){
                         worksData.setAuthor(author);
+                    }
                     worksData.type = type;
+                    if (type == 4){
+                        worksData.type = 5;
+                        worksData.author = worksData.getComAuthor();
+                    }
                     mDataList.add(worksData);
                 }
                 llNoData.setVisibility(View.GONE);
@@ -149,8 +162,22 @@ public class OtherWorksDataFragment extends BaseListFragment<WorksData> implemen
             mDataList.add(new WorksData());
             mDataList.add(new WorksData());
             mDataList.add(new WorksData());
+
+
+            for (WorksData worksData : mDataList) {
+                if (type < 3){
+                    worksData.setAuthor(author);
+                }
+                worksData.type = type;
+                if (type == 4){
+                    worksData.type = 5;
+                    worksData.author = worksData.getComAuthor();
+                }
+            }
+
             adapter.notifyDataSetChanged();
             recycler.onRefreshCompleted();
+
             return;
         }
 
@@ -161,13 +188,14 @@ public class OtherWorksDataFragment extends BaseListFragment<WorksData> implemen
 
     @Override
     protected BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
+
+        View view ;
         if (type == 4){
-            View view = LayoutInflater.from(context).inflate(R.layout.usercenter_cooperaitem, parent, false);
-            CooperationViewHolder holder = new CooperationViewHolder(view);
-            return holder;
+            view = LayoutInflater.from(context).inflate(R.layout.activity_work_list_item2, parent, false);
+        } else {
+            view = LayoutInflater.from(context).inflate(R.layout.activity_work_list_item, parent, false);
         }
 
-        View view = LayoutInflater.from(context).inflate(R.layout.activity_work_list_item, parent, false);
         WorksViewHolder holder = new WorksViewHolder(view, context, mDataList, COME, null);
         return holder;
     }

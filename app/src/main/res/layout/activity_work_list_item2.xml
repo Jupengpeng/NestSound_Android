@@ -10,7 +10,7 @@
     <LinearLayout
         android:id="@+id/ll_body"
         android:layout_width="match_parent"
-        android:layout_height="86dp"
+        android:layout_height="96dp"
         android:gravity="center_vertical"
         android:paddingLeft="10dp"
         android:background="?selectableItemBackground"
@@ -40,21 +40,21 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 >
-            <TextView
-                android:id="@+id/tv_name"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:text="title"
-                android:textColor="@color/main_text_color"
-                android:textSize="15sp" />
-            <ImageView
-                android:id="@+id/iv_lock"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:src="@drawable/icon_lock" />
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:text="title"
+                    android:textColor="@color/main_text_color"
+                    android:textSize="15sp" />
+                <ImageView
+                    android:id="@+id/iv_lock"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:src="@drawable/icon_lock" />
             </LinearLayout>
             <TextView
                 android:id="@+id/tv_author"
@@ -107,12 +107,12 @@
         </LinearLayout>
     </LinearLayout>
 
-<LinearLayout
-    android:id="@+id/ll_split_line"
-    android:layout_width="match_parent"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
-    android:layout_height="@dimen/spit_line_height"
-    android:orientation="vertical"
-    android:background="@color/split_line" />
+    <LinearLayout
+        android:id="@+id/ll_split_line"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_height="@dimen/spit_line_height"
+        android:orientation="vertical"
+        android:background="@color/split_line" />
 </LinearLayout>
