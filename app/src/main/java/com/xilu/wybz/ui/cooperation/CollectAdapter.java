@@ -22,10 +22,12 @@ import butterknife.ButterKnife;
  * Created by Administrator on 2016/10/21.
  */
 
-public class CollectAdapter extends RecyclerView.Adapter<CollectAdapter.CollectViewHolder> {
+public class CollectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<CollectBean> collectBeanList;
     private Context context;
-
+    private static final int TYPE_ITEM = 0;
+    private static final int TYPE_FOOTER = 1;
+    protected boolean isLoadMoreFooterShown = false;
 
     public CollectAdapter(List<CollectBean> collectBeanList, Context context) {
         this.collectBeanList = collectBeanList;
@@ -43,46 +45,73 @@ public class CollectAdapter extends RecyclerView.Adapter<CollectAdapter.CollectV
     }
 
     @Override
-    public CollectViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        CollectAdapter.CollectViewHolder holder = new CollectAdapter.CollectViewHolder(LayoutInflater.from(context).inflate(R.layout.collect_item, parent, false));
-        return holder;
+    public int getItemViewType(int position) {
+        if (isLoadMoreFooterShown && position == getItemCount() - 1) {
+            return TYPE_FOOTER;
+        } else {
+            return TYPE_ITEM;
+        }
     }
 
     @Override
-    public void onBindViewHolder(CollectViewHolder holder, int position) {
-        CollectBean collectBean = collectBeanList.get(position);
-
-        if (collectBean != null) {
-            switch (collectBean.getStatus()) {
-                case 1://正在进行
-                    holder.collect_tv_status.setText("正在进行");
-
-                    break;
-
-                case 3://对面停止合作
-                    holder.collect_tv_status.setText("对方停止该合作");
-                    break;
-
-                case 4://已到期
-                    holder.collect_tv_status.setText("已到期");
-                    holder.collect_tv_status.setTextColor(Color.parseColor("#ff6161"));
-                    break;
-
-                case 8://合作成功
-                    holder.collect_tv_status.setText("合作成功");
-                    break;
-            }
-            holder.collect_tv_name.setText(collectBean.getNickname());
-            holder.collect_tv_title.setText(collectBean.getTitle());
-            holder.collect_tv_participatenum.setText(collectBean.getParticipatenum()+"人参与合作");
-            holder.collect_tv_time.setText(DateFormatUtils.formatX1(collectBean.getCreatetime()));
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        CollectAdapter.CollectViewHolder holder = new CollectAdapter.CollectViewHolder(LayoutInflater.from(context).inflate(R.layout.collect_item, parent, false));
+        if (viewType == TYPE_ITEM) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(
+                    R.layout.collect_item, null);
+            return new CollectViewHolder(view);
+        } else if (viewType == TYPE_FOOTER) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.widget_pull_to_refresh_footer, parent, false);
+            return new FooterViewHolder(view);
         }
+        return null;
+    }
 
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        if (holder instanceof CollectViewHolder) {
+            CollectBean collectBean = collectBeanList.get(position);
+
+            if (collectBean != null) {
+                switch (collectBean.getStatus()) {
+                    case 1://正在进行
+                        ((CollectViewHolder) holder).collect_tv_status.setText("正在进行");
+
+                        break;
+
+                    case 3://对面停止合作
+                        ((CollectViewHolder) holder).collect_tv_status.setText("对方停止该合作");
+                        break;
+
+                    case 4://已到期
+                        ((CollectViewHolder) holder).collect_tv_status.setText("已到期");
+                        ((CollectViewHolder) holder).collect_tv_status.setTextColor(Color.parseColor("#ff6161"));
+                        break;
+
+                    case 8://合作成功
+                        ((CollectViewHolder) holder).collect_tv_status.setText("合作成功");
+                        break;
+                }
+                ((CollectViewHolder) holder).collect_tv_name.setText(collectBean.getNickname());
+                ((CollectViewHolder) holder).collect_tv_title.setText(collectBean.getTitle());
+                ((CollectViewHolder) holder).collect_tv_participatenum.setText(collectBean.getWorknum() + "人参与合作");
+                ((CollectViewHolder) holder).collect_tv_time.setText(DateFormatUtils.formatX1(collectBean.getCreatetime()));
+            }
+        }
+    }
+
+    public void onLoadMoreStateChanged(boolean isShown) {
+        this.isLoadMoreFooterShown = isShown;
+        if (isShown) {
+            notifyItemInserted(getItemCount());
+        } else {
+            notifyItemRemoved(getItemCount());
+        }
     }
 
     @Override
     public int getItemCount() {
-        return collectBeanList.size();
+        return collectBeanList.size() + (isLoadMoreFooterShown ? 1 : 0);
     }
 
     class CollectViewHolder extends RecyclerView.ViewHolder {
@@ -105,5 +134,14 @@ public class CollectAdapter extends RecyclerView.Adapter<CollectAdapter.CollectV
             ButterKnife.bind(this, itemView);
 
         }
+    }
+
+    class FooterViewHolder extends RecyclerView.ViewHolder {
+
+        public FooterViewHolder(View view) {
+            super(view);
+        }
+
+
     }
 }

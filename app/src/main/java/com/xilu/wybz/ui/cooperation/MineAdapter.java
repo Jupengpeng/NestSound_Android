@@ -33,17 +33,28 @@ public class MineAdapter extends RecyclerView.Adapter<MineAdapter.MineViewHolder
     public interface OnItemClickListener {
         void onItemClick(View view, int position);
     }
+    public interface OnItemLongClickListener {
+        void onItemLongClick(View view, int position);
+    }
 
     private MineAdapter.OnItemClickListener mOnItemClickListener;
+    private MineAdapter.OnItemLongClickListener mOnItemLongClickListener;
 
     public void setOnItemClickListener(MineAdapter.OnItemClickListener mOnItemClickListener) {
         this.mOnItemClickListener = mOnItemClickListener;
     }
-
+    public void setOnItemLongClickListener(MineAdapter.OnItemLongClickListener mOnItemLongClickListener) {
+        this.mOnItemLongClickListener = mOnItemLongClickListener;
+    }
     @Override
     public MineViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         MineAdapter.MineViewHolder holder = new MineAdapter.MineViewHolder(LayoutInflater.from(context).inflate(R.layout.mine_item, parent, false));
         return holder;
+    }
+
+    public void removeItem(int pos) {
+        mineBeanList.remove(pos);
+        notifyDataSetChanged();
     }
 
     @Override
@@ -54,7 +65,7 @@ public class MineAdapter extends RecyclerView.Adapter<MineAdapter.MineViewHolder
             holder.mine_tv_time.setText(DateFormatUtils.formatX1(mineBean.getCreatetime()));
             switch (mineBean.getStatus()) {
                 case 1:
-                    holder.mine_tv_count.setText(mineBean.getWorknum()+"");
+                    holder.mine_tv_count.setText(mineBean.getWorknum() + "");
                     break;
                 case 2:
                     holder.mine_tv_count.setVisibility(View.GONE);
@@ -70,7 +81,7 @@ public class MineAdapter extends RecyclerView.Adapter<MineAdapter.MineViewHolder
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mOnItemClickListener.onItemClick(holder.itemView,position);
+                mOnItemClickListener.onItemClick(holder.itemView, position);
             }
         });
 

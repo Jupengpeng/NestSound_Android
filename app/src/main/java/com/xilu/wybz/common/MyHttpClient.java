@@ -452,5 +452,69 @@ public class MyHttpClient {
         return "/paypal/pay/status/v22";
     }
 
+
+//2.3版本接口
+    //合作列表
+    public static String getDemandlist() {
+        return "/cooperate/index/demandlist/v23";
+    }
+
+    //发布需求
+    public static String getDemand() {
+        return "/cooperate/demand/public/v23";
+    }
+
+    //合作-发布需求-歌词列表
+    public static String getLyricslist() {
+        return "/cooperate/demand/lyricslist/v23";
+    }
+
+    //合作-合作(按钮)
+    public static String getPreinfo() {
+        return "/cooperate/demand/preinfo/v23";
+    }
+
+    //合作-合作详情页
+    public static String getCooperaDetail() {
+        return "/cooperate/demand/detail/v23";
+    }
+
+    //我的列表
+    public static String getMylist() {
+        return "/cooperate/index/mylist/v23";
+    }
+
+    //我的-删除合作
+    public static String getDelete() {
+        return "/cooperate/demand/delete/v23";
+    }
+    //我的-采纳作品
+    public static String getAccept(){
+        return "/cooperate/demand/accept/v23";
+    }
+    //收藏列表
+    public static String getFovlist(){
+        return "/cooperate/index/fovlist/v23";
+    }
+    //收藏-收藏操作
+    public static String getFov (){
+        return "/cooperate/demand/fov/v23";
+    }
+    //留言列表详情
+    public static String getLeavelist (){
+        return "/cooperate/comment/leavelist/v23";
+    }
+    //发表留言
+    public static String getPublishComment (){
+        return "/cooperate/comment/save/v23";
+    }
+    //邀请-邀请列表
+    public static String getInvitelist (){
+        return "/cooperate/invite/userlist/v23";
+    }
+    //邀请-发起邀请
+    public static String getPublishInvite(){
+        return "/cooperate/invite/save/v23";
+    }
 }
 

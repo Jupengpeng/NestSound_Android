@@ -26,12 +26,14 @@ import butterknife.ButterKnife;
  * Created by Administrator on 2016/10/21.
  */
 
-public class CooperationAdapter extends RecyclerView.Adapter<CooperationAdapter.CooperationViewHolder> {
+public class CooperationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<CooperationBean> cooperationBeanList;
     private Context context;
     private CooperaCommentAdapter adapter;
     private List<CooperationBean.CommentListBean> commentBeanList = new ArrayList<>();
-
+    private static final int TYPE_ITEM = 0;
+    private static final int TYPE_FOOTER = 1;
+    protected boolean isLoadMoreFooterShown = false;
     public CooperationAdapter(List<CooperationBean> cooperationBeanList, Context context) {
 
         this.cooperationBeanList = cooperationBeanList;
@@ -49,57 +51,86 @@ public class CooperationAdapter extends RecyclerView.Adapter<CooperationAdapter.
     }
 
     @Override
-    public CooperationViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        CooperationAdapter.CooperationViewHolder holder = new CooperationAdapter.CooperationViewHolder(LayoutInflater.from(context).inflate(R.layout.cooperation_item, parent, false));
-        return holder;
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+//        CooperationAdapter.CooperationViewHolder holder = new CooperationAdapter.CooperationViewHolder(LayoutInflater.from(context).inflate(R.layout.cooperation_item, parent, false));
+        if (viewType == TYPE_ITEM) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(
+                    R.layout.cooperation_item, null);
+            return new CooperationViewHolder(view);
+        } else if (viewType == TYPE_FOOTER) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.widget_pull_to_refresh_footer, parent, false);
+            return new FooterViewHolder(view);
+        }
+
+
+        return null;
     }
 
     @Override
-    public void onBindViewHolder(CooperationViewHolder holder, int position) {
-        CooperationBean cooperationBean = cooperationBeanList.get(position);
-        if (cooperationBean != null) {
-            holder.coopera_tv_name.setText(cooperationBean.getUserInfo().getNickname());
-            holder.coopera_tv_time.setText(DateFormatUtils.formatX1(cooperationBean.getDemandInfo().getCreatetime()));
-            holder.coopera_tv_lyricsname.setText(cooperationBean.getDemandInfo().getTitle());
-            holder.coopera_tv_lyricscontent.setText(cooperationBean.getDemandInfo().getLyrics());
-            holder.coopera_tv_require.setText(cooperationBean.getDemandInfo().getRequirement());
-            holder.coopera_commentnum_tv.setText("更多" + cooperationBean.getDemandInfo().getCommentnum() + "条留言");
-            holder.coopera_worknum_tv.setText("已有" + cooperationBean.getDemandInfo().getWorknum() + "位巢人参与合作");
-            holder.coopera_tv_lyricscontent.setText(cooperationBean.getDemandInfo().getLyrics());
-            holder.coopera_comment_rectclerview.setNestedScrollingEnabled(false);
-            holder.coopera_comment_rectclerview.setLayoutManager(new LinearLayoutManager(context));
-            commentBeanList = cooperationBean.getCommentList();
-            adapter = new CooperaCommentAdapter(commentBeanList,context);
-            holder.coopera_comment_rectclerview.setAdapter(adapter);
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        if (holder instanceof CooperationViewHolder) {
+            CooperationBean cooperationBean = cooperationBeanList.get(position);
+            if (cooperationBean != null) {
+                ((CooperationViewHolder) holder).coopera_tv_name.setText(cooperationBean.getUserInfo().getNickname());
+                ((CooperationViewHolder) holder).coopera_tv_time.setText(DateFormatUtils.formatX1(cooperationBean.getDemandInfo().getCreatetime()));
+                ((CooperationViewHolder) holder).coopera_tv_lyricsname.setText(cooperationBean.getDemandInfo().getTitle());
+                ((CooperationViewHolder) holder).coopera_tv_lyricscontent.setText(cooperationBean.getDemandInfo().getLyrics());
+                ((CooperationViewHolder) holder).coopera_tv_require.setText(cooperationBean.getDemandInfo().getRequirement());
+                ((CooperationViewHolder) holder).coopera_commentnum_tv.setText("更多" + cooperationBean.getDemandInfo().getCommentnum() + "条留言");
+                ((CooperationViewHolder) holder).coopera_worknum_tv.setText("已有" + cooperationBean.getDemandInfo().getWorknum() + "位巢人参与合作");
+                ((CooperationViewHolder) holder).coopera_tv_lyricscontent.setText(cooperationBean.getDemandInfo().getLyrics());
+                ((CooperationViewHolder) holder).coopera_comment_rectclerview.setNestedScrollingEnabled(false);
+                ((CooperationViewHolder) holder).coopera_comment_rectclerview.setLayoutManager(new LinearLayoutManager(context));
+                commentBeanList = cooperationBean.getCommentList();
+                adapter = new CooperaCommentAdapter(commentBeanList, context);
+                ((CooperationViewHolder) holder).coopera_comment_rectclerview.setAdapter(adapter);
 
+            }
+            ((CooperationViewHolder) holder).ll_jump.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int pos = holder.getLayoutPosition();
+                    mOnItemClickListener.onItemClick(  ((CooperationViewHolder) holder).ll_jump, pos, 1);
+                }
+            });
+            ((CooperationViewHolder) holder).ll_jump2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int pos = holder.getLayoutPosition();
+                    mOnItemClickListener.onItemClick(  ((CooperationViewHolder) holder).ll_jump2, pos, 2);
+                }
+            });
+            ((CooperationViewHolder) holder).coopera_bt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int pos = holder.getLayoutPosition();
+                    mOnItemClickListener.onItemClick(  ((CooperationViewHolder) holder).ll_jump2, pos, 3);
+                }
+            });
         }
-        holder.ll_jump.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int pos = holder.getLayoutPosition();
-                mOnItemClickListener.onItemClick(holder.ll_jump, pos, 1);
-            }
-        });
-        holder.ll_jump2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int pos = holder.getLayoutPosition();
-                mOnItemClickListener.onItemClick(holder.ll_jump2, pos, 2);
-            }
-        });
-        holder.coopera_bt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int pos = holder.getLayoutPosition();
-                mOnItemClickListener.onItemClick(holder.ll_jump2, pos, 3);
-            }
-        });
+    }
 
+
+    @Override
+    public int getItemViewType(int position) {
+        if (isLoadMoreFooterShown && position == getItemCount() - 1) {
+            return TYPE_FOOTER;
+        } else {
+            return TYPE_ITEM;
+        }
+    }
+    public void onLoadMoreStateChanged(boolean isShown) {
+        this.isLoadMoreFooterShown = isShown;
+        if (isShown) {
+            notifyItemInserted(getItemCount());
+        } else {
+            notifyItemRemoved(getItemCount());
+        }
     }
 
     @Override
     public int getItemCount() {
-        return cooperationBeanList.size();
+        return cooperationBeanList.size()+ (isLoadMoreFooterShown ? 1 : 0);
     }
 
     class CooperationViewHolder extends RecyclerView.ViewHolder {
@@ -132,6 +163,15 @@ public class CooperationAdapter extends RecyclerView.Adapter<CooperationAdapter.
             super(itemView);
             ButterKnife.bind(this, itemView);
 
+        }
+
+
+    }
+
+    class FooterViewHolder extends RecyclerView.ViewHolder {
+
+        public FooterViewHolder(View view) {
+            super(view);
         }
 
 

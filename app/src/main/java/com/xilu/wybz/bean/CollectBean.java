@@ -8,7 +8,7 @@ public class CollectBean {
 
     int id;
     String title;
-    int participatenum;
+    int worknum;
     long createtime;
     int status;
     int uid;
@@ -32,12 +32,12 @@ public class CollectBean {
         this.title = title;
     }
 
-    public int getParticipatenum() {
-        return participatenum;
+    public int getWorknum() {
+        return worknum;
     }
 
-    public void setParticipatenum(int participatenum) {
-        this.participatenum = participatenum;
+    public void setWorknum(int worknum) {
+        this.worknum = worknum;
     }
 
     public long getCreatetime() {

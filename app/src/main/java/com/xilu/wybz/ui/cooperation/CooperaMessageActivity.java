@@ -156,7 +156,21 @@ public class CooperaMessageActivity extends ToolbarActivity implements ICooperaM
                 }
             }
         });
+        cooperaMessageAdapter.setOnItemLongClickListener(new CooperaMessageAdapter.OnItemLongClickListener() {
+            @Override
+            public void onItemLongClick(View view, int position, int type, CooperaMessageBean cooperaMessageBean) {
+                switch (type) {
+                    case 1:
+                        showMsg("hahaha ");
+                        cooperaMessageAdapter.removeitem(position);
 
+                        break;
+                    case 2:
+
+                        break;
+                }
+            }
+        });
     }
 
     @Override

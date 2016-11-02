@@ -20,11 +20,11 @@ public class CollectPresenter extends BasePresenter<ICollectView> {
 
     public void getCollectList() {
         List<CollectBean> collectBeanList = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 7; i++) {
             CollectBean collectBean = new CollectBean();
             collectBean.setCreatetime(1473665904+i);
             collectBean.setNickname("qwewqewqe"+i);
-            collectBean.setParticipatenum(i);
+            collectBean.setWorknum(i);
             collectBean.setTitle("按实际开"+i);
             if(i==1){
                 collectBean.setStatus(1);

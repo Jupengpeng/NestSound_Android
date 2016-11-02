@@ -37,6 +37,7 @@ public class CooperationFragment extends BaseFragment implements ICooperationVie
     RecyclerView cooperationrecyclerview;
     @Bind(R.id.more_iv)
     ImageView more_iv;
+    private int page =1;
     CooperationAdapter cooperationAdapter;
     private CooperationPresenter cooperationPresenter;
     private List<CooperationBean> cooperationList;
@@ -89,22 +90,26 @@ public class CooperationFragment extends BaseFragment implements ICooperationVie
         if (cooperationList == null) cooperationBeanList = new ArrayList<>();
         if (cooperationList.size() > 0) cooperationList.clear();
         cooperationList.addAll(cooperationBeanList);
-        cooperationAdapter.notifyDataSetChanged();
 
+        if(cooperationAdapter.isLoadMoreFooterShown==true){
+            cooperationAdapter.onLoadMoreStateChanged(false);
+        }
+        cooperationAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void initView() {
         cooperationList = new ArrayList<>();
-        cooperationrecyclerview.setLayoutManager(new LinearLayoutManager(context));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+        cooperationrecyclerview.setLayoutManager(linearLayoutManager);
         cooperationAdapter = new CooperationAdapter(cooperationList, context);
         cooperationrecyclerview.setAdapter(cooperationAdapter);
-        cooperationPresenter.getCooperationList();
+        cooperationPresenter.getCooperationList(1);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 if (refreshLayout.isRefreshing()) {
-                    cooperationPresenter.getCooperationList();
+                    cooperationPresenter.getCooperationList(1);
                     refreshLayout.setRefreshing(false);
 
                 }
@@ -114,7 +119,15 @@ public class CooperationFragment extends BaseFragment implements ICooperationVie
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-
+                int post =  linearLayoutManager.findFirstCompletelyVisibleItemPosition();
+                int total =linearLayoutManager.getItemCount();
+                int visible = linearLayoutManager.getChildCount();
+                if((post+visible)>=total){
+                    cooperationAdapter.onLoadMoreStateChanged(true);
+//                    cooperationPresenter.getCooperationList(2);
+                }else{
+                    cooperationAdapter.onLoadMoreStateChanged(false);
+                }
             }
         });
         more_iv.setOnClickListener(new View.OnClickListener() {

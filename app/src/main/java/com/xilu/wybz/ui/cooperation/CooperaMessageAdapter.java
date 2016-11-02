@@ -38,10 +38,19 @@ public class CooperaMessageAdapter extends RecyclerView.Adapter<CooperaMessageAd
         void onItemClick(View view, int position, int type, CooperaMessageBean cooperaMessageBean);
     }
 
+    public interface OnItemLongClickListener {
+        void onItemLongClick(View view, int position, int type, CooperaMessageBean cooperaMessageBean);
+    }
+
     private CooperaMessageAdapter.OnItemClickListener mOnItemClickListener;
+    private CooperaMessageAdapter.OnItemLongClickListener mOnItemLongClickListener;
 
     public void setOnItemClickListener(CooperaMessageAdapter.OnItemClickListener mOnItemClickListener) {
         this.mOnItemClickListener = mOnItemClickListener;
+    }
+
+    public void setOnItemLongClickListener(CooperaMessageAdapter.OnItemLongClickListener mOnItemLongClickListener) {
+        this.mOnItemLongClickListener = mOnItemLongClickListener;
     }
 
     @Override
@@ -73,14 +82,25 @@ public class CooperaMessageAdapter extends RecyclerView.Adapter<CooperaMessageAd
                 mOnItemClickListener.onItemClick(holder.layout, position, 1, cooperaMessageBean);
             }
         });
+        holder.layout.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                mOnItemLongClickListener.onItemLongClick(holder.layout, position, 1, cooperaMessageBean);
+                return false;
+            }
+        });
         holder.head_iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mOnItemClickListener.onItemClick(holder.head_iv,position,2,cooperaMessageBean);
+                mOnItemClickListener.onItemClick(holder.head_iv, position, 2, cooperaMessageBean);
             }
         });
 
 
+    }
+    public void removeitem(int pos){
+        cooperaLyricBeenList.remove(pos);
+        notifyDataSetChanged();
     }
 
     @Override

@@ -298,7 +298,6 @@ public class WorksFragment extends BaseListFragment<WorksData> implements IUserC
                 public void onClick(int pos, int which) {
 
 
-
                 }
             });
             return holder;

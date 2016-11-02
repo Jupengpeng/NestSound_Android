@@ -58,7 +58,8 @@ public class CollectFragment extends BaseFragment implements ICollectView {
     public void initView() {
         beanList = new ArrayList<>();
         collectAdapter = new CollectAdapter(beanList, context);
-        collect_recyclerview.setLayoutManager(new LinearLayoutManager(context));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+        collect_recyclerview.setLayoutManager(linearLayoutManager);
         collect_recyclerview.setAdapter(collectAdapter);
         collectPresenter.getCollectList();
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -66,6 +67,27 @@ public class CollectFragment extends BaseFragment implements ICollectView {
             public void onRefresh() {
                 collectPresenter.getCollectList();
                 refreshLayout.setRefreshing(false);
+            }
+        });
+        collect_recyclerview.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                int post =  linearLayoutManager.findFirstCompletelyVisibleItemPosition();
+                int total =linearLayoutManager.getItemCount();
+                int visible = linearLayoutManager.getChildCount();
+                if((post+visible)>=total){
+                    collectAdapter.onLoadMoreStateChanged(true);
+//                    cooperationPresenter.getCooperationList(2);
+                }else{
+                    collectAdapter.onLoadMoreStateChanged(false);
+                }
+
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
             }
         });
     }
