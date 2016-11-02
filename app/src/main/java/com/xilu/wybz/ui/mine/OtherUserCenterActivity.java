@@ -177,6 +177,8 @@ public class OtherUserCenterActivity extends BaseActivity implements IOnlyFollow
         tabs.add(llMysong);
         tabs.add(llMylyrics);
         tabs.add(llMyfav);
+        tabs.add(llMyrecord);
+
         pagerAdapter = new OtherCenterListAdapter(context, getSupportFragmentManager(), userId, userName);
         mViewpager.setAdapter(pagerAdapter);
         mViewpager.setOffscreenPageLimit(tabs.size());
@@ -279,7 +281,7 @@ public class OtherUserCenterActivity extends BaseActivity implements IOnlyFollow
         }
     }
 
-    @OnClick({R.id.user_fansnum, R.id.user_follownum, R.id.ll_mysong, R.id.ll_mylyrics, R.id.ll_myfav})
+    @OnClick({R.id.user_fansnum, R.id.user_follownum, R.id.ll_mysong, R.id.ll_mylyrics, R.id.ll_myfav,R.id.ll_myrecord})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.user_follownum:
@@ -311,6 +313,15 @@ public class OtherUserCenterActivity extends BaseActivity implements IOnlyFollow
                     return;
                 } else {
                     currentIndex = 2;
+                }
+                mViewpager.setCurrentItem(currentIndex);
+                changeTabColor();
+                break;
+            case R.id.ll_myrecord:
+                if (currentIndex == 3) {
+                    return;
+                } else {
+                    currentIndex = 3;
                 }
                 mViewpager.setCurrentItem(currentIndex);
                 changeTabColor();

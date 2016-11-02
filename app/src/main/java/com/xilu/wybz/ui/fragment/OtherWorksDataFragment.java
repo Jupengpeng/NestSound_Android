@@ -28,11 +28,11 @@ public class OtherWorksDataFragment extends BaseListFragment<WorksData> implemen
     public static String TYPE = "type";
     public static String UID = "uid";
     public static String AUTHOR = "author";
-    private int type;//1=歌曲，2=歌词，3=收藏,4=灵感记录（加载）
+    private int type;//1=歌曲，2=歌词，3=收藏,4=合作
     private int userId;
     private String COME;
     private String author;
-    private String[] OTHERCOMES = new String[]{"usersong", "userlyrics", "userfav"};//他人主页
+    private String[] OTHERCOMES = new String[]{"usersong", "userlyrics", "userfav","userRRR"};//他人主页
     private boolean isFirstTab;
     private boolean isFirst;
     @Override
@@ -50,11 +50,11 @@ public class OtherWorksDataFragment extends BaseListFragment<WorksData> implemen
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+
             type = getArguments().getInt(TYPE);
             userId = getArguments().getInt(UID);
             COME = OTHERCOMES[type];
             if (type == 0) isFirstTab = true;
-            type = type + 1;
             author = getArguments().getString(AUTHOR);
         }
 
@@ -68,7 +68,7 @@ public class OtherWorksDataFragment extends BaseListFragment<WorksData> implemen
     public static OtherWorksDataFragment newInstance(int type, int userId, String author) {
         OtherWorksDataFragment tabFragment = new OtherWorksDataFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt(TYPE, type);
+        bundle.putInt(TYPE, type+1);
         bundle.putInt(UID, userId);
         bundle.putString(AUTHOR, author);
         tabFragment.setArguments(bundle);
@@ -104,6 +104,7 @@ public class OtherWorksDataFragment extends BaseListFragment<WorksData> implemen
 
     @Override
     public void showWorksData(List<WorksData> worksDataList) {
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -143,6 +144,16 @@ public class OtherWorksDataFragment extends BaseListFragment<WorksData> implemen
     @Override
     public void loadNoData() {
         if (isDestroy) return;
+        if (type == 4){
+            mDataList.add(new WorksData());
+            mDataList.add(new WorksData());
+            mDataList.add(new WorksData());
+            mDataList.add(new WorksData());
+            adapter.notifyDataSetChanged();
+            recycler.onRefreshCompleted();
+            return;
+        }
+
         llNoData.setVisibility(View.VISIBLE);
         recycler.onRefreshCompleted();
         recycler.enableLoadMore(false);
@@ -150,6 +161,12 @@ public class OtherWorksDataFragment extends BaseListFragment<WorksData> implemen
 
     @Override
     protected BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
+        if (type == 4){
+            View view = LayoutInflater.from(context).inflate(R.layout.usercenter_cooperaitem, parent, false);
+            CooperationViewHolder holder = new CooperationViewHolder(view);
+            return holder;
+        }
+
         View view = LayoutInflater.from(context).inflate(R.layout.activity_work_list_item, parent, false);
         WorksViewHolder holder = new WorksViewHolder(view, context, mDataList, COME, null);
         return holder;
@@ -160,5 +177,24 @@ public class OtherWorksDataFragment extends BaseListFragment<WorksData> implemen
         super.onDestroyView();
         if (userPresenter != null)
             userPresenter.cancelRequest();
+    }
+
+
+    public class CooperationViewHolder extends BaseViewHolder {
+
+
+        public CooperationViewHolder(View itemView) {
+            super(itemView);
+        }
+
+        @Override
+        public void onBindViewHolder(int position) {
+
+        }
+
+        @Override
+        public void onItemClick(View view, int position) {
+
+        }
     }
 }
