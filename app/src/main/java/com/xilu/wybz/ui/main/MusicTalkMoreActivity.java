@@ -74,7 +74,6 @@ public class MusicTalkMoreActivity extends BaseListActivity<MusicTalk> implement
         if (action == PullRecycler.ACTION_PULL_TO_REFRESH){
             mDataList.clear();
         }
-
         recycler.enableLoadMore(true);
         mDataList.addAll(songAlbumList);
         adapter.notifyDataSetChanged();

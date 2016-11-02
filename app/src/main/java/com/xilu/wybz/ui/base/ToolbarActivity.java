@@ -56,6 +56,7 @@ public abstract class ToolbarActivity extends BaseActivity {
 //        }
         setTitle("");
 
+
         setSupportActionBar(mToolbar);
         if (canBack()) {
             ActionBar actionBar = getSupportActionBar();

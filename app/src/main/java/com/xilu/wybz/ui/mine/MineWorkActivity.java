@@ -13,7 +13,7 @@ import com.xilu.wybz.ui.fragment.WorksFragment;
  */
 public class MineWorkActivity extends BasePlayMenuActivity {
     int type;
-    private String[] MyTitles = new String[]{"我的歌曲", "我的歌词", "我的收藏", "灵感记录"};
+    private String[] MyTitles = new String[]{"我的歌曲", "我的歌词", "我的收藏", "灵感记录","合作作品"};
     public static void toNewMyWorkActivity(Context context, int type) {
         Intent intent = new Intent(context, MineWorkActivity.class);
         intent.putExtra(KeySet.KEY_TYPE, type);
@@ -36,7 +36,7 @@ public class MineWorkActivity extends BasePlayMenuActivity {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             type = bundle.getInt(KeySet.KEY_TYPE);
-            if(type>4)type=1;
+            if(type>5)type=1;
             setTitle(MyTitles[type-1]);
         }
         WorksFragment worksFragment = WorksFragment.newInstance(type);

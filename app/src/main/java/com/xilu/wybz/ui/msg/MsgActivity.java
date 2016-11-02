@@ -31,8 +31,8 @@ import butterknife.Bind;
  */
 public class MsgActivity extends BaseListActivity<MsgBean> implements IMsgNumView {
     public int[] icons = new int[]{R.drawable.ic_msg_comment, R.drawable.ic_msg_zan,
-            R.drawable.ic_msg_fav, R.drawable.ic_msg_bq, R.drawable.ic_msg_notice};
-    public String[] titles = new String[]{"评论", "点赞", "收藏", "保全消息", "系统消息"};
+            R.drawable.ic_msg_fav, R.drawable.ic_msg_bq, R.drawable.ic_msg_notice, R.drawable.ic_hezuoxiaoxi};
+    public String[] titles = new String[]{"评论", "点赞", "收藏", "保全消息", "系统消息", "合作消息"};
     public MsgNumPresenter msgNumPresenter;
 
     public boolean canBack() {
@@ -74,6 +74,7 @@ public class MsgActivity extends BaseListActivity<MsgBean> implements IMsgNumVie
 
     /**
      * showMsgNum.
+     *
      * @param msgBean
      */
     @Override
@@ -153,6 +154,9 @@ public class MsgActivity extends BaseListActivity<MsgBean> implements IMsgNumVie
                     break;
                 case 4:
                     startActivity(MsgSystemActivity.class);
+                    break;
+                case 5:
+
                     break;
             }
         }

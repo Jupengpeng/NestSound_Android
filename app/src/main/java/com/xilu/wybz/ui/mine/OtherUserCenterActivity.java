@@ -172,7 +172,7 @@ public class OtherUserCenterActivity extends BaseActivity implements IOnlyFollow
         });
 
         tabs = new ArrayList<>();
-        llMyrecord.setVisibility(View.GONE);
+//        llMyrecord.setVisibility(View.GONE);
         llMysong.setSelected(true);
         tabs.add(llMysong);
         tabs.add(llMylyrics);

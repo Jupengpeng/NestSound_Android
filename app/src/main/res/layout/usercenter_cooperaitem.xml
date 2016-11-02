@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/ll_body"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?selectableItemBackground"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/iv_cover"
+            android:layout_width="88dp"
+            android:layout_height="88dp"
+            android:background="#000" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="0.90"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="289dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:textColor="@color/main_text_color"
+                    android:textSize="15sp"
+                    tools:text="title" />
+
+                <ImageView
+                    android:id="@+id/iv_lock"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/icon_lock"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_makeword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:singleLine="true"
+                android:textColor="@color/main_text_color2"
+                android:textSize="12sp"
+                tools:text="author" />
+
+            <TextView
+                android:id="@+id/tv_makesong"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:singleLine="true"
+                android:textColor="@color/main_text_color2"
+                android:textSize="12sp"
+                tools:text="author" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="5dp">
+
+                <TextView
+                    android:id="@+id/tv_look_num"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableLeft="@drawable/ic_ranking_look"
+                    android:drawablePadding="3dp"
+                    android:text=""
+                    android:textColor="@color/main_text_color3"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tv_fov_num"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableLeft="@drawable/ic_lyrics_fav1"
+                    android:drawablePadding="3dp"
+                    android:text=""
+                    android:textColor="@color/main_text_color3"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tv_zan_num"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableLeft="@drawable/ic_ranking_fov"
+                    android:drawablePadding="3dp"
+                    android:text=""
+                    android:textColor="@color/main_text_color3"
+                    android:textSize="12sp" />
+
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_split_line"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/spit_line_height"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/split_line"
+        android:orientation="vertical" />
+</LinearLayout>
