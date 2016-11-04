@@ -213,10 +213,11 @@ public class OtherUserCenterActivity extends BaseActivity implements IOnlyFollow
         if(userInfoBean!=null){
             mFansNum.setText(NumberUtil.format(userInfoBean.fansnum));
             mFollowNum.setText(NumberUtil.format(userInfoBean.gznum));
+
             tvSongNum.setText(NumberUtil.format(userInfoBean.worknum));
             tvLyricsNum.setText(NumberUtil.format(userInfoBean.lyricsnum));
             tvFovNum.setText(NumberUtil.format(userInfoBean.fovnum));
-            tvRecordNum.setText(NumberUtil.format(userInfoBean.inspirenum));
+            tvRecordNum.setText(NumberUtil.format(userInfoBean.cooperatenum));
             isFocus = userInfoBean.isFocus;
             setUserData(userInfoBean.user);
         }

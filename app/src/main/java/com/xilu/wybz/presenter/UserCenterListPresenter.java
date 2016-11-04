@@ -5,14 +5,11 @@ import android.content.Context;
 import com.google.gson.reflect.TypeToken;
 import com.xilu.wybz.bean.DataBean;
 import com.xilu.wybz.bean.JsonResponse;
-import com.xilu.wybz.bean.UserInfoBean;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.callback.AppJsonCalback;
 import com.xilu.wybz.http.callback.MyStringCallback;
-import com.xilu.wybz.ui.IView.IMyWorkView;
 import com.xilu.wybz.ui.IView.IUserCenterListView;
-import com.xilu.wybz.ui.IView.IUserView;
 import com.xilu.wybz.utils.ParseUtils;
 import com.xilu.wybz.utils.PrefsUtil;
 
@@ -94,6 +91,31 @@ public class UserCenterListPresenter extends BasePresenter<IUserCenterListView> 
             }
         });
     }
+    //删除作品
+    public void deleteCooperate(String id) {
+        params = new HashMap<>();
+        params.put("uid", ""+PrefsUtil.getUserId(context));
+        params.put("itemid", ""+id);
+        httpUtils.post(MyHttpClient.getDeleteCooprateWorksUrl(), params, new AppJsonCalback(context) {
+
+            @Override
+            public void onResult(JsonResponse<? extends Object> response) {
+                iView.deleteSuccess();
+            }
+
+            @Override
+            public void onResultError(JsonResponse<? extends Object> response) {
+                super.onResultError(response);
+                iView.deleteFail();
+            }
+
+            @Override
+            public void onError(Call call, Exception e) {
+                super.onError(call, e);
+                iView.deleteFail();
+            }
+        });
+    }
 
     //取消收藏
     public void unfav(String itemid, int target_uid, int wtype) {
@@ -143,4 +165,10 @@ public class UserCenterListPresenter extends BasePresenter<IUserCenterListView> 
             }
         });
     }
+
+
+
+
+
+
 }

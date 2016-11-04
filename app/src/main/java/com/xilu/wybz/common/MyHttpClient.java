@@ -314,6 +314,10 @@ public class MyHttpClient {
     public static String getDeleteWorksUrl() {
         return "/java/userCenter/deleteWork";
     }
+    //删除我的作品
+    public static String getDeleteCooprateWorksUrl() {
+        return "/cooperate/work/delete/v23";
+    }
 
     //更新歌曲 歌词公开的状态
     public static String getUpdateMusicUrl() {
