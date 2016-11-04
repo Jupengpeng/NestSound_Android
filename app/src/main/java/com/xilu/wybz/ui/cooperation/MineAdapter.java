@@ -1,6 +1,7 @@
 package com.xilu.wybz.ui.cooperation;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +34,7 @@ public class MineAdapter extends RecyclerView.Adapter<MineAdapter.MineViewHolder
     public interface OnItemClickListener {
         void onItemClick(View view, int position);
     }
+
     public interface OnItemLongClickListener {
         void onItemLongClick(View view, int position);
     }
@@ -43,9 +45,11 @@ public class MineAdapter extends RecyclerView.Adapter<MineAdapter.MineViewHolder
     public void setOnItemClickListener(MineAdapter.OnItemClickListener mOnItemClickListener) {
         this.mOnItemClickListener = mOnItemClickListener;
     }
+
     public void setOnItemLongClickListener(MineAdapter.OnItemLongClickListener mOnItemLongClickListener) {
         this.mOnItemLongClickListener = mOnItemLongClickListener;
     }
+
     @Override
     public MineViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         MineAdapter.MineViewHolder holder = new MineAdapter.MineViewHolder(LayoutInflater.from(context).inflate(R.layout.mine_item, parent, false));
@@ -65,16 +69,23 @@ public class MineAdapter extends RecyclerView.Adapter<MineAdapter.MineViewHolder
             holder.mine_tv_time.setText(DateFormatUtils.formatX1(mineBean.getCreatetime()));
             switch (mineBean.getStatus()) {
                 case 1:
-                    holder.mine_tv_count.setText(mineBean.getWorknum() + "");
+                    holder.mine_status.setText("正在进行");
+                    holder.mine_status.setTextColor(Color.parseColor("#ffb705"));
                     break;
-                case 2:
-                    holder.mine_tv_count.setVisibility(View.GONE);
-                    holder.mine_tv_success.setVisibility(View.VISIBLE);
+                case 3:
+                    holder.mine_status.setText("已经删除");
+                    holder.mine_status.setTextColor(Color.parseColor("#ffb705"));
                     break;
 
-                case 3:
-                    holder.mine_tv_count.setVisibility(View.GONE);
-                    holder.mine_tv_expire.setVisibility(View.VISIBLE);
+                case 4:
+                    holder.mine_status.setText("已经到期");
+                    holder.mine_status.setTextColor(Color.parseColor("#ff6161"));
+
+                    break;
+                case 8:
+                    holder.mine_status.setText("合作成功");
+                    holder.mine_status.setTextColor(Color.parseColor("#ffb705"));
+
                     break;
             }
         }
@@ -82,6 +93,13 @@ public class MineAdapter extends RecyclerView.Adapter<MineAdapter.MineViewHolder
             @Override
             public void onClick(View v) {
                 mOnItemClickListener.onItemClick(holder.itemView, position);
+            }
+        });
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                mOnItemLongClickListener.onItemLongClick(holder.itemView, position);
+                return false;
             }
         });
 
@@ -99,12 +117,8 @@ public class MineAdapter extends RecyclerView.Adapter<MineAdapter.MineViewHolder
         TextView mine_tv_lyricsname;
         @Bind(R.id.mine_tv_time)
         TextView mine_tv_time;
-        @Bind(R.id.mine_tv_count)
-        TextView mine_tv_count;
-        @Bind(R.id.mine_tv_success)
-        TextView mine_tv_success;
-        @Bind(R.id.mine_tv_expire)
-        TextView mine_tv_expire;
+        @Bind(R.id.mine_status)
+        TextView mine_status;
 
         public MineViewHolder(View itemView) {
             super(itemView);

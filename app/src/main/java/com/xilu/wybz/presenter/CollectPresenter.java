@@ -2,11 +2,19 @@ package com.xilu.wybz.presenter;
 
 import android.content.Context;
 
+import com.google.gson.reflect.TypeToken;
 import com.xilu.wybz.bean.CollectBean;
+import com.xilu.wybz.bean.JsonResponse;
+import com.xilu.wybz.common.MyHttpClient;
+import com.xilu.wybz.http.callback.AppJsonCalback;
 import com.xilu.wybz.ui.IView.ICollectView;
+import com.xilu.wybz.utils.PrefsUtil;
 
-import java.util.ArrayList;
+import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.List;
+
+import okhttp3.Call;
 
 /**
  * Created by Administrator on 2016/10/24.
@@ -18,25 +26,30 @@ public class CollectPresenter extends BasePresenter<ICollectView> {
         super(context, iView);
     }
 
-    public void getCollectList() {
-        List<CollectBean> collectBeanList = new ArrayList<>();
-        for (int i = 0; i < 7; i++) {
-            CollectBean collectBean = new CollectBean();
-            collectBean.setCreatetime(1473665904+i);
-            collectBean.setNickname("qwewqewqe"+i);
-            collectBean.setWorknum(i);
-            collectBean.setTitle("按实际开"+i);
-            if(i==1){
-                collectBean.setStatus(1);
-            }else if(i==2){
-                collectBean.setStatus(3);
-            }else if(i==3){
-                collectBean.setStatus(4);
-            }else if(i==4){
-                collectBean.setStatus(8);
+    public void getCollectList(int page) {
+        params = new HashMap<>();
+        params.put("page", page + "");
+        params.put("uid", "" + PrefsUtil.getUserId(context));
+        params.put("token", PrefsUtil.getUserInfo(context).loginToken);
+        httpUtils.post(MyHttpClient.getFovlist(), params, new AppJsonCalback(context) {
+            @Override
+            public void onError(Call call, Exception e) {
+                super.onError(call, e);
             }
-            collectBeanList.add(collectBean);
-        }
-        iView.showCollectList(collectBeanList);
+
+            @Override
+            public void onResult(JsonResponse<? extends Object> response) {
+                super.onResult(response);
+                List<CollectBean> collectBeanList = response.getData();
+                iView.showCollectList(collectBeanList);
+
+            }
+
+            @Override
+            public Type getDataType() {
+                return new TypeToken<List<CollectBean>>() {
+                }.getType();
+            }
+        });
     }
 }

@@ -44,6 +44,7 @@ public class CooperationActivity extends BaseActivity {
         tabLayout.setupWithViewPager(viewPager);
         mAppbar.setPadding(0, SystemBarHelper.getStatusBarHeight(this),0,0);
 
+
     }
     @OnClick(R.id.iv)
     public void onClick(View view) {

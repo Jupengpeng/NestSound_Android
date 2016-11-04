@@ -9,7 +9,7 @@ import java.io.Serializable;
 public class CooperaLyricBean implements Serializable{
 
 
-    int itemid;
+    long itemid;
     String title;
     String lyrics;
     String author;
@@ -17,11 +17,11 @@ public class CooperaLyricBean implements Serializable{
     int status;
 
 
-    public int getItemid() {
+    public long getItemid() {
         return itemid;
     }
 
-    public void setItemid(int itemid) {
+    public void setItemid(long itemid) {
         this.itemid = itemid;
     }
 

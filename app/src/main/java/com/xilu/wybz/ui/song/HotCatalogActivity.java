@@ -82,6 +82,15 @@ public class HotCatalogActivity extends BaseSectionListActivity<TemplateBean> im
     private HotCatalog typeBean;
     private SelectAdapter adapter1, adapter2;
 
+
+    String title;
+    String lyric;
+
+    int cooperatype;// 1是从合作按钮过来的
+    String iusername;
+    int iuid;
+    int did;
+
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_hotcatalog_list;
@@ -107,6 +116,13 @@ public class HotCatalogActivity extends BaseSectionListActivity<TemplateBean> im
             flash = intent.getBooleanExtra(FLASH_TAG, false);
             aid = intent.getStringExtra(KeySet.KEY_ID);
         }
+        title = getIntent().getStringExtra("title");
+
+        lyric = getIntent().getStringExtra("lyric");
+        cooperatype = getIntent().getIntExtra("coopera", 0);
+        did = getIntent().getIntExtra("did", 0);
+        iuid = getIntent().getIntExtra("iuid", 0);
+        iusername = getIntent().getStringExtra("iusername");
 
         int space10 = DensityUtil.dip2px(context, 10);
 
@@ -199,11 +215,19 @@ public class HotCatalogActivity extends BaseSectionListActivity<TemplateBean> im
                 public void onClick(View v) {
                     if (hotBean != null) {
                         if (flash) {
-                            EventBus.getDefault().post(new Event.ImportHotEvent(hotBean.simplesing));
-                            finish();
+//                            if (cooperatype == 1) {
+//                                MakeSongActivity.toMakeSongActivity(context, hotBean.simplesing, lyric, title, nickname, cooperatype,did,iuid,iusername);
+//                            } else {
+                                EventBus.getDefault().post(new Event.ImportHotEvent(hotBean.simplesing));
+                                finish();
+//                            }
                         } else {
                             hotBean.simplesing.aid = aid;
-                            MakeSongActivity.toMakeSongActivity(context, hotBean.simplesing);
+                            if (cooperatype == 1) {
+                                MakeSongActivity.toMakeSongActivity(context, hotBean.simplesing, lyric, title, cooperatype,did,iuid,iusername);
+                            } else {
+                                MakeSongActivity.toMakeSongActivity(context, hotBean.simplesing);
+                            }
                         }
                     }
                 }
@@ -361,10 +385,18 @@ public class HotCatalogActivity extends BaseSectionListActivity<TemplateBean> im
             TemplateBean bean = mDataList.get(position).t;
             bean.aid = aid;
             if (flash) {
-                EventBus.getDefault().post(new Event.ImportHotEvent(bean));
-                finish();
+//                if (cooperatype == 1) {
+//                    MakeSongActivity.toMakeSongActivity(context, hotBean.simplesing, lyric, title, nickname, cooperatype,did,iuid,iusername);
+//                } else {
+                    EventBus.getDefault().post(new Event.ImportHotEvent(bean));
+                    finish();
+//                }
             } else {
-                MakeSongActivity.toMakeSongActivity(context, bean);
+                if (cooperatype == 1) {
+                    MakeSongActivity.toMakeSongActivity(context, hotBean.simplesing, lyric, title, cooperatype,did,iuid,iusername);
+                } else {
+                    MakeSongActivity.toMakeSongActivity(context, bean);
+                }
             }
         }
     }

@@ -12,4 +12,6 @@ public interface ICooperationView extends IBaseView {
 
     void showCooperation(List<CooperationBean> cooperationBeanList);
 
+    void noMoreData();
+
 }

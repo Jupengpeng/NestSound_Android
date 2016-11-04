@@ -19,6 +19,7 @@ public class MainPresenter extends BasePresenter<IHomeView> {
     }
 
     public void getHomeData() {
+
         httpUtils.get(MyHttpClient.getHomeUrl(),null, new MyStringCallback() {
             @Override
             public void onAfter() {

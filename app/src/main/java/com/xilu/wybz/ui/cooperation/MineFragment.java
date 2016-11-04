@@ -32,6 +32,7 @@ public class MineFragment extends BaseFragment implements IMineView {
     MinePresenter minePresenter;
     private List<MineBean> mineList;
     private MineAdapter mineAdapter;
+    private int page = 1;
 
     @Override
     protected int getLayoutResId() {
@@ -52,19 +53,26 @@ public class MineFragment extends BaseFragment implements IMineView {
         mine_recyclerview.setLayoutManager(linearLayoutManager);
         mineAdapter = new MineAdapter(mineList, context);
         mine_recyclerview.setAdapter(mineAdapter);
-        minePresenter.getMineList();
+        minePresenter.getMineList(page);
         mineAdapter.setOnItemClickListener(new MineAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Intent intent = new Intent(context,CooperaDetailsActivity.class);
-                intent.putExtra("type",2);
+                Intent intent = new Intent(context, CooperaDetailsActivity.class);
+                intent.putExtra("type", 2);
+                intent.putExtra("did", mineList.get(position).getId());
                 startActivity(intent);
+            }
+        });
+        mineAdapter.setOnItemLongClickListener(new MineAdapter.OnItemLongClickListener() {
+            @Override
+            public void onItemLongClick(View view, int position) {
+                minePresenter.deleteCoopera(mineList.get(position).getId(), position);
             }
         });
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                minePresenter.getMineList();
+                minePresenter.getMineList(1);
                 refreshLayout.setRefreshing(false);
             }
         });
@@ -72,30 +80,46 @@ public class MineFragment extends BaseFragment implements IMineView {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
+
+                int lastPosition = -1;
+
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    lastPosition = linearLayoutManager.findLastVisibleItemPosition();
+                }
+                if (lastPosition == recyclerView.getLayoutManager().getItemCount() - 1) {
+
+                }
             }
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-               int post =  linearLayoutManager.findFirstCompletelyVisibleItemPosition();
-                int total =linearLayoutManager.getItemCount();
-                int visible = linearLayoutManager.getChildCount();
-                if((post+visible)>=total){
-                    minePresenter.getMineList();
-                }
+//                int post = linearLayoutManager.findFirstCompletelyVisibleItemPosition();
+//                int total = linearLayoutManager.getItemCount();
+//                int visible = linearLayoutManager.getChildCount();
+//                if ((post + visible) >= total) {
+//                    minePresenter.getMineList(page++);
+//                }
 
             }
         });
     }
+
     @Override
     public void showMineList(List<MineBean> mineBeanList) {
         disMissLoading(ll_loading);
         if (isDestroy) return;
         if (mineList == null) mineBeanList = new ArrayList<>();
-        if (mineList.size() > 0) mineList.clear();
+        if (page == 1) mineList.clear();
         mineList.addAll(mineBeanList);
         mineAdapter.notifyDataSetChanged();
     }
+
+    @Override
+    public void deleteSuccess(int position) {
+        mineAdapter.removeItem(position);
+    }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();

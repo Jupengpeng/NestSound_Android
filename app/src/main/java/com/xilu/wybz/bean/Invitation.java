@@ -6,17 +6,17 @@ package com.xilu.wybz.bean;
 
 public class Invitation {
 
-    String uid;
+    int uid;
     String nickname;
     String headurl;
     String signature;
     int invite;
 
-    public String getUid() {
+    public int getUid() {
         return uid;
     }
 
-    public void setUid(String uid) {
+    public void setUid(int uid) {
         this.uid = uid;
     }
 

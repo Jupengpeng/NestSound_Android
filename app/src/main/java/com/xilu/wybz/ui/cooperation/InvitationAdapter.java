@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.Invitation;
+import com.xilu.wybz.view.CircleImageView;
 
 import java.util.List;
 
@@ -58,9 +59,15 @@ public class InvitationAdapter extends RecyclerView.Adapter<InvitationAdapter.In
                 holder.finishinvitation_bt.setVisibility(View.VISIBLE);
             }
         }
-        if(position>2){
+        if (position > 2) {
             holder.invitation_recommend.setVisibility(View.GONE);
         }
+        holder.invitation_bt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mOnItemClickListener.onItemClick(holder.invitation_bt, position);
+            }
+        });
 
     }
 
@@ -72,7 +79,7 @@ public class InvitationAdapter extends RecyclerView.Adapter<InvitationAdapter.In
     class InvitationViewHolder extends RecyclerView.ViewHolder {
 
         @Bind(R.id.invitation_head_iv)
-        ImageView invitation_head_iv;
+        CircleImageView invitation_head_iv;
         @Bind(R.id.invitation_tv_name)
         TextView invitation_tv_name;
         @Bind(R.id.invitation_tv_signature)

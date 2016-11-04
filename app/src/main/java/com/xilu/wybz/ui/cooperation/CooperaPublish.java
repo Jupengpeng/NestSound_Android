@@ -10,12 +10,15 @@ import android.widget.TextView;
 
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.CooperaLyricBean;
+import com.xilu.wybz.presenter.CooperaPublishPresenter;
+import com.xilu.wybz.ui.IView.ICooperaPublishView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 
 import butterknife.Bind;
 import butterknife.OnClick;
 
-public class CooperaPublish extends ToolbarActivity {
+public class CooperaPublish extends ToolbarActivity implements ICooperaPublishView {
+    CooperaPublishPresenter cooperaPublishPresenter;
     CooperaLyricBean cooperaLyricBean;
     @Bind(R.id.title_tv)
     TextView title_tv;
@@ -31,14 +34,20 @@ public class CooperaPublish extends ToolbarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initPresenter();
 
+    }
+
+    private void initPresenter() {
+        cooperaPublishPresenter = new CooperaPublishPresenter(context, this);
+        cooperaPublishPresenter.init();
     }
 
     @OnClick({R.id.chooselyric_iv})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.chooselyric_iv:
-                Intent intent = new Intent(context,ChooseLyricActivity.class);
+                Intent intent = new Intent(context, ChooseLyricActivity.class);
                 startActivity(intent);
                 break;
         }
@@ -58,8 +67,9 @@ public class CooperaPublish extends ToolbarActivity {
 
             if (cooperaLyricBean == null || "".equals(editText.getText().toString().trim())) {
                 showMsg("请选择歌曲");
-            }else{
-                startActivity(CooperationActivity.class);
+            } else {
+                cooperaPublishPresenter.publishDemand(editText.getText().toString().trim(), cooperaLyricBean.getItemid());
+
             }
 
 
@@ -76,5 +86,24 @@ public class CooperaPublish extends ToolbarActivity {
         if (cooperaLyricBean != null) {
             title_tv.setText(cooperaLyricBean.getTitle());
         }
+    }
+
+    @Override
+    public void success() {
+        showMsg("发布成功");
+        Intent intent = new Intent(CooperaPublish.this, CooperationFragment.class);
+        intent.putExtra("success", "success");
+        startActivity(intent);
+    }
+
+    @Override
+    public void fail() {
+        showMsg("网络出小差了~~~");
+    }
+
+    @Override
+    public void initView() {
+
+
     }
 }

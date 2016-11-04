@@ -2,11 +2,18 @@ package com.xilu.wybz.presenter;
 
 import android.content.Context;
 
+import com.google.gson.reflect.TypeToken;
 import com.xilu.wybz.bean.CooperationBean;
+import com.xilu.wybz.bean.JsonResponse;
+import com.xilu.wybz.common.MyHttpClient;
+import com.xilu.wybz.http.callback.AppJsonCalback;
 import com.xilu.wybz.ui.IView.ICooperationView;
 
-import java.util.ArrayList;
+import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.List;
+
+import okhttp3.Call;
 
 /**
  * Created by Administrator on 2016/10/20.
@@ -20,70 +27,32 @@ public class CooperationPresenter extends BasePresenter<ICooperationView> {
     }
 
     public void getCooperationList(int page) {
-        List<CooperationBean> list = new ArrayList<>();
-        list = getData(page);
-        iView.showCooperation(list);
+        params = new HashMap<>();
+        params.put("page", page + "");
+//        params.put("token",PrefsUtil.getUserInfo(context).loginToken) ;
+
+        httpUtils.post(MyHttpClient.getDemandlist(), params, new AppJsonCalback(context) {
+            @Override
+            public void onError(Call call, Exception e) {
+                super.onError(call, e);
+
+            }
+
+            @Override
+            public void onResult(JsonResponse<? extends Object> response) {
+                super.onResult(response);
+                List<CooperationBean> cooperationBeanList = response.getData();
+                if(cooperationBeanList.size()==0){
+                    iView.noMoreData();
+                }
+                iView.showCooperation(cooperationBeanList);
+            }
+            @Override
+            public Type getDataType() {
+                return new TypeToken<List<CooperationBean>>(){}.getType();
+            }
+        });
     }
 
-    public List<CooperationBean> getData(int page) {
-        if(page==1){
-            List<CooperationBean> list = new ArrayList<>();
-            List<CooperationBean.CommentListBean> commentListBeanList = new ArrayList<>();
-            for (int i = 0; i < 5; i++) {
-                CooperationBean cooperationBean = new CooperationBean();
-                CooperationBean.DemandInfoBean demandInfoBean = new CooperationBean.DemandInfoBean();
-                demandInfoBean.setCreatetime(555555555);
-                demandInfoBean.setLyrics("我期待着我的梦想\n希望有一天能发出光芒\n我思念着我的故乡\n不知何时才能回到它身旁\n我思念着我的亲人\n多么希望他们身体安康");
-                demandInfoBean.setRequirement("文件看了就为了求可敬了空间为科技路口为妻儿就立刻就看了" + i);
-                demandInfoBean.setTitle("wqeqweqw" + i);
-                demandInfoBean.setWorknum(i);
-                demandInfoBean.setCommentnum(i);
-                cooperationBean.setDemandInfo(demandInfoBean);
-
-                CooperationBean.UserInfoBean userInfoBean = new CooperationBean.UserInfoBean();
-                userInfoBean.setNickname("dadao" + i);
-                cooperationBean.setUserInfo(userInfoBean);
-
-                CooperationBean.CommentListBean commentListBean = new CooperationBean.CommentListBean();
-
-                commentListBean.setNickname("qweqwewq" + i);
-                commentListBean.setComment("vvvvvvvv" + i);
-
-                commentListBeanList.add(commentListBean);
-                cooperationBean.setCommentList(commentListBeanList);
-                list.add(cooperationBean);
-            }
-            return list;
-        }else{
-            List<CooperationBean> list = new ArrayList<>();
-            List<CooperationBean.CommentListBean> commentListBeanList = new ArrayList<>();
-            for (int i = 0; i < 5; i++) {
-                CooperationBean cooperationBean = new CooperationBean();
-                CooperationBean.DemandInfoBean demandInfoBean = new CooperationBean.DemandInfoBean();
-                demandInfoBean.setCreatetime(555555555);
-                demandInfoBean.setLyrics("希望有一天能发出光芒\n我思念着我的故乡\n不知何时才能回到它身旁\n我思念着我的亲人\n多么希望他们身体安康");
-                demandInfoBean.setRequirement("文件看了就为了求可敬了空间为科技路口为妻儿就立刻就看了" + i);
-                demandInfoBean.setTitle("wqeqweqw" + i);
-                demandInfoBean.setWorknum(i);
-                demandInfoBean.setCommentnum(i);
-                cooperationBean.setDemandInfo(demandInfoBean);
-
-                CooperationBean.UserInfoBean userInfoBean = new CooperationBean.UserInfoBean();
-                userInfoBean.setNickname("dadao" + i);
-                cooperationBean.setUserInfo(userInfoBean);
-
-                CooperationBean.CommentListBean commentListBean = new CooperationBean.CommentListBean();
-
-                commentListBean.setNickname("qweqwewq" + i);
-                commentListBean.setComment("vvvvvvvv" + i);
-
-                commentListBeanList.add(commentListBean);
-                cooperationBean.setCommentList(commentListBeanList);
-                list.add(cooperationBean);
-            }
-            return list;
-        }
-
-    }
 
 }

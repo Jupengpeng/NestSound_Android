@@ -453,10 +453,10 @@ public class MyHttpClient {
     }
 
 
-//2.3版本接口
+    //2.3版本接口
     //合作列表
     public static String getDemandlist() {
-        return "/cooperate/index/demandlist/v23";
+        return "/cooperate/common/index/demandlist/v23";
     }
 
     //发布需求
@@ -488,33 +488,76 @@ public class MyHttpClient {
     public static String getDelete() {
         return "/cooperate/demand/delete/v23";
     }
+
     //我的-采纳作品
-    public static String getAccept(){
+    public static String getAccept() {
         return "/cooperate/demand/accept/v23";
     }
+
     //收藏列表
-    public static String getFovlist(){
+    public static String getFovlist() {
         return "/cooperate/index/fovlist/v23";
     }
+
     //收藏-收藏操作
-    public static String getFov (){
+    public static String getFov() {
         return "/cooperate/demand/fov/v23";
+
     }
+
     //留言列表详情
-    public static String getLeavelist (){
+    public static String getLeavelist() {
         return "/cooperate/comment/leavelist/v23";
     }
+
     //发表留言
-    public static String getPublishComment (){
+    public static String getPublishComments() {
         return "/cooperate/comment/save/v23";
     }
+
     //邀请-邀请列表
-    public static String getInvitelist (){
+    public static String getInvitelist() {
         return "/cooperate/invite/userlist/v23";
     }
+
     //邀请-发起邀请
-    public static String getPublishInvite(){
+    public static String sendInvite() {
         return "/cooperate/invite/save/v23";
+    }
+
+    //歌曲成品-歌曲播放页数据
+    public static String getPlayDetail() {
+        return "/cooperate/work/detail/v23";
+    }
+
+    //歌曲成品-发布歌曲
+    public static String publishSong() {
+        return "/cooperate/work/public/v23";
+    }
+
+    //歌曲成品-点赞接口
+    public static String cooperaZan() {
+        return "/cooperate/work/zan/v23";
+    }
+
+    //歌曲成品-收藏接口
+    public static String cooperaCollect() {
+        return "/cooperate/work/fov/v23";
+    }
+
+    //歌曲成品-发表评论
+    public static String publishComment() {
+        return "/cooperate/work/commentsave/v23";
+    }
+
+    //歌曲成品-获取作品评论列表
+    public static String getCooperaCommentList() {
+        return "/cooperate/work/commentsave/v23";
+    }
+
+    //歌曲成品-删除评论
+    public static String deleteComment() {
+        return "/cooperate/work/commentdelete/v23";
     }
 }
 

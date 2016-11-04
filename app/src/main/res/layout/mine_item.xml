@@ -33,40 +33,17 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/mine_tv_success"
+            android:id="@+id/mine_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
-            android:text="合作成功"
+            android:text="正在进行"
             android:textColor="#ffb705"
-            android:textSize="14sp"
-            android:visibility="gone" />
+            android:textSize="14sp" />
 
-        <TextView
-            android:id="@+id/mine_tv_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
 
-            android:text="+128"
-            android:textColor="#999999"
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/mine_tv_expire"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
-            android:text="已到期"
-            android:textColor="#ff6161"
-            android:textSize="14sp"
-            android:visibility="gone" />
         <View
             android:id="@+id/view"
             android:layout_alignParentBottom="true"

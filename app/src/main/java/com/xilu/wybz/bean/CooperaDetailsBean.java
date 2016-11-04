@@ -154,7 +154,7 @@ public class CooperaDetailsBean {
         private String title;
         private String requirement;
         private int status;
-        private int itemid;
+        private long itemid;
         private String lyrics;
         private int worknum;
 
@@ -222,11 +222,11 @@ public class CooperaDetailsBean {
             this.status = status;
         }
 
-        public int getItemid() {
+        public long getItemid() {
             return itemid;
         }
 
-        public void setItemid(int itemid) {
+        public void setItemid(long itemid) {
             this.itemid = itemid;
         }
 

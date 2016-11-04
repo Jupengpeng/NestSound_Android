@@ -33,6 +33,8 @@ public class ChooseLyricActivity extends ToolbarActivity implements ICooperaLyri
     private List<CooperaLyricBean> lyricbeanList;
 
     private CooperaLyricAdapter cooperaLyricadapter;
+    private int page = 1;
+    private CooperaLyricBean lyricBean;
 
     @Override
     protected int getLayoutRes() {
@@ -49,7 +51,7 @@ public class ChooseLyricActivity extends ToolbarActivity implements ICooperaLyri
     private void initDialog(int position, CooperaLyricBean cooperaLyricBean) {
         dialog = new AlertDialog.Builder(ChooseLyricActivity.this).create();
         LayoutInflater layoutInflater = LayoutInflater.from(ChooseLyricActivity.this);
-        LinearLayout layout = (LinearLayout) layoutInflater.inflate(R.layout.deletecainadialig, null);
+        LinearLayout layout = (LinearLayout) layoutInflater.inflate(R.layout.simidialig, null);
         Button positive_bt = (Button) layout.findViewById(R.id.cancle_bt);
         Button cancle_bt = (Button) layout.findViewById(R.id.positive_bt);
         dialog.show();
@@ -63,8 +65,7 @@ public class ChooseLyricActivity extends ToolbarActivity implements ICooperaLyri
         cancle_bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startLyricDetailsActivity(cooperaLyricBean);//发送post请求将作品至为公开
-                dialog.dismiss();
+                cooperaLyricPresenter.updateLyricStatu(cooperaLyricBean.getItemid(), cooperaLyricBean.getStatus());
             }
         });
 
@@ -85,24 +86,31 @@ public class ChooseLyricActivity extends ToolbarActivity implements ICooperaLyri
     }
 
     @Override
+    public void updatesuccess() {
+        startLyricDetailsActivity(lyricBean);//发送post请求将作品至为公开
+        dialog.dismiss();
+    }
+
+    @Override
     public void initView() {
         lyricbeanList = new ArrayList<>();
         chooselyric_recyclerview.setLayoutManager(new LinearLayoutManager(this));
         cooperaLyricadapter = new CooperaLyricAdapter(lyricbeanList, this);
         chooselyric_recyclerview.setAdapter(cooperaLyricadapter);
-        cooperaLyricPresenter.getCooperaLyricList();
+        cooperaLyricPresenter.getCooperaLyricList(page);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                cooperaLyricPresenter.getCooperaLyricList();
+                cooperaLyricPresenter.getCooperaLyricList(page);
                 refreshLayout.setRefreshing(false);
             }
         });
         cooperaLyricadapter.setOnItemClickListener(new CooperaLyricAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position, CooperaLyricBean cooperaLyricBean) {
-                if (cooperaLyricBean.getStatus() == 1) {
-                    initDialog(position, cooperaLyricBean);
+                lyricBean = cooperaLyricBean;
+                if (cooperaLyricBean.getStatus() == 0) {
+                    initDialog(position, lyricBean);
 
                 } else {
                     startLyricDetailsActivity(cooperaLyricBean);

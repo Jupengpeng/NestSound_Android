@@ -29,7 +29,12 @@ import java.util.List;
 import butterknife.Bind;
 
 public class CooperaMessageActivity extends ToolbarActivity implements ICooperaMessageView {
-
+    @Bind(R.id.tv_nodata)
+    protected TextView tvNoData;
+    @Bind(R.id.iv_nodata)
+    protected ImageView ivNoData;
+    @Bind(R.id.ll_nodata)
+    protected LinearLayout llNoData;
     @Bind(R.id.refreshlayout)
     SwipeRefreshLayout refreshLayout;
     @Bind(R.id.message_recyclerview)
@@ -42,7 +47,9 @@ public class CooperaMessageActivity extends ToolbarActivity implements ICooperaM
     private String content;
     private CooperaMessagePresenter cooperaMessagePresenter;
     private CooperaMessageAdapter cooperaMessageAdapter;
-
+    private int did;//合作需求ID
+    private int page = 1;
+    private int commentnum;
     private List<CooperaMessageBean> messageBeanList = new ArrayList<>();
     String comment;
     int comment_type;
@@ -53,8 +60,16 @@ public class CooperaMessageActivity extends ToolbarActivity implements ICooperaM
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle("留言");
+        initData();
         loadFootBar();
         initPresenter();
+    }
+
+    private void initData() {
+        did = getIntent().getIntExtra("did", 0);
+        commentnum = getIntent().getIntExtra("commentnum", 0);
+        itemid = getIntent().getLongExtra("itemid", 0);
+        message_commentnum.setText("留言" + commentnum);
     }
 
     private void initPresenter() {
@@ -100,7 +115,7 @@ public class CooperaMessageActivity extends ToolbarActivity implements ICooperaM
 
     private void toSendComment() {
         showPd("正在评论中...");
-        cooperaMessagePresenter.sendComment(itemid, comment_type, 2, target_uid, content);
+        cooperaMessagePresenter.sendComment(itemid, 1, 2, 0, content);
     }
 
     @Override
@@ -113,8 +128,11 @@ public class CooperaMessageActivity extends ToolbarActivity implements ICooperaM
         if (isDestroy) return;
         if (messageBeanList == null) cooperaMessageBeanList = new ArrayList<>();
         if (messageBeanList.size() > 0) messageBeanList.clear();
+
         messageBeanList.addAll(cooperaMessageBeanList);
         cooperaMessageAdapter.notifyDataSetChanged();
+
+
     }
 
     @Override
@@ -123,11 +141,11 @@ public class CooperaMessageActivity extends ToolbarActivity implements ICooperaM
         message_recyclerview.setLayoutManager(new LinearLayoutManager(this));
         cooperaMessageAdapter = new CooperaMessageAdapter(messageBeanList, this);
         message_recyclerview.setAdapter(cooperaMessageAdapter);
-        cooperaMessagePresenter.getCooperaMessageList();
+        cooperaMessagePresenter.getCooperaMessageList(did, page);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                cooperaMessagePresenter.getCooperaMessageList();
+//                cooperaMessagePresenter.getCooperaMessageList();
                 refreshLayout.setRefreshing(false);
             }
         });
@@ -142,7 +160,7 @@ public class CooperaMessageActivity extends ToolbarActivity implements ICooperaM
                         comment = etContent.getText().toString().trim();
                         if (comment_type == 2) {
                             etContent.setHint("回复" + position);
-                        }else {
+                        } else {
                             etContent.setHint("来~说点什么");
                         }
                         KeyBoardUtil.showSoftInput(context, etContent);
@@ -185,12 +203,16 @@ public class CooperaMessageActivity extends ToolbarActivity implements ICooperaM
 
     @Override
     public void loadNoData() {
-
+        tvNoData.setText("暂无留言");
+//        refreshLayout.setVisibility(View.GONE);
+        llNoData.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void commentSuccess(int id) {
-
+        showMsg("评论成功");
+        cancelPd();
+        etContent.setText("");
     }
 
     @Override
