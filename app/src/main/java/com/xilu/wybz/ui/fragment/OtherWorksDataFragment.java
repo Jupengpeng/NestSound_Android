@@ -28,11 +28,11 @@ public class OtherWorksDataFragment extends BaseListFragment<WorksData> implemen
     public static String TYPE = "type";
     public static String UID = "uid";
     public static String AUTHOR = "author";
-    private int type;//1=歌曲，2=歌词，3=收藏,4=灵感记录（加载）
+    private int type;//1=歌曲，2=歌词，3=收藏,4=合作
     private int userId;
     private String COME;
     private String author;
-    private String[] OTHERCOMES = new String[]{"usersong", "userlyrics", "userfav"};//他人主页
+    private String[] OTHERCOMES = new String[]{"usersong", "userlyrics", "userfav","userRRR"};//他人主页
     private boolean isFirstTab;
     private boolean isFirst;
     @Override
@@ -50,16 +50,20 @@ public class OtherWorksDataFragment extends BaseListFragment<WorksData> implemen
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+
             type = getArguments().getInt(TYPE);
             userId = getArguments().getInt(UID);
-            COME = OTHERCOMES[type];
+            COME = OTHERCOMES[type-1];
             if (type == 0) isFirstTab = true;
-            type = type + 1;
             author = getArguments().getString(AUTHOR);
         }
 
     }
 
+    /**
+     *
+     * @return
+     */
     protected ILayoutManager getLayoutManager() {
         MyLinearLayoutManager myLinearLayoutManager = new MyLinearLayoutManager(getActivity().getApplicationContext(), OrientationHelper.VERTICAL, false);
         return myLinearLayoutManager;
@@ -68,7 +72,7 @@ public class OtherWorksDataFragment extends BaseListFragment<WorksData> implemen
     public static OtherWorksDataFragment newInstance(int type, int userId, String author) {
         OtherWorksDataFragment tabFragment = new OtherWorksDataFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt(TYPE, type);
+        bundle.putInt(TYPE, type+1);
         bundle.putInt(UID, userId);
         bundle.putString(AUTHOR, author);
         tabFragment.setArguments(bundle);
@@ -99,11 +103,16 @@ public class OtherWorksDataFragment extends BaseListFragment<WorksData> implemen
     @Override
     public void onRefresh(int action) {
         super.onRefresh(action);
-        userPresenter.loadData(userId, type, page++);
+        int questType = type;
+        if (type == 4){
+            questType = 5;
+        }
+        userPresenter.loadData(userId, questType, page++);
     }
 
     @Override
     public void showWorksData(List<WorksData> worksDataList) {
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -112,9 +121,14 @@ public class OtherWorksDataFragment extends BaseListFragment<WorksData> implemen
                     mDataList.clear();
                 }
                 for (WorksData worksData : worksDataList) {
-                    if (type < 3)
+                    if (type < 3){
                         worksData.setAuthor(author);
+                    }
                     worksData.type = type;
+                    if (type == 4){
+                        worksData.type = 5;
+                        worksData.author = worksData.getComAuthor();
+                    }
                     mDataList.add(worksData);
                 }
                 llNoData.setVisibility(View.GONE);
@@ -143,6 +157,30 @@ public class OtherWorksDataFragment extends BaseListFragment<WorksData> implemen
     @Override
     public void loadNoData() {
         if (isDestroy) return;
+        if (type == 4){
+            mDataList.add(new WorksData());
+            mDataList.add(new WorksData());
+            mDataList.add(new WorksData());
+            mDataList.add(new WorksData());
+
+
+            for (WorksData worksData : mDataList) {
+                if (type < 3){
+                    worksData.setAuthor(author);
+                }
+                worksData.type = type;
+                if (type == 4){
+                    worksData.type = 5;
+                    worksData.author = worksData.getComAuthor();
+                }
+            }
+
+            adapter.notifyDataSetChanged();
+            recycler.onRefreshCompleted();
+
+            return;
+        }
+
         llNoData.setVisibility(View.VISIBLE);
         recycler.onRefreshCompleted();
         recycler.enableLoadMore(false);
@@ -150,7 +188,14 @@ public class OtherWorksDataFragment extends BaseListFragment<WorksData> implemen
 
     @Override
     protected BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.activity_work_list_item, parent, false);
+
+        View view ;
+        if (type == 4){
+            view = LayoutInflater.from(context).inflate(R.layout.activity_work_list_item2, parent, false);
+        } else {
+            view = LayoutInflater.from(context).inflate(R.layout.activity_work_list_item, parent, false);
+        }
+
         WorksViewHolder holder = new WorksViewHolder(view, context, mDataList, COME, null);
         return holder;
     }
@@ -160,5 +205,24 @@ public class OtherWorksDataFragment extends BaseListFragment<WorksData> implemen
         super.onDestroyView();
         if (userPresenter != null)
             userPresenter.cancelRequest();
+    }
+
+
+    public class CooperationViewHolder extends BaseViewHolder {
+
+
+        public CooperationViewHolder(View itemView) {
+            super(itemView);
+        }
+
+        @Override
+        public void onBindViewHolder(int position) {
+
+        }
+
+        @Override
+        public void onItemClick(View view, int position) {
+
+        }
     }
 }

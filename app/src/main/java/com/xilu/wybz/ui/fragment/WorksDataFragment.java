@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.xilu.wybz.R;
-import com.xilu.wybz.adapter.InspireRecordViewHolder;
 import com.xilu.wybz.adapter.WorksViewHolder;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.Event;
@@ -49,6 +48,7 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
     private String[] MYCOMES = new String[]{"mysong", "mylyrics", "myfav", "myrecord"};
     private boolean isFirst;
     private boolean isFirstTab;
+
     @Override
     protected void initPresenter() {
         EventBus.getDefault().register(this);
@@ -74,13 +74,9 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
             type = getArguments().getInt(TYPE);
             userId = getArguments().getInt(UID);
             if (type == 0) isFirstTab = true;
-            COME = MYCOMES[type];
-            if(type==0||type==1){//歌曲歌词 需要+1
-                workType = type+1;
-            }else if(type==3){//灵感记录
-                workType = type;
-            }
-            type = type + 1;
+            COME = MYCOMES[type - 1];
+            workType = type;
+
             author = getArguments().getString(AUTHOR);
         }
 
@@ -94,7 +90,7 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
     public static WorksDataFragment newInstance(int type, int userId, String author) {
         WorksDataFragment tabFragment = new WorksDataFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt(TYPE, type);
+        bundle.putInt(TYPE, type + 1);
         bundle.putInt(UID, userId);
         bundle.putString(AUTHOR, author);
         tabFragment.setArguments(bundle);
@@ -121,7 +117,11 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
     @Override
     public void onRefresh(int action) {
         super.onRefresh(action);
-        userPresenter.loadData(type, page++);
+        int questType = type;
+        if (type == 4){
+            questType = 5;
+        }
+        userPresenter.loadData(questType, page++);
     }
 
     @Override
@@ -136,12 +136,15 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
                 for (WorksData worksData : worksDataList) {
                     if (type < 3)
                         worksData.setAuthor(author);
-                    if (type == 0) {
-                        worksData.type = 4;
-                    } else if (type == 1) {
+                    if (type == 1) {
                         worksData.type = 1;
-                    } else if (type == 2) {
+                    }
+                    if (type == 2) {
                         worksData.type = 2;
+                    }
+                    if (type == 4){
+                        worksData.type = 5;
+                        worksData.author = worksData.getComAuthor();
                     }
                     mDataList.add(worksData);
                 }
@@ -175,7 +178,7 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
     }
 
     public void updateNum(WorksData worksData, int type) {
-        if (isDestroy||mDataList==null) return;
+        if (isDestroy || mDataList == null) return;
         int index = -1;
         for (int i = 0; i < mDataList.size(); i++) {
             if (worksData.itemid == mDataList.get(i).itemid && worksData.type == mDataList.get(i).type) {
@@ -218,7 +221,7 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
         }
         removeItem(selectPos);
         userPresenter.loadData(type, page++);
-        EventBus.getDefault().post(new Event.UpdateWorksNum(type,-1));
+        EventBus.getDefault().post(new Event.UpdateWorksNum(type, -1));
     }
 
     @Override
@@ -229,7 +232,7 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
     public void updateSuccess() {
         mDataList.get(selectPos).status = 1 - mDataList.get(selectPos).status;
         updateItem(selectPos);
-        ToastUtils.toast(context,"设置成功！");
+        ToastUtils.toast(context, "设置成功！");
     }
 
     @Override
@@ -240,6 +243,33 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
     @Override
     public void loadNoData() {
         if (isDestroy) return;
+
+
+
+        if (type == 4){
+            mDataList.add(new WorksData());
+            mDataList.add(new WorksData());
+            mDataList.add(new WorksData());
+            mDataList.add(new WorksData());
+
+
+            for (WorksData worksData : mDataList) {
+                if (type < 3){
+                    worksData.setAuthor(author);
+                }
+                worksData.type = type;
+                if (type == 4){
+                    worksData.type = 5;
+                    worksData.author = worksData.getComAuthor();
+                }
+            }
+
+            adapter.notifyDataSetChanged();
+            recycler.onRefreshCompleted();
+
+            return;
+        }
+
         llNoData.setVisibility(View.VISIBLE);
         recycler.onRefreshCompleted();
         recycler.enableLoadMore(false);
@@ -261,7 +291,7 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
 
     //更新某个item
     public void updateData(WorksData worksData) {
-        if (mDataList!=null&&mDataList.size() > 0) {
+        if (mDataList != null && mDataList.size() > 0) {
             int index = -1;
             for (int i = 0; i < mDataList.size(); i++) {
                 if (worksData.itemid == mDataList.get(i).itemid && worksData.status == mDataList.get(i).status) {
@@ -340,9 +370,9 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
     @Override
     protected BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
         if (type == 4) {//灵感记录
-            View view = LayoutInflater.from(context).inflate(R.layout.fragment_inspirerecord_item, parent, false);
-            InspireRecordViewHolder holder = new InspireRecordViewHolder(view, context, mDataList, COME,
-                    new InspireRecordViewHolder.OnItemClickListener() {
+            View view = LayoutInflater.from(context).inflate(R.layout.activity_work_list_item2, parent, false);
+            WorksViewHolder holder = new WorksViewHolder(view, context, mDataList, COME,
+                    new WorksViewHolder.OnItemClickListener() {
                         @Override
                         public void onClick(int pos, int which) {
                             if (which == 0) {
@@ -351,7 +381,8 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
                         }
                     });
             return holder;
-        } else {
+        } else
+        {
             View view = LayoutInflater.from(context).inflate(R.layout.activity_work_list_item, parent, false);
             WorksViewHolder holder = new WorksViewHolder(view, context, mDataList, COME,
                     new WorksViewHolder.OnItemClickListener() {
