@@ -88,6 +88,7 @@ public class InvitationActivity extends ToolbarActivity implements IInvitationVi
             @Override
             public void onItemClick(View view, int position) {
                 if (invitationlist.size() > 0) {
+
                     invitationPresenter.sendInvitation(invitationlist.get(position).getUid(), did);
                     showPd("邀请中...");
                 }
