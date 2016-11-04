@@ -58,6 +58,7 @@ public class CooperaDetailsPresenter extends BasePresenter<ICooperaDetailsView> 
     public void collect(int did, int type) {
         params = new HashMap<>();
         params.put("did", did + "");
+        params.put("uid", "" + PrefsUtil.getUserId(context));
         params.put("token", PrefsUtil.getUserInfo(context).loginToken);
         params.put("type", type + "");
         httpUtils.post(MyHttpClient.getFov(), params, new MyStringCallback() {

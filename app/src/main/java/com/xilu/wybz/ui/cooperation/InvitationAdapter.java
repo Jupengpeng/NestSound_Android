@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.Invitation;
+import com.xilu.wybz.common.ZnImageLoader;
 import com.xilu.wybz.view.CircleImageView;
 
 import java.util.List;
@@ -51,6 +52,8 @@ public class InvitationAdapter extends RecyclerView.Adapter<InvitationAdapter.In
     @Override
     public void onBindViewHolder(InvitationViewHolder holder, int position) {
         Invitation invitation = invitationList.get(position);
+        ZnImageLoader.getInstance().displayImage(invitation.getHeadurl(), ZnImageLoader.getInstance().headOptions, holder.invitation_head_iv);
+
         if (invitation != null) {
             holder.invitation_tv_name.setText(invitation.getNickname());
             holder.invitation_tv_signature.setText(invitation.getSignature());

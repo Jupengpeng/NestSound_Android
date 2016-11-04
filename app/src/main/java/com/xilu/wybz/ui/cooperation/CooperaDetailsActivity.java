@@ -138,6 +138,14 @@ public class CooperaDetailsActivity extends ToolbarActivity implements ICooperaD
         cancle_bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(CooperaDetailsActivity.this, HotCatalogActivity.class);
+                intent.putExtra("lyric", lyric);
+                intent.putExtra("title", title);
+                intent.putExtra("iusername", iusername);
+                intent.putExtra("coopera", 1);
+                intent.putExtra("did", id);
+                intent.putExtra("iuid", iuid);
+                startActivity(intent);
                 dialog.dismiss();
             }
         });

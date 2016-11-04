@@ -501,7 +501,7 @@ public class MyHttpClient {
 
     //收藏-收藏操作
     public static String getFov() {
-        return "/cooperate/demand/fov/v23";
+        return "/cooperate/demand/fov/V23";
 
     }
 

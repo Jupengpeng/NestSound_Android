@@ -4,7 +4,12 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.Invitation;
@@ -22,6 +27,8 @@ public class InvitationActivity extends ToolbarActivity implements IInvitationVi
     SwipeRefreshLayout refreshLayout;
     @Bind(R.id.invitation_recyclerview)
     RecyclerView invitation_recyclerview;
+    @Bind(R.id.et_keyword)
+    EditText et_keyword;
     private InvitationPresenter invitationPresenter;
     private InvitationAdapter invitationAdapter;
     private List<Invitation> invitationlist;
@@ -84,6 +91,21 @@ public class InvitationActivity extends ToolbarActivity implements IInvitationVi
                     invitationPresenter.sendInvitation(invitationlist.get(position).getUid(), did);
                     showPd("邀请中...");
                 }
+            }
+        });
+
+        et_keyword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                String content = et_keyword.getText().toString().trim();
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    if (TextUtils.isEmpty(content)) {
+                        showMsg("hahah");
+//                        invitationPresenter.getInvitationList(did, page, content);
+                    }
+                    return true;
+                }
+                return false;
             }
         });
     }
