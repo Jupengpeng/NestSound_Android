@@ -231,22 +231,22 @@ public class MyHttpClient {
 
     //个人主页
     public static String getUserCenter() {
-        return "/java/userCenter/index/v22";
+        return "/java/userCenter/index/v23";
     }
 
     //他人主页
     public static String getOtherCenter() {
-        return "/java/common/otherCenter/index/v22";
+        return "/java/common/otherCenter/index/v23";
     }
 
     //个人主页
     public static String getUserCenterList() {
-        return "/java/userCenter/listdetails/v22";
+        return "/java/userCenter/listdetails/v23";
     }
 
     //他人主页
     public static String getOtherCenterList() {
-        return "/java/common/otherCenter/listdetails/v22";
+        return "/java/common/otherCenter/listdetails/v23";
     }
 
     //歌词
