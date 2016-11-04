@@ -35,7 +35,7 @@
             android:layout_marginLeft="28dp"
             android:layout_weight="1"
             android:background="@drawable/dismiss_bg"
-            android:text="确定"
+            android:text="取消"
             android:textColor="@color/main_text_color2"
             android:textSize="14sp" />
 
@@ -48,7 +48,7 @@
             android:layout_marginRight="28dp"
             android:layout_toRightOf="@+id/cancle_bt"
             android:background="@drawable/bt_bg"
-            android:text="取消"
+            android:text="确定"
             android:textColor="@color/main_text_color2"
             android:textSize="14sp" />
 

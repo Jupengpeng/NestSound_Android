@@ -75,6 +75,12 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView, 
 
     SaveSongPresenter saveSongPresenter;
 
+    private int type;
+    private int did;//合作需求ID
+
+    private int iuid;//词作者id
+    private String lUsername;//词作者
+
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_savesong;
@@ -83,6 +89,16 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView, 
     public static void toSaveSongActivity(Context context, WorksData worksData) {
         Intent intent = new Intent(context, SaveSongActivity.class);
         intent.putExtra("worksData", worksData);
+        context.startActivity(intent);
+    }
+
+    public static void toSaveSongActivity(Context context, WorksData worksData, int type, String lUsername, int did, int iuid) {
+        Intent intent = new Intent(context, SaveSongActivity.class);
+        intent.putExtra("worksData", worksData);
+        intent.putExtra("type", type);
+        intent.putExtra("did", did);
+        intent.putExtra("iuid", iuid);
+        intent.putExtra("lUsername", lUsername);
         context.startActivity(intent);
     }
 
@@ -103,6 +119,10 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView, 
         if (bundle != null) {
             worksData = (WorksData) bundle.getSerializable("worksData");
         }
+        type = getIntent().getIntExtra("type", 0);
+        did = getIntent().getIntExtra("did", 0);
+        iuid = getIntent().getIntExtra("iuid", 0);
+        lUsername = getIntent().getStringExtra("iusername");
     }
 
     @Override
@@ -199,7 +219,10 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView, 
             public void onSuccess(String imageUrl) {
                 worksData.setPic(imageUrl);
                 if (materialDialog != null && materialDialog.isShowing())
-                    saveSongPresenter.saveSong(worksData);
+                    if (type == 1) {
+                        saveSongPresenter.saveCooperaSong(worksData, did,iuid, lUsername);
+                    }
+                saveSongPresenter.saveSong(worksData);
             }
 
             @Override
@@ -333,7 +356,11 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView, 
                 if (new File(worksData.pic).exists()) {
                     uploadCoverPic();
                 } else {
-                    saveSongPresenter.saveSong(worksData);
+                    if (type == 1) {
+                        saveSongPresenter.saveCooperaSong(worksData, did,iuid, lUsername);
+                    } else {
+                        saveSongPresenter.saveSong(worksData);
+                    }
                 }
                 return true;
 

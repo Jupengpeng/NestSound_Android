@@ -9,4 +9,6 @@ import com.xilu.wybz.bean.CooperaDetailsBean;
 public interface ICooperaDetailsView extends IBaseView {
 
     void showCooperaDetailsBean(CooperaDetailsBean cooperaDetailsBean);
+
+    void collectSuccess();
 }

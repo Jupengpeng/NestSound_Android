@@ -11,4 +11,6 @@ import java.util.List;
 public interface ICooperaLyricView extends IBaseView {
 
     void showCooperaLyricList(List<CooperaLyricBean> lyricBeanList);
+
+    void updatesuccess();
 }

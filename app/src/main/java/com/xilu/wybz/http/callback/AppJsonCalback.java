@@ -67,9 +67,9 @@ public class AppJsonCalback extends JsonCallback {
             ToastUtils.toastLong(context,"登录状态失效，请重新进行登录！");
             return;
         }
-        if (StringUtils.isNotBlank(response.getMessage())){
-            ToastUtils.toastLong(context,response.getMessage());
-        }
+//        if (StringUtils.isNotBlank(response.getMessage())){
+//            ToastUtils.toastLong(context,response.getMessage());
+//        }
 
     }
 

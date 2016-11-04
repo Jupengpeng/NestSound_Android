@@ -27,7 +27,7 @@ public class OtherCenterListAdapter extends FragmentStatePagerAdapter {
         mTitles.add("歌曲");
         mTitles.add("歌词");
         mTitles.add("收藏");
-        mTitles.add("合作作品");
+//        mTitles.add("合作作品");
     }
 
     @Override
@@ -43,7 +43,6 @@ public class OtherCenterListAdapter extends FragmentStatePagerAdapter {
     public int getCount() {
         return mTitles.size();
     }
-
     @Override
     public CharSequence getPageTitle(int position) {
         return mTitles.get(position);

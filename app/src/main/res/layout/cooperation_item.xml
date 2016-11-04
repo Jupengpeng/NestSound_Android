@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:padding="10dp">
 
-        <ImageView
+        <com.xilu.wybz.view.CircleImageView
             android:id="@+id/coopera_head_iv"
             android:layout_width="42dp"
             android:layout_height="42dp"
@@ -123,8 +123,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="13dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"/>
-
+            android:layout_marginTop="10dp" />
 
 
         <RelativeLayout

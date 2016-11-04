@@ -111,13 +111,30 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
     protected MaterialDialog reStartDialog;
     private MakeSongTipDialog makeSongTipDialog;
 
-
+    private String title;
+    private String lyric;
+    private int cooperatype;
+    private int did;
+    private int iuid;
+    private String iusername;
 
     private boolean useCountDown = false;
 
     public static void toMakeSongActivity(Context context, TemplateBean templateBean) {
         Intent intent = new Intent(context, MakeSongActivity.class);
         intent.putExtra("templateBean", templateBean);
+        context.startActivity(intent);
+    }
+
+    public static void toMakeSongActivity(Context context, TemplateBean templateBean, String lyric, String title, int type, int did, int iuid, String iusername) {
+        Intent intent = new Intent(context, MakeSongActivity.class);
+        intent.putExtra("templateBean", templateBean);
+        intent.putExtra("lyric", lyric);
+        intent.putExtra("title", title);
+        intent.putExtra("type", type);
+        intent.putExtra("did", did);
+        intent.putExtra("iuid", iuid);
+        intent.putExtra("iusername", iusername);
         context.startActivity(intent);
     }
 
@@ -128,19 +145,19 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        useCountDown = PrefsUtil.getBoolean(KeySet.KEY_COUNTDOWN_OPEN,getApplicationContext());
+        useCountDown = PrefsUtil.getBoolean(KeySet.KEY_COUNTDOWN_OPEN, getApplicationContext());
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         initData();
-        if(!PrefsUtil.getBoolean("isMakeSongTip",context)){
+        if (!PrefsUtil.getBoolean("isMakeSongTip", context)) {
             makeSongTipDialog = new MakeSongTipDialog(context);
             makeSongTipDialog.showDialog();
-            PrefsUtil.putBoolean("isMakeSongTip",true,context);
+            PrefsUtil.putBoolean("isMakeSongTip", true, context);
         }
         if (MyApplication.getInstance().mMainService == null) {
             MyApplication.getInstance().bindMainService();
-        }else{
+        } else {
             MyApplication.getInstance().mMainService.doRelease();
         }
         makeSongPresenter = new MakeSongPresenter(context, this);
@@ -161,6 +178,7 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
         if (RecordInstance.getInstance().isStart()) {
             RecordInstance.getInstance().toStop();
         }
+
 
         helper = waveSurface.getWaveSurfaceHelper();
 
@@ -183,7 +201,7 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
             @Override
             public void onRecordStart() {
                 int duration = RecordInstance.getInstance().getMediaPlayer().getDuration();
-                helper.setTotalSize((duration +990)/ 1000);
+                helper.setTotalSize((duration + 990) / 1000);
             }
 
             @Override
@@ -221,11 +239,11 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
     }
 
     public void upData() {
-        if(!new File(FileDir.hotDir).exists())new File(FileDir.hotDir).mkdirs();
-        templateFileName = FileDir.hotDir+ MD5Util.getMD5String(templateBean.mp3);
+        if (!new File(FileDir.hotDir).exists()) new File(FileDir.hotDir).mkdirs();
+        templateFileName = FileDir.hotDir + MD5Util.getMD5String(templateBean.mp3);
         //if templateFileName not exists
         if (!FileUtils.fileExists(templateFileName)) {
-            if(makeSongTipDialog==null) {
+            if (makeSongTipDialog == null) {
                 if (loadDialog == null) {
                     loadDialog = new MaterialDialog.Builder(this)
                             .title(R.string.progress_dialog)
@@ -236,7 +254,7 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
                 }
                 loadDialog.show();
             }
-            if(PermissionUtils.checkSdcardPermission(this)) {
+            if (PermissionUtils.checkSdcardPermission(this)) {
                 makeSongPresenter.loadFile(templateBean.mp3, templateFileName);
             }
         }
@@ -268,8 +286,8 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
         worksData.musicurl = musicurl;
         isPause = false;
 
-        if ("1".equals(worksData.useheadset)){
-            SongTuningActivity.toSongTuningActivity(context,worksData);
+        if ("1".equals(worksData.useheadset)) {
+            SongTuningActivity.toSongTuningActivity(context, worksData);
             cancelPd();
         } else {
             makeSongPresenter.tuningMusic(worksData);
@@ -288,7 +306,11 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
         worksData.recordurl = bean.oldPath;
         worksData.musicurl = bean.newPath;
         cancelPd();
-        SaveSongActivity.toSaveSongActivity(this, worksData);
+        if (cooperatype == 1) {
+            SaveSongActivity.toSaveSongActivity(this, worksData, 1, iusername, did, iuid);
+        } else {
+            SaveSongActivity.toSaveSongActivity(this, worksData);
+        }
     }
 
     @Override
@@ -300,15 +322,16 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
 
     public void showWorks() {
 
-        if (etTitle == null){
+        if (etTitle == null) {
             return;
         }
+
         etTitle.setText(worksData.title);
         etWord.setText(worksData.lyrics);
 
     }
 
-    public void reSetActivity(){
+    public void reSetActivity() {
 
         useheadset = true;
         status = 0; //0:未开始  1：录音中  2：暂停  3：完成
@@ -346,20 +369,39 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
 
     private void initData() {
         Bundle bundle = getIntent().getExtras();
+
         if (bundle != null) {
             templateBean = (TemplateBean) bundle.getSerializable("templateBean");
         }
         if (templateBean == null) isQc = true;
+
+        lyric = getIntent().getStringExtra("lyric");
+        title = getIntent().getStringExtra("title");
+        cooperatype = getIntent().getIntExtra("type", 0);
+        did = getIntent().getIntExtra("did", 0);
+        iuid = getIntent().getIntExtra("iuid",0);
+        iusername = getIntent().getStringExtra("iusername");
+
+
+        if (cooperatype == 1) {
+            etTitle.setText(title);
+            etTitle.setFocusable(false);
+            etTitle.setEnabled(false);
+            etWord.setText(lyric);
+            etWord.setFocusable(false);
+            etWord.setEnabled(false);
+        }
+
     }
 
-//    @OnClick({R.id.iv_play, R.id.iv_record, R.id.iv_restart, R.id.iv_import, R.id.iv_edit})
+    //    @OnClick({R.id.iv_play, R.id.iv_record, R.id.iv_restart, R.id.iv_import, R.id.iv_edit})
     @OnClick({R.id.iv_play, R.id.iv_record, R.id.iv_restart, R.id.iv_import_banzhou, R.id.iv_import_lrc})
     public void onClick(View view) {
         switch (view.getId()) {
 
             case R.id.iv_play:
 
-                if (status == 0){
+                if (status == 0) {
                     showMsg("还未开始录音");
                     return;
                 }
@@ -374,11 +416,11 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
                     helper.scroll = false;
                 } else {
 
-                    if (helper.scroll){
-                        playProgress = helper.getCurrentPosition()*50;
+                    if (helper.scroll) {
+                        playProgress = helper.getCurrentPosition() * 50;
                         MediaInstance.getInstance().seek = playProgress;
                         DoubleMediaInstance.getInstance().seek = playProgress;
-                        Log.d("play","playProgress="+playProgress);
+                        Log.d("play", "playProgress=" + playProgress);
                     } else {
                         MediaInstance.getInstance().seek = -1;
                         DoubleMediaInstance.getInstance().seek = -1;
@@ -401,7 +443,7 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
                     return;
                 }
 
-                if (status == 0){
+                if (status == 0) {
                     showMsg("还未开始录音");
                     return;
                 }
@@ -414,7 +456,7 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
                         .onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                if (helper != null){
+                                if (helper != null) {
                                     helper.onDrawWave(new ArrayList<>(), 0);
                                 }
                                 /**
@@ -426,7 +468,7 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
                                 try {
                                     RecordInstance.getInstance().toStop();
                                     RecordInstance.getInstance().deleteCacheFile();
-                                } catch (RuntimeException e){
+                                } catch (RuntimeException e) {
                                 }
 
 //                                if (useCountDown){
@@ -441,17 +483,17 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
                 break;
             case R.id.iv_record:
 
-                if(!PermissionUtils.checkSdcardPermission(this)){
+                if (!PermissionUtils.checkSdcardPermission(this)) {
                     return;
                 }
-                if(!PermissionUtils.checkRecordAudioPermission(this)){
+                if (!PermissionUtils.checkRecordAudioPermission(this)) {
                     return;
                 }
                 if (isPlay) {
                     showMsg("请先停止播放");
                     return;
                 }
-                if (status == 3){
+                if (status == 3) {
                     showMsg("已经录制完成");
                     return;
                 }
@@ -472,7 +514,7 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
                         return;
                     }
                     showRecordStart();
-                    if (useCountDown){
+                    if (useCountDown) {
                         countDownStartRecord();
                     } else {
                         startRecord();
@@ -489,7 +531,7 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
                     showMsg("请先停止播放");
                     return;
                 }
-                HotCatalogActivity.toHotCatalogActivity(this,true);
+                HotCatalogActivity.toHotCatalogActivity(this, true);
                 break;
 
             case R.id.iv_import_lrc:
@@ -509,9 +551,9 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
     /**
      * 倒计时，重新开始.
      */
-    private void countDownRestart(){
+    private void countDownRestart() {
 
-        if (dialog == null){
+        if (dialog == null) {
             dialog = new CountdownDialog(context);
         }
 
@@ -524,7 +566,7 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
         dialog.startCountDown();
     }
 
-    private void functionReStart(){
+    private void functionReStart() {
 
         if (RecordInstance.getInstance().toRestart()) {
             status = 1;
@@ -535,15 +577,15 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
     }
 
 
-    private void reSetPlayer(){
-        if (isPause){
+    private void reSetPlayer() {
+        if (isPause) {
             stopPlay();
-            isPause =  false;
+            isPause = false;
         }
     }
 
     private void startPlay() {
-        if (isPause){
+        if (isPause) {
             if (playInstance == 1) {
                 MediaInstance.getInstance().resumeMediaPlay();
                 MediaInstance.getInstance().startTimerTask();
@@ -728,7 +770,6 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
     }
 
 
-
     public void showSongPlay() {
         ivPlay.setImageResource(R.drawable.ic_replay_play);
     }
@@ -740,11 +781,11 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
     private CountdownDialog dialog;
 
     /**
-     *  倒计时开始录音.
+     * 倒计时开始录音.
      */
-    private void countDownStartRecord(){
+    private void countDownStartRecord() {
 
-        if (dialog == null){
+        if (dialog == null) {
             dialog = new CountdownDialog(context);
         }
 
@@ -798,7 +839,7 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
                     showMsg("请先停止录音");
                     return true;
                 }
-                if (status == 0){
+                if (status == 0) {
                     showMsg("还未开始录音");
                     return true;
                 }
@@ -835,7 +876,7 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
                     return true;
                 }
 
-                if (useheadset){
+                if (useheadset) {
 //                    startActivity(SongTuningActivity.class);
 //                    return true;
                     showPd("歌曲正在上传，请稍候...");
@@ -873,7 +914,7 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
 
     private void onKeyBack() {
 
-        if (isPlay){
+        if (isPlay) {
             MediaInstance.getInstance().stopMediaPlay();
         }
         if (status == 0) {
@@ -912,12 +953,12 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
             if (intent.hasExtra("state")) {
                 if (intent.getIntExtra("state", 2) == 0) {
                     //拔出
-                    if (status == 1){
+                    if (status == 1) {
                         useheadset = false;
                     }
                 } else if (intent.getIntExtra("state", 2) == 1) {
                     //插入
-                    if (status == 0){
+                    if (status == 0) {
                         useheadset = true;
                     }
                 }
@@ -968,9 +1009,9 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
             loadDialog.cancel();
             loadDialog = null;
         }
-        if (makeSongPresenter != null){
+        if (makeSongPresenter != null) {
             makeSongPresenter.cancelRequest();
-            makeSongPresenter= null;
+            makeSongPresenter = null;
         }
         super.onDestroy();
     }

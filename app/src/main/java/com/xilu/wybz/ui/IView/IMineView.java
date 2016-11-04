@@ -11,4 +11,6 @@ import java.util.List;
 public interface IMineView extends IBaseView {
 
     void  showMineList(List<MineBean> mineBeanList);
+
+    void deleteSuccess(int pos);
 }

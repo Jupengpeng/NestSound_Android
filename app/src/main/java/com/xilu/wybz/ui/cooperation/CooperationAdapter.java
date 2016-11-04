@@ -7,13 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.CooperationBean;
+import com.xilu.wybz.common.ZnImageLoader;
 import com.xilu.wybz.utils.DateFormatUtils;
+import com.xilu.wybz.view.CircleImageView;
 import com.xilu.wybz.view.MyRecyclerView;
 
 import java.util.ArrayList;
@@ -34,6 +35,7 @@ public class CooperationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private static final int TYPE_ITEM = 0;
     private static final int TYPE_FOOTER = 1;
     protected boolean isLoadMoreFooterShown = false;
+
     public CooperationAdapter(List<CooperationBean> cooperationBeanList, Context context) {
 
         this.cooperationBeanList = cooperationBeanList;
@@ -71,6 +73,7 @@ public class CooperationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         if (holder instanceof CooperationViewHolder) {
             CooperationBean cooperationBean = cooperationBeanList.get(position);
             if (cooperationBean != null) {
+                ZnImageLoader.getInstance().displayImage(cooperationBean.getUserInfo().getHeadurl(), ZnImageLoader.getInstance().headOptions, ((CooperationViewHolder) holder).coopera_head_iv);
                 ((CooperationViewHolder) holder).coopera_tv_name.setText(cooperationBean.getUserInfo().getNickname());
                 ((CooperationViewHolder) holder).coopera_tv_time.setText(DateFormatUtils.formatX1(cooperationBean.getDemandInfo().getCreatetime()));
                 ((CooperationViewHolder) holder).coopera_tv_lyricsname.setText(cooperationBean.getDemandInfo().getTitle());
@@ -90,21 +93,21 @@ public class CooperationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 @Override
                 public void onClick(View v) {
                     int pos = holder.getLayoutPosition();
-                    mOnItemClickListener.onItemClick(  ((CooperationViewHolder) holder).ll_jump, pos, 1);
+                    mOnItemClickListener.onItemClick(((CooperationViewHolder) holder).ll_jump, pos, 1);
                 }
             });
             ((CooperationViewHolder) holder).ll_jump2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int pos = holder.getLayoutPosition();
-                    mOnItemClickListener.onItemClick(  ((CooperationViewHolder) holder).ll_jump2, pos, 2);
+                    mOnItemClickListener.onItemClick(((CooperationViewHolder) holder).ll_jump2, pos, 2);
                 }
             });
             ((CooperationViewHolder) holder).coopera_bt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int pos = holder.getLayoutPosition();
-                    mOnItemClickListener.onItemClick(  ((CooperationViewHolder) holder).ll_jump2, pos, 3);
+                    mOnItemClickListener.onItemClick(((CooperationViewHolder) holder).ll_jump2, pos, 3);
                 }
             });
         }
@@ -119,6 +122,7 @@ public class CooperationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             return TYPE_ITEM;
         }
     }
+
     public void onLoadMoreStateChanged(boolean isShown) {
         this.isLoadMoreFooterShown = isShown;
         if (isShown) {
@@ -130,12 +134,12 @@ public class CooperationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public int getItemCount() {
-        return cooperationBeanList.size()+ (isLoadMoreFooterShown ? 1 : 0);
+        return cooperationBeanList.size() + (isLoadMoreFooterShown ? 1 : 0);
     }
 
     class CooperationViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.coopera_head_iv)
-        ImageView coopera_head_iv;
+        CircleImageView coopera_head_iv;
         @Bind(R.id.coopera_tv_name)
         TextView coopera_tv_name;
         @Bind(R.id.coopera_tv_time)
@@ -164,8 +168,6 @@ public class CooperationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             ButterKnife.bind(this, itemView);
 
         }
-
-
     }
 
     class FooterViewHolder extends RecyclerView.ViewHolder {
@@ -173,7 +175,6 @@ public class CooperationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         public FooterViewHolder(View view) {
             super(view);
         }
-
 
     }
 }

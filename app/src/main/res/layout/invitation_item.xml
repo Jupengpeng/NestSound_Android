@@ -15,7 +15,7 @@
             android:layout_width="42dp"
             android:layout_height="42dp">
 
-            <ImageView
+            <com.xilu.wybz.view.CircleImageView
                 android:id="@+id/invitation_head_iv"
                 android:layout_width="42dp"
                 android:layout_height="42dp"

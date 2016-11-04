@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.Invitation;
@@ -24,6 +25,9 @@ public class InvitationActivity extends ToolbarActivity implements IInvitationVi
     private InvitationPresenter invitationPresenter;
     private InvitationAdapter invitationAdapter;
     private List<Invitation> invitationlist;
+    private int did;//合作需求ID
+
+    private int page = 1;
 
     @Override
     protected int getLayoutRes() {
@@ -52,18 +56,34 @@ public class InvitationActivity extends ToolbarActivity implements IInvitationVi
     }
 
     @Override
+    public void sendSuccess() {
+        cancelPd();
+        showMsg("邀请成功");
+    }
+
+    @Override
     public void initView() {
+        did = getIntent().getIntExtra("did", 0);
         invitationlist = new ArrayList<>();
         invitation_recyclerview.setLayoutManager(new LinearLayoutManager(this));
         invitationAdapter = new InvitationAdapter(invitationlist, this);
         invitation_recyclerview.setAdapter(invitationAdapter);
-        invitationPresenter.getInvitationList();
+        invitationPresenter.getInvitationList(did, page, "");
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                invitationPresenter.getInvitationList();
+//                invitationPresenter.getInvitationList(page);
                 refreshLayout.setRefreshing(false);
-                invitationAdapter.notifyDataSetChanged();
+//                invitationAdapter.notifyDataSetChanged();
+            }
+        });
+        invitationAdapter.setOnItemClickListener(new InvitationAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                if (invitationlist.size() > 0) {
+                    invitationPresenter.sendInvitation(invitationlist.get(position).getUid(), did);
+                    showPd("邀请中...");
+                }
             }
         });
     }

@@ -30,6 +30,7 @@ public class CollectFragment extends BaseFragment implements ICollectView {
     CollectPresenter collectPresenter;
     CollectAdapter collectAdapter;
     private List<CollectBean> beanList;
+    private int page = 1;
 
     @Override
     protected int getLayoutResId() {
@@ -48,9 +49,10 @@ public class CollectFragment extends BaseFragment implements ICollectView {
     public void showCollectList(List<CollectBean> collectBeanList) {
         disMissLoading(ll_loading);
         if (isDestroy) return;
-        if (beanList == null) collectBeanList = new ArrayList<>();
-        if (beanList.size() > 0) beanList.clear();
+        if (beanList == null) beanList = new ArrayList<>();
+        if (page == 1) beanList.clear();
         beanList.addAll(collectBeanList);
+
         collectAdapter.notifyDataSetChanged();
     }
 
@@ -61,11 +63,11 @@ public class CollectFragment extends BaseFragment implements ICollectView {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         collect_recyclerview.setLayoutManager(linearLayoutManager);
         collect_recyclerview.setAdapter(collectAdapter);
-        collectPresenter.getCollectList();
+        collectPresenter.getCollectList(page);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                collectPresenter.getCollectList();
+                collectPresenter.getCollectList(1);
                 refreshLayout.setRefreshing(false);
             }
         });
@@ -73,15 +75,6 @@ public class CollectFragment extends BaseFragment implements ICollectView {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                int post =  linearLayoutManager.findFirstCompletelyVisibleItemPosition();
-                int total =linearLayoutManager.getItemCount();
-                int visible = linearLayoutManager.getChildCount();
-                if((post+visible)>=total){
-                    collectAdapter.onLoadMoreStateChanged(true);
-//                    cooperationPresenter.getCooperationList(2);
-                }else{
-                    collectAdapter.onLoadMoreStateChanged(false);
-                }
 
             }
 

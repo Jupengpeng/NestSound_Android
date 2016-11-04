@@ -2,14 +2,17 @@ package com.xilu.wybz.presenter;
 
 import android.content.Context;
 
+import com.google.gson.reflect.TypeToken;
 import com.xilu.wybz.bean.CooperaMessageBean;
+import com.xilu.wybz.bean.JsonResponse;
 import com.xilu.wybz.common.MyHttpClient;
+import com.xilu.wybz.http.callback.AppJsonCalback;
 import com.xilu.wybz.http.callback.MyStringCallback;
 import com.xilu.wybz.ui.IView.ICooperaMessageView;
 import com.xilu.wybz.utils.ParseUtils;
 import com.xilu.wybz.utils.PrefsUtil;
 
-import java.util.ArrayList;
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
 
@@ -24,20 +27,38 @@ public class CooperaMessagePresenter extends BasePresenter<ICooperaMessageView> 
         super(context, iView);
     }
 
-    public void getCooperaMessageList() {
-        List<CooperaMessageBean> cooperaMessageBeanList = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            CooperaMessageBean cooperaMessageBean = new CooperaMessageBean();
-            cooperaMessageBean.setNickname("qqqqq" + i);
-            cooperaMessageBean.setTarget_nickname("疯子");
-            cooperaMessageBean.setUid(i);
-            cooperaMessageBean.setComment_type(i);
-            cooperaMessageBean.setComment("sdsadsasdsadsadasdsadsadsad" + i);
-            cooperaMessageBean.setCreatedate(454654564);
+    public void getCooperaMessageList(int did, int page) {
+        params = new HashMap<>();
+        params.put("did", did + "");
+        params.put("page", page + "");
+        params.put("token", PrefsUtil.getUserInfo(context).loginToken);
+        httpUtils.post(MyHttpClient.getLeavelist(), params, new AppJsonCalback(context) {
 
-            cooperaMessageBeanList.add(cooperaMessageBean);
-        }
-        iView.showCooperaMessageList(cooperaMessageBeanList);
+            @Override
+            public void onResult(JsonResponse<? extends Object> response) {
+                super.onResult(response);
+                List<CooperaMessageBean> cooperaMessageBeanList = response.getData();
+                if(page==1){
+                    if(cooperaMessageBeanList.size()==0){
+                        iView.loadNoData();
+                    }
+                }
+                iView.showCooperaMessageList(cooperaMessageBeanList);
+            }
+
+            @Override
+            public void onError(Call call, Exception e) {
+                super.onError(call, e);
+            }
+
+            @Override
+            public Type getDataType() {
+                return new TypeToken<List<CooperaMessageBean>>() {
+                }.getType();
+            }
+        });
+
+
     }
 
     public void sendComment(long itemid, int comment_type, int type, long target_uid, String comment) {
@@ -50,7 +71,7 @@ public class CooperaMessagePresenter extends BasePresenter<ICooperaMessageView> 
         if (comment_type == 2) {
             params.put("target_uid", target_uid + "");
         }
-        httpUtils.post(MyHttpClient.getSaveCommentUrl(), params, new MyStringCallback() {
+        httpUtils.post(MyHttpClient.getPublishComments(), params, new MyStringCallback() {
             @Override
             public void onResponse(String response) {
                 super.onResponse(response);
