@@ -9,6 +9,7 @@ import java.io.Serializable;
 public class PreserveMessageBean implements Serializable{
 
     public int id;
+    public int did;
     public int status;//1=未读，0=已读
     public String pushtype;
     public String title;

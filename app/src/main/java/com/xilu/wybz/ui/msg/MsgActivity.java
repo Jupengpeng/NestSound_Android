@@ -161,7 +161,7 @@ public class MsgActivity extends BaseListActivity<MsgBean> implements IMsgNumVie
                     startActivity(MsgSystemActivity.class);
                     break;
                 case 5:
-
+                    startActivity(MsgCooprateActivity.class);
                     break;
             }
         }

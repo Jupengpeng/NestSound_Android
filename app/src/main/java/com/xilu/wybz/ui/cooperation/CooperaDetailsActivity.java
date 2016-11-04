@@ -1,5 +1,6 @@
 package com.xilu.wybz.ui.cooperation;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -19,6 +20,7 @@ import com.xilu.wybz.bean.CooperaDetailsBean;
 import com.xilu.wybz.presenter.CooperaDetailsPresenter;
 import com.xilu.wybz.ui.IView.ICooperaDetailsView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
+import com.xilu.wybz.ui.preserve.PreserveInfoActivity;
 import com.xilu.wybz.ui.song.HotCatalogActivity;
 import com.xilu.wybz.utils.DateFormatUtils;
 import com.xilu.wybz.view.CircleImageView;
@@ -86,6 +88,17 @@ public class CooperaDetailsActivity extends ToolbarActivity implements ICooperaD
     private int iuid;
     private String iusername;
 
+    /**
+     *
+     * @param context
+     * @param did
+     */
+    public static void start(Context context, int did){
+        Intent intent = new Intent(context, CooperaDetailsActivity.class);
+        intent.putExtra("id", did);
+        context.startActivity(intent);
+    }
+
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_cooperadetails;
@@ -95,7 +108,6 @@ public class CooperaDetailsActivity extends ToolbarActivity implements ICooperaD
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle("某某的合作");
-
         initDatas();
         initPresenter();
     }

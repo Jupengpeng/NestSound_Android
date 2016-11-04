@@ -100,6 +100,15 @@ public class MyCommon {
     public final static String PUSH_TYPE_COPYRIGHSUCCESS="copyrighSuccess"; //保权成功
     public final static String PUSH_TYPE_COPYRIGHFAIL="copyrighFail";  //保权失败
 
+    public final static String PUSH_TYPE_COO="cooperate"; //合作作曲
+    public final static String PUSH_TYPE_COO_COMPLETE="cooperateComplete"; //合作完成
+    public final static String PUSH_TYPE_COO_INVITE="cooperateInvite"; //合作邀请
+    public final static String PUSH_TYPE_COO_ACCESS="cooperateAccess";  //合作采纳
+    public final static String PUSH_TYPE_COO_EXPIRE="cooperateExpire";  //合作到期
+    public final static String PUSH_TYPE_COO_LEAVE="cooperateLeave";  //合作留言
+    public final static String PUSH_TYPE_COO_LEAVEREPLY="cooperateLeaveReply";  //合作留言回复
+
+
     //默认歌词图片
     public static List<String> getLyricsPic() {
         List<String> lyricsPics = new ArrayList<>();
