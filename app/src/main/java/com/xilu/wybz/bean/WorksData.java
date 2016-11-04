@@ -12,6 +12,7 @@ import java.io.Serializable;
  */
 //@Table("workdata")
 public class WorksData implements Serializable {
+    public String did; //合作id
     public String itemid;//歌曲id
     public String pic;//歌曲封面
     public String title;//标题

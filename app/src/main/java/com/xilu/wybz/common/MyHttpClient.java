@@ -231,22 +231,22 @@ public class MyHttpClient {
 
     //个人主页
     public static String getUserCenter() {
-        return "/java/userCenter/index/v22";
+        return "/java/userCenter/index/v23";
     }
 
     //他人主页
     public static String getOtherCenter() {
-        return "/java/common/otherCenter/index/v22";
+        return "/java/common/otherCenter/index/v23";
     }
 
     //个人主页
     public static String getUserCenterList() {
-        return "/java/userCenter/listdetails/v22";
+        return "/java/userCenter/listdetails/v23";
     }
 
     //他人主页
     public static String getOtherCenterList() {
-        return "/java/common/otherCenter/listdetails/v22";
+        return "/java/common/otherCenter/listdetails/v23";
     }
 
     //歌词
@@ -313,6 +313,10 @@ public class MyHttpClient {
     //删除我的作品
     public static String getDeleteWorksUrl() {
         return "/java/userCenter/deleteWork";
+    }
+    //删除我的作品
+    public static String getDeleteCooprateWorksUrl() {
+        return "/cooperate/work/delete/v23";
     }
 
     //更新歌曲 歌词公开的状态

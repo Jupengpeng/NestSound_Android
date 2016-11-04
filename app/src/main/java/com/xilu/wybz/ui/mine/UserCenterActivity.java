@@ -260,9 +260,10 @@ public class UserCenterActivity extends BaseActivity implements IModifyCoverView
             tvSongNum.setText(NumberUtil.format(userInfoBean.worknum));
             tvLyricsNum.setText(NumberUtil.format(userInfoBean.lyricsnum));
             tvFovNum.setText(NumberUtil.format(userInfoBean.fovnum));
-            tvRecordNum.setText(NumberUtil.format(userInfoBean.inspirenum));
+            tvRecordNum.setText(NumberUtil.format(userInfoBean.cooperatenum));
         }
     }
+
     //在修改个人资料页面发送过来的
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(Event.UpdateUserInfo event) {
@@ -330,8 +331,8 @@ public class UserCenterActivity extends BaseActivity implements IModifyCoverView
                 tvFovNum.setText(NumberUtil.format(userInfoBean.fovnum));
                 break;
             case 4:
-                userInfoBean.inspirenum = userInfoBean.inspirenum + count;
-                tvRecordNum.setText(NumberUtil.format(userInfoBean.inspirenum));
+                userInfoBean.cooperatenum = userInfoBean.cooperatenum + count;
+                tvRecordNum.setText(NumberUtil.format(userInfoBean.cooperatenum));
                 break;
         }
     }

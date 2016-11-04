@@ -15,6 +15,8 @@ import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.MsgNumPresenter;
 import com.xilu.wybz.ui.IView.IMsgNumView;
 import com.xilu.wybz.ui.base.BaseListActivity;
+import com.xilu.wybz.utils.PrefsUtil;
+import com.xilu.wybz.utils.StringUtils;
 import com.xilu.wybz.view.SystemBarHelper;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 
@@ -107,7 +109,10 @@ public class MsgActivity extends BaseListActivity<MsgBean> implements IMsgNumVie
         SystemBarHelper.setHeightAndPadding(this, mAppBar);
 
         recycler.enablePullToRefresh(false);
-        msgNumPresenter.loadData();
+
+        if(!StringUtils.isBlank(PrefsUtil.getUserInfo(context).loginToken)){
+            msgNumPresenter.loadData();
+        }
     }
 
     public class MsgViewHolder extends BaseViewHolder {

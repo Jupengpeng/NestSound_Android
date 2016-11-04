@@ -35,7 +35,6 @@ import java.util.List;
  * Created by hujunwei on 16/6/3.
  */
 public class WorksDataFragment extends BaseListFragment<WorksData> implements IUserCenterListView {
-    UserCenterListPresenter userPresenter;
     public static String TYPE = "type";
     public static String UID = "uid";
     public static String AUTHOR = "author";
@@ -48,6 +47,8 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
     private String[] MYCOMES = new String[]{"mysong", "mylyrics", "myfav", "myrecord"};
     private boolean isFirst;
     private boolean isFirstTab;
+
+    UserCenterListPresenter userPresenter;
 
     @Override
     protected void initPresenter() {
@@ -326,6 +327,14 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
         }
     }
 
+    //删除合作作品
+    public void deleteCooperateWorksData(int pos) {
+        selectPos = pos;
+        if (pos >= 0 && pos < mDataList.size()) {
+            userPresenter.deleteCooperate(mDataList.get(pos).did);
+        }
+    }
+
     //取消收藏作品
     public void unfavWorksData(int pos) {
         selectPos = pos;
@@ -369,14 +378,14 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
 
     @Override
     protected BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
-        if (type == 4) {//灵感记录
+        if (type == 4) {//合作作品
             View view = LayoutInflater.from(context).inflate(R.layout.activity_work_list_item2, parent, false);
             WorksViewHolder holder = new WorksViewHolder(view, context, mDataList, COME,
                     new WorksViewHolder.OnItemClickListener() {
                         @Override
                         public void onClick(int pos, int which) {
                             if (which == 0) {
-                                showDeleteDialog(pos);
+                                deleteCooperateWorksData(pos);
                             }
                         }
                     });
