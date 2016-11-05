@@ -20,4 +20,5 @@
 
 
     <include layout="@layout/ll_loading" />
+    <include layout="@layout/ll_nodata" />
 </LinearLayout>

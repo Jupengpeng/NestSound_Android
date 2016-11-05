@@ -25,12 +25,14 @@ import butterknife.Bind;
 public class MineFragment extends BaseFragment implements IMineView {
     @Bind(R.id.ll_loading)
     LinearLayout ll_loading;
+    @Bind(R.id.ll_nodata)
+    LinearLayout ll_nodata;
     @Bind(R.id.refreshlayout)
     SwipeRefreshLayout refreshLayout;
     @Bind(R.id.mine_recyclerview)
     RecyclerView mine_recyclerview;
     MinePresenter minePresenter;
-    private List<MineBean> mineList;
+    private List<MineBean> mineList = new ArrayList<>();
     private MineAdapter mineAdapter;
     private int page = 1;
 
@@ -48,11 +50,15 @@ public class MineFragment extends BaseFragment implements IMineView {
 
     @Override
     public void initView() {
-        mineList = new ArrayList<>();
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         mine_recyclerview.setLayoutManager(linearLayoutManager);
         mineAdapter = new MineAdapter(mineList, context);
         mine_recyclerview.setAdapter(mineAdapter);
+        if (mineList.size() > 0) {
+            mineList.clear();
+            page = 1;
+        }
         minePresenter.getMineList(page);
         mineAdapter.setOnItemClickListener(new MineAdapter.OnItemClickListener() {
             @Override
@@ -72,8 +78,15 @@ public class MineFragment extends BaseFragment implements IMineView {
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                minePresenter.getMineList(1);
-                refreshLayout.setRefreshing(false);
+                if (refreshLayout.isRefreshing()) {
+                    if (mineList.size() > 0) {
+                        mineList.clear();
+                        page = 1;
+                    }
+                    minePresenter.getMineList(page);
+                    refreshLayout.setRefreshing(false);
+
+                }
             }
         });
         mine_recyclerview.setOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -87,7 +100,9 @@ public class MineFragment extends BaseFragment implements IMineView {
                     lastPosition = linearLayoutManager.findLastVisibleItemPosition();
                 }
                 if (lastPosition == recyclerView.getLayoutManager().getItemCount() - 1) {
-
+                    mineAdapter.onLoadMoreStateChanged(true);
+                    page++;
+                    minePresenter.getMineList(page);
                 }
             }
 
@@ -109,15 +124,24 @@ public class MineFragment extends BaseFragment implements IMineView {
     public void showMineList(List<MineBean> mineBeanList) {
         disMissLoading(ll_loading);
         if (isDestroy) return;
-        if (mineList == null) mineBeanList = new ArrayList<>();
-        if (page == 1) mineList.clear();
         mineList.addAll(mineBeanList);
         mineAdapter.notifyDataSetChanged();
+        showMsg("" + mineList.size());
     }
 
     @Override
     public void deleteSuccess(int position) {
         mineAdapter.removeItem(position);
+    }
+
+    @Override
+    public void noData() {
+        ll_nodata.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void noMoreData() {
+        mineAdapter.onLoadMoreStateChanged(false);
     }
 
     @Override

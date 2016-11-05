@@ -514,6 +514,7 @@
             android:name=".ui.cooperation.LyricDetailsActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".ui.cooperation.CooperaMessageActivity"
+            android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait"
             />
         <activity

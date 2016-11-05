@@ -26,12 +26,13 @@ import butterknife.ButterKnife;
 public class InvitationAdapter extends RecyclerView.Adapter<InvitationAdapter.InvitationViewHolder> {
     private List<Invitation> invitationList;
     private Context context;
-
+    private int type;
 
     public InvitationAdapter(List<Invitation> invitationList, Context context) {
         this.invitationList = invitationList;
         this.context = context;
     }
+
 
     public interface OnItemClickListener {
         void onItemClick(View view, int position);
@@ -46,7 +47,16 @@ public class InvitationAdapter extends RecyclerView.Adapter<InvitationAdapter.In
     @Override
     public InvitationViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         InvitationAdapter.InvitationViewHolder holder = new InvitationAdapter.InvitationViewHolder(LayoutInflater.from(context).inflate(R.layout.invitation_item, parent, false));
+
         return holder;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
     @Override
@@ -57,21 +67,26 @@ public class InvitationAdapter extends RecyclerView.Adapter<InvitationAdapter.In
         if (invitation != null) {
             holder.invitation_tv_name.setText(invitation.getNickname());
             holder.invitation_tv_signature.setText(invitation.getSignature());
-            if (invitation.getInvite() == 1) {
-                holder.invitation_bt.setVisibility(View.GONE);
-                holder.finishinvitation_bt.setVisibility(View.VISIBLE);
+            if (invitation.getInvite() == 1 ) {
+                holder.invitation_bt.setBackgroundResource(R.drawable.finishbt_bg);
+                holder.invitation_bt.setText("已邀请");
+
             }
+
+
         }
-        if (position > 2) {
+        if (invitation.getRecommend() == 0) {
             holder.invitation_recommend.setVisibility(View.GONE);
         }
-        holder.invitation_bt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mOnItemClickListener.onItemClick(holder.invitation_bt, position);
-            }
-        });
 
+        if (invitation.getInvite() == 0) {
+            holder.invitation_bt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mOnItemClickListener.onItemClick(holder.invitation_bt, position);
+                }
+            });
+        }
     }
 
     @Override

@@ -96,11 +96,11 @@ public class CooperationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     mOnItemClickListener.onItemClick(((CooperationViewHolder) holder).ll_jump, pos, 1);
                 }
             });
-            ((CooperationViewHolder) holder).ll_jump2.setOnClickListener(new View.OnClickListener() {
+            ((CooperationViewHolder) holder).coopera_head_iv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int pos = holder.getLayoutPosition();
-                    mOnItemClickListener.onItemClick(((CooperationViewHolder) holder).ll_jump2, pos, 2);
+                    mOnItemClickListener.onItemClick(((CooperationViewHolder) holder).coopera_head_iv, pos, 2);
                 }
             });
             ((CooperationViewHolder) holder).coopera_bt.setOnClickListener(new View.OnClickListener() {

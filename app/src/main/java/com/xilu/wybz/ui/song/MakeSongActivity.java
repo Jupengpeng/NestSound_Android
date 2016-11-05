@@ -16,6 +16,7 @@ import android.widget.ImageView;
 
 import com.czt.mp3recorder.MP3Recorder;
 import com.xilu.wybz.R;
+import com.xilu.wybz.bean.PreinfoBean;
 import com.xilu.wybz.bean.TemplateBean;
 import com.xilu.wybz.bean.TruningMusicBean;
 import com.xilu.wybz.bean.UserBean;
@@ -114,11 +115,16 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
     private String title;
     private String lyric;
     private int cooperatype;
-    private int did;
     private int iuid;
+    private int wuid;
     private String iusername;
+    private String wusername;
 
     private boolean useCountDown = false;
+
+
+    private PreinfoBean preinfoBean;
+    private int did;
 
     public static void toMakeSongActivity(Context context, TemplateBean templateBean) {
         Intent intent = new Intent(context, MakeSongActivity.class);
@@ -126,15 +132,15 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
         context.startActivity(intent);
     }
 
-    public static void toMakeSongActivity(Context context, TemplateBean templateBean, String lyric, String title, int type, int did, int iuid, String iusername) {
+    public static void toMakeSongActivity(Context context, TemplateBean templateBean, int type, PreinfoBean preinfoBean, int did) {
         Intent intent = new Intent(context, MakeSongActivity.class);
         intent.putExtra("templateBean", templateBean);
-        intent.putExtra("lyric", lyric);
-        intent.putExtra("title", title);
-        intent.putExtra("type", type);
+        intent.putExtra("preinfoBean", preinfoBean);
         intent.putExtra("did", did);
-        intent.putExtra("iuid", iuid);
-        intent.putExtra("iusername", iusername);
+
+        intent.putExtra("type", type);
+
+
         context.startActivity(intent);
     }
 
@@ -307,7 +313,7 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
         worksData.musicurl = bean.newPath;
         cancelPd();
         if (cooperatype == 1) {
-            SaveSongActivity.toSaveSongActivity(this, worksData, 1, iusername, did, iuid);
+            SaveSongActivity.toSaveSongActivity(this, worksData, 1, preinfoBean, did);
         } else {
             SaveSongActivity.toSaveSongActivity(this, worksData);
         }
@@ -374,20 +380,22 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
             templateBean = (TemplateBean) bundle.getSerializable("templateBean");
         }
         if (templateBean == null) isQc = true;
-
-        lyric = getIntent().getStringExtra("lyric");
-        title = getIntent().getStringExtra("title");
         cooperatype = getIntent().getIntExtra("type", 0);
-        did = getIntent().getIntExtra("did", 0);
-        iuid = getIntent().getIntExtra("iuid",0);
-        iusername = getIntent().getStringExtra("iusername");
-
-
+        preinfoBean = (PreinfoBean) getIntent().getSerializableExtra("preinfoBean");
+        if (preinfoBean != null) {
+            lyric = preinfoBean.getLyrics();
+            title = preinfoBean.getTitle();
+            did = getIntent().getIntExtra("did", 0);
+            iuid = preinfoBean.getlUid();
+            iusername = preinfoBean.getlUsername();
+            wuid = preinfoBean.getwUid();
+            wusername = preinfoBean.getwUsername();
+        }
         if (cooperatype == 1) {
             etTitle.setText(title);
             etTitle.setFocusable(false);
             etTitle.setEnabled(false);
-            etWord.setText(lyric);
+            etWord.setText("作曲者：" + wusername + "\n" + "作词者：" + iusername + "\n" + lyric);
             etWord.setFocusable(false);
             etWord.setEnabled(false);
         }

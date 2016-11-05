@@ -11,5 +11,9 @@ import java.util.List;
 public interface IInvitationView extends IBaseView {
 
     void showInvitationList(List<Invitation> invitationList) ;
+//    void showSerachInvitationList(List<Invitation> invitationList) ;
+//    void sendSuccess(int pos);
     void sendSuccess();
+    void serachSuccess();
+    void noData();
 }

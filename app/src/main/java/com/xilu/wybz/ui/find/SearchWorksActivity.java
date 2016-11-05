@@ -58,6 +58,7 @@ public class SearchWorksActivity extends ToolbarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initView();
+
     }
 
     public void initView() {

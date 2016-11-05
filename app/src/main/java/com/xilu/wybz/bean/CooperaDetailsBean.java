@@ -156,7 +156,16 @@ public class CooperaDetailsBean {
         private int status;
         private long itemid;
         private String lyrics;
+        private int iscollect;
         private int worknum;
+
+        public int getIscollect() {
+            return iscollect;
+        }
+
+        public void setIscollect(int iscollect) {
+            this.iscollect = iscollect;
+        }
 
         public int getUid() {
             return uid;

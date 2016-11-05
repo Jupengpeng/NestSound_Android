@@ -1,6 +1,7 @@
 package com.xilu.wybz.ui.IView;
 
 import com.xilu.wybz.bean.CooperationBean;
+import com.xilu.wybz.bean.PreinfoBean;
 
 import java.util.List;
 
@@ -13,5 +14,9 @@ public interface ICooperationView extends IBaseView {
     void showCooperation(List<CooperationBean> cooperationBeanList);
 
     void noMoreData();
+
+    void showpreinfoBean(PreinfoBean preinfoBean);
+
+    void noData();
 
 }

@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -33,7 +34,6 @@ public class InvitationActivity extends ToolbarActivity implements IInvitationVi
     private InvitationAdapter invitationAdapter;
     private List<Invitation> invitationlist;
     private int did;//合作需求ID
-
     private int page = 1;
 
     @Override
@@ -44,6 +44,7 @@ public class InvitationActivity extends ToolbarActivity implements IInvitationVi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         setTitle("邀请");
         initPresenter();
     }
@@ -66,6 +67,20 @@ public class InvitationActivity extends ToolbarActivity implements IInvitationVi
     public void sendSuccess() {
         cancelPd();
         showMsg("邀请成功");
+//        invitationAdapter.setType(4);
+//        invitationAdapter.notifyDataSetChanged();
+
+    }
+
+    @Override
+    public void serachSuccess() {
+//        page++;
+//        invitationPresenter.getInvitationList(did, page, "");
+    }
+
+    @Override
+    public void noData() {
+
     }
 
     @Override
@@ -94,15 +109,25 @@ public class InvitationActivity extends ToolbarActivity implements IInvitationVi
                 }
             }
         });
+        invitation_recyclerview.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
 
+            }
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+        });
         et_keyword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 String content = et_keyword.getText().toString().trim();
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    if (TextUtils.isEmpty(content)) {
-                        showMsg("hahah");
-//                        invitationPresenter.getInvitationList(did, page, content);
+                    if (!TextUtils.isEmpty(content)) {
+                        invitationPresenter.getInvitationList(did, page, content);
                     }
                     return true;
                 }

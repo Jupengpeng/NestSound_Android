@@ -21,6 +21,7 @@ import com.xilu.wybz.R;
 import com.xilu.wybz.adapter.SelectAdapter;
 import com.xilu.wybz.bean.HotBean;
 import com.xilu.wybz.bean.HotCatalog;
+import com.xilu.wybz.bean.PreinfoBean;
 import com.xilu.wybz.bean.TemplateBean;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.KeySet;
@@ -83,14 +84,11 @@ public class HotCatalogActivity extends BaseSectionListActivity<TemplateBean> im
     private SelectAdapter adapter1, adapter2;
 
 
-    String title;
-    String lyric;
+
 
     int cooperatype;// 1是从合作按钮过来的
-    String iusername;
-    int iuid;
-    int did;
-
+    private PreinfoBean preinfoBean;
+    private int did;
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_hotcatalog_list;
@@ -116,13 +114,10 @@ public class HotCatalogActivity extends BaseSectionListActivity<TemplateBean> im
             flash = intent.getBooleanExtra(FLASH_TAG, false);
             aid = intent.getStringExtra(KeySet.KEY_ID);
         }
-        title = getIntent().getStringExtra("title");
 
-        lyric = getIntent().getStringExtra("lyric");
         cooperatype = getIntent().getIntExtra("coopera", 0);
-        did = getIntent().getIntExtra("did", 0);
-        iuid = getIntent().getIntExtra("iuid", 0);
-        iusername = getIntent().getStringExtra("iusername");
+        did = getIntent().getIntExtra("did",0);
+        preinfoBean = (PreinfoBean) getIntent().getSerializableExtra("preinfoBean");
 
         int space10 = DensityUtil.dip2px(context, 10);
 
@@ -224,7 +219,7 @@ public class HotCatalogActivity extends BaseSectionListActivity<TemplateBean> im
                         } else {
                             hotBean.simplesing.aid = aid;
                             if (cooperatype == 1) {
-                                MakeSongActivity.toMakeSongActivity(context, hotBean.simplesing, lyric, title, cooperatype,did,iuid,iusername);
+                                MakeSongActivity.toMakeSongActivity(context, hotBean.simplesing,cooperatype,preinfoBean,did);
                             } else {
                                 MakeSongActivity.toMakeSongActivity(context, hotBean.simplesing);
                             }
@@ -393,7 +388,7 @@ public class HotCatalogActivity extends BaseSectionListActivity<TemplateBean> im
 //                }
             } else {
                 if (cooperatype == 1) {
-                    MakeSongActivity.toMakeSongActivity(context, hotBean.simplesing, lyric, title, cooperatype,did,iuid,iusername);
+                    MakeSongActivity.toMakeSongActivity(context, hotBean.simplesing,cooperatype,preinfoBean,did);
                 } else {
                     MakeSongActivity.toMakeSongActivity(context, bean);
                 }

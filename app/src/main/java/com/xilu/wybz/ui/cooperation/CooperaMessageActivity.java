@@ -115,7 +115,7 @@ public class CooperaMessageActivity extends ToolbarActivity implements ICooperaM
 
     private void toSendComment() {
         showPd("正在评论中...");
-        cooperaMessagePresenter.sendComment(itemid, 1, 2, 0, content);
+        cooperaMessagePresenter.sendComment(did, 1, 2, 0, content);
     }
 
     @Override

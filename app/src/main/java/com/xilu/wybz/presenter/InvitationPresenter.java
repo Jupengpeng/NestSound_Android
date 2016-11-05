@@ -45,6 +45,9 @@ public class InvitationPresenter extends BasePresenter<IInvitationView> {
             @Override
             public void onResult(JsonResponse<? extends Object> response) {
                 super.onResult(response);
+                if (key != null || !"".equals(key)) {
+                    iView.serachSuccess();
+                }
 
                 List<Invitation> invitationBeanList = response.getData();
                 iView.showInvitationList(invitationBeanList);
@@ -68,7 +71,7 @@ public class InvitationPresenter extends BasePresenter<IInvitationView> {
         params.put("target_uid", target_uid + "");
         params.put("did", did + "");
         params.put("token", PrefsUtil.getUserInfo(context).loginToken);
-        httpUtils.post(MyHttpClient.sendInvite(),params,new MyStringCallback(){
+        httpUtils.post(MyHttpClient.sendInvite(), params, new MyStringCallback() {
             @Override
             public void onError(Call call, Exception e) {
                 super.onError(call, e);

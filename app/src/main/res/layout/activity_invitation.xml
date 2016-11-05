@@ -35,6 +35,7 @@
                 android:gravity="center"
                 android:background="@color/tran"
                 android:hint="搜索"
+
                 android:imeOptions="actionSearch"
                 android:inputType="text"
                 android:textColor="@color/main_text_color3"

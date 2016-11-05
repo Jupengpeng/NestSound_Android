@@ -59,17 +59,17 @@ public class CompleteListAdapter extends RecyclerView.Adapter<CompleteListAdapte
             holder.complete_lUsername.setText(completeBean.getLUsername());
             holder.complete_wUsername.setText(completeBean.getWUsername());
             holder.complete_createtime.setText(DateFormatUtils.formatX1(completeBean.getCreatetime()));
-            ZnImageLoader.getInstance().displayImage("http://i04.pic.sogou.com/15a7ed77bf5fa401", ZnImageLoader.getInstance().headOptions, holder.complete_iv);
+            ZnImageLoader.getInstance().displayImage(completeBean.getPic(), ZnImageLoader.getInstance().headOptions, holder.complete_iv);
 
             if (completeBean.getAccess() == 1) {
                 holder.complete_isaccess_bt.setBackgroundResource(R.drawable.finishbt_bg);
                 holder.complete_isaccess_bt.setText("已采纳");
                 holder.complete_isaccess_bt.setEnabled(false);
             }
-            if(flag==1){
+            if (flag == 1) {
                 holder.complete_isaccess_bt.setVisibility(View.GONE);
             }
-            if(completeBean.getAccess() != 1) {
+            if (completeBean.getAccess() != 1) {
                 holder.complete_isaccess_bt.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

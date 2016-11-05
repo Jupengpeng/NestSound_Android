@@ -13,4 +13,8 @@ public interface IMineView extends IBaseView {
     void  showMineList(List<MineBean> mineBeanList);
 
     void deleteSuccess(int pos);
+
+    void noData();
+
+    void noMoreData();
 }

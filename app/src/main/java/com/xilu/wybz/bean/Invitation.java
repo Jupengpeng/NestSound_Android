@@ -11,6 +11,15 @@ public class Invitation {
     String headurl;
     String signature;
     int invite;
+    int recommend;
+
+    public int getRecommend() {
+        return recommend;
+    }
+
+    public void setRecommend(int recommend) {
+        this.recommend = recommend;
+    }
 
     public int getUid() {
         return uid;

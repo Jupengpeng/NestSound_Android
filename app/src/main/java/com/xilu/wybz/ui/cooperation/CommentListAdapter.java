@@ -54,7 +54,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
         holder.tv_name.setText(commentBean.getNickname());
         holder.tv_content.setText(commentBean.getComment());
         holder.tv_date.setText(DateFormatUtils.formatX1(commentBean.getCreatedate()));
-        ZnImageLoader.getInstance().displayImage("http://i04.pic.sogou.com/15a7ed77bf5fa401", ZnImageLoader.getInstance().headOptions, holder.iv_head);
+        ZnImageLoader.getInstance().displayImage(commentBean.getHeaderurl(), ZnImageLoader.getInstance().headOptions, holder.iv_head);
     }
 
     @Override

@@ -18,6 +18,7 @@ import android.widget.ImageView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
+import com.xilu.wybz.bean.PreinfoBean;
 import com.xilu.wybz.bean.ShareResponseBean;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.Event;
@@ -76,11 +77,10 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView, 
     SaveSongPresenter saveSongPresenter;
 
     private int type;
-    private int did;//合作需求ID
 
-    private int iuid;//词作者id
-    private String lUsername;//词作者
 
+    private PreinfoBean preinfoBean;
+    private int did;
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_savesong;
@@ -92,13 +92,12 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView, 
         context.startActivity(intent);
     }
 
-    public static void toSaveSongActivity(Context context, WorksData worksData, int type, String lUsername, int did, int iuid) {
+    public static void toSaveSongActivity(Context context, WorksData worksData, int type, PreinfoBean preinfoBean,int did) {
         Intent intent = new Intent(context, SaveSongActivity.class);
         intent.putExtra("worksData", worksData);
         intent.putExtra("type", type);
         intent.putExtra("did", did);
-        intent.putExtra("iuid", iuid);
-        intent.putExtra("lUsername", lUsername);
+        intent.putExtra("preinfoBean", preinfoBean);
         context.startActivity(intent);
     }
 
@@ -121,8 +120,8 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView, 
         }
         type = getIntent().getIntExtra("type", 0);
         did = getIntent().getIntExtra("did", 0);
-        iuid = getIntent().getIntExtra("iuid", 0);
-        lUsername = getIntent().getStringExtra("iusername");
+        preinfoBean = (PreinfoBean) getIntent().getSerializableExtra("preinfoBean");
+
     }
 
     @Override
@@ -220,7 +219,7 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView, 
                 worksData.setPic(imageUrl);
                 if (materialDialog != null && materialDialog.isShowing())
                     if (type == 1) {
-                        saveSongPresenter.saveCooperaSong(worksData, did,iuid, lUsername);
+                        saveSongPresenter.saveCooperaSong(worksData, preinfoBean,did);
                     }
                 saveSongPresenter.saveSong(worksData);
             }
@@ -357,7 +356,7 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView, 
                     uploadCoverPic();
                 } else {
                     if (type == 1) {
-                        saveSongPresenter.saveCooperaSong(worksData, did,iuid, lUsername);
+                        saveSongPresenter.saveCooperaSong(worksData,preinfoBean,did);
                     } else {
                         saveSongPresenter.saveSong(worksData);
                     }
