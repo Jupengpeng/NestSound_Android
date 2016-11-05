@@ -122,6 +122,10 @@
             android:name=".ui.msg.MsgSystemActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.msg.MsgCooprateActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".ui.mine.FollowAndFansActivity"

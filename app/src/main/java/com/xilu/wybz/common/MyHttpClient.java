@@ -206,6 +206,10 @@ public class MyHttpClient {
     }
 
 
+    //合作列表
+    public static String getMsgCooperatelist() {
+        return "/java/message/cooperatelist/v23";
+    }
     /**
      * @return
      */
