@@ -1,5 +1,6 @@
 package com.xilu.wybz.ui.cooperation;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -97,6 +98,16 @@ public class CooperaDetailsActivity extends ToolbarActivity implements ICooperaD
     private int id; //合作ID
     private int page = 1;
 
+    /**
+     *
+     * @param context
+     * @param did
+     */
+    public static void start(Context context, int did){
+        Intent intent = new Intent(context, CooperaDetailsActivity.class);
+        intent.putExtra("id", did);
+        context.startActivity(intent);
+    }
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_cooperadetails;
