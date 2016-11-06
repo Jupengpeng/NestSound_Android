@@ -78,6 +78,13 @@ public class CompleteListAdapter extends RecyclerView.Adapter<CompleteListAdapte
                     }
                 });
             }
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int pos = holder.getLayoutPosition();
+                    mOnItemClickListener.onItemClick(holder.itemView, pos, 2);
+                }
+            });
         }
 
     }

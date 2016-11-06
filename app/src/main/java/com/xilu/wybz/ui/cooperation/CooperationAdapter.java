@@ -55,15 +55,15 @@ public class CooperationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 //        CooperationAdapter.CooperationViewHolder holder = new CooperationAdapter.CooperationViewHolder(LayoutInflater.from(context).inflate(R.layout.cooperation_item, parent, false));
-        if (viewType == TYPE_ITEM) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(
-                    R.layout.cooperation_item, null);
-            return new CooperationViewHolder(view);
-        } else if (viewType == TYPE_FOOTER) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.widget_pull_to_refresh_footer, parent, false);
-            return new FooterViewHolder(view);
-        }
 
+          if (viewType == TYPE_ITEM) {
+              View view = LayoutInflater.from(parent.getContext()).inflate(
+                      R.layout.cooperation_item, null);
+              return new CooperationViewHolder(view);
+          } else if (viewType == TYPE_FOOTER) {
+              View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.widget_pull_to_refresh_footer, parent, false);
+              return new FooterViewHolder(view);
+          }
 
         return null;
     }

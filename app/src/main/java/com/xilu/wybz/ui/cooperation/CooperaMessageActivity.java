@@ -8,27 +8,31 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewStub;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.xilu.wybz.R;
+import com.xilu.wybz.bean.ActionBean;
 import com.xilu.wybz.bean.CooperaMessageBean;
 import com.xilu.wybz.presenter.CooperaMessagePresenter;
 import com.xilu.wybz.ui.IView.ICooperaMessageView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
-import com.xilu.wybz.ui.mine.UserCenterActivity;
+import com.xilu.wybz.ui.mine.OtherUserCenterActivity;
 import com.xilu.wybz.utils.KeyBoardUtil;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.SystemUtils;
+import com.xilu.wybz.utils.ToastUtils;
+import com.xilu.wybz.view.dialog.ActionMoreDialog;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 
-public class CooperaMessageActivity extends ToolbarActivity implements ICooperaMessageView {
+public class CooperaMessageActivity extends ToolbarActivity implements ICooperaMessageView, SwipeRefreshLayout.OnRefreshListener {
     @Bind(R.id.tv_nodata)
     protected TextView tvNoData;
     @Bind(R.id.iv_nodata)
@@ -52,9 +56,13 @@ public class CooperaMessageActivity extends ToolbarActivity implements ICooperaM
     private int commentnum;
     private List<CooperaMessageBean> messageBeanList = new ArrayList<>();
     String comment;
-    int comment_type;
+    int comment_type = 1;
     long itemid;
     long target_uid;
+    ActionMoreDialog actionMoreDialog;
+    String[] actionTitles = new String[]{"删除"};
+    String[] actionTypes = new String[]{"del"};
+    List<ActionBean> actionBeanList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +78,14 @@ public class CooperaMessageActivity extends ToolbarActivity implements ICooperaM
         commentnum = getIntent().getIntExtra("commentnum", 0);
         itemid = getIntent().getLongExtra("itemid", 0);
         message_commentnum.setText("留言" + commentnum);
+        actionBeanList = new ArrayList<>();
+        for (int i = 0; i < actionTitles.length; i++) {
+            ActionBean actionBean = new ActionBean();
+            actionBean.setTitle(actionTitles[i]);
+            actionBean.setType(actionTypes[i]);
+            actionBeanList.add(actionBean);
+        }
+
     }
 
     private void initPresenter() {
@@ -115,7 +131,7 @@ public class CooperaMessageActivity extends ToolbarActivity implements ICooperaM
 
     private void toSendComment() {
         showPd("正在评论中...");
-        cooperaMessagePresenter.sendComment(did, 1, 2, 0, content);
+        cooperaMessagePresenter.sendComment(did, comment_type, 2, target_uid, content);
     }
 
     @Override
@@ -126,9 +142,6 @@ public class CooperaMessageActivity extends ToolbarActivity implements ICooperaM
     @Override
     public void showCooperaMessageList(List<CooperaMessageBean> cooperaMessageBeanList) {
         if (isDestroy) return;
-        if (messageBeanList == null) cooperaMessageBeanList = new ArrayList<>();
-        if (messageBeanList.size() > 0) messageBeanList.clear();
-
         messageBeanList.addAll(cooperaMessageBeanList);
         cooperaMessageAdapter.notifyDataSetChanged();
 
@@ -137,16 +150,26 @@ public class CooperaMessageActivity extends ToolbarActivity implements ICooperaM
 
     @Override
     public void initView() {
-        messageBeanList = new ArrayList<>();
-        message_recyclerview.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+        message_recyclerview.setLayoutManager(linearLayoutManager);
         cooperaMessageAdapter = new CooperaMessageAdapter(messageBeanList, this);
         message_recyclerview.setAdapter(cooperaMessageAdapter);
         cooperaMessagePresenter.getCooperaMessageList(did, page);
-        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        refreshLayout.setOnRefreshListener(this);
+        message_recyclerview.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onRefresh() {
-//                cooperaMessagePresenter.getCooperaMessageList();
-                refreshLayout.setRefreshing(false);
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                int lastPosition = -1;
+
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    lastPosition = linearLayoutManager.findLastVisibleItemPosition();
+                }
+                if (lastPosition == recyclerView.getLayoutManager().getItemCount() - 1) {
+                    cooperaMessageAdapter.onLoadMoreStateChanged(true);
+                    page++;
+                    cooperaMessagePresenter.getCooperaMessageList(did, page);
+                }
             }
         });
         cooperaMessageAdapter.setOnItemClickListener(new CooperaMessageAdapter.OnItemClickListener() {
@@ -154,23 +177,41 @@ public class CooperaMessageActivity extends ToolbarActivity implements ICooperaM
             public void onItemClick(View view, int position, int type, CooperaMessageBean cooperaMessageBean) {
                 switch (type) {
                     case 1:
-                        itemid = cooperaMessageBean.getItemid();
-                        comment_type = cooperaMessageBean.getComment_type();
-                        target_uid = cooperaMessageBean.getTarget_uid();
-                        comment = etContent.getText().toString().trim();
-                        if (comment_type == 2) {
-                            etContent.setHint("回复" + position);
+                        if (PrefsUtil.getUserId(context) > 0) {
+                            boolean isMe = cooperaMessageBean.getUid() == PrefsUtil.getUserId(context);
+                            if (isMe) {
+                                actionMoreDialog = new ActionMoreDialog(context, new AdapterView.OnItemClickListener() {
+                                    @Override
+                                    public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
+                                        if (pos == 0) {
+//                                            commentPresenter.delComment(commentBean.id, commentBean.itemid, position, type);
+                                        }
+                                    }
+                                }, actionBeanList);
+                                if (!actionMoreDialog.isShowing()) {
+                                    actionMoreDialog.showDialog();
+                                }
+                            } else {
+                                itemid = cooperaMessageBean.getItemid();
+                                comment_type = 2;
+                                target_uid = cooperaMessageBean.getUid();
+                                comment = etContent.getText().toString().trim();
+                                etContent.setHint("回复" + cooperaMessageBean.getNickname());
+                                etContent.requestFocus();
+                                KeyBoardUtil.showSoftInput(context, etContent);
+                            }
                         } else {
-                            etContent.setHint("来~说点什么");
-                        }
-                        KeyBoardUtil.showSoftInput(context, etContent);
+                            ToastUtils.logingTip(context, "请登录后再进行回复！");
 
+
+                        }
                         break;
                     case 2:
                         if (cooperaMessageBean.getUid() != PrefsUtil.getUserId(context)) {
-                            startActivity(UserCenterActivity.class);
+                            OtherUserCenterActivity.toUserInfoActivity(context, cooperaMessageBean.getUid(), cooperaMessageBean.getNickname());
                         }
                         break;
+
                 }
             }
         });
@@ -198,7 +239,7 @@ public class CooperaMessageActivity extends ToolbarActivity implements ICooperaM
 
     @Override
     public void loadNoMore() {
-
+        cooperaMessageAdapter.onLoadMoreStateChanged(false);
     }
 
     @Override
@@ -212,7 +253,11 @@ public class CooperaMessageActivity extends ToolbarActivity implements ICooperaM
     public void commentSuccess(int id) {
         showMsg("评论成功");
         cancelPd();
+        llNoData.setVisibility(View.GONE);
         etContent.setText("");
+        onRefresh();
+        commentnum+=1;
+        message_commentnum.setText("留言"+commentnum);
     }
 
     @Override
@@ -235,5 +280,15 @@ public class CooperaMessageActivity extends ToolbarActivity implements ICooperaM
         super.onDestroy();
 
 
+    }
+
+    @Override
+    public void onRefresh() {
+        if (messageBeanList.size() > 0) {
+            messageBeanList.clear();
+            page = 1;
+        }
+        cooperaMessagePresenter.getCooperaMessageList(did, page);
+        refreshLayout.setRefreshing(false);
     }
 }

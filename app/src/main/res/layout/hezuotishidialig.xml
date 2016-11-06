@@ -32,8 +32,10 @@
             android:id="@+id/cancle_bt"
             android:layout_width="90dp"
             android:layout_height="38dp"
+            style="?android:attr/borderlessButtonStyle"
             android:layout_marginLeft="28dp"
             android:layout_weight="1"
+
             android:background="@drawable/dismiss_bg"
             android:text="取消"
             android:textColor="@color/main_text_color2"
@@ -41,6 +43,7 @@
 
         <Button
             android:text="确定"
+            style="?android:attr/borderlessButtonStyle"
             android:id="@+id/positive_bt"
             android:layout_width="90dp"
             android:layout_height="38dp"

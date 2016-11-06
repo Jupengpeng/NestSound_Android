@@ -47,9 +47,9 @@ public class CooperationFragment extends BaseFragment implements ICooperationVie
     private CooperationPresenter cooperationPresenter;
     private List<CooperationBean> cooperationList = new ArrayList<>();
     AlertDialog dialog;
-    int mLastVisibleItem;
-    int mFirstVisibleItem;
 
+
+    private boolean isRefreshing;
     private int did;//合作需求ID
 
     @Override
@@ -100,7 +100,9 @@ public class CooperationFragment extends BaseFragment implements ICooperationVie
         if (isDestroy) return;
         cooperationList.addAll(cooperationBeanList);
         cooperationAdapter.notifyDataSetChanged();
-        showMsg("" + cooperationList.size());
+        if (refreshLayout.isRefreshing()) {
+            refreshLayout.setRefreshing(false);
+        }
     }
 
     @Override
@@ -115,9 +117,9 @@ public class CooperationFragment extends BaseFragment implements ICooperationVie
         intent.putExtra("preinfoBean", preinfoBean);
         intent.putExtra("coopera", 1);
         intent.putExtra("did", did);
-
         startActivity(intent);
         dialog.dismiss();
+        getActivity().finish();
     }
 
     @Override
@@ -132,20 +134,26 @@ public class CooperationFragment extends BaseFragment implements ICooperationVie
         cooperationrecyclerview.setLayoutManager(linearLayoutManager);
         cooperationAdapter = new CooperationAdapter(cooperationList, context);
         cooperationrecyclerview.setAdapter(cooperationAdapter);
-        if(cooperationList.size()>0){
-            cooperationList.clear();
-            page = 1;
-        }
+
+//        if (cooperationList.size() > 0) {
+//            cooperationList.clear();
+//            page = 1;
+//        }
         cooperationPresenter.getCooperationList(page);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if(cooperationList.size()>0){
-                    cooperationList.clear();
-                    page=1;
+                isRefreshing = refreshLayout.isRefreshing();
+                if (isRefreshing) {
+                    if (cooperationList.size() > 0) {
+                        cooperationList.clear();
+                        page = 1;
+                    }
+                    refreshLayout.setRefreshing(false);
+                    cooperationPresenter.getCooperationList(page);
+
                 }
-                cooperationPresenter.getCooperationList(page);
-                refreshLayout.setRefreshing(false);
+
             }
         });
         cooperationrecyclerview.setOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -163,14 +171,6 @@ public class CooperationFragment extends BaseFragment implements ICooperationVie
                     cooperationPresenter.getCooperationList(page);
 
                 }
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                mLastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
-                mFirstVisibleItem = linearLayoutManager.findFirstCompletelyVisibleItemPosition();
-
             }
         });
         more_iv.setOnClickListener(new View.OnClickListener() {

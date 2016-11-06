@@ -45,11 +45,31 @@ public class InvitationPresenter extends BasePresenter<IInvitationView> {
             @Override
             public void onResult(JsonResponse<? extends Object> response) {
                 super.onResult(response);
-                if (key != null || !"".equals(key)) {
-                    iView.serachSuccess();
-                }
-
                 List<Invitation> invitationBeanList = response.getData();
+                if (key != "" ) {
+                    if (page == 1) {
+                        if (invitationBeanList.size() == 0) {
+                            iView.noSerachData();
+                        }
+                    } else {
+                        if (invitationBeanList.size() == 0) {
+                            iView.noSerachMoreData();
+                        }
+                    }
+                    if(invitationBeanList.size()>0){
+                        iView.serachSuccess();
+                    }
+                } else {
+                    if (page == 1) {
+                        if (invitationBeanList.size() == 0) {
+                            iView.noData();
+                        }
+                    } else {
+                        if (invitationBeanList.size() == 0) {
+                            iView.noMoreData();
+                        }
+                    }
+                }
                 iView.showInvitationList(invitationBeanList);
             }
 

@@ -12,6 +12,15 @@ public class Invitation {
     String signature;
     int invite;
     int recommend;
+    public boolean isSelected = false;
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
 
     public int getRecommend() {
         return recommend;

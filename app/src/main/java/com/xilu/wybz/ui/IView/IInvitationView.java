@@ -16,4 +16,7 @@ public interface IInvitationView extends IBaseView {
     void sendSuccess();
     void serachSuccess();
     void noData();
+    void noMoreData();
+    void noSerachData();
+    void noSerachMoreData();
 }

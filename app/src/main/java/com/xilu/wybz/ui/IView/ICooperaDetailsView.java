@@ -18,4 +18,6 @@ public interface ICooperaDetailsView extends IBaseView {
     void collectSuccess(int type);
 
     void showpreinfoBean(PreinfoBean preinfoBean);
+
+    void acceptSuccess();
 }

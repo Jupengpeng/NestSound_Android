@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -27,11 +26,12 @@ import com.xilu.wybz.utils.DateFormatUtils;
 import com.xilu.wybz.view.CircleImageView;
 import com.xilu.wybz.view.MyRecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+
+import static com.xilu.wybz.R.id.positive_bt;
 
 /**
  * Created by Administrator on 2016/10/23.
@@ -89,25 +89,26 @@ public class CooperaDetailsActivity extends ToolbarActivity implements ICooperaD
     int iscollect;
     private CooperaDetailsBean detailsBean;
     private CooperaDetailsPresenter cooperaDetailsPresenter;
-    private List<CooperaDetailsBean.CommentListBean> CommentList = new ArrayList<>();
-    private List<CooperaDetailsBean.CompleteListBean> CompleteList = new ArrayList<>();
+    private List<CooperaDetailsBean.CommentListBean> CommentList;
+    private List<CooperaDetailsBean.CompleteListBean> CompleteList;
     private CommentListAdapter commentListAdapter;
     private CompleteListAdapter completeListAdapter;
     private AlertDialog dialog;
     private AlertDialog dialog2;
     private int id; //合作ID
     private int page = 1;
+    private int itemid;
 
     /**
-     *
      * @param context
      * @param did
      */
-    public static void start(Context context, int did){
+    public static void start(Context context, int did) {
         Intent intent = new Intent(context, CooperaDetailsActivity.class);
         intent.putExtra("id", did);
         context.startActivity(intent);
     }
+
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_cooperadetails;
@@ -149,8 +150,8 @@ public class CooperaDetailsActivity extends ToolbarActivity implements ICooperaD
         dialog2 = new AlertDialog.Builder(CooperaDetailsActivity.this).create();
         LayoutInflater layoutInflater = LayoutInflater.from(CooperaDetailsActivity.this);
         LinearLayout layout = (LinearLayout) layoutInflater.inflate(R.layout.hezuotishidialig, null);
-        Button positive_bt = (Button) layout.findViewById(R.id.cancle_bt);
-        Button cancle_bt = (Button) layout.findViewById(R.id.positive_bt);
+        Button positive_bts = (Button) layout.findViewById(R.id.cancle_bt);
+        Button cancle_bt = (Button) layout.findViewById(positive_bt);
         dialog2.show();
         dialog2.getWindow().setContentView(layout);
         cancle_bt.setOnClickListener(new View.OnClickListener() {
@@ -159,7 +160,7 @@ public class CooperaDetailsActivity extends ToolbarActivity implements ICooperaD
                 cooperaDetailsPresenter.getPreinfo(id);
             }
         });
-        positive_bt.setOnClickListener(new View.OnClickListener() {
+        positive_bts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                startLyricDetailsActivity(cooperaLyricBean);//发送post请求将作品至为公开
@@ -185,10 +186,12 @@ public class CooperaDetailsActivity extends ToolbarActivity implements ICooperaD
             case R.id.collectcoopera:
                 if (iscollect == 0) {
                     //取消收藏
+                    iscollect = 1;
                     collect_iv.setImageResource(R.drawable.ic_shoucangdianji);
                     cooperaDetailsPresenter.collect(id, 1);
                 } else if (iscollect == 1) {
                     //已收藏
+                    iscollect = 0;
                     cooperaDetailsPresenter.collect(id, 0);
                     collect_iv.setImageResource(R.drawable.ic_shoucang);
                 }
@@ -212,8 +215,8 @@ public class CooperaDetailsActivity extends ToolbarActivity implements ICooperaD
         dialog = new AlertDialog.Builder(CooperaDetailsActivity.this).create();
         LayoutInflater layoutInflater = LayoutInflater.from(CooperaDetailsActivity.this);
         LinearLayout layout = (LinearLayout) layoutInflater.inflate(R.layout.caina, null);
-        Button positive_bt = (Button) layout.findViewById(R.id.cancle_bt);
-        Button cancle_bt = (Button) layout.findViewById(R.id.positive_bt);
+        Button cancle_bt = (Button) layout.findViewById(R.id.cancle_bt);
+        Button positive_bto = (Button) layout.findViewById(positive_bt);
         dialog.show();
         dialog.getWindow().setContentView(layout);
         cancle_bt.setOnClickListener(new View.OnClickListener() {
@@ -223,11 +226,10 @@ public class CooperaDetailsActivity extends ToolbarActivity implements ICooperaD
                 dialog.dismiss();
             }
         });
-        positive_bt.setOnClickListener(new View.OnClickListener() {
+        positive_bto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                dialog.dismiss();
+                cooperaDetailsPresenter.accept(id, itemid);
             }
         });
 
@@ -235,34 +237,15 @@ public class CooperaDetailsActivity extends ToolbarActivity implements ICooperaD
 
     @Override
     public void initView() {
+
         commentList_recyclerview.setNestedScrollingEnabled(false);
         completeList_recyclerview.setNestedScrollingEnabled(false);
-        cooperaDetailsPresenter.getCooperaDetailsBean(id,page);
-        commentListAdapter = new CommentListAdapter(CommentList, context);
         commentList_recyclerview.setLayoutManager(new LinearLayoutManager(context));
-        commentList_recyclerview.setAdapter(commentListAdapter);
-        completeListAdapter = new CompleteListAdapter(CompleteList, context, where);
         completeList_recyclerview.setLayoutManager(new LinearLayoutManager(context));
-        completeList_recyclerview.setAdapter(completeListAdapter);
 
-//        commentList_recyclerview.setNestedScrollingEnabled(false);
-//        completeList_recyclerview.setNestedScrollingEnabled(false);
-//        cooperaDetailsPresenter.getCooperaDetailsBean(id, page);
-//        commentListAdapter = new CommentListAdapter(CommentList, this);
-//        commentList_recyclerview.setLayoutManager(new LinearLayoutManager(context));
-//        completeListAdapter = new CompleteListAdapter(CompleteList, context, where);
-//        completeList_recyclerview.setLayoutManager(new LinearLayoutManager(context));
-//        completeList_recyclerview.setAdapter(completeListAdapter);
-        completeListAdapter.setOnItemClickListener(new CompleteListAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position, int type) {
-                switch (type) {
-                    case 1:
-                        initDialog();
-                        break;
-                }
-            }
-        });
+        cooperaDetailsPresenter.getCooperaDetailsBean(id, page);
+
+
     }
 
     @Override
@@ -279,37 +262,53 @@ public class CooperaDetailsActivity extends ToolbarActivity implements ICooperaD
         cooperadetails_tv_commentnum.setText("全部" + cooperaDetailsBean.getDemandInfo().getCommentnum() + "条留言>>");
         CommentList = cooperaDetailsBean.getCommentList();
         CompleteList = cooperaDetailsBean.getCompleteList();
-//        cooperadetails_tv_name.setText(cooperaDetailsBean.getUserInfo().getNickname());
-//        cooperadetails_tv_nickname.setText("作词:" + cooperaDetailsBean.getUserInfo().getNickname());
-//        loadImage(cooperaDetailsBean.getUserInfo().getHeadurl(), cooperadetails_head_iv);
-//        cooperadetails_tv_time.setText(DateFormatUtils.formatX1(cooperaDetailsBean.getDemandInfo().getCreatetime()));
-//        cooperadetails_tv_endtime.setText("至" + DateFormatUtils.formatX1(cooperaDetailsBean.getDemandInfo().getEndtime()).substring(5, 10) + "过期");
-//        cooperadetails_tv_requirement.setText(cooperaDetailsBean.getDemandInfo().getRequirement());
-//        cooperadetails_tv_title.setText(cooperaDetailsBean.getDemandInfo().getTitle());
-//        cooperadetails_tv_lyric.setText(cooperaDetailsBean.getDemandInfo().getLyrics());
-//        cooperadetails_tv_commentnum.setText("全部" + cooperaDetailsBean.getDemandInfo().getCommentnum() + "条留言>>");
-//        iscollect = cooperaDetailsBean.getDemandInfo().getIscollect();
-//        if (iscollect == 1) {
-//            collect_iv.setImageResource(R.drawable.ic_shoucangdianji);
-//        }
-//        showMsg("" + CompleteList.size());
-//        completeListAdapter.notifyDataSetChanged();
-//        commentListAdapter.notifyDataSetChanged();
+
+
+        cooperadetails_tv_name.setText(cooperaDetailsBean.getUserInfo().getNickname());
+        cooperadetails_tv_nickname.setText("作词:" + cooperaDetailsBean.getUserInfo().getNickname());
+        loadImage(cooperaDetailsBean.getUserInfo().getHeadurl(), cooperadetails_head_iv);
+        cooperadetails_tv_time.setText(DateFormatUtils.formatX1(cooperaDetailsBean.getDemandInfo().getCreatetime()));
+        cooperadetails_tv_endtime.setText("至" + DateFormatUtils.formatX1(cooperaDetailsBean.getDemandInfo().getEndtime()).substring(5, 10) + "过期");
+        cooperadetails_tv_requirement.setText(cooperaDetailsBean.getDemandInfo().getRequirement());
+        cooperadetails_tv_title.setText(cooperaDetailsBean.getDemandInfo().getTitle());
+        cooperadetails_tv_lyric.setText(cooperaDetailsBean.getDemandInfo().getLyrics());
+        cooperadetails_tv_commentnum.setText("全部" + cooperaDetailsBean.getDemandInfo().getCommentnum() + "条留言>>");
+        iscollect = cooperaDetailsBean.getDemandInfo().getIscollect();
+        if (iscollect == 1) {
+            collect_iv.setImageResource(R.drawable.ic_shoucangdianji);
+        }
+
         disMissLoading(ll_loading);
         scrollView.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void showCooperaCommentList(List<CooperaDetailsBean.CommentListBean> commentListBean) {
-        CommentList = commentListBean;
-        Log.e("AAA",commentListBean.size()+"");
+        commentListAdapter = new CommentListAdapter(CommentList, this);
         commentList_recyclerview.setAdapter(commentListAdapter);
         commentListAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void showCooperaCompleteList(List<CooperaDetailsBean.CompleteListBean> completeListBeen) {
-        Log.e("AAA",completeListBeen.size()+"");
+        completeListAdapter = new CompleteListAdapter(CompleteList, context, where);
+        completeList_recyclerview.setAdapter(completeListAdapter);
+        completeListAdapter.notifyDataSetChanged();
+        completeListAdapter.setOnItemClickListener(new CompleteListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position, int type) {
+                switch (type) {
+                    case 1:
+                        itemid = completeListBeen.get(position).getItemid();
+                        initDialog();
+                        break;
+                    case 2:
+//                        PlayAudioActivity.toPlayAudioActivity();
+                        showMsg("" + position);
+                        break;
+                }
+            }
+        });
     }
 
     @Override
@@ -330,5 +329,11 @@ public class CooperaDetailsActivity extends ToolbarActivity implements ICooperaD
         intent.putExtra("did", id);
         startActivity(intent);
         dialog2.dismiss();
+        finish();
+    }
+
+    @Override
+    public void acceptSuccess() {
+        dialog.dismiss();
     }
 }
