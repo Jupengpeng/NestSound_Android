@@ -63,7 +63,5 @@
         android:textSize="14sp"
         android:textColor="@color/main_title_color"
         />
-
-
     <include layout="@layout/view_spit_line"/>
 </LinearLayout>

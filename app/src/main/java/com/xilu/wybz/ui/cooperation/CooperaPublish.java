@@ -91,7 +91,7 @@ public class CooperaPublish extends ToolbarActivity implements ICooperaPublishVi
     @Override
     public void success() {
         showMsg("发布成功");
-        Intent intent = new Intent(CooperaPublish.this, CooperationFragment.class);
+        Intent intent = new Intent(CooperaPublish.this, CooperationActivity.class);
         intent.putExtra("success", "success");
         startActivity(intent);
     }

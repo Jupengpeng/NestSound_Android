@@ -55,15 +55,15 @@ public class CooperationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 //        CooperationAdapter.CooperationViewHolder holder = new CooperationAdapter.CooperationViewHolder(LayoutInflater.from(context).inflate(R.layout.cooperation_item, parent, false));
-        if (viewType == TYPE_ITEM) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(
-                    R.layout.cooperation_item, null);
-            return new CooperationViewHolder(view);
-        } else if (viewType == TYPE_FOOTER) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.widget_pull_to_refresh_footer, parent, false);
-            return new FooterViewHolder(view);
-        }
 
+          if (viewType == TYPE_ITEM) {
+              View view = LayoutInflater.from(parent.getContext()).inflate(
+                      R.layout.cooperation_item, null);
+              return new CooperationViewHolder(view);
+          } else if (viewType == TYPE_FOOTER) {
+              View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.widget_pull_to_refresh_footer, parent, false);
+              return new FooterViewHolder(view);
+          }
 
         return null;
     }
@@ -96,11 +96,11 @@ public class CooperationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     mOnItemClickListener.onItemClick(((CooperationViewHolder) holder).ll_jump, pos, 1);
                 }
             });
-            ((CooperationViewHolder) holder).ll_jump2.setOnClickListener(new View.OnClickListener() {
+            ((CooperationViewHolder) holder).coopera_head_iv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int pos = holder.getLayoutPosition();
-                    mOnItemClickListener.onItemClick(((CooperationViewHolder) holder).ll_jump2, pos, 2);
+                    mOnItemClickListener.onItemClick(((CooperationViewHolder) holder).coopera_head_iv, pos, 2);
                 }
             });
             ((CooperationViewHolder) holder).coopera_bt.setOnClickListener(new View.OnClickListener() {

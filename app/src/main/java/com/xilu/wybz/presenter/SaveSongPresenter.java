@@ -4,12 +4,12 @@ import android.content.Context;
 import android.util.Log;
 
 import com.xilu.wybz.bean.JsonResponse;
+import com.xilu.wybz.bean.PreinfoBean;
 import com.xilu.wybz.bean.ShareResponseBean;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.callback.AppJsonCalback;
 import com.xilu.wybz.ui.IView.ISaveSongView;
-import com.xilu.wybz.utils.PrefsUtil;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -80,16 +80,18 @@ public class SaveSongPresenter extends BasePresenter<ISaveSongView> {
                 }
         );
     }
-    public void saveCooperaSong(WorksData worksData,int did,int lUid,String lUsername) {
+
+    public void saveCooperaSong(WorksData worksData, PreinfoBean preinfoBean,int did) {
         params = new HashMap<>();
         try {
-            params.put("did",did+"");
-            params.put("lUid",lUid+"");
-            params.put("lUsername",lUsername);
-            params.put("wUsername", PrefsUtil.getUserInfo(context).nickname);
-            params.put("wUid", worksData.uid + "");
-            params.put("title", worksData.title);
-            params.put("lyrics", worksData.lyrics);
+            params.put("did", did + "");
+            params.put("lUid", preinfoBean.getlUid() + "");
+            params.put("lUsername", preinfoBean.getlUsername());
+            params.put("wUsername", preinfoBean.getwUsername());
+            params.put("wUid", preinfoBean.getwUid() + "");
+
+            params.put("title", preinfoBean.getTitle());
+            params.put("lyrics", preinfoBean.getLyrics());
             params.put("createtype", "HOT");
             params.put("useheadset", worksData.useheadset);//耳机
             params.put("hotid", "" + worksData.hotid);

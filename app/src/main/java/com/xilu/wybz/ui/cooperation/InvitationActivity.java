@@ -5,10 +5,14 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.xilu.wybz.R;
@@ -22,9 +26,11 @@ import java.util.List;
 
 import butterknife.Bind;
 
-public class InvitationActivity extends ToolbarActivity implements IInvitationView {
+public class InvitationActivity extends ToolbarActivity implements IInvitationView, SwipeRefreshLayout.OnRefreshListener {
     @Bind(R.id.refreshlayout)
     SwipeRefreshLayout refreshLayout;
+    @Bind(R.id.ll_nodata)
+    LinearLayout ll_nodata;
     @Bind(R.id.invitation_recyclerview)
     RecyclerView invitation_recyclerview;
     @Bind(R.id.et_keyword)
@@ -33,8 +39,10 @@ public class InvitationActivity extends ToolbarActivity implements IInvitationVi
     private InvitationAdapter invitationAdapter;
     private List<Invitation> invitationlist;
     private int did;//合作需求ID
-
     private int page = 1;
+
+
+    private String content = "";
 
     @Override
     protected int getLayoutRes() {
@@ -44,6 +52,7 @@ public class InvitationActivity extends ToolbarActivity implements IInvitationVi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         setTitle("邀请");
         initPresenter();
     }
@@ -56,58 +65,138 @@ public class InvitationActivity extends ToolbarActivity implements IInvitationVi
     @Override
     public void showInvitationList(List<Invitation> invitationList) {
         if (isDestroy) return;
-        if (invitationlist == null) invitationList = new ArrayList<>();
-        if (invitationlist.size() > 0) invitationlist.clear();
         invitationlist.addAll(invitationList);
         invitationAdapter.notifyDataSetChanged();
+
+        invitationAdapter.onLoadMoreStateChanged(false);
     }
 
     @Override
     public void sendSuccess() {
         cancelPd();
         showMsg("邀请成功");
+//        invitationAdapter.setType(4);
+//        invitationAdapter.notifyDataSetChanged();
+
+    }
+
+    @Override
+    public void serachSuccess() {
+//        page++;
+//        invitationPresenter.getInvitationList(did, page, "");
+        ll_nodata.setVisibility(View.GONE);
+        refreshLayout.setRefreshing(false);
+//        content = null;
+    }
+
+    @Override
+    public void noData() {
+        ll_nodata.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void noMoreData() {
+        invitationAdapter.onLoadMoreStateChanged(false);
+    }
+
+    @Override
+    public void noSerachData() {
+        refreshLayout.setRefreshing(false);
+        ll_nodata.setVisibility(View.VISIBLE);
+
+    }
+
+    @Override
+    public void noSerachMoreData() {
+        refreshLayout.setRefreshing(false);
+        invitationAdapter.onLoadMoreStateChanged(false);
     }
 
     @Override
     public void initView() {
         did = getIntent().getIntExtra("did", 0);
         invitationlist = new ArrayList<>();
-        invitation_recyclerview.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        invitation_recyclerview.setLayoutManager(linearLayoutManager);
         invitationAdapter = new InvitationAdapter(invitationlist, this);
         invitation_recyclerview.setAdapter(invitationAdapter);
-        invitationPresenter.getInvitationList(did, page, "");
-        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+
+        invitationPresenter.getInvitationList(did, page, content);
+        invitation_recyclerview.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onRefresh() {
-//                invitationPresenter.getInvitationList(page);
-                refreshLayout.setRefreshing(false);
-//                invitationAdapter.notifyDataSetChanged();
+            public boolean onTouch(View v, MotionEvent event) {
+                if (refreshLayout.isRefreshing()) {
+                    return true;
+                } else {
+                    return false;
+                }
             }
         });
+        refreshLayout.setOnRefreshListener(this);
+
         invitationAdapter.setOnItemClickListener(new InvitationAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 if (invitationlist.size() > 0) {
-
                     invitationPresenter.sendInvitation(invitationlist.get(position).getUid(), did);
                     showPd("邀请中...");
                 }
             }
         });
+        invitation_recyclerview.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
 
+            }
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                int visibleItemCount = linearLayoutManager.getChildCount();
+                int totalItemCount = linearLayoutManager.getItemCount();
+                int lastVisibleItemPosition = linearLayoutManager.findLastVisibleItemPosition();
+                int pastVisiblesItems = linearLayoutManager.findFirstVisibleItemPosition();
+                if (visibleItemCount > 0 && newState == RecyclerView.SCROLL_STATE_IDLE && (visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                    invitationAdapter.onLoadMoreStateChanged(true);
+                    page++;
+                    invitationPresenter.getInvitationList(did, page, content);
+                    Log.e("AAA", "到底了");
+                }
+
+            }
+        });
         et_keyword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                String content = et_keyword.getText().toString().trim();
+                content = et_keyword.getText().toString().trim();
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    if (TextUtils.isEmpty(content)) {
-                        showMsg("hahah");
-//                        invitationPresenter.getInvitationList(did, page, content);
+                    if (!TextUtils.isEmpty(content)) {
+                        if (invitationlist.size() > 0) {
+                            invitationlist.clear();
+                        }
+                        page = 1;
+                        invitationPresenter.getInvitationList(did, page, content);
+                        refreshLayout.setRefreshing(true);
                     }
                     return true;
                 }
                 return false;
             }
         });
+    }
+
+    @Override
+    public void onRefresh() {
+        if (page >= 1) {
+            invitationlist.clear();
+            page = 1;
+        }
+        content = "";
+
+        invitationPresenter.getInvitationList(did, page, content);
+        refreshLayout.setRefreshing(false);
+
+//        invitationAdapter.onLoadMoreStateChanged(false);
     }
 }

@@ -3,65 +3,71 @@ package com.xilu.wybz.bean;
 import java.util.List;
 
 /**
- * Created by Administrator on 2016/10/26.
+ * Created by Administrator on 2016/11/6.
  */
 
 public class CooperaDetailsBean {
 
+
     /**
-     * id : 5
-     * userInfo : {"uid":22467,"headurl":"http://pic.yinchao.cn/xxx/12313231.png","nickname":"test","signature":"哈哈"}
-     * completeList : [{"createtime":1477397884000,"title":"合作","lUsername":"词作者","itemid":1,"pic":"/123123.jpg","access":0,"wUsername":"曲作者"}]
-     * commentList : [{"uid":54426,"nickname":"guan","isread":0,"target_uid":22467,"comment_type":2,"headerurl":"http://pic.yinchao.cn/headport/2016072013460041343001png","id":2,"targetheaderurl":"http://pic.yinchao.cn/xxx/12313231.png","comment":"合作需求回帖","target_nickname":"test"},{"uid":22467,"nickname":"test","isread":0,"target_uid":0,"comment_type":1,"headerurl":"http://pic.yinchao.cn/xxx/12313231.png","id":1,"targetheaderurl":"","comment":"评论合作需求测试","target_nickname":""}]
-     * demandInfo : {"uid":22467,"createtime":1477468124000,"endtime":1478660051000,"id":5,"commentnum":2,"title":"wwwwwwwwwwwwwwwwww","requirement":"合作要求","status":1,"itemid":6,"lyrics":"wwwwwwwwwwwwwwwwww","worknum":1}
+     * id : 19
+     * userInfo : {"uid":25799,"bgpic":"1476700658.jpg","headurl":"http://pic.yinchao.cn/1476689907.jpg","nickname":"疯子","signature":"摩羯吉祥物图"}
+     * completeList : [{"createtime":1478328600000,"title":"才有时间能参与","lUsername":"积极","pic":"http://pic.yinchao.cn/muscover/2016110514500069933101.jpg","itemid":9,"access":0,"wUsername":"疯子"},{"createtime":1478260080000,"title":"才有时间能参与","lUsername":"积极","pic":"http://pic.yinchao.cn/muscover/2016110419480028970415.jpg","itemid":7,"access":0,"wUsername":"疯子"}]
+     * commentList : [{"uid":47794,"nickname":"积极","isread":1,"createdate":1478347273000,"target_uid":0,"comment_type":1,"itemid":19,"headerurl":"http://pic.yinchao.cn/headport/2016101415022560836214.jpg","type":2,"id":65,"targetheaderurl":"","comment":"馍","target_nickname":""},{"uid":47794,"nickname":"积极","isread":1,"createdate":1478347269000,"target_uid":0,"comment_type":1,"itemid":19,"headerurl":"http://pic.yinchao.cn/headport/2016101415022560836214.jpg","type":2,"id":64,"targetheaderurl":"","comment":"路","target_nickname":""},{"uid":47794,"nickname":"积极","isread":1,"createdate":1478347257000,"target_uid":0,"comment_type":1,"itemid":19,"headerurl":"http://pic.yinchao.cn/headport/2016101415022560836214.jpg","type":2,"id":63,"targetheaderurl":"","comment":"咯","target_nickname":""}]
+     * demandInfo : {"id":19,"endtime":1479541773000,"createtime":1478245773000,"uid":25799,"commentnum":43,"requirement":"Yang yang yang","title":"才有时间能参与","status":1,"itemid":28718,"worknum":2,"lyrics":"想他欢迎您","iscollect":0}
      */
 
     private int id;
     /**
-     * uid : 22467
-     * headurl : http://pic.yinchao.cn/xxx/12313231.png
-     * nickname : test
-     * signature : 哈哈
+     * uid : 25799
+     * bgpic : 1476700658.jpg
+     * headurl : http://pic.yinchao.cn/1476689907.jpg
+     * nickname : 疯子
+     * signature : 摩羯吉祥物图
      */
 
     private UserInfoBean userInfo;
     /**
-     * uid : 22467
-     * createtime : 1477468124000
-     * endtime : 1478660051000
-     * id : 5
-     * commentnum : 2
-     * title : wwwwwwwwwwwwwwwwww
-     * requirement : 合作要求
+     * id : 19
+     * endtime : 1479541773000
+     * createtime : 1478245773000
+     * uid : 25799
+     * commentnum : 43
+     * requirement : Yang yang yang
+     * title : 才有时间能参与
      * status : 1
-     * itemid : 6
-     * lyrics : wwwwwwwwwwwwwwwwww
-     * worknum : 1
+     * itemid : 28718
+     * worknum : 2
+     * lyrics : 想他欢迎您
+     * iscollect : 0
      */
 
     private DemandInfoBean demandInfo;
     /**
-     * createtime : 1477397884000
-     * title : 合作
-     * lUsername : 词作者
-     * itemid : 1
-     * pic : /123123.jpg
+     * createtime : 1478328600000
+     * title : 才有时间能参与
+     * lUsername : 积极
+     * pic : http://pic.yinchao.cn/muscover/2016110514500069933101.jpg
+     * itemid : 9
      * access : 0
-     * wUsername : 曲作者
+     * wUsername : 疯子
      */
 
     private List<CompleteListBean> completeList;
     /**
-     * uid : 54426
-     * nickname : guan
-     * isread : 0
-     * target_uid : 22467
-     * comment_type : 2
-     * headerurl : http://pic.yinchao.cn/headport/2016072013460041343001png
-     * id : 2
-     * targetheaderurl : http://pic.yinchao.cn/xxx/12313231.png
-     * comment : 合作需求回帖
-     * target_nickname : test
+     * uid : 47794
+     * nickname : 积极
+     * isread : 1
+     * createdate : 1478347273000
+     * target_uid : 0
+     * comment_type : 1
+     * itemid : 19
+     * headerurl : http://pic.yinchao.cn/headport/2016101415022560836214.jpg
+     * type : 2
+     * id : 65
+     * targetheaderurl :
+     * comment : 馍
+     * target_nickname :
      */
 
     private List<CommentListBean> commentList;
@@ -108,6 +114,7 @@ public class CooperaDetailsBean {
 
     public static class UserInfoBean {
         private int uid;
+        private String bgpic;
         private String headurl;
         private String nickname;
         private String signature;
@@ -118,6 +125,14 @@ public class CooperaDetailsBean {
 
         public void setUid(int uid) {
             this.uid = uid;
+        }
+
+        public String getBgpic() {
+            return bgpic;
+        }
+
+        public void setBgpic(String bgpic) {
+            this.bgpic = bgpic;
         }
 
         public String getHeadurl() {
@@ -146,32 +161,25 @@ public class CooperaDetailsBean {
     }
 
     public static class DemandInfoBean {
-        private int uid;
-        private long createtime;
-        private long endtime;
         private int id;
+        private long endtime;
+        private long createtime;
+        private int uid;
         private int commentnum;
-        private String title;
         private String requirement;
+        private String title;
         private int status;
-        private long itemid;
-        private String lyrics;
+        private int itemid;
         private int worknum;
+        private String lyrics;
+        private int iscollect;
 
-        public int getUid() {
-            return uid;
+        public int getId() {
+            return id;
         }
 
-        public void setUid(int uid) {
-            this.uid = uid;
-        }
-
-        public long getCreatetime() {
-            return createtime;
-        }
-
-        public void setCreatetime(long createtime) {
-            this.createtime = createtime;
+        public void setId(int id) {
+            this.id = id;
         }
 
         public long getEndtime() {
@@ -182,12 +190,20 @@ public class CooperaDetailsBean {
             this.endtime = endtime;
         }
 
-        public int getId() {
-            return id;
+        public long getCreatetime() {
+            return createtime;
         }
 
-        public void setId(int id) {
-            this.id = id;
+        public void setCreatetime(long createtime) {
+            this.createtime = createtime;
+        }
+
+        public int getUid() {
+            return uid;
+        }
+
+        public void setUid(int uid) {
+            this.uid = uid;
         }
 
         public int getCommentnum() {
@@ -198,20 +214,20 @@ public class CooperaDetailsBean {
             this.commentnum = commentnum;
         }
 
-        public String getTitle() {
-            return title;
-        }
-
-        public void setTitle(String title) {
-            this.title = title;
-        }
-
         public String getRequirement() {
             return requirement;
         }
 
         public void setRequirement(String requirement) {
             this.requirement = requirement;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
         }
 
         public int getStatus() {
@@ -222,12 +238,20 @@ public class CooperaDetailsBean {
             this.status = status;
         }
 
-        public long getItemid() {
+        public int getItemid() {
             return itemid;
         }
 
-        public void setItemid(long itemid) {
+        public void setItemid(int itemid) {
             this.itemid = itemid;
+        }
+
+        public int getWorknum() {
+            return worknum;
+        }
+
+        public void setWorknum(int worknum) {
+            this.worknum = worknum;
         }
 
         public String getLyrics() {
@@ -238,12 +262,12 @@ public class CooperaDetailsBean {
             this.lyrics = lyrics;
         }
 
-        public int getWorknum() {
-            return worknum;
+        public int getIscollect() {
+            return iscollect;
         }
 
-        public void setWorknum(int worknum) {
-            this.worknum = worknum;
+        public void setIscollect(int iscollect) {
+            this.iscollect = iscollect;
         }
     }
 
@@ -251,8 +275,8 @@ public class CooperaDetailsBean {
         private long createtime;
         private String title;
         private String lUsername;
-        private int itemid;
         private String pic;
+        private int itemid;
         private int access;
         private String wUsername;
 
@@ -280,20 +304,20 @@ public class CooperaDetailsBean {
             this.lUsername = lUsername;
         }
 
-        public int getItemid() {
-            return itemid;
-        }
-
-        public void setItemid(int itemid) {
-            this.itemid = itemid;
-        }
-
         public String getPic() {
             return pic;
         }
 
         public void setPic(String pic) {
             this.pic = pic;
+        }
+
+        public int getItemid() {
+            return itemid;
+        }
+
+        public void setItemid(int itemid) {
+            this.itemid = itemid;
         }
 
         public int getAccess() {
@@ -317,22 +341,16 @@ public class CooperaDetailsBean {
         private int uid;
         private String nickname;
         private int isread;
+        private long createdate;
         private int target_uid;
         private int comment_type;
+        private int itemid;
         private String headerurl;
+        private int type;
         private int id;
         private String targetheaderurl;
-        private long createdate;
         private String comment;
         private String target_nickname;
-
-        public long getCreatedate() {
-            return createdate;
-        }
-
-        public void setCreatedate(long createdate) {
-            this.createdate = createdate;
-        }
 
         public int getUid() {
             return uid;
@@ -358,6 +376,14 @@ public class CooperaDetailsBean {
             this.isread = isread;
         }
 
+        public long getCreatedate() {
+            return createdate;
+        }
+
+        public void setCreatedate(long createdate) {
+            this.createdate = createdate;
+        }
+
         public int getTarget_uid() {
             return target_uid;
         }
@@ -374,12 +400,28 @@ public class CooperaDetailsBean {
             this.comment_type = comment_type;
         }
 
+        public int getItemid() {
+            return itemid;
+        }
+
+        public void setItemid(int itemid) {
+            this.itemid = itemid;
+        }
+
         public String getHeaderurl() {
             return headerurl;
         }
 
         public void setHeaderurl(String headerurl) {
             this.headerurl = headerurl;
+        }
+
+        public int getType() {
+            return type;
+        }
+
+        public void setType(int type) {
+            this.type = type;
         }
 
         public int getId() {

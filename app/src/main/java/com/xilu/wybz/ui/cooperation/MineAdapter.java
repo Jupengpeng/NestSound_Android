@@ -21,14 +21,18 @@ import butterknife.ButterKnife;
  * Created by Administrator on 2016/10/21.
  */
 
-public class MineAdapter extends RecyclerView.Adapter<MineAdapter.MineViewHolder> {
+public class MineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<MineBean> mineBeanList;
     private Context context;
-
+    private int itemWidth;
+    private static final int TYPE_ITEM = 0;
+    private static final int TYPE_FOOTER = 1;
+    protected boolean isLoadMoreFooterShown = false;
 
     public MineAdapter(List<MineBean> mineBeanList, Context context) {
         this.mineBeanList = mineBeanList;
         this.context = context;
+
     }
 
     public interface OnItemClickListener {
@@ -51,9 +55,43 @@ public class MineAdapter extends RecyclerView.Adapter<MineAdapter.MineViewHolder
     }
 
     @Override
-    public MineViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        MineAdapter.MineViewHolder holder = new MineAdapter.MineViewHolder(LayoutInflater.from(context).inflate(R.layout.mine_item, parent, false));
-        return holder;
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+//        MineAdapter.MineViewHolder holder = new MineAdapter.MineViewHolder(LayoutInflater.from(context).inflate(R.layout.mine_item, parent, false));
+//        return holder;
+        if (viewType == TYPE_ITEM) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(
+                    R.layout.mine_item, null);
+            return new MineViewHolder(view);
+        } else if (viewType == TYPE_FOOTER) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.widget_pull_to_refresh_footer, parent, false);
+            return new FooterViewHolder(view);
+        }
+
+
+        return null;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (isLoadMoreFooterShown && position == getItemCount() - 1) {
+            return TYPE_FOOTER;
+        } else {
+            return TYPE_ITEM;
+        }
+    }
+
+    public void onLoadMoreStateChanged(boolean isShown) {
+        this.isLoadMoreFooterShown = isShown;
+        if (isShown) {
+            notifyItemInserted(getItemCount());
+        } else {
+            notifyItemRemoved(getItemCount());
+        }
+    }
+
+    @Override
+    public int getItemCount() {
+        return mineBeanList.size() + (isLoadMoreFooterShown ? 1 : 0);
     }
 
     public void removeItem(int pos) {
@@ -62,54 +100,51 @@ public class MineAdapter extends RecyclerView.Adapter<MineAdapter.MineViewHolder
     }
 
     @Override
-    public void onBindViewHolder(MineViewHolder holder, int position) {
-        MineBean mineBean = mineBeanList.get(position);
-        if (mineBean != null) {
-            holder.mine_tv_lyricsname.setText(mineBean.getTitle());
-            holder.mine_tv_time.setText(DateFormatUtils.formatX1(mineBean.getCreatetime()));
-            switch (mineBean.getStatus()) {
-                case 1:
-                    holder.mine_status.setText("正在进行");
-                    holder.mine_status.setTextColor(Color.parseColor("#ffb705"));
-                    break;
-                case 3:
-                    holder.mine_status.setText("已经删除");
-                    holder.mine_status.setTextColor(Color.parseColor("#ffb705"));
-                    break;
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        if (holder instanceof MineViewHolder) {
+            MineBean mineBean = mineBeanList.get(position);
+            if (mineBean != null) {
+                ((MineViewHolder) holder).mine_tv_lyricsname.setText(mineBean.getTitle());
+                ((MineViewHolder) holder).mine_tv_time.setText(DateFormatUtils.formatX1(mineBean.getCreatetime()));
+                switch (mineBean.getStatus()) {
+                    case 1:
+                        ((MineViewHolder) holder).mine_status.setText("正在进行");
+                        ((MineViewHolder) holder).mine_status.setTextColor(Color.parseColor("#ffb705"));
+                        break;
+                    case 3:
+                        ((MineViewHolder) holder).mine_status.setText("已经删除");
+                        ((MineViewHolder) holder).mine_status.setTextColor(Color.parseColor("#ffb705"));
+                        break;
 
-                case 4:
-                    holder.mine_status.setText("已经到期");
-                    holder.mine_status.setTextColor(Color.parseColor("#ff6161"));
+                    case 4:
+                        ((MineViewHolder) holder).mine_status.setText("已经到期");
+                        ((MineViewHolder) holder).mine_status.setTextColor(Color.parseColor("#ff6161"));
 
-                    break;
-                case 8:
-                    holder.mine_status.setText("合作成功");
-                    holder.mine_status.setTextColor(Color.parseColor("#ffb705"));
+                        break;
+                    case 8:
+                        ((MineViewHolder) holder).mine_status.setText("合作成功");
+                        ((MineViewHolder) holder).mine_status.setTextColor(Color.parseColor("#ffb705"));
 
-                    break;
+                        break;
+                }
             }
+            ((MineViewHolder) holder).itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mOnItemClickListener.onItemClick(holder.itemView, position);
+                }
+            });
+            ((MineViewHolder) holder).itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    mOnItemLongClickListener.onItemLongClick(holder.itemView, position);
+                    return false;
+                }
+            });
+
         }
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mOnItemClickListener.onItemClick(holder.itemView, position);
-            }
-        });
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                mOnItemLongClickListener.onItemLongClick(holder.itemView, position);
-                return false;
-            }
-        });
-
-
     }
 
-    @Override
-    public int getItemCount() {
-        return mineBeanList.size();
-    }
 
     class MineViewHolder extends RecyclerView.ViewHolder {
 
@@ -125,5 +160,13 @@ public class MineAdapter extends RecyclerView.Adapter<MineAdapter.MineViewHolder
             ButterKnife.bind(this, itemView);
 
         }
+    }
+
+    class FooterViewHolder extends RecyclerView.ViewHolder {
+
+        public FooterViewHolder(View view) {
+            super(view);
+        }
+
     }
 }

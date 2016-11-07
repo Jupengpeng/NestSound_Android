@@ -2,9 +2,12 @@ package com.xilu.wybz.ui.cooperation;
 
 import android.content.Intent;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.xilu.wybz.R;
@@ -18,6 +21,9 @@ import java.util.List;
 
 import butterknife.Bind;
 
+import static com.xilu.wybz.R.id.cancle_bt;
+import static com.xilu.wybz.R.id.positive_bt;
+
 /**
  * Created by Administrator on 2016/10/19.
  */
@@ -25,14 +31,17 @@ import butterknife.Bind;
 public class MineFragment extends BaseFragment implements IMineView {
     @Bind(R.id.ll_loading)
     LinearLayout ll_loading;
+    @Bind(R.id.ll_nodata)
+    LinearLayout ll_nodata;
     @Bind(R.id.refreshlayout)
     SwipeRefreshLayout refreshLayout;
     @Bind(R.id.mine_recyclerview)
     RecyclerView mine_recyclerview;
     MinePresenter minePresenter;
-    private List<MineBean> mineList;
+    private List<MineBean> mineList = new ArrayList<>();
     private MineAdapter mineAdapter;
     private int page = 1;
+    private AlertDialog dialog;
 
     @Override
     protected int getLayoutResId() {
@@ -41,18 +50,50 @@ public class MineFragment extends BaseFragment implements IMineView {
 
     @Override
     protected void initPresenter() {
+        if (mineList.size() > 0) {
+            disMissLoading(ll_loading);
+            return;
+        }
         minePresenter = new MinePresenter(context, this);
         showLoading(ll_loading);
         minePresenter.init();
     }
 
+    private void initDialog(int pos) {
+
+        dialog = new AlertDialog.Builder(getActivity()).create();
+        LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+        LinearLayout layout = (LinearLayout) layoutInflater.inflate(R.layout.deletehezuoxuqiu, null);
+        Button cancle_bto = (Button) layout.findViewById(cancle_bt);
+        Button positive_bto = (Button) layout.findViewById(positive_bt);
+        dialog.show();
+        dialog.getWindow().setContentView(layout);
+        cancle_bto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        positive_bto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                minePresenter.deleteCoopera(mineList.get(pos).getId(), pos);
+
+            }
+        });
+    }
+
     @Override
     public void initView() {
-        mineList = new ArrayList<>();
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         mine_recyclerview.setLayoutManager(linearLayoutManager);
         mineAdapter = new MineAdapter(mineList, context);
         mine_recyclerview.setAdapter(mineAdapter);
+        if (mineList.size() > 0) {
+            mineList.clear();
+            page = 1;
+        }
         minePresenter.getMineList(page);
         mineAdapter.setOnItemClickListener(new MineAdapter.OnItemClickListener() {
             @Override
@@ -66,14 +107,23 @@ public class MineFragment extends BaseFragment implements IMineView {
         mineAdapter.setOnItemLongClickListener(new MineAdapter.OnItemLongClickListener() {
             @Override
             public void onItemLongClick(View view, int position) {
-                minePresenter.deleteCoopera(mineList.get(position).getId(), position);
+
+                initDialog(position);
+
             }
         });
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                minePresenter.getMineList(1);
-                refreshLayout.setRefreshing(false);
+                if (refreshLayout.isRefreshing()) {
+                    if (mineList.size() > 0) {
+                        mineList.clear();
+                        page = 1;
+                    }
+                    minePresenter.getMineList(page);
+                    refreshLayout.setRefreshing(false);
+
+                }
             }
         });
         mine_recyclerview.setOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -87,7 +137,9 @@ public class MineFragment extends BaseFragment implements IMineView {
                     lastPosition = linearLayoutManager.findLastVisibleItemPosition();
                 }
                 if (lastPosition == recyclerView.getLayoutManager().getItemCount() - 1) {
-
+                    mineAdapter.onLoadMoreStateChanged(true);
+                    page++;
+                    minePresenter.getMineList(page);
                 }
             }
 
@@ -109,8 +161,6 @@ public class MineFragment extends BaseFragment implements IMineView {
     public void showMineList(List<MineBean> mineBeanList) {
         disMissLoading(ll_loading);
         if (isDestroy) return;
-        if (mineList == null) mineBeanList = new ArrayList<>();
-        if (page == 1) mineList.clear();
         mineList.addAll(mineBeanList);
         mineAdapter.notifyDataSetChanged();
     }
@@ -118,6 +168,17 @@ public class MineFragment extends BaseFragment implements IMineView {
     @Override
     public void deleteSuccess(int position) {
         mineAdapter.removeItem(position);
+        dialog.dismiss();
+    }
+
+    @Override
+    public void noData() {
+        ll_nodata.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void noMoreData() {
+        mineAdapter.onLoadMoreStateChanged(false);
     }
 
     @Override

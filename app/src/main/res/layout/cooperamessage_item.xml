@@ -45,7 +45,7 @@
             android:layout_below="@+id/nickname_tv"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="9dp"
-            android:text="回复闭疏窗：下次合作下次合作下次合作下次合作下次合作下次合作下次合作下次合作下次合作下次合作下次合作下次合作下次合作下次合作下次合作下次合作下次合作下次合作"
+            android:text=""
             android:textColor="@color/main_text_color2"
             android:textSize="12sp" />
     </RelativeLayout>

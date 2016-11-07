@@ -11,9 +11,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.umeng.socialize.utils.Log;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.CooperationBean;
+import com.xilu.wybz.bean.PreinfoBean;
 import com.xilu.wybz.presenter.CooperationPresenter;
 import com.xilu.wybz.ui.IView.ICooperationView;
 import com.xilu.wybz.ui.fragment.BaseFragment;
@@ -32,7 +32,8 @@ import butterknife.Bind;
  */
 
 public class CooperationFragment extends BaseFragment implements ICooperationView {
-
+    @Bind(R.id.ll_nodata)
+    LinearLayout ll_nodata;
     @Bind(R.id.ll_loading)
     LinearLayout ll_loading;
     @Bind(R.id.refreshlayout)
@@ -44,10 +45,12 @@ public class CooperationFragment extends BaseFragment implements ICooperationVie
     private int page = 1;
     CooperationAdapter cooperationAdapter;
     private CooperationPresenter cooperationPresenter;
-    private List<CooperationBean> cooperationList;
+    private List<CooperationBean> cooperationList = new ArrayList<>();
+    AlertDialog dialog;
 
-    int mLastVisibleItem;
-    int mFirstVisibleItem;
+
+    private boolean isRefreshing;
+    private int did;//合作需求ID
 
     @Override
     protected int getLayoutResId() {
@@ -65,7 +68,7 @@ public class CooperationFragment extends BaseFragment implements ICooperationVie
 
     private void initDialog(int pos) {
 
-        AlertDialog dialog = new AlertDialog.Builder(getActivity()).create();
+        dialog = new AlertDialog.Builder(getActivity()).create();
         LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
         LinearLayout layout = (LinearLayout) layoutInflater.inflate(R.layout.hezuotishidialig, null);
         Button positive_bt = (Button) layout.findViewById(R.id.cancle_bt);
@@ -75,15 +78,9 @@ public class CooperationFragment extends BaseFragment implements ICooperationVie
         cancle_bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), HotCatalogActivity.class);
-                intent.putExtra("lyric", cooperationList.get(pos).getDemandInfo().getLyrics());
-                intent.putExtra("title", cooperationList.get(pos).getDemandInfo().getTitle());
-                intent.putExtra("iusername", cooperationList.get(pos).getUserInfo().getNickname());
-                intent.putExtra("coopera", 1);
-                intent.putExtra("did", cooperationList.get(pos).getDemandInfo().getId());
-                intent.putExtra("iuid", cooperationList.get(pos).getDemandInfo().getUid());
-                startActivity(intent);
-                dialog.dismiss();
+                did = cooperationList.get(pos).getDemandInfo().getId();
+                cooperationPresenter.getPreinfo(did);
+
             }
         });
         positive_bt.setOnClickListener(new View.OnClickListener() {
@@ -101,42 +98,62 @@ public class CooperationFragment extends BaseFragment implements ICooperationVie
     public void showCooperation(List<CooperationBean> cooperationBeanList) {
         disMissLoading(ll_loading);
         if (isDestroy) return;
-        if (cooperationList == null) cooperationList = new ArrayList<>();
-        if (page == 1) {
-            cooperationList.clear();
-        }
         cooperationList.addAll(cooperationBeanList);
-        Log.e("AAA", cooperationList.size() + "");
         cooperationAdapter.notifyDataSetChanged();
+        if (refreshLayout.isRefreshing()) {
+            refreshLayout.setRefreshing(false);
+        }
     }
 
     @Override
     public void noMoreData() {
-        showMsg("没有更多数据");
+//        showMsg("没有更多数据");
         cooperationAdapter.onLoadMoreStateChanged(false);
     }
 
     @Override
+    public void showpreinfoBean(PreinfoBean preinfoBean) {
+        Intent intent = new Intent(getActivity(), HotCatalogActivity.class);
+        intent.putExtra("preinfoBean", preinfoBean);
+        intent.putExtra("coopera", 1);
+        intent.putExtra("did", did);
+        startActivity(intent);
+        dialog.dismiss();
+        getActivity().finish();
+    }
+
+    @Override
+    public void noData() {
+        ll_nodata.setVisibility(View.VISIBLE);
+    }
+
+    @Override
     public void initView() {
-        cooperationList = new ArrayList<>();
-//        if (cooperationList.size() > 0) {
-//            cooperationList.clear();
-//        }
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         cooperationrecyclerview.setLayoutManager(linearLayoutManager);
         cooperationAdapter = new CooperationAdapter(cooperationList, context);
         cooperationrecyclerview.setAdapter(cooperationAdapter);
+
+//        if (cooperationList.size() > 0) {
+//            cooperationList.clear();
+//            page = 1;
+//        }
         cooperationPresenter.getCooperationList(page);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if (refreshLayout.isRefreshing()) {
-//                    cooperationList.clear();
-//                    cooperationPresenter.getCooperationList(page);
+                isRefreshing = refreshLayout.isRefreshing();
+                if (isRefreshing) {
+                    if (cooperationList.size() > 0) {
+                        cooperationList.clear();
+                        page = 1;
+                    }
                     refreshLayout.setRefreshing(false);
+                    cooperationPresenter.getCooperationList(page);
 
                 }
+
             }
         });
         cooperationrecyclerview.setOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -150,17 +167,10 @@ public class CooperationFragment extends BaseFragment implements ICooperationVie
                 }
                 if (lastPosition == recyclerView.getLayoutManager().getItemCount() - 1) {
                     cooperationAdapter.onLoadMoreStateChanged(true);
-                    cooperationPresenter.getCooperationList(++page);
+                    page++;
+                    cooperationPresenter.getCooperationList(page);
 
                 }
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                mLastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
-                mFirstVisibleItem = linearLayoutManager.findFirstCompletelyVisibleItemPosition();
-
             }
         });
         more_iv.setOnClickListener(new View.OnClickListener() {
@@ -177,13 +187,14 @@ public class CooperationFragment extends BaseFragment implements ICooperationVie
                     case 1:
 
                         Intent intent = new Intent(getActivity(), CooperaDetailsActivity.class);
-                        intent.putExtra("type", 1);
+                        if (cooperationList.get(position).getUserInfo().getUid() == PrefsUtil.getUserId(context)) {
+                            intent.putExtra("type", 2);
+                        } else {
+                            intent.putExtra("type", 1);
+                        }
                         intent.putExtra("did", cooperationList.get(position).getId());
-                        intent.putExtra("lyric", cooperationList.get(position).getDemandInfo().getLyrics());
-                        intent.putExtra("title", cooperationList.get(position).getDemandInfo().getTitle());
-                        intent.putExtra("iusername", cooperationList.get(position).getUserInfo().getNickname());
-                        intent.putExtra("iuid", cooperationList.get(position).getDemandInfo().getUid());
                         startActivity(intent);
+
                         break;
                     case 2:
 //                    Toast.makeText(context,"jump",Toast.LENGTH_SHORT).show();

@@ -5,6 +5,7 @@ import android.content.Context;
 import com.google.gson.reflect.TypeToken;
 import com.xilu.wybz.bean.CooperaDetailsBean;
 import com.xilu.wybz.bean.JsonResponse;
+import com.xilu.wybz.bean.PreinfoBean;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.callback.AppJsonCalback;
 import com.xilu.wybz.http.callback.MyStringCallback;
@@ -39,6 +40,8 @@ public class CooperaDetailsPresenter extends BasePresenter<ICooperaDetailsView> 
                 super.onResult(response);
                 CooperaDetailsBean cooperaDetailsBean = response.getData();
                 iView.showCooperaDetailsBean(cooperaDetailsBean);
+                iView.showCooperaCommentList(cooperaDetailsBean.getCommentList());
+                iView.showCooperaCompleteList(cooperaDetailsBean.getCompleteList());
             }
 
             @Override
@@ -49,6 +52,33 @@ public class CooperaDetailsPresenter extends BasePresenter<ICooperaDetailsView> 
             @Override
             public Type getDataType() {
                 return new TypeToken<CooperaDetailsBean>() {
+                }.getType();
+            }
+        });
+    }
+
+    public void getPreinfo(int did) {
+        params = new HashMap<>();
+        params.put("uid", "" + PrefsUtil.getUserId(context));
+        params.put("token", PrefsUtil.getUserInfo(context).loginToken);
+        params.put("did", did + "");
+        httpUtils.post(MyHttpClient.getPreinfo(), params, new AppJsonCalback(context) {
+            @Override
+            public void onError(Call call, Exception e) {
+                super.onError(call, e);
+
+            }
+
+            @Override
+            public void onResult(JsonResponse<? extends Object> response) {
+                super.onResult(response);
+                PreinfoBean preinfoBean = response.getData();
+                iView.showpreinfoBean(preinfoBean);
+            }
+
+            @Override
+            public Type getDataType() {
+                return new TypeToken<PreinfoBean>() {
                 }.getType();
             }
         });
@@ -72,7 +102,30 @@ public class CooperaDetailsPresenter extends BasePresenter<ICooperaDetailsView> 
                 super.onResponse(response);
                 int commentId = ParseUtils.getCommentId(context, response);
                 if (commentId == 200) {
-                    iView.collectSuccess();
+                    iView.collectSuccess(type);
+                }
+            }
+        });
+    }
+
+    public void accept(int did,int itemid){
+        params= new HashMap<>();
+        params.put("did",did+"");
+        params.put("itemid",itemid+"");
+        params.put("token", PrefsUtil.getUserInfo(context).loginToken);
+
+        httpUtils.post(MyHttpClient.getAccept(),params,new MyStringCallback(){
+            @Override
+            public void onError(Call call, Exception e) {
+                super.onError(call, e);
+            }
+
+            @Override
+            public void onResponse(String response) {
+                super.onResponse(response);
+                int commentId = ParseUtils.getCommentId(context, response);
+                if (commentId == 200) {
+                    iView.acceptSuccess();
                 }
             }
         });

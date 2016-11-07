@@ -45,8 +45,31 @@ public class InvitationPresenter extends BasePresenter<IInvitationView> {
             @Override
             public void onResult(JsonResponse<? extends Object> response) {
                 super.onResult(response);
-
                 List<Invitation> invitationBeanList = response.getData();
+                if (key != "" ) {
+                    if (page == 1) {
+                        if (invitationBeanList.size() == 0) {
+                            iView.noSerachData();
+                        }
+                    } else {
+                        if (invitationBeanList.size() == 0) {
+                            iView.noSerachMoreData();
+                        }
+                    }
+                    if(invitationBeanList.size()>0){
+                        iView.serachSuccess();
+                    }
+                } else {
+                    if (page == 1) {
+                        if (invitationBeanList.size() == 0) {
+                            iView.noData();
+                        }
+                    } else {
+                        if (invitationBeanList.size() == 0) {
+                            iView.noMoreData();
+                        }
+                    }
+                }
                 iView.showInvitationList(invitationBeanList);
             }
 
@@ -68,7 +91,7 @@ public class InvitationPresenter extends BasePresenter<IInvitationView> {
         params.put("target_uid", target_uid + "");
         params.put("did", did + "");
         params.put("token", PrefsUtil.getUserInfo(context).loginToken);
-        httpUtils.post(MyHttpClient.sendInvite(),params,new MyStringCallback(){
+        httpUtils.post(MyHttpClient.sendInvite(), params, new MyStringCallback() {
             @Override
             public void onError(Call call, Exception e) {
                 super.onError(call, e);

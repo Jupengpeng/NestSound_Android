@@ -31,7 +31,7 @@ public class CollectFragment extends BaseFragment implements ICollectView {
     CollectAdapter collectAdapter;
     private List<CollectBean> beanList;
     private int page = 1;
-
+    private boolean isFirst;
     @Override
     protected int getLayoutResId() {
         return R.layout.fragment_collect;
@@ -39,6 +39,8 @@ public class CollectFragment extends BaseFragment implements ICollectView {
 
     @Override
     protected void initPresenter() {
+        if (isFirst) return;
+        else isFirst = true;
         collectPresenter = new CollectPresenter(context, this);
         showLoading(ll_loading);
         collectPresenter.init();

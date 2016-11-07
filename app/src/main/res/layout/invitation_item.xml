@@ -63,6 +63,7 @@
             android:layout_width="72dp"
             android:layout_height="30dp"
             android:layout_gravity="center_vertical"
+            style="?android:attr/borderlessButtonStyle"
             android:background="@drawable/bt_bg"
             android:focusable="false"
             android:text="邀请"

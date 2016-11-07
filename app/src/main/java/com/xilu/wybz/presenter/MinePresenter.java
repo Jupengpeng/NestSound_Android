@@ -39,6 +39,15 @@ public class MinePresenter extends BasePresenter<IMineView> {
             public void onResult(JsonResponse<? extends Object> response) {
                 super.onResult(response);
                 List<MineBean> mineBeanList = response.getData();
+                if(page==1){
+                    if(mineBeanList.size()==0){
+                        iView.noData();
+                    }
+                }else{
+                    if(mineBeanList.size()==0){
+                        iView.noMoreData();
+                    }
+                }
                 iView.showMineList(mineBeanList);
             }
 

@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.CollectBean;
+import com.xilu.wybz.common.ZnImageLoader;
 import com.xilu.wybz.utils.DateFormatUtils;
 
 import java.util.List;
@@ -96,6 +97,8 @@ public class CollectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 ((CollectViewHolder) holder).collect_tv_title.setText(collectBean.getTitle());
                 ((CollectViewHolder) holder).collect_tv_participatenum.setText(collectBean.getWorknum() + "人参与合作");
                 ((CollectViewHolder) holder).collect_tv_time.setText(DateFormatUtils.formatX1(collectBean.getCreatetime()));
+                ZnImageLoader.getInstance().displayImage(collectBean.getHeadurl(), ZnImageLoader.getInstance().headOptions, ((CollectViewHolder) holder).collect_headerurl_iv);
+
             }
         }
     }

@@ -42,6 +42,7 @@
         </LinearLayout>
 
     </RelativeLayout>
+    <include layout="@layout/ll_nodata"/>
     <View
         android:id="@+id/view"
         android:layout_width="match_parent"

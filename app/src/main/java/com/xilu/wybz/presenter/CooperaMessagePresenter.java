@@ -38,9 +38,13 @@ public class CooperaMessagePresenter extends BasePresenter<ICooperaMessageView> 
             public void onResult(JsonResponse<? extends Object> response) {
                 super.onResult(response);
                 List<CooperaMessageBean> cooperaMessageBeanList = response.getData();
-                if(page==1){
-                    if(cooperaMessageBeanList.size()==0){
+                if (page == 1) {
+                    if (cooperaMessageBeanList.size() == 0) {
                         iView.loadNoData();
+                    }
+                } else {
+                    if (cooperaMessageBeanList.size() == 0) {
+                        iView.loadNoMore();
                     }
                 }
                 iView.showCooperaMessageList(cooperaMessageBeanList);

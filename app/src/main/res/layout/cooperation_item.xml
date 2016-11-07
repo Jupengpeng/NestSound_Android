@@ -47,6 +47,7 @@
         <Button
             android:id="@+id/coopera_bt"
             android:layout_width="62dp"
+            style="?android:attr/borderlessButtonStyle"
             android:layout_height="28dp"
             android:layout_gravity="center_vertical"
             android:background="@drawable/bt_bg"

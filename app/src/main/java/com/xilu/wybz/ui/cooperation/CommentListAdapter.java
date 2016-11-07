@@ -2,6 +2,7 @@ package com.xilu.wybz.ui.cooperation;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,10 +52,11 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
     @Override
     public void onBindViewHolder(CommentListViewHolder holder, int position) {
         CooperaDetailsBean.CommentListBean commentBean = commentListBean.get(position);
+        Log.e("BBB", commentBean.getComment());
         holder.tv_name.setText(commentBean.getNickname());
         holder.tv_content.setText(commentBean.getComment());
         holder.tv_date.setText(DateFormatUtils.formatX1(commentBean.getCreatedate()));
-        ZnImageLoader.getInstance().displayImage("http://i04.pic.sogou.com/15a7ed77bf5fa401", ZnImageLoader.getInstance().headOptions, holder.iv_head);
+        ZnImageLoader.getInstance().displayImage(commentBean.getHeaderurl(), ZnImageLoader.getInstance().headOptions, holder.iv_head);
     }
 
     @Override
