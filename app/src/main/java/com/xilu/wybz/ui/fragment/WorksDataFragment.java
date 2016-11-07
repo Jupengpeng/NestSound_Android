@@ -74,9 +74,9 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
         if (getArguments() != null) {
             type = getArguments().getInt(TYPE);
             userId = getArguments().getInt(UID);
-            if (type == 0) isFirstTab = true;
             COME = MYCOMES[type - 1];
             workType = type;
+            if (type == 1) isFirstTab = true;
 
             author = getArguments().getString(AUTHOR);
         }

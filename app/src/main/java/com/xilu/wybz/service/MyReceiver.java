@@ -14,8 +14,10 @@ import com.xilu.wybz.R;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.KeySet;
 import com.xilu.wybz.common.MyCommon;
+import com.xilu.wybz.ui.MainTabActivity;
 import com.xilu.wybz.ui.mine.FollowAndFansActivity;
 import com.xilu.wybz.ui.msg.MsgCommentActivity;
+import com.xilu.wybz.ui.msg.MsgCooprateActivity;
 import com.xilu.wybz.ui.msg.MsgFavActivity;
 import com.xilu.wybz.ui.msg.MsgPreserveActivity;
 import com.xilu.wybz.ui.msg.MsgSystemActivity;
@@ -135,6 +137,11 @@ public class MyReceiver extends BroadcastReceiver {
         }
     }
 
+    /**
+     *
+     * @param context
+     * @param msg
+     */
     private void notify(Context context, String msg) {
         notifyId = (int) (System.currentTimeMillis() / 1000);
         String content = "";
@@ -190,6 +197,14 @@ public class MyReceiver extends BroadcastReceiver {
             openintent = new Intent(context, FollowAndFansActivity.class);
             openintent.putExtra(KeySet.KEY_TYPE, KeySet.TYPE_FANS_ACT);
             openintent.putExtra(KeySet.KEY_UID, PrefsUtil.getUserId(context));
+        } else if (type.equals(MyCommon.PUSH_TYPE_COO_COMPLETE)
+                ||type.equals(MyCommon.PUSH_TYPE_COO_INVITE)
+                ||type.equals(MyCommon.PUSH_TYPE_COO_ACCESS)
+                ||type.equals(MyCommon.PUSH_TYPE_COO_EXPIRE)
+                ||type.equals(MyCommon.PUSH_TYPE_COO_LEAVE)
+                ||type.equals(MyCommon.PUSH_TYPE_COO_LEAVEREPLY)
+                ) {
+            openintent = new Intent(context, MsgCooprateActivity.class);
         }
 
         if (idTypes.get(type) == null) {
@@ -199,6 +214,12 @@ public class MyReceiver extends BroadcastReceiver {
         }
         ids.add(notifyId);
         idTypes.put(type, ids);
+
+        if (openintent == null){
+            Log.e("Push","未知类型 type ?? openintent = null");
+            openintent = new Intent(context, MainTabActivity.class);
+        }
+
         //发送消息通知
         EventBus.getDefault().post(new Event.NoticeMsgEvent(type));
         PendingIntent contentIntent = PendingIntent.getActivity(context, 0, openintent, 0);

@@ -54,7 +54,7 @@ public class OtherWorksDataFragment extends BaseListFragment<WorksData> implemen
             type = getArguments().getInt(TYPE);
             userId = getArguments().getInt(UID);
             COME = OTHERCOMES[type-1];
-            if (type == 0) isFirstTab = true;
+            if (type == 1) isFirstTab = true;
             author = getArguments().getString(AUTHOR);
         }
 

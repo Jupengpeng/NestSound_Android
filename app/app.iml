@@ -123,7 +123,6 @@
       <sourceFolder url="file://$MODULE_DIR$/src/test/shaders" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/assets" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/blame" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/builds" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/classes" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/dependency-cache" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.android.support/animated-vector-drawable/23.3.0/jars" />
@@ -143,23 +142,17 @@
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.facebook.fresco/imagepipeline-base/0.9.0/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.facebook.fresco/imagepipeline/0.9.0/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.squareup.leakcanary/leakcanary-android-no-op/1.5/jars" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.squareup.leakcanary/leakcanary-android/1.5/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.wdullaer/materialdatetimepicker/2.3.0/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/id.zelory/compressor/1.0.2/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/in.srain.cube/ultra-ptr/1.0.11/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/me.zhanghai.android.materialprogressbar/library/1.1.5/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/incremental" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/incremental-classes" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/incremental-runtime-classes" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/incremental-safeguard" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/incremental-verifier" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/instant-run-resources" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/instant-run-support" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/jniLibs" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/manifests" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/reload-dex" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/multi-dex" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/pre-dexed" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/res" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/restart-dex" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/rs" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/shaders" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/symbols" />
@@ -175,7 +168,6 @@
     <orderEntry type="library" exported="" name="lite-orm-1.9.1" level="project" />
     <orderEntry type="library" exported="" name="materialdatetimepicker-2.3.0" level="project" />
     <orderEntry type="library" exported="" name="gson-2.3.1" level="project" />
-    <orderEntry type="library" exported="" name="leakcanary-analyzer-1.5" level="project" />
     <orderEntry type="library" exported="" name="umeng_social_sdk" level="project" />
     <orderEntry type="library" exported="" name="fbcore-0.9.0" level="project" />
     <orderEntry type="library" exported="" name="ultra-ptr-1.0.11" level="project" />
@@ -196,18 +188,15 @@
     <orderEntry type="library" exported="" name="mta-sdk-1.6.2" level="project" />
     <orderEntry type="library" exported="" name="umeng-update-v2.6.0.1" level="project" />
     <orderEntry type="library" exported="" name="okhttp-3.3.1" level="project" />
-    <orderEntry type="library" exported="" scope="TEST" name="leakcanary-android-no-op-1.5" level="project" />
+    <orderEntry type="library" exported="" name="leakcanary-android-no-op-1.5" level="project" />
     <orderEntry type="library" exported="" name="compressor-1.0.2" level="project" />
     <orderEntry type="library" exported="" name="commons-httpclient-3.1" level="project" />
     <orderEntry type="library" exported="" name="happy-dns-0.2.1" level="project" />
-    <orderEntry type="library" exported="" name="haha-2.0.3" level="project" />
     <orderEntry type="library" exported="" name="picasso-2.5.2" level="project" />
     <orderEntry type="library" exported="" name="SocialSDK_Sina" level="project" />
     <orderEntry type="library" exported="" name="weiboSDKCore_3.1.4" level="project" />
-    <orderEntry type="library" exported="" name="leakcanary-watcher-1.5" level="project" />
     <orderEntry type="library" exported="" name="imagepipeline-0.9.0" level="project" />
     <orderEntry type="library" exported="" name="support-v4-23.3.0" level="project" />
-    <orderEntry type="library" exported="" name="leakcanary-android-1.5" level="project" />
     <orderEntry type="library" exported="" name="SocialSDK_WeiXin_2" level="project" />
     <orderEntry type="library" exported="" name="bolts-android-1.1.4" level="project" />
     <orderEntry type="library" exported="" name="jpush-android-2.1.9" level="project" />
@@ -238,7 +227,7 @@
     <orderEntry type="library" exported="" name="mqqopenpay" level="project" />
     <orderEntry type="library" exported="" name="libammsdk" level="project" />
     <orderEntry type="library" exported="" name="alipaySingle-20160825" level="project" />
-    <orderEntry type="library" exported="" name="UPPayPluginExPro" level="project" />
     <orderEntry type="library" exported="" name="libpingpp-2.1.6" level="project" />
+    <orderEntry type="library" exported="" name="UPPayPluginExPro" level="project" />
   </component>
 </module>
