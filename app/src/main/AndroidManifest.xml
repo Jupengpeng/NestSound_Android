@@ -508,7 +508,7 @@
         <meta-data android:name="JPUSH_CHANNEL" android:value="yinchao"/>
         <meta-data android:name="JPUSH_APPKEY" android:value="fc0c317f16cfdc18ebcb7180" />
         <activity
-            android:name=".ui.cooperation.CooperaPublish"
+            android:name=".ui.cooperation.CooperaPublishActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity

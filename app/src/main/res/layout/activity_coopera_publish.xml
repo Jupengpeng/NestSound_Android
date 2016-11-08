@@ -6,22 +6,41 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
 
-    tools:context="com.xilu.wybz.ui.cooperation.CooperaPublish">
+    tools:context="com.xilu.wybz.ui.cooperation.CooperaPublishActivity">
 
     <include layout="@layout/view_toolbar" />
 
-    <EditText
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:gravity="start"
-        android:paddingTop="15dp"
-        android:paddingLeft="10dp"
-        android:maxLength="150"
-        android:hint="简单说一下你的合作愿望吧"
-        android:textColor="#c1c1c1"
-        android:textSize="14sp"
-        android:background="#ffffff"
-        android:id="@+id/editText" />
+        android:layout_height="160dp">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:id="@+id/editText"
+            android:layout_height="160dp"
+            android:background="#ffffff"
+            android:gravity="start"
+            android:hint="简单说一下你的合作愿望吧"
+            android:maxLength="150"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingTop="10dp"
+            android:textColor="@color/main_text_color"
+            android:textColorHint="@color/main_text_color3"
+            android:textSize="14sp" />
+        <TextView
+            android:id="@+id/test_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="10dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:text="0/150"
+            android:textColor="@color/main_text_color5"
+            android:textSize="14sp"
+            />
+    </RelativeLayout>
 
     <View
         android:layout_width="match_parent"
@@ -38,9 +57,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:text="选择参加合作的歌词作品"
-            android:textColor="#c1c1c1"
+            android:layout_marginLeft="15dp"
+            android:hint="选择参加合作的歌词作品"
+            android:textColor="@color/main_text_color"
+            android:textColorHint="@color/main_text_color3"
             android:textSize="14sp" />
 
         <ImageView
@@ -61,7 +81,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:orientation="vertical">
 
         <TextView
@@ -69,34 +90,77 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="14dp"
             android:text="说明"
-            android:textColor="#333333"
-            android:textSize="13sp" />
+            android:textColor="@color/main_text_color"
+            android:textSize="14sp" />
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="21dp"
-            android:layout_marginTop="13dp"
-            android:text="· 默认合作期限为15天，您可以在所有合作作品中选取一首作为采纳作品，如超期或期限内没有满意作品，则视为合作结束"
-            android:textColor="#666666"
-            android:textSize="12sp" />
+            android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="21dp"
-            android:layout_marginTop="13dp"
-            android:text="· 删除合作需求，他人将无法进行合作，但已合作完成作品不会被删除"
-            android:textColor="#666666"
-            android:textSize="12sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="13dp"
+                android:text="-"
+                android:textColor="@color/main_text_color2"
+                android:textSize="14sp" />
 
-        <TextView
-            android:layout_width="wrap_content"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:layout_marginTop="13dp"
+                android:text="默认合作期限为15天，您可以在所有合作作品中选取一首作为采纳作品，如超期或期限内没有满意作品，则视为合作结束"
+                android:textColor="@color/main_text_color2"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="21dp"
-            android:layout_marginTop="13dp"
-            android:text="· 您的歌词作品在发起合作后，将无法修改"
-            android:textColor="#666666"
-            android:textSize="12sp" />
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="13dp"
+                android:text="-"
+                android:textColor="@color/main_text_color2"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:layout_marginTop="13dp"
+                android:text="删除合作需求，他人将无法进行合作，但已合作完成作品不会被删除"
+                android:textColor="@color/main_text_color2"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="13dp"
+                android:text="-"
+                android:textColor="@color/main_text_color2"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:layout_marginTop="13dp"
+                android:text="您的歌词作品在发起合作后，将无法修改"
+                android:textColor="@color/main_text_color2"
+                android:textSize="12sp" />
+        </LinearLayout>
+
     </LinearLayout>
 </LinearLayout>

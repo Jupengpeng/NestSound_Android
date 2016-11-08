@@ -75,7 +75,7 @@ public class LyricDetailsActivity extends ToolbarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == R.id.menu_use) {
-            Intent intent = new Intent(LyricDetailsActivity.this, CooperaPublish.class);
+            Intent intent = new Intent(LyricDetailsActivity.this, CooperaPublishActivity.class);
             intent.putExtra("cooperaLyricBean", cooperaLyricBean);
             startActivity(intent);
             return true;

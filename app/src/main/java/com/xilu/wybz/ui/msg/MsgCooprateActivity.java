@@ -82,9 +82,9 @@ public class MsgCooprateActivity extends BaseListActivity<PreserveMessageBean> i
     }
 
     public void clearMsg() {
-        EventBus.getDefault().post(new Event.ClearMsgEvent(MyCommon.PUSH_TYPE_COPYRIGH));
+        EventBus.getDefault().post(new Event.ClearMsgEvent(MyCommon.PUSH_TYPE_COO));
         Intent mIntent = new Intent("com.xilu.wybz.intent.CLEARNOTICE");
-        mIntent.putExtra("type", MyCommon.PUSH_TYPE_COPYRIGH);
+        mIntent.putExtra("type", MyCommon.PUSH_TYPE_COO);
         sendBroadcast(mIntent);
     }
 
@@ -146,7 +146,7 @@ public class MsgCooprateActivity extends BaseListActivity<PreserveMessageBean> i
     @Override
     public void onSuccess(List<PreserveMessageBean> list) {
         if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
-//            mDataList.clear();
+            mDataList.clear();
         }
         mDataList.addAll(list);
         recycler.onRefreshCompleted();
@@ -230,16 +230,21 @@ public class MsgCooprateActivity extends BaseListActivity<PreserveMessageBean> i
                     ivType.setImageResource(R.drawable.ic_hezuodaoqi);
                     break;
                 case MyCommon.PUSH_TYPE_COO_LEAVE:
-                    tvTitle.setText("合作到期");
-                    loadImage(bean.headerUrl,ivType);
+                    tvTitle.setText("合作消息");
+                    ivType.setImageResource(R.drawable.ic_hezuo_liuyan);
+//                    loadImage(bean.headerUrl,ivType);
                     break;
                 case MyCommon.PUSH_TYPE_COO_LEAVEREPLY:
-                    tvTitle.setText("合作到期");
-                    loadImage(bean.headerUrl,ivType);
+                    tvTitle.setText("合作消息");
+                    ivType.setImageResource(R.drawable.ic_hezuo_liuyan);
+//                    loadImage(bean.headerUrl,ivType);
                     break;
             }
 
             tvCreateTime.setText(DateFormatUtils.formatX1(bean.createtime));
+            if (StringUtils.isNotBlank(bean.title)){
+                tvTitle.setText(bean.title);
+            }
             tvContent.setText(bean.content);
         }
 

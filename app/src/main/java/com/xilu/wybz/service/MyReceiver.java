@@ -168,8 +168,16 @@ public class MyReceiver extends BroadcastReceiver {
                 type.equals(MyCommon.PUSH_TYPE_RECOMENDTOINDEX) || type.equals(MyCommon.PUSH_TYPE_ADDTOSONGLIST)
                 ) {
             type = MyCommon.PUSH_TYPE_SYSTEMMSG;
-        } else if (type.contains(MyCommon.PUSH_TYPE_COPYRIGH)) {
+        } else if (type.contains(MyCommon.PUSH_TYPE_COPYRIGHSUCCESS) || type.contains(MyCommon.PUSH_TYPE_COPYRIGHFAIL )) {
             type = MyCommon.PUSH_TYPE_COPYRIGH;
+        } else if (type.equals(MyCommon.PUSH_TYPE_COO_COMPLETE)
+                ||type.equals(MyCommon.PUSH_TYPE_COO_INVITE)
+                ||type.equals(MyCommon.PUSH_TYPE_COO_ACCESS)
+                ||type.equals(MyCommon.PUSH_TYPE_COO_EXPIRE)
+                ||type.equals(MyCommon.PUSH_TYPE_COO_LEAVE)
+                ||type.equals(MyCommon.PUSH_TYPE_COO_LEAVEREPLY)
+                ){
+            type = MyCommon.PUSH_TYPE_COO;
         }
 //        if (AppInfoUtil.isRunningForeground(content)) {//app在前台
 //           } else {//app在后台 需要打开MainTabActivity 再进行跳转
@@ -182,8 +190,9 @@ public class MyReceiver extends BroadcastReceiver {
             openintent = new Intent(context, MsgZambiaActivity.class);
         } else if (type.equals(MyCommon.PUSH_TYPE_FOV)) {
             openintent = new Intent(context, MsgFavActivity.class);
-        } else if (type.equals(MyCommon.PUSH_TYPE_COPYRIGHSUCCESS)
-                ||type.equals(MyCommon.PUSH_TYPE_COPYRIGHFAIL)) {
+        } else if (type.equals(MyCommon.PUSH_TYPE_COPYRIGH)
+                ||type.equals(MyCommon.PUSH_TYPE_COPYRIGHFAIL)
+                ||type.equals(MyCommon.PUSH_TYPE_COPYRIGHSUCCESS)) {
             openintent = new Intent(context, MsgPreserveActivity.class);
         } else if (type.equals(MyCommon.PUSH_TYPE_SYSTEMMSG)
                 ||type.equals(MyCommon.PUSH_TYPE_NEWACTIVITY)
@@ -198,6 +207,7 @@ public class MyReceiver extends BroadcastReceiver {
             openintent.putExtra(KeySet.KEY_TYPE, KeySet.TYPE_FANS_ACT);
             openintent.putExtra(KeySet.KEY_UID, PrefsUtil.getUserId(context));
         } else if (type.equals(MyCommon.PUSH_TYPE_COO_COMPLETE)
+                ||type.equals(MyCommon.PUSH_TYPE_COO)
                 ||type.equals(MyCommon.PUSH_TYPE_COO_INVITE)
                 ||type.equals(MyCommon.PUSH_TYPE_COO_ACCESS)
                 ||type.equals(MyCommon.PUSH_TYPE_COO_EXPIRE)
