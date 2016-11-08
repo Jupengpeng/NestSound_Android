@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.CooperaLyricBean;
@@ -32,8 +31,6 @@ public class ChooseLyricActivity extends ToolbarActivity implements ICooperaLyri
     AlertDialog dialog;
     @Bind(R.id.ll_nodata)
     LinearLayout llnodata;
-    @Bind(R.id.tv_nodata)
-    TextView tvnodata;
     private CooperaLyricPresenter cooperaLyricPresenter;
     private List<CooperaLyricBean> lyricbeanList;
 
@@ -44,6 +41,7 @@ public class ChooseLyricActivity extends ToolbarActivity implements ICooperaLyri
     private int currentScrollState;
     private int lastVisibleItemPosition;
 
+    private boolean ishasData = true;
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_choose_lyric;
@@ -101,12 +99,12 @@ public class ChooseLyricActivity extends ToolbarActivity implements ICooperaLyri
 
     @Override
     public void noData() {
-        tvnodata.setText("这家伙很懒，什么也没有留下(⊙o⊙)…");
         llnodata.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void noMoreData() {
+        ishasData=false;
         cooperaLyricadapter.onLoadMoreStateChanged(false);
     }
 
@@ -143,7 +141,7 @@ public class ChooseLyricActivity extends ToolbarActivity implements ICooperaLyri
                 Log.e("AAA1", lastVisibleItemPosition + "");
                 Log.e("AAA2", (lastVisibleItemPosition) % 10 + "");
                 if ((visibleItemCount > 0 && currentScrollState == RecyclerView.SCROLL_STATE_IDLE &&
-                        (lastVisibleItemPosition) >= totalItemCount - 1) && !refreshLayout.isRefreshing() && ((lastVisibleItemPosition) % 10 == 0)) {
+                        (lastVisibleItemPosition) >= totalItemCount - 1) && !refreshLayout.isRefreshing() && ishasData) {
                     cooperaLyricadapter.onLoadMoreStateChanged(true);
                     page++;
                     lastVisibleItemPosition = lastVisibleItemPosition - 1;

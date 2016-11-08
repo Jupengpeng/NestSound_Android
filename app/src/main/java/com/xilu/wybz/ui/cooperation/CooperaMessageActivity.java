@@ -64,6 +64,8 @@ public class CooperaMessageActivity extends ToolbarActivity implements ICooperaM
     String[] actionTypes = new String[]{"del"};
     List<ActionBean> actionBeanList;
 
+
+    private boolean ishasData= true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -131,7 +133,7 @@ public class CooperaMessageActivity extends ToolbarActivity implements ICooperaM
 
     private void toSendComment() {
         showPd("正在评论中...");
-        cooperaMessagePresenter.sendComment(did, comment_type, 2, target_uid, content);
+        cooperaMessagePresenter.sendComment(did, comment_type, 3, target_uid, content);
     }
 
     @Override
@@ -165,7 +167,7 @@ public class CooperaMessageActivity extends ToolbarActivity implements ICooperaM
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     lastPosition = linearLayoutManager.findLastVisibleItemPosition();
                 }
-                if (lastPosition == recyclerView.getLayoutManager().getItemCount() - 1 && !refreshLayout.isRefreshing()) {
+                if (lastPosition == recyclerView.getLayoutManager().getItemCount() - 1 && !refreshLayout.isRefreshing() && ishasData) {
                     cooperaMessageAdapter.onLoadMoreStateChanged(true);
                     page++;
                     cooperaMessagePresenter.getCooperaMessageList(did, page);
@@ -246,6 +248,7 @@ public class CooperaMessageActivity extends ToolbarActivity implements ICooperaM
 
     @Override
     public void loadNoMore() {
+        ishasData =false;
         cooperaMessageAdapter.onLoadMoreStateChanged(false);
     }
 

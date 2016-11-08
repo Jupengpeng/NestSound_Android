@@ -280,6 +280,7 @@ public class CooperaDetailsBean {
         private int access;
         private String wUsername;
 
+
         public long getCreatetime() {
             return createtime;
         }

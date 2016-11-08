@@ -28,7 +28,7 @@ public class PlayPresenter extends BasePresenter<IPlayView> {
         params.put("work_id", music_id+"");
         params.put("target_uid", target_uid+"");
         params.put("wtype", "1");
-        httpUtils.post(MyHttpClient.getWorkFovUrl(), params, new MyStringCallback() {
+        httpUtils.post(MyHttpClient.cooperaCollect(), params, new MyStringCallback() {
             @Override
             public void onResponse(String response) {
                 DataBean dataBean = ParseUtils.getDataBean(context,response);
@@ -50,7 +50,7 @@ public class PlayPresenter extends BasePresenter<IPlayView> {
         params.put("work_id", music_id);
         params.put("target_uid", target_uid+"");
         params.put("wtype", "1");
-        httpUtils.post(MyHttpClient.getUpvoteUrl(), params, new MyStringCallback() {
+        httpUtils.post(MyHttpClient.cooperaZan(), params, new MyStringCallback() {
             public void onResponse(String response) {
                 DataBean dataBean = ParseUtils.getDataBean(context,response);
                 if(dataBean!=null&&dataBean.code==200)

@@ -54,6 +54,7 @@ public class CooperationFragment extends BaseFragment implements ICooperationVie
     private boolean isRefreshing;
     private int did;//合作需求ID
 
+    private boolean ishasData = true;
     @Override
     protected int getLayoutResId() {
         return R.layout.fragment_cooperation;
@@ -110,6 +111,7 @@ public class CooperationFragment extends BaseFragment implements ICooperationVie
     @Override
     public void noMoreData() {
 //        showMsg("没有更多数据");
+        ishasData = false;
         cooperationAdapter.onLoadMoreStateChanged(false);
     }
 
@@ -148,7 +150,7 @@ public class CooperationFragment extends BaseFragment implements ICooperationVie
                 int visibleItemCount = linearLayoutManager.getChildCount();
                 int totalItemCount = linearLayoutManager.getItemCount();
                 if ((visibleItemCount > 0 && currentScrollState == RecyclerView.SCROLL_STATE_IDLE &&
-                        (lastVisibleItemPosition) >= totalItemCount - 1) && !refreshLayout.isRefreshing() && ((lastVisibleItemPosition) % 5 == 0)) {
+                        (lastVisibleItemPosition) >= totalItemCount - 1) && !refreshLayout.isRefreshing() &&ishasData) {
                     cooperationAdapter.onLoadMoreStateChanged(true);
                     page++;
                     lastVisibleItemPosition = lastVisibleItemPosition - 1;

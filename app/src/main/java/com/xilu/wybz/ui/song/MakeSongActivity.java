@@ -137,7 +137,6 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
         intent.putExtra("templateBean", templateBean);
         intent.putExtra("preinfoBean", preinfoBean);
         intent.putExtra("did", did);
-
         intent.putExtra("type", type);
 
 
@@ -293,7 +292,12 @@ public class MakeSongActivity extends ToolbarActivity implements IMakeSongView {
         isPause = false;
 
         if ("1".equals(worksData.useheadset)) {
-            SongTuningActivity.toSongTuningActivity(context, worksData);
+            if (cooperatype == 1) {
+                SongTuningActivity.toSongTuningActivity(context, worksData, 1, preinfoBean, did);// 合作戴耳机
+            } else {
+                SongTuningActivity.toSongTuningActivity(context, worksData, 0, preinfoBean, did);
+            }
+
             cancelPd();
         } else {
             makeSongPresenter.tuningMusic(worksData);

@@ -256,17 +256,17 @@ public class MyHttpClient {
 
     //评论列表
     public static String getCommentListUrl() {
-        return "/java/common/comment/list/v22";
+        return "/cooperate/work/commentlist/v23";
     }
 
     //评论接口
     public static String getSaveCommentUrl() {
-        return "/java/commentopt/save/v22";
+        return "/cooperate/work/commentsave/v23";
     }
 
     //删除评论
     public static String getDelCommentUrl() {
-        return "/java/commentopt/delete/v22";
+        return "/cooperate/work/commentdelete/v23";
     }
 
     //更新IP

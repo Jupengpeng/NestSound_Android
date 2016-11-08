@@ -39,11 +39,12 @@ public class InvitationActivity extends ToolbarActivity implements IInvitationVi
     private List<Invitation> invitationlist;
     private int did;//合作需求ID
     private int page = 1;
-
+    private boolean ishasData = true;
 
     private String content = "";
     private int currentScrollState;
     private int lastVisibleItemPosition;
+
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_invitation;
@@ -67,7 +68,6 @@ public class InvitationActivity extends ToolbarActivity implements IInvitationVi
         if (isDestroy) return;
         invitationlist.addAll(invitationList);
         invitationAdapter.notifyDataSetChanged();
-
         invitationAdapter.onLoadMoreStateChanged(false);
     }
 
@@ -96,11 +96,13 @@ public class InvitationActivity extends ToolbarActivity implements IInvitationVi
 
     @Override
     public void noMoreData() {
+        ishasData = false;
         invitationAdapter.onLoadMoreStateChanged(false);
     }
 
     @Override
     public void noSerachData() {
+        ishasData = false;
         refreshLayout.setRefreshing(false);
         ll_nodata.setVisibility(View.VISIBLE);
 
@@ -108,6 +110,7 @@ public class InvitationActivity extends ToolbarActivity implements IInvitationVi
 
     @Override
     public void noSerachMoreData() {
+        ishasData = false;
         refreshLayout.setRefreshing(false);
         invitationAdapter.onLoadMoreStateChanged(false);
     }
@@ -173,12 +176,12 @@ public class InvitationActivity extends ToolbarActivity implements IInvitationVi
                 Log.e("AAA1", lastVisibleItemPosition + "");
                 Log.e("AAA2", (lastVisibleItemPosition) % 10 + "");
                 if ((visibleItemCount > 0 && currentScrollState == RecyclerView.SCROLL_STATE_IDLE &&
-                        (lastVisibleItemPosition) >= totalItemCount - 1) && !refreshLayout.isRefreshing() && ((lastVisibleItemPosition) % 10 == 0)) {
+                        (lastVisibleItemPosition) >= totalItemCount - 1) && !refreshLayout.isRefreshing() && ishasData) {
                     invitationAdapter.onLoadMoreStateChanged(true);
                     page++;
                     lastVisibleItemPosition = lastVisibleItemPosition - 1;
                     invitationPresenter.getInvitationList(did, page, content);
-                    Log.e("AAA3", (lastVisibleItemPosition) % 10+ "");
+                    Log.e("AAA3", (lastVisibleItemPosition) % 10 + "");
                 }
             }
         });
@@ -192,6 +195,7 @@ public class InvitationActivity extends ToolbarActivity implements IInvitationVi
                             invitationlist.clear();
                         }
                         page = 1;
+                        ishasData = true;
                         invitationPresenter.getInvitationList(did, page, content);
                         refreshLayout.setRefreshing(true);
                     }

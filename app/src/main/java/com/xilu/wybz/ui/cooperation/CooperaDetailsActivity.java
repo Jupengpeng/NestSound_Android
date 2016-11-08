@@ -275,33 +275,35 @@ public class CooperaDetailsActivity extends ToolbarActivity implements ICooperaD
 
     @Override
     public void showCooperaDetailsBean(CooperaDetailsBean cooperaDetailsBean) {
-        detailsBean = cooperaDetailsBean;
-        setTitle(cooperaDetailsBean.getUserInfo().getNickname() + "的合作");
-        cooperadetails_tv_name.setText(cooperaDetailsBean.getUserInfo().getNickname());
-        cooperadetails_tv_nickname.setText("作词:" + cooperaDetailsBean.getUserInfo().getNickname());
-        cooperadetails_tv_time.setText(DateFormatUtils.formatX1(cooperaDetailsBean.getDemandInfo().getCreatetime()));
-        cooperadetails_tv_endtime.setText("至" + DateFormatUtils.formatX1(cooperaDetailsBean.getDemandInfo().getEndtime()).substring(5, 10) + "过期");
-        cooperadetails_tv_requirement.setText(cooperaDetailsBean.getDemandInfo().getRequirement());
-        cooperadetails_tv_title.setText(cooperaDetailsBean.getDemandInfo().getTitle());
-        cooperadetails_tv_lyric.setText(cooperaDetailsBean.getDemandInfo().getLyrics());
-        cooperadetails_tv_commentnum.setText("全部" + cooperaDetailsBean.getDemandInfo().getCommentnum() + "条留言>>");
-        CommentList = cooperaDetailsBean.getCommentList();
-        CompleteList = cooperaDetailsBean.getCompleteList();
-        cooperadetails_tv_name.setText(cooperaDetailsBean.getUserInfo().getNickname());
-        cooperadetails_tv_nickname.setText("作词:" + cooperaDetailsBean.getUserInfo().getNickname());
-        loadImage(cooperaDetailsBean.getUserInfo().getHeadurl(), cooperadetails_head_iv);
-        cooperadetails_tv_time.setText(DateFormatUtils.formatX1(cooperaDetailsBean.getDemandInfo().getCreatetime()));
-        cooperadetails_tv_endtime.setText("至" + DateFormatUtils.formatX1(cooperaDetailsBean.getDemandInfo().getEndtime()).substring(5, 10) + "过期");
-        cooperadetails_tv_requirement.setText(cooperaDetailsBean.getDemandInfo().getRequirement());
-        cooperadetails_tv_title.setText(cooperaDetailsBean.getDemandInfo().getTitle());
-        cooperadetails_tv_lyric.setText(cooperaDetailsBean.getDemandInfo().getLyrics());
-        cooperadetails_tv_commentnum.setText("全部" + cooperaDetailsBean.getDemandInfo().getCommentnum() + "条留言>>");
-        iscollect = cooperaDetailsBean.getDemandInfo().getIscollect();
-        if (iscollect == 1) {
-            collect_iv.setImageResource(R.drawable.ic_shoucangdianji);
+        if (cooperaDetailsBean != null) {
+            detailsBean = cooperaDetailsBean;
+            setTitle(cooperaDetailsBean.getUserInfo().getNickname() + "的合作");
+            cooperadetails_tv_name.setText(cooperaDetailsBean.getUserInfo().getNickname());
+            cooperadetails_tv_nickname.setText("作词:" + cooperaDetailsBean.getUserInfo().getNickname());
+            cooperadetails_tv_time.setText(DateFormatUtils.formatX1(cooperaDetailsBean.getDemandInfo().getCreatetime()));
+            cooperadetails_tv_endtime.setText("至" + DateFormatUtils.formatX1(cooperaDetailsBean.getDemandInfo().getEndtime()).substring(5, 10) + "过期");
+            cooperadetails_tv_requirement.setText(cooperaDetailsBean.getDemandInfo().getRequirement());
+            cooperadetails_tv_title.setText(cooperaDetailsBean.getDemandInfo().getTitle());
+            cooperadetails_tv_lyric.setText(cooperaDetailsBean.getDemandInfo().getLyrics());
+            cooperadetails_tv_commentnum.setText("全部" + cooperaDetailsBean.getDemandInfo().getCommentnum() + "条留言>>");
+            CommentList = cooperaDetailsBean.getCommentList();
+            CompleteList = cooperaDetailsBean.getCompleteList();
+            cooperadetails_tv_name.setText(cooperaDetailsBean.getUserInfo().getNickname());
+            cooperadetails_tv_nickname.setText("作词:" + cooperaDetailsBean.getUserInfo().getNickname());
+            loadImage(cooperaDetailsBean.getUserInfo().getHeadurl(), cooperadetails_head_iv);
+            cooperadetails_tv_time.setText(DateFormatUtils.formatX1(cooperaDetailsBean.getDemandInfo().getCreatetime()));
+            cooperadetails_tv_endtime.setText("至" + DateFormatUtils.formatX1(cooperaDetailsBean.getDemandInfo().getEndtime()).substring(5, 10) + "过期");
+            cooperadetails_tv_requirement.setText(cooperaDetailsBean.getDemandInfo().getRequirement());
+            cooperadetails_tv_title.setText(cooperaDetailsBean.getDemandInfo().getTitle());
+            cooperadetails_tv_lyric.setText(cooperaDetailsBean.getDemandInfo().getLyrics());
+            cooperadetails_tv_commentnum.setText("全部" + cooperaDetailsBean.getDemandInfo().getCommentnum() + "条留言>>");
+            iscollect = cooperaDetailsBean.getDemandInfo().getIscollect();
+            if (iscollect == 1) {
+                collect_iv.setImageResource(R.drawable.ic_shoucangdianji);
+            }
+            disMissLoading(ll_loading);
+            scrollView.setVisibility(View.VISIBLE);
         }
-        disMissLoading(ll_loading);
-        scrollView.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -324,6 +326,7 @@ public class CooperaDetailsActivity extends ToolbarActivity implements ICooperaD
 
     @Override
     public void showCooperaCompleteList(List<CooperaDetailsBean.CompleteListBean> completeListBeen) {
+
         if (completeListBeen.size() > 0) {
             completeListAdapter = new CompleteListAdapter(CompleteList, context, where);
             completeList_recyclerview.setAdapter(completeListAdapter);
@@ -338,7 +341,7 @@ public class CooperaDetailsActivity extends ToolbarActivity implements ICooperaD
                             break;
                         case 2:
 //                        PlayAudioActivity.toPlayAudioActivity();
-                            PlayAudioActivity.toPlayAudioActivity(context,completeListBeen.get(position).getItemid()+"",3);
+                            PlayAudioActivity.toPlayAudioActivity(context, completeListBeen.get(position).getItemid() + "", "", "hezuo");
                             break;
                     }
                 }
@@ -373,9 +376,9 @@ public class CooperaDetailsActivity extends ToolbarActivity implements ICooperaD
     @Override
     public void acceptSuccess() {
         dialog.dismiss();
+
         onRefresh();
     }
-
     @Override
     public void onRefresh() {
         cooperaDetailsPresenter.getCooperaDetailsBean(id, page);

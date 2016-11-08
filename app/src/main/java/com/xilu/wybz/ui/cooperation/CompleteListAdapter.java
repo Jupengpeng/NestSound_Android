@@ -61,10 +61,10 @@ public class CompleteListAdapter extends RecyclerView.Adapter<CompleteListAdapte
             holder.complete_createtime.setText(DateFormatUtils.formatX1(completeBean.getCreatetime()));
             ZnImageLoader.getInstance().displayImage(completeBean.getPic(), ZnImageLoader.getInstance().headOptions, holder.complete_iv);
 
-            if (completeBean.getAccess() == 1) {
+            if (completeBean.getAccess() == 1 ) {
                 holder.complete_isaccess_bt.setBackgroundResource(R.drawable.finishbt_bg);
                 holder.complete_isaccess_bt.setText("已采纳");
-                holder.complete_isaccess_bt.setEnabled(false);
+
             }
             if (flag == 1) {
                 holder.complete_isaccess_bt.setVisibility(View.GONE);

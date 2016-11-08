@@ -49,7 +49,7 @@ public class CooperationPresenter extends BasePresenter<ICooperationView> {
                         iView.noData();
                     }
                 } else {
-                    if (cooperationBeanList.size() == 0 || cooperationBeanList.size() <= 5) {
+                    if (cooperationBeanList.size() == 0 ) {
                         iView.noMoreData();
                     }
                 }
