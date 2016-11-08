@@ -21,10 +21,6 @@ public class MyHttpClient {
     public static String QINIU_URL = "http://pic.yinchao.cn";
 
 
-    public static String PROTOCOL_1 = "";
-    public static String PROTOCOL_2 = "";
-    public static String PROTOCOL_3 = "";
-
 
     public static String getQnToken() {
         return "/java/common/uploadcallback/qiniutoken";

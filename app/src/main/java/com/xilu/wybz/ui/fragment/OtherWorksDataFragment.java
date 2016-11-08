@@ -32,9 +32,9 @@ public class OtherWorksDataFragment extends BaseListFragment<WorksData> implemen
     private int userId;
     private String COME;
     private String author;
-    private String[] OTHERCOMES = new String[]{"usersong", "userlyrics", "userfav","userRRR"};//他人主页
-    private boolean isFirstTab;
-    private boolean isFirst;
+    private String[] OTHERCOMES = new String[]{"usersong", "userlyrics", "userfav","hezuo"};//他人主页
+    private boolean isFirst = false;
+    private boolean isFirstTab = false;
     @Override
     protected void initPresenter() {
         userPresenter = new OtherCenterListPresenter(context, this);
@@ -137,7 +137,7 @@ public class OtherWorksDataFragment extends BaseListFragment<WorksData> implemen
                 adapter.notifyDataSetChanged();
                 recycler.onRefreshCompleted();
             }
-        }, 600);
+        }, 200);
     }
 
 
@@ -157,29 +157,29 @@ public class OtherWorksDataFragment extends BaseListFragment<WorksData> implemen
     @Override
     public void loadNoData() {
         if (isDestroy) return;
-        if (type == 4){
-            mDataList.add(new WorksData());
-            mDataList.add(new WorksData());
-            mDataList.add(new WorksData());
-            mDataList.add(new WorksData());
-
-
-            for (WorksData worksData : mDataList) {
-                if (type < 3){
-                    worksData.setAuthor(author);
-                }
-                worksData.type = type;
-                if (type == 4){
-                    worksData.type = 5;
-                    worksData.author = worksData.getComAuthor();
-                }
-            }
-
-            adapter.notifyDataSetChanged();
-            recycler.onRefreshCompleted();
-
-            return;
-        }
+//        if (type == 4){
+//            mDataList.add(new WorksData());
+//            mDataList.add(new WorksData());
+//            mDataList.add(new WorksData());
+//            mDataList.add(new WorksData());
+//
+//
+//            for (WorksData worksData : mDataList) {
+//                if (type < 3){
+//                    worksData.setAuthor(author);
+//                }
+//                worksData.type = type;
+//                if (type == 4){
+//                    worksData.type = 5;
+//                    worksData.author = worksData.getComAuthor();
+//                }
+//            }
+//
+//            adapter.notifyDataSetChanged();
+//            recycler.onRefreshCompleted();
+//
+//            return;
+//        }
 
         llNoData.setVisibility(View.VISIBLE);
         recycler.onRefreshCompleted();

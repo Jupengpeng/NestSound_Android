@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.OrientationHelper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,9 +45,9 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
     private String COME;
     private String author;
     private int workType;//type 1=歌曲，2=歌词，3=灵感记录（删除作品的type）
-    private String[] MYCOMES = new String[]{"mysong", "mylyrics", "myfav", "myrecord"};
-    private boolean isFirst;
-    private boolean isFirstTab;
+    private String[] MYCOMES = new String[]{"mysong", "mylyrics", "myfav", "hezuo"};
+    private boolean isFirst = false;
+    private boolean isFirstTab = false;
 
     UserCenterListPresenter userPresenter;
 
@@ -61,6 +62,7 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
         if (isFirst) return;
         else isFirst = true;
         recycler.setRefreshing();
+        Log.e("recycler","loadData");
     }
 
     @Override
@@ -80,7 +82,6 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
 
             author = getArguments().getString(AUTHOR);
         }
-
     }
 
     protected ILayoutManager getLayoutManager() {
@@ -149,13 +150,13 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
                     }
                     mDataList.add(worksData);
                 }
+                recycler.enableLoadMore(false);
                 llNoData.setVisibility(View.GONE);
-                recycler.enableLoadMore(true);
-                recycler.getRecyclerView().requestLayout();
-                adapter.notifyDataSetChanged();
                 recycler.onRefreshCompleted();
+                adapter.notifyDataSetChanged();
+                recycler.enableLoadMore(true);
             }
-        }, 600);
+        }, 200);
     }
 
     public void updateList() {
@@ -177,6 +178,43 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
         recycler.onRefreshCompleted();
         recycler.enableLoadMore(false);
     }
+
+
+    @Override
+    public void loadNoData() {
+        if (isDestroy) return;
+
+
+
+//        if (type == 4){
+//            mDataList.add(new WorksData());
+//            mDataList.add(new WorksData());
+//            mDataList.add(new WorksData());
+//            mDataList.add(new WorksData());
+//
+//
+//            for (WorksData worksData : mDataList) {
+//                if (type < 3){
+//                    worksData.setAuthor(author);
+//                }
+//                worksData.type = type;
+//                if (type == 4){
+//                    worksData.type = 5;
+//                    worksData.author = worksData.getComAuthor();
+//                }
+//            }
+//
+//            adapter.notifyDataSetChanged();
+//            recycler.onRefreshCompleted();
+//
+//            return;
+//        }
+
+        llNoData.setVisibility(View.VISIBLE);
+        recycler.onRefreshCompleted();
+        recycler.enableLoadMore(false);
+    }
+
 
     public void updateNum(WorksData worksData, int type) {
         if (isDestroy || mDataList == null) return;
@@ -239,41 +277,6 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
     @Override
     public void updateFail() {
 
-    }
-
-    @Override
-    public void loadNoData() {
-        if (isDestroy) return;
-
-
-
-        if (type == 4){
-            mDataList.add(new WorksData());
-            mDataList.add(new WorksData());
-            mDataList.add(new WorksData());
-            mDataList.add(new WorksData());
-
-
-            for (WorksData worksData : mDataList) {
-                if (type < 3){
-                    worksData.setAuthor(author);
-                }
-                worksData.type = type;
-                if (type == 4){
-                    worksData.type = 5;
-                    worksData.author = worksData.getComAuthor();
-                }
-            }
-
-            adapter.notifyDataSetChanged();
-            recycler.onRefreshCompleted();
-
-            return;
-        }
-
-        llNoData.setVisibility(View.VISIBLE);
-        recycler.onRefreshCompleted();
-        recycler.enableLoadMore(false);
     }
 
     //移除某个item

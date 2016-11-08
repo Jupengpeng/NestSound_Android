@@ -153,14 +153,22 @@ public class MainService extends Service implements IMusicDetailView, AudioManag
         PrefsUtil.putString(CurrentMusic.PLAY_FROM, playFrom, this);
         PrefsUtil.putString(CurrentMusic.PLAY_ID, playId, this);
         PrefsUtil.putString(CurrentMusic.PLAY_GEDAN_ID, PlayGedanId, this);
-        loadMusicDetailPresenter.loadMusicDetail(playId);
+        String type = null;
+        if ("hezuo".equalsIgnoreCase(playFrom)){
+            type = "3";
+        }
+        loadMusicDetailPresenter.loadMusicDetail(playId,type);
     }
 
     //列表里面切歌 position顺延
     public void loadNowListData(String playId) {
         isPlay = true;
         this.playId = playId;
-        loadMusicDetailPresenter.loadMusicDetail(playId);
+        String type = null;
+        if ("hezuo".equalsIgnoreCase(playFrom)){
+            type = "3";
+        }
+        loadMusicDetailPresenter.loadMusicDetail(playId,type);
     }
 
     @Override

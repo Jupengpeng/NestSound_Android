@@ -749,6 +749,9 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
                 MyApplication.getInstance().getMainService().doRelease();
             }
         }
+        if (handler!= null){
+            handler.removeCallbacksAndMessages(null);
+        }
         if (playPresenter != null)
             playPresenter.cancleRequest();
         PrefsUtil.saveMusicData(context, worksData);
