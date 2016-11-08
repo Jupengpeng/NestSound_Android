@@ -28,7 +28,7 @@ public class CooperaPublishActivity extends ToolbarActivity implements ICooperaP
     @Bind(R.id.editText)
     EditText editText;
     @Bind(R.id.test_size)
-    EditText sizeText;
+    TextView sizeText;
 
 
     @Override
