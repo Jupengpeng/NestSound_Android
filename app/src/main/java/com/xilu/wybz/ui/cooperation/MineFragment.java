@@ -5,10 +5,12 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.MineBean;
@@ -28,11 +30,13 @@ import static com.xilu.wybz.R.id.positive_bt;
  * Created by Administrator on 2016/10/19.
  */
 
-public class MineFragment extends BaseFragment implements IMineView {
+public class MineFragment extends BaseFragment implements IMineView, SwipeRefreshLayout.OnRefreshListener {
     @Bind(R.id.ll_loading)
     LinearLayout ll_loading;
     @Bind(R.id.ll_nodata)
     LinearLayout ll_nodata;
+    @Bind(R.id.tv_nodata)
+    TextView tvnodata;
     @Bind(R.id.refreshlayout)
     SwipeRefreshLayout refreshLayout;
     @Bind(R.id.mine_recyclerview)
@@ -42,6 +46,9 @@ public class MineFragment extends BaseFragment implements IMineView {
     private MineAdapter mineAdapter;
     private int page = 1;
     private AlertDialog dialog;
+
+    private int currentScrollState;
+    private int lastVisibleItemPosition;
 
     @Override
     protected int getLayoutResId() {
@@ -112,47 +119,44 @@ public class MineFragment extends BaseFragment implements IMineView {
 
             }
         });
-        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                if (refreshLayout.isRefreshing()) {
-                    if (mineList.size() > 0) {
-                        mineList.clear();
-                        page = 1;
-                    }
-                    minePresenter.getMineList(page);
-                    refreshLayout.setRefreshing(false);
-
-                }
-            }
-        });
+        refreshLayout.setOnRefreshListener(this);
         mine_recyclerview.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
 
-                int lastPosition = -1;
+//                int lastPosition = 0;
+//                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+//                    lastPosition = linearLayoutManager.findLastVisibleItemPosition();
+//                    Log.e("AAA", lastPosition + "");
+//                }
+//                if (lastPosition == recyclerView.getLayoutManager().getItemCount() - 1 && !refreshLayout.isRefreshing()) {
+//                    Log.e("AAA", "日了狗");
+//                    mineAdapter.onLoadMoreStateChanged(true);
+//                    page++;
+//                    minePresenter.getMineList(page);
+//                }
+                currentScrollState = newState;
 
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    lastPosition = linearLayoutManager.findLastVisibleItemPosition();
-                }
-                if (lastPosition == recyclerView.getLayoutManager().getItemCount() - 1) {
+                int visibleItemCount = linearLayoutManager.getChildCount();
+                int totalItemCount = linearLayoutManager.getItemCount();
+                Log.e("AAA1", lastVisibleItemPosition + "");
+                Log.e("AAA2", (lastVisibleItemPosition) % 10 + "");
+                if ((visibleItemCount > 0 && currentScrollState == RecyclerView.SCROLL_STATE_IDLE &&
+                        (lastVisibleItemPosition) >= totalItemCount - 1) && !refreshLayout.isRefreshing() && ((lastVisibleItemPosition) % 10 == 0)) {
                     mineAdapter.onLoadMoreStateChanged(true);
                     page++;
+                    lastVisibleItemPosition = lastVisibleItemPosition - 1;
                     minePresenter.getMineList(page);
+                    Log.e("AAA3", (lastVisibleItemPosition) % 10+ "");
                 }
             }
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-//                int post = linearLayoutManager.findFirstCompletelyVisibleItemPosition();
-//                int total = linearLayoutManager.getItemCount();
-//                int visible = linearLayoutManager.getChildCount();
-//                if ((post + visible) >= total) {
-//                    minePresenter.getMineList(page++);
-//                }
-
+                lastVisibleItemPosition = (linearLayoutManager)
+                        .findLastVisibleItemPosition() + 1;
             }
         });
     }
@@ -169,10 +173,15 @@ public class MineFragment extends BaseFragment implements IMineView {
     public void deleteSuccess(int position) {
         mineAdapter.removeItem(position);
         dialog.dismiss();
+        if (mineList.size() ==0) {
+            tvnodata.setText("暂无发布作品");
+            ll_nodata.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
     public void noData() {
+        tvnodata.setText("暂无发布作品");
         ll_nodata.setVisibility(View.VISIBLE);
     }
 
@@ -189,4 +198,13 @@ public class MineFragment extends BaseFragment implements IMineView {
     }
 
 
+    @Override
+    public void onRefresh() {
+        if (mineList.size() > 0) {
+            mineList.clear();
+            page = 1;
+        }
+        minePresenter.getMineList(page);
+        refreshLayout.setRefreshing(false);
+    }
 }

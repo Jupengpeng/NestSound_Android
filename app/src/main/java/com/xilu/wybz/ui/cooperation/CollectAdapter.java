@@ -36,13 +36,22 @@ public class CollectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     public interface OnItemClickListener {
-        void onItemClick(View view, int position, int type);
+        void onItemClick(View view, int position);
+    }
+
+    public interface OnItemLongClickListener {
+        void onItemLongClick(View view, int position);
     }
 
     private CollectAdapter.OnItemClickListener mOnItemClickListener;
+    private CollectAdapter.OnItemLongClickListener mOnItemLongClickListener;
 
     public void setOnItemClickListener(CollectAdapter.OnItemClickListener mOnItemClickListener) {
         this.mOnItemClickListener = mOnItemClickListener;
+    }
+
+    public void setOnItemLongClickListener(CollectAdapter.OnItemLongClickListener mOnItemLongClickListener) {
+        this.mOnItemLongClickListener = mOnItemLongClickListener;
     }
 
     @Override
@@ -68,6 +77,11 @@ public class CollectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         return null;
     }
 
+    public void removeItem(int pos) {
+        collectBeanList.remove(pos);
+        notifyDataSetChanged();
+    }
+
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof CollectViewHolder) {
@@ -77,18 +91,14 @@ public class CollectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 switch (collectBean.getStatus()) {
                     case 1://正在进行
                         ((CollectViewHolder) holder).collect_tv_status.setText("正在进行");
-
                         break;
-
                     case 3://对面停止合作
                         ((CollectViewHolder) holder).collect_tv_status.setText("对方停止该合作");
                         break;
-
                     case 4://已到期
                         ((CollectViewHolder) holder).collect_tv_status.setText("已到期");
                         ((CollectViewHolder) holder).collect_tv_status.setTextColor(Color.parseColor("#ff6161"));
                         break;
-
                     case 8://合作成功
                         ((CollectViewHolder) holder).collect_tv_status.setText("合作成功");
                         break;
@@ -98,8 +108,14 @@ public class CollectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 ((CollectViewHolder) holder).collect_tv_participatenum.setText(collectBean.getWorknum() + "人参与合作");
                 ((CollectViewHolder) holder).collect_tv_time.setText(DateFormatUtils.formatX1(collectBean.getCreatetime()));
                 ZnImageLoader.getInstance().displayImage(collectBean.getHeadurl(), ZnImageLoader.getInstance().headOptions, ((CollectViewHolder) holder).collect_headerurl_iv);
-
             }
+            ((CollectViewHolder) holder).itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mOnItemClickListener.onItemClick(((CollectViewHolder) holder).itemView, position);
+                }
+            });
+
         }
     }
 

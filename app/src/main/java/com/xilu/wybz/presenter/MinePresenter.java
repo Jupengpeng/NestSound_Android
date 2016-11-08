@@ -44,7 +44,8 @@ public class MinePresenter extends BasePresenter<IMineView> {
                         iView.noData();
                     }
                 }else{
-                    if(mineBeanList.size()==0){
+                    if(mineBeanList.size()==0 || mineBeanList.size() <= 10){
+
                         iView.noMoreData();
                     }
                 }

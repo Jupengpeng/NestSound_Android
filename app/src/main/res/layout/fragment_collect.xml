@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/ll_loading" />
+
+    <include layout="@layout/ll_nodata" />
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/refreshlayout"
@@ -18,5 +22,4 @@
     </android.support.v4.widget.SwipeRefreshLayout>
 
 
-    <include layout="@layout/ll_loading" />
 </LinearLayout>

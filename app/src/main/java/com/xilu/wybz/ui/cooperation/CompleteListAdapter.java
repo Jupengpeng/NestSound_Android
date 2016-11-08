@@ -55,9 +55,9 @@ public class CompleteListAdapter extends RecyclerView.Adapter<CompleteListAdapte
     public void onBindViewHolder(CompleteListViewHolder holder, int position) {
         CooperaDetailsBean.CompleteListBean completeBean = CompleteListBean.get(position);
         if (completeBean != null) {
-            holder.complete_title.setText(completeBean.getTitle());
-            holder.complete_lUsername.setText(completeBean.getLUsername());
-            holder.complete_wUsername.setText(completeBean.getWUsername());
+                holder.complete_title.setText("歌曲名: "+completeBean.getTitle());
+            holder.complete_lUsername.setText("作词    : "+completeBean.getLUsername());
+            holder.complete_wUsername.setText("作曲    : "+completeBean.getWUsername());
             holder.complete_createtime.setText(DateFormatUtils.formatX1(completeBean.getCreatetime()));
             ZnImageLoader.getInstance().displayImage(completeBean.getPic(), ZnImageLoader.getInstance().headOptions, holder.complete_iv);
 

@@ -3,6 +3,7 @@ package com.xilu.wybz.ui.cooperation;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,8 +22,12 @@ import com.xilu.wybz.bean.PreinfoBean;
 import com.xilu.wybz.presenter.CooperaDetailsPresenter;
 import com.xilu.wybz.ui.IView.ICooperaDetailsView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
+import com.xilu.wybz.ui.mine.OtherUserCenterActivity;
+import com.xilu.wybz.ui.mine.UserCenterActivity;
 import com.xilu.wybz.ui.song.HotCatalogActivity;
+import com.xilu.wybz.ui.song.PlayAudioActivity;
 import com.xilu.wybz.utils.DateFormatUtils;
+import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.view.CircleImageView;
 import com.xilu.wybz.view.MyRecyclerView;
 
@@ -37,7 +42,7 @@ import static com.xilu.wybz.R.id.positive_bt;
  * Created by Administrator on 2016/10/23.
  */
 
-public class CooperaDetailsActivity extends ToolbarActivity implements ICooperaDetailsView {
+public class CooperaDetailsActivity extends ToolbarActivity implements ICooperaDetailsView, SwipeRefreshLayout.OnRefreshListener {
     int where;// 1  是从合作页面过来的  2 是从我的页面过来的
 
     @Bind(R.id.ll_loading)
@@ -64,6 +69,8 @@ public class CooperaDetailsActivity extends ToolbarActivity implements ICooperaD
     @Bind(R.id.cooperadetails_tv_endtime)
     TextView cooperadetails_tv_endtime;
 
+    @Bind(R.id.refreshlayout)
+    SwipeRefreshLayout refreshLayout;
     @Bind(R.id.cooperadetails_tv_requirement)
     TextView cooperadetails_tv_requirement;
 
@@ -86,6 +93,8 @@ public class CooperaDetailsActivity extends ToolbarActivity implements ICooperaD
     LinearLayout comment_layout;
     @Bind(R.id.collect_iv)
     ImageView collect_iv;
+    @Bind(R.id.ic_coopera)
+    ImageView ic_coopera;
     int iscollect;
     private CooperaDetailsBean detailsBean;
     private CooperaDetailsPresenter cooperaDetailsPresenter;
@@ -170,7 +179,7 @@ public class CooperaDetailsActivity extends ToolbarActivity implements ICooperaD
 
     }
 
-    @OnClick({R.id.layout1, R.id.invitation, R.id.collectcoopera, R.id.coopera, R.id.comment_layout})
+    @OnClick({R.id.layout1, R.id.invitation, R.id.collectcoopera, R.id.coopera, R.id.comment_layout, R.id.cooperadetails_head_iv})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.layout1:
@@ -205,9 +214,26 @@ public class CooperaDetailsActivity extends ToolbarActivity implements ICooperaD
                 intent1.putExtra("commentnum", detailsBean.getDemandInfo().getCommentnum());
                 intent1.putExtra("itemid", detailsBean.getDemandInfo().getItemid());
 
-                startActivity(intent1);
+                startActivityForResult(intent1, 100);
 
                 break;
+            case R.id.cooperadetails_head_iv:
+                int uid = detailsBean.getUserInfo().getUid();
+                if (uid != PrefsUtil.getUserId(context)) {
+                    OtherUserCenterActivity.toUserInfoActivity(context, uid, detailsBean.getUserInfo().getNickname());
+                } else {
+                    startActivity(UserCenterActivity.class);
+                }
+                break;
+        }
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 100 && resultCode == 200) {
+            onRefresh();
         }
     }
 
@@ -244,8 +270,7 @@ public class CooperaDetailsActivity extends ToolbarActivity implements ICooperaD
         completeList_recyclerview.setLayoutManager(new LinearLayoutManager(context));
 
         cooperaDetailsPresenter.getCooperaDetailsBean(id, page);
-
-
+        refreshLayout.setOnRefreshListener(this);
     }
 
     @Override
@@ -262,8 +287,6 @@ public class CooperaDetailsActivity extends ToolbarActivity implements ICooperaD
         cooperadetails_tv_commentnum.setText("全部" + cooperaDetailsBean.getDemandInfo().getCommentnum() + "条留言>>");
         CommentList = cooperaDetailsBean.getCommentList();
         CompleteList = cooperaDetailsBean.getCompleteList();
-
-
         cooperadetails_tv_name.setText(cooperaDetailsBean.getUserInfo().getNickname());
         cooperadetails_tv_nickname.setText("作词:" + cooperaDetailsBean.getUserInfo().getNickname());
         loadImage(cooperaDetailsBean.getUserInfo().getHeadurl(), cooperadetails_head_iv);
@@ -277,7 +300,6 @@ public class CooperaDetailsActivity extends ToolbarActivity implements ICooperaD
         if (iscollect == 1) {
             collect_iv.setImageResource(R.drawable.ic_shoucangdianji);
         }
-
         disMissLoading(ll_loading);
         scrollView.setVisibility(View.VISIBLE);
     }
@@ -287,28 +309,44 @@ public class CooperaDetailsActivity extends ToolbarActivity implements ICooperaD
         commentListAdapter = new CommentListAdapter(CommentList, this);
         commentList_recyclerview.setAdapter(commentListAdapter);
         commentListAdapter.notifyDataSetChanged();
+        commentListAdapter.setOnItemClickListener(new CommentListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                int uid = commentListBean.get(position).getUid();
+                if (uid != PrefsUtil.getUserId(context)) {
+                    OtherUserCenterActivity.toUserInfoActivity(context, uid, commentListBean.get(position).getNickname());
+                } else {
+                    startActivity(UserCenterActivity.class);
+                }
+            }
+        });
     }
 
     @Override
     public void showCooperaCompleteList(List<CooperaDetailsBean.CompleteListBean> completeListBeen) {
-        completeListAdapter = new CompleteListAdapter(CompleteList, context, where);
-        completeList_recyclerview.setAdapter(completeListAdapter);
-        completeListAdapter.notifyDataSetChanged();
-        completeListAdapter.setOnItemClickListener(new CompleteListAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position, int type) {
-                switch (type) {
-                    case 1:
-                        itemid = completeListBeen.get(position).getItemid();
-                        initDialog();
-                        break;
-                    case 2:
+        if (completeListBeen.size() > 0) {
+            completeListAdapter = new CompleteListAdapter(CompleteList, context, where);
+            completeList_recyclerview.setAdapter(completeListAdapter);
+            completeListAdapter.notifyDataSetChanged();
+            completeListAdapter.setOnItemClickListener(new CompleteListAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, int position, int type) {
+                    switch (type) {
+                        case 1:
+                            itemid = completeListBeen.get(position).getItemid();
+                            initDialog();
+                            break;
+                        case 2:
 //                        PlayAudioActivity.toPlayAudioActivity();
-                        showMsg("" + position);
-                        break;
+                            PlayAudioActivity.toPlayAudioActivity(context,completeListBeen.get(position).getItemid()+"",3);
+                            break;
+                    }
                 }
-            }
-        });
+            });
+        } else {
+            ic_coopera.setVisibility(View.VISIBLE);
+            completeList_recyclerview.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -335,5 +373,12 @@ public class CooperaDetailsActivity extends ToolbarActivity implements ICooperaD
     @Override
     public void acceptSuccess() {
         dialog.dismiss();
+        onRefresh();
+    }
+
+    @Override
+    public void onRefresh() {
+        cooperaDetailsPresenter.getCooperaDetailsBean(id, page);
+        refreshLayout.setRefreshing(false);
     }
 }

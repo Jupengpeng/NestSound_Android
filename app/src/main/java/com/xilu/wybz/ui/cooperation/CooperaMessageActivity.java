@@ -165,7 +165,7 @@ public class CooperaMessageActivity extends ToolbarActivity implements ICooperaM
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     lastPosition = linearLayoutManager.findLastVisibleItemPosition();
                 }
-                if (lastPosition == recyclerView.getLayoutManager().getItemCount() - 1) {
+                if (lastPosition == recyclerView.getLayoutManager().getItemCount() - 1 && !refreshLayout.isRefreshing()) {
                     cooperaMessageAdapter.onLoadMoreStateChanged(true);
                     page++;
                     cooperaMessagePresenter.getCooperaMessageList(did, page);
@@ -233,6 +233,13 @@ public class CooperaMessageActivity extends ToolbarActivity implements ICooperaM
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+//        Intent intent = new Intent();
+        setResult(200);
+    }
+
+    @Override
     public void loadFail() {
 
     }
@@ -256,8 +263,8 @@ public class CooperaMessageActivity extends ToolbarActivity implements ICooperaM
         llNoData.setVisibility(View.GONE);
         etContent.setText("");
         onRefresh();
-        commentnum+=1;
-        message_commentnum.setText("留言"+commentnum);
+        commentnum += 1;
+        message_commentnum.setText("留言" + commentnum);
     }
 
     @Override

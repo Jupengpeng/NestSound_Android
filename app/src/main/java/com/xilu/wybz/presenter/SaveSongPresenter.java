@@ -29,7 +29,6 @@ public class SaveSongPresenter extends BasePresenter<ISaveSongView> {
     public void saveSong(WorksData worksData) {
         params = new HashMap<>();
         try {
-
             params.put("uid", worksData.uid + "");
             params.put("title", worksData.title);
             params.put("author", worksData.author);

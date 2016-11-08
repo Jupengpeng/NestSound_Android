@@ -9,7 +9,7 @@
     tools:context="com.xilu.wybz.ui.cooperation.ChooseLyricActivity">
 
     <include layout="@layout/view_toolbar" />
-
+    <include layout="@layout/ll_nodata"/>
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/refreshlayout"
         android:layout_width="match_parent"

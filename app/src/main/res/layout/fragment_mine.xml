@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
+    <include layout="@layout/ll_loading" />
+    <include layout="@layout/ll_nodata" />
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/refreshlayout"
         android:layout_width="match_parent"
@@ -18,7 +19,4 @@
         </android.support.v7.widget.RecyclerView>
     </android.support.v4.widget.SwipeRefreshLayout>
 
-
-    <include layout="@layout/ll_loading" />
-    <include layout="@layout/ll_nodata" />
 </LinearLayout>

@@ -11,4 +11,7 @@ import java.util.List;
 public interface ICollectView extends IBaseView {
 
     void showCollectList(List<CollectBean> collectBeanList);
+    void noData();
+    void noMoreData();
+    void cancleCollectSuccess(int pos);
 }

@@ -29,7 +29,7 @@
         android:background="#40CBCBCB" />
 
     <RelativeLayout
-
+        android:id="@+id/chooselyric_iv"
         android:layout_width="match_parent"
         android:layout_height="50dp">
 
@@ -44,7 +44,6 @@
             android:textSize="14sp" />
 
         <ImageView
-            android:id="@+id/chooselyric_iv"
             android:layout_width="17dp"
             android:layout_height="17dp"
             android:layout_alignParentRight="true"

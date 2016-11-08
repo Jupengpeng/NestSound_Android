@@ -57,6 +57,12 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
         holder.tv_content.setText(commentBean.getComment());
         holder.tv_date.setText(DateFormatUtils.formatX1(commentBean.getCreatedate()));
         ZnImageLoader.getInstance().displayImage(commentBean.getHeaderurl(), ZnImageLoader.getInstance().headOptions, holder.iv_head);
+        holder.iv_head.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mOnItemClickListener.onItemClick(holder.iv_head, position);
+            }
+        });
     }
 
     @Override

@@ -63,8 +63,6 @@ public class InvitationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.widget_pull_to_refresh_footer, parent, false);
             return new FooterViewHolder(view);
         }
-
-
         return null;
     }
 
@@ -108,7 +106,6 @@ public class InvitationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 if (invitation.getInvite() == 1) {
                     ((InvitationViewHolder) holder).invitation_bt.setBackgroundResource(R.drawable.finishbt_bg);
                     ((InvitationViewHolder) holder).invitation_bt.setText("已邀请");
-
                 }
             }
             if (invitation.getRecommend() == 0) {

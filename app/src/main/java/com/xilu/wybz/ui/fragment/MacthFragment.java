@@ -293,7 +293,7 @@ public class MacthFragment extends BaseListFragment<MatchWorkBean> implements Sc
                             }
                         }
                         if (playPos >= 0 && playPos != position) {//切换伴奏 重置上一首的状态
-                            MyApplication.getInstance().mMainService.loadData(worksData.itemid, from, "");
+                            MyApplication.getInstance().mMainService.loadData(worksData.itemid, from, "",0);
                             mDataList.get(position).isPlay = true;
                             ivPlay.setImageResource(R.drawable.ic_match_pause);
                         } else if (playPos >= 0 && playPos == position) {//播放当前
@@ -302,7 +302,7 @@ public class MacthFragment extends BaseListFragment<MatchWorkBean> implements Sc
                                     ? R.drawable.ic_match_pause : R.drawable.ic_match_play);
                             MyApplication.getInstance().mMainService.doPP(mDataList.get(playPos).isPlay);
                         } else {//初此播放
-                            MyApplication.getInstance().mMainService.loadData(worksData.itemid, from, "");
+                            MyApplication.getInstance().mMainService.loadData(worksData.itemid, from, "",0);
                             mDataList.get(position).isPlay = true;
                             ivPlay.setImageResource(R.drawable.ic_match_pause);
                         }

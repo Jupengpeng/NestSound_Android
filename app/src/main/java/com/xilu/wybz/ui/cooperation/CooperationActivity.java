@@ -1,5 +1,6 @@
 package com.xilu.wybz.ui.cooperation;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.TabLayout;
@@ -86,7 +87,7 @@ public class CooperationActivity extends BaseActivity implements ViewPager.OnPag
                 switch (position) {
                     case 1:
                         if (PrefsUtil.getUserId(context) == 0) {
-                            startActivity(LoginActivity.class);
+                            isLogin();
                         } else {
                             MineFragment mineFragment = (MineFragment) adapter.getFragment(1);
                             if (mineFragment != null) {
@@ -96,7 +97,7 @@ public class CooperationActivity extends BaseActivity implements ViewPager.OnPag
                         break;
                     case 2:
                         if (PrefsUtil.getUserId(context) == 0) {
-                            startActivity(LoginActivity.class);
+                            isLogin();
                         } else {
                             CollectFragment collectFragment = (CollectFragment) adapter.getFragment(2);
                             if (collectFragment != null) {
@@ -107,6 +108,20 @@ public class CooperationActivity extends BaseActivity implements ViewPager.OnPag
                 }
             }
         }, 200);
+    }
+
+    public void isLogin() {
+        Intent intent = new Intent();
+        intent.setClass(CooperationActivity.this, LoginActivity.class);
+        startActivityForResult(intent, 100);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 100) {
+            finish();
+        }
     }
 
     @Override

@@ -6,10 +6,12 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.CooperaLyricBean;
@@ -22,19 +24,25 @@ import java.util.List;
 
 import butterknife.Bind;
 
-public class ChooseLyricActivity extends ToolbarActivity implements ICooperaLyricView {
+public class ChooseLyricActivity extends ToolbarActivity implements ICooperaLyricView, SwipeRefreshLayout.OnRefreshListener {
     @Bind(R.id.refreshlayout)
     SwipeRefreshLayout refreshLayout;
     @Bind(R.id.chooselyric_recyclerview)
     RecyclerView chooselyric_recyclerview;
     AlertDialog dialog;
-
+    @Bind(R.id.ll_nodata)
+    LinearLayout llnodata;
+    @Bind(R.id.tv_nodata)
+    TextView tvnodata;
     private CooperaLyricPresenter cooperaLyricPresenter;
     private List<CooperaLyricBean> lyricbeanList;
 
     private CooperaLyricAdapter cooperaLyricadapter;
     private int page = 1;
     private CooperaLyricBean lyricBean;
+
+    private int currentScrollState;
+    private int lastVisibleItemPosition;
 
     @Override
     protected int getLayoutRes() {
@@ -65,13 +73,14 @@ public class ChooseLyricActivity extends ToolbarActivity implements ICooperaLyri
         cancle_bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cooperaLyricPresenter.updateLyricStatu(cooperaLyricBean.getItemid(), cooperaLyricBean.getStatus());
+                cooperaLyricPresenter.updateLyricStatu(cooperaLyricBean.getItemid(), 1);
             }
         });
 
     }
 
     private void initPresenter() {
+
         cooperaLyricPresenter = new CooperaLyricPresenter(this, this);
         cooperaLyricPresenter.init();
     }
@@ -79,10 +88,9 @@ public class ChooseLyricActivity extends ToolbarActivity implements ICooperaLyri
     @Override
     public void showCooperaLyricList(List<CooperaLyricBean> lyricBeanList) {
         if (isDestroy) return;
-        if (lyricbeanList == null) lyricBeanList = new ArrayList<>();
-        if (lyricbeanList.size() > 0) lyricbeanList.clear();
         lyricbeanList.addAll(lyricBeanList);
         cooperaLyricadapter.notifyDataSetChanged();
+        refreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -92,38 +100,81 @@ public class ChooseLyricActivity extends ToolbarActivity implements ICooperaLyri
     }
 
     @Override
+    public void noData() {
+        tvnodata.setText("这家伙很懒，什么也没有留下(⊙o⊙)…");
+        llnodata.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void noMoreData() {
+        cooperaLyricadapter.onLoadMoreStateChanged(false);
+    }
+
+    @Override
     public void initView() {
         lyricbeanList = new ArrayList<>();
-        chooselyric_recyclerview.setLayoutManager(new LinearLayoutManager(this));
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        chooselyric_recyclerview.setLayoutManager(linearLayoutManager);
         cooperaLyricadapter = new CooperaLyricAdapter(lyricbeanList, this);
         chooselyric_recyclerview.setAdapter(cooperaLyricadapter);
         cooperaLyricPresenter.getCooperaLyricList(page);
-        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                cooperaLyricPresenter.getCooperaLyricList(page);
-                refreshLayout.setRefreshing(false);
-            }
-        });
+        refreshLayout.setOnRefreshListener(this);
+        refreshLayout.setRefreshing(true);
         cooperaLyricadapter.setOnItemClickListener(new CooperaLyricAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position, CooperaLyricBean cooperaLyricBean) {
                 lyricBean = cooperaLyricBean;
                 if (cooperaLyricBean.getStatus() == 0) {
                     initDialog(position, lyricBean);
-
                 } else {
                     startLyricDetailsActivity(cooperaLyricBean);
                 }
-
             }
         });
+        chooselyric_recyclerview.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                currentScrollState = newState;
 
+                int visibleItemCount = linearLayoutManager.getChildCount();
+                int totalItemCount = linearLayoutManager.getItemCount();
+                Log.e("AAA1", lastVisibleItemPosition + "");
+                Log.e("AAA2", (lastVisibleItemPosition) % 10 + "");
+                if ((visibleItemCount > 0 && currentScrollState == RecyclerView.SCROLL_STATE_IDLE &&
+                        (lastVisibleItemPosition) >= totalItemCount - 1) && !refreshLayout.isRefreshing() && ((lastVisibleItemPosition) % 10 == 0)) {
+                    cooperaLyricadapter.onLoadMoreStateChanged(true);
+                    page++;
+                    lastVisibleItemPosition = lastVisibleItemPosition - 1;
+                    cooperaLyricPresenter.getCooperaLyricList(page);
+                    Log.e("AAA3", (lastVisibleItemPosition) % 10 + "");
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                lastVisibleItemPosition = (linearLayoutManager)
+                        .findLastVisibleItemPosition() + 1;
+            }
+        });
     }
 
     public void startLyricDetailsActivity(CooperaLyricBean cooperaLyricBean) {
         Intent intent = new Intent(ChooseLyricActivity.this, LyricDetailsActivity.class);
         intent.putExtra("cooperaLyricBean", cooperaLyricBean);
         startActivity(intent);
+    }
+
+    @Override
+    public void onRefresh() {
+
+        if (lyricbeanList.size() > 0) {
+            lyricbeanList.clear();
+            page = 1;
+        }
+        cooperaLyricPresenter.getCooperaLyricList(page);
+        refreshLayout.setRefreshing(false);
     }
 }

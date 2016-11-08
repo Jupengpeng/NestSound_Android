@@ -39,6 +39,15 @@ public class CooperaLyricPresenter extends BasePresenter<ICooperaLyricView> {
             public void onResult(JsonResponse<? extends Object> response) {
                 super.onResult(response);
                 List<CooperaLyricBean> cooperaLyricBeanList = response.getData();
+                if(page ==1 ){
+                    if(cooperaLyricBeanList.size()==0){
+                        iView.noData();
+                    }
+                }else{
+                    if(cooperaLyricBeanList.size()==0 || cooperaLyricBeanList.size()<=10){
+                        iView.noMoreData();
+                    }
+                }
                 iView.showCooperaLyricList(cooperaLyricBeanList);
             }
 

@@ -143,6 +143,8 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     PlayLyricsAdapter playLyricsAdapter;
     List<String> lyricsList;
     boolean isPlay = true;
+
+    int type;
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_playaudio;
@@ -155,7 +157,12 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
         intent.putExtra("gedanid", gedanid);
         context.startActivity(intent);
     }
-
+    public static void toPlayAudioActivity(Context context, String id,int type) {
+        Intent intent = new Intent(context, PlayAudioActivity.class);
+        intent.putExtra("id", id);
+        intent.putExtra("type", type);
+        context.startActivity(intent);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -242,6 +249,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
             id = bundle.getString("id");
             from = bundle.getString("from", "");
             gedanid = bundle.getString("gedanid", "");
+            type = bundle.getInt("type",0);
             String playId = PrefsUtil.getString(MainService.CurrentMusic.PLAY_ID, context);
             isCurrentMusic = (id.equals(playId));
         }
@@ -267,12 +275,12 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
                 //停止或者尚未播放
                 ivPlay.setImageResource(R.drawable.ic_play_pause);
                 isPlay = true;
-                MyApplication.getInstance().getMainService().loadData(id, from, gedanid);
+                MyApplication.getInstance().getMainService().loadData(id, from, gedanid,type);
             }
         } else {//开启服务
             ivPlay.setImageResource(R.drawable.ic_play_pause);
             isPlay = true;
-            MyApplication.getInstance().getMainService().loadData(id, from, gedanid);
+            MyApplication.getInstance().getMainService().loadData(id, from, gedanid,type);
         }
     }
 

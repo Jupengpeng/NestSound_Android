@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="48dp">
+    android:layout_height="wrap_content">
 
     <TextView
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:id="@+id/chooselyric_tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"
         android:text="从你的全世界路过"
-        android:textColor="#333333"
+        android:textColor="@color/main_text_color"
         android:textSize="14sp" />
 
     <ImageView
@@ -30,7 +32,7 @@
         android:layout_centerVertical="true"
         android:layout_marginRight="10dp"
         android:text="2016.10.21 20:09"
-        android:textColor="#999999"
+        android:textColor="@color/main_text_color3"
         android:textSize="12sp" />
 
     <View

@@ -7,7 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
@@ -43,7 +42,8 @@ public class InvitationActivity extends ToolbarActivity implements IInvitationVi
 
 
     private String content = "";
-
+    private int currentScrollState;
+    private int lastVisibleItemPosition;
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_invitation;
@@ -122,16 +122,7 @@ public class InvitationActivity extends ToolbarActivity implements IInvitationVi
         invitation_recyclerview.setAdapter(invitationAdapter);
 
         invitationPresenter.getInvitationList(did, page, content);
-        invitation_recyclerview.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (refreshLayout.isRefreshing()) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        });
+
         refreshLayout.setOnRefreshListener(this);
 
         invitationAdapter.setOnItemClickListener(new InvitationAdapter.OnItemClickListener() {
@@ -147,23 +138,48 @@ public class InvitationActivity extends ToolbarActivity implements IInvitationVi
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
+                lastVisibleItemPosition = (linearLayoutManager)
+                        .findLastVisibleItemPosition() + 1;
 
             }
 
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
+//                int visibleItemCount = linearLayoutManager.getChildCount();
+//                int totalItemCount = linearLayoutManager.getItemCount();
+//                int lastVisibleItemPosition = linearLayoutManager.findLastVisibleItemPosition();
+//                int pastVisiblesItems = linearLayoutManager.findFirstVisibleItemPosition();
+//                if (visibleItemCount > 0 && newState == RecyclerView.SCROLL_STATE_IDLE && (visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+//                    invitationAdapter.onLoadMoreStateChanged(true);
+//                    page++;
+//                    invitationPresenter.getInvitationList(did, page, content);
+//                    Log.e("AAA", "到底了");
+//                }
+//                int lastPosition = 0;
+//
+//                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+//                    lastPosition = linearLayoutManager.findLastVisibleItemPosition();
+//                }
+//                if (lastPosition == recyclerView.getLayoutManager().getItemCount() - 1  && !refreshLayout.isRefreshing() ) {
+//                    invitationAdapter.onLoadMoreStateChanged(true);
+//                    page++;
+//                    invitationPresenter.getInvitationList(did, page, content);
+//                }
+                currentScrollState = newState;
+
                 int visibleItemCount = linearLayoutManager.getChildCount();
                 int totalItemCount = linearLayoutManager.getItemCount();
-                int lastVisibleItemPosition = linearLayoutManager.findLastVisibleItemPosition();
-                int pastVisiblesItems = linearLayoutManager.findFirstVisibleItemPosition();
-                if (visibleItemCount > 0 && newState == RecyclerView.SCROLL_STATE_IDLE && (visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                Log.e("AAA1", lastVisibleItemPosition + "");
+                Log.e("AAA2", (lastVisibleItemPosition) % 10 + "");
+                if ((visibleItemCount > 0 && currentScrollState == RecyclerView.SCROLL_STATE_IDLE &&
+                        (lastVisibleItemPosition) >= totalItemCount - 1) && !refreshLayout.isRefreshing() && ((lastVisibleItemPosition) % 10 == 0)) {
                     invitationAdapter.onLoadMoreStateChanged(true);
                     page++;
+                    lastVisibleItemPosition = lastVisibleItemPosition - 1;
                     invitationPresenter.getInvitationList(did, page, content);
-                    Log.e("AAA", "到底了");
+                    Log.e("AAA3", (lastVisibleItemPosition) % 10+ "");
                 }
-
             }
         });
         et_keyword.setOnEditorActionListener(new TextView.OnEditorActionListener() {

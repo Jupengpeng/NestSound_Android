@@ -13,4 +13,8 @@ public interface ICooperaLyricView extends IBaseView {
     void showCooperaLyricList(List<CooperaLyricBean> lyricBeanList);
 
     void updatesuccess();
+
+    void noData();
+
+    void noMoreData();
 }

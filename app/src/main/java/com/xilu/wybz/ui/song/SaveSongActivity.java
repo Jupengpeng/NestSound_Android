@@ -81,6 +81,7 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView, 
 
     private PreinfoBean preinfoBean;
     private int did;
+
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_savesong;
@@ -92,7 +93,7 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView, 
         context.startActivity(intent);
     }
 
-    public static void toSaveSongActivity(Context context, WorksData worksData, int type, PreinfoBean preinfoBean,int did) {
+    public static void toSaveSongActivity(Context context, WorksData worksData, int type, PreinfoBean preinfoBean, int did) {
         Intent intent = new Intent(context, SaveSongActivity.class);
         intent.putExtra("worksData", worksData);
         intent.putExtra("type", type);
@@ -218,10 +219,11 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView, 
             public void onSuccess(String imageUrl) {
                 worksData.setPic(imageUrl);
                 if (materialDialog != null && materialDialog.isShowing())
-                    if (type == 1) {
-                        saveSongPresenter.saveCooperaSong(worksData, preinfoBean,did);
+                    if (type == 1) {// 1 合作作品
+                        saveSongPresenter.saveCooperaSong(worksData, preinfoBean, did);
+                    } else {
+                        saveSongPresenter.saveSong(worksData);
                     }
-                saveSongPresenter.saveSong(worksData);
             }
 
             @Override
@@ -356,7 +358,7 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView, 
                     uploadCoverPic();
                 } else {
                     if (type == 1) {
-                        saveSongPresenter.saveCooperaSong(worksData,preinfoBean,did);
+                        saveSongPresenter.saveCooperaSong(worksData, preinfoBean, did);
                     } else {
                         saveSongPresenter.saveSong(worksData);
                     }

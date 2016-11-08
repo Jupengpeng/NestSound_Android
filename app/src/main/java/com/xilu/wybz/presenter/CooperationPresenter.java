@@ -49,7 +49,7 @@ public class CooperationPresenter extends BasePresenter<ICooperationView> {
                         iView.noData();
                     }
                 } else {
-                    if (cooperationBeanList.size() == 0) {
+                    if (cooperationBeanList.size() == 0 || cooperationBeanList.size() <= 5) {
                         iView.noMoreData();
                     }
                 }
@@ -65,7 +65,6 @@ public class CooperationPresenter extends BasePresenter<ICooperationView> {
             }
         });
     }
-
     public void getPreinfo(int did) {
         params = new HashMap<>();
         params.put("uid", "" + PrefsUtil.getUserId(context));

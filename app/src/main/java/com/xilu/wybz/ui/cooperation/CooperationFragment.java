@@ -31,7 +31,7 @@ import butterknife.Bind;
  * Created by Administrator on 2016/10/19.
  */
 
-public class CooperationFragment extends BaseFragment implements ICooperationView {
+public class CooperationFragment extends BaseFragment implements ICooperationView, SwipeRefreshLayout.OnRefreshListener {
     @Bind(R.id.ll_nodata)
     LinearLayout ll_nodata;
     @Bind(R.id.ll_loading)
@@ -48,6 +48,8 @@ public class CooperationFragment extends BaseFragment implements ICooperationVie
     private List<CooperationBean> cooperationList = new ArrayList<>();
     AlertDialog dialog;
 
+    private int currentScrollState;
+    private int lastVisibleItemPosition;
 
     private boolean isRefreshing;
     private int did;//合作需求ID
@@ -134,58 +136,48 @@ public class CooperationFragment extends BaseFragment implements ICooperationVie
         cooperationrecyclerview.setLayoutManager(linearLayoutManager);
         cooperationAdapter = new CooperationAdapter(cooperationList, context);
         cooperationrecyclerview.setAdapter(cooperationAdapter);
-
-//        if (cooperationList.size() > 0) {
-//            cooperationList.clear();
-//            page = 1;
-//        }
         cooperationPresenter.getCooperationList(page);
-        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                isRefreshing = refreshLayout.isRefreshing();
-                if (isRefreshing) {
-                    if (cooperationList.size() > 0) {
-                        cooperationList.clear();
-                        page = 1;
-                    }
-                    refreshLayout.setRefreshing(false);
-                    cooperationPresenter.getCooperationList(page);
+        refreshLayout.setOnRefreshListener(this);
 
-                }
-
-            }
-        });
         cooperationrecyclerview.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                int lastPosition = -1;
+                currentScrollState = newState;
 
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    lastPosition = linearLayoutManager.findLastVisibleItemPosition();
-                }
-                if (lastPosition == recyclerView.getLayoutManager().getItemCount() - 1) {
+                int visibleItemCount = linearLayoutManager.getChildCount();
+                int totalItemCount = linearLayoutManager.getItemCount();
+                if ((visibleItemCount > 0 && currentScrollState == RecyclerView.SCROLL_STATE_IDLE &&
+                        (lastVisibleItemPosition) >= totalItemCount - 1) && !refreshLayout.isRefreshing() && ((lastVisibleItemPosition) % 5 == 0)) {
                     cooperationAdapter.onLoadMoreStateChanged(true);
                     page++;
+                    lastVisibleItemPosition = lastVisibleItemPosition - 1;
                     cooperationPresenter.getCooperationList(page);
-
                 }
+
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                lastVisibleItemPosition = (linearLayoutManager)
+                        .findLastVisibleItemPosition() + 1;
             }
         });
         more_iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), CooperaPublish.class));
-
+//                startActivity(new Intent(getActivity(), CooperaPublish.class));
+                Intent intent = new Intent(getActivity(), CooperaPublish.class);
+                getActivity().startActivityForResult(intent, 100);
             }
         });
+
         cooperationAdapter.setOnItemClickListener(new CooperationAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position, int type) {
                 switch (type) {
                     case 1:
-
                         Intent intent = new Intent(getActivity(), CooperaDetailsActivity.class);
                         if (cooperationList.get(position).getUserInfo().getUid() == PrefsUtil.getUserId(context)) {
                             intent.putExtra("type", 2);
@@ -213,9 +205,7 @@ public class CooperationFragment extends BaseFragment implements ICooperationVie
                 }
             }
         });
-
     }
-
 
     @Override
     public void onDestroyView() {
@@ -224,5 +214,25 @@ public class CooperationFragment extends BaseFragment implements ICooperationVie
             cooperationPresenter.cancelRequest();
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 100 && resultCode == 200) {
+            getActivity().finish();
+        }
+    }
+
+    @Override
+    public void onRefresh() {
+        isRefreshing = refreshLayout.isRefreshing();
+        if (isRefreshing) {
+            if (cooperationList.size() > 0) {
+                cooperationList.clear();
+                page = 1;
+            }
+            refreshLayout.setRefreshing(false);
+            cooperationPresenter.getCooperationList(page);
+        }
+    }
 
 }
