@@ -114,7 +114,7 @@ public class CooperaDetailsActivity extends ToolbarActivity implements ICooperaD
      */
     public static void start(Context context, int did) {
         Intent intent = new Intent(context, CooperaDetailsActivity.class);
-        intent.putExtra("id", did);
+        intent.putExtra("did", did);
         context.startActivity(intent);
     }
 

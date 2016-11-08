@@ -21,6 +21,8 @@ import com.xilu.wybz.ui.base.BaseListActivity;
 import com.xilu.wybz.ui.cooperation.CooperaDetailsActivity;
 import com.xilu.wybz.utils.DateFormatUtils;
 import com.xilu.wybz.utils.PrefsUtil;
+import com.xilu.wybz.utils.StringUtils;
+import com.xilu.wybz.utils.ToastUtils;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.PullRecycler;
 
@@ -193,6 +195,13 @@ public class MsgCooprateActivity extends BaseListActivity<PreserveMessageBean> i
             root.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (StringUtils.isNotBlank(bean.headerUrl)){
+
+                    }
+                    if (bean.did == 0){
+                        ToastUtils.toast(context,"错误合作ID");
+                        return;
+                    }
                     CooperaDetailsActivity.start(context, bean.did);
                 }
             });
@@ -219,6 +228,14 @@ public class MsgCooprateActivity extends BaseListActivity<PreserveMessageBean> i
                 case MyCommon.PUSH_TYPE_COO_EXPIRE:
                     tvTitle.setText("合作到期");
                     ivType.setImageResource(R.drawable.ic_hezuodaoqi);
+                    break;
+                case MyCommon.PUSH_TYPE_COO_LEAVE:
+                    tvTitle.setText("合作到期");
+                    loadImage(bean.headerUrl,ivType);
+                    break;
+                case MyCommon.PUSH_TYPE_COO_LEAVEREPLY:
+                    tvTitle.setText("合作到期");
+                    loadImage(bean.headerUrl,ivType);
                     break;
             }
 
