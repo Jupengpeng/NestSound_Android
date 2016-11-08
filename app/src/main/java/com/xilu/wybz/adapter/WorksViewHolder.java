@@ -112,7 +112,7 @@ public class WorksViewHolder extends com.xilu.wybz.view.pull.BaseViewHolder {
             itemNames.add("删除");
         } else if (COME.equals("myfav")) {
             itemNames.add("取消收藏");
-        } else if (COME.equals("myrecord")){
+        } else if (COME.equals("hezuo")){
             itemNames.add("删除");
         }
         new MaterialDialog.Builder(mContext)

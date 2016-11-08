@@ -50,7 +50,9 @@
     <RelativeLayout
         android:id="@+id/chooselyric_iv"
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_height="48dp"
+        android:background="?selectableItemBackground"
+        >
 
         <TextView
             android:id="@+id/title_tv"
