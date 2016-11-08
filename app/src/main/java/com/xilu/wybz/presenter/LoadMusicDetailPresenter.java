@@ -31,7 +31,7 @@ public class LoadMusicDetailPresenter extends BasePresenter<IMusicDetailView> {
         if (StringUtils.isNotBlank(type)){
             params.put("type", type);
         } else {
-            params.put("type", "");
+//            params.put("type", "");
         }
         httpUtils.get(MyHttpClient.getMusicWorkUrl(), params, new MyStringCallback() {
             @Override

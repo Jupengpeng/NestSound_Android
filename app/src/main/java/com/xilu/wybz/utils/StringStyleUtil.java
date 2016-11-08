@@ -13,6 +13,7 @@ import android.view.View;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.xilu.wybz.bean.CommentBean;
+import com.xilu.wybz.bean.CooperaDetailsBean;
 import com.xilu.wybz.bean.CooperaMessageBean;
 import com.xilu.wybz.bean.MsgCommentBean;
 import com.xilu.wybz.bean.WorksData;
@@ -66,6 +67,19 @@ public class StringStyleUtil {
 //        spannableString.setSpan(new ForegroundColorSpan(0xff539ac2),2,2+nickName.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
 
         spannableString.setSpan(new UserNameClickableSpan(context,cooperaMessageBean),2,2+nickName.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        return spannableString;
+    }
+    public static SpannableString getWorkMessageStyleStr(Context context, CooperaDetailsBean.CommentListBean commentListBean) {
+        String nickName = commentListBean.getTarget_nickname();
+        if (StringUtils.isBlank(nickName)){
+            return new SpannableString(commentListBean.getComment());
+        }
+        String comment ="回复" + nickName+"："+commentListBean.getComment();
+        SpannableString spannableString = new SpannableString(comment);
+
+//        spannableString.setSpan(new ForegroundColorSpan(0xff539ac2),2,2+nickName.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+
+        spannableString.setSpan(new UserNameClickableSpan(context,commentListBean),2,2+nickName.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         return spannableString;
     }
     public static SpannableString getUserLink(Context context, String userName, int uid) {
@@ -173,6 +187,7 @@ public class StringStyleUtil {
         public Context context;
         CommentBean comment;
         CooperaMessageBean cooperaMessageBean;
+        CooperaDetailsBean.CommentListBean commentListBeans;
         public UserNameClickableSpan(Context context,CommentBean comment) {
             this.context = context;
             this.comment = comment;
@@ -180,6 +195,10 @@ public class StringStyleUtil {
         public UserNameClickableSpan(Context context,CooperaMessageBean cooperaMessageBean) {
             this.context = context;
             this.cooperaMessageBean = cooperaMessageBean;
+        }
+        public UserNameClickableSpan(Context context,CooperaDetailsBean.CommentListBean commentListBean) {
+            this.context = context;
+            this.commentListBeans = commentListBean;
         }
         @Override
         public void updateDrawState(TextPaint ds) {

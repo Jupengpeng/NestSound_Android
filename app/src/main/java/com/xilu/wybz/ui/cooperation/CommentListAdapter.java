@@ -2,6 +2,7 @@ package com.xilu.wybz.ui.cooperation;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import com.xilu.wybz.R;
 import com.xilu.wybz.bean.CooperaDetailsBean;
 import com.xilu.wybz.common.ZnImageLoader;
 import com.xilu.wybz.utils.DateFormatUtils;
+import com.xilu.wybz.utils.StringStyleUtil;
 import com.xilu.wybz.view.CircleImageView;
 
 import java.util.List;
@@ -54,7 +56,14 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
         CooperaDetailsBean.CommentListBean commentBean = commentListBean.get(position);
         Log.e("BBB", commentBean.getComment());
         holder.tv_name.setText(commentBean.getNickname());
-        holder.tv_content.setText(commentBean.getComment());
+        if (commentBean.getComment_type() == 2) {
+
+            SpannableString s = StringStyleUtil.getWorkMessageStyleStr(context, commentBean);
+            holder.tv_content.setText(s);
+        }else{
+            holder.tv_content.setText(commentBean.getComment());
+        }
+
         holder.tv_date.setText(DateFormatUtils.formatX1(commentBean.getCreatedate()));
         ZnImageLoader.getInstance().displayImage(commentBean.getHeaderurl(), ZnImageLoader.getInstance().headOptions, holder.iv_head);
         holder.iv_head.setOnClickListener(new View.OnClickListener() {

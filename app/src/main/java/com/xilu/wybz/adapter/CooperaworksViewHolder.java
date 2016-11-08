@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.ZnImageLoader;
+import com.xilu.wybz.ui.song.PlayAudioActivity;
 import com.xilu.wybz.utils.NumberUtil;
 
 import java.util.List;
@@ -25,8 +26,6 @@ public class CooperaworksViewHolder extends com.xilu.wybz.view.pull.BaseViewHold
     TextView tv_name;
     @Bind(R.id.tv_makeword)
     TextView tv_makeword;
-    @Bind(R.id.tv_makesong)
-    TextView tv_makesong;
     @Bind(R.id.tv_look_num)
     TextView tv_look_num;
     @Bind(R.id.tv_fov_num)
@@ -61,11 +60,16 @@ public class CooperaworksViewHolder extends com.xilu.wybz.view.pull.BaseViewHold
         WorksData worksData = mDataList.get(position);
         ZnImageLoader.getInstance().displayImage(worksData.pic, ZnImageLoader.getInstance().options, iv_cover);
         tv_name.setText(worksData.title);
-        tv_makeword.setText(worksData.author);
-//        tv_makesong.setText(worksData.author);
+        tv_makeword.setText(worksData.getComAuthor());
         tv_look_num.setText(NumberUtil.format(worksData.looknum));
         tv_fov_num.setText(NumberUtil.format(worksData.fovnum));
         tv_zan_num.setText(NumberUtil.format(worksData.zannum));
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               onItemClick(v, position);
+            }
+        });
     }
 
     public void onItemLongClick(View view, int position) {
@@ -75,6 +79,8 @@ public class CooperaworksViewHolder extends com.xilu.wybz.view.pull.BaseViewHold
 
     @Override
     public void onItemClick(View view, int position) {
+        WorksData worksData = mDataList.get(position);
+        PlayAudioActivity.toPlayAudioActivity(mContext, worksData.getItemid(), "", "hezuo");
 
     }
 

@@ -48,7 +48,7 @@ public class CollectPresenter extends BasePresenter<ICollectView> {
                         iView.noData();
                     }
                 } else {
-                    if (collectBeanList.size() == 0 || collectBeanList.size()<=10) {
+                    if (collectBeanList.size() == 0) {
                         iView.noMoreData();
                     }
                 }

@@ -388,7 +388,7 @@ public class HotCatalogActivity extends BaseSectionListActivity<TemplateBean> im
 //                }
             } else {
                 if (cooperatype == 1) {
-                    MakeSongActivity.toMakeSongActivity(context, hotBean.simplesing,cooperatype,preinfoBean,did);
+                    MakeSongActivity.toMakeSongActivity(context, bean,cooperatype,preinfoBean,did);
                 } else {
                     MakeSongActivity.toMakeSongActivity(context, bean);
                 }

@@ -5,12 +5,10 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.MineBean;
@@ -35,8 +33,6 @@ public class MineFragment extends BaseFragment implements IMineView, SwipeRefres
     LinearLayout ll_loading;
     @Bind(R.id.ll_nodata)
     LinearLayout ll_nodata;
-    @Bind(R.id.tv_nodata)
-    TextView tvnodata;
     @Bind(R.id.refreshlayout)
     SwipeRefreshLayout refreshLayout;
     @Bind(R.id.mine_recyclerview)
@@ -50,6 +46,8 @@ public class MineFragment extends BaseFragment implements IMineView, SwipeRefres
     private int currentScrollState;
     private int lastVisibleItemPosition;
 
+
+    private boolean ishasData = true;
     @Override
     protected int getLayoutResId() {
         return R.layout.fragment_mine;
@@ -140,15 +138,12 @@ public class MineFragment extends BaseFragment implements IMineView, SwipeRefres
 
                 int visibleItemCount = linearLayoutManager.getChildCount();
                 int totalItemCount = linearLayoutManager.getItemCount();
-                Log.e("AAA1", lastVisibleItemPosition + "");
-                Log.e("AAA2", (lastVisibleItemPosition) % 10 + "");
                 if ((visibleItemCount > 0 && currentScrollState == RecyclerView.SCROLL_STATE_IDLE &&
-                        (lastVisibleItemPosition) >= totalItemCount - 1) && !refreshLayout.isRefreshing() && ((lastVisibleItemPosition) % 10 == 0)) {
+                        (lastVisibleItemPosition) >= totalItemCount - 1) && !refreshLayout.isRefreshing() && ishasData) {
                     mineAdapter.onLoadMoreStateChanged(true);
                     page++;
                     lastVisibleItemPosition = lastVisibleItemPosition - 1;
                     minePresenter.getMineList(page);
-                    Log.e("AAA3", (lastVisibleItemPosition) % 10+ "");
                 }
             }
 
@@ -174,19 +169,20 @@ public class MineFragment extends BaseFragment implements IMineView, SwipeRefres
         mineAdapter.removeItem(position);
         dialog.dismiss();
         if (mineList.size() ==0) {
-            tvnodata.setText("暂无发布作品");
+
             ll_nodata.setVisibility(View.VISIBLE);
         }
     }
 
     @Override
     public void noData() {
-        tvnodata.setText("暂无发布作品");
+
         ll_nodata.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void noMoreData() {
+        ishasData=false;
         mineAdapter.onLoadMoreStateChanged(false);
     }
 

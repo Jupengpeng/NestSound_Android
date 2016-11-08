@@ -88,7 +88,6 @@ public class SaveSongPresenter extends BasePresenter<ISaveSongView> {
             params.put("lUsername", preinfoBean.getlUsername());
             params.put("wUsername", preinfoBean.getwUsername());
             params.put("wUid", preinfoBean.getwUid() + "");
-
             params.put("title", preinfoBean.getTitle());
             params.put("lyrics", preinfoBean.getLyrics());
             params.put("createtype", "HOT");

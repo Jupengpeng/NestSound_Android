@@ -52,7 +52,7 @@ public class InvitationPresenter extends BasePresenter<IInvitationView> {
                             iView.noSerachData();
                         }
                     } else {
-                        if (invitationBeanList.size() == 0 || invitationBeanList.size()<=10) {
+                        if (invitationBeanList.size() == 0 ) {
                             iView.noSerachMoreData();
                         }
                     }

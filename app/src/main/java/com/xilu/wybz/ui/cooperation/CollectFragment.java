@@ -7,7 +7,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.CollectBean;
@@ -29,8 +28,7 @@ public class CollectFragment extends BaseFragment implements ICollectView, Swipe
     LinearLayout ll_loading;
     @Bind(R.id.ll_nodata)
     LinearLayout llnoda;
-    @Bind(R.id.tv_nodata)
-    TextView tv_nodata;
+
     @Bind(R.id.refreshlayout)
     SwipeRefreshLayout refreshLayout;
     @Bind(R.id.collect_recyclerview)
@@ -43,6 +41,7 @@ public class CollectFragment extends BaseFragment implements ICollectView, Swipe
     private boolean isFirst;
     private int currentScrollState;
     private int lastVisibleItemPosition;
+    private boolean ishasData = true;
 
     @Override
     protected int getLayoutResId() {
@@ -69,12 +68,12 @@ public class CollectFragment extends BaseFragment implements ICollectView, Swipe
 
     @Override
     public void noData() {
-        tv_nodata.setText("暂无收藏");
         llnoda.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void noMoreData() {
+        ishasData = false;
         collectAdapter.onLoadMoreStateChanged(false);
     }
 
@@ -82,8 +81,7 @@ public class CollectFragment extends BaseFragment implements ICollectView, Swipe
     public void cancleCollectSuccess(int pos) {
         collectAdapter.removeItem(pos);
         dialog.dismiss();
-        if (pos == 0) {
-            tv_nodata.setText("暂无收藏");
+        if (beanList.size() == 0) {
             llnoda.setVisibility(View.VISIBLE);
         }
     }
@@ -116,7 +114,7 @@ public class CollectFragment extends BaseFragment implements ICollectView, Swipe
                 int visibleItemCount = linearLayoutManager.getChildCount();
                 int totalItemCount = linearLayoutManager.getItemCount();
                 if ((visibleItemCount > 0 && currentScrollState == RecyclerView.SCROLL_STATE_IDLE &&
-                        (lastVisibleItemPosition) >= totalItemCount - 1) && !refreshLayout.isRefreshing() && ((lastVisibleItemPosition) % 10 == 0)) {
+                        (lastVisibleItemPosition) >= totalItemCount - 1) && !refreshLayout.isRefreshing() && ishasData) {
                     collectAdapter.onLoadMoreStateChanged(true);
                     page++;
                     collectPresenter.getCollectList(page);
@@ -127,7 +125,7 @@ public class CollectFragment extends BaseFragment implements ICollectView, Swipe
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 lastVisibleItemPosition = (linearLayoutManager)
-                        .findLastVisibleItemPosition()+1;
+                        .findLastVisibleItemPosition() + 1;
             }
         });
         collectAdapter.setOnItemClickListener(new CollectAdapter.OnItemClickListener() {
