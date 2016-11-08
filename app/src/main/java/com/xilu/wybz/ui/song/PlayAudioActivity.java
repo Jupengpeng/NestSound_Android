@@ -275,12 +275,12 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
                 //停止或者尚未播放
                 ivPlay.setImageResource(R.drawable.ic_play_pause);
                 isPlay = true;
-                MyApplication.getInstance().getMainService().loadData(id, from, gedanid,type);
+                MyApplication.getInstance().getMainService().loadData(id, from, gedanid);
             }
         } else {//开启服务
             ivPlay.setImageResource(R.drawable.ic_play_pause);
             isPlay = true;
-            MyApplication.getInstance().getMainService().loadData(id, from, gedanid,type);
+            MyApplication.getInstance().getMainService().loadData(id, from, gedanid);
         }
     }
 
