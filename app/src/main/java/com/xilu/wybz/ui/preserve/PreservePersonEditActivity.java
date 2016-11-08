@@ -30,8 +30,6 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.OnClick;
 
-import static android.app.Activity.RESULT_OK;
-
 /**
  * Created by Administrator on 2016/9/14.
  */
@@ -144,7 +142,9 @@ public class PreservePersonEditActivity extends ToolbarActivity implements ISamp
             return;
         }
 
-//        personInfo = new PersonInfo();
+        if (personInfo == null){
+            personInfo = new PersonInfo();
+        }
 
         personInfo.cUserName = preservationName.getText().toString();
         personInfo.cCardId = preservationCardId.getText().toString();

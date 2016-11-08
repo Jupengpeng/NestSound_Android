@@ -42,8 +42,6 @@ import java.util.List;
 
 import okhttp3.Call;
 
-import static android.R.attr.type;
-
 
 /**
  * Created by hujunwei on 16/6/29.
@@ -146,7 +144,7 @@ public class MainService extends Service implements IMusicDetailView, AudioManag
     }
 
     //播放歌曲 首次播放 或者 切入进来的 需要定位
-    public void loadData(String playId, String playFrom, String PlayGedanId,int type) {
+    public void loadData(String playId, String playFrom, String PlayGedanId) {
         isPlay = true;
         this.playId = playId;
         this.playFrom = playFrom;
@@ -155,14 +153,22 @@ public class MainService extends Service implements IMusicDetailView, AudioManag
         PrefsUtil.putString(CurrentMusic.PLAY_FROM, playFrom, this);
         PrefsUtil.putString(CurrentMusic.PLAY_ID, playId, this);
         PrefsUtil.putString(CurrentMusic.PLAY_GEDAN_ID, PlayGedanId, this);
-        loadMusicDetailPresenter.loadMusicDetail(playId,type+"");
+        String type = null;
+        if ("hezuo".equalsIgnoreCase(playFrom)){
+            type = "3";
+        }
+        loadMusicDetailPresenter.loadMusicDetail(playId,type);
     }
 
     //列表里面切歌 position顺延
     public void loadNowListData(String playId) {
         isPlay = true;
         this.playId = playId;
-        loadMusicDetailPresenter.loadMusicDetail(playId,type+"");
+        String type = null;
+        if ("hezuo".equalsIgnoreCase(playFrom)){
+            type = "3";
+        }
+        loadMusicDetailPresenter.loadMusicDetail(playId,type);
     }
 
     @Override

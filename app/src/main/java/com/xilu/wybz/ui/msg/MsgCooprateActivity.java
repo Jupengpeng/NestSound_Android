@@ -97,7 +97,7 @@ public class MsgCooprateActivity extends BaseListActivity<PreserveMessageBean> i
         super.onRefresh(action);
 
         defaultListPresenter.getData(page++);
-        mock();
+//        mock();
     }
 
     private void mock() {

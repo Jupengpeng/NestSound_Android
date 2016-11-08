@@ -3,15 +3,11 @@ package com.xilu.wybz.presenter;
 import android.content.Context;
 
 import com.google.gson.reflect.TypeToken;
-import com.xilu.wybz.bean.DataBean;
 import com.xilu.wybz.bean.JsonResponse;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.callback.AppJsonCalback;
-import com.xilu.wybz.http.callback.MyStringCallback;
 import com.xilu.wybz.ui.IView.IOtherCenterListView;
-import com.xilu.wybz.ui.IView.IUserCenterListView;
-import com.xilu.wybz.utils.ParseUtils;
 import com.xilu.wybz.utils.PrefsUtil;
 
 import java.lang.reflect.Type;
@@ -65,6 +61,12 @@ public class OtherCenterListPresenter extends BasePresenter<IOtherCenterListView
             @Override
             public void onResultError(JsonResponse<? extends Object> response) {
                 super.onResultError(response);
+                iView.loadFail();
+            }
+
+            @Override
+            public void onError(Call call, Exception e) {
+                super.onError(call, e);
                 iView.loadFail();
             }
         });

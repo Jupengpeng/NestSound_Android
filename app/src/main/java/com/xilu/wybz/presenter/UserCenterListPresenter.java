@@ -65,6 +65,12 @@ public class UserCenterListPresenter extends BasePresenter<IUserCenterListView> 
                 super.onResultError(response);
                 iView.loadFail();
             }
+
+            @Override
+            public void onError(Call call, Exception e) {
+                super.onError(call, e);
+                iView.loadFail();
+            }
         });
     }
     //删除作品
