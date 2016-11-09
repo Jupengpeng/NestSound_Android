@@ -10,7 +10,9 @@ import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.ZnImageLoader;
 import com.xilu.wybz.ui.song.PlayAudioActivity;
 import com.xilu.wybz.utils.NumberUtil;
+import com.xilu.wybz.view.materialdialogs.MaterialDialog;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -73,7 +75,25 @@ public class CooperaworksViewHolder extends com.xilu.wybz.view.pull.BaseViewHold
     }
 
     public void onItemLongClick(View view, int position) {
-
+        if (OnItemClickListener == null) return;
+        List<String> itemNames = new ArrayList<>();
+        if (COME.equals("mysong")||COME.equals("mylyrics")) {
+            itemNames.add(mDataList.get(position).status == 0 ? "设为公开" : "设为私密");
+            itemNames.add("删除");
+        } else if (COME.equals("myfav")) {
+            itemNames.add("取消收藏");
+        } else if (COME.equals("hezuo")){
+            itemNames.add("删除");
+        }
+        new MaterialDialog.Builder(mContext)
+                .title(R.string.dialog_title)
+                .items(itemNames)
+                .itemsCallback(new MaterialDialog.ListCallback() {
+                    @Override
+                    public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        OnItemClickListener.onClick(position, which);
+                    }
+                }).show();
 
     }
 
