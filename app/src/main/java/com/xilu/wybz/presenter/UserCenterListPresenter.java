@@ -12,6 +12,7 @@ import com.xilu.wybz.http.callback.MyStringCallback;
 import com.xilu.wybz.ui.IView.IUserCenterListView;
 import com.xilu.wybz.utils.ParseUtils;
 import com.xilu.wybz.utils.PrefsUtil;
+import com.xilu.wybz.utils.ToastUtils;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -85,6 +86,7 @@ public class UserCenterListPresenter extends BasePresenter<IUserCenterListView> 
                 DataBean dataBean = ParseUtils.getDataBean(context, response);
                 if (dataBean != null && dataBean.code == 200) {
                     iView.deleteSuccess();
+                    ToastUtils.toast(context,"删除成功");
                 } else {
                     iView.deleteFail();
                 }
@@ -107,6 +109,7 @@ public class UserCenterListPresenter extends BasePresenter<IUserCenterListView> 
             @Override
             public void onResult(JsonResponse<? extends Object> response) {
                 iView.deleteSuccess();
+                ToastUtils.toast(context,"删除成功");
             }
 
             @Override

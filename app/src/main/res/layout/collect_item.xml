@@ -7,15 +7,15 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="42dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="9dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:layout_marginTop="10dp">
 
-        <ImageView
+        <com.xilu.wybz.view.CircleImageView
             android:id="@+id/collect_headerurl_iv"
             android:layout_width="42dp"
             android:layout_height="42dp"
-            android:src="@drawable/ic_song_effect_caojiang" />
+            android:src="#e2e2e2" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -59,7 +59,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
        >
 
         <TextView
@@ -75,7 +76,6 @@
             android:id="@+id/collect_tv_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:text="对方停止该合作"

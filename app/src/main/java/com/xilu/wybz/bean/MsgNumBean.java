@@ -8,5 +8,6 @@ public class MsgNumBean {
     public int zannum;
     public int fovnum;
     public int copyrightnum;
+    public int cooperatenum;
     public int sysmsg;
 }

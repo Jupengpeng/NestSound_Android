@@ -33,8 +33,8 @@ import butterknife.Bind;
  */
 public class MsgActivity extends BaseListActivity<MsgBean> implements IMsgNumView {
     public int[] icons = new int[]{R.drawable.ic_msg_comment, R.drawable.ic_msg_zan,
-            R.drawable.ic_msg_fav, R.drawable.ic_msg_bq, R.drawable.ic_msg_notice, R.drawable.ic_hezuoxiaoxi};
-    public String[] titles = new String[]{"评论", "点赞", "收藏", "保全消息", "系统消息", "合作消息"};
+            R.drawable.ic_msg_fav, R.drawable.ic_msg_bq, R.drawable.ic_hezuoxiaoxi, R.drawable.ic_msg_notice};
+    public String[] titles = new String[]{"评论", "点赞", "收藏", "保全消息", "合作消息", "系统消息"};
     public MsgNumPresenter msgNumPresenter;
 
     public boolean canBack() {
@@ -82,14 +82,16 @@ public class MsgActivity extends BaseListActivity<MsgBean> implements IMsgNumVie
     @Override
     public void showMsgNum(MsgNumBean msgBean) {
         if (isDestroy || msgBean == null) return;
-        msgCount = msgBean.commentnum + msgBean.fovnum + msgBean.sysmsg + msgBean.zannum + msgBean.copyrightnum;
+        msgCount = msgBean.commentnum + msgBean.fovnum + msgBean.sysmsg
+                + msgBean.zannum + msgBean.copyrightnum+ msgBean.cooperatenum;
         changeMsgStatus();
         if (mDataList != null && mDataList.size() > 0) {
             mDataList.get(0).count = msgBean.commentnum;
             mDataList.get(1).count = msgBean.zannum;
             mDataList.get(2).count = msgBean.fovnum;
             mDataList.get(3).count = msgBean.copyrightnum;
-            mDataList.get(4).count = msgBean.sysmsg;
+            mDataList.get(4).count = msgBean.cooperatenum;
+            mDataList.get(5).count = msgBean.sysmsg;
             adapter.notifyDataSetChanged();
         }
     }
@@ -158,10 +160,10 @@ public class MsgActivity extends BaseListActivity<MsgBean> implements IMsgNumVie
                     startActivity(MsgPreserveActivity.class);
                     break;
                 case 4:
-                    startActivity(MsgSystemActivity.class);
+                    startActivity(MsgCooprateActivity.class);
                     break;
                 case 5:
-                    startActivity(MsgCooprateActivity.class);
+                    startActivity(MsgSystemActivity.class);
                     break;
             }
         }
@@ -180,12 +182,14 @@ public class MsgActivity extends BaseListActivity<MsgBean> implements IMsgNumVie
             case MyCommon.PUSH_TYPE_FOV:
                 pos = 2;
                 break;
-            case MyCommon.PUSH_TYPE_COPYRIGHSUCCESS:
-            case MyCommon.PUSH_TYPE_COPYRIGHFAIL:
+            case MyCommon.PUSH_TYPE_COPYRIGH:
                 pos = 3;
                 break;
-            case MyCommon.PUSH_TYPE_SYSTEMMSG:
+            case MyCommon.PUSH_TYPE_COO:
                 pos = 4;
+                break;
+            case MyCommon.PUSH_TYPE_SYSTEMMSG:
+                pos = 5;
                 break;
         }
         mDataList.get(pos).count = mDataList.get(pos).count + 1;
@@ -207,12 +211,14 @@ public class MsgActivity extends BaseListActivity<MsgBean> implements IMsgNumVie
             case MyCommon.PUSH_TYPE_FOV:
                 pos = 2;
                 break;
-            case MyCommon.PUSH_TYPE_COPYRIGHSUCCESS:
-            case MyCommon.PUSH_TYPE_COPYRIGHFAIL:
+            case MyCommon.PUSH_TYPE_COPYRIGH:
                 pos = 3;
                 break;
-            case MyCommon.PUSH_TYPE_SYSTEMMSG:
+            case MyCommon.PUSH_TYPE_COO:
                 pos = 4;
+                break;
+            case MyCommon.PUSH_TYPE_SYSTEMMSG:
+                pos = 5;
                 break;
         }
         //清空消息之前 先把消息总个数减掉当前分类的消息个数

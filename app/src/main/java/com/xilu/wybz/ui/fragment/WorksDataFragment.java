@@ -334,7 +334,7 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
     public void deleteCooperateWorksData(int pos) {
         selectPos = pos;
         if (pos >= 0 && pos < mDataList.size()) {
-            userPresenter.deleteCooperate(mDataList.get(pos).did);
+            userPresenter.deleteCooperate(mDataList.get(pos).itemid);
         }
     }
 
