@@ -65,9 +65,9 @@ public class CooperaPublish extends ToolbarActivity implements ICooperaPublishVi
 
         if (item.getItemId() == R.id.menu_publish) {//发送post请求 携带参数itemid 和 要求
 
-            if (cooperaLyricBean == null ) {
+            if (cooperaLyricBean == null) {
                 showMsg("请选择歌曲");
-            }else if( "".equals(editText.getText().toString().trim())){
+            } else if ("".equals(editText.getText().toString().trim())) {
                 showMsg("请填写合作期望");
             } else {
                 cooperaPublishPresenter.publishDemand(editText.getText().toString().trim(), cooperaLyricBean.getItemid());
@@ -89,10 +89,9 @@ public class CooperaPublish extends ToolbarActivity implements ICooperaPublishVi
     @Override
     public void success() {
         showMsg("发布成功");
-        setResult(200);
         Intent intent = new Intent(CooperaPublish.this, CooperationActivity.class);
-        intent.putExtra("success", "success");
         startActivity(intent);
+
     }
 
     @Override

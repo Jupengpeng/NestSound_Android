@@ -48,6 +48,7 @@ public class MineFragment extends BaseFragment implements IMineView, SwipeRefres
 
 
     private boolean ishasData = true;
+
     @Override
     protected int getLayoutResId() {
         return R.layout.fragment_mine;
@@ -111,9 +112,12 @@ public class MineFragment extends BaseFragment implements IMineView, SwipeRefres
         });
         mineAdapter.setOnItemLongClickListener(new MineAdapter.OnItemLongClickListener() {
             @Override
-            public void onItemLongClick(View view, int position) {
-
-                initDialog(position);
+            public void onItemLongClick(View view, int position, int status) {
+                if (status == 1) {
+                    initDialog(position);
+                } else {
+                    minePresenter.deleteCoopera(mineList.get(position).getId(), position);
+                }
 
             }
         });
@@ -142,7 +146,6 @@ public class MineFragment extends BaseFragment implements IMineView, SwipeRefres
                         (lastVisibleItemPosition) >= totalItemCount - 1) && !refreshLayout.isRefreshing() && ishasData) {
                     mineAdapter.onLoadMoreStateChanged(true);
                     page++;
-                    lastVisibleItemPosition = lastVisibleItemPosition - 1;
                     minePresenter.getMineList(page);
                 }
             }
@@ -167,8 +170,10 @@ public class MineFragment extends BaseFragment implements IMineView, SwipeRefres
     @Override
     public void deleteSuccess(int position) {
         mineAdapter.removeItem(position);
-        dialog.dismiss();
-        if (mineList.size() ==0) {
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+        }
+        if (mineList.size() == 0) {
 
             ll_nodata.setVisibility(View.VISIBLE);
         }
@@ -182,7 +187,7 @@ public class MineFragment extends BaseFragment implements IMineView, SwipeRefres
 
     @Override
     public void noMoreData() {
-        ishasData=false;
+        ishasData = false;
         mineAdapter.onLoadMoreStateChanged(false);
     }
 
@@ -202,5 +207,6 @@ public class MineFragment extends BaseFragment implements IMineView, SwipeRefres
         }
         minePresenter.getMineList(page);
         refreshLayout.setRefreshing(false);
+        ishasData = true;
     }
 }

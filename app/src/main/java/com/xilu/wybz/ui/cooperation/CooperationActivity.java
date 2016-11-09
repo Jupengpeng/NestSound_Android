@@ -34,6 +34,8 @@ public class CooperationActivity extends BaseActivity implements ViewPager.OnPag
     ImageView iv;
     public boolean isFirst;
     CooperationPageAdapter adapter;
+    CooperationFragment cooperationfragment;
+
 
     @Override
     protected int getLayoutRes() {
@@ -52,7 +54,7 @@ public class CooperationActivity extends BaseActivity implements ViewPager.OnPag
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
         tabLayout.setupWithViewPager(viewPager);
         mAppbar.setPadding(0, SystemBarHelper.getStatusBarHeight(this), 0, 0);
-//        initFragment();
+
     }
 
     @OnClick(R.id.iv)
@@ -62,16 +64,6 @@ public class CooperationActivity extends BaseActivity implements ViewPager.OnPag
                 finish();
                 break;
         }
-    }
-
-
-    private void initFragment() {
-        CooperationFragment cooperationfragment = new CooperationFragment();
-        fragments.add(cooperationfragment);
-        MineFragment minefragment = new MineFragment();
-        fragments.add(minefragment);
-        CollectFragment collectfragment = new CollectFragment();
-        fragments.add(collectfragment);
     }
 
     @Override

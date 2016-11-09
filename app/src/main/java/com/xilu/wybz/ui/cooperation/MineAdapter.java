@@ -40,7 +40,7 @@ public class MineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     public interface OnItemLongClickListener {
-        void onItemLongClick(View view, int position);
+        void onItemLongClick(View view, int position,int status);
     }
 
     private MineAdapter.OnItemClickListener mOnItemClickListener;
@@ -137,7 +137,7 @@ public class MineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ((MineViewHolder) holder).itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    mOnItemLongClickListener.onItemLongClick(holder.itemView, position);
+                    mOnItemLongClickListener.onItemLongClick(holder.itemView, position,mineBean.getStatus());
                     return false;
                 }
             });

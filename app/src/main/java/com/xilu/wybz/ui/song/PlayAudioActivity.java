@@ -137,14 +137,15 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     DownPicPresenter downPicPresenter;
     List<ActionBean> actionBeanList;
     String[] actionTitles = new String[]{"个人主页", "举报"};
-    String[] actionTitles2 = new String[]{ "删除"};
+    String[] actionTitles2 = new String[]{"删除"};
     String[] actionTypes = new String[]{"homepage", "jubao"};
-    String[] actionTypes2 = new String[]{ "del"};
+    String[] actionTypes2 = new String[]{"del"};
     PlayLyricsAdapter playLyricsAdapter;
     List<String> lyricsList;
     boolean isPlay = true;
 
     int type;
+
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_playaudio;
@@ -157,17 +158,19 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
         intent.putExtra("gedanid", gedanid);
         context.startActivity(intent);
     }
-    public static void toPlayAudioActivity(Context context, String id,int type) {
+
+    public static void toPlayAudioActivity(Context context, String id, int type) {
         Intent intent = new Intent(context, PlayAudioActivity.class);
         intent.putExtra("id", id);
         intent.putExtra("type", type);
         context.startActivity(intent);
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        ExitApplication.getInstance().exit();
-        if(MyApplication.getInstance().mMainService==null){
+        if (MyApplication.getInstance().mMainService == null) {
             MyApplication.getInstance().bindMainService();
         }
         EventBus.getDefault().register(this);
@@ -203,7 +206,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                if(MyApplication.getInstance().getMainService()!=null)
+                if (MyApplication.getInstance().getMainService() != null)
                     MyApplication.getInstance().getMainService().setCurrentPosition(progress);
             }
 
@@ -211,6 +214,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
             public void onStartTrackingTouch(SeekBar seekBar) {
 
             }
+
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress,
                                           boolean fromUser) {
@@ -249,7 +253,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
             id = bundle.getString("id");
             from = bundle.getString("from", "");
             gedanid = bundle.getString("gedanid", "");
-            type = bundle.getInt("type",0);
+            type = bundle.getInt("type", 0);
             String playId = PrefsUtil.getString(MainService.CurrentMusic.PLAY_ID, context);
             isCurrentMusic = (id.equals(playId));
         }
@@ -258,20 +262,20 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
         if (isCurrentMusic) {//正在播放的是本首
             worksData = PrefsUtil.getMusicData(context, id);
             adapterData();
-            if (MainService.status!=1) {
+            if (MainService.status != 1) {
                 //播放或者是暂停状态 恢复位置
                 playSeekBar.setMax(MyApplication.getInstance().getMainService().getDuration());
                 playSeekBar.setProgress(MyApplication.getInstance().getMainService().getCurrentPosition());
                 tvTime.setText(FormatHelper.formatDuration(MyApplication.getInstance().getMainService().getCurrentPosition() / 1000));
-                if (MainService.status==2) {
+                if (MainService.status == 2) {
                     ivPlay.setImageResource(R.drawable.ic_play_play);
                     isPlay = false;
-                } else if (MainService.status==3) {
+                } else if (MainService.status == 3) {
                     ivPlay.setImageResource(R.drawable.ic_play_pause);
                     isPlay = true;
                     startTimer();
                 }
-            }else{
+            } else {
                 //停止或者尚未播放
                 ivPlay.setImageResource(R.drawable.ic_play_pause);
                 isPlay = true;
@@ -288,7 +292,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
         sv_content.fullScroll(ScrollView.FOCUS_UP);
         viewPager.setCurrentItem(0);
         try {
-            if(worksData==null)return;
+            if (worksData == null) return;
             String pic = worksData.getPic();
             if (StringUtils.isNotBlank(pic)) {
                 loadPic(pic);
@@ -321,7 +325,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
             tvFav.setChecked(worksData.getIscollect() == 1);
             int times = Integer.valueOf(worksData.getMp3times());
             tvAlltime.setText(FormatHelper.formatDuration(times));
-            playSeekBar.setMax(times*1000);
+            playSeekBar.setMax(times * 1000);
             toolbar.setSubtitle(author);
             if (!TextUtils.isEmpty(lyrics)) {
                 String[] lyricss = lyrics.split("\\n");
@@ -358,7 +362,7 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
             blurImageView.setImageBitmap(BitmapUtils.getSDCardImg(path));
         } else {//下载并保存到本地
             imageUrl = MyCommon.getImageUrl(imageUrl, 200, 200);
-            if(PermissionUtils.checkSdcardPermission(this)) {
+            if (PermissionUtils.checkSdcardPermission(this)) {
                 downPicPresenter.downLoadBitmap(imageUrl, path);
             }
         }
@@ -476,9 +480,9 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
                     return;
                 }
                 isPlay = !isPlay;
-                if(isPlay){
+                if (isPlay) {
                     ivPlay.setImageResource(R.drawable.ic_play_pause);
-                }else{
+                } else {
                     ivPlay.setImageResource(R.drawable.ic_play_play);
                 }
                 MyApplication.getInstance().getMainService().doPP(isPlay);
@@ -539,13 +543,22 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
 
     @Override
     public void toCommentActivity() {
-        CommentActivity.toCommentActivity(context, worksData.itemid,1,false);
+        if ("hezuo".equals(from)) {
+            CommentActivity.toCommentActivity(context, worksData.itemid, 3, false);
+        } else {
+            CommentActivity.toCommentActivity(context, worksData.itemid, 1, false);
+        }
     }
 
     @Override
     public void collectionMusic() {
         rlFav.setEnabled(false);
-        playPresenter.setCollectionState(worksData.itemid, worksData.uid);
+        if ("hezuo".equals(from)) {
+            playPresenter.setCollectionState(worksData.itemid, worksData.uid, 3);
+        } else {
+            playPresenter.setCollectionState(worksData.itemid, worksData.uid, 1);
+        }
+
     }
 
     @Override
@@ -572,7 +585,11 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     @Override
     public void zambiaMusic() {
         rlZan.setEnabled(false);
-        playPresenter.setZambiaState(id, worksData.uid);
+        if ("hezuo".equals(from)) {
+            playPresenter.setZambiaState(id, worksData.uid, 3);
+        } else {
+            playPresenter.setZambiaState(id, worksData.uid, 1);
+        }
     }
 
     @Override
@@ -659,8 +676,8 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(Event.PPStatusEvent event) {
-        if(isDestroy)return;
-        if(event.getFrom().equals(from)) {
+        if (isDestroy) return;
+        if (event.getFrom().equals(from)) {
             switch (event.getStatus()) {
                 case MyCommon.STARTED://开始
                     ivPlay.setImageResource(R.drawable.ic_play_pause);
@@ -746,18 +763,18 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        UMShareAPI.get( this ).onActivityResult( requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
     protected void onDestroy() {
         closeTimer();
-        if(MyApplication.getInstance().getMainService()!=null) {
+        if (MyApplication.getInstance().getMainService() != null) {
             if (MyApplication.getInstance().getMainService().status == 1) {
                 MyApplication.getInstance().getMainService().doRelease();
             }
         }
-        if (handler!= null){
+        if (handler != null) {
             handler.removeCallbacksAndMessages(null);
         }
         if (playPresenter != null)

@@ -1,6 +1,7 @@
 package com.xilu.wybz.ui.cooperation;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -131,6 +132,21 @@ public class CollectFragment extends BaseFragment implements ICollectView, Swipe
         collectAdapter.setOnItemClickListener(new CollectAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
+                int status = beanList.get(position).getStatus();
+                Intent intent = new Intent(getActivity(), CooperaDetailsActivity.class);
+                if(status==1){
+                    intent.putExtra("type", 1);
+                }else{
+                    intent.putExtra("type", 2);
+                }
+
+                intent.putExtra("did", beanList.get(position).getId());
+                startActivity(intent);
+            }
+        });
+        collectAdapter.setOnItemLongClickListener(new CollectAdapter.OnItemLongClickListener() {
+            @Override
+            public void onItemLongClick(View view, int position) {
                 dialog = new AlertDialog.Builder(context).setTitle("取消收藏")
                         .setMessage("您确认取消收藏吗？").setNegativeButton("取消", null).setPositiveButton("确定", new DialogInterface.OnClickListener() {
                             @Override
@@ -159,5 +175,6 @@ public class CollectFragment extends BaseFragment implements ICollectView, Swipe
         }
         collectPresenter.getCollectList(page);
         refreshLayout.setRefreshing(false);
+        ishasData = true;
     }
 }

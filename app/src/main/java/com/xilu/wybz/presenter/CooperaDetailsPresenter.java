@@ -39,6 +39,7 @@ public class CooperaDetailsPresenter extends BasePresenter<ICooperaDetailsView> 
             public void onResult(JsonResponse<? extends Object> response) {
                 super.onResult(response);
                 CooperaDetailsBean cooperaDetailsBean = response.getData();
+
                 iView.showCooperaDetailsBean(cooperaDetailsBean);
                 iView.showCooperaCommentList(cooperaDetailsBean.getCommentList());
                 iView.showCooperaCompleteList(cooperaDetailsBean.getCompleteList());
@@ -108,7 +109,7 @@ public class CooperaDetailsPresenter extends BasePresenter<ICooperaDetailsView> 
         });
     }
 
-    public void accept(int did,int itemid){
+    public void accept(int did,int itemid,int pos){
         params= new HashMap<>();
         params.put("did",did+"");
         params.put("itemid",itemid+"");
@@ -125,7 +126,7 @@ public class CooperaDetailsPresenter extends BasePresenter<ICooperaDetailsView> 
                 super.onResponse(response);
                 int commentId = ParseUtils.getCommentId(context, response);
                 if (commentId == 200) {
-                    iView.acceptSuccess();
+                    iView.acceptSuccess(pos);
                 }
             }
         });

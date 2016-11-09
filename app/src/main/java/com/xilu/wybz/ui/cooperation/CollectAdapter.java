@@ -115,6 +115,16 @@ public class CollectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     mOnItemClickListener.onItemClick(((CollectViewHolder) holder).itemView, position);
                 }
             });
+            ((CollectViewHolder) holder).itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+
+                    mOnItemLongClickListener.onItemLongClick(((CollectViewHolder) holder).itemView, position);
+
+                    return false;
+                }
+            });
+
 
         }
     }

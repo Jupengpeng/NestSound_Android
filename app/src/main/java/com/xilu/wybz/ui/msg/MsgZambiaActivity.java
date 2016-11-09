@@ -47,18 +47,21 @@ public class MsgZambiaActivity extends BaseListActivity<ZambiaBean> implements I
         zanPresenter = new MsgZanPresenter(this, this);
         zanPresenter.init();
     }
+
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         clearMsg();
         onRefresh(PullRecycler.ACTION_PULL_TO_REFRESH);
     }
-    public void clearMsg(){
+
+    public void clearMsg() {
         EventBus.getDefault().post(new Event.ClearMsgEvent(MyCommon.PUSH_TYPE_ZAN));
         Intent mIntent = new Intent("com.xilu.wybz.intent.CLEARNOTICE");
         mIntent.putExtra("type", MyCommon.PUSH_TYPE_ZAN);
         sendBroadcast(mIntent);
     }
+
     @Override
     public void initView() {
         setTitle("点赞");
@@ -146,8 +149,10 @@ public class MsgZambiaActivity extends BaseListActivity<ZambiaBean> implements I
             if (StringUtils.isNotBlank(zambiaBean.itemid)) {
                 if (zambiaBean.type == 1) {
                     PlayAudioActivity.toPlayAudioActivity(context, zambiaBean.itemid, "", MyCommon.MSG_COMMENT);
-                } else {
+                } else if(zambiaBean.type == 2){
                     LyricsdisplayActivity.toLyricsdisplayActivity(context, zambiaBean.itemid, zambiaBean.title);
+                }else if(zambiaBean.type == 3){
+                    PlayAudioActivity.toPlayAudioActivity(context, zambiaBean.itemid, "", "hezuo");
                 }
             }
         }
@@ -159,6 +164,7 @@ public class MsgZambiaActivity extends BaseListActivity<ZambiaBean> implements I
         @Override
         public void onBindViewHolder(int position) {
             ZambiaBean zanbiaBean = mDataList.get(position);
+            itemView.setTag(zanbiaBean);
             tvTime.setText(DateTimeUtil.timestamp2DateTime(zanbiaBean.add_time));
             tvUserName.setText(zanbiaBean.nickname);
             tvAuthor.setText(zanbiaBean.author);

@@ -178,17 +178,17 @@ public class MyHttpClient {
      */
     //消息收藏列表
     public static String getMsgFovList() {
-        return "/java/message/fovMyCenterList/v22";
+        return "/java/message/fovMyCenterList/v23";
     }
 
     //消息评论列表
     public static String getMsgCommentList() {
-        return "/java/message/commentCenterList/v22";
+        return "/java/message/commentCenterList/v23";
     }
 
     //消息点赞列表
     public static String getMsgZanList() {
-        return "/java/message/zanCenterList/v22";
+        return "/java/message/zanCenterList/v23";
     }
 
     //保全消息列表
@@ -256,7 +256,7 @@ public class MyHttpClient {
 
     //评论列表
     public static String getCommentListUrl() {
-        return "/cooperate/work/commentlist/v23";
+        return "/java/common/comment/list/v22";
     }
 
     //评论接口
@@ -556,11 +556,12 @@ public class MyHttpClient {
 
     //歌曲成品-获取作品评论列表
     public static String getCooperaCommentList() {
-        return "/cooperate/work/commentsave/v23";
+        return "/cooperate/work/commentlist/v23";
     }
 
+
     //歌曲成品-删除评论
-    public static String deleteComment() {
+    public static String deletecooperaComment() {
         return "/cooperate/work/commentdelete/v23";
     }
 }

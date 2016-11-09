@@ -55,6 +55,7 @@ public class CooperationFragment extends BaseFragment implements ICooperationVie
     private int did;//合作需求ID
 
     private boolean ishasData = true;
+
     @Override
     protected int getLayoutResId() {
         return R.layout.fragment_cooperation;
@@ -140,7 +141,6 @@ public class CooperationFragment extends BaseFragment implements ICooperationVie
         cooperationrecyclerview.setAdapter(cooperationAdapter);
         cooperationPresenter.getCooperationList(page);
         refreshLayout.setOnRefreshListener(this);
-
         cooperationrecyclerview.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -150,10 +150,9 @@ public class CooperationFragment extends BaseFragment implements ICooperationVie
                 int visibleItemCount = linearLayoutManager.getChildCount();
                 int totalItemCount = linearLayoutManager.getItemCount();
                 if ((visibleItemCount > 0 && currentScrollState == RecyclerView.SCROLL_STATE_IDLE &&
-                        (lastVisibleItemPosition) >= totalItemCount - 1) && !refreshLayout.isRefreshing() &&ishasData) {
+                        (lastVisibleItemPosition) >= totalItemCount - 1) && !refreshLayout.isRefreshing() && ishasData) {
                     cooperationAdapter.onLoadMoreStateChanged(true);
                     page++;
-                    lastVisibleItemPosition = lastVisibleItemPosition - 1;
                     cooperationPresenter.getCooperationList(page);
                 }
 
@@ -171,7 +170,8 @@ public class CooperationFragment extends BaseFragment implements ICooperationVie
             public void onClick(View v) {
 //                startActivity(new Intent(getActivity(), CooperaPublish.class));
                 Intent intent = new Intent(getActivity(), CooperaPublish.class);
-                getActivity().startActivityForResult(intent, 100);
+//                getActivity().startActivityForResult(intent, 150);
+                startActivity(intent);
             }
         });
 
@@ -210,19 +210,32 @@ public class CooperationFragment extends BaseFragment implements ICooperationVie
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if (cooperationList.size() > 0) {
+            cooperationList.clear();
+            page = 1;
+        }
+        cooperationPresenter.getCooperationList(page);
+
+
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         if (cooperationPresenter != null)
             cooperationPresenter.cancelRequest();
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 100 && resultCode == 200) {
-            getActivity().finish();
-        }
-    }
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (requestCode == 150 && resultCode == 160) {
+//
+//            onRefresh();
+//        }
+//    }
 
     @Override
     public void onRefresh() {
@@ -235,6 +248,6 @@ public class CooperationFragment extends BaseFragment implements ICooperationVie
             refreshLayout.setRefreshing(false);
             cooperationPresenter.getCooperationList(page);
         }
+        ishasData = true;
     }
-
 }

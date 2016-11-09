@@ -17,8 +17,8 @@
         android:layout_marginTop="20dp"
         android:gravity="center_horizontal"
         android:lineSpacingExtra="5dp"
-        android:maxEms="10"
-        android:text="您的合作作品在该合作需求期间，您将无法进行删除"
+        android:maxEms="9"
+        android:text="1.需求结束前您的作品无法删除2.如被采纳，删除该采纳需求仅对自己有效"
         android:textColor="@color/main_text_color"
         android:textSize="14sp" />
 

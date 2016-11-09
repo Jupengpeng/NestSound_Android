@@ -22,17 +22,18 @@ public class PlayPresenter extends BasePresenter<IPlayView> {
         super(context, iView);
     }
 
-    public void setCollectionState(String music_id, int target_uid) {
+    public void setCollectionState(String music_id, int target_uid, int type) {
         params = new HashMap<>();
-        params.put("user_id",PrefsUtil.getUserId(context)+"");;
-        params.put("work_id", music_id+"");
-        params.put("target_uid", target_uid+"");
-        params.put("wtype", "1");
-        httpUtils.post(MyHttpClient.cooperaCollect(), params, new MyStringCallback() {
+        params.put("user_id", PrefsUtil.getUserId(context) + "");
+        ;
+        params.put("work_id", music_id + "");
+        params.put("target_uid", target_uid + "");
+        params.put("wtype", type + "");
+        httpUtils.post(type == 3 ? MyHttpClient.cooperaCollect() : MyHttpClient.getWorkFovUrl(), params, new MyStringCallback() {
             @Override
             public void onResponse(String response) {
-                DataBean dataBean = ParseUtils.getDataBean(context,response);
-                if(dataBean!=null&&dataBean.code==200)
+                DataBean dataBean = ParseUtils.getDataBean(context, response);
+                if (dataBean != null && dataBean.code == 200)
                     iView.collectionMusicSuccess();
                 else
                     iView.collectionMusicFail();
@@ -44,42 +45,46 @@ public class PlayPresenter extends BasePresenter<IPlayView> {
             }
         });
     }
-    public void setZambiaState(String music_id, int target_uid) {
+
+    public void setZambiaState(String music_id, int target_uid, int type) {
         params = new HashMap<>();
-        params.put("user_id",PrefsUtil.getUserId(context)+"");;
+        params.put("user_id", PrefsUtil.getUserId(context) + "");
         params.put("work_id", music_id);
-        params.put("target_uid", target_uid+"");
-        params.put("wtype", "1");
-        httpUtils.post(MyHttpClient.cooperaZan(), params, new MyStringCallback() {
+        params.put("target_uid", target_uid + "");
+        params.put("wtype", type + "");
+        httpUtils.post(type==3?MyHttpClient.cooperaZan():MyHttpClient.getUpvoteUrl(), params, new MyStringCallback() {
             public void onResponse(String response) {
-                DataBean dataBean = ParseUtils.getDataBean(context,response);
-                if(dataBean!=null&&dataBean.code==200)
+                DataBean dataBean = ParseUtils.getDataBean(context, response);
+                if (dataBean != null && dataBean.code == 200)
                     iView.zambiaMusicSuccess();
                 else
                     iView.zambiaMusicFail();
             }
+
             @Override
             public void onError(Call call, Exception e) {
                 iView.zambiaMusicFail();
             }
         });
     }
+
     //删除作品
     public void delete(String id) {
         params = new HashMap<>();
-        params.put("id",id);
-        params.put("type","1");//歌曲
+        params.put("id", id);
+        params.put("type", "1");//歌曲
         httpUtils.post(MyHttpClient.getDeleteWorksUrl(), params, new MyStringCallback() {
             @Override
             public void onResponse(String response) {
                 super.onResponse(response);
-                DataBean dataBean = ParseUtils.getDataBean(context,response);
-                if(dataBean!=null&&dataBean.code==200){
+                DataBean dataBean = ParseUtils.getDataBean(context, response);
+                if (dataBean != null && dataBean.code == 200) {
                     iView.deleteSuccess();
-                }else{
+                } else {
                     iView.deleteFail();
                 }
             }
+
             @Override
             public void onError(Call call, Exception e) {
                 super.onError(call, e);
@@ -87,7 +92,8 @@ public class PlayPresenter extends BasePresenter<IPlayView> {
             }
         });
     }
-    public void cancleRequest(){
+
+    public void cancleRequest() {
         httpUtils.cancelHttpByTag(MyHttpClient.getUpvoteUrl());
         httpUtils.cancelHttpByTag(MyHttpClient.getUpvoteUrl());
         httpUtils.cancelHttpByTag(MyHttpClient.getDeleteWorksUrl());

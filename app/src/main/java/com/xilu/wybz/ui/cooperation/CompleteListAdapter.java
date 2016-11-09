@@ -23,10 +23,14 @@ import butterknife.ButterKnife;
  * Created by Administrator on 2016/10/21.
  */
 
-public class CompleteListAdapter extends RecyclerView.Adapter<CompleteListAdapter.CompleteListViewHolder> {
+public class CompleteListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<CooperaDetailsBean.CompleteListBean> CompleteListBean;
     private Context context;
     private int flag;
+    private boolean b = false;
+    private static final int TYPE_ITEM = 0;
+    private static final int TYPE_FOOTER = 1;
+    protected boolean isLoadMoreFooterShown = false;
 
     public CompleteListAdapter(List<CooperaDetailsBean.CompleteListBean> CompleteListBean, Context context, int flag) {
         this.CompleteListBean = CompleteListBean;
@@ -45,53 +49,82 @@ public class CompleteListAdapter extends RecyclerView.Adapter<CompleteListAdapte
     }
 
     @Override
-    public CompleteListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        CompleteListAdapter.CompleteListViewHolder holder = new CompleteListAdapter.CompleteListViewHolder(LayoutInflater.from(context).inflate(R.layout.completework_item, parent, false));
-        return holder;
+    public int getItemViewType(int position) {
+        if (isLoadMoreFooterShown && position == getItemCount() - 1) {
+            return TYPE_FOOTER;
+        } else {
+            return TYPE_ITEM;
+        }
+    }
+
+    public void onLoadMoreStateChanged(boolean isShown) {
+        this.isLoadMoreFooterShown = isShown;
+        if (isShown) {
+            notifyItemInserted(getItemCount());
+        } else {
+            notifyItemRemoved(getItemCount());
+        }
+    }
+
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+//        CompleteListAdapter.CompleteListViewHolder holder = new CompleteListAdapter.CompleteListViewHolder(LayoutInflater.from(context).inflate(R.layout.completework_item, parent, false));
+//        return holder;
+        if (viewType == TYPE_ITEM) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(
+                    R.layout.completework_item, null);
+            return new CompleteListViewHolder(view);
+        } else if (viewType == TYPE_FOOTER) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.widget_pull_to_refresh_footer, parent, false);
+            return new FooterViewHolder(view);
+        }
+        return null;
     }
 
 
     @Override
-    public void onBindViewHolder(CompleteListViewHolder holder, int position) {
-        CooperaDetailsBean.CompleteListBean completeBean = CompleteListBean.get(position);
-        if (completeBean != null) {
-                holder.complete_title.setText("歌曲名: "+completeBean.getTitle());
-            holder.complete_lUsername.setText("作词    : "+completeBean.getLUsername());
-            holder.complete_wUsername.setText("作曲    : "+completeBean.getWUsername());
-            holder.complete_createtime.setText(DateFormatUtils.formatX1(completeBean.getCreatetime()));
-            ZnImageLoader.getInstance().displayImage(completeBean.getPic(), ZnImageLoader.getInstance().headOptions, holder.complete_iv);
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        if (holder instanceof CompleteListViewHolder) {
+            CooperaDetailsBean.CompleteListBean completeBean = CompleteListBean.get(position);
+            if (completeBean != null) {
+                ((CompleteListViewHolder)holder).complete_title.setText("歌曲名: " + completeBean.getTitle());
+                ((CompleteListViewHolder)holder).complete_lUsername.setText("作词    : " + completeBean.getLUsername());
+                ((CompleteListViewHolder)holder).complete_wUsername.setText("作曲    : " + completeBean.getWUsername());
+                ((CompleteListViewHolder)holder).complete_createtime.setText(DateFormatUtils.formatX1(completeBean.getCreatetime()));
+                ZnImageLoader.getInstance().displayImage(completeBean.getPic(), ZnImageLoader.getInstance().headOptions, ((CompleteListViewHolder)holder).complete_iv);
+                if (flag == 1) {
+                    ((CompleteListViewHolder)holder).complete_isaccess_bt.setVisibility(View.GONE);
+                }
+                if (completeBean.getAccess() == 1) {
+                    b = true;
+                    ((CompleteListViewHolder)holder).complete_isaccess_bt.setBackgroundResource(R.drawable.finishbt_bg);
+                    ((CompleteListViewHolder)holder).complete_isaccess_bt.setText("已采纳");
+                }
+                if (completeBean.getAccess() != 1 && b == false) {
+                    ((CompleteListViewHolder)holder).complete_isaccess_bt.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            int pos = holder.getLayoutPosition();
+                            mOnItemClickListener.onItemClick(((CompleteListViewHolder)holder).complete_isaccess_bt, pos, 1);
+                        }
+                    });
+                } else {
 
-            if (completeBean.getAccess() == 1 ) {
-                holder.complete_isaccess_bt.setBackgroundResource(R.drawable.finishbt_bg);
-                holder.complete_isaccess_bt.setText("已采纳");
-
-            }
-            if (flag == 1) {
-                holder.complete_isaccess_bt.setVisibility(View.GONE);
-            }
-            if (completeBean.getAccess() != 1) {
-                holder.complete_isaccess_bt.setOnClickListener(new View.OnClickListener() {
+                }
+                ((CompleteListViewHolder)holder).itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        int pos = holder.getLayoutPosition();
-                        mOnItemClickListener.onItemClick(holder.complete_isaccess_bt, pos, 1);
+                        int pos = ((CompleteListViewHolder)holder).getLayoutPosition();
+                        mOnItemClickListener.onItemClick(((CompleteListViewHolder)holder).itemView, pos, 2);
                     }
                 });
             }
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int pos = holder.getLayoutPosition();
-                    mOnItemClickListener.onItemClick(holder.itemView, pos, 2);
-                }
-            });
         }
-
     }
 
     @Override
     public int getItemCount() {
-        return CompleteListBean.size();
+        return CompleteListBean.size() + (isLoadMoreFooterShown ? 1 : 0);
     }
 
     class CompleteListViewHolder extends RecyclerView.ViewHolder {
@@ -112,5 +145,13 @@ public class CompleteListAdapter extends RecyclerView.Adapter<CompleteListAdapte
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
+    }
+
+    class FooterViewHolder extends RecyclerView.ViewHolder {
+
+        public FooterViewHolder(View view) {
+            super(view);
+        }
+
     }
 }

@@ -114,8 +114,9 @@ public class CooperaDetailsActivity extends ToolbarActivity implements ICooperaD
      */
     public static void start(Context context, int did) {
         Intent intent = new Intent(context, CooperaDetailsActivity.class);
-        intent.putExtra("id", did);
+        intent.putExtra("did", did);
         context.startActivity(intent);
+
     }
 
     @Override
@@ -126,7 +127,7 @@ public class CooperaDetailsActivity extends ToolbarActivity implements ICooperaD
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitle("某某的合作");
+        setTitle("合作");
         initDatas();
         initPresenter();
     }
@@ -237,7 +238,7 @@ public class CooperaDetailsActivity extends ToolbarActivity implements ICooperaD
         }
     }
 
-    private void initDialog() {
+    private void initDialog(int pos) {
         dialog = new AlertDialog.Builder(CooperaDetailsActivity.this).create();
         LayoutInflater layoutInflater = LayoutInflater.from(CooperaDetailsActivity.this);
         LinearLayout layout = (LinearLayout) layoutInflater.inflate(R.layout.caina, null);
@@ -255,7 +256,7 @@ public class CooperaDetailsActivity extends ToolbarActivity implements ICooperaD
         positive_bto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cooperaDetailsPresenter.accept(id, itemid);
+                cooperaDetailsPresenter.accept(id, itemid,pos);
             }
         });
 
@@ -267,10 +268,12 @@ public class CooperaDetailsActivity extends ToolbarActivity implements ICooperaD
         commentList_recyclerview.setNestedScrollingEnabled(false);
         completeList_recyclerview.setNestedScrollingEnabled(false);
         commentList_recyclerview.setLayoutManager(new LinearLayoutManager(context));
-        completeList_recyclerview.setLayoutManager(new LinearLayoutManager(context));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+        completeList_recyclerview.setLayoutManager(linearLayoutManager);
 
         cooperaDetailsPresenter.getCooperaDetailsBean(id, page);
         refreshLayout.setOnRefreshListener(this);
+
     }
 
     @Override
@@ -328,6 +331,7 @@ public class CooperaDetailsActivity extends ToolbarActivity implements ICooperaD
     public void showCooperaCompleteList(List<CooperaDetailsBean.CompleteListBean> completeListBeen) {
 
         if (completeListBeen.size() > 0) {
+
             completeListAdapter = new CompleteListAdapter(CompleteList, context, where);
             completeList_recyclerview.setAdapter(completeListAdapter);
             completeListAdapter.notifyDataSetChanged();
@@ -337,7 +341,7 @@ public class CooperaDetailsActivity extends ToolbarActivity implements ICooperaD
                     switch (type) {
                         case 1:
                             itemid = completeListBeen.get(position).getItemid();
-                            initDialog();
+                            initDialog(position);
                             break;
                         case 2:
 //                        PlayAudioActivity.toPlayAudioActivity();
@@ -374,9 +378,8 @@ public class CooperaDetailsActivity extends ToolbarActivity implements ICooperaD
     }
 
     @Override
-    public void acceptSuccess() {
+    public void acceptSuccess(int pos) {
         dialog.dismiss();
-
         onRefresh();
     }
     @Override

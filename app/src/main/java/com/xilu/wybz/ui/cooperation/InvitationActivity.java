@@ -179,7 +179,6 @@ public class InvitationActivity extends ToolbarActivity implements IInvitationVi
                         (lastVisibleItemPosition) >= totalItemCount - 1) && !refreshLayout.isRefreshing() && ishasData) {
                     invitationAdapter.onLoadMoreStateChanged(true);
                     page++;
-                    lastVisibleItemPosition = lastVisibleItemPosition - 1;
                     invitationPresenter.getInvitationList(did, page, content);
                     Log.e("AAA3", (lastVisibleItemPosition) % 10 + "");
                 }
@@ -216,7 +215,7 @@ public class InvitationActivity extends ToolbarActivity implements IInvitationVi
 
         invitationPresenter.getInvitationList(did, page, content);
         refreshLayout.setRefreshing(false);
-
+        ishasData = true;
 //        invitationAdapter.onLoadMoreStateChanged(false);
     }
 }

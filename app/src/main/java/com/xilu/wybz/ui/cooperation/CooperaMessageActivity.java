@@ -254,7 +254,7 @@ public class CooperaMessageActivity extends ToolbarActivity implements ICooperaM
 
     @Override
     public void loadNoData() {
-        tvNoData.setText("暂无留言");
+//        tvNoData.setText("暂无留言");
 //        refreshLayout.setVisibility(View.GONE);
         llNoData.setVisibility(View.VISIBLE);
     }
@@ -300,5 +300,6 @@ public class CooperaMessageActivity extends ToolbarActivity implements ICooperaM
         }
         cooperaMessagePresenter.getCooperaMessageList(did, page);
         refreshLayout.setRefreshing(false);
+        ishasData=true;
     }
 }

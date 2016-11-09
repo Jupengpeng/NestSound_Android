@@ -279,7 +279,15 @@ public class CooperaDetailsBean {
         private int itemid;
         private int access;
         private String wUsername;
+        private boolean isVisibale =false;
 
+        public boolean isVisibale() {
+            return isVisibale;
+        }
+
+        public void setVisibale(boolean visibale) {
+            isVisibale = visibale;
+        }
 
         public long getCreatetime() {
             return createtime;

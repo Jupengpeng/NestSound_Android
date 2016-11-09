@@ -39,7 +39,6 @@
             tools:text="toolbar" />
 
         <View
-
             android:layout_width="match_parent"
             android:layout_height="@dimen/spit_line_height"
             android:layout_alignParentBottom="true"
