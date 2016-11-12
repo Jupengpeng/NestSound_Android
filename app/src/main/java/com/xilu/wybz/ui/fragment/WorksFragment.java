@@ -44,7 +44,7 @@ public class WorksFragment extends BaseListFragment<WorksData> implements IUserC
     private String COME;
     private boolean isMe = true;
     private int workType;//type 1=歌曲，2=歌词，3=灵感记录（删除作品的type）
-    private String[] MYCOMES = new String[]{"mysong", "mylyrics", "myfav", "myrecord","mycoopera"};
+    private String[] MYCOMES = new String[]{"mysong", "mylyrics", "myfav", "myrecord", "mycoopera"};
 
     @Override
     protected void initPresenter() {
@@ -86,6 +86,13 @@ public class WorksFragment extends BaseListFragment<WorksData> implements IUserC
         return tabFragment;
     }
 
+    //删除合作作品
+    public void deleteCooperateWorksData(int pos) {
+        selectPos = pos;
+        if (pos >= 0 && pos < mDataList.size()) {
+            userPresenter.deleteCooperate(mDataList.get(pos).itemid);
+        }
+    }
 
     @Override
     public void initView() {
@@ -293,11 +300,12 @@ public class WorksFragment extends BaseListFragment<WorksData> implements IUserC
             return holder;
         } else if (type == 5) {
             View view = LayoutInflater.from(context).inflate(R.layout.usercenter_cooperaitem, parent, false);
-            CooperaworksViewHolder holder = new CooperaworksViewHolder(view, context, mDataList, COME, new CooperaworksViewHolder.OnItemClickListener() {
+            CooperaworksViewHolder holder = new CooperaworksViewHolder(view, context, mDataList, "hezuo", new CooperaworksViewHolder.OnItemClickListener() {
                 @Override
                 public void onClick(int pos, int which) {
-
-
+                    if (which == 0) {
+                        deleteCooperateWorksData(pos);
+                    }
                 }
             });
             return holder;

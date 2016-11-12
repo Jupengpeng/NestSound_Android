@@ -169,7 +169,7 @@ public class CooperationFragment extends BaseFragment implements ICooperationVie
             @Override
             public void onClick(View v) {
 //                startActivity(new Intent(getActivity(), CooperaPublish.class));
-                Intent intent = new Intent(getActivity(), CooperaPublish.class);
+                Intent intent = new Intent(getActivity(), CooperaPublishActivity.class);
 //                getActivity().startActivityForResult(intent, 150);
                 startActivity(intent);
             }
