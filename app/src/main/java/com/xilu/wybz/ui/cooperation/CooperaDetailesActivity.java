@@ -3,6 +3,7 @@ package com.xilu.wybz.ui.cooperation;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,7 +19,6 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.umeng.socialize.utils.Log;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.CooperaDetailsBean;
 import com.xilu.wybz.bean.PreinfoBean;
@@ -47,6 +47,10 @@ public class CooperaDetailesActivity extends ToolbarActivity implements ICoopera
     SwipeRefreshLayout refreshLayout;
     @Bind(R.id.listview)
     ListView lv;
+    @Bind(R.id.ll_loading)
+    LinearLayout llloading;
+    @Bind(R.id.ll_nodata)
+    LinearLayout ll_nodata;
     @Bind(R.id.layout1)
     RelativeLayout layout1;
     @Bind(R.id.layout2)
@@ -114,7 +118,10 @@ public class CooperaDetailesActivity extends ToolbarActivity implements ICoopera
     }
 
     private void initPresenter() {
+
         cooperaDetailsPresenter = new CooperaDetailsPresenter(this, this);
+        showLoading(llloading);
+        refreshLayout.setVisibility(View.GONE);
         cooperaDetailsPresenter.init();
 
     }
@@ -147,12 +154,10 @@ public class CooperaDetailesActivity extends ToolbarActivity implements ICoopera
             public void onScrollStateChanged(AbsListView view, int scrollState) {
                 int itemLastIndex = completeAdapter.getCount() - 1;
                 int lastIndex = itemLastIndex + 1;
-                if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE && visiableLastIndex == lastIndex) {
+                if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE && visiableLastIndex == lastIndex && isHasData==true) {
                     lv.addFooterView(foot);
                     page++;
                     cooperaDetailsPresenter.getCooperaDetailsBean(id, page);
-
-
                 }
             }
 
@@ -160,10 +165,6 @@ public class CooperaDetailesActivity extends ToolbarActivity implements ICoopera
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 visiableItemCounts = visibleItemCount;
                 visiableLastIndex = firstVisibleItem + visiableItemCounts - 1;
-//                if (totalItemCount == completeAdapter.getCount() - 1) {
-//                    lv.removeFooterView(foot);
-//
-//                }
             }
         });
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -234,10 +235,10 @@ public class CooperaDetailesActivity extends ToolbarActivity implements ICoopera
     protected int getLayoutRes() {
         return R.layout.activity_coopera_detailes;
     }
-
-
     @Override
     public void showCooperaDetailsBean(CooperaDetailsBean cooperaDetailsBean) {
+        disMissLoading(llloading);
+        refreshLayout.setVisibility(View.VISIBLE);
         detailsBean = cooperaDetailsBean;
         setTitle(cooperaDetailsBean.getUserInfo().getNickname() + "的合作");
         cooperadetails_tv_nickname.setText("作词:" + cooperaDetailsBean.getUserInfo().getNickname());
@@ -324,8 +325,6 @@ public class CooperaDetailesActivity extends ToolbarActivity implements ICoopera
 
     @Override
     public void showCooperaCompleteList(List<CooperaDetailsBean.CompleteListBean> completeListBeen) {
-        Log.e("BBB1", completeListBeen.size() + "");
-        Log.e("BBB2", completeList.size() + "");
         lv.removeFooterView(foot);
         completeList.addAll(completeListBeen);
         completeAdapter.notifyDataSetChanged();
@@ -336,6 +335,9 @@ public class CooperaDetailesActivity extends ToolbarActivity implements ICoopera
                 initDialog(position);
             }
         });
+        if(refreshLayout.isRefreshing()){
+            refreshLayout.setRefreshing(false);
+        }
     }
 
     @Override
@@ -369,14 +371,24 @@ public class CooperaDetailesActivity extends ToolbarActivity implements ICoopera
         nocoopera.setVisibility(View.VISIBLE);
     }
 
+    @Override
+    public void noMoreCompleteData() {
+        isHasData=false;
+    }
+
 
     @Override
     public void onRefresh() {
-        if (completeList.size() > 0) {
-            completeList.clear();
-            page = 1;
-        }
-        cooperaDetailsPresenter.getCooperaDetailsBean(id, page);
-        refreshLayout.setRefreshing(false);
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                completeList.clear();
+
+                page=1;
+                cooperaDetailsPresenter.getCooperaDetailsBean(id, page);
+                isHasData=true;
+            }
+        }, 2000);
     }
 }

@@ -1,6 +1,7 @@
 package com.xilu.wybz.ui.cooperation;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -165,6 +166,9 @@ public class MineFragment extends BaseFragment implements IMineView, SwipeRefres
         if (isDestroy) return;
         mineList.addAll(mineBeanList);
         mineAdapter.notifyDataSetChanged();
+        if(refreshLayout.isRefreshing()){
+            refreshLayout.setRefreshing(false);
+        }
     }
 
     @Override
@@ -203,13 +207,22 @@ public class MineFragment extends BaseFragment implements IMineView, SwipeRefres
     public void onRefresh() {
 
 
-        if (mineList.size() > 0) {
-            mineList.clear();
-            page = 1;
-        }
-        refreshLayout.setRefreshing(false);
-        minePresenter.getMineList(page);
-        ishasData=true;
+//        if (mineList.size() > 0) {
+//            mineList.clear();
+//            page = 1;
+//        }
+//        refreshLayout.setRefreshing(false);
+//        minePresenter.getMineList(page);
+//        ishasData=true;
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mineList.clear();
+                page = 1;
+                minePresenter.getMineList(page);
+                ishasData = true;
+            }
+        }, 2000);
     }
 
 

@@ -15,6 +15,8 @@ import com.xilu.wybz.utils.DateFormatUtils;
 
 import java.util.List;
 
+import static android.view.View.GONE;
+
 /**
  * Created by Administrator on 2016/11/12.
  */
@@ -24,6 +26,7 @@ public class CooperaDetatilesAdapter extends BaseAdapter {
     private Context context;
     private int flag;
     private boolean b = false;
+
 
     public CooperaDetatilesAdapter(List<CooperaDetailsBean.CompleteListBean> completeListBean, Context context, int flag) {
         CompleteListBean = completeListBean;
@@ -80,38 +83,62 @@ public class CooperaDetatilesAdapter extends BaseAdapter {
             holder.complete_wUsername.setText("作曲    : " + completeBean.getWUsername());
             holder.complete_createtime.setText(DateFormatUtils.formatX1(completeBean.getCreatetime()));
             ZnImageLoader.getInstance().displayImage(completeBean.getPic(), ZnImageLoader.getInstance().headOptions, holder.complete_iv);
-            if (flag == 1) {
-                holder.complete_isaccess_bt.setVisibility(View.GONE);
-            }
             for (int i = 0; i < CompleteListBean.size(); i++) {
-                if (CompleteListBean.get(i).getAccess() == 1) {
+                CooperaDetailsBean.CompleteListBean completeBean2 = CompleteListBean.get(i);
+                if (completeBean2.getAccess() == 1) {
                     b = true;
                 }
             }
-
-            if (b == true && completeBean.getAccess() == 1) {
-                holder.complete_isaccess_bt.setBackgroundResource(R.drawable.finishbt_bg);
-                holder.complete_isaccess_bt.setText("已采纳");
-            } else {
-                holder.complete_isaccess_bt.setVisibility(View.GONE);
-            }
-
-            if (completeBean.getAccess() != 1 && b == false) {
-                ViewHolder finalHolder = holder;
-                holder.complete_isaccess_bt.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        mOnItemClickListener.onItemClick(finalHolder.complete_isaccess_bt, position, 1);
+            switch (flag) {
+                case 1:
+                    holder.complete_isaccess_bt.setVisibility(GONE);
+                    break;
+                case 2:
+                    if (b == false) {
+                        holder.complete_isaccess_bt.setBackgroundResource(R.drawable.bt_bg);
+                        holder.complete_isaccess_bt.setText("采纳");
+                    } else {
+                        if (completeBean.getAccess() == 1) {
+                            holder.complete_isaccess_bt.setBackgroundResource(R.drawable.finishbt_bg);
+                            holder.complete_isaccess_bt.setText("已采纳");
+                            holder.complete_isaccess_bt.setEnabled(false);
+                            holder.complete_isaccess_bt.setClickable(false);
+                        } else {
+                            holder.complete_isaccess_bt.setVisibility(GONE);
+                        }
                     }
-                });
+
+                    break;
+                default:
+
+                    break;
             }
+
+//            if (flag == 1) {
+//                holder.complete_isaccess_bt.setVisibility(View.GONE);
+//            }
+//
+//            if (completeBean.getAccess() == 1) {
+//                holder.complete_isaccess_bt.setBackgroundResource(R.drawable.finishbt_bg);
+//                holder.complete_isaccess_bt.setText("已采纳");
+//                b = true;
+//            }
+//
+//
+
+            ViewHolder finalHolder = holder;
+            holder.complete_isaccess_bt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mOnItemClickListener.onItemClick(finalHolder.complete_isaccess_bt, position, 1);
+                    b = true;
+
+                }
+            });
 
         }
-
         return convertView;
     }
-
 
     class ViewHolder {
         ImageView complete_iv;

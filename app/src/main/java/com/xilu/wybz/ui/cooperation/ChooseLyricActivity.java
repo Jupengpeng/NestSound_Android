@@ -2,6 +2,7 @@ package com.xilu.wybz.ui.cooperation;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -42,6 +43,7 @@ public class ChooseLyricActivity extends ToolbarActivity implements ICooperaLyri
     private int lastVisibleItemPosition;
 
     private boolean ishasData = true;
+
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_choose_lyric;
@@ -88,7 +90,8 @@ public class ChooseLyricActivity extends ToolbarActivity implements ICooperaLyri
         if (isDestroy) return;
         lyricbeanList.addAll(lyricBeanList);
         cooperaLyricadapter.notifyDataSetChanged();
-        refreshLayout.setRefreshing(false);
+        if(refreshLayout.isRefreshing()){
+        refreshLayout.setRefreshing(false);}
     }
 
     @Override
@@ -104,7 +107,7 @@ public class ChooseLyricActivity extends ToolbarActivity implements ICooperaLyri
 
     @Override
     public void noMoreData() {
-        ishasData=false;
+        ishasData = false;
         cooperaLyricadapter.onLoadMoreStateChanged(false);
     }
 
@@ -168,11 +171,14 @@ public class ChooseLyricActivity extends ToolbarActivity implements ICooperaLyri
     @Override
     public void onRefresh() {
 
-        if (lyricbeanList.size() > 0) {
-            lyricbeanList.clear();
-            page = 1;
-        }
-        cooperaLyricPresenter.getCooperaLyricList(page);
-        refreshLayout.setRefreshing(false);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                lyricbeanList.clear();
+                page = 1;
+                cooperaLyricPresenter.getCooperaLyricList(page);
+                ishasData = true;
+            }
+        }, 2000);
     }
 }

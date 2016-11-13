@@ -176,6 +176,18 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
                     WorksData worksData = recommendWorkList.get(position);
                     if (worksData.status == 2) {
                         LyricsdisplayActivity.toLyricsdisplayActivity(context, worksData.itemid, worksData.getTitle());
+                    }else if(worksData.status==3){
+                        String playFrom = PrefsUtil.getString("playFrom", context);
+                        if (!playFrom.equals("hezuo") || MainService.ids.size() == 0) {
+                            if (MainService.ids.size() > 0)
+                                MainService.ids.clear();
+                            for (WorksData workData : recommendWorkList) {
+                                if (workData.status == 1) {
+                                    MainService.ids.add(workData.getItemid());
+                                }
+                            }
+                        }
+                        PlayAudioActivity.toPlayAudioActivity(context, worksData.itemid, "", "hezuo");
                     } else {
                         String playFrom = PrefsUtil.getString("playFrom", context);
                         if (!playFrom.equals(MyCommon.TUIJIAN) || MainService.ids.size() == 0) {
@@ -211,6 +223,18 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
                     WorksData worksData = newWorkList.get(position);
                     if (worksData.status == 2) {
                         LyricsdisplayActivity.toLyricsdisplayActivity(context, worksData.itemid, worksData.getTitle());
+                    }else if(worksData.status==3){
+                        String playFrom = PrefsUtil.getString("playFrom", context);
+                        if (!playFrom.equals("hezuo") || MainService.ids.size() == 0) {
+                            if (MainService.ids.size() > 0)
+                                MainService.ids.clear();
+                            for (WorksData workData : newWorkList) {
+                                if (workData.status == 1) {
+                                    MainService.ids.add(workData.getItemid());
+                                }
+                            }
+                        }
+                        PlayAudioActivity.toPlayAudioActivity(context, worksData.itemid, "", "hezuo");
                     } else {
                         String playFrom = PrefsUtil.getString("playFrom", context);
                         if (!playFrom.equals(MyCommon.ZUIXIN) || MainService.ids.size() == 0) {
