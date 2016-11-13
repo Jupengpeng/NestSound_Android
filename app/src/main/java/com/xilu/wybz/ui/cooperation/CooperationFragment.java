@@ -1,6 +1,7 @@
 package com.xilu.wybz.ui.cooperation;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -180,7 +181,8 @@ public class CooperationFragment extends BaseFragment implements ICooperationVie
             public void onItemClick(View view, int position, int type) {
                 switch (type) {
                     case 1:
-                        Intent intent = new Intent(getActivity(), CooperaDetailsActivity.class);
+//                        Intent intent = new Intent(getActivity(), CooperaDetailsActivity.class);
+                        Intent intent = new Intent(getActivity(), CooperaDetailesActivity.class);
                         if (cooperationList.get(position).getUserInfo().getUid() == PrefsUtil.getUserId(context)) {
                             intent.putExtra("type", 2);
                         } else {
@@ -239,15 +241,30 @@ public class CooperationFragment extends BaseFragment implements ICooperationVie
 
     @Override
     public void onRefresh() {
-        isRefreshing = refreshLayout.isRefreshing();
-        if (isRefreshing) {
-            if (cooperationList.size() > 0) {
-                cooperationList.clear();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (cooperationList.size() > 0) {
+                    cooperationList.clear();
+                }
                 page = 1;
+                cooperationPresenter.getCooperationList(page);
+                ishasData = true;
             }
+        }, 2000);
+        if(refreshLayout.isRefreshing()){
             refreshLayout.setRefreshing(false);
-            cooperationPresenter.getCooperationList(page);
         }
-        ishasData = true;
+//        isRefreshing = refreshLayout.isRefreshing();
+//        if (isRefreshing) {
+//            if (cooperationList.size() > 0) {
+//                cooperationList.clear();
+//                page = 1;
+//            }
+//            refreshLayout.setRefreshing(false);
+//            cooperationPresenter.getCooperationList(page);
+//        }
+//        ishasData = true;
+
     }
 }

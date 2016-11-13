@@ -39,10 +39,20 @@ public class CooperaDetailsPresenter extends BasePresenter<ICooperaDetailsView> 
             public void onResult(JsonResponse<? extends Object> response) {
                 super.onResult(response);
                 CooperaDetailsBean cooperaDetailsBean = response.getData();
+                if (page == 1) {
+                    if (cooperaDetailsBean.getCompleteList().size() == 0) {
+                        iView.noCompleteData();
+                    }
+                    iView.showCooperaCompleteList(cooperaDetailsBean.getCompleteList());
+                    iView.showCooperaDetailsBean(cooperaDetailsBean);
+                    iView.showCooperaCommentList(cooperaDetailsBean.getCommentList());
 
-                iView.showCooperaDetailsBean(cooperaDetailsBean);
-                iView.showCooperaCommentList(cooperaDetailsBean.getCommentList());
-                iView.showCooperaCompleteList(cooperaDetailsBean.getCompleteList());
+                }
+                if (page != 1) {
+                    iView.showCooperaCompleteList(cooperaDetailsBean.getCompleteList());
+                }
+
+
             }
 
             @Override
@@ -109,13 +119,13 @@ public class CooperaDetailsPresenter extends BasePresenter<ICooperaDetailsView> 
         });
     }
 
-    public void accept(int did,int itemid,int pos){
-        params= new HashMap<>();
-        params.put("did",did+"");
-        params.put("itemid",itemid+"");
+    public void accept(int did, int itemid, int pos) {
+        params = new HashMap<>();
+        params.put("did", did + "");
+        params.put("itemid", itemid + "");
         params.put("token", PrefsUtil.getUserInfo(context).loginToken);
 
-        httpUtils.post(MyHttpClient.getAccept(),params,new MyStringCallback(){
+        httpUtils.post(MyHttpClient.getAccept(), params, new MyStringCallback() {
             @Override
             public void onError(Call call, Exception e) {
                 super.onError(call, e);

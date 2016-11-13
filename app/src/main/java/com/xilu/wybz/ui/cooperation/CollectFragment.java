@@ -133,7 +133,7 @@ public class CollectFragment extends BaseFragment implements ICollectView, Swipe
             @Override
             public void onItemClick(View view, int position) {
                 int status = beanList.get(position).getStatus();
-                Intent intent = new Intent(getActivity(), CooperaDetailsActivity.class);
+                Intent intent = new Intent(getActivity(), CooperaDetailesActivity.class);
                 if(status==1){
                     intent.putExtra("type", 1);
                 }else{

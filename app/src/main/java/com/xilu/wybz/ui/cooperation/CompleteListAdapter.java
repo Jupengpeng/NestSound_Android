@@ -30,6 +30,7 @@ public class CompleteListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private boolean b = false;
     private static final int TYPE_ITEM = 0;
     private static final int TYPE_FOOTER = 1;
+    private static final int TYPE_HEAD = 2;
     protected boolean isLoadMoreFooterShown = false;
 
     public CompleteListAdapter(List<CooperaDetailsBean.CompleteListBean> CompleteListBean, Context context, int flag) {
@@ -52,7 +53,7 @@ public class CompleteListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public int getItemViewType(int position) {
         if (isLoadMoreFooterShown && position == getItemCount() - 1) {
             return TYPE_FOOTER;
-        } else {
+        }else {
             return TYPE_ITEM;
         }
     }

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="108dp">
+    android:descendantFocusability="blocksDescendants"
+    android:layout_height="98dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -76,9 +77,5 @@
             android:textSize="13sp" />
     </RelativeLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:layout_alignParentBottom="true"
-        android:background="#40CBCBCB" />
+
 </RelativeLayout>
