@@ -18,6 +18,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.umeng.socialize.utils.Log;
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.CooperaDetailsBean;
 import com.xilu.wybz.bean.PreinfoBean;
@@ -58,6 +59,7 @@ public class CooperaDetailesActivity extends ToolbarActivity implements ICoopera
     private CooperaDetailsBean detailsBean;
     ImageView nocoopera;
     private List<CooperaDetailsBean.CompleteListBean> completeList = new ArrayList<>();
+    private List<CooperaDetailsBean.CompleteListBean> totalcompleteList = new ArrayList<>();
     private CooperaDetailsPresenter cooperaDetailsPresenter;
     int where;// 1  是从合作页面过来的  2 是从我的页面过来的
     private AlertDialog dialog;
@@ -322,6 +324,8 @@ public class CooperaDetailesActivity extends ToolbarActivity implements ICoopera
 
     @Override
     public void showCooperaCompleteList(List<CooperaDetailsBean.CompleteListBean> completeListBeen) {
+        Log.e("BBB1", completeListBeen.size() + "");
+        Log.e("BBB2", completeList.size() + "");
         lv.removeFooterView(foot);
         completeList.addAll(completeListBeen);
         completeAdapter.notifyDataSetChanged();
