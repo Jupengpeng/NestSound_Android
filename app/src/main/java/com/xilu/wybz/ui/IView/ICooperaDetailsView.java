@@ -20,4 +20,7 @@ public interface ICooperaDetailsView extends IBaseView {
     void showpreinfoBean(PreinfoBean preinfoBean);
 
     void acceptSuccess(int pos);
+
+    void noCompleteData();
+
 }

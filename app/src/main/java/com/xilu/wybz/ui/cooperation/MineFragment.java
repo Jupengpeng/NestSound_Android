@@ -104,7 +104,7 @@ public class MineFragment extends BaseFragment implements IMineView, SwipeRefres
         mineAdapter.setOnItemClickListener(new MineAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Intent intent = new Intent(context, CooperaDetailsActivity.class);
+                Intent intent = new Intent(context, CooperaDetailesActivity.class);
                 intent.putExtra("type", 2);
                 intent.putExtra("did", mineList.get(position).getId());
                 startActivity(intent);
@@ -201,12 +201,16 @@ public class MineFragment extends BaseFragment implements IMineView, SwipeRefres
 
     @Override
     public void onRefresh() {
+
+
         if (mineList.size() > 0) {
             mineList.clear();
             page = 1;
         }
-        minePresenter.getMineList(page);
         refreshLayout.setRefreshing(false);
-        ishasData = true;
+        minePresenter.getMineList(page);
+        ishasData=true;
     }
+
+
 }

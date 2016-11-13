@@ -62,7 +62,7 @@
                     android:paddingTop="10dp"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
-                    fresco:placeholderImage="@drawable/ic_ad_dz"
+                    fresco:placeholderImage="@drawable/hezuopaidang"
                     fresco:actualImageScaleType="centerCrop"
                     fresco:placeholderImageScaleType="centerCrop"
                     fresco:viewAspectRatio="4.29"

@@ -18,7 +18,7 @@ import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.presenter.DefaultListPresenter;
 import com.xilu.wybz.ui.IView.IDefaultListView;
 import com.xilu.wybz.ui.base.BaseListActivity;
-import com.xilu.wybz.ui.cooperation.CooperaDetailsActivity;
+import com.xilu.wybz.ui.cooperation.CooperaDetailesActivity;
 import com.xilu.wybz.utils.DateFormatUtils;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtils;
@@ -202,7 +202,7 @@ public class MsgCooprateActivity extends BaseListActivity<PreserveMessageBean> i
                         ToastUtils.toast(context,"错误合作ID");
                         return;
                     }
-                    CooperaDetailsActivity.start(context, bean.did);
+                    CooperaDetailesActivity.start(context, bean.did);
                 }
             });
         }

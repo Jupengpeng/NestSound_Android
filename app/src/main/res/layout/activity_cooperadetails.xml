@@ -272,15 +272,6 @@
                     android:id="@+id/completeList_recyclerview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
-
-                <ImageView
-                    android:id="@+id/ic_coopera"
-                    android:layout_marginTop="50dp"
-                    android:layout_marginBottom="50dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_nocoopera"
-                    android:visibility="gone" />
             </LinearLayout>
         </ScrollView>
     </android.support.v4.widget.SwipeRefreshLayout>

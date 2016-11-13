@@ -238,7 +238,7 @@ public class CooperaMessageActivity extends ToolbarActivity implements ICooperaM
     protected void onResume() {
         super.onResume();
 //        Intent intent = new Intent();
-        setResult(200);
+//        setResult(200);
     }
 
     @Override
