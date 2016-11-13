@@ -84,6 +84,7 @@ public class FindActivity extends BasePlayMenuActivity implements ViewPager.OnPa
                         SongFragment songFragment = (SongFragment) pagerAdapter.getFragment(1);
                         if(songFragment!=null){
                             songFragment.loadData();
+
                         }
                         break;
                     case 2:
