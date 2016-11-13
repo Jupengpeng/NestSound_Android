@@ -252,9 +252,6 @@ public class CooperationFragment extends BaseFragment implements ICooperationVie
                 ishasData = true;
             }
         }, 2000);
-        if(refreshLayout.isRefreshing()){
-            refreshLayout.setRefreshing(false);
-        }
 //        isRefreshing = refreshLayout.isRefreshing();
 //        if (isRefreshing) {
 //            if (cooperationList.size() > 0) {

@@ -1,6 +1,7 @@
 package com.xilu.wybz.ui.cooperation;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -146,6 +147,9 @@ public class CooperaMessageActivity extends ToolbarActivity implements ICooperaM
         if (isDestroy) return;
         messageBeanList.addAll(cooperaMessageBeanList);
         cooperaMessageAdapter.notifyDataSetChanged();
+        if(refreshLayout.isRefreshing()){
+            refreshLayout.setRefreshing(false);
+        }
 
 
     }
@@ -294,12 +298,16 @@ public class CooperaMessageActivity extends ToolbarActivity implements ICooperaM
 
     @Override
     public void onRefresh() {
-        if (messageBeanList.size() > 0) {
-            messageBeanList.clear();
-            page = 1;
-        }
-        cooperaMessagePresenter.getCooperaMessageList(did, page);
-        refreshLayout.setRefreshing(false);
-        ishasData=true;
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                messageBeanList.clear();
+                page=1;
+                cooperaMessagePresenter.getCooperaMessageList(did, page);
+                ishasData=true;
+            }
+        }, 2000);
+
     }
 }

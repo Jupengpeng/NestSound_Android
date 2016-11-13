@@ -2,6 +2,7 @@ package com.xilu.wybz.ui.cooperation;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -65,6 +66,10 @@ public class CollectFragment extends BaseFragment implements ICollectView, Swipe
         if (isDestroy) return;
         beanList.addAll(collectBeanList);
         collectAdapter.notifyDataSetChanged();
+        if(refreshLayout.isRefreshing()){
+            refreshLayout.setRefreshing(false);
+
+        }
     }
 
     @Override
@@ -134,9 +139,9 @@ public class CollectFragment extends BaseFragment implements ICollectView, Swipe
             public void onItemClick(View view, int position) {
                 int status = beanList.get(position).getStatus();
                 Intent intent = new Intent(getActivity(), CooperaDetailesActivity.class);
-                if(status==1){
+                if (status == 1) {
                     intent.putExtra("type", 1);
-                }else{
+                } else {
                     intent.putExtra("type", 2);
                 }
 
@@ -169,12 +174,21 @@ public class CollectFragment extends BaseFragment implements ICollectView, Swipe
 
     @Override
     public void onRefresh() {
-        if (beanList.size() > 0) {
-            beanList.clear();
-            page = 1;
-        }
-        collectPresenter.getCollectList(page);
-        refreshLayout.setRefreshing(false);
-        ishasData = true;
+//        if (beanList.size() > 0) {
+//            beanList.clear();
+//            page = 1;
+//        }
+//        collectPresenter.getCollectList(page);
+//        refreshLayout.setRefreshing(false);
+//        ishasData = true;
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                beanList.clear();
+                page = 1;
+                collectPresenter.getCollectList(page);
+                ishasData = true;
+            }
+        }, 2000);
     }
 }

@@ -1,11 +1,11 @@
 package com.xilu.wybz.ui.cooperation;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -69,6 +69,10 @@ public class InvitationActivity extends ToolbarActivity implements IInvitationVi
         invitationlist.addAll(invitationList);
         invitationAdapter.notifyDataSetChanged();
         invitationAdapter.onLoadMoreStateChanged(false);
+        if (refreshLayout.isRefreshing()) {
+            refreshLayout.setRefreshing(false);
+        }
+
     }
 
     @Override
@@ -149,38 +153,17 @@ public class InvitationActivity extends ToolbarActivity implements IInvitationVi
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-//                int visibleItemCount = linearLayoutManager.getChildCount();
-//                int totalItemCount = linearLayoutManager.getItemCount();
-//                int lastVisibleItemPosition = linearLayoutManager.findLastVisibleItemPosition();
-//                int pastVisiblesItems = linearLayoutManager.findFirstVisibleItemPosition();
-//                if (visibleItemCount > 0 && newState == RecyclerView.SCROLL_STATE_IDLE && (visibleItemCount + pastVisiblesItems) >= totalItemCount) {
-//                    invitationAdapter.onLoadMoreStateChanged(true);
-//                    page++;
-//                    invitationPresenter.getInvitationList(did, page, content);
-//                    Log.e("AAA", "到底了");
-//                }
-//                int lastPosition = 0;
-//
-//                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-//                    lastPosition = linearLayoutManager.findLastVisibleItemPosition();
-//                }
-//                if (lastPosition == recyclerView.getLayoutManager().getItemCount() - 1  && !refreshLayout.isRefreshing() ) {
-//                    invitationAdapter.onLoadMoreStateChanged(true);
-//                    page++;
-//                    invitationPresenter.getInvitationList(did, page, content);
-//                }
                 currentScrollState = newState;
 
                 int visibleItemCount = linearLayoutManager.getChildCount();
                 int totalItemCount = linearLayoutManager.getItemCount();
-                Log.e("AAA1", lastVisibleItemPosition + "");
-                Log.e("AAA2", (lastVisibleItemPosition) % 10 + "");
+
                 if ((visibleItemCount > 0 && currentScrollState == RecyclerView.SCROLL_STATE_IDLE &&
                         (lastVisibleItemPosition) >= totalItemCount - 1) && !refreshLayout.isRefreshing() && ishasData) {
                     invitationAdapter.onLoadMoreStateChanged(true);
                     page++;
                     invitationPresenter.getInvitationList(did, page, content);
-                    Log.e("AAA3", (lastVisibleItemPosition) % 10 + "");
+
                 }
             }
         });
@@ -207,15 +190,16 @@ public class InvitationActivity extends ToolbarActivity implements IInvitationVi
 
     @Override
     public void onRefresh() {
-        if (page >= 1) {
-            invitationlist.clear();
-            page = 1;
-        }
-        content = "";
 
-        invitationPresenter.getInvitationList(did, page, content);
-        refreshLayout.setRefreshing(false);
-        ishasData = true;
-//        invitationAdapter.onLoadMoreStateChanged(false);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                invitationlist.clear();
+                page = 1;
+                content = "";
+                invitationPresenter.getInvitationList(did, page, content);
+                ishasData=true;
+            }
+        }, 2000);
     }
 }

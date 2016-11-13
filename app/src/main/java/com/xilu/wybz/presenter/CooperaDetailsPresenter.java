@@ -47,6 +47,10 @@ public class CooperaDetailsPresenter extends BasePresenter<ICooperaDetailsView> 
                     iView.showCooperaDetailsBean(cooperaDetailsBean);
                     iView.showCooperaCommentList(cooperaDetailsBean.getCommentList());
 
+                }else {
+                    if (cooperaDetailsBean.getCompleteList().size() == 0) {
+                        iView.noMoreCompleteData();
+                    }
                 }
                 if (page != 1) {
                     iView.showCooperaCompleteList(cooperaDetailsBean.getCompleteList());

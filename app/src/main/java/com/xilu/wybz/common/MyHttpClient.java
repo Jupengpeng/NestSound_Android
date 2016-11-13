@@ -47,7 +47,7 @@ public class MyHttpClient {
 
     //首页数据
     public static String getHomeUrl() {
-        return "/java/common/index/app/v22";
+        return "/java/common/index/app/v23";
     }
 
     //乐说列表
@@ -92,12 +92,12 @@ public class MyHttpClient {
 
     //发现里面歌曲
     public static String getFindSongList() {
-        return "/java/common/find/music/v22";
+        return "/java/common/find/music/v23";
     }
 
     //发现里面更多歌曲
     public static String getFindMoreSongList() {
-        return "/java/common/find/moremusic/v22";
+        return "/java/common/find/moremusic/v23";
     }
 
     //发现里面歌词

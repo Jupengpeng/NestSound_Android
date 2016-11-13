@@ -22,5 +22,6 @@ public interface ICooperaDetailsView extends IBaseView {
     void acceptSuccess(int pos);
 
     void noCompleteData();
+    void noMoreCompleteData();
 
 }
