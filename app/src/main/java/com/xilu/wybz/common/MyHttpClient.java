@@ -286,7 +286,7 @@ public class MyHttpClient {
 
     //搜索接口
     public static String getSearchList() {
-        return "/java/common/search/search";
+        return "/java/common/search/search/v23";
     }
 
     //搜索接口

@@ -13,7 +13,6 @@ import android.widget.LinearLayout;
 import com.xilu.wybz.R;
 import com.xilu.wybz.ui.base.BaseActivity;
 import com.xilu.wybz.ui.login.LoginActivity;
-import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.view.SystemBarHelper;
 
 import java.util.ArrayList;
@@ -78,24 +77,19 @@ public class CooperationActivity extends BaseActivity implements ViewPager.OnPag
             public void run() {
                 switch (position) {
                     case 1:
-                        if (PrefsUtil.getUserId(context) == 0) {
-                            isLogin();
-                        } else {
+
                             MineFragment mineFragment = (MineFragment) adapter.getFragment(1);
                             if (mineFragment != null) {
                                 mineFragment.initPresenter();
                             }
-                        }
+
                         break;
                     case 2:
-                        if (PrefsUtil.getUserId(context) == 0) {
-                            isLogin();
-                        } else {
+
                             CollectFragment collectFragment = (CollectFragment) adapter.getFragment(2);
                             if (collectFragment != null) {
                                 collectFragment.initPresenter();
                             }
-                        }
                         break;
                 }
             }

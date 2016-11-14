@@ -146,6 +146,8 @@ public class WorksViewHolder extends com.xilu.wybz.view.pull.BaseViewHolder {
             }
             if (worksData.type == 5){
                 PlayAudioActivity.toPlayAudioActivity(mContext, worksData.getItemid(), "", COME);
+            }else{
+                PlayAudioActivity.toPlayAudioActivity(mContext, worksData.getItemid(), "", "hezuo");
             }
 
         }

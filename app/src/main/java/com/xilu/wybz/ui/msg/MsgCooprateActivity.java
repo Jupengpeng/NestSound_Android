@@ -34,6 +34,14 @@ import java.util.Map;
 
 import butterknife.Bind;
 
+import static com.xilu.wybz.common.MyCommon.PUSH_TYPE_COO;
+import static com.xilu.wybz.common.MyCommon.PUSH_TYPE_COO_ACCESS;
+import static com.xilu.wybz.common.MyCommon.PUSH_TYPE_COO_COMPLETE;
+import static com.xilu.wybz.common.MyCommon.PUSH_TYPE_COO_EXPIRE;
+import static com.xilu.wybz.common.MyCommon.PUSH_TYPE_COO_INVITE;
+import static com.xilu.wybz.common.MyCommon.PUSH_TYPE_COO_LEAVE;
+import static com.xilu.wybz.common.MyCommon.PUSH_TYPE_COO_LEAVEREPLY;
+
 /**
  * Created by Administrator on 2016/10/10.
  */
@@ -82,9 +90,9 @@ public class MsgCooprateActivity extends BaseListActivity<PreserveMessageBean> i
     }
 
     public void clearMsg() {
-        EventBus.getDefault().post(new Event.ClearMsgEvent(MyCommon.PUSH_TYPE_COO));
+        EventBus.getDefault().post(new Event.ClearMsgEvent(PUSH_TYPE_COO));
         Intent mIntent = new Intent("com.xilu.wybz.intent.CLEARNOTICE");
-        mIntent.putExtra("type", MyCommon.PUSH_TYPE_COO);
+        mIntent.putExtra("type", PUSH_TYPE_COO);
         sendBroadcast(mIntent);
     }
 
@@ -108,18 +116,18 @@ public class MsgCooprateActivity extends BaseListActivity<PreserveMessageBean> i
             @Override
             public void run() {
                 PreserveMessageBean bean = new PreserveMessageBean();
-                bean.pushtype = MyCommon.PUSH_TYPE_COO_COMPLETE;
+                bean.pushtype = PUSH_TYPE_COO_COMPLETE;
                 bean.content = "PUSH_TYPE_COO_COMPLETE";
                 bean.createtime = System.currentTimeMillis();
 
                 mDataList.add(bean);
                 bean = new PreserveMessageBean();
-                bean.pushtype = MyCommon.PUSH_TYPE_COO_INVITE;
+                bean.pushtype = PUSH_TYPE_COO_INVITE;
                 bean.content = "PUSH_TYPE_COO_COMPLETE";
                 bean.createtime = System.currentTimeMillis();
                 mDataList.add(bean);
                 bean = new PreserveMessageBean();
-                bean.pushtype = MyCommon.PUSH_TYPE_COO_ACCESS;
+                bean.pushtype = PUSH_TYPE_COO_ACCESS;
                 bean.content = "PUSH_TYPE_COO_COMPLETE";
                 bean.createtime = System.currentTimeMillis();
                 mDataList.add(bean);
@@ -195,14 +203,34 @@ public class MsgCooprateActivity extends BaseListActivity<PreserveMessageBean> i
             root.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (StringUtils.isNotBlank(bean.headerUrl)){
+                    if (StringUtils.isNotBlank(bean.headerUrl)) {
 
                     }
-                    if (bean.did == 0){
-                        ToastUtils.toast(context,"错误合作ID");
+                    if (bean.did == 0) {
+                        ToastUtils.toast(context, "错误合作ID");
                         return;
                     }
-                    CooperaDetailesActivity.start(context, bean.did);
+
+                    switch (bean.pushtype) {
+                        case PUSH_TYPE_COO_COMPLETE:
+                            CooperaDetailesActivity.start(context, bean.did, 3, 2);
+                            break;
+                        case PUSH_TYPE_COO_INVITE:
+                            CooperaDetailesActivity.start(context, bean.did, 0, 2);
+                            break;
+                        case PUSH_TYPE_COO_ACCESS:
+                            CooperaDetailesActivity.start(context, bean.did, 3, 2);
+                            break;
+                        case PUSH_TYPE_COO_EXPIRE:
+                            CooperaDetailesActivity.start(context, bean.did, 3, 2);
+                            break;
+                        case PUSH_TYPE_COO_LEAVE:
+                            CooperaDetailesActivity.start(context, bean.did, 0, 2);
+                            break;
+                        case PUSH_TYPE_COO_LEAVEREPLY:
+                            CooperaDetailesActivity.start(context, bean.did, 0, 2);
+                            break;
+                    }
                 }
             });
         }
@@ -213,15 +241,15 @@ public class MsgCooprateActivity extends BaseListActivity<PreserveMessageBean> i
             bean = mDataList.get(position);
 
             switch (bean.pushtype) {
-                case MyCommon.PUSH_TYPE_COO_COMPLETE:
+                case PUSH_TYPE_COO_COMPLETE:
                     tvTitle.setText("合作完成");
                     ivType.setImageResource(R.drawable.ic_hezuowancheng);
                     break;
-                case MyCommon.PUSH_TYPE_COO_INVITE:
+                case PUSH_TYPE_COO_INVITE:
                     tvTitle.setText("合作邀请");
                     ivType.setImageResource(R.drawable.ic_hezuoyaoqing);
                     break;
-                case MyCommon.PUSH_TYPE_COO_ACCESS:
+                case PUSH_TYPE_COO_ACCESS:
                     tvTitle.setText("合作采纳");
                     ivType.setImageResource(R.drawable.ic_hezuocaina);
                     break;
@@ -242,9 +270,9 @@ public class MsgCooprateActivity extends BaseListActivity<PreserveMessageBean> i
             }
 
             tvCreateTime.setText(DateFormatUtils.formatX1(bean.createtime));
-            if (StringUtils.isNotBlank(bean.title)){
-                tvTitle.setText(bean.title);
-            }
+//            if (StringUtils.isNotBlank(bean.title)) {
+//                tvTitle.setText(bean.title);
+//            }
             tvContent.setText(bean.content);
         }
 

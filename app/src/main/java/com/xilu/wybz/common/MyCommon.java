@@ -101,6 +101,7 @@ public class MyCommon {
     public final static String PUSH_TYPE_COPYRIGHFAIL="copyrighFail";  //保权失败
 
     public final static String PUSH_TYPE_COO="cooperate"; //合作作曲
+
     public final static String PUSH_TYPE_COO_COMPLETE="cooperateComplete"; //合作完成
     public final static String PUSH_TYPE_COO_INVITE="cooperateInvite"; //合作邀请
     public final static String PUSH_TYPE_COO_ACCESS="cooperateAccess";  //合作采纳

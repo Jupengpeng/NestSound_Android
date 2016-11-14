@@ -59,6 +59,7 @@ public class CooperaDetailesActivity extends ToolbarActivity implements ICoopera
     ImageView collect_iv;
     private int visiableLastIndex = 0;
     private int visiableItemCounts = 0;
+    private boolean isfootView = false;
     int iscollect;
     private CooperaDetailsBean detailsBean;
     ImageView nocoopera;
@@ -88,6 +89,7 @@ public class CooperaDetailesActivity extends ToolbarActivity implements ICoopera
     private RecyclerView commentList_recyclerview;
     private LinearLayout comment_layout;
     View foot;
+    int pushtype;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,8 +99,10 @@ public class CooperaDetailesActivity extends ToolbarActivity implements ICoopera
         initPresenter();
     }
 
-    public static void start(Context context, int did) {
+    public static void start(Context context, int did, int pushtype, int type) {
         Intent intent = new Intent(context, CooperaDetailesActivity.class);
+        intent.putExtra("type", type);
+        intent.putExtra("pushtype", pushtype);
         intent.putExtra("did", did);
         context.startActivity(intent);
 
@@ -107,12 +111,17 @@ public class CooperaDetailesActivity extends ToolbarActivity implements ICoopera
     private void initData() {
         where = getIntent().getIntExtra("type", 0);
         id = getIntent().getIntExtra("did", 0);
+        pushtype = getIntent().getIntExtra("pushtype", 0);
         if (where == 1) {
             layout1.setVisibility(View.GONE);
             layout2.setVisibility(View.VISIBLE);
 
         } else if (where == 2) {
             layout1.setVisibility(View.VISIBLE);
+            layout2.setVisibility(View.GONE);
+        }
+        if (pushtype == 3) {
+            layout1.setVisibility(View.GONE);
             layout2.setVisibility(View.GONE);
         }
     }
@@ -154,10 +163,12 @@ public class CooperaDetailesActivity extends ToolbarActivity implements ICoopera
             public void onScrollStateChanged(AbsListView view, int scrollState) {
                 int itemLastIndex = completeAdapter.getCount() - 1;
                 int lastIndex = itemLastIndex + 1;
-                if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE && visiableLastIndex == lastIndex && isHasData==true) {
+                if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE && visiableLastIndex == lastIndex && isHasData == true) {
                     lv.addFooterView(foot);
                     page++;
                     cooperaDetailsPresenter.getCooperaDetailsBean(id, page);
+                    isfootView = true;
+
                 }
             }
 
@@ -235,6 +246,7 @@ public class CooperaDetailesActivity extends ToolbarActivity implements ICoopera
     protected int getLayoutRes() {
         return R.layout.activity_coopera_detailes;
     }
+
     @Override
     public void showCooperaDetailsBean(CooperaDetailsBean cooperaDetailsBean) {
         disMissLoading(llloading);
@@ -250,7 +262,10 @@ public class CooperaDetailesActivity extends ToolbarActivity implements ICoopera
         cooperadetails_tv_lyric.setText(cooperaDetailsBean.getDemandInfo().getLyrics());
         cooperadetails_tv_commentnum.setText("全部" + cooperaDetailsBean.getDemandInfo().getCommentnum() + "条留言>>");
         loadImage(cooperaDetailsBean.getUserInfo().getHeadurl(), circlehead);
-
+        iscollect = cooperaDetailsBean.getDemandInfo().getIscollect();
+        if (iscollect == 1) {
+            collect_iv.setImageResource(R.drawable.ic_shoucangdianji);
+        }
     }
 
 
@@ -325,7 +340,10 @@ public class CooperaDetailesActivity extends ToolbarActivity implements ICoopera
 
     @Override
     public void showCooperaCompleteList(List<CooperaDetailsBean.CompleteListBean> completeListBeen) {
-        lv.removeFooterView(foot);
+        if (isfootView == true) {
+            lv.removeFooterView(foot);
+            isfootView=false;
+        }
         completeList.addAll(completeListBeen);
         completeAdapter.notifyDataSetChanged();
         completeAdapter.setOnItemClickListener(new CompleteListAdapter.OnItemClickListener() {
@@ -335,7 +353,7 @@ public class CooperaDetailesActivity extends ToolbarActivity implements ICoopera
                 initDialog(position);
             }
         });
-        if(refreshLayout.isRefreshing()){
+        if (refreshLayout.isRefreshing()) {
             refreshLayout.setRefreshing(false);
         }
     }
@@ -373,7 +391,7 @@ public class CooperaDetailesActivity extends ToolbarActivity implements ICoopera
 
     @Override
     public void noMoreCompleteData() {
-        isHasData=false;
+        isHasData = false;
     }
 
 
@@ -385,9 +403,9 @@ public class CooperaDetailesActivity extends ToolbarActivity implements ICoopera
             public void run() {
                 completeList.clear();
 
-                page=1;
+                page = 1;
                 cooperaDetailsPresenter.getCooperaDetailsBean(id, page);
-                isHasData=true;
+                isHasData = true;
             }
         }, 2000);
     }

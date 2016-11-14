@@ -79,7 +79,7 @@ public class SongFragment extends BaseSectionListFragment<WorksData> implements 
         if(findSongBean.redList!=null) {
             mDataList.add(new SectionData(true, 1, "热门歌曲"));
             for (WorksData worksData : findSongBean.redList) {
-                worksData.type = 1;
+//                worksData.type = 1;
                 worksData.come = MyCommon.RED;
                 mDataList.add(new SectionData(worksData));
             }
@@ -87,7 +87,7 @@ public class SongFragment extends BaseSectionListFragment<WorksData> implements 
         if(findSongBean.newList!=null) {
             mDataList.add(new SectionData(true, mDataList.size(), "最新歌曲"));
             for (WorksData worksData : findSongBean.newList) {
-                worksData.type = 1;
+//                worksData.type = 1;
                 worksData.come = MyCommon.NEWS;
                 mDataList.add(new SectionData(worksData));
             }
@@ -109,7 +109,6 @@ public class SongFragment extends BaseSectionListFragment<WorksData> implements 
         recycler.enableLoadMore(false);
         recycler.onRefreshCompleted();
     }
-//
     protected ILayoutManager getLayoutManager() {
         MyGridLayoutManager myGridLayoutManager = new MyGridLayoutManager(getActivity().getApplicationContext(),column);
         return myGridLayoutManager;

@@ -32,13 +32,15 @@ import butterknife.Bind;
 /**
  * Created by hujunwei on 16/5/22.
  */
-public class SearchSongFragment extends BaseListFragment<WorksData> implements ISearchView{
+public class SearchSongFragment extends BaseListFragment<WorksData> implements ISearchView {
     SearchPresenter searchPresenter;
+
     @Override
     protected void initPresenter() {
-        searchPresenter = new SearchPresenter(context,this);
+        searchPresenter = new SearchPresenter(context, this);
         searchPresenter.init();
     }
+
     @Override
     public void initView() {
         recycler.enablePullToRefresh(false);
@@ -63,12 +65,12 @@ public class SearchSongFragment extends BaseListFragment<WorksData> implements I
     }
 
     @Override
-    public void showWorksData(List<WorksData> worksDataList){
+    public void showWorksData(List<WorksData> worksDataList) {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if(isDestroy)return;
-                if(mDataList.size()==0){
+                if (isDestroy) return;
+                if (mDataList.size() == 0) {
                     EventBus.getDefault().post(new Event.ShowSearchTabEvent(true));
                 }
                 recycler.enableLoadMore(true);
@@ -76,7 +78,7 @@ public class SearchSongFragment extends BaseListFragment<WorksData> implements I
                 adapter.notifyDataSetChanged();
                 recycler.onRefreshCompleted();
             }
-        },600);
+        }, 600);
     }
 
     @Override
@@ -86,33 +88,35 @@ public class SearchSongFragment extends BaseListFragment<WorksData> implements I
 
     @Override
     public void loadFail() {
-        if(isDestroy)return;
+        if (isDestroy) return;
         recycler.onRefreshCompleted();
     }
 
 
     @Override
     public void loadNoMore() {
-        if(isDestroy)return;
+        if (isDestroy) return;
         recycler.onRefreshCompleted();
         recycler.enableLoadMore(false);
     }
 
     @Override
     public void loadNoData() {
-        if(isDestroy)return;
-        if(mDataList.size()==0){
+        if (isDestroy) return;
+        if (mDataList.size() == 0) {
             EventBus.getDefault().post(new Event.ShowSearchTabEvent(false));
         }
         llNoData.setVisibility(View.VISIBLE);
         recycler.onRefreshCompleted();
         recycler.enableLoadMore(false);
     }
+
     @Override
     protected BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
         WorksViewHolder holder = new WorksViewHolder(LayoutInflater.from(context).inflate(R.layout.activity_work_list_item, parent, false));
         return holder;
     }
+
     class WorksViewHolder extends BaseViewHolder {
         int itemWidth;
         @Bind(R.id.iv_cover)
@@ -127,6 +131,7 @@ public class SearchSongFragment extends BaseListFragment<WorksData> implements I
         TextView tvName;
         @Bind(R.id.tv_author)
         TextView tvAuthor;
+
         public WorksViewHolder(View view) {
             super(view);
             itemWidth = DensityUtil.dip2px(context, 66);
@@ -139,27 +144,53 @@ public class SearchSongFragment extends BaseListFragment<WorksData> implements I
             String url = MyCommon.getImageUrl(worksData.getPic(), itemWidth, itemWidth);
             ImageLoadUtil.loadImage(url, ivCover);
             tvName.setText(worksData.title);
-            tvAuthor.setText(worksData.author);
+            if (worksData.type == 3) {
+                tvAuthor.setText("合作作品");
+            } else {
+                tvAuthor.setText(worksData.author);
+            }
+
             tvLookNum.setText(NumberUtil.format(worksData.looknum));
             tvZanNum.setText(NumberUtil.format(worksData.zannum));
             tvFovNum.setText(NumberUtil.format(worksData.fovnum));
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onItemClick(v,position);
+                    onItemClick(v, position);
                 }
             });
         }
 
         @Override
         public void onItemClick(View view, int position) {
-            toPlayPos(position);
+            WorksData worksData = mDataList.get(position);
+            if (worksData.type == 3) {
+                toPlayPoss(position);
+            } else {
+                toPlayPos(position);
+            }
         }
     }
-    public void toPlayPos(int position){
+
+    public void toPlayPoss(int position) {
         if (mDataList.size() > 0) {
-            String playFrom = PrefsUtil.getString("playFrom",context);
-            if(!playFrom.equals(MyCommon.SEARCH)|| MainService.ids.size()==0){
+            String playFrom = PrefsUtil.getString("playFrom", context);
+            if (!playFrom.equals("hezuo") || MainService.ids.size() == 0) {
+                if (MainService.ids.size() > 0)
+                    MainService.ids.clear();
+                for (WorksData worksData : mDataList) {
+                    MainService.ids.add(worksData.getItemid());
+                }
+            }
+            WorksData worksData = mDataList.get(position);
+            PlayAudioActivity.toPlayAudioActivity(context, worksData.getItemid(), "", "hezuo");
+        }
+    }
+
+    public void toPlayPos(int position) {
+        if (mDataList.size() > 0) {
+            String playFrom = PrefsUtil.getString("playFrom", context);
+            if (!playFrom.equals(MyCommon.SEARCH) || MainService.ids.size() == 0) {
                 if (MainService.ids.size() > 0)
                     MainService.ids.clear();
                 for (WorksData worksData : mDataList) {
@@ -174,7 +205,7 @@ public class SearchSongFragment extends BaseListFragment<WorksData> implements I
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if(searchPresenter!=null)
-        searchPresenter.cancelRequest();
+        if (searchPresenter != null)
+            searchPresenter.cancelRequest();
     }
 }
