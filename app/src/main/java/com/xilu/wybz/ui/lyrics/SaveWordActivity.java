@@ -259,7 +259,7 @@ public class SaveWordActivity extends ToolbarActivity implements ISaveWordView {
         EventBus.getDefault().post(new Event.SaveLyricsSuccessEvent(2, worksData));//歌词展示页面
         if (StringUtils.isBlank(aid))//参加活动的作品 由于服务端没有返回分享地址 故不能跳转
             worksData.type = 2;
-            ShareActivity.toShareActivity(context, worksData);
+            ShareActivity.toShareActivity(context, worksData,0);
         finish();
     }
 

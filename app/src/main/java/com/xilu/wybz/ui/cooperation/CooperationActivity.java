@@ -56,10 +56,10 @@ public class CooperationActivity extends BaseActivity implements ViewPager.OnPag
 
     }
 
-    @OnClick(R.id.iv)
+    @OnClick(R.id.llayout)
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.iv:
+            case R.id.llayout:
                 finish();
                 break;
         }

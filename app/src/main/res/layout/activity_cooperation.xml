@@ -3,20 +3,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_cooperation"
     android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="44dp">
 
-        <ImageView
-            android:id="@+id/iv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp"
-            android:src="@drawable/ic_menu_back" />
+        <RelativeLayout
+            android:id="@+id/llayout"
+            android:layout_width="50dp"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:src="@drawable/ic_menu_back" />
+        </RelativeLayout>
 
         <android.support.design.widget.TabLayout
             android:id="@+id/tablayout"
@@ -25,15 +31,17 @@
             android:layout_centerHorizontal="true"></android.support.design.widget.TabLayout>
 
     </RelativeLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/spit_line_height"
         android:background="@color/split_line" />
+
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
-        android:layout_weight="1"
-        android:layout_height="0dp"></android.support.v4.view.ViewPager>
+        android:layout_height="0dp"
+        android:layout_weight="1"></android.support.v4.view.ViewPager>
 
 
 </LinearLayout>

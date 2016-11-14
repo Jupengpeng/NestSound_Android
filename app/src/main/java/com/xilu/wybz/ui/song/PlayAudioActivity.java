@@ -326,7 +326,11 @@ public class PlayAudioActivity extends ToolbarActivity implements AdapterView.On
             int times = Integer.valueOf(worksData.getMp3times());
             tvAlltime.setText(FormatHelper.formatDuration(times));
             playSeekBar.setMax(times * 1000);
-            toolbar.setSubtitle(author);
+            if (from.equals("hezuo")) {
+                toolbar.setSubtitle("合作作品");
+            } else {
+                toolbar.setSubtitle(author);
+            }
             if (!TextUtils.isEmpty(lyrics)) {
                 String[] lyricss = lyrics.split("\\n");
                 lyricsList = Arrays.asList(lyricss);

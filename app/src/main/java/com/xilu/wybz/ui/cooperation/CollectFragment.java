@@ -18,6 +18,7 @@ import com.xilu.wybz.ui.IView.ICollectView;
 import com.xilu.wybz.ui.fragment.BaseFragment;
 import com.xilu.wybz.ui.login.LoginActivity;
 import com.xilu.wybz.utils.PrefsUtil;
+import com.xilu.wybz.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,8 +62,20 @@ public class CollectFragment extends BaseFragment implements ICollectView, Swipe
         if (isFirst) return;
         else isFirst = true;
         collectPresenter = new CollectPresenter(context, this);
-
-        collectPresenter.init();
+        if (PrefsUtil.getUserId(context) == 0) {
+            llnologin.setVisibility(View.VISIBLE);
+        }
+        login_bt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                startActivityForResult(intent, 100);
+            }
+        });
+        showLoading(ll_loading);
+        if (!StringUtils.isBlank(PrefsUtil.getUserInfo(context).loginToken)) {
+            collectPresenter.init();
+        }
 
     }
 
@@ -72,7 +85,7 @@ public class CollectFragment extends BaseFragment implements ICollectView, Swipe
         if (isDestroy) return;
         beanList.addAll(collectBeanList);
         collectAdapter.notifyDataSetChanged();
-        if(refreshLayout.isRefreshing()){
+        if (refreshLayout.isRefreshing()) {
             refreshLayout.setRefreshing(false);
 
         }
@@ -97,13 +110,15 @@ public class CollectFragment extends BaseFragment implements ICollectView, Swipe
             llnoda.setVisibility(View.VISIBLE);
         }
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==100){
+        if (requestCode == 100) {
             getActivity().finish();
         }
     }
+
     @Override
     public void initView() {
 
@@ -113,8 +128,8 @@ public class CollectFragment extends BaseFragment implements ICollectView, Swipe
         login_bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent =new Intent(getActivity(), LoginActivity.class);
-                startActivityForResult(intent,100);
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                startActivityForResult(intent, 100);
             }
         });
         showLoading(ll_loading);
@@ -153,18 +168,18 @@ public class CollectFragment extends BaseFragment implements ICollectView, Swipe
             public void onItemClick(View view, int position) {
                 int status = beanList.get(position).getStatus();
 //                Intent intent = new Intent(getActivity(), CooperaDetailesActivity.class);
-                switch (status){
+                switch (status) {
                     case 1:
-                        CooperaDetailesActivity.start(context,beanList.get(position).getId(), 0, 1);
+                        CooperaDetailesActivity.start(context, beanList.get(position).getId(), 0, 1);
                         break;
                     case 3:
-                        CooperaDetailesActivity.start(context,beanList.get(position).getId(), 3, 2);
+                        CooperaDetailesActivity.start(context, beanList.get(position).getId(), 3, 2);
                         break;
                     case 4:
-                        CooperaDetailesActivity.start(context,beanList.get(position).getId(), 3, 2);
+                        CooperaDetailesActivity.start(context, beanList.get(position).getId(), 3, 2);
                         break;
                     case 8:
-                        CooperaDetailesActivity.start(context,beanList.get(position).getId(), 3, 2);
+                        CooperaDetailesActivity.start(context, beanList.get(position).getId(), 3, 2);
                         break;
                 }
 
