@@ -18,6 +18,7 @@ import com.xilu.wybz.bean.PreinfoBean;
 import com.xilu.wybz.presenter.CooperationPresenter;
 import com.xilu.wybz.ui.IView.ICooperationView;
 import com.xilu.wybz.ui.fragment.BaseFragment;
+import com.xilu.wybz.ui.login.LoginActivity;
 import com.xilu.wybz.ui.mine.OtherUserCenterActivity;
 import com.xilu.wybz.ui.mine.UserCenterActivity;
 import com.xilu.wybz.ui.song.HotCatalogActivity;
@@ -133,6 +134,20 @@ public class CooperationFragment extends BaseFragment implements ICooperationVie
         ll_nodata.setVisibility(View.VISIBLE);
     }
 
+    public void isLogin() {
+        Intent intent = new Intent();
+        intent.setClass(getActivity(), LoginActivity.class);
+        startActivityForResult(intent, 100);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 100) {
+            getActivity().finish();
+        }
+    }
+
     @Override
     public void initView() {
 
@@ -169,42 +184,57 @@ public class CooperationFragment extends BaseFragment implements ICooperationVie
         more_iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (PrefsUtil.getUserId(context) == 0) {
+                    isLogin();
+                } else {
 //                startActivity(new Intent(getActivity(), CooperaPublish.class));
-                Intent intent = new Intent(getActivity(), CooperaPublishActivity.class);
+                    Intent intent = new Intent(getActivity(), CooperaPublishActivity.class);
 //                getActivity().startActivityForResult(intent, 150);
-                startActivity(intent);
+                    startActivity(intent);
+                }
             }
         });
+
 
         cooperationAdapter.setOnItemClickListener(new CooperationAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position, int type) {
+
                 switch (type) {
                     case 1:
-//                        Intent intent = new Intent(getActivity(), CooperaDetailsActivity.class);
-                        Intent intent = new Intent(getActivity(), CooperaDetailesActivity.class);
-                        if (cooperationList.get(position).getUserInfo().getUid() == PrefsUtil.getUserId(context)) {
-                            intent.putExtra("type", 2);
+                        if (PrefsUtil.getUserId(context) == 0) {
+                            isLogin();
                         } else {
-                            intent.putExtra("type", 1);
+                            Intent intent = new Intent(getActivity(), CooperaDetailesActivity.class);
+                            if (cooperationList.get(position).getUserInfo().getUid() == PrefsUtil.getUserId(context)) {
+                                intent.putExtra("type", 2);
+                            } else {
+                                intent.putExtra("type", 1);
+                            }
+                            intent.putExtra("did", cooperationList.get(position).getId());
+                            startActivity(intent);
                         }
-                        intent.putExtra("did", cooperationList.get(position).getId());
-                        startActivity(intent);
-
                         break;
                     case 2:
-//                    Toast.makeText(context,"jump",Toast.LENGTH_SHORT).show();
-                        int uid = cooperationList.get(position).getUserInfo().getUid();
-                        String username = cooperationList.get(position).getUserInfo().getNickname();
-                        if (uid == PrefsUtil.getUserId(context)) {
-                            Intent intent1 = new Intent(getActivity(), UserCenterActivity.class);
-                            startActivity(intent1);
+                        if (PrefsUtil.getUserId(context) == 0) {
+                            isLogin();
                         } else {
-                            OtherUserCenterActivity.toUserInfoActivity(context, uid, username);
+                            int uid = cooperationList.get(position).getUserInfo().getUid();
+                            String username = cooperationList.get(position).getUserInfo().getNickname();
+                            if (uid == PrefsUtil.getUserId(context)) {
+                                Intent intent1 = new Intent(getActivity(), UserCenterActivity.class);
+                                startActivity(intent1);
+                            } else {
+                                OtherUserCenterActivity.toUserInfoActivity(context, uid, username);
+                            }
                         }
                         break;
                     case 3:
-                        initDialog(position);
+                        if (PrefsUtil.getUserId(context) == 0) {
+                            isLogin();
+                        } else {
+                            initDialog(position);
+                        }
                         break;
                 }
             }

@@ -45,6 +45,7 @@ public class HomeWorksViewHolder extends com.xilu.wybz.view.pull.BaseViewHolder 
     TextView tvAuthor;
     @Bind(R.id.rl_cover)
     RelativeLayout rlCover;
+
     public HomeWorksViewHolder(View view, Context context, List<SectionData<WorksData>> sectionDatas, int column) {
         super(view);
         mContext = context;
@@ -57,23 +58,27 @@ public class HomeWorksViewHolder extends com.xilu.wybz.view.pull.BaseViewHolder 
     @Override
     public void onBindViewHolder(int position) {
         WorksData worksData = mDataList.get(position).t;
-        if(StringUtils.isBlank(worksData.pic)){
-            worksData.pic = MyHttpClient.QINIU_URL+MyCommon.getLyricsPic().get((int)(Math.random()*10));
+        if (StringUtils.isBlank(worksData.pic)) {
+            worksData.pic = MyHttpClient.QINIU_URL + MyCommon.getLyricsPic().get((int) (Math.random() * 10));
         }
         String url = MyCommon.getImageUrl(worksData.getPic(), itemWidth, itemWidth);
         ImageLoadUtil.loadImage(url, ivCover);
-        if(StringUtils.isNotBlank(worksData.name)) {
+        if (StringUtils.isNotBlank(worksData.name)) {
             tvName.setText(worksData.name);
-        }else{
+        } else {
             tvName.setText(worksData.title);
         }
-        tvAuthor.setText(worksData.author);
+        if (worksData.type == 3) {
+            tvAuthor.setText("合作作品");
+        } else {
+            tvAuthor.setText(worksData.author);
+        }
         tvCount.setText(NumberUtil.format(worksData.looknum));
-        ivType.setImageResource(worksData.type == 1 ? R.drawable.ic_song_type : R.drawable.ic_lyric_type);
+        ivType.setImageResource(worksData.type == 1 ||worksData.type==3? R.drawable.ic_song_type : R.drawable.ic_lyric_type);
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onItemClick(v,position);
+                onItemClick(v, position);
             }
         });
     }
@@ -81,16 +86,36 @@ public class HomeWorksViewHolder extends com.xilu.wybz.view.pull.BaseViewHolder 
 
     @Override
     public void onItemClick(View view, int position) {
-        if(position>=0&&position<mDataList.size()) {
+        if (position >= 0 && position < mDataList.size()) {
             if (mDataList.get(position).t.type == 1 || mDataList.get(position).t.type == 0) {
                 toPlayPos(position);
             } else if (mDataList.get(position).t.type == 2) {
                 LyricsdisplayActivity.toLyricsdisplayActivity(mContext, mDataList.get(position).t.itemid, mDataList.get(position).t.name);
+            }else if(mDataList.get(position).t.type == 3){
+                toPlayPoss(position);
             }
+        }
+    }
+    public void toPlayPoss(int position) {
+
+        if (mDataList.size() > 0) {
+            WorksData worksData = mDataList.get(position).t;
+            String playFrom = PrefsUtil.getString("playFrom", mContext);
+            if (!playFrom.equals("hezuo") || MainService.ids.size() == 0) {
+                if (MainService.ids.size() > 0)
+                    MainService.ids.clear();
+                for (SectionData<WorksData> sectionData : mDataList) {
+                    if (sectionData.t != null && sectionData.t.status == 1) {
+                        MainService.ids.add(sectionData.t.itemid);
+                    }
+                }
+            }
+            PlayAudioActivity.toPlayAudioActivity(mContext, worksData.getItemid(), "", "hezuo");
         }
     }
 
     public void toPlayPos(int position) {
+
         if (mDataList.size() > 0) {
             WorksData worksData = mDataList.get(position).t;
             String playFrom = PrefsUtil.getString("playFrom", mContext);
@@ -98,7 +123,7 @@ public class HomeWorksViewHolder extends com.xilu.wybz.view.pull.BaseViewHolder 
                 if (MainService.ids.size() > 0)
                     MainService.ids.clear();
                 for (SectionData<WorksData> sectionData : mDataList) {
-                    if (sectionData.t!=null&&sectionData.t.status == 1) {
+                    if (sectionData.t != null && sectionData.t.status == 1) {
                         MainService.ids.add(sectionData.t.itemid);
                     }
                 }

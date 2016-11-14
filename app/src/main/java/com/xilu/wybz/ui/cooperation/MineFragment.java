@@ -16,6 +16,8 @@ import com.xilu.wybz.bean.MineBean;
 import com.xilu.wybz.presenter.MinePresenter;
 import com.xilu.wybz.ui.IView.IMineView;
 import com.xilu.wybz.ui.fragment.BaseFragment;
+import com.xilu.wybz.ui.login.LoginActivity;
+import com.xilu.wybz.utils.PrefsUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +36,10 @@ public class MineFragment extends BaseFragment implements IMineView, SwipeRefres
     LinearLayout ll_loading;
     @Bind(R.id.ll_nodata)
     LinearLayout ll_nodata;
+    @Bind(R.id.llnologin)
+    LinearLayout llnologin;
+    @Bind(R.id.login_bt)
+    Button login_bt;
     @Bind(R.id.refreshlayout)
     SwipeRefreshLayout refreshLayout;
     @Bind(R.id.mine_recyclerview)
@@ -43,6 +49,7 @@ public class MineFragment extends BaseFragment implements IMineView, SwipeRefres
     private MineAdapter mineAdapter;
     private int page = 1;
     private AlertDialog dialog;
+    private AlertDialog dialog2;
 
     private int currentScrollState;
     private int lastVisibleItemPosition;
@@ -57,12 +64,12 @@ public class MineFragment extends BaseFragment implements IMineView, SwipeRefres
 
     @Override
     protected void initPresenter() {
+
         if (mineList.size() > 0) {
             disMissLoading(ll_loading);
             return;
         }
         minePresenter = new MinePresenter(context, this);
-        showLoading(ll_loading);
         minePresenter.init();
     }
 
@@ -90,9 +97,51 @@ public class MineFragment extends BaseFragment implements IMineView, SwipeRefres
         });
     }
 
+    private void initDialog2(int pos) {
+
+        dialog2 = new AlertDialog.Builder(getActivity()).create();
+        LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+        LinearLayout layout = (LinearLayout) layoutInflater.inflate(R.layout.deletehezuoxuqiutwo, null);
+        Button cancle_bto = (Button) layout.findViewById(cancle_bt);
+        Button positive_bto = (Button) layout.findViewById(positive_bt);
+        dialog2.show();
+        dialog2.getWindow().setContentView(layout);
+        cancle_bto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog2.dismiss();
+            }
+        });
+        positive_bto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                minePresenter.deleteCoopera(mineList.get(pos).getId(), pos);
+
+            }
+        });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==100){
+            getActivity().finish();
+        }
+    }
+
     @Override
     public void initView() {
-
+        if (PrefsUtil.getUserId(context) == 0) {
+            llnologin.setVisibility(View.VISIBLE);
+        }
+        login_bt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent =new Intent(getActivity(), LoginActivity.class);
+                startActivityForResult(intent,100);
+            }
+        });
+        showLoading(ll_loading);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         mine_recyclerview.setLayoutManager(linearLayoutManager);
         mineAdapter = new MineAdapter(mineList, context);
@@ -117,7 +166,7 @@ public class MineFragment extends BaseFragment implements IMineView, SwipeRefres
                 if (status == 1) {
                     initDialog(position);
                 } else {
-                    minePresenter.deleteCoopera(mineList.get(position).getId(), position);
+                    initDialog2(position);
                 }
 
             }
@@ -166,7 +215,7 @@ public class MineFragment extends BaseFragment implements IMineView, SwipeRefres
         if (isDestroy) return;
         mineList.addAll(mineBeanList);
         mineAdapter.notifyDataSetChanged();
-        if(refreshLayout.isRefreshing()){
+        if (refreshLayout.isRefreshing()) {
             refreshLayout.setRefreshing(false);
         }
     }
@@ -177,8 +226,10 @@ public class MineFragment extends BaseFragment implements IMineView, SwipeRefres
         if (dialog != null && dialog.isShowing()) {
             dialog.dismiss();
         }
+        if (dialog2 != null && dialog2.isShowing()) {
+            dialog2.dismiss();
+        }
         if (mineList.size() == 0) {
-
             ll_nodata.setVisibility(View.VISIBLE);
         }
     }

@@ -94,6 +94,7 @@ public class CollectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                         break;
                     case 3://对面停止合作
                         ((CollectViewHolder) holder).collect_tv_status.setText("对方停止该合作");
+                        ((CollectViewHolder) holder).collect_tv_status.setTextColor(Color.parseColor("#ff6161"));
                         break;
                     case 4://已到期
                         ((CollectViewHolder) holder).collect_tv_status.setText("已到期");
