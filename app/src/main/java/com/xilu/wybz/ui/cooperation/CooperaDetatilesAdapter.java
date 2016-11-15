@@ -53,9 +53,9 @@ public class CooperaDetatilesAdapter extends BaseAdapter {
         void onItemClick(View view, int position, int type);
     }
 
-    private CompleteListAdapter.OnItemClickListener mOnItemClickListener;
+    private OnItemClickListener mOnItemClickListener;
 
-    public void setOnItemClickListener(CompleteListAdapter.OnItemClickListener mOnItemClickListener) {
+    public void setOnItemClickListener(OnItemClickListener mOnItemClickListener) {
         this.mOnItemClickListener = mOnItemClickListener;
     }
 
@@ -132,7 +132,6 @@ public class CooperaDetatilesAdapter extends BaseAdapter {
                 public void onClick(View v) {
                     mOnItemClickListener.onItemClick(finalHolder.complete_isaccess_bt, position, 1);
                     b = true;
-
                 }
             });
 

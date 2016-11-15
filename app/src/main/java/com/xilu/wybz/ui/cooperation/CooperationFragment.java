@@ -94,8 +94,6 @@ public class CooperationFragment extends BaseFragment implements ICooperationVie
             public void onClick(View v) {
 //                startLyricDetailsActivity(cooperaLyricBean);//发送post请求将作品至为公开
                 dialog.dismiss();
-
-
             }
         });
     }
@@ -131,7 +129,9 @@ public class CooperationFragment extends BaseFragment implements ICooperationVie
 
     @Override
     public void noData() {
-        ll_nodata.setVisibility(View.VISIBLE);
+        if(ll_nodata!=null){
+            ll_nodata.setVisibility(View.VISIBLE);
+        }
     }
 
     public void isLogin() {
@@ -164,21 +164,20 @@ public class CooperationFragment extends BaseFragment implements ICooperationVie
                 currentScrollState = newState;
 
                 int visibleItemCount = linearLayoutManager.getChildCount();
-                int totalItemCount = linearLayoutManager.getItemCount();
+                int totalItemCount = cooperationAdapter.getItemCount();
                 if ((visibleItemCount > 0 && currentScrollState == RecyclerView.SCROLL_STATE_IDLE &&
                         (lastVisibleItemPosition) >= totalItemCount - 1) && !refreshLayout.isRefreshing() && ishasData) {
                     cooperationAdapter.onLoadMoreStateChanged(true);
                     page++;
                     cooperationPresenter.getCooperationList(page);
                 }
-
             }
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 lastVisibleItemPosition = (linearLayoutManager)
-                        .findLastVisibleItemPosition() + 1;
+                        .findLastVisibleItemPosition();
             }
         });
         more_iv.setOnClickListener(new View.OnClickListener() {

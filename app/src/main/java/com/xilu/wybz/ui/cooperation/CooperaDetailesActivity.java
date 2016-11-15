@@ -8,6 +8,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AbsListView;
@@ -348,11 +349,19 @@ public class CooperaDetailesActivity extends ToolbarActivity implements ICoopera
         }
         completeList.addAll(completeListBeen);
         completeAdapter.notifyDataSetChanged();
-        completeAdapter.setOnItemClickListener(new CompleteListAdapter.OnItemClickListener() {
+//        completeAdapter.setOnItemClickListener(new CompleteListAdapter.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(View view, int position, int type) {
+//                itemid = completeListBeen.get(position).getItemid();
+//                initDialog(position);
+//            }
+//        });
+        completeAdapter.setOnItemClickListener(new CooperaDetatilesAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position, int type) {
                 itemid = completeListBeen.get(position).getItemid();
-                initDialog(position);
+                Log.e("AAA",itemid+"");
+                initDialog(position-1);
             }
         });
         if (refreshLayout != null && refreshLayout.isRefreshing()) {

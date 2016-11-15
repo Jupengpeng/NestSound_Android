@@ -8,7 +8,7 @@
 
     <include layout="@layout/ll_loading" />
 
-    <include layout="@layout/ll_nodata" />
+    <!--<include layout="@layout/ll_nodata" />-->
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/refreshlayout"
