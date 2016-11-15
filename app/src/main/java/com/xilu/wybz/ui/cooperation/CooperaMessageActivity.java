@@ -66,7 +66,8 @@ public class CooperaMessageActivity extends ToolbarActivity implements ICooperaM
     List<ActionBean> actionBeanList;
 
 
-    private boolean ishasData= true;
+    private boolean ishasData = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -147,7 +148,7 @@ public class CooperaMessageActivity extends ToolbarActivity implements ICooperaM
         if (isDestroy) return;
         messageBeanList.addAll(cooperaMessageBeanList);
         cooperaMessageAdapter.notifyDataSetChanged();
-        if(refreshLayout.isRefreshing()){
+        if (refreshLayout.isRefreshing()) {
             refreshLayout.setRefreshing(false);
         }
 
@@ -252,7 +253,7 @@ public class CooperaMessageActivity extends ToolbarActivity implements ICooperaM
 
     @Override
     public void loadNoMore() {
-        ishasData =false;
+        ishasData = false;
         cooperaMessageAdapter.onLoadMoreStateChanged(false);
     }
 
@@ -260,7 +261,9 @@ public class CooperaMessageActivity extends ToolbarActivity implements ICooperaM
     public void loadNoData() {
 //        tvNoData.setText("暂无留言");
 //        refreshLayout.setVisibility(View.GONE);
-        llNoData.setVisibility(View.VISIBLE);
+        if (llNoData != null) {
+            llNoData.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -303,9 +306,9 @@ public class CooperaMessageActivity extends ToolbarActivity implements ICooperaM
             @Override
             public void run() {
                 messageBeanList.clear();
-                page=1;
+                page = 1;
                 cooperaMessagePresenter.getCooperaMessageList(did, page);
-                ishasData=true;
+                ishasData = true;
             }
         }, 2000);
 

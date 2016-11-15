@@ -207,7 +207,7 @@ public class MineFragment extends BaseFragment implements IMineView, SwipeRefres
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 lastVisibleItemPosition = (linearLayoutManager)
-                        .findLastVisibleItemPosition() + 1;
+                        .findLastVisibleItemPosition();
             }
         });
     }
@@ -239,8 +239,8 @@ public class MineFragment extends BaseFragment implements IMineView, SwipeRefres
 
     @Override
     public void noData() {
-
-        ll_nodata.setVisibility(View.VISIBLE);
+        if(ll_nodata!=null){
+        ll_nodata.setVisibility(View.VISIBLE);}
     }
 
     @Override

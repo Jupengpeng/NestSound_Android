@@ -32,8 +32,8 @@ import butterknife.Bind;
 public class CollectFragment extends BaseFragment implements ICollectView, SwipeRefreshLayout.OnRefreshListener {
     @Bind(R.id.ll_loading)
     LinearLayout ll_loading;
-    @Bind(R.id.ll_nodata)
-    LinearLayout llnoda;
+//    @Bind(R.id.ll_nodata)
+//    LinearLayout llnoda;
     @Bind(R.id.llnologin)
     LinearLayout llnologin;
     @Bind(R.id.login_bt)
@@ -93,7 +93,10 @@ public class CollectFragment extends BaseFragment implements ICollectView, Swipe
 
     @Override
     public void noData() {
-        llnoda.setVisibility(View.VISIBLE);
+//        if(llnoda!=null){
+//            llnoda.setVisibility(View.VISIBLE);
+//        }
+
     }
 
     @Override
@@ -106,9 +109,9 @@ public class CollectFragment extends BaseFragment implements ICollectView, Swipe
     public void cancleCollectSuccess(int pos) {
         collectAdapter.removeItem(pos);
         dialog.dismiss();
-        if (beanList.size() == 0) {
-            llnoda.setVisibility(View.VISIBLE);
-        }
+//        if (beanList.size() == 0) {
+//            llnoda.setVisibility(View.VISIBLE);
+//        }
     }
 
     @Override
