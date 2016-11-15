@@ -18,6 +18,7 @@ import com.xilu.wybz.ui.IView.IMineView;
 import com.xilu.wybz.ui.fragment.BaseFragment;
 import com.xilu.wybz.ui.login.LoginActivity;
 import com.xilu.wybz.utils.PrefsUtil;
+import com.xilu.wybz.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,7 +71,20 @@ public class MineFragment extends BaseFragment implements IMineView, SwipeRefres
             return;
         }
         minePresenter = new MinePresenter(context, this);
-        minePresenter.init();
+        if (PrefsUtil.getUserId(context) == 0) {
+            llnologin.setVisibility(View.VISIBLE);
+        }
+        login_bt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                startActivityForResult(intent, 100);
+            }
+        });
+        showLoading(ll_loading);
+        if (!StringUtils.isBlank(PrefsUtil.getUserInfo(context).loginToken)) {
+            minePresenter.init();
+        }
     }
 
     private void initDialog(int pos) {
@@ -124,24 +138,13 @@ public class MineFragment extends BaseFragment implements IMineView, SwipeRefres
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==100){
+        if (requestCode == 100) {
             getActivity().finish();
         }
     }
 
     @Override
     public void initView() {
-        if (PrefsUtil.getUserId(context) == 0) {
-            llnologin.setVisibility(View.VISIBLE);
-        }
-        login_bt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent =new Intent(getActivity(), LoginActivity.class);
-                startActivityForResult(intent,100);
-            }
-        });
-        showLoading(ll_loading);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         mine_recyclerview.setLayoutManager(linearLayoutManager);
         mineAdapter = new MineAdapter(mineList, context);

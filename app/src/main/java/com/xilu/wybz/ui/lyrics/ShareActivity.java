@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.ProductInfo;
@@ -16,29 +17,33 @@ import com.xilu.wybz.ui.preserve.ApplyPreserveActivity;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.UmengShareUtil;
 
+import butterknife.Bind;
 import butterknife.OnClick;
 
 /**
  * Created by hujunwei on 16/5/26.
  */
 public class ShareActivity extends ToolbarActivity {
+    @Bind(R.id.baoquanlayout)
+    LinearLayout baoquanlayout;
+
     WorksData worksData;
     UmengShareUtil shareUtil;
     private Bitmap overlay = null;
+    private int type;
 
     /**
-     *
      * @param context
      * @param worksData
      */
-    public static void toShareActivity(Context context, WorksData worksData) {
+    public static void toShareActivity(Context context, WorksData worksData, int type) {
         Intent intent = new Intent(context, ShareActivity.class);
         intent.putExtra("worksData", worksData);
+        intent.putExtra("type", type);
         context.startActivity(intent);
     }
 
     /**
-     *
      * @return
      */
     @Override
@@ -47,7 +52,6 @@ public class ShareActivity extends ToolbarActivity {
     }
 
     /**
-     *
      * @param savedInstanceState
      */
     @Override
@@ -57,23 +61,28 @@ public class ShareActivity extends ToolbarActivity {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             worksData = (WorksData) bundle.getSerializable("worksData");
+            type = getIntent().getIntExtra("type", 0);
+        }
+        if(type==1){
+           baoquanlayout.setVisibility(View.GONE);
         }
         String shareTitle = worksData.title;
         String shareAuthor = worksData.author;
         String shareLink = worksData.shareurl;
-        String sharePic = MyHttpClient.QINIU_URL+worksData.pic;
-        String shareBody = PrefsUtil.getUserId(context)==worksData.uid ? "我用音巢app创作了一首歌词，快来看看吧!" : "我在音巢app上发现一首好歌词，太棒了~";
+        String sharePic = MyHttpClient.QINIU_URL + worksData.pic;
+        String shareBody = PrefsUtil.getUserId(context) == worksData.uid ? "我用音巢app创作了一首歌词，快来看看吧!" : "我在音巢app上发现一首好歌词，太棒了~";
         String shareContent = shareBody + " 《" + shareTitle + "》 ▷" + shareLink + " (@音巢音乐)";
         String playUrl = worksData.playurl;
         ShareBean shareBean = new ShareBean(shareTitle, shareAuthor, shareContent, shareLink, sharePic, playUrl, 0);
-        shareUtil = new UmengShareUtil(this,shareBean);
+        shareUtil = new UmengShareUtil(this, shareBean);
+
+
     }
 
     /**
-     *
      * @param view
      */
-    @OnClick({R.id.tv_weixin, R.id.tv_friend, R.id.tv_weibo, R.id.tv_qq, R.id.tv_qzone,R.id.share_submit})
+    @OnClick({R.id.tv_weixin, R.id.tv_friend, R.id.tv_weibo, R.id.tv_qq, R.id.tv_qzone, R.id.share_submit})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_weixin:
@@ -100,13 +109,13 @@ public class ShareActivity extends ToolbarActivity {
     /**
      *
      */
-    private void startPreserve(){
+    private void startPreserve() {
 
         ProductInfo info = new ProductInfo();
 
         info.id = worksData.itemid;
         info.type = worksData.type;
 
-        ApplyPreserveActivity.start(this,info);
+        ApplyPreserveActivity.start(this, info);
     }
 }

@@ -216,7 +216,7 @@ public class MsgCooprateActivity extends BaseListActivity<PreserveMessageBean> i
                             CooperaDetailesActivity.start(context, bean.did, 3, 2);
                             break;
                         case PUSH_TYPE_COO_INVITE:
-                            CooperaDetailesActivity.start(context, bean.did, 0, 2);
+                            CooperaDetailesActivity.start(context, bean.did, 0, 1);
                             break;
                         case PUSH_TYPE_COO_ACCESS:
                             CooperaDetailesActivity.start(context, bean.did, 3, 2);
