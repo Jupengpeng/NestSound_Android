@@ -150,7 +150,7 @@ public class CooperationFragment extends BaseFragment implements ICooperationVie
 
     @Override
     public void initView() {
-
+        onRefresh();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         cooperationrecyclerview.setLayoutManager(linearLayoutManager);
         cooperationAdapter = new CooperationAdapter(cooperationList, context);
@@ -279,7 +279,9 @@ public class CooperationFragment extends BaseFragment implements ICooperationVie
                 }
                 page = 1;
                 cooperationPresenter.getCooperationList(page);
-                ishasData = true;
+                if(ishasData==false){
+                    ishasData = true;
+                }
             }
         }, 2000);
 //        isRefreshing = refreshLayout.isRefreshing();

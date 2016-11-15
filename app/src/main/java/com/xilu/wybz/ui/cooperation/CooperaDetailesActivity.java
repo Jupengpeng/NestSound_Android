@@ -250,7 +250,9 @@ public class CooperaDetailesActivity extends ToolbarActivity implements ICoopera
     @Override
     public void showCooperaDetailsBean(CooperaDetailsBean cooperaDetailsBean) {
         disMissLoading(llloading);
-        refreshLayout.setVisibility(View.VISIBLE);
+        if (refreshLayout != null) {
+            refreshLayout.setVisibility(View.VISIBLE);
+        }
         detailsBean = cooperaDetailsBean;
         setTitle(cooperaDetailsBean.getUserInfo().getNickname() + "的合作");
         cooperadetails_tv_nickname.setText("作词:" + cooperaDetailsBean.getUserInfo().getNickname());
@@ -342,7 +344,7 @@ public class CooperaDetailesActivity extends ToolbarActivity implements ICoopera
     public void showCooperaCompleteList(List<CooperaDetailsBean.CompleteListBean> completeListBeen) {
         if (isfootView == true) {
             lv.removeFooterView(foot);
-            isfootView=false;
+            isfootView = false;
         }
         completeList.addAll(completeListBeen);
         completeAdapter.notifyDataSetChanged();
@@ -353,7 +355,7 @@ public class CooperaDetailesActivity extends ToolbarActivity implements ICoopera
                 initDialog(position);
             }
         });
-        if (refreshLayout.isRefreshing()) {
+        if (refreshLayout != null && refreshLayout.isRefreshing()) {
             refreshLayout.setRefreshing(false);
         }
     }
@@ -402,7 +404,6 @@ public class CooperaDetailesActivity extends ToolbarActivity implements ICoopera
             @Override
             public void run() {
                 completeList.clear();
-
                 page = 1;
                 cooperaDetailsPresenter.getCooperaDetailsBean(id, page);
                 isHasData = true;
