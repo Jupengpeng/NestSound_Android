@@ -341,7 +341,7 @@ public class MainTabActivity extends BaseActivity {
                 mMoreWindow.closeByAnimation();
                 return true;
             }
-            if ((System.currentTimeMillis() - exitTime) < 2000) {
+            if ((System.currentTimeMillis() - exitTime) < 1000) {
                 if (MainService.ids.size() > 0) {
                     String ids = "";
                     for (int i = 0; i < MainService.ids.size(); i++) {

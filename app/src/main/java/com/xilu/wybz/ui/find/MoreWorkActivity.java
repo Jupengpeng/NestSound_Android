@@ -90,7 +90,11 @@ public class MoreWorkActivity extends BaseListActivity<WorksData> implements IFi
                 }
                 recycler.enableLoadMore(true);
                 for(WorksData worksData : worksDataList){
-                    worksData.type = workType;
+                    if (worksData.type != 3){
+                        worksData.type = workType;
+                    } else {
+                        worksData.type = 6;
+                    }
                     mDataList.add(worksData);
                 }
                 adapter.notifyDataSetChanged();
