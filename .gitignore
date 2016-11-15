@@ -22,7 +22,6 @@ build/
 
 /*/build/
 
-*.iml
 
 
 
@@ -36,3 +35,8 @@ proguard/
 # Log Files
 *.log
 src/ppzs/
+/app/app.iml
+/library/library.iml
+/music-service/music-service.iml
+/pingpp/pingpp.iml
+/yinchaoapp.iml
