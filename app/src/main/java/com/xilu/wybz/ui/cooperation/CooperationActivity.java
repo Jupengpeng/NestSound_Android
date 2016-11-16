@@ -77,10 +77,9 @@ public class CooperationActivity extends BaseActivity implements ViewPager.OnPag
             public void run() {
                 switch (position) {
                     case 1:
-
                             MineFragment mineFragment = (MineFragment) adapter.getFragment(1);
                             if (mineFragment != null) {
-                                mineFragment.initPresenter();
+//                                mineFragment.initPresenter();
                             }
 
                         break;
@@ -88,7 +87,7 @@ public class CooperationActivity extends BaseActivity implements ViewPager.OnPag
 
                             CollectFragment collectFragment = (CollectFragment) adapter.getFragment(2);
                             if (collectFragment != null) {
-                                collectFragment.initPresenter();
+//                                collectFragment.initPresenter();
                             }
                         break;
                 }

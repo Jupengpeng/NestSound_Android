@@ -31,7 +31,6 @@ public class CooperationPresenter extends BasePresenter<ICooperationView> {
     public void getCooperationList(int page) {
         params = new HashMap<>();
         params.put("page", page + "");
-//        params.put("token",PrefsUtil.getUserInfo(context).loginToken) ;
 
         httpUtils.post(MyHttpClient.getDemandlist(), params, new AppJsonCalback(context) {
             @Override

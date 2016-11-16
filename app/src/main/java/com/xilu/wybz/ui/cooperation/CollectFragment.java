@@ -32,8 +32,8 @@ import butterknife.Bind;
 public class CollectFragment extends BaseFragment implements ICollectView, SwipeRefreshLayout.OnRefreshListener {
     @Bind(R.id.ll_loading)
     LinearLayout ll_loading;
-//    @Bind(R.id.ll_nodata)
-//    LinearLayout llnoda;
+    @Bind(R.id.ll_nodata)
+    LinearLayout llnoda;
     @Bind(R.id.llnologin)
     LinearLayout llnologin;
     @Bind(R.id.login_bt)
@@ -81,7 +81,16 @@ public class CollectFragment extends BaseFragment implements ICollectView, Swipe
 
     @Override
     public void showCollectList(List<CollectBean> collectBeanList) {
+
         disMissLoading(ll_loading);
+
+        if (collectBeanList == null || collectBeanList.size() == 0){
+            llnoda.setVisibility(View.VISIBLE);
+            return;
+        } else {
+            llnoda.setVisibility(View.GONE);
+        }
+
         if (isDestroy) return;
         beanList.addAll(collectBeanList);
         collectAdapter.notifyDataSetChanged();
@@ -93,9 +102,9 @@ public class CollectFragment extends BaseFragment implements ICollectView, Swipe
 
     @Override
     public void noData() {
-//        if(llnoda!=null){
-//            llnoda.setVisibility(View.VISIBLE);
-//        }
+        if(llnoda!=null){
+            llnoda.setVisibility(View.VISIBLE);
+        }
 
     }
 
@@ -109,9 +118,6 @@ public class CollectFragment extends BaseFragment implements ICollectView, Swipe
     public void cancleCollectSuccess(int pos) {
         collectAdapter.removeItem(pos);
         dialog.dismiss();
-//        if (beanList.size() == 0) {
-//            llnoda.setVisibility(View.VISIBLE);
-//        }
     }
 
     @Override
@@ -170,7 +176,6 @@ public class CollectFragment extends BaseFragment implements ICollectView, Swipe
             @Override
             public void onItemClick(View view, int position) {
                 int status = beanList.get(position).getStatus();
-//                Intent intent = new Intent(getActivity(), CooperaDetailesActivity.class);
                 switch (status) {
                     case 1:
                         CooperaDetailesActivity.start(context, beanList.get(position).getId(), 0, 1);
@@ -185,11 +190,9 @@ public class CollectFragment extends BaseFragment implements ICollectView, Swipe
                         CooperaDetailesActivity.start(context, beanList.get(position).getId(), 3, 2);
                         break;
                 }
-
-//                intent.putExtra("did", );
-//                startActivity(intent);
             }
         });
+
         collectAdapter.setOnItemLongClickListener(new CollectAdapter.OnItemLongClickListener() {
             @Override
             public void onItemLongClick(View view, int position) {

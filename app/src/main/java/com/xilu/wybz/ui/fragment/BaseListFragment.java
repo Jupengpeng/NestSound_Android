@@ -17,6 +17,7 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
+import com.xilu.wybz.common.ZnImageLoader;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.view.pull.BaseListAdapter;
 import com.xilu.wybz.view.pull.BaseViewHolder;
@@ -237,5 +238,9 @@ public abstract class BaseListFragment<T> extends BaseFragment implements PullRe
                 .setOldController(mDraweeView.getController())
                 .build();
         mDraweeView.setController(controller);
+    }
+
+    protected void loadImage(String picUrl, ImageView imageView) {
+        ZnImageLoader.getInstance().displayImage(picUrl, ZnImageLoader.getInstance().options, imageView);
     }
 }

@@ -1,74 +1,63 @@
 package com.xilu.wybz.ui.cooperation;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Handler;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.xilu.wybz.R;
 import com.xilu.wybz.bean.CooperationBean;
 import com.xilu.wybz.bean.PreinfoBean;
 import com.xilu.wybz.presenter.CooperationPresenter;
 import com.xilu.wybz.ui.IView.ICooperationView;
-import com.xilu.wybz.ui.fragment.BaseFragment;
+import com.xilu.wybz.ui.fragment.BaseListFragment;
 import com.xilu.wybz.ui.login.LoginActivity;
 import com.xilu.wybz.ui.mine.OtherUserCenterActivity;
 import com.xilu.wybz.ui.mine.UserCenterActivity;
 import com.xilu.wybz.ui.song.HotCatalogActivity;
+import com.xilu.wybz.utils.DateFormatUtils;
 import com.xilu.wybz.utils.PrefsUtil;
+import com.xilu.wybz.view.CircleImageView;
+import com.xilu.wybz.view.MyRecyclerView;
+import com.xilu.wybz.view.pull.BaseViewHolder;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
+
+import static com.umeng.socialize.Config.dialog;
 
 /**
  * Created by Administrator on 2016/10/19.
  */
 
-public class CooperationFragment extends BaseFragment implements ICooperationView, SwipeRefreshLayout.OnRefreshListener {
-    @Bind(R.id.ll_nodata)
-    LinearLayout ll_nodata;
-    @Bind(R.id.ll_loading)
-    LinearLayout ll_loading;
-    @Bind(R.id.refreshlayout)
-    SwipeRefreshLayout refreshLayout;
-    @Bind(R.id.cooperationrecyclerview)
-    RecyclerView cooperationrecyclerview;
-    @Bind(R.id.more_iv)
-    ImageView more_iv;
-    private int page = 1;
-    CooperationAdapter cooperationAdapter;
+public class CooperationFragment extends BaseListFragment<CooperationBean> implements ICooperationView {
+
+
     private CooperationPresenter cooperationPresenter;
-    private List<CooperationBean> cooperationList = new ArrayList<>();
-    AlertDialog dialog;
 
-    private int currentScrollState;
-    private int lastVisibleItemPosition;
-
-    private boolean isRefreshing;
     private int did;//合作需求ID
 
-    private boolean ishasData = true;
 
+    /**
+     * 调用页面.
+     */
     @Override
-    protected int getLayoutResId() {
-        return R.layout.fragment_cooperation;
+    protected void initPresenter() {
+        recycler.getRecyclerView().setBackgroundColor(Color.parseColor("#ffffff"));
 
+        cooperationPresenter = new CooperationPresenter(context, this);
+        cooperationPresenter.init();
     }
 
     @Override
-    protected void initPresenter() {
-        cooperationPresenter = new CooperationPresenter(context, this);
-        showLoading(ll_loading);
-        cooperationPresenter.init();
+    public void initView() {
 
     }
 
@@ -84,7 +73,7 @@ public class CooperationFragment extends BaseFragment implements ICooperationVie
         cancle_bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                did = cooperationList.get(pos).getDemandInfo().getId();
+                did = mDataList.get(pos).getDemandInfo().getId();
                 cooperationPresenter.getPreinfo(did);
 
             }
@@ -92,28 +81,178 @@ public class CooperationFragment extends BaseFragment implements ICooperationVie
         positive_bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                startLyricDetailsActivity(cooperaLyricBean);//发送post请求将作品至为公开
                 dialog.dismiss();
             }
         });
     }
 
+
+    @Override
+    protected void setUpData() {
+        super.setUpData();
+        recycler.setRefreshing();
+    }
+
+    @Override
+    public void onRefresh(int action) {
+        super.onRefresh(action);
+        cooperationPresenter.getCooperationList(page++);
+    }
+
+    @Override
+    public boolean hasPadding() {
+        return false;
+    }
+
+    @Override
+    protected BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
+
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cooperation_item, parent, false);
+        BaseViewHolder viewHolder = new CooperViewHolder(view);
+        return viewHolder;
+    }
+
+    /**
+     * CooperViewHolder.
+     */
+    class CooperViewHolder extends BaseViewHolder {
+
+        @Bind(R.id.coopera_head_iv)
+        CircleImageView cooperaHeadIv;
+        @Bind(R.id.coopera_tv_name)
+        TextView cooperaTvName;
+        @Bind(R.id.coopera_tv_time)
+        TextView cooperaTvTime;
+        @Bind(R.id.coopera_bt)
+        Button cooperaBt;
+        @Bind(R.id.ll_jump2)
+        LinearLayout llJump2;
+        @Bind(R.id.view)
+        View view;
+        @Bind(R.id.coopera_tv_lyricsname)
+        TextView cooperaTvLyricsname;
+        @Bind(R.id.coopera_tv_lyricscontent)
+        TextView cooperaTvLyricscontent;
+        @Bind(R.id.coopera_tv_require)
+        TextView cooperaTvRequire;
+        @Bind(R.id.coopera_comment_rectclerview)
+        MyRecyclerView cooperaCommentRectclerview;
+        @Bind(R.id.coopera_commentnum_tv)
+        TextView cooperaCommentnumTv;
+        @Bind(R.id.coopera_worknum_tv)
+        TextView cooperaWorknumTv;
+        @Bind(R.id.ll_jump)
+        LinearLayout llJump;
+
+        CooperationBean bean;
+
+
+
+
+        public CooperViewHolder(View itemView) {
+            super(itemView);
+        }
+
+        @Override
+        public void onBindViewHolder(int position) {
+            bean = mDataList.get(position);
+
+            loadImage(bean.getUserInfo().getHeadurl(), cooperaHeadIv);
+            cooperaTvName.setText(bean.getUserInfo().getNickname());
+            cooperaTvTime.setText(DateFormatUtils.formatX1(bean.getDemandInfo().getCreatetime()));
+
+            cooperaTvLyricsname.setText(bean.getDemandInfo().getTitle());
+            cooperaTvRequire.setText(bean.getDemandInfo().getRequirement());
+            cooperaTvLyricscontent.setText(bean.getDemandInfo().getLyrics());
+
+            cooperaCommentnumTv.setText("更多" + bean.getDemandInfo().getCommentnum() + "条留言");
+            cooperaWorknumTv.setText("已有" + bean.getDemandInfo().getWorknum() + "位巢人参与合作");
+
+            List<CooperationBean.CommentListBean> commentBeanList;
+            commentBeanList = bean.getCommentList();
+            CooperaCommentAdapter adapter = new CooperaCommentAdapter(commentBeanList, context);
+
+            cooperaCommentRectclerview.setAdapter(adapter);
+
+            llJump.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (PrefsUtil.getUserId(context) == 0) {
+                        startLoginPage();
+                    } else {
+                        Intent intent = new Intent(getActivity(), CooperaDetailesActivity.class);
+                        if (bean.getUserInfo().getUid() == PrefsUtil.getUserId(context)) {
+                            intent.putExtra("type", 2);
+                        } else {
+                            intent.putExtra("type", 1);
+                        }
+                        intent.putExtra("did", bean.getId());
+                        startActivity(intent);
+                    }
+                }
+            });
+
+            cooperaHeadIv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (PrefsUtil.getUserId(context) == 0) {
+                        startLoginPage();
+                    } else {
+                        int uid = bean.getUserInfo().getUid();
+                        String username = bean.getUserInfo().getNickname();
+                        if (uid == PrefsUtil.getUserId(context)) {
+                            Intent intent1 = new Intent(getActivity(), UserCenterActivity.class);
+                            startActivity(intent1);
+                        } else {
+                            OtherUserCenterActivity.toUserInfoActivity(context, uid, username);
+                        }
+                    }
+
+                }
+            });
+
+            cooperaBt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (PrefsUtil.getUserId(context) == 0) {
+                        startLoginPage();
+                    } else {
+                        initDialog(position);
+                    }
+                }
+            });
+        }
+
+        @Override
+        public void onItemClick(View view, int position) {
+
+        }
+    }
+
+
     @Override
     public void showCooperation(List<CooperationBean> cooperationBeanList) {
-        disMissLoading(ll_loading);
-        if (isDestroy) return;
-        cooperationList.addAll(cooperationBeanList);
-        cooperationAdapter.notifyDataSetChanged();
-        if (refreshLayout.isRefreshing()) {
-            refreshLayout.setRefreshing(false);
-        }
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (isDestroy) return;
+
+                recycler.onRefreshCompleted();
+                llNoData.setVisibility(View.GONE);
+                recycler.enableLoadMore(true);
+                mDataList.addAll(cooperationBeanList);
+                adapter.notifyDataSetChanged();
+
+                checkData();
+            }
+        }, 600);
     }
 
     @Override
     public void noMoreData() {
-//        showMsg("没有更多数据");
-        ishasData = false;
-        cooperationAdapter.onLoadMoreStateChanged(false);
+
+        recycler.enableLoadMore(false);
     }
 
     @Override
@@ -129,12 +268,11 @@ public class CooperationFragment extends BaseFragment implements ICooperationVie
 
     @Override
     public void noData() {
-        if(ll_nodata!=null){
-            ll_nodata.setVisibility(View.VISIBLE);
-        }
+        showNoDataView();
     }
 
-    public void isLogin() {
+
+    public void startLoginPage() {
         Intent intent = new Intent();
         intent.setClass(getActivity(), LoginActivity.class);
         startActivityForResult(intent, 100);
@@ -148,109 +286,7 @@ public class CooperationFragment extends BaseFragment implements ICooperationVie
         }
     }
 
-    @Override
-    public void initView() {
-        onRefresh();
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
-        cooperationrecyclerview.setLayoutManager(linearLayoutManager);
-        cooperationAdapter = new CooperationAdapter(cooperationList, context);
-        cooperationrecyclerview.setAdapter(cooperationAdapter);
-        cooperationPresenter.getCooperationList(page);
-        refreshLayout.setOnRefreshListener(this);
-        cooperationrecyclerview.setOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                currentScrollState = newState;
 
-                int visibleItemCount = linearLayoutManager.getChildCount();
-                int totalItemCount = cooperationAdapter.getItemCount();
-                if ((visibleItemCount > 0 && currentScrollState == RecyclerView.SCROLL_STATE_IDLE &&
-                        (lastVisibleItemPosition) >= totalItemCount - 1) && !refreshLayout.isRefreshing() && ishasData) {
-                    cooperationAdapter.onLoadMoreStateChanged(true);
-                    page++;
-                    cooperationPresenter.getCooperationList(page);
-                }
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                lastVisibleItemPosition = (linearLayoutManager)
-                        .findLastVisibleItemPosition();
-            }
-        });
-        more_iv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (PrefsUtil.getUserId(context) == 0) {
-                    isLogin();
-                } else {
-//                startActivity(new Intent(getActivity(), CooperaPublish.class));
-                    Intent intent = new Intent(getActivity(), CooperaPublishActivity.class);
-//                getActivity().startActivityForResult(intent, 150);
-                    startActivity(intent);
-                }
-            }
-        });
-
-
-        cooperationAdapter.setOnItemClickListener(new CooperationAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position, int type) {
-
-                switch (type) {
-                    case 1:
-                        if (PrefsUtil.getUserId(context) == 0) {
-                            isLogin();
-                        } else {
-                            Intent intent = new Intent(getActivity(), CooperaDetailesActivity.class);
-                            if (cooperationList.get(position).getUserInfo().getUid() == PrefsUtil.getUserId(context)) {
-                                intent.putExtra("type", 2);
-                            } else {
-                                intent.putExtra("type", 1);
-                            }
-                            intent.putExtra("did", cooperationList.get(position).getId());
-                            startActivity(intent);
-                        }
-                        break;
-                    case 2:
-                        if (PrefsUtil.getUserId(context) == 0) {
-                            isLogin();
-                        } else {
-                            int uid = cooperationList.get(position).getUserInfo().getUid();
-                            String username = cooperationList.get(position).getUserInfo().getNickname();
-                            if (uid == PrefsUtil.getUserId(context)) {
-                                Intent intent1 = new Intent(getActivity(), UserCenterActivity.class);
-                                startActivity(intent1);
-                            } else {
-                                OtherUserCenterActivity.toUserInfoActivity(context, uid, username);
-                            }
-                        }
-                        break;
-                    case 3:
-                        if (PrefsUtil.getUserId(context) == 0) {
-                            isLogin();
-                        } else {
-                            initDialog(position);
-                        }
-                        break;
-                }
-            }
-        });
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (cooperationList.size() > 0) {
-            cooperationList.clear();
-            page = 1;
-        }
-        cooperationPresenter.getCooperationList(page);
-
-
-    }
 
     @Override
     public void onDestroyView() {
@@ -259,40 +295,5 @@ public class CooperationFragment extends BaseFragment implements ICooperationVie
             cooperationPresenter.cancelRequest();
     }
 
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == 150 && resultCode == 160) {
-//
-//            onRefresh();
-//        }
-//    }
 
-    @Override
-    public void onRefresh() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (cooperationList.size() > 0) {
-                    cooperationList.clear();
-                }
-                page = 1;
-                cooperationPresenter.getCooperationList(page);
-                if(ishasData==false){
-                    ishasData = true;
-                }
-            }
-        }, 2000);
-//        isRefreshing = refreshLayout.isRefreshing();
-//        if (isRefreshing) {
-//            if (cooperationList.size() > 0) {
-//                cooperationList.clear();
-//                page = 1;
-//            }
-//            refreshLayout.setRefreshing(false);
-//            cooperationPresenter.getCooperationList(page);
-//        }
-//        ishasData = true;
-
-    }
 }

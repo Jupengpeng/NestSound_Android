@@ -180,17 +180,6 @@ public class MineFragment extends BaseFragment implements IMineView, SwipeRefres
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
 
-//                int lastPosition = 0;
-//                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-//                    lastPosition = linearLayoutManager.findLastVisibleItemPosition();
-//                    Log.e("AAA", lastPosition + "");
-//                }
-//                if (lastPosition == recyclerView.getLayoutManager().getItemCount() - 1 && !refreshLayout.isRefreshing()) {
-//                    Log.e("AAA", "日了狗");
-//                    mineAdapter.onLoadMoreStateChanged(true);
-//                    page++;
-//                    minePresenter.getMineList(page);
-//                }
                 currentScrollState = newState;
 
                 int visibleItemCount = linearLayoutManager.getChildCount();
@@ -260,14 +249,6 @@ public class MineFragment extends BaseFragment implements IMineView, SwipeRefres
     @Override
     public void onRefresh() {
 
-
-//        if (mineList.size() > 0) {
-//            mineList.clear();
-//            page = 1;
-//        }
-//        refreshLayout.setRefreshing(false);
-//        minePresenter.getMineList(page);
-//        ishasData=true;
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -276,7 +257,7 @@ public class MineFragment extends BaseFragment implements IMineView, SwipeRefres
                 minePresenter.getMineList(page);
                 ishasData = true;
             }
-        }, 2000);
+        }, 200);
     }
 
 
