@@ -37,6 +37,7 @@ import butterknife.ButterKnife;
 public abstract class BaseListFragment<T> extends BaseFragment implements PullRecycler.OnRecyclerRefreshListener {
     protected Context context;
     protected BaseListAdapter adapter;
+    protected View mRootView;
     protected ArrayList<T> mDataList;
     @Bind(R.id.pullRecycler)
     protected PullRecycler recycler;
@@ -56,6 +57,7 @@ public abstract class BaseListFragment<T> extends BaseFragment implements PullRe
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(getLayoutResId(), container, false);
+        mRootView = view;
         ButterKnife.bind(this, view);
         initPresenter();
         setUpData();

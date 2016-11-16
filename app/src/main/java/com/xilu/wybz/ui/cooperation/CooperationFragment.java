@@ -7,6 +7,7 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -26,6 +27,7 @@ import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.view.CircleImageView;
 import com.xilu.wybz.view.MyRecyclerView;
 import com.xilu.wybz.view.pull.BaseViewHolder;
+import com.xilu.wybz.view.pull.PullRecycler;
 
 import java.util.List;
 
@@ -44,6 +46,7 @@ public class CooperationFragment extends BaseListFragment<CooperationBean> imple
 
     private int did;//合作需求ID
 
+    private View stub;
 
     /**
      * 调用页面.
@@ -56,9 +59,26 @@ public class CooperationFragment extends BaseListFragment<CooperationBean> imple
         cooperationPresenter.init();
     }
 
+    /**
+     * initView.
+     */
     @Override
     public void initView() {
 
+        ViewStub viewStub = (ViewStub)mRootView.findViewById(R.id.view_stub_bottom);
+        stub = viewStub.inflate().findViewById(R.id.more_add);
+
+        stub.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (PrefsUtil.getUserId(context) == 0) {
+                    startLoginPage();
+                } else {
+                    Intent intent = new Intent(getActivity(), CooperaPublishActivity.class);
+                    startActivity(intent);
+                }
+            }
+        });
     }
 
     private void initDialog(int pos) {
@@ -233,6 +253,10 @@ public class CooperationFragment extends BaseListFragment<CooperationBean> imple
     @Override
     public void showCooperation(List<CooperationBean> cooperationBeanList) {
 
+        if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
+            mDataList.clear();
+        }
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -285,8 +309,6 @@ public class CooperationFragment extends BaseListFragment<CooperationBean> imple
             getActivity().finish();
         }
     }
-
-
 
     @Override
     public void onDestroyView() {
