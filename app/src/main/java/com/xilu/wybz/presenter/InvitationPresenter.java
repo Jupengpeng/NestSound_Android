@@ -11,6 +11,7 @@ import com.xilu.wybz.http.callback.MyStringCallback;
 import com.xilu.wybz.ui.IView.IInvitationView;
 import com.xilu.wybz.utils.ParseUtils;
 import com.xilu.wybz.utils.PrefsUtil;
+import com.xilu.wybz.utils.StringUtils;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -33,8 +34,10 @@ public class InvitationPresenter extends BasePresenter<IInvitationView> {
         params = new HashMap<>();
         params.put("did", did + "");
         params.put("page", page + "");
-        params.put("key", key);
-        params.put("token", PrefsUtil.getUserInfo(context).loginToken);
+
+        if (StringUtils.isNotBlank(key)){
+            params.put("key", key);
+        }
         params.put("uid", "" + PrefsUtil.getUserId(context));
         httpUtils.post(MyHttpClient.getInvitelist(), params, new AppJsonCalback(context) {
             @Override
