@@ -154,7 +154,7 @@ public abstract class BaseListActivity<T> extends BasePlayMenuActivity implement
         mDataList.add(0, t);
         recycler.setSelection(0);
         adapter.notifyItemInserted(0);
-        adapter.notifyItemRangeChanged(0, mDataList.size());
+        adapter.notifyDataSetChanged();
         recycler.getRecyclerView().requestLayout();
         llNoData.setVisibility(View.GONE);
     }

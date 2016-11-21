@@ -261,12 +261,12 @@ public class MyHttpClient {
 
     //评论接口
     public static String getSaveCommentUrl() {
-        return "/cooperate/work/commentsave/v23";
+        return "/java/commentopt/save/v22";
     }
 
     //删除评论
     public static String getDelCommentUrl() {
-        return "/cooperate/work/commentdelete/v23";
+        return "/java/commentopt/delete/v22";
     }
 
     //更新IP
