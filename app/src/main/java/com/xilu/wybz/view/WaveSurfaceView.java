@@ -5,7 +5,6 @@ import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.VelocityTracker;
@@ -78,7 +77,7 @@ public class WaveSurfaceView extends SurfaceView {
         switch (action) {
             case MotionEvent.ACTION_DOWN:
                 x1 = event.getX();
-                Log.d("sur","ACTION_DOWN:" + x1);
+//                Log.d("sur","ACTION_DOWN:" + x1);
                 break;
             case MotionEvent.ACTION_MOVE:
                 x2 = event.getX();
@@ -88,10 +87,10 @@ public class WaveSurfaceView extends SurfaceView {
                     x1 = x2;
                 }
 
-                Log.d("sur","ACTION_MOVE:" + x2);
+//                Log.d("sur","ACTION_MOVE:" + x2);
                 break;
             case MotionEvent.ACTION_UP:
-                Log.d("sur","ACTION_UP:" );
+//                Log.d("sur","ACTION_UP:" );
 
                 break;
             case MotionEvent.ACTION_CANCEL:

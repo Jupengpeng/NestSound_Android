@@ -120,6 +120,7 @@
             android:layout_width="match_parent"
             android:layout_height="46dp"
             android:gravity="center_vertical"
+            android:background="?selectableItemBackground"
             android:paddingLeft="15dp"
             android:paddingRight="15dp">
 
@@ -153,6 +154,7 @@
             android:layout_width="match_parent"
             android:layout_height="46dp"
             android:gravity="center_vertical"
+            android:background="?selectableItemBackground"
             android:paddingLeft="15dp"
             android:paddingRight="15dp">
 
@@ -181,6 +183,7 @@
                 android:src="@drawable/ic_setting_arrow" />
         </LinearLayout>
 
+
         <include layout="@layout/view_spit_line" />
         <View
             android:layout_width="match_parent"
@@ -191,6 +194,7 @@
             android:id="@+id/ll_bq_info"
             android:layout_width="match_parent"
             android:layout_height="46dp"
+            android:background="?selectableItemBackground"
             android:gravity="center_vertical"
             android:paddingLeft="15dp"
             android:paddingRight="15dp">

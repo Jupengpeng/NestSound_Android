@@ -38,8 +38,13 @@ public class LyricsFragment extends BaseSectionListFragment<WorksData> implement
     }
 
     public void loadData() {
-        if (isFirst) return;
-        else isFirst = true;
+//        if (isFirst) return;
+//        else isFirst = true;
+
+        if (mDataList != null && mDataList.size()>0){
+            disMissLoading(ll_loading);
+            return;
+        }
         showLoading(ll_loading);
         songPresenter.init();
     }
@@ -91,12 +96,14 @@ public class LyricsFragment extends BaseSectionListFragment<WorksData> implement
 
     @Override
     public void showErrorView() {
+        disMissLoading(ll_loading);
         if (isDestroy) return;
 
     }
 
     @Override
     public void loadingFinish() {
+        disMissLoading(ll_loading);
         if (isDestroy) return;
         recycler.enableLoadMore(false);
         recycler.onRefreshCompleted();

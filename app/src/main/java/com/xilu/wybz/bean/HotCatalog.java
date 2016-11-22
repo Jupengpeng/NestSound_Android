@@ -7,6 +7,7 @@ import java.io.Serializable;
  */
 public class HotCatalog implements Serializable{
     public int id;
+    public int sort;
     public String categoryname;
     public String categorypic;
     public boolean isCheck;

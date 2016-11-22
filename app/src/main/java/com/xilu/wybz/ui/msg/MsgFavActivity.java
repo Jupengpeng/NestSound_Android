@@ -14,7 +14,6 @@ import com.xilu.wybz.bean.CollectionBean;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.MsgCollectionPresenter;
-import com.xilu.wybz.service.MyReceiver;
 import com.xilu.wybz.ui.IView.ICollectionView;
 import com.xilu.wybz.ui.base.BaseListActivity;
 import com.xilu.wybz.ui.lyrics.LyricsdisplayActivity;
@@ -170,8 +169,10 @@ public class MsgFavActivity extends BaseListActivity<CollectionBean> implements 
                     if(StringUtils.isNotBlank(collectionBean.itemid)&&!collectionBean.itemid.equals("0")) {
                         if (collectionBean.type == 1) {
                             PlayAudioActivity.toPlayAudioActivity(context, collectionBean.itemid, "", MyCommon.MSG_COMMENT);
-                        } else {
+                        } else if(collectionBean.type == 2){
                             LyricsdisplayActivity.toLyricsdisplayActivity(context, collectionBean.itemid, collectionBean.title);
+                        }else if(collectionBean.type == 3){
+                            PlayAudioActivity.toPlayAudioActivity(context, collectionBean.itemid, "","hezuo");
                         }
                     }
                 }

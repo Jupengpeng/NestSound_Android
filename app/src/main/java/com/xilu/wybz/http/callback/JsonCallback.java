@@ -1,12 +1,12 @@
 package com.xilu.wybz.http.callback;
 
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.gson.Gson;
 import com.xilu.wybz.bean.JsonResponse;
 import com.xilu.wybz.http.rsa.RSAUtils;
 import com.xilu.wybz.utils.LogUtils;
+import com.xilu.wybz.utils.StringUtils;
 
 import org.json.JSONObject;
 
@@ -48,11 +48,12 @@ public class JsonCallback extends Callback<JsonResponse>{
             jsonResponse.setCode(code);
             jsonResponse.setMessage(message);
 
-            if (!TextUtils.isEmpty(data)) {
+            if (StringUtils.isNotBlank(data) && !"null".equalsIgnoreCase(data)) {
                 decode = RSAUtils.decryptByPublicKey(new String(RSAUtils.decodeConvert(data), "UTF-8"));
-//                Log.d("url", decode);
+                Log.d("url", decode);
                 LogUtils.iJsonFormat("url",decode,true);
-                if (type == null){
+
+                if (type == null && !"null".equalsIgnoreCase(decode)){
                     jsonResponse.setData(decode);
                 } else {
                     jsonResponse.setData( new Gson().fromJson(decode,type));

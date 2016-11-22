@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.umeng.socialize.utils.Log;
 import com.xilu.wybz.bean.ActBean;
 import com.xilu.wybz.bean.CollectionBean;
 import com.xilu.wybz.bean.CommentBean;
@@ -12,11 +13,10 @@ import com.xilu.wybz.bean.DataBean;
 import com.xilu.wybz.bean.FansBean;
 import com.xilu.wybz.bean.Lyricat;
 import com.xilu.wybz.bean.MainBean;
-import com.xilu.wybz.bean.MineBean;
 import com.xilu.wybz.bean.MsgCommentBean;
 import com.xilu.wybz.bean.MusicTalk;
 import com.xilu.wybz.bean.SongAlbum;
-import com.xilu.wybz.bean.SystemBean;
+import com.xilu.wybz.bean.message.SystemMessageBean;
 import com.xilu.wybz.bean.TemplateBean;
 import com.xilu.wybz.bean.TokenBean;
 import com.xilu.wybz.bean.UserBean;
@@ -133,14 +133,14 @@ public class ParseUtils {
         return commentBeanList;
     }
     //消息收藏列表
-    public static List<SystemBean> getSystemsData(Context context, String response) {
-        List<SystemBean> commentBeanList = new ArrayList<>();
+    public static List<SystemMessageBean> getSystemsData(Context context, String response) {
+        List<SystemMessageBean> commentBeanList = new ArrayList<>();
         try {
             JSONObject jsonObject = new JSONObject(response);
             int code = jsonObject.getInt("code");
             if (code == 200) {
                 if(!TextUtils.isEmpty(jsonObject.getString("data")))
-                commentBeanList = new Gson().fromJson(jsonObject.getString("data"), new TypeToken<List<SystemBean>>() {}.getType());
+                commentBeanList = new Gson().fromJson(jsonObject.getString("data"), new TypeToken<List<SystemMessageBean>>() {}.getType());
             } else {
                 showMsg(context, jsonObject.getString("message"));
             }
@@ -284,22 +284,7 @@ public class ParseUtils {
         }
         return dataBean;
     }
-    //我的主页数据
-    public static MineBean getMineBean(Context context, String response) {
-        MineBean dataBean = null;
-        try {
-            JSONObject jsonObject = new JSONObject(response);
-            int code = jsonObject.getInt("code");
-            if (code == 200) {
-                dataBean = new Gson().fromJson(jsonObject.getString("data"),MineBean.class);
-            } else {
-                showMsg(context, jsonObject.getString("message"));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return dataBean;
-    }
+
     public static DataBean getDataBean(Context context,String response) {
         DataBean dataBean = new DataBean();
         try {
@@ -349,19 +334,20 @@ public class ParseUtils {
     }
     //获取评论Id
     public static int getCommentId(Context context, String response){
-        int id = 0;
+        int code = 0;
         try {
             JSONObject jsonObject = new JSONObject(response);
-            int code = jsonObject.getInt("code");
+            code = jsonObject.getInt("code");
             if (code == 200) {
-                id = jsonObject.getInt("data");
+//                id = jsonObject.getInt("data");
             } else {
                 showMsg(context, jsonObject.getString("message"));
+                Log.e("AAA",jsonObject.getString("message"));
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return id;
+        return code;
     }
     public static boolean checkCode(String jsonData) {
         try {

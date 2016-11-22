@@ -4,20 +4,18 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.OrientationHelper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.xilu.wybz.R;
-import com.xilu.wybz.adapter.InspireRecordViewHolder;
 import com.xilu.wybz.adapter.WorksViewHolder;
-import com.xilu.wybz.bean.UserBean;
-import com.xilu.wybz.bean.UserInfoBean;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.PlayMediaInstance;
-import com.xilu.wybz.presenter.UserPresenter;
-import com.xilu.wybz.ui.IView.IUserView;
+import com.xilu.wybz.presenter.UserCenterListPresenter;
+import com.xilu.wybz.ui.IView.IUserCenterListView;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.ToastUtils;
 import com.xilu.wybz.view.materialdialogs.DialogAction;
@@ -37,8 +35,7 @@ import java.util.List;
 /**
  * Created by hujunwei on 16/6/3.
  */
-public class WorksDataFragment extends BaseListFragment<WorksData> implements IUserView {
-    UserPresenter userPresenter;
+public class WorksDataFragment extends BaseListFragment<WorksData> implements IUserCenterListView {
     public static String TYPE = "type";
     public static String UID = "uid";
     public static String AUTHOR = "author";
@@ -47,16 +44,17 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
     private int selectPos;
     private String COME;
     private String author;
-    private boolean isMe;
     private int workType;//type 1=歌曲，2=歌词，3=灵感记录（删除作品的type）
-    private String[] MYCOMES = new String[]{"mysong", "mylyrics", "myfav", "myrecord"};
-    private String[] OTHERCOMES = new String[]{"usersong", "userlyrics", "userfav"};//他人主页
-    private boolean isFirst;
-    private boolean isFirstTab;
+    private String[] MYCOMES = new String[]{"mysong", "mylyrics", "myfav", "hezuo"};
+    private boolean isFirst = false;
+    private boolean isFirstTab = false;
+
+    UserCenterListPresenter userPresenter;
+
     @Override
     protected void initPresenter() {
         EventBus.getDefault().register(this);
-        userPresenter = new UserPresenter(context, this);
+        userPresenter = new UserCenterListPresenter(context, this);
         userPresenter.init();
     }
 
@@ -64,6 +62,7 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
         if (isFirst) return;
         else isFirst = true;
         recycler.setRefreshing();
+        Log.e("recycler","loadData");
     }
 
     @Override
@@ -77,22 +76,12 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
         if (getArguments() != null) {
             type = getArguments().getInt(TYPE);
             userId = getArguments().getInt(UID);
-            isMe = (userId == PrefsUtil.getUserId(context));
-            if (type == 0) isFirstTab = true;
-            if (!isMe) {
-                COME = OTHERCOMES[type];
-            } else {
-                COME = MYCOMES[type];
-                if(type==0||type==1){//歌曲歌词 需要+1
-                    workType = type+1;
-                }else if(type==3){//灵感记录
-                    workType = type;
-                }
-            }
-            type = type + 1;
+            COME = MYCOMES[type - 1];
+            workType = type;
+            if (type == 1) isFirstTab = true;
+
             author = getArguments().getString(AUTHOR);
         }
-
     }
 
     protected ILayoutManager getLayoutManager() {
@@ -103,7 +92,7 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
     public static WorksDataFragment newInstance(int type, int userId, String author) {
         WorksDataFragment tabFragment = new WorksDataFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt(TYPE, type);
+        bundle.putInt(TYPE, type + 1);
         bundle.putInt(UID, userId);
         bundle.putString(AUTHOR, author);
         tabFragment.setArguments(bundle);
@@ -113,7 +102,6 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
 
     @Override
     public void initView() {
-//        recycler.enablePullToRefresh(false);
     }
 
     @Override
@@ -128,37 +116,14 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
         }
     }
 
-    public void reSet() {
-        userId = PrefsUtil.getUserId(context);
-        author = PrefsUtil.getUserInfo(context).name;
-        isMe = (userId == PrefsUtil.getUserId(context));
-    }
-
     @Override
     public void onRefresh(int action) {
         super.onRefresh(action);
-        userPresenter.loadData(userId, type, page++);
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(Event.LoginOutEvent event) {
-        isFirst = false;
-        if (mDataList != null && mDataList.size() != 0) {
-            page = 1;
-            mDataList.clear();
-            adapter.notifyDataSetChanged();
-            recycler.getRecyclerView().requestLayout();
+        int questType = type;
+        if (type == 4){
+            questType = 5;
         }
-    }
-
-    @Override
-    public void setUserInfo(UserBean userBean) {
-        EventBus.getDefault().post(new Event.UpdataUserBean(userBean, isMe ? 1 : 2));
-    }
-
-    @Override
-    public void setUserInfoBean(UserInfoBean userBean) {
-        EventBus.getDefault().post(new Event.UpdataUserInfoBean(userBean, isMe ? 1 : 2));
+        userPresenter.loadData(questType, page++);
     }
 
     @Override
@@ -173,22 +138,25 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
                 for (WorksData worksData : worksDataList) {
                     if (type < 3)
                         worksData.setAuthor(author);
-                    if (type == 0) {
-                        worksData.type = 4;
-                    } else if (type == 1) {
+                    if (type == 1) {
                         worksData.type = 1;
-                    } else if (type == 2) {
+                    }
+                    if (type == 2) {
                         worksData.type = 2;
+                    }
+                    if (type == 4){
+                        worksData.type = 5;
+                        worksData.author = worksData.getComAuthor();
                     }
                     mDataList.add(worksData);
                 }
+                recycler.enableLoadMore(false);
                 llNoData.setVisibility(View.GONE);
-                recycler.enableLoadMore(true);
-                recycler.getRecyclerView().requestLayout();
-                adapter.notifyDataSetChanged();
                 recycler.onRefreshCompleted();
+                adapter.notifyDataSetChanged();
+                recycler.enableLoadMore(true);
             }
-        }, 600);
+        }, 200);
     }
 
     public void updateList() {
@@ -211,8 +179,45 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
         recycler.enableLoadMore(false);
     }
 
+
+    @Override
+    public void loadNoData() {
+        if (isDestroy) return;
+
+
+
+//        if (type == 4){
+//            mDataList.add(new WorksData());
+//            mDataList.add(new WorksData());
+//            mDataList.add(new WorksData());
+//            mDataList.add(new WorksData());
+//
+//
+//            for (WorksData worksData : mDataList) {
+//                if (type < 3){
+//                    worksData.setAuthor(author);
+//                }
+//                worksData.type = type;
+//                if (type == 4){
+//                    worksData.type = 5;
+//                    worksData.author = worksData.getComAuthor();
+//                }
+//            }
+//
+//            adapter.notifyDataSetChanged();
+//            recycler.onRefreshCompleted();
+//
+//            return;
+//        }
+
+        llNoData.setVisibility(View.VISIBLE);
+        recycler.onRefreshCompleted();
+        recycler.enableLoadMore(false);
+    }
+
+
     public void updateNum(WorksData worksData, int type) {
-        if (isDestroy||mDataList==null) return;
+        if (isDestroy || mDataList == null) return;
         int index = -1;
         for (int i = 0; i < mDataList.size(); i++) {
             if (worksData.itemid == mDataList.get(i).itemid && worksData.type == mDataList.get(i).type) {
@@ -254,7 +259,8 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
             }
         }
         removeItem(selectPos);
-        EventBus.getDefault().post(new Event.UpdateWorksNum(type,-1));
+        userPresenter.loadData(type, page++);
+        EventBus.getDefault().post(new Event.UpdateWorksNum(type, -1));
     }
 
     @Override
@@ -265,20 +271,12 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
     public void updateSuccess() {
         mDataList.get(selectPos).status = 1 - mDataList.get(selectPos).status;
         updateItem(selectPos);
-        ToastUtils.toast(context,"设置成功！");
+        ToastUtils.toast(context, "设置成功！");
     }
 
     @Override
     public void updateFail() {
 
-    }
-
-    @Override
-    public void loadNoData() {
-        if (isDestroy) return;
-        llNoData.setVisibility(View.VISIBLE);
-        recycler.onRefreshCompleted();
-        recycler.enableLoadMore(false);
     }
 
     //移除某个item
@@ -297,7 +295,7 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
 
     //更新某个item
     public void updateData(WorksData worksData) {
-        if (mDataList!=null&&mDataList.size() > 0) {
+        if (mDataList != null && mDataList.size() > 0) {
             int index = -1;
             for (int i = 0; i < mDataList.size(); i++) {
                 if (worksData.itemid == mDataList.get(i).itemid && worksData.status == mDataList.get(i).status) {
@@ -329,6 +327,14 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
         selectPos = pos;
         if (pos >= 0 && pos < mDataList.size()) {
             userPresenter.delete(mDataList.get(pos).getItemid(), workType);
+        }
+    }
+
+    //删除合作作品
+    public void deleteCooperateWorksData(int pos) {
+        selectPos = pos;
+        if (pos >= 0 && pos < mDataList.size()) {
+            userPresenter.deleteCooperate(mDataList.get(pos).itemid);
         }
     }
 
@@ -375,22 +381,23 @@ public class WorksDataFragment extends BaseListFragment<WorksData> implements IU
 
     @Override
     protected BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
-        if (type == 4) {//灵感记录
-            View view = LayoutInflater.from(context).inflate(R.layout.fragment_inspirerecord_item, parent, false);
-            InspireRecordViewHolder holder = new InspireRecordViewHolder(view, context, mDataList, COME,
-                    !isMe ? null : new InspireRecordViewHolder.OnItemClickListener() {
+        if (type == 4) {//合作作品
+            View view = LayoutInflater.from(context).inflate(R.layout.activity_work_list_item2, parent, false);
+            WorksViewHolder holder = new WorksViewHolder(view, context, mDataList, COME,
+                    new WorksViewHolder.OnItemClickListener() {
                         @Override
                         public void onClick(int pos, int which) {
                             if (which == 0) {
-                                showDeleteDialog(pos);
+                                deleteCooperateWorksData(pos);
                             }
                         }
                     });
             return holder;
-        } else {
+        } else
+        {
             View view = LayoutInflater.from(context).inflate(R.layout.activity_work_list_item, parent, false);
             WorksViewHolder holder = new WorksViewHolder(view, context, mDataList, COME,
-                    !isMe ? null : new WorksViewHolder.OnItemClickListener() {
+                    new WorksViewHolder.OnItemClickListener() {
                         @Override
                         public void onClick(int pos, int which) {
                             if (type == 3) {//取消收藏的时候 不提示 直接取消

@@ -143,7 +143,7 @@ public class RankingFragment extends BaseFragment implements IRankingView {
 
     @Override
     public void showErrorView() {
-
+        disMissLoading(ll_loading);
     }
 
     @Override
@@ -154,6 +154,7 @@ public class RankingFragment extends BaseFragment implements IRankingView {
     }
     @Override
     public void loadFinish() {
+        disMissLoading(ll_loading);
         if(isDestroy)return;
         count++;
         if (count == 2) {

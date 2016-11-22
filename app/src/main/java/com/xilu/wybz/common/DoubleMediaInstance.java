@@ -319,7 +319,7 @@ public class DoubleMediaInstance {
                         onProgressLitsener.progress(current);
                     }
                 } else {
-                    Log.d("timer","cancel");
+//                    Log.d("timer","cancel");
                     timer.cancel();
                     timer = null;
                 }
@@ -351,7 +351,9 @@ public class DoubleMediaInstance {
 
 
     public void destroy(){
-
+        mInstance = null;
+        iml = null;
+        stopTimerTask();
         if (isPlay()){
             mediaPlayer1.stop();
             mediaPlayer2.stop();
@@ -364,7 +366,6 @@ public class DoubleMediaInstance {
         }catch (Exception e){
 //            e.printStackTrace();
         }
-        mInstance = null;
     }
 
 

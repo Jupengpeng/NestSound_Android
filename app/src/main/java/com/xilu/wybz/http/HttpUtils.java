@@ -49,12 +49,13 @@ public class HttpUtils {
         if(params==null){
             params = new HashMap<>();
         }
+
         params.put("expiretime",System.currentTimeMillis()+ PhoneUtils.getPhoneImei(context));
         params.put("token", PrefsUtil.getUserInfo(context).loginToken);
 
         String paramString = new Gson().toJson(params);
 
-        Log.e("url","url:"+url+"params:"+paramString);
+        Log.e("url","url:"+url+"?data="+paramString);
         String content = RSAUtils.encodeConvert(RSAUtils.encryptByPublicKey(paramString).getBytes());
         Log.e("url","encode:"+content);
         OkHttpUtils.post()
@@ -66,6 +67,7 @@ public class HttpUtils {
                 .execute(callback);
 
     }
+
     //普通post提交
     public RequestCall postLong(String url, Map<String, String> params, Callback stringCallback) {
         if(params==null){
@@ -93,6 +95,21 @@ public class HttpUtils {
 
         return call;
     }
+
+
+
+
+    //普通post提交
+    public void postSupper(String method, String url, Map<String, String> params, Callback callback) {
+
+        if ("post".equalsIgnoreCase(method)){
+            post(url,params,callback);
+            return;
+        }
+        get(url,params,callback);
+
+    }
+
 
     //普通post提交
     public RequestCall post(String tag, String url, Map<String, String> params, Callback stringCallback) {

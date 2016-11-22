@@ -78,7 +78,7 @@ public class NetWorkUtil {
      * Gps是否打开 需要<uses-permission
      * android:name="android.permission.ACCESS_FINE_LOCATION" />权限
      *
-     * @param context the context
+     * @param context the content
      * @return true, if is gps enabled
      */
     public static boolean isGpsEnabled(Context context) {
@@ -90,7 +90,7 @@ public class NetWorkUtil {
     /**
      * wifi是否打开.
      *
-     * @param context the context
+     * @param context the content
      * @return true, if is wifi enabled
      */
     public static boolean isWifiEnabled(Context context) {
@@ -106,7 +106,7 @@ public class NetWorkUtil {
     /**
      * 判断当前网络是否是wifi网络.
      *
-     * @param context the context
+     * @param context the content
      * @return boolean
      */
     public static boolean isWifi(Context context) {
@@ -120,7 +120,7 @@ public class NetWorkUtil {
     /**
      * 判断当前网络是否是3G网络.
      *
-     * @param context the context
+     * @param context the content
      * @return boolean
      */
     public static boolean is3G(Context context) {

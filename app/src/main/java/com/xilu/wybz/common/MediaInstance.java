@@ -220,12 +220,12 @@ public class MediaInstance {
                 try {
                     if (mediaPlayer != null) {
                         int current = mediaPlayer.getCurrentPosition();
-                        Log.d("timer", "createtime:" + current);
+                        Log.d("timer", "MediaInstance:" + current);
                         if (onProgressLitsener != null && current != 1) {
                             onProgressLitsener.progress(current);
                         }
                     } else {
-                        Log.d("timer", "cancel");
+//                        Log.d("timer", "cancel");
                         timer.cancel();
                         timer = null;
                     }
@@ -273,6 +273,9 @@ public class MediaInstance {
 
 
     public void destroy() {
+        iml = null;
+        mInstance = null;
+        stopTimerTask();
         if (isPlay) {
             mediaPlayer.stop();
         }
@@ -282,7 +285,6 @@ public class MediaInstance {
         } catch (Exception e) {
 //            e.printStackTrace();
         }
-        mInstance = null;
     }
 
 

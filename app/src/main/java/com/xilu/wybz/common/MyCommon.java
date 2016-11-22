@@ -27,6 +27,9 @@ public class MyCommon {
     public static final int END = -1;//结束
     public static final int ERROR = -2;//播放出错
     public static final int FAILED = -3;//获取数据失败
+
+    public static final int CommentType_MuiscTalk = 3;//获取数据失败
+
     //播放模式
     public static final int PLAY_MODEL_ORDER = 0;//顺序播放
     public static final int PLAY_MODEL_RANDOM = 1;//随机播放
@@ -86,14 +89,26 @@ public class MyCommon {
     public final static String PUSH_TYPE_ZAN="zan"; //对我的点赞
     public final static String PUSH_TYPE_FOV="fov"; //对我的收藏
     public final static String PUSH_TYPE_FOCUS="focus"; //对我的关注
+
+    public final static String PUSH_TYPE_SYSTEMMSG="systemmsg";  //系统消息
     public final static String PUSH_TYPE_RECOMENDTOINDEX="recommedToIndex"; //我的作品被推荐至首页
     public final static String PUSH_TYPE_ADDTOSONGLIST="addToSonglist";  //我的作品被添加至歌单
-    public final static String PUSH_TYPE_SYSTEMMSG="systemmsg";  //我的作品被添加至歌单
     public final static String PUSH_TYPE_NEWACTIVITY="newActivity"; //最新活动上线推送
     public final static String PUSH_TYPE_ACTIVITYFINISH="activityFinish";  //活动最终获奖推送
+
+    public final static String PUSH_TYPE_COPYRIGH="copyright"; //保权
     public final static String PUSH_TYPE_COPYRIGHSUCCESS="copyrighSuccess"; //保权成功
-    public final static String PUSH_TYPE_COPYRIGH="copyright"; //保权成功
     public final static String PUSH_TYPE_COPYRIGHFAIL="copyrighFail";  //保权失败
+
+    public final static String PUSH_TYPE_COO="cooperate"; //合作作曲
+
+    public final static String PUSH_TYPE_COO_COMPLETE="cooperateComplete"; //合作完成
+    public final static String PUSH_TYPE_COO_INVITE="cooperateInvite"; //合作邀请
+    public final static String PUSH_TYPE_COO_ACCESS="cooperateAccess";  //合作采纳
+    public final static String PUSH_TYPE_COO_EXPIRE="cooperateExpire";  //合作到期
+    public final static String PUSH_TYPE_COO_LEAVE="cooperateLeave";  //合作留言
+    public final static String PUSH_TYPE_COO_LEAVEREPLY="cooperateLeaveReply";  //合作留言回复
+
 
     //默认歌词图片
     public static List<String> getLyricsPic() {

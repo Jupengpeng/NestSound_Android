@@ -433,6 +433,8 @@ public class MakeWordByTempleateActivity extends BaseListActivity<TemplateLrcBea
         TextView templateWord;
         EditText lrcWord;
         Space space;
+
+        TemplateLrcBean template;
         public SampleViewHolder(View itemView) {
             super(itemView);
             templateWord = (TextView) itemView.findViewById(R.id.lrc_template_temp);
@@ -442,7 +444,7 @@ public class MakeWordByTempleateActivity extends BaseListActivity<TemplateLrcBea
 
         @Override
         public void onBindViewHolder(int position) {
-            final TemplateLrcBean template = mDataList.get(position);
+            template = mDataList.get(position);
 
             if (position == mDataList.size()-1){
                 space.setVisibility(View.VISIBLE);
@@ -450,8 +452,12 @@ public class MakeWordByTempleateActivity extends BaseListActivity<TemplateLrcBea
                 space.setVisibility(View.GONE);
             }
             templateWord.setText(template.template);
-            lrcWord.setText(template.lrcWord);
-//            lrcWord.setHint(template.template);
+            if (template.lrcWord != null){
+                lrcWord.setText(template.lrcWord);
+            } else {
+                lrcWord.setText("");
+            }
+
             lrcWord.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {

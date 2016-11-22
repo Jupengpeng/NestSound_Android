@@ -112,6 +112,8 @@ public class WorksViewHolder extends com.xilu.wybz.view.pull.BaseViewHolder {
             itemNames.add("删除");
         } else if (COME.equals("myfav")) {
             itemNames.add("取消收藏");
+        } else if (COME.equals("hezuo")){
+            itemNames.add("删除");
         }
         new MaterialDialog.Builder(mContext)
                 .title(R.string.dialog_title)
@@ -132,11 +134,22 @@ public class WorksViewHolder extends com.xilu.wybz.view.pull.BaseViewHolder {
     @Override
     public void onItemClick(View view, int position) {
         if (position >= 0 && position < mDataList.size()) {
-            if (mDataList.get(position).type == 1 || mDataList.get(position).type == 0) {
+            //ygs 他人页面收藏打不开  缺少type判断
+            WorksData worksData = mDataList.get(position);
+            if (worksData.type == 1 || mDataList.get(position).type == 0 || mDataList.get(position).type == 3) {
                 toPlayPos(position);
-            } else if (mDataList.get(position).type == 2) {
-                LyricsdisplayActivity.toLyricsdisplayActivity(mContext, mDataList.get(position).getItemid(), mDataList.get(position).name);
+                return;
             }
+            if (worksData.type == 2) {
+                LyricsdisplayActivity.toLyricsdisplayActivity(mContext, mDataList.get(position).getItemid(), mDataList.get(position).name);
+                return;
+            }
+            if (worksData.type == 5){
+                PlayAudioActivity.toPlayAudioActivity(mContext, worksData.getItemid(), "", COME);
+            }else{
+                PlayAudioActivity.toPlayAudioActivity(mContext, worksData.getItemid(), "", "hezuo");
+            }
+
         }
     }
 

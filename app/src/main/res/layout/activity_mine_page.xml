@@ -3,7 +3,6 @@
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/main_bg"
     android:orientation="vertical">
 
     <include layout="@layout/view_toolbar_play" />
@@ -12,7 +11,6 @@
         android:id="@+id/ll_mine_page"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
         android:gravity="center_vertical"
         android:paddingBottom="15dp"
         android:paddingLeft="15dp"
@@ -114,10 +112,13 @@
             />
         </LinearLayout>
 
-        <include layout="@layout/view_spit_line" />
 
+
+
+
+        <include layout="@layout/view_spit_line" />
         <LinearLayout
-            android:id="@+id/ll_fav"
+            android:id="@+id/ll_coopera"
             android:layout_width="match_parent"
             android:layout_height="46dp"
             android:background="?selectableItemBackground"
@@ -129,8 +130,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="我的收藏"
-                android:drawableLeft="@drawable/ic_myfav"
+                android:text="合作作品"
+                android:drawableLeft="@drawable/ic_hezuozuopin"
                 android:gravity="center_vertical"
                 android:drawablePadding="15dp"
                 android:textColor="@color/main_text_color"
@@ -142,9 +143,7 @@
                 android:src="@drawable/ic_setting_arrow" />
             />
         </LinearLayout>
-
         <include layout="@layout/view_spit_line" />
-
         <LinearLayout
             android:id="@+id/ll_record"
             android:layout_width="match_parent"
@@ -171,7 +170,33 @@
                 android:src="@drawable/ic_setting_arrow" />
             />
         </LinearLayout>
+        <include layout="@layout/view_spit_line" />
+        <LinearLayout
+            android:id="@+id/ll_fav"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:background="?selectableItemBackground"
+            android:gravity="center_vertical"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp">
 
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="我的收藏"
+                android:drawableLeft="@drawable/ic_myfav"
+                android:gravity="center_vertical"
+                android:drawablePadding="15dp"
+                android:textColor="@color/main_text_color"
+                android:textSize="15sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_setting_arrow" />
+            />
+        </LinearLayout>
         <include layout="@layout/view_spit_line" />
 
         <LinearLayout
@@ -225,35 +250,6 @@
                 android:layout_weight="1"
                 android:text="个人资料"
                 android:drawableLeft="@drawable/ic_myinfo"
-                android:gravity="center_vertical"
-                android:drawablePadding="15dp"
-                android:textColor="@color/main_text_color"
-                android:textSize="15sp" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_setting_arrow" />
-            />
-        </LinearLayout>
-
-        <include layout="@layout/view_spit_line" />
-
-        <LinearLayout
-            android:id="@+id/ll_share"
-            android:layout_width="match_parent"
-            android:layout_height="46dp"
-            android:background="?selectableItemBackground"
-            android:gravity="center_vertical"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="推荐给好友"
-                android:drawableLeft="@drawable/ic_share_app"
                 android:gravity="center_vertical"
                 android:drawablePadding="15dp"
                 android:textColor="@color/main_text_color"

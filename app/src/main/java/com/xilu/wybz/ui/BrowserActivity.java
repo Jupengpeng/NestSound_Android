@@ -7,12 +7,12 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Message;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewStub;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.DownloadListener;
@@ -21,19 +21,30 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.xilu.wybz.R;
+import com.xilu.wybz.bean.MusicTalk;
 import com.xilu.wybz.common.Event;
+import com.xilu.wybz.common.KeySet;
+import com.xilu.wybz.presenter.MusicTalkPresenter;
+import com.xilu.wybz.ui.IView.IMusicTalkDetailView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
 import com.xilu.wybz.ui.login.LoginActivity;
 import com.xilu.wybz.ui.market.MatchActivity;
 import com.xilu.wybz.ui.market.StarInfoActivity;
 import com.xilu.wybz.ui.market.StarListActivity;
+import com.xilu.wybz.ui.song.CommentActivity;
 import com.xilu.wybz.utils.PhoneUtils;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtils;
+import com.xilu.wybz.utils.SystemUtils;
+import com.xilu.wybz.view.dialog.ShareDialog;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -42,29 +53,47 @@ import java.util.List;
 
 import butterknife.Bind;
 
+import static com.xilu.wybz.common.MyCommon.CommentType_MuiscTalk;
+
 /**
  * Created by June on 2016/3/2.
  */
-public class BrowserActivity extends ToolbarActivity {
-
-    public static final int FILECHOOSER_RESULTCODE = 200;
-
+public class BrowserActivity extends ToolbarActivity implements IMusicTalkDetailView {
     @Bind(R.id.pb)
     ProgressBar mProgressBar;
     @Bind(R.id.webview)
     WebView mWebView;
 
+    private LinearLayout llFootBar;
+    private LinearLayout llZan;
+    private LinearLayout llComment;
+    private LinearLayout llShare;
+    private ImageView ivZanIcon;
+    private TextView tvZanNum;
+    private TextView tvShareNum;
+    private TextView tvCommentNum;
     private ValueCallback<Uri> mUploadMessage;
     private ValueCallback<Uri[]> mUploadCallbackAboveL;
     private String url = "";
     private List<String> titles;
+    private int isZan;
+    private ShareDialog shareDialog;
+    private MusicTalk musicTalk;
+    public static final int FILECHOOSER_RESULTCODE = 200;
+    private MusicTalkPresenter musicTalkPresenter;
+
 
     public static void toBrowserActivity(Context context, String url) {
         Intent intent = new Intent(context, BrowserActivity.class);
         intent.putExtra("url", url);
         context.startActivity(intent);
     }
-
+    //乐说过来的
+    public static void toBrowserActivity(Context context, MusicTalk musicTalk) {
+        Intent intent = new Intent(context, BrowserActivity.class);
+        intent.putExtra(KeySet.KEY_MUSICTALK, musicTalk);
+        context.startActivity(intent);
+    }
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_webview;
@@ -73,12 +102,48 @@ public class BrowserActivity extends ToolbarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
         initViews();
         initData();
-
         mProgressBar.setProgress(20);
     }
-
+    public void loadFootBar() {
+        ViewStub stub = (ViewStub) findViewById(R.id.view_musictalk_footbar);
+        llFootBar = (LinearLayout) stub.inflate();
+        llZan = (LinearLayout) llFootBar.findViewById(R.id.ll_zan);
+        llShare = (LinearLayout) llFootBar.findViewById(R.id.ll_share);
+        llComment = (LinearLayout) llFootBar.findViewById(R.id.ll_comment);
+        tvCommentNum = (TextView) llFootBar.findViewById(R.id.tv_comment_num);
+        tvShareNum = (TextView) llFootBar.findViewById(R.id.tv_share_num);
+        tvZanNum = (TextView) llFootBar.findViewById(R.id.tv_zan_num);
+        ivZanIcon = (ImageView) llFootBar.findViewById(R.id.iv_zan_icon);
+        llComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (SystemUtils.isLogin(context)) {
+                    CommentActivity.toCommentActivity(context,musicTalk.itemid,CommentType_MuiscTalk,false);
+                }
+            }
+        });
+        llShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(shareDialog==null){
+                    shareDialog = new ShareDialog(BrowserActivity.this,musicTalk);
+                    musicTalkPresenter.shareCount(musicTalk.itemid);
+                }
+                shareDialog.showDialog();
+            }
+        });
+        llZan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (SystemUtils.isLogin(context)) {
+                    musicTalkPresenter.Zan(musicTalk.itemid);
+                }
+            }
+        });
+    }
     public void initViews() {
         titles = new ArrayList<>();
         setTitle("网页加载中...");
@@ -207,6 +272,73 @@ public class BrowserActivity extends ToolbarActivity {
         return cookieManager.getCookie(url);
     }
 
+    @Override
+    public void loadSuccess(MusicTalk musicTalkNum) {
+        isZan = musicTalkNum.isZan;
+        musicTalk.commentnum = musicTalkNum.commentnum;
+        musicTalk.sharenum = musicTalkNum.sharenum;
+        musicTalk.zannum = musicTalkNum.zannum;
+
+        ivZanIcon.setImageResource(isZan==0?R.drawable.ic_musictalk_zan:R.drawable.ic_musictalk_zaned);
+        tvCommentNum.setText("("+musicTalkNum.commentnum+")");
+        tvShareNum.setText("("+musicTalkNum.sharenum+")");
+        tvZanNum.setText("("+musicTalkNum.zannum+")");
+    }
+
+    @Override
+    public void loadError() {
+
+    }
+
+    @Override
+    public void zanSuccess() {
+        isZan = 1-isZan;
+        ivZanIcon.setImageResource(isZan==0?R.drawable.ic_musictalk_zan:R.drawable.ic_musictalk_zaned);
+        if(isZan==1){
+            musicTalk.zannum += 1;
+        }else{
+            musicTalk.zannum -= 1;
+        }
+        tvZanNum.setText("("+musicTalk.zannum+")");
+    }
+
+    @Override
+    public void zanFail() {
+
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(Event.ShareSuccessEvent event) {
+        if(musicTalk!=null){
+            Log.e("AAA","00000000");
+        }
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(Event.UpdataCommentNumEvent event) {
+        if(event.getType()== CommentType_MuiscTalk){
+            int count = event.getNum();
+            musicTalk.commentnum+=count;
+            tvCommentNum.setText("("+musicTalk.commentnum+")");
+        }
+    }
+
+
+    @Override
+    public void shareSuccess() {
+        Log.e("AAA","11111111111");
+        musicTalk.sharenum += 1;
+        tvShareNum.setText("("+musicTalk.sharenum+")");
+    }
+
+    @Override
+    public void shareFail() {
+
+    }
+
+    @Override
+    public void initView() {
+
+    }
+
 
     public class MyWebViewChromeClient extends WebChromeClient {
         // 监听网页加载进度
@@ -224,11 +356,9 @@ public class BrowserActivity extends ToolbarActivity {
 
         @Override
         public void onReceivedTitle(WebView view, String title) {
-            titles.add(title);
-            if (!TextUtils.isEmpty(title)) {
-                setTitle(title);
-            }
             super.onReceivedTitle(view, title);
+            titles.add(title);
+            setTitle(title);
         }
 
         // For Android < 3.0
@@ -301,12 +431,22 @@ public class BrowserActivity extends ToolbarActivity {
         Log.e("cookies", "LoginSuccessEvent:" + getCookies(context, url));
     }
 
-
     // 内部类
     public void initData() {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            url = bundle.getString("url");
+            musicTalk = (MusicTalk) bundle.getSerializable(KeySet.KEY_MUSICTALK);
+            if(musicTalk==null){
+                url = bundle.getString("url");
+            }else{
+                url = musicTalk.url;
+//                musicTalk.shareurl = musicTalk.url;
+            }
+        }
+        if(musicTalk!=null){
+            loadFootBar();
+            musicTalkPresenter = new MusicTalkPresenter(context,this);
+            musicTalkPresenter.getDetail(musicTalk.itemid);
         }
         int id = PrefsUtil.getUserId(context);
         synCookies(context, url, "imei=" + PhoneUtils.getPhoneImei(context) + ",ycua=APP_ANDROID,userId=" + id);
@@ -384,11 +524,12 @@ public class BrowserActivity extends ToolbarActivity {
 
     @Override
     protected void onDestroy() {
+        super.onDestroy();
         if (mWebView != null) {
             mWebView.removeAllViews();
             mWebView.destroy();
             mWebView = null;
         }
-        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

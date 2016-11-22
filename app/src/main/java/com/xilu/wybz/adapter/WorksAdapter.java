@@ -58,14 +58,20 @@ public class WorksAdapter extends RecyclerView.Adapter<WorksAdapter.WorksViewHol
         }
         String url = MyCommon.getImageUrl(worksData.getPic(), itemWidth, itemWidth);
         ImageLoadUtil.loadImage(url, holder.ivCover);
+        if(worksData.status==3){
+            holder.tvAuthor.setText("合作作品");
+        }
         if(StringUtils.isNotBlank(worksData.name)) {
             holder.tvName.setText(worksData.name);
         }else{
             holder.tvName.setText(worksData.title);
         }
-        holder.tvAuthor.setText(worksData.author);
+        if(worksData.status==3){
+            holder.tvAuthor.setText("合作作品");
+        }else{
+        holder.tvAuthor.setText(worksData.author);}
         holder.tvCount.setText(NumberUtil.format(worksData.looknum));
-        holder.ivType.setImageResource(worksData.status == 1 ? R.drawable.ic_song_type : R.drawable.ic_lyric_type);
+        holder.ivType.setImageResource(worksData.status == 1 ||worksData.status==3? R.drawable.ic_song_type : R.drawable.ic_lyric_type);
         if (mOnItemClickListener != null) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

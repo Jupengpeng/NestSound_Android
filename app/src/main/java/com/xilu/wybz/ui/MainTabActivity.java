@@ -24,7 +24,7 @@ import com.xilu.wybz.ui.find.FindActivity;
 import com.xilu.wybz.ui.login.LoginActivity;
 import com.xilu.wybz.ui.lyrics.MakeWordActivity;
 import com.xilu.wybz.ui.main.MainActivity;
-import com.xilu.wybz.ui.mine.NewMineActivity;
+import com.xilu.wybz.ui.mine.MineActivity;
 import com.xilu.wybz.ui.msg.MsgActivity;
 import com.xilu.wybz.ui.record.InspireRecordActivity;
 import com.xilu.wybz.ui.song.HotCatalogActivity;
@@ -141,7 +141,7 @@ public class MainTabActivity extends BaseActivity {
         list.add(getView("FIND", intent));
         intent = new Intent(this, MsgActivity.class);
         list.add(getView("MSG", intent));
-        intent = new Intent(this, NewMineActivity.class);
+        intent = new Intent(this, MineActivity.class);
         list.add(getView("MINE", intent));
         adapter = new MyPagerAdapter(list);
         viewpager.setAdapter(adapter);
@@ -281,6 +281,11 @@ public class MainTabActivity extends BaseActivity {
     public void onEventMainThread(Event.MsgTipEvent event) {
         ivTip.setVisibility(event.isShow()?View.VISIBLE:View.GONE);
     }
+
+    /**
+     * onEventMainThread.
+     * @param event
+     */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(Event.LoginOutEvent event) {
         JPushInterface.setAliasAndTags(getApplicationContext(), "", null, mAliasCallback);
@@ -291,6 +296,12 @@ public class MainTabActivity extends BaseActivity {
         }
     }
 
+    /**
+     * onActivityResult.
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // 获取当前活动的Activity实例
@@ -313,6 +324,13 @@ public class MainTabActivity extends BaseActivity {
         if (mMoreWindow != null) {
             mMoreWindow.destroy();
         }
+
+        manager.dispatchDestroy(true);
+        manager = null;
+        list = null;
+        adapter = null;
+
+
         EventBus.getDefault().unregister(this);
     }
 
@@ -323,7 +341,7 @@ public class MainTabActivity extends BaseActivity {
                 mMoreWindow.closeByAnimation();
                 return true;
             }
-            if ((System.currentTimeMillis() - exitTime) < 2000) {
+            if ((System.currentTimeMillis() - exitTime) < 1000) {
                 if (MainService.ids.size() > 0) {
                     String ids = "";
                     for (int i = 0; i < MainService.ids.size(); i++) {

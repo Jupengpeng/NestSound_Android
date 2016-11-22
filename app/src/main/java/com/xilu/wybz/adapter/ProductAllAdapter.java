@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.xilu.wybz.ui.preservation.ProductsFragment;
+import com.xilu.wybz.ui.preserve.ProductsFragment;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,6 +28,7 @@ public class ProductAllAdapter extends FragmentStatePagerAdapter{
                 return lyricFragment;
             case 1:
                 ProductsFragment songFragment = new ProductsFragment();
+                songFragment.viewType = 2;
                 mPageReferenceMap.put(position,songFragment);
                 return songFragment;
 

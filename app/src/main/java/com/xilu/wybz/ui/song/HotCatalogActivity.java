@@ -3,11 +3,8 @@ package com.xilu.wybz.ui.song;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,6 +21,7 @@ import com.xilu.wybz.R;
 import com.xilu.wybz.adapter.SelectAdapter;
 import com.xilu.wybz.bean.HotBean;
 import com.xilu.wybz.bean.HotCatalog;
+import com.xilu.wybz.bean.PreinfoBean;
 import com.xilu.wybz.bean.TemplateBean;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.KeySet;
@@ -39,7 +37,6 @@ import com.xilu.wybz.utils.FormatHelper;
 import com.xilu.wybz.utils.NumberUtil;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtils;
-import com.xilu.wybz.view.FlowLayout;
 import com.xilu.wybz.view.GridSpacingItemDecoration;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.PullRecycler;
@@ -76,6 +73,7 @@ public class HotCatalogActivity extends BaseSectionListActivity<TemplateBean> im
     private int column = 1;
     private int column2 = 4;
     private int cid = 0;
+    private int tempCid = 0;
     private HotCatalogPresenter hotCatalogPresenter;
     private HotPresenter hotPresenter;
     private HotBean hotBean;
@@ -85,6 +83,12 @@ public class HotCatalogActivity extends BaseSectionListActivity<TemplateBean> im
     private HotCatalog typeBean;
     private SelectAdapter adapter1, adapter2;
 
+
+
+
+    int cooperatype;// 1是从合作按钮过来的
+    private PreinfoBean preinfoBean;
+    private int did;
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_hotcatalog_list;
@@ -111,6 +115,10 @@ public class HotCatalogActivity extends BaseSectionListActivity<TemplateBean> im
             aid = intent.getStringExtra(KeySet.KEY_ID);
         }
 
+        cooperatype = getIntent().getIntExtra("coopera", 0);
+        did = getIntent().getIntExtra("did",0);
+        preinfoBean = (PreinfoBean) getIntent().getSerializableExtra("preinfoBean");
+
         int space10 = DensityUtil.dip2px(context, 10);
 
         catalogRecyler.setNestedScrollingEnabled(false);
@@ -126,6 +134,10 @@ public class HotCatalogActivity extends BaseSectionListActivity<TemplateBean> im
     protected void initPresenter() {
         hotCatalogPresenter = new HotCatalogPresenter(this, this);
         hotCatalogPresenter.init();
+
+
+        hotPresenter = new HotPresenter(context, this);
+        recycler.setRefreshing();
     }
 
     @Override
@@ -133,8 +145,8 @@ public class HotCatalogActivity extends BaseSectionListActivity<TemplateBean> im
         setTitle("原唱伴奏");
         hideRight();
         setUpData();
-        recycler.enablePullToRefresh(false);
-        hotBean = PrefsUtil.getHotBean(context);
+        recycler.enablePullToRefresh(true);
+//        hotBean = PrefsUtil.getHotBean(context);
         if (hotBean != null && hotBean.simplesing != null) {
             mDataList = new ArrayList<>();
             showHotCatalog(hotBean);
@@ -173,9 +185,11 @@ public class HotCatalogActivity extends BaseSectionListActivity<TemplateBean> im
         page = 1;
         recycler.setRefreshing();
     }
+
     @OnClick(R.id.ll_select)
     public void onSelectClick() {
     }
+
     public class SectionHeaderViewHolder extends BaseViewHolder {
         @Bind(R.id.iv_qc)
         SimpleDraweeView ivQc;
@@ -196,11 +210,19 @@ public class HotCatalogActivity extends BaseSectionListActivity<TemplateBean> im
                 public void onClick(View v) {
                     if (hotBean != null) {
                         if (flash) {
-                            EventBus.getDefault().post(new Event.ImportHotEvent(hotBean.simplesing));
-                            finish();
+//                            if (cooperatype == 1) {
+//                                MakeSongActivity.toMakeSongActivity(context, hotBean.simplesing, lyric, title, nickname, cooperatype,did,iuid,iusername);
+//                            } else {
+                                EventBus.getDefault().post(new Event.ImportHotEvent(hotBean.simplesing));
+                                finish();
+//                            }
                         } else {
                             hotBean.simplesing.aid = aid;
-                            MakeSongActivity.toMakeSongActivity(context, hotBean.simplesing);
+                            if (cooperatype == 1) {
+                                MakeSongActivity.toMakeSongActivity(context, hotBean.simplesing,cooperatype,preinfoBean,did);
+                            } else {
+                                MakeSongActivity.toMakeSongActivity(context, hotBean.simplesing);
+                            }
                         }
                     }
                 }
@@ -228,18 +250,22 @@ public class HotCatalogActivity extends BaseSectionListActivity<TemplateBean> im
     public void showHotCatalog(HotBean hotBean) {
         if (isDestroy) return;
         this.hotBean = hotBean;
+
         PrefsUtil.saveHotBean(context, hotBean);
+
         if (hotPresenter == null) {
             hotPresenter = new HotPresenter(context, this);
             recycler.setRefreshing();
         }
         if (adapter1 == null) {
             List<HotCatalog> hotCatalogs = new ArrayList<>();
-            typeBean = new HotCatalog();
-            typeBean.categoryname = "全部";
-            typeBean.isCheck = true;
-            hotCatalogs.add(typeBean);
             hotCatalogs.addAll(hotBean.list);
+            if (hotCatalogs.size() > 0) {
+                HotCatalog catalog = hotCatalogs.get(0);
+                catalog.isCheck = true;
+
+            }
+
             List<HotCatalog> types = new ArrayList<>();
             typeBean = new HotCatalog();
             typeBean.categoryname = "最新";
@@ -354,10 +380,18 @@ public class HotCatalogActivity extends BaseSectionListActivity<TemplateBean> im
             TemplateBean bean = mDataList.get(position).t;
             bean.aid = aid;
             if (flash) {
-                EventBus.getDefault().post(new Event.ImportHotEvent(bean));
-                finish();
+//                if (cooperatype == 1) {
+//                    MakeSongActivity.toMakeSongActivity(context, hotBean.simplesing, lyric, title, nickname, cooperatype,did,iuid,iusername);
+//                } else {
+                    EventBus.getDefault().post(new Event.ImportHotEvent(bean));
+                    finish();
+//                }
             } else {
-                MakeSongActivity.toMakeSongActivity(context, bean);
+                if (cooperatype == 1) {
+                    MakeSongActivity.toMakeSongActivity(context, bean,cooperatype,preinfoBean,did);
+                } else {
+                    MakeSongActivity.toMakeSongActivity(context, bean);
+                }
             }
         }
     }
@@ -372,25 +406,25 @@ public class HotCatalogActivity extends BaseSectionListActivity<TemplateBean> im
 
     @Override
     public void showHotData(List<TemplateBean> templateBeens) {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (isDestroy) return;
-                if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
-                    mDataList.clear();
-                }
-                if (mDataList.size() == 0) {
-                    mDataList.add(new SectionData<>(true, 0, "清唱"));
-                }
-                llNoData.setVisibility(View.GONE);
-                recycler.enableLoadMore(true);
-                for (TemplateBean templateBean : templateBeens) {
-                    mDataList.add(new SectionData(templateBean));
-                }
-                adapter.notifyDataSetChanged();
-                recycler.onRefreshCompleted();
-            }
-        }, 600);
+        if (isDestroy) return;
+        if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
+            mDataList.clear();
+        }
+        if (mDataList.size() == 0) {
+            mDataList.add(new SectionData<>(true, 0, "清唱"));
+        }
+        llNoData.setVisibility(View.GONE);
+        if (templateBeens == null || templateBeens.size() < 10) {
+            recycler.enableLoadMore(false);
+        } else {
+
+            recycler.enableLoadMore(true);
+        }
+        for (TemplateBean templateBean : templateBeens) {
+            mDataList.add(new SectionData(templateBean));
+        }
+        recycler.onRefreshCompleted();
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -414,6 +448,7 @@ public class HotCatalogActivity extends BaseSectionListActivity<TemplateBean> im
     @Override
     public void loadNoData() {
         if (isDestroy) return;
+        recycler.onRefreshCompleted();
         llNoData.setVisibility(View.VISIBLE);
     }
 
@@ -428,7 +463,11 @@ public class HotCatalogActivity extends BaseSectionListActivity<TemplateBean> im
         switch (item.getItemId()) {
             case R.id.menu_catalog:
                 if (llSelect.getVisibility() == View.GONE) {
+                    if (hotBean == null || hotBean.list.size() == 0) {
+                        hotCatalogPresenter.loadData(1);
+                    }
                     showSelect();
+
                 } else {
                     hideSelect();
                 }
@@ -437,7 +476,10 @@ public class HotCatalogActivity extends BaseSectionListActivity<TemplateBean> im
         return super.onOptionsItemSelected(item);
     }
 
+    private boolean keyBack = false;
+
     private void showSelect() {
+        keyBack = true;
         llSelect.setVisibility(View.VISIBLE);
         llSelect.startAnimation(AnimationUtils.loadAnimation(context, R.anim.top_in_anim));
         flowCover.setVisibility(View.VISIBLE);
@@ -445,9 +487,19 @@ public class HotCatalogActivity extends BaseSectionListActivity<TemplateBean> im
     }
 
     private void hideSelect() {
+        keyBack = false;
         llSelect.setVisibility(View.GONE);
         llSelect.startAnimation(AnimationUtils.loadAnimation(context, R.anim.top_out_anim));
         flowCover.setVisibility(View.GONE);
         flowCover.startAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_out));
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (keyBack) {
+            hideSelect();
+            return;
+        }
+        super.onBackPressed();
     }
 }

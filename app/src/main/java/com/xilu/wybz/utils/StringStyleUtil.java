@@ -13,9 +13,11 @@ import android.view.View;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.xilu.wybz.bean.CommentBean;
+import com.xilu.wybz.bean.CooperaDetailsBean;
+import com.xilu.wybz.bean.CooperaMessageBean;
 import com.xilu.wybz.bean.MsgCommentBean;
 import com.xilu.wybz.bean.WorksData;
-import com.xilu.wybz.ui.mine.UserInfoActivity;
+import com.xilu.wybz.ui.mine.OtherUserCenterActivity;
 
 import java.util.List;
 
@@ -41,7 +43,6 @@ public class StringStyleUtil {
         return spannableString;
     }
 
-
     public static SpannableString getWorkCommentStyleStr(Context context, CommentBean commentBean) {
         String nickName = commentBean.target_nickname;
         if (StringUtils.isBlank(nickName)){
@@ -55,7 +56,32 @@ public class StringStyleUtil {
         spannableString.setSpan(new UserNameClickableSpan(context,commentBean),2,2+nickName.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         return spannableString;
     }
+    public static SpannableString getWorkMessageStyleStr(Context context, CooperaMessageBean cooperaMessageBean) {
+        String nickName = cooperaMessageBean.getTarget_nickname();
+        if (StringUtils.isBlank(nickName)){
+            return new SpannableString(cooperaMessageBean.getComment());
+        }
+        String comment ="回复" + nickName+"："+cooperaMessageBean.getComment();
+        SpannableString spannableString = new SpannableString(comment);
 
+//        spannableString.setSpan(new ForegroundColorSpan(0xff539ac2),2,2+nickName.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+
+        spannableString.setSpan(new UserNameClickableSpan(context,cooperaMessageBean),2,2+nickName.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        return spannableString;
+    }
+    public static SpannableString getWorkMessageStyleStr(Context context, CooperaDetailsBean.CommentListBean commentListBean) {
+        String nickName = commentListBean.getTarget_nickname();
+        if (StringUtils.isBlank(nickName)){
+            return new SpannableString(commentListBean.getComment());
+        }
+        String comment ="回复" + nickName+"："+commentListBean.getComment();
+        SpannableString spannableString = new SpannableString(comment);
+
+//        spannableString.setSpan(new ForegroundColorSpan(0xff539ac2),2,2+nickName.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+
+        spannableString.setSpan(new UserNameClickableSpan(context,commentListBean),2,2+nickName.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        return spannableString;
+    }
     public static SpannableString getUserLink(Context context, String userName, int uid) {
         SpannableString spannableString = new SpannableString(userName);
         spannableString.setSpan(new UserNameLinkClickableSpan(context,userName,uid),0,userName.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
@@ -63,9 +89,9 @@ public class StringStyleUtil {
     }
 
     public static SpannableString getParentCommentStyleStr(CommentBean commentBean) {
-        String comment ="我:" + commentBean.getComment();
+        String comment =commentBean.nickname+":" + commentBean.getComment();
         SpannableString spannableString = new SpannableString(comment);
-        spannableString.setSpan(new ForegroundColorSpan(0xff539ac2),0,1, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(new ForegroundColorSpan(0xff539ac2),0,commentBean.nickname.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         return spannableString;
     }
     //获取歌词内容
@@ -151,7 +177,7 @@ public class StringStyleUtil {
         @Override
         public void onClick(View widget) {
             if(PrefsUtil.getUserId(context)!=uid) {
-                UserInfoActivity.toUserInfoActivity(context, uid, name);
+                OtherUserCenterActivity.toUserInfoActivity(context, uid, name);
             }
         }
 
@@ -160,11 +186,20 @@ public class StringStyleUtil {
     public static class UserNameClickableSpan extends ClickableSpan{
         public Context context;
         CommentBean comment;
+        CooperaMessageBean cooperaMessageBean;
+        CooperaDetailsBean.CommentListBean commentListBeans;
         public UserNameClickableSpan(Context context,CommentBean comment) {
             this.context = context;
             this.comment = comment;
         }
-
+        public UserNameClickableSpan(Context context,CooperaMessageBean cooperaMessageBean) {
+            this.context = context;
+            this.cooperaMessageBean = cooperaMessageBean;
+        }
+        public UserNameClickableSpan(Context context,CooperaDetailsBean.CommentListBean commentListBean) {
+            this.context = context;
+            this.commentListBeans = commentListBean;
+        }
         @Override
         public void updateDrawState(TextPaint ds) {
             super.updateDrawState(ds);
@@ -176,7 +211,7 @@ public class StringStyleUtil {
         @Override
         public void onClick(View widget) {
             if(PrefsUtil.getUserId(context)!=comment.target_uid) {
-                UserInfoActivity.toUserInfoActivity(context, comment.target_uid, comment.target_nickname);
+                OtherUserCenterActivity.toUserInfoActivity(context, comment.target_uid, comment.target_nickname);
             }
         }
 

@@ -9,25 +9,22 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.facebook.imageutils.BitmapUtil;
 import com.xilu.wybz.R;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.KeySet;
 import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.ui.MainTabActivity;
-import com.xilu.wybz.ui.main.MainActivity;
 import com.xilu.wybz.ui.mine.FollowAndFansActivity;
 import com.xilu.wybz.ui.msg.MsgCommentActivity;
+import com.xilu.wybz.ui.msg.MsgCooprateActivity;
 import com.xilu.wybz.ui.msg.MsgFavActivity;
+import com.xilu.wybz.ui.msg.MsgPreserveActivity;
 import com.xilu.wybz.ui.msg.MsgSystemActivity;
 import com.xilu.wybz.ui.msg.MsgZambiaActivity;
-import com.xilu.wybz.utils.AppInfoUtil;
 import com.xilu.wybz.utils.BitmapUtils;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtils;
-import com.xilu.wybz.utils.ToastUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
@@ -78,11 +75,11 @@ public class MyReceiver extends BroadcastReceiver {
         } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
             Log.e(TAG, "[MyReceiver] 用户点击打开了通知");
             //打开自定义的Activity
-//        	Intent i = new Intent(context, TestActivity.class);
+//        	Intent i = new Intent(content, TestActivity.class);
 //        	i.putExtras(bundle);
 //        	//i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //        	i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP );
-//        	context.startActivity(i);
+//        	content.startActivity(i);
         } else if (JPushInterface.ACTION_RICHPUSH_CALLBACK.equals(intent.getAction())) {
             Log.e(TAG, "[MyReceiver] 用户收到到RICH PUSH CALLBACK: " + bundle.getString(JPushInterface.EXTRA_EXTRA));
             //在这里根据 JPushInterface.EXTRA_EXTRA 的内容处理代码，比如打开新的Activity， 打开一个网页等..
@@ -140,6 +137,11 @@ public class MyReceiver extends BroadcastReceiver {
         }
     }
 
+    /**
+     *
+     * @param context
+     * @param msg
+     */
     private void notify(Context context, String msg) {
         notifyId = (int) (System.currentTimeMillis() / 1000);
         String content = "";
@@ -166,27 +168,55 @@ public class MyReceiver extends BroadcastReceiver {
                 type.equals(MyCommon.PUSH_TYPE_RECOMENDTOINDEX) || type.equals(MyCommon.PUSH_TYPE_ADDTOSONGLIST)
                 ) {
             type = MyCommon.PUSH_TYPE_SYSTEMMSG;
-        }else if(type.contains(MyCommon.PUSH_TYPE_COPYRIGH)){
+        } else if (type.contains(MyCommon.PUSH_TYPE_COPYRIGHSUCCESS) || type.contains(MyCommon.PUSH_TYPE_COPYRIGHFAIL )) {
             type = MyCommon.PUSH_TYPE_COPYRIGH;
+        } else if (type.equals(MyCommon.PUSH_TYPE_COO_COMPLETE)
+                ||type.equals(MyCommon.PUSH_TYPE_COO_INVITE)
+                ||type.equals(MyCommon.PUSH_TYPE_COO_ACCESS)
+                ||type.equals(MyCommon.PUSH_TYPE_COO_EXPIRE)
+                ||type.equals(MyCommon.PUSH_TYPE_COO_LEAVE)
+                ||type.equals(MyCommon.PUSH_TYPE_COO_LEAVEREPLY)
+                ){
+            type = MyCommon.PUSH_TYPE_COO;
         }
-//        if (AppInfoUtil.isRunningForeground(context)) {//app在前台
-            if (type.equals(MyCommon.PUSH_TYPE_COMMENT)) {
-                openintent = new Intent(context, MsgCommentActivity.class);
-            } else if (type.equals(MyCommon.PUSH_TYPE_ZAN)) {
-                openintent = new Intent(context, MsgZambiaActivity.class);
-            } else if (type.equals(MyCommon.PUSH_TYPE_FOV)) {
-                openintent = new Intent(context, MsgFavActivity.class);
-            } else if (type.equals(MyCommon.PUSH_TYPE_SYSTEMMSG)) {
-                openintent = new Intent(context, MsgSystemActivity.class);
-            } else if (type.equals(MyCommon.PUSH_TYPE_FOCUS)) {
-                openintent = new Intent(context, FollowAndFansActivity.class);
-                openintent.putExtra(KeySet.KEY_TYPE, KeySet.TYPE_FANS_ACT);
-                openintent.putExtra(KeySet.KEY_UID, PrefsUtil.getUserId(context));
-            }
-//        } else {//app在后台 需要打开MainTabActivity 再进行跳转
-//            openintent = new Intent(context, MainTabActivity.class);
+//        if (AppInfoUtil.isRunningForeground(content)) {//app在前台
+//           } else {//app在后台 需要打开MainTabActivity 再进行跳转
+//            openintent = new Intent(content, MainTabActivity.class);
 //            openintent.putExtra("type", type);
 //        }
+        if (type.equals(MyCommon.PUSH_TYPE_COMMENT)) {
+            openintent = new Intent(context, MsgCommentActivity.class);
+        } else if (type.equals(MyCommon.PUSH_TYPE_ZAN)) {
+            openintent = new Intent(context, MsgZambiaActivity.class);
+        } else if (type.equals(MyCommon.PUSH_TYPE_FOV)) {
+            openintent = new Intent(context, MsgFavActivity.class);
+        } else if (type.equals(MyCommon.PUSH_TYPE_COPYRIGH)
+                ||type.equals(MyCommon.PUSH_TYPE_COPYRIGHFAIL)
+                ||type.equals(MyCommon.PUSH_TYPE_COPYRIGHSUCCESS)) {
+            openintent = new Intent(context, MsgPreserveActivity.class);
+        } else if (type.equals(MyCommon.PUSH_TYPE_SYSTEMMSG)
+                ||type.equals(MyCommon.PUSH_TYPE_NEWACTIVITY)
+                ||type.equals(MyCommon.PUSH_TYPE_ACTIVITYFINISH)
+                ||type.equals(MyCommon.PUSH_TYPE_RECOMENDTOINDEX)
+                ||type.equals(MyCommon.PUSH_TYPE_ADDTOSONGLIST)
+                ||type.equals(MyCommon.PUSH_TYPE_SYSTEMMSG)
+                ) {
+            openintent = new Intent(context, MsgSystemActivity.class);
+        } else if (type.equals(MyCommon.PUSH_TYPE_FOCUS)) {
+            openintent = new Intent(context, FollowAndFansActivity.class);
+            openintent.putExtra(KeySet.KEY_TYPE, KeySet.TYPE_FANS_ACT);
+            openintent.putExtra(KeySet.KEY_UID, PrefsUtil.getUserId(context));
+        } else if (type.equals(MyCommon.PUSH_TYPE_COO_COMPLETE)
+                ||type.equals(MyCommon.PUSH_TYPE_COO)
+                ||type.equals(MyCommon.PUSH_TYPE_COO_INVITE)
+                ||type.equals(MyCommon.PUSH_TYPE_COO_ACCESS)
+                ||type.equals(MyCommon.PUSH_TYPE_COO_EXPIRE)
+                ||type.equals(MyCommon.PUSH_TYPE_COO_LEAVE)
+                ||type.equals(MyCommon.PUSH_TYPE_COO_LEAVEREPLY)
+                ) {
+            openintent = new Intent(context, MsgCooprateActivity.class);
+        }
+
         if (idTypes.get(type) == null) {
             ids = new ArrayList<>();
         } else {
@@ -194,6 +224,12 @@ public class MyReceiver extends BroadcastReceiver {
         }
         ids.add(notifyId);
         idTypes.put(type, ids);
+
+        if (openintent == null){
+            Log.e("Push","未知类型 type ?? openintent = null");
+            openintent = new Intent(context, MainTabActivity.class);
+        }
+
         //发送消息通知
         EventBus.getDefault().post(new Event.NoticeMsgEvent(type));
         PendingIntent contentIntent = PendingIntent.getActivity(context, 0, openintent, 0);

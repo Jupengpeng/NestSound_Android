@@ -98,7 +98,7 @@ public class SharePosterActivity extends ToolbarActivity {
                 if (StringUtils.isNotBlank(savePath)) {
                     if (shareDialog == null) {
                         worksData.pic = savePath;
-                        shareDialog = new ShareDialog(SharePosterActivity.this, worksData, 1);
+                        shareDialog = new ShareDialog(SharePosterActivity.this, worksData, 1,false);
                     }
                     if (!shareDialog.isShowing()) {
                         shareDialog.showDialog();
@@ -150,6 +150,7 @@ public class SharePosterActivity extends ToolbarActivity {
             coverPath = FileDir.coverPic + System.currentTimeMillis() + ".jpg";
             Uri imgUri = Uri.fromFile(new File(coverPath));
             GalleryUtils.getInstance().cropPicture(this, uri, imgUri, 1, 1, 750, 750);
+
         } else if (requestCode == AppConstant.KITKAT_ABOVE) {
             uri = data.getData();
             Log.d("tag", "uri=" + uri);

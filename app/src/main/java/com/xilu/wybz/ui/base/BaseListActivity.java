@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
+
 /**
  * Created by June on 16/5/8.
  */
@@ -84,10 +85,20 @@ public abstract class BaseListActivity<T> extends BasePlayMenuActivity implement
             page = 1;
         }
     }
+
+
+    protected void checkData(){
+        if (mDataList == null || mDataList.size() == 0){
+            showNoDataView();
+        } else {
+            showDataView();
+        }
+    }
     public boolean hasPadding() {return true;}
     protected void setUpAdapter() {
         adapter = new ListAdapter();
     }
+
 
     protected ILayoutManager getLayoutManager() {
         return new MyLinearLayoutManager(getApplicationContext());
@@ -143,10 +154,19 @@ public abstract class BaseListActivity<T> extends BasePlayMenuActivity implement
         mDataList.add(0, t);
         recycler.setSelection(0);
         adapter.notifyItemInserted(0);
-        adapter.notifyItemRangeChanged(0, mDataList.size());
+        adapter.notifyDataSetChanged();
         recycler.getRecyclerView().requestLayout();
         llNoData.setVisibility(View.GONE);
     }
+
+    protected void showNoDataView(){
+        llNoData.setVisibility(View.VISIBLE);
+    }
+
+    protected void showDataView(){
+        llNoData.setVisibility(View.GONE);
+    }
+
     protected boolean isSectionHeader(int position) {
         return false;
     }

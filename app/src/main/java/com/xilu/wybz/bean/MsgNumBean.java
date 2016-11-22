@@ -7,5 +7,7 @@ public class MsgNumBean {
     public int commentnum;
     public int zannum;
     public int fovnum;
+    public int copyrightnum;
+    public int cooperatenum;
     public int sysmsg;
 }

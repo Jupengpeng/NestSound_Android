@@ -10,12 +10,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xilu.wybz.R;
-import com.xilu.wybz.ui.find.FindActivity;
 import com.xilu.wybz.ui.lyrics.LyricsPosterActivity;
 import com.xilu.wybz.ui.lyrics.ShareActivity;
-import com.xilu.wybz.ui.main.MainActivity;
-import com.xilu.wybz.ui.mine.NewMineActivity;
-import com.xilu.wybz.ui.msg.MsgActivity;
 import com.xilu.wybz.ui.song.PlayAudioActivity;
 import com.xilu.wybz.ui.song.SongAblumActivity;
 import com.xilu.wybz.view.SystemBarHelper;
@@ -34,12 +30,13 @@ public abstract class ToolbarActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         mAppBar = (RelativeLayout) findViewById(R.id.app_bar_layout);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (isHomeActivity || this instanceof ShareActivity
+        if ( this instanceof ShareActivity
                 || this instanceof LyricsPosterActivity
                 || this instanceof PlayAudioActivity
                 || this instanceof SongAblumActivity) {
             SystemBarHelper.setHeightAndPadding(this, mAppBar);
         }
+
         View view = findViewById(R.id.view);
         if (mToolbar == null || mAppBar == null) {
             throw new IllegalStateException("No toolbar");
@@ -50,13 +47,16 @@ public abstract class ToolbarActivity extends BaseActivity {
         } else {
             mToolbar.setTitleTextAppearance(context, R.style.ToolbarTitleAppearance2);
         }
-        if (this instanceof FindActivity || this instanceof MsgActivity ||
-                this instanceof NewMineActivity|| this instanceof MainActivity) {
-            mToolbar.setBackgroundColor(getResources().getColor(R.color.main_theme_color));
-            view.setVisibility(View.GONE);
-        } else {
-            setTitle("");
-        }
+
+//        if (isHomeActivity) {
+//            mToolbar.setBackgroundColor(getResources().getColor(R.color.main_theme_color));
+//            view.setVisibility(View.GONE);
+//        } else {
+//            setTitle("");
+//        }
+        setTitle("");
+
+
         setSupportActionBar(mToolbar);
         if (canBack()) {
             ActionBar actionBar = getSupportActionBar();

@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.view.KeyEvent;
 import android.view.View;
 
 import com.xilu.wybz.R;
@@ -48,6 +47,11 @@ public class FindActivity extends BasePlayMenuActivity implements ViewPager.OnPa
             else isFirst = true;
         setTitle("");
         SystemBarHelper.tintStatusBar(this, Color.argb(255, 0xFF, 0xD7, 0x05));
+        mToolbar.setBackgroundColor(getResources().getColor(R.color.main_theme_color));
+        mAppBar.setBackgroundColor(getResources().getColor(R.color.main_theme_color));
+        SystemBarHelper.setHeightAndPadding(this, mAppBar);
+
+
         pagerAdapter = new FindAdapter(getSupportFragmentManager());
         container.setAdapter(pagerAdapter);
         container.setOffscreenPageLimit(4);
@@ -63,10 +67,6 @@ public class FindActivity extends BasePlayMenuActivity implements ViewPager.OnPa
                 return;
         }
 
-    }
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        return false;
     }
 
     @Override
@@ -84,6 +84,7 @@ public class FindActivity extends BasePlayMenuActivity implements ViewPager.OnPa
                         SongFragment songFragment = (SongFragment) pagerAdapter.getFragment(1);
                         if(songFragment!=null){
                             songFragment.loadData();
+
                         }
                         break;
                     case 2:

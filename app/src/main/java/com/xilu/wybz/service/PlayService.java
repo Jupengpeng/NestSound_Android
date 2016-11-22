@@ -461,7 +461,7 @@
 //
 //    private BroadcastReceiver mNoisyAudioStreamReceiver = new BroadcastReceiver() {
 //        @Override
-//        public void onReceive(Context context, Intent intent) {
+//        public void onReceive(Context content, Intent intent) {
 //            if (AudioManager.ACTION_AUDIO_BECOMING_NOISY.equals(intent.getAction())) {
 //                if (PlayMediaInstance.getInstance().status == 3) {
 //                    PlayMediaInstance.getInstance().pauseMediaPlay();

@@ -3,8 +3,8 @@
     android:id="@+id/ll_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_horizontal"
     android:background="@drawable/bg_share"
+    android:gravity="center_horizontal"
     android:orientation="vertical">
 
     <include layout="@layout/view_toolbar_playaudio" />
@@ -33,7 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-            android:layout_marginTop="28dp"
+            android:layout_marginTop="14dp"
             android:layout_toRightOf="@+id/iv_top1"
             android:text="恭喜您，发布成功！"
             android:textColor="@color/main_text_color"
@@ -45,27 +45,27 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="赶紧分享给朋友看看吧"
-        android:textColor="@color/main_text_color"
+        android:textColor="@color/main_text_color2"
         android:textSize="16.5sp" />
 
     <LinearLayout
-        android:layout_marginLeft="25dp"
-        android:layout_marginRight="25dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
         android:layout_marginTop="50dp">
 
 
         <TextView
             android:id="@+id/tv_weixin"
-            android:paddingTop="15dp"
-            android:paddingBottom="15dp"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:drawablePadding="12dp"
+            android:layout_weight="1"
+            android:drawablePadding="6dp"
             android:drawableTop="@drawable/ic_share_wx"
             android:gravity="center"
+            android:paddingBottom="@dimen/share_icon_padding"
+            android:paddingTop="@dimen/share_icon_padding"
             android:text="微信"
             android:textColor="@color/main_text_color" />
 
@@ -73,13 +73,13 @@
         <TextView
             android:id="@+id/tv_friend"
             android:layout_width="0dp"
-            android:layout_weight="1"
-            android:paddingTop="15dp"
-            android:paddingBottom="15dp"
             android:layout_height="wrap_content"
-            android:drawablePadding="12dp"
+            android:layout_weight="1"
+            android:drawablePadding="6dp"
             android:drawableTop="@drawable/ic_share_wx_friend"
             android:gravity="center"
+            android:paddingBottom="@dimen/share_icon_padding"
+            android:paddingTop="@dimen/share_icon_padding"
             android:text="朋友圈"
             android:textColor="@color/main_text_color" />
 
@@ -87,13 +87,13 @@
         <TextView
             android:id="@+id/tv_weibo"
             android:layout_width="0dp"
-            android:layout_weight="1"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
             android:layout_height="wrap_content"
-            android:drawablePadding="12dp"
+            android:layout_weight="1"
+            android:drawablePadding="6dp"
             android:drawableTop="@drawable/ic_share_wb"
             android:gravity="center"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
             android:text="微博"
             android:textColor="@color/main_text_color" />
 
@@ -101,22 +101,22 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_marginLeft="25dp"
-        android:layout_marginRight="25dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp">
 
 
         <TextView
             android:id="@+id/tv_qq"
-            android:paddingTop="15dp"
-            android:paddingBottom="15dp"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:drawablePadding="12dp"
+            android:layout_weight="1"
+            android:drawablePadding="6dp"
             android:drawableTop="@drawable/ic_share_qq"
             android:gravity="center"
+            android:paddingBottom="@dimen/share_icon_padding"
+            android:paddingTop="@dimen/share_icon_padding"
             android:text="QQ"
             android:textColor="@color/main_text_color" />
 
@@ -124,31 +124,76 @@
         <TextView
             android:id="@+id/tv_qzone"
             android:layout_width="0dp"
-            android:layout_weight="1"
-            android:paddingTop="15dp"
-            android:paddingBottom="15dp"
             android:layout_height="wrap_content"
-            android:drawablePadding="12dp"
+            android:layout_weight="1"
+            android:drawablePadding="6dp"
             android:drawableTop="@drawable/ic_share_qzone"
             android:gravity="center"
+            android:paddingBottom="@dimen/share_icon_padding"
+            android:paddingTop="@dimen/share_icon_padding"
             android:text="QQ空间"
             android:textColor="@color/main_text_color" />
 
 
         <TextView
             android:layout_width="0dp"
-            android:layout_weight="1"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
             android:layout_height="wrap_content"
-            android:drawablePadding="12dp"
+            android:layout_weight="1"
+            android:drawablePadding="6dp"
             android:drawableTop="@drawable/ic_share_wb"
             android:gravity="center"
+            android:paddingBottom="@dimen/share_icon_padding"
+            android:paddingTop="@dimen/share_icon_padding"
             android:text="微博"
-            android:visibility="invisible"
-            android:textColor="@color/main_text_color" />
+            android:textColor="@color/main_text_color"
+            android:visibility="invisible" />
+
+    </LinearLayout>
+
+    <!--<ImageView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="0.4dp"-->
+    <!--android:layout_marginTop="40dp"-->
+    <!--android:layout_marginBottom="0dp"-->
+    <!--android:layout_marginLeft="40dp"-->
+    <!--android:layout_marginRight="40dp"-->
+    <!--android:src="@color/white"-->
+    <!--android:id="@+id/imageView" />-->
+    <LinearLayout
+        android:id="@+id/baoquanlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:text="*为了你的个人权益，推荐你进行保全等级"
+            android:textColor="@color/main_text_color"
+            android:textSize="13sp" />
+
+        <LinearLayout
+            android:id="@+id/share_submit"
+            style="@style/SubmitButton.Share"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_share_preserve"
+                android:drawablePadding="8dp"
+                android:gravity="center"
+                android:text="保全登记"
+                android:textColor="@color/main_text_color"
+                android:textSize="16sp" />
 
 
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

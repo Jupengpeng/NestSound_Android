@@ -8,6 +8,7 @@ public class KeySet {
     public static final String KEY_TYPE = "yinchao_type";
     public static final String KEY_OPEN = "type_open";
     public static final String KEY_PUSH_OPEN = "isPushOpen";
+    public static final String KEY_COUNTDOWN_OPEN = "_isCountDownOpen";
     public static final int TYPE_FOLLOW_ACT = 2;
     public static final int TYPE_FANS_ACT = 1;
     public static final String KEY_UID = "type_uid";
@@ -16,7 +17,17 @@ public class KeySet {
     public static final String ACTIVITY_VO = "activity_vo";
     public static final String LOCAL_LYRICS = "local_lyrics";
     public static final String WORKS_DATA = "works_data";
+    public static final String KEY_MUSICTALK = "music_talk";
     public static final String CONTENT = "content";
     public static final String COMMENT = "comment";
+
+
+
+
+    public static class PING{
+
+        public static final String PING_APP_ID = "app_DyDa54avz5iT5C0q";
+
+    }
 
 }

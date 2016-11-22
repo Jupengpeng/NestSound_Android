@@ -17,6 +17,7 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
+import com.xilu.wybz.common.ZnImageLoader;
 import com.xilu.wybz.utils.DensityUtil;
 import com.xilu.wybz.view.pull.BaseListAdapter;
 import com.xilu.wybz.view.pull.BaseViewHolder;
@@ -36,6 +37,7 @@ import butterknife.ButterKnife;
 public abstract class BaseListFragment<T> extends BaseFragment implements PullRecycler.OnRecyclerRefreshListener {
     protected Context context;
     protected BaseListAdapter adapter;
+    protected View mRootView;
     protected ArrayList<T> mDataList;
     @Bind(R.id.pullRecycler)
     protected PullRecycler recycler;
@@ -55,6 +57,7 @@ public abstract class BaseListFragment<T> extends BaseFragment implements PullRe
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(getLayoutResId(), container, false);
+        mRootView = view;
         ButterKnife.bind(this, view);
         initPresenter();
         setUpData();
@@ -113,6 +116,24 @@ public abstract class BaseListFragment<T> extends BaseFragment implements PullRe
             page = 1;
         }
     }
+
+    protected void checkData(){
+        if (mDataList == null || mDataList.size() == 0){
+            showNoDataView();
+        }else {
+            showDataView();
+        }
+    }
+
+    protected void showNoDataView(){
+        llNoData.setVisibility(View.VISIBLE);
+    }
+
+    protected void showDataView(){
+        llNoData.setVisibility(View.GONE);
+    }
+
+
 
     protected void setUpAdapter() {
         adapter = new ListAdapter();
@@ -219,5 +240,9 @@ public abstract class BaseListFragment<T> extends BaseFragment implements PullRe
                 .setOldController(mDraweeView.getController())
                 .build();
         mDraweeView.setController(controller);
+    }
+
+    protected void loadImage(String picUrl, ImageView imageView) {
+        ZnImageLoader.getInstance().displayImage(picUrl, ZnImageLoader.getInstance().options, imageView);
     }
 }

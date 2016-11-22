@@ -28,7 +28,7 @@ import com.xilu.wybz.common.MyCommon;
 import com.xilu.wybz.presenter.CommentPresenter;
 import com.xilu.wybz.ui.IView.ICommentView;
 import com.xilu.wybz.ui.base.BaseListActivity;
-import com.xilu.wybz.ui.mine.UserInfoActivity;
+import com.xilu.wybz.ui.mine.OtherUserCenterActivity;
 import com.xilu.wybz.utils.DateTimeUtil;
 import com.xilu.wybz.utils.KeyBoardUtil;
 import com.xilu.wybz.utils.NetWorkUtil;
@@ -341,8 +341,15 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
                 tvName.setText(bean.nickname);
             if (bean.createdate > 0)
                 tvDate.setText(DateTimeUtil.timestamp2DateTime(bean.createdate));
-            SpannableString s = StringStyleUtil.getWorkCommentStyleStr(context, bean);
-            tvContent.setText(s);
+            //ygs  少判断
+            if(bean.getComment_type()==1){
+//                SpannableString s = StringStyleUtil.getParentCommentStyleStr(bean);
+                tvContent.setText(bean.getComment());
+            }else if(bean.comment_type==2){
+                SpannableString s = StringStyleUtil.getWorkCommentStyleStr(context, bean);
+                tvContent.setText(s);
+            }
+
             tvContent.setMovementMethod(LinkMovementMethod.getInstance());
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -354,7 +361,7 @@ public class CommentActivity extends BaseListActivity<CommentBean> implements IC
                 @Override
                 public void onClick(View v) {
                     if (bean.getUid() != PrefsUtil.getUserId(context))
-                        UserInfoActivity.toUserInfoActivity(context, bean.getUid(), bean.getNickname());
+                        OtherUserCenterActivity.toUserInfoActivity(context, bean.getUid(), bean.getNickname());
                 }
             });
         }

@@ -22,8 +22,6 @@ import com.xilu.wybz.utils.StringUtils;
 import com.xilu.wybz.view.SpacesItemDecoration;
 import com.xilu.wybz.view.pull.BaseViewHolder;
 import com.xilu.wybz.view.pull.PullRecycler;
-import com.xilu.wybz.view.pull.layoutmanager.ILayoutManager;
-import com.xilu.wybz.view.pull.layoutmanager.MyLinearLayoutManager;
 
 import java.util.List;
 
@@ -31,10 +29,11 @@ import butterknife.Bind;
 
 /**
  * Created by hujunwei on 16/5/20.
+ *
+ *
  */
 public class MusicTalkMoreActivity extends BaseListActivity<MusicTalk> implements IMusicTalkMoreView {
-    private int page = 1;
-    private int action = 0;
+
     private String nodata = "暂无更多乐说";
     private MusicTalkMorePresenter musicTalkMorePresenter;
 
@@ -49,6 +48,7 @@ public class MusicTalkMoreActivity extends BaseListActivity<MusicTalk> implement
         setTitle("乐说");
         tvNoData.setText(nodata);
     }
+
     @Override
     protected void setUpData() {
         super.setUpData();
@@ -60,9 +60,10 @@ public class MusicTalkMoreActivity extends BaseListActivity<MusicTalk> implement
         super.onRefresh(action);
         musicTalkMorePresenter.loadData(page++);
     }
-    protected ILayoutManager getLayoutManager() {
-        return new MyLinearLayoutManager(getApplicationContext());
-    }
+
+//    protected ILayoutManager getLayoutManager() {
+//        return new MyLinearLayoutManager(getApplicationContext());
+//    }
 
     protected RecyclerView.ItemDecoration getItemDecoration() {
         return new SpacesItemDecoration(dip10);
@@ -70,18 +71,19 @@ public class MusicTalkMoreActivity extends BaseListActivity<MusicTalk> implement
 
     @Override
     public void showMusicTalkData(List<MusicTalk> songAlbumList) {
-        if (action == PullRecycler.ACTION_PULL_TO_REFRESH) {
+        if (action == PullRecycler.ACTION_PULL_TO_REFRESH){
             mDataList.clear();
         }
         recycler.enableLoadMore(true);
         mDataList.addAll(songAlbumList);
         adapter.notifyDataSetChanged();
         recycler.onRefreshCompleted();
+        checkData();
     }
 
     @Override
     public void loadFail() {
-        if (recycler == null){
+        if (recycler == null) {
             return;
         }
         recycler.onRefreshCompleted();
@@ -90,7 +92,7 @@ public class MusicTalkMoreActivity extends BaseListActivity<MusicTalk> implement
 
     @Override
     public void loadNoMore() {
-        if (recycler == null){
+        if (recycler == null) {
             return;
         }
         recycler.onRefreshCompleted();
@@ -99,7 +101,7 @@ public class MusicTalkMoreActivity extends BaseListActivity<MusicTalk> implement
 
     @Override
     public void loadNoData() {
-        if (recycler == null){
+        if (recycler == null) {
             return;
         }
         llNoData.setVisibility(View.VISIBLE);
@@ -119,7 +121,7 @@ public class MusicTalkMoreActivity extends BaseListActivity<MusicTalk> implement
 
         public SampleViewHolder(View itemView) {
             super(itemView);
-            int itemWidth = DensityUtil.getScreenW(context)-DensityUtil.dip2px(context,20);
+            int itemWidth = DensityUtil.getScreenW(context) - DensityUtil.dip2px(context, 20);
             int itemHeight = itemWidth * 191 / 330;
             mDraweeView.setLayoutParams(new FrameLayout.LayoutParams(itemWidth, itemHeight));
         }
@@ -131,7 +133,7 @@ public class MusicTalkMoreActivity extends BaseListActivity<MusicTalk> implement
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onItemClick(v,position);
+                    onItemClick(v, position);
                 }
             });
         }
@@ -141,10 +143,11 @@ public class MusicTalkMoreActivity extends BaseListActivity<MusicTalk> implement
             toPlayPos(position);
         }
     }
-    public void toPlayPos(int position){
+
+    public void toPlayPos(int position) {
         if (mDataList.size() > 0) {
             MusicTalk musicTalk = mDataList.get(position);
-            if(StringUtils.isBlank(musicTalk.url)&&StringUtils.isNotBlank(musicTalk.itemid)) {
+            if (StringUtils.isBlank(musicTalk.url) && StringUtils.isNotBlank(musicTalk.itemid)) {
                 String playFrom = PrefsUtil.getString("playFrom", context);
                 if (!playFrom.equals(MyCommon.MUSICTALK) || MainService.ids.size() == 0) {
                     if (MainService.ids.size() > 0)
@@ -154,8 +157,8 @@ public class MusicTalkMoreActivity extends BaseListActivity<MusicTalk> implement
                     }
                 }
                 PlayAudioActivity.toPlayAudioActivity(context, musicTalk.itemid, "", MyCommon.MUSICTALK);
-            }else if(StringUtils.isNotBlank(musicTalk.url)){
-                BrowserActivity.toBrowserActivity(context,musicTalk.url);
+            } else if (StringUtils.isNotBlank(musicTalk.url)) {
+                BrowserActivity.toBrowserActivity(context, musicTalk);
             }
         }
     }
@@ -163,7 +166,7 @@ public class MusicTalkMoreActivity extends BaseListActivity<MusicTalk> implement
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(musicTalkMorePresenter!=null)
+        if (musicTalkMorePresenter != null)
             musicTalkMorePresenter.cancelRequest();
     }
 }

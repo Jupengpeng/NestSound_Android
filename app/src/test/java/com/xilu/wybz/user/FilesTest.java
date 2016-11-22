@@ -14,24 +14,24 @@ import static org.junit.Assert.assertEquals;
 public class FilesTest {
 
     @Test
-    public void testFiles() throws Exception{
+    public void testFiles() throws Exception {
 
-
-        File file = new File(".");
-
-        String[] strings = file.list();
-        for(String e:strings){
-            println(e);
-        }
+//        File file = new File(".");
+//
+//        String[] strings = file.list();
+//        for(String e:strings){
+//            println(e);
+//        }
 //        println(file.getCanonicalPath());
+        double s = 12262.2222;
 
+        println(String.format("%.2f",s));
 
         assertEquals(1, 1);
-
     }
 
     @Test
-    public void testDraft() throws Exception{
+    public void testDraft() throws Exception {
 
         LyricsDraftUtils.directories = "draftDir/";
         File file = new File("src/main/assets/rhyme.json");
@@ -59,7 +59,7 @@ public class FilesTest {
 
 
     @Test
-    public void test2() throws Exception{
+    public void test2() throws Exception {
 
 
 //        String fileName = "E:\\test.text";

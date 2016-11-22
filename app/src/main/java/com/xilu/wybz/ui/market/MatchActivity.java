@@ -30,8 +30,8 @@ import com.xilu.wybz.ui.IView.IMatchView;
 import com.xilu.wybz.ui.base.BasePlayMenuActivity;
 import com.xilu.wybz.ui.fragment.MacthFragment;
 import com.xilu.wybz.ui.lyrics.MakeWordActivity;
-import com.xilu.wybz.ui.mine.MyWorkActivity;
-import com.xilu.wybz.ui.mine.UserInfoActivity;
+import com.xilu.wybz.ui.mine.MatchWorkActivity;
+import com.xilu.wybz.ui.mine.OtherUserCenterActivity;
 import com.xilu.wybz.ui.song.HotCatalogActivity;
 import com.xilu.wybz.utils.DateTimeUtil;
 import com.xilu.wybz.utils.DensityUtil;
@@ -171,7 +171,7 @@ public class MatchActivity extends BasePlayMenuActivity implements ViewPager.OnP
             @Override
             public void onItemClick(View view, int position) {
                 if (PrefsUtil.getUserId(context) != joinUserBeanList.get(position).id) {
-                    UserInfoActivity.toUserInfoActivity(context, joinUserBeanList.get(position).id,
+                    OtherUserCenterActivity.toUserInfoActivity(context, joinUserBeanList.get(position).id,
                             joinUserBeanList.get(position).nickname);
                 }
             }
@@ -336,7 +336,7 @@ public class MatchActivity extends BasePlayMenuActivity implements ViewPager.OnP
                 MakeWordActivity.toMakeWordActivity(context, new WorksData(), aid);
             }
         } else if (itemtType.equals("submit")) {
-            MyWorkActivity.toMyWorkActivity(context, aid, type);
+            MatchWorkActivity.toMyWorkActivity(context, aid, type);
         }
     }
 

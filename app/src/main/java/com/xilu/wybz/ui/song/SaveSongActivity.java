@@ -18,6 +18,7 @@ import android.widget.ImageView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.xilu.wybz.R;
+import com.xilu.wybz.bean.PreinfoBean;
 import com.xilu.wybz.bean.ShareResponseBean;
 import com.xilu.wybz.bean.WorksData;
 import com.xilu.wybz.common.Event;
@@ -75,6 +76,12 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView, 
 
     SaveSongPresenter saveSongPresenter;
 
+    private int type;
+
+
+    private PreinfoBean preinfoBean;
+    private int did;
+
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_savesong;
@@ -83,6 +90,15 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView, 
     public static void toSaveSongActivity(Context context, WorksData worksData) {
         Intent intent = new Intent(context, SaveSongActivity.class);
         intent.putExtra("worksData", worksData);
+        context.startActivity(intent);
+    }
+
+    public static void toSaveSongActivity(Context context, WorksData worksData, int type, PreinfoBean preinfoBean, int did) {
+        Intent intent = new Intent(context, SaveSongActivity.class);
+        intent.putExtra("worksData", worksData);
+        intent.putExtra("type", type);
+        intent.putExtra("did", did);
+        intent.putExtra("preinfoBean", preinfoBean);
         context.startActivity(intent);
     }
 
@@ -103,6 +119,10 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView, 
         if (bundle != null) {
             worksData = (WorksData) bundle.getSerializable("worksData");
         }
+        type = getIntent().getIntExtra("type", 0);
+        did = getIntent().getIntExtra("did", 0);
+        preinfoBean = (PreinfoBean) getIntent().getSerializableExtra("preinfoBean");
+
     }
 
     @Override
@@ -138,6 +158,7 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView, 
             }
         });
 
+        MediaInstance.getInstance().destroy();
 
         MediaInstance.getInstance().setIMediaPlayerListener(new IMediaPlayerListener() {
             @Override
@@ -198,7 +219,11 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView, 
             public void onSuccess(String imageUrl) {
                 worksData.setPic(imageUrl);
                 if (materialDialog != null && materialDialog.isShowing())
-                    saveSongPresenter.saveSong(worksData);
+                    if (type == 1) {// 1 合作作品
+                        saveSongPresenter.saveCooperaSong(worksData, preinfoBean, did);
+                    } else {
+                        saveSongPresenter.saveSong(worksData);
+                    }
             }
 
             @Override
@@ -236,7 +261,8 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView, 
 
 
         cancelPd();
-        ShareActivity.toShareActivity(this, worksData);
+        worksData.type = 1;
+        ShareActivity.toShareActivity(this, worksData,type);
 
         finish();
     }
@@ -260,7 +286,7 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView, 
             return;
         }
 
-        if (status == 0 || status == 6) {
+        if (status == 0 || status == 5 || status == 6) {
 //            MediaInstance.getInstance().startMediaPlayAsync(worksData.musicurl);
             MediaInstance.getInstance().startMediaPlayAsync(MyHttpClient.ROOT_URL + worksData.musicurl);
 
@@ -308,7 +334,6 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView, 
 
         switch (item.getItemId()) {
             case android.R.id.home:
-                needDestroy = false;
                 finish();
                 return true;
             case R.id.menu_publish:
@@ -317,7 +342,8 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView, 
                     showMsg("请先选择歌曲的封面！");
                     return true;
                 }
-                needDestroy = true;
+                MediaInstance.getInstance().stopMediaPlay();
+
                 worksData.is_issue = cbIsopen.isChecked() ? 1 : 0;
                 showPd("正在发布中，请稍候...");
                 if (materialDialog != null) {
@@ -331,7 +357,11 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView, 
                 if (new File(worksData.pic).exists()) {
                     uploadCoverPic();
                 } else {
-                    saveSongPresenter.saveSong(worksData);
+                    if (type == 1) {
+                        saveSongPresenter.saveCooperaSong(worksData, preinfoBean, did);
+                    } else {
+                        saveSongPresenter.saveSong(worksData);
+                    }
                 }
                 return true;
 
@@ -368,7 +398,7 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView, 
                     Uri.fromFile(new File(thePath)), imgUri, 1, 1, 750, 750);
         } else if (requestCode == AppConstant.INTENT_CROP) {
             if (new File(coverPath).exists()) {
-                int width = DensityUtil.dip2px(context,60);
+                int width = DensityUtil.dip2px(context, 60);
                 ImageLoadUtil.loadImage(context, new File(coverPath), ivCover, width, width);
                 worksData.setPic(coverPath);
             } else {
@@ -394,16 +424,17 @@ public class SaveSongActivity extends ToolbarActivity implements ISaveSongView, 
         showbuttonPlay();
     }
 
-    boolean needDestroy = false;
+    @Override
+    public void finish() {
+        super.finish();
+        MediaInstance.getInstance().setIMediaPlayerListener(null);
+    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
-        if (needDestroy) {
-            MediaInstance.getInstance().stopMediaPlay();
-            MediaInstance.getInstance().destroy();
-        }
+        MediaInstance.getInstance().destroy();
         if (saveSongPresenter != null) {
             saveSongPresenter.cancelRequest();
         }

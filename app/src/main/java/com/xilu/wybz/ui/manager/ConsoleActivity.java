@@ -19,7 +19,7 @@ import android.widget.TextView;
 import com.xilu.wybz.R;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.ui.base.ToolbarActivity;
-import com.xilu.wybz.ui.preservation.ApplyPreservActivity;
+import com.xilu.wybz.ui.preserve.ApplyPreserveActivity;
 import com.xilu.wybz.utils.PrefsUtil;
 import com.xilu.wybz.utils.StringUtils;
 
@@ -163,18 +163,18 @@ public class ConsoleActivity extends ToolbarActivity {
             @Override
             public void onClick(View v) {
 
-//                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context);
+//                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(content);
 //
 //                bottomSheetDialog.setContentView(R.layout.activity_manager_console);
 //                bottomSheetDialog.show();
 
 //                startActivity(MusicControllerActivity.class);
 //                startActivity(PreservPersonInfoActivity.class);
-                startActivity(ApplyPreservActivity.class);
+                startActivity(ApplyPreserveActivity.class);
 
 
 //                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-//                WeChatPayUtils.register(context);
+//                WeChatPayUtils.register(content);
 //                WeChatPayUtils.pay();
             }
         });
@@ -229,8 +229,8 @@ public class ConsoleActivity extends ToolbarActivity {
     private void changeService(String host){
 
         MyHttpClient.ROOT_URL = host;
-        MyHttpClient.PRE_ROOT = host.substring(0,host.length()-1);
-        MyHttpClient.BASE_URL = MyHttpClient.ROOT_URL+MyHttpClient.BASE_PATH;
+        MyHttpClient.PRE_ROOT = host;
+        MyHttpClient.BASE_URL = MyHttpClient.ROOT_URL;
 
         PrefsUtil.putString(PrefsUtil.DOMAIN,host,this);
         Log.d("url","BASE_URL:"+MyHttpClient.BASE_URL);

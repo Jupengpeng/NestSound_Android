@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.xilu.wybz">
+    package="com.xilu.wybz"> <!-- 获取logcat日志 -->
+    <uses-sdk
+        android:minSdkVersion="4"
+        tools:overrideLibrary="com.umeng.socialize.evernote,com.umeng.socialize.pinterest" />
+
     <uses-permission android:name="com.xilu.wybz.permission.JPUSH_MESSAGE" />
+
     <permission
         android:name="com.xilu.wybz.permission.JPUSH_MESSAGE"
         android:protectionLevel="signature" />
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -18,7 +24,7 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_LOGS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.CALL_PHONE"/>
+    <uses-permission android:name="android.permission.CALL_PHONE" />
     <!-- QQ、QQ空间所需权限 -->
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.SET_DEBUG_APP" />
@@ -26,10 +32,21 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
-    <!-- 获取logcat日志 -->
-    <uses-sdk
-        android:minSdkVersion="4"
-        tools:overrideLibrary="com.umeng.socialize.evernote,com.umeng.socialize.pinterest" />
+
+    <!-- 通用权限 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.NFC" />
+
+    <!-- 百度支付额外需要的权限 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+
     <application
         android:name=".ui.MyApplication"
         android:allowBackup="true"
@@ -43,12 +60,13 @@
             android:theme="@style/AppTheme2">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".ui.MainTabActivity"
-            android:launchMode="singleTask"
+            android:launchMode="standard"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.WelActivity"
@@ -56,22 +74,21 @@
         <activity
             android:name=".ui.BrowserActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/MianTheme" />
-
+            android:theme="@style/MainTheme" />
         <activity
             android:name=".ui.main.MainActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/MainTheme" />
         <activity
             android:name=".ui.main.SongablumMoreActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.main.MusicTalkMoreActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.find.FindActivity"
-            android:theme="@style/MainTheme"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/MainTheme" />
         <activity
             android:name=".ui.find.MoreWorkActivity"
             android:screenOrientation="portrait" />
@@ -79,9 +96,11 @@
             android:name=".ui.find.SearchWorksActivity"
             android:screenOrientation="portrait" />
 
+        <!-- 消息相关界面 -->
         <activity
             android:name=".ui.msg.MsgActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/MainTheme" />
         <activity
             android:name=".ui.msg.MsgZambiaActivity"
             android:launchMode="singleTask"
@@ -95,39 +114,49 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.msg.MsgPreserveActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.msg.MsgSystemActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
-
+        <activity
+            android:name=".ui.msg.MsgCooprateActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.mine.FollowAndFansActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.mine.UserCenterActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.mine.MineActivity"
-            android:screenOrientation="portrait" />
-
+            android:screenOrientation="portrait"
+            android:theme="@style/MainTheme" />
         <activity
-            android:name=".ui.mine.NewMineActivity"
+            android:name=".ui.mine.MatchWorkActivity"
             android:screenOrientation="portrait" />
-
         <activity
-            android:name=".ui.mine.MyWorkActivity"
+            android:name=".ui.mine.MineWorkActivity"
             android:screenOrientation="portrait" />
-
         <activity
-            android:name=".ui.mine.NewMyWorkActivity"
+            android:name=".ui.mine.OtherUserCenterActivity"
             android:screenOrientation="portrait" />
-
         <activity
-            android:name=".ui.mine.UserInfoActivity"
+            android:name=".ui.market.MatchActivity"
             android:screenOrientation="portrait" />
-
-        <activity android:name=".ui.market.MatchActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".ui.market.StarInfoActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".ui.market.StarListActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".ui.market.JoinUserListActivity" android:screenOrientation="portrait"/>
-
+        <activity
+            android:name=".ui.market.StarInfoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.market.StarListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.market.JoinUserListActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.setting.SettingActivity"
             android:screenOrientation="portrait"
@@ -143,17 +172,13 @@
         <activity
             android:name=".ui.setting.OtherAccountActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.setting.AboutMessageActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/MianTheme" />
-
-
+            android:theme="@style/MainTheme" />
         <activity
             android:name=".ui.manager.ConsoleActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.login.RegisterActivity"
             android:screenOrientation="portrait"
@@ -171,7 +196,6 @@
             android:name=".ui.login.ModifyPwdActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-
         <activity
             android:name=".ui.song.MakeHotActivity"
             android:screenOrientation="portrait" />
@@ -203,8 +227,6 @@
         <activity
             android:name=".ui.song.SongTuningActivity"
             android:screenOrientation="portrait" />
-
-
         <activity
             android:name=".ui.record.InspireRecordActivity"
             android:screenOrientation="portrait" />
@@ -214,7 +236,6 @@
         <activity
             android:name=".ui.record.ModifyInspireRecordActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.lyrics.LyricsdisplayActivity"
             android:screenOrientation="portrait" />
@@ -243,8 +264,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.lyrics.MakeWordByTempleateActivity"
-            android:windowSoftInputMode="adjustResize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.lyrics.DraftLyricsActivity"
             android:screenOrientation="portrait" />
@@ -256,29 +277,28 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
 
-        <!--preservation-->
+        <!-- preservation -->
 
         <activity
-            android:name=".ui.preservation.ApplyPreservActivity"
-            android:screenOrientation="portrait"/>
+            android:name=".ui.preserve.ApplyPreserveActivity"
+            android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.preservation.PreservPersonInfoActivity"
-            android:screenOrientation="portrait"/>
+            android:name=".ui.preserve.PreservePersonInfoActivity"
+            android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.preservation.PreservPersonEditActivity"
-            android:screenOrientation="portrait"/>
+            android:name=".ui.preserve.PreservePersonEditActivity"
+            android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.preservation.PreservInfoActivity"
-            android:screenOrientation="portrait"/>
+            android:name=".ui.preserve.PreserveInfoActivity"
+            android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.preservation.ProductPreservListActivity"
-            android:screenOrientation="portrait"/>
+            android:name=".ui.preserve.ProductPreserveListActivity"
+            android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.preservation.ProductAllActivity"
-            android:screenOrientation="portrait"/>
+            android:name=".ui.preserve.ProductAllActivity"
+            android:screenOrientation="portrait" />
 
-
-        <!--MainService-->
+        <!-- MainService -->
 
         <service
             android:name=".service.MainService"
@@ -294,7 +314,7 @@
             android:name="com.sina.weibo.sdk.component.WeiboSdkBrowser"
             android:configChanges="keyboardHidden|orientation"
             android:exported="false"
-            android:windowSoftInputMode="adjustResize"></activity>
+            android:windowSoftInputMode="adjustResize" />
         <!-- QQ -->
         <activity
             android:name="com.tencent.tauth.AuthActivity"
@@ -313,65 +333,70 @@
             android:name="com.tencent.connect.common.AssistActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name="com.xilu.yinchao.music.MusicControllerActivity" />
 
+        <!-- Ping++ SDK 注册 -->
         <activity
-            android:name="com.xilu.yinchao.music.MusicControllerActivity"
-            />
+            android:name="com.pingplusplus.android.PaymentActivity"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
-        <!--支付宝支付-->
+        <!-- 支付宝支付 -->
         <activity
             android:name="com.alipay.sdk.app.H5PayActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
             android:exported="false"
-            android:screenOrientation="behind" >
-        </activity>
+            android:screenOrientation="behind" />
         <activity
             android:name="com.alipay.sdk.auth.AuthActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
             android:exported="false"
-            android:screenOrientation="behind" >
-        </activity>
+            android:screenOrientation="behind" />
 
         <!-- 微信支付 -->
-        <activity
+
+        <activity-alias
             android:name=".wxapi.WXPayEntryActivity"
             android:exported="true"
-            android:launchMode="singleTop"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+            android:targetActivity="com.pingplusplus.android.PaymentActivity" />
+
+        <!-- <activity -->
+        <!-- android:name=".wxapi.WXPayEntryActivity" -->
+        <!-- android:exported="true" -->
+        <!-- android:launchMode="singleTop" -->
+        <!-- android:theme="@android:style/Theme.Translucent.NoTitleBar"/> -->
 
         <receiver android:name=".service.helper.HeadSetReceiver">
             <intent-filter android:priority="2147483647">
-                <action android:name="android.intent.action.MEDIA_BUTTON"></action>
+                <action android:name="android.intent.action.MEDIA_BUTTON" />
             </intent-filter>
         </receiver>
-        <!-- Rich push 核心功能 since 2.0.6-->
+        <!-- Rich push 核心功能 since 2.0.6 -->
         <activity
             android:name="cn.jpush.android.ui.PopWinActivity"
-            android:theme="@style/MyDialogStyle"
-            android:exported="false">
-        </activity>
+            android:exported="false"
+            android:theme="@style/MyDialogStyle" />
 
-        <!-- Required SDK核心功能-->
+        <!-- Required SDK核心功能 -->
         <activity
             android:name="cn.jpush.android.ui.PushActivity"
             android:configChanges="orientation|keyboardHidden"
-            android:theme="@android:style/Theme.NoTitleBar"
-            android:exported="false">
+            android:exported="false"
+            android:theme="@android:style/Theme.NoTitleBar">
             <intent-filter>
                 <action android:name="cn.jpush.android.ui.PushActivity" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="com.xilu.wybz" />
             </intent-filter>
         </activity>
-        <!-- Required  SDK核心功能-->
+        <!-- Required  SDK核心功能 -->
         <service
             android:name="cn.jpush.android.service.DownloadService"
             android:enabled="true"
-            android:exported="false" >
-        </service>
+            android:exported="false" />
 
-
-        <!-- Required SDK 核心功能-->
+        <!-- Required SDK 核心功能 -->
         <!-- 可配置android:process参数将PushService放在其他进程中 -->
         <service
             android:name="cn.jpush.android.service.PushService"
@@ -393,18 +418,18 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="cn.jpush.android.intent.DaemonService" />
+
                 <category android:name="com.xilu.wybz" />
             </intent-filter>
-
         </service>
 
-        <!-- Required SDK核心功能-->
+        <!-- Required SDK核心功能 -->
         <receiver
             android:name="cn.jpush.android.service.PushReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter android:priority="1000">
-                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY" />   <!--Required  显示通知栏 -->
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY" /> <!-- Required  显示通知栏 -->
                 <category android:name="com.xilu.wybz" />
             </intent-filter>
             <intent-filter>
@@ -415,56 +440,86 @@
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_ADDED" />
                 <action android:name="android.intent.action.PACKAGE_REMOVED" />
+
                 <data android:scheme="package" />
             </intent-filter>
-
         </receiver>
 
-        <!-- Required SDK核心功能-->
-        <receiver android:name="cn.jpush.android.service.AlarmReceiver" android:exported="false"/>
+        <!-- Required SDK核心功能 -->
+        <receiver
+            android:name="cn.jpush.android.service.AlarmReceiver"
+            android:exported="false" />
         <receiver
             android:name=".service.MyReceiver"
-            android:exported="false"
-            android:enabled="true">
+            android:enabled="true"
+            android:exported="false">
             <intent-filter>
-                <action android:name="cn.jpush.android.intent.REGISTRATION" /> <!--Required  用户注册SDK的intent-->
-                <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" /> <!--Required  用户接收SDK消息的intent-->
-                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" /> <!--Required  用户接收SDK通知栏信息的intent-->
-                <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" /> <!--Required  用户打开自定义通知栏的intent-->
-                <action android:name="cn.jpush.android.intent.ACTION_RICHPUSH_CALLBACK" /> <!--Optional 用户接受Rich Push Javascript 回调函数的intent-->
-                <action android:name="cn.jpush.android.intent.CONNECTION" /><!-- 接收网络变化 连接/断开 since 1.6.3 -->
+                <action android:name="cn.jpush.android.intent.REGISTRATION" /> <!-- Required  用户注册SDK的intent -->
+                <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" /> <!-- Required  用户接收SDK消息的intent -->
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" /> <!-- Required  用户接收SDK通知栏信息的intent -->
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" /> <!-- Required  用户打开自定义通知栏的intent -->
+                <action android:name="cn.jpush.android.intent.ACTION_RICHPUSH_CALLBACK" /> <!-- Optional 用户接受Rich Push Javascript 回调函数的intent -->
+                <action android:name="cn.jpush.android.intent.CONNECTION" /> <!-- 接收网络变化 连接/断开 since 1.6.3 -->
                 <action android:name="com.xilu.wybz.intent.CLEARNOTICE" />
+
                 <category android:name="com.xilu.wybz" />
             </intent-filter>
         </receiver>
 
-        <service android:name="com.xilu.yinchao.music.YinchaoMusicService"
+        <service
+            android:name="com.xilu.yinchao.music.YinchaoMusicService"
             android:exported="false"
-            tools:ignore="ExportedService"
-            >
+            tools:ignore="ExportedService">
             <intent-filter>
                 <action android:name="android.media.browse.MediaBrowserService" />
             </intent-filter>
-            <!--android:permission="cn.yinchao.android.music.SERVICE"-->
-            <!--android:process="yinchao-player"-->
+            <!-- android:permission="cn.yinchao.android.music.SERVICE" -->
+            <!-- android:process="yinchao-player" -->
         </service>
+
         <meta-data
             android:name="UMENG_CHANNEL"
             android:value="${UMENG_CHANNEL_VALUE}" />
         <meta-data
             android:name="CHANNEL"
             android:value="${CHANNEL_VALUE}" />
-
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="56a8610ce0f55afc29001dca" />
-
         <meta-data
             android:name="UMENG_MESSAGE_SECRET"
             android:value="f1168f7bdf262938f02024ea1b1acc92" />
+        <meta-data
+            android:name="JPUSH_CHANNEL"
+            android:value="yinchao" />
+        <meta-data
+            android:name="JPUSH_APPKEY"
+            android:value="fc0c317f16cfdc18ebcb7180" />
 
-        <meta-data android:name="JPUSH_CHANNEL" android:value="yinchao"/>
-        <meta-data android:name="JPUSH_APPKEY" android:value="fc0c317f16cfdc18ebcb7180" />
+        <activity
+            android:name=".ui.cooperation.CooperaPublishActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.cooperation.ChooseLyricActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.cooperation.LyricDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.cooperation.CooperaMessageActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.cooperation.CooperaDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.cooperation.CooperationActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.cooperation.InvitationActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ui.cooperation.CooperaDetailesActivity"></activity>
     </application>
 
 </manifest>

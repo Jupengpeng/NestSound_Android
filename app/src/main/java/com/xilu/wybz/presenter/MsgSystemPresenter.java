@@ -2,7 +2,7 @@ package com.xilu.wybz.presenter;
 
 import android.content.Context;
 
-import com.xilu.wybz.bean.SystemBean;
+import com.xilu.wybz.bean.message.SystemMessageBean;
 import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.http.callback.MyStringCallback;
 import com.xilu.wybz.ui.IView.ISystemMsgView;
@@ -35,7 +35,7 @@ public class MsgSystemPresenter extends BasePresenter<ISystemMsgView> {
 
             @Override
             public void onResponse(String response) {
-                List<SystemBean> mList = ParseUtils.getSystemsData(context,response);
+                List<SystemMessageBean> mList = ParseUtils.getSystemsData(context,response);
                 if (mList==null||mList.size() == 0) {
                     if (page == 1) {
                         iView.loadNoData();

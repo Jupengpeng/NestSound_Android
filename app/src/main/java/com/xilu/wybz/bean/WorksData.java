@@ -12,6 +12,7 @@ import java.io.Serializable;
  */
 //@Table("workdata")
 public class WorksData implements Serializable {
+    public String did; //合作id
     public String itemid;//歌曲id
     public String pic;//歌曲封面
     public String title;//标题
@@ -60,6 +61,33 @@ public class WorksData implements Serializable {
     public boolean isPlay;//是否播放
 
     public int effect;//音效
+    public int coopera;
+    /**
+     * 合作
+     * "wUid":作曲人id,
+     * "wUsername:"作曲人姓名",
+     * "lUid":作词人id,
+     * "lUsername:"作词人姓名",
+     */
+    public String wUid;
+    public String wUsername = "test1";
+    public String lUid;
+    public String lUsername = "test2";
+
+    /**
+     * @return
+     */
+    public String getComAuthor() {
+        String result = "作曲人姓名:";
+        if (StringUtils.isNotBlank(wUsername)) {
+            result += wUsername;
+        }
+        result += "\n作词人姓名:";
+        if (StringUtils.isNotBlank(lUsername)) {
+            result += lUsername;
+        }
+        return result;
+    }
 
     public int getType() {
         return type;
@@ -215,8 +243,8 @@ public class WorksData implements Serializable {
     }
 
     public String getPic() {
-        if(StringUtils.isNotBlank(pic)&&!pic.startsWith("http")){
-            pic = MyHttpClient.QINIU_URL+pic;
+        if (StringUtils.isNotBlank(pic) && !pic.startsWith("http")) {
+            pic = MyHttpClient.QINIU_URL + pic;
         }
         return pic;
     }

@@ -32,15 +32,23 @@ public class SongFragment extends BaseSectionListFragment<WorksData> implements 
     private SongPresenter songPresenter;
     private int column = 3;
     private int type = 1;
-    private boolean isFirst;
+    private boolean isFirst = true;
     @Override
     protected void initPresenter() {
         songPresenter = new SongPresenter(context, this);
     }
 
-    public void loadData() {
-        if (isFirst) return;
-        else isFirst = true;
+    public void loadData(){
+//        if (!isFirst){
+//            return;
+//        }
+//        else {
+//            isFirst = false;
+//        }
+        if (mDataList != null && mDataList.size()>0){
+            disMissLoading(ll_loading);
+            return;
+        }
         showLoading(ll_loading);
         songPresenter.init();
     }
@@ -71,7 +79,7 @@ public class SongFragment extends BaseSectionListFragment<WorksData> implements 
         if(findSongBean.redList!=null) {
             mDataList.add(new SectionData(true, 1, "热门歌曲"));
             for (WorksData worksData : findSongBean.redList) {
-                worksData.type = 1;
+//                worksData.type = 1;
                 worksData.come = MyCommon.RED;
                 mDataList.add(new SectionData(worksData));
             }
@@ -79,7 +87,7 @@ public class SongFragment extends BaseSectionListFragment<WorksData> implements 
         if(findSongBean.newList!=null) {
             mDataList.add(new SectionData(true, mDataList.size(), "最新歌曲"));
             for (WorksData worksData : findSongBean.newList) {
-                worksData.type = 1;
+//                worksData.type = 1;
                 worksData.come = MyCommon.NEWS;
                 mDataList.add(new SectionData(worksData));
             }
@@ -91,16 +99,16 @@ public class SongFragment extends BaseSectionListFragment<WorksData> implements 
     @Override
     public void showErrorView() {
         if (isDestroy) return;
-
+        disMissLoading(ll_loading);
     }
 
     @Override
     public void loadingFinish() {
+        disMissLoading(ll_loading);
         if (isDestroy) return;
         recycler.enableLoadMore(false);
         recycler.onRefreshCompleted();
     }
-//
     protected ILayoutManager getLayoutManager() {
         MyGridLayoutManager myGridLayoutManager = new MyGridLayoutManager(getActivity().getApplicationContext(),column);
         return myGridLayoutManager;

@@ -8,34 +8,35 @@ import android.os.Parcelable;
  */
 public class PersonInfo implements Parcelable {
 
-    public String name;
-    public String cardID;
-    public String phone;
+    public String cUserName;
+    public String cCardId;
+    public String cPhone;
+    public String cEmail;
+    public int id = -1;
+    public int cType = 1;
+    public int from = 1;
 
-    public String getName() {
-        return name;
+
+
+
+
+
+    public String getTypeString(){
+        String type = "/";
+        if (cType == 1){
+            type = "曲作者";
+        } else if (cType == 2){
+            type = "词作者";
+        } else if (cType == 3){
+            type = "曲作者/词作者";
+        }
+        return type;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getCardID() {
-        return cardID;
-    }
-
-    public void setCardID(String cardID) {
-        this.cardID = cardID;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
+    /**
+     *
+     * @return
+     */
     @Override
     public int describeContents() {
         return 0;
@@ -43,21 +44,27 @@ public class PersonInfo implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.name);
-        dest.writeString(this.cardID);
-        dest.writeString(this.phone);
+        dest.writeString(this.cUserName);
+        dest.writeString(this.cCardId);
+        dest.writeString(this.cPhone);
+        dest.writeString(this.cEmail);
+        dest.writeInt(this.cType);
+        dest.writeInt(this.from);
     }
 
     public PersonInfo() {
     }
 
     protected PersonInfo(Parcel in) {
-        this.name = in.readString();
-        this.cardID = in.readString();
-        this.phone = in.readString();
+        this.cUserName = in.readString();
+        this.cCardId = in.readString();
+        this.cPhone = in.readString();
+        this.cEmail = in.readString();
+        this.cType = in.readInt();
+        this.from = in.readInt();
     }
 
-    public static final Parcelable.Creator<PersonInfo> CREATOR = new Parcelable.Creator<PersonInfo>() {
+    public static final Creator<PersonInfo> CREATOR = new Creator<PersonInfo>() {
         @Override
         public PersonInfo createFromParcel(Parcel source) {
             return new PersonInfo(source);

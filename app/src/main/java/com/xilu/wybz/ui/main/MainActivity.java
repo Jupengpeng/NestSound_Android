@@ -1,5 +1,7 @@
 package com.xilu.wybz.ui.main;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -34,6 +36,7 @@ import com.xilu.wybz.service.MainService;
 import com.xilu.wybz.ui.BrowserActivity;
 import com.xilu.wybz.ui.IView.IHomeView;
 import com.xilu.wybz.ui.base.BasePlayMenuActivity;
+import com.xilu.wybz.ui.cooperation.CooperationActivity;
 import com.xilu.wybz.ui.lyrics.LyricsdisplayActivity;
 import com.xilu.wybz.ui.song.PlayAudioActivity;
 import com.xilu.wybz.ui.song.SongAblumActivity;
@@ -43,6 +46,7 @@ import com.xilu.wybz.utils.StringUtils;
 import com.xilu.wybz.view.GridSpacingItemDecoration;
 import com.xilu.wybz.view.SpacesItemDecoration;
 import com.xilu.wybz.view.SwipeRefreshLayoutCompat;
+import com.xilu.wybz.view.SystemBarHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -118,6 +122,12 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SystemBarHelper.tintStatusBar(this, Color.argb(255, 0xFF, 0xD7, 0x05));
+        setTitle("音巢音乐");
+        mToolbar.setBackgroundColor(getResources().getColor(R.color.main_theme_color));
+        mAppBar.setBackgroundColor(getResources().getColor(R.color.main_theme_color));
+        SystemBarHelper.setHeightAndPadding(this, mAppBar);
+
         presenter = new MainPresenter(this, this);
         presenter.init();
     }
@@ -166,6 +176,18 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
                     WorksData worksData = recommendWorkList.get(position);
                     if (worksData.status == 2) {
                         LyricsdisplayActivity.toLyricsdisplayActivity(context, worksData.itemid, worksData.getTitle());
+                    }else if(worksData.status==3){
+                        String playFrom = PrefsUtil.getString("playFrom", context);
+                        if (!playFrom.equals("hezuo") || MainService.ids.size() == 0) {
+                            if (MainService.ids.size() > 0)
+                                MainService.ids.clear();
+                            for (WorksData workData : recommendWorkList) {
+                                if (workData.status == 1) {
+                                    MainService.ids.add(workData.getItemid());
+                                }
+                            }
+                        }
+                        PlayAudioActivity.toPlayAudioActivity(context, worksData.itemid, "", "hezuo");
                     } else {
                         String playFrom = PrefsUtil.getString("playFrom", context);
                         if (!playFrom.equals(MyCommon.TUIJIAN) || MainService.ids.size() == 0) {
@@ -201,6 +223,18 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
                     WorksData worksData = newWorkList.get(position);
                     if (worksData.status == 2) {
                         LyricsdisplayActivity.toLyricsdisplayActivity(context, worksData.itemid, worksData.getTitle());
+                    }else if(worksData.status==3){
+                        String playFrom = PrefsUtil.getString("playFrom", context);
+                        if (!playFrom.equals("hezuo") || MainService.ids.size() == 0) {
+                            if (MainService.ids.size() > 0)
+                                MainService.ids.clear();
+                            for (WorksData workData : newWorkList) {
+                                if (workData.status == 1) {
+                                    MainService.ids.add(workData.getItemid());
+                                }
+                            }
+                        }
+                        PlayAudioActivity.toPlayAudioActivity(context, worksData.itemid, "", "hezuo");
                     } else {
                         String playFrom = PrefsUtil.getString("playFrom", context);
                         if (!playFrom.equals(MyCommon.ZUIXIN) || MainService.ids.size() == 0) {
@@ -238,7 +272,7 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
 
                         PlayAudioActivity.toPlayAudioActivity(context, musicTalk.itemid, "", MyCommon.MUSICTALK);
                     } else if (StringUtils.isNotBlank(musicTalk.url)) {
-                        BrowserActivity.toBrowserActivity(context, musicTalk.url);
+                        BrowserActivity.toBrowserActivity(context, musicTalk);
                     }
                 }
             }
@@ -451,7 +485,8 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
                 break;
             case R.id.iv_dz:
 //                startActivity(MatchActivity.class);
-                BrowserActivity.toBrowserActivity(context,MyCommon.customization);
+//                BrowserActivity.toBrowserActivity(context,MyCommon.customization);
+                startActivity(new Intent(MainActivity.this, CooperationActivity.class));
                 break;
         }
     }
@@ -459,6 +494,10 @@ public class MainActivity extends BasePlayMenuActivity implements IHomeView {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (mHandler != null){
+            mHandler.removeCallbacksAndMessages(null);
+            mHandler = null;
+        }
         if (presenter != null)
             presenter.cancelRequest();
     }

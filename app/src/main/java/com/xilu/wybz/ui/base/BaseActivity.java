@@ -16,18 +16,14 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.umeng.analytics.MobclickAgent;
-
 import com.xilu.wybz.R;
 import com.xilu.wybz.common.ZnImageLoader;
 import com.xilu.wybz.ui.MainTabActivity;
 import com.xilu.wybz.ui.SplashActivity;
 import com.xilu.wybz.ui.WelActivity;
-import com.xilu.wybz.ui.find.FindActivity;
+import com.xilu.wybz.ui.cooperation.CooperationActivity;
 import com.xilu.wybz.ui.lyrics.LyricsPosterActivity;
 import com.xilu.wybz.ui.lyrics.ShareActivity;
-import com.xilu.wybz.ui.main.MainActivity;
-import com.xilu.wybz.ui.mine.NewMineActivity;
-import com.xilu.wybz.ui.msg.MsgActivity;
 import com.xilu.wybz.ui.song.PlayAudioActivity;
 import com.xilu.wybz.ui.song.SongAblumActivity;
 import com.xilu.wybz.utils.NetWorkUtil;
@@ -48,7 +44,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected boolean isChenjin;
     protected boolean isDestroy = false;
     protected Context context;
-    boolean isHomeActivity;
+    boolean isHomeActivity =false;
     protected AnimImageView animImageView;
     protected List<Integer> resourceIdList;
     protected ImageView ivLoading;
@@ -63,8 +59,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         setContentView(getLayoutRes());
         ButterKnife.bind(this);
         isChenjin = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
-        isHomeActivity = this instanceof MainActivity || this instanceof FindActivity
-                || this instanceof MsgActivity||this instanceof NewMineActivity;
 
     }
 
@@ -77,7 +71,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             }
             if (this instanceof WelActivity || this instanceof PlayAudioActivity || this instanceof LyricsPosterActivity
                     || this instanceof SongAblumActivity || this instanceof ShareActivity
-                    || this instanceof SplashActivity || this instanceof MainTabActivity) {
+                    || this instanceof SplashActivity || this instanceof MainTabActivity || this instanceof CooperationActivity) {
                 SystemBarHelper.immersiveStatusBar(this);
                 SystemBarHelper.tintStatusBar(this, Color.argb(0, 0xFF, 0xD7, 0x05));
             }

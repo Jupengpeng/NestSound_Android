@@ -6,7 +6,7 @@ package com.xilu.wybz.bean;
 public class TemplateLrcBean {
 
     public String template = "前生的爱终究会留下一个记号";
-    public String lrcWord = "前生的爱终究会留下一个记号";
+    public String lrcWord = null;
 
     public TemplateLrcBean(){
 

@@ -3,7 +3,6 @@
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/main_theme_color"
     android:orientation="vertical"
     >
     <include layout="@layout/view_toolbar_play" />
@@ -63,7 +62,7 @@
                     android:paddingTop="10dp"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
-                    fresco:placeholderImage="@drawable/ic_ad_dz"
+                    fresco:placeholderImage="@drawable/hezuopaidang"
                     fresco:actualImageScaleType="centerCrop"
                     fresco:placeholderImageScaleType="centerCrop"
                     fresco:viewAspectRatio="4.29"

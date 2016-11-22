@@ -9,6 +9,9 @@ public class UserInfoBean {
     public int lyricsnum;
     public int worknum;
     public int inspirenum;
+    public int cooperatenum;
     public int fovnum;
     public int isFocus;
+    public int msgCount;
+    public UserBean user;
 }

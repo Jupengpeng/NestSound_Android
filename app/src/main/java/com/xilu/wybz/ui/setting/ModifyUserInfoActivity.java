@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.xilu.wybz.R;
+import com.xilu.wybz.bean.PersonInfo;
 import com.xilu.wybz.bean.UserBean;
 import com.xilu.wybz.common.Event;
 import com.xilu.wybz.common.FileDir;
@@ -22,6 +23,7 @@ import com.xilu.wybz.common.MyHttpClient;
 import com.xilu.wybz.presenter.ModifyUserInfoPresenter;
 import com.xilu.wybz.ui.IView.IModifyUserInfoView;
 import com.xilu.wybz.ui.base.ToolbarActivity;
+import com.xilu.wybz.ui.preserve.PreservePersonEditActivity;
 import com.xilu.wybz.utils.AppConstant;
 import com.xilu.wybz.utils.GalleryUtils;
 import com.xilu.wybz.utils.PrefsUtil;
@@ -138,6 +140,9 @@ public class ModifyUserInfoActivity extends ToolbarActivity implements IModifyUs
                 showModifyBirthdayDialog();
                 break;
             case R.id.ll_bq_info:
+                PersonInfo info = new PersonInfo();
+                info.from = 2;
+                PreservePersonEditActivity.start(this,info);
                 break;
         }
     }

@@ -39,6 +39,10 @@ public class SaveWordPresenter extends BasePresenter<ISaveWordView> {
                 map.put("id", worksData.itemid + "");
             }
             map.put("status", worksData.type + "");
+            if (StringUtils.isBlank(worksData.author)){
+                worksData.author = PrefsUtil.getUserInfo(context).nickname;
+            }
+            map.put("author", ""+worksData.author);
         } catch (Exception e) {
             Log.e("Exception", e.toString());
         }

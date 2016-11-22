@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="256dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:src="@drawable/tanchuan_caina" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:gravity="center_horizontal"
+        android:lineSpacingExtra="5dp"
+        android:maxEms="10"
+        android:text="采纳后，您的合作需求将会结束并标示为“成功”，不再接受其他人的合作"
+        android:textColor="@color/main_text_color"
+        android:textSize="14sp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="15dp">
+
+        <Button
+            android:id="@+id/cancle_bt"
+            android:layout_width="90dp"
+            android:layout_height="38dp"
+            android:layout_marginLeft="28dp"
+            android:layout_weight="1"
+            style="?android:attr/borderlessButtonStyle"
+            android:background="@drawable/dismiss_bg"
+            android:text="取消"
+            android:textColor="@color/main_text_color2"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/positive_bt"
+            android:layout_width="90dp"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_height="38dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="28dp"
+            android:layout_toRightOf="@+id/cancle_bt"
+            android:background="@drawable/bt_bg"
+            android:text="确定"
+            android:textColor="@color/main_text_color2"
+            android:textSize="14sp" />
+
+    </RelativeLayout>
+</LinearLayout>

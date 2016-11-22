@@ -1,35 +1,55 @@
 package com.xilu.wybz.bean;
 
-import java.util.List;
-
 /**
- * Created by June on 2015/9/2.
+ * Created by Administrator on 2016/10/24.
  */
+
 public class MineBean {
+    int id ;
+    String title;
+    long createtime;
+    int worknum;
+    int status;
 
-    public int fansnum;
-    public int gznum;
-    public int lyricsnum;
-    public int worknum;
-    public int inspirenum;
-    public int fovnum;
-    public int isFocus;////是否已关注  0=未关注，1=已关注过，2=已互相关注过
-    public UserBean user;
-    public List<WorksData> list;
 
-    public UserBean getUser() {
-        return user;
+    public int getId() {
+        return id;
     }
 
-    public void setUser(UserBean user) {
-        this.user = user;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public List<WorksData> getList() {
-        return list;
+    public String getTitle() {
+        return title;
     }
 
-    public void setList(List<WorksData> list) {
-        this.list = list;
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+
+    public long getCreatetime() {
+        return createtime;
+    }
+
+    public void setCreatetime(long createtime) {
+        this.createtime = createtime;
+    }
+
+    public int getWorknum() {
+        return worknum;
+    }
+
+    public void setWorknum(int worknum) {
+        this.worknum = worknum;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 }

@@ -91,6 +91,7 @@ public class ActFragment extends BaseListFragment<ActBean> implements IActView {
 
     @Override
     public void showErrorView() {
+        disMissLoading(ll_loading);
         if(isDestroy)return;
         recycler.onRefreshCompleted();
     }

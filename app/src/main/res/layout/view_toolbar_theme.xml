@@ -30,6 +30,9 @@
         android:gravity="center"
         tools:text="toolbar"
         android:textSize="18sp"
+        android:lines="1"
+        android:layout_marginLeft="56dp"
+        android:layout_marginRight="56dp"
         android:textColor="@color/main_text_color"
         />
     <View

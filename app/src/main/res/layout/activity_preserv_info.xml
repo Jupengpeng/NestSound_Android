@@ -7,63 +7,69 @@
 
     <include layout="@layout/view_toolbar" />
 
-    <ScrollView
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="none">
+        android:layout_height="match_parent">
 
-        <LinearLayout
+
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:scrollbars="none">
 
-
-            <include layout="@layout/view_preservation_user_info_all"/>
-
-            <ImageView
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="15dp"
-                android:src="@color/main_bg"
-                />
-            <include layout="@layout/view_product_info"/>
-            <include layout="@layout/view_preservation_info_ext"/>
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="15dp"
-                android:src="@color/main_bg"
-                />
-
-            <TextView
-                android:id="@+id/preservation_submit"
-                android:layout_marginTop="24dp"
-                android:layout_marginLeft="@dimen/preservation_margin"
-                android:layout_marginRight="@dimen/preservation_margin"
-                android:text="查看证书"
-                style="@style/SubmitButton"
-                />
-
-            <TextView
-                android:id="@+id/preservation_error"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:drawableLeft="@drawable/ic_preservation_error"
-                android:drawablePadding="8dp"
-                android:layout_gravity="center_horizontal"
-                android:text="你的保全订单失败，请联系 \n客服：400-32563412"
-                android:textColor="@color/main_text_color3"
-                android:textSize="12sp"
-                />
-
-            <android.support.v4.widget.Space
-                android:layout_width="wrap_content"
-                android:layout_height="32dp" />
+                android:orientation="vertical">
 
 
-        </LinearLayout>
+                <include layout="@layout/view_preservation_user_info_all" />
 
-    </ScrollView>
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="15dp"
+                    android:src="@color/main_bg" />
 
+                <include layout="@layout/view_product_info" />
+
+                <include layout="@layout/view_preservation_info_ext" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="15dp"
+                    android:src="@color/main_bg" />
+
+                <TextView
+                    android:id="@+id/preservation_submit"
+                    style="@style/SubmitButton"
+                    android:layout_marginLeft="@dimen/preservation_margin"
+                    android:layout_marginRight="@dimen/preservation_margin"
+                    android:layout_marginTop="24dp"
+                    android:text="查看证书" />
+
+                <TextView
+                    android:id="@+id/preservation_error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:drawableLeft="@drawable/ic_preservation_error"
+                    android:drawablePadding="8dp"
+                    android:text="你的保全订单失败，请联系 \n客服：400-32563412"
+                    android:textColor="@color/main_text_color3"
+                    android:textSize="12sp" />
+
+                <android.support.v4.widget.Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp" />
+
+
+            </LinearLayout>
+
+        </ScrollView>
+
+        <include layout="@layout/ll_nodata" />
+
+    </FrameLayout>
 
 </LinearLayout>

@@ -18,7 +18,7 @@
     <dimen name="title_size_see2">17sp</dimen>
     <dimen name="nav_header_height">160dp</dimen>
     <dimen name="nav_header_vertical_spacing">16dp</dimen>
-    <dimen name="spit_line_height">0.5dp</dimen>
+    <dimen name="spit_line_height">2px</dimen>
 
     <dimen name="yc_42">42dp</dimen>
     <dimen name="yc_2">2dp</dimen>
@@ -93,7 +93,12 @@
     <dimen name="more_window_item_margin">12dp</dimen>
 
 
+    <dimen name="margin_theme">15dp</dimen>
+
     <dimen name="preservation_margin">15dp</dimen>
-    <dimen name="preservation_split">2dp</dimen>
+    <dimen name="preservation_split">1dp</dimen>
+
+    <dimen name="share_icon_padding">4dp</dimen>
+
 
 </resources>

@@ -22,8 +22,6 @@ build/
 
 /*/build/
 
-*.iml
-
 
 
 
@@ -35,3 +33,4 @@ proguard/
 
 # Log Files
 *.log
+/library.iml
